@@ -1,0 +1,14 @@
+name: Citizens
+main: com.fullwall.Citizens.Citizens
+version: 1.07
+author: fullwall
+commands:
+    npc:
+        description: Performs various NPC-related commands.
+        usage: |
+                    The command was not recognized. Did you type in it in correctly?
+                    See /citizens help for a list of commands.
+    citizens:
+        description: Performs Citizens-related commands.
+        usage: |
+                    You typed the command incorrectly. It should be /<command> help
