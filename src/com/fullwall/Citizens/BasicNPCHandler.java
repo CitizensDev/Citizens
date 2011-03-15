@@ -26,6 +26,7 @@ public class BasicNPCHandler extends NPCManager {
 	public void setNPCText(String name, ArrayList<String> text) {
 		text = StringUtils.colourise(text);
 		super.setBasicNPCText(name, text);
+		PropertyPool.saveText(name, text);
 	}
 
 	public void setName(String name, String changeTo) {
@@ -49,6 +50,7 @@ public class BasicNPCHandler extends NPCManager {
 		texts.add(text);
 		texts = StringUtils.colourise(texts);
 		super.setBasicNPCText(name, texts);
+		PropertyPool.saveText(name, texts);
 	}
 
 	public void resetText(String name) {

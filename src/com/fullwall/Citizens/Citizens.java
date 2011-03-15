@@ -45,7 +45,11 @@ public class Citizens extends JavaPlugin {
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static boolean talkWhenClose = false;
 	public static iConomy economy = null;
-
+	
+	@Override
+	public void onLoad() {
+	}
+	
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGED, l, Event.Priority.Normal,
@@ -88,11 +92,16 @@ public class Citizens extends JavaPlugin {
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		handler.despawnAllNPCs();
+		PropertyPool.locations.save();
+		PropertyPool.texts.save();
+		PropertyPool.items.save();
+		PropertyPool.colours.save();
+		PropertyPool.settings.save();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
 				+ ") disabled");
 	}
-
+	
 	private void setupHelp() {
 		Plugin test = getServer().getPluginManager().getPlugin("Help");
 		if (test != null) {
@@ -127,6 +136,9 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc move [name]",
 					"Moves an NPC to your location.", this,
 					"citizens.general.move");
+			helpPlugin.registerCommand("npc tp [name]",
+					"Teleports you to the location of an NPC.", this,
+					"citizens.general.move");
 		}
 	}
 
@@ -141,7 +153,7 @@ public class Citizens extends JavaPlugin {
 	private void setupNPCs() {
 		String[] list = PropertyPool.locations.getString("list").split(",");
 		for (String name : list) {
-			Location loc = StringUtils.getLocationFromName(name);
+			Location loc = PropertyPool.getLocationFromName(name);
 			if (loc != null) {
 				handler.spawnNPC(name, loc);
 				ArrayList<String> text = PropertyPool.getText(name);

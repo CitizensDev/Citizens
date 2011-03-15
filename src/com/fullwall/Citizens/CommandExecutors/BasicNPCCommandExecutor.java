@@ -3,13 +3,17 @@ package com.fullwall.Citizens.CommandExecutors;
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Utils.StringUtils;
 
 public class BasicNPCCommandExecutor implements CommandExecutor {
 
@@ -23,8 +27,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String commandLabel, String[] args) {
+	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		if (args.length >= 2 && args[0].equals("create")) {
 			if (sender instanceof Player) {
 				if (hasPermission("citizens.basic.create", sender)) {
@@ -119,8 +122,23 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			} else
 				sender.sendMessage(noPermissionsMessage);
 			return true;
-		} else if (command.getName().equals("citizens") && args.length == 1
-				&& (args[0].equals("help"))) {
+		} else if (args.length >= 2 && args[0].equals("tp")){
+			Player p = null;
+			if (sender instanceof Player) {
+			if (hasPermission("citizens.tp", sender)){
+				if(validateName(args[1], sender)){
+					p = (Player)sender;
+					p.teleportTo((PropertyPool.getLocationFromName(args[1])));
+					sender.sendMessage("Teleported you to the NPC named "+args[1]+" Enjoy!");
+				}
+				}else{
+					sender.sendMessage(noPermissionsMessage);
+				}
+			}else{
+			  sender.sendMessage(mustBeIngameMessage);
+			}
+			return true;
+	}else if (command.getName().equals("citizens") && args.length == 1 && (args[0].equals("help"))) {
 			if (hasPermission("citizens.help", sender)) {
 				sendHelp(sender);
 			} else
@@ -150,6 +168,10 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	}
 
 	private void moveNPC(CommandSender sender, String name) {
+		Location loc = PropertyPool.getLocationFromName(name);
+		if (loc != null){
+			PropertyPool.saveLocation(name, loc);
+		}
 		plugin.handler.moveNPC(name, ((Player) sender).getLocation());
 		sender.sendMessage(name + " is enroute to your location!");
 	}
@@ -173,11 +195,10 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 
 	private void setColour(String[] args, CommandSender sender) {
 		if (args[2].indexOf('&') != 0) {
-			sender.sendMessage(ChatColor.GRAY + "Use an & to specify "
-					+ args[0] + ".");
-		}
+			sender.sendMessage(ChatColor.GRAY + "Use an & to specify "+ args[0] + ".");
+		} else {
 		plugin.handler.setColour(args[1], args[2]);
-
+		}
 	}
 
 	private void addText(String[] args, CommandSender sender) {
@@ -242,8 +263,10 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		sender.sendMessage("§8/§cnpc §bitem [name] [id|item name] §e- §asets the in-hand item of an NPC.");
 		sender.sendMessage("§8/§cnpc §bhelmet|torso|legs|boots [name] [id|item name] §e- §asets the item slot of an NPC.");
 		sender.sendMessage("§8/§cnpc §bmove [name] §e- §amoves an NPC to your location.");
+		sender.sendMessage("§8/§cnpc §btp [name] §e- §aTeleports you to the location of an NPC.");
+		
 		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§fPlugin made by fullwall.");
+		sender.sendMessage("§fPlugin made by fullwall and NeonMaster.");
 
 	}
 
@@ -260,4 +283,5 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		return !(sender instanceof Player)
 				|| Permission.generic((Player) sender, permission);
 	}
+
 }

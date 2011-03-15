@@ -2,13 +2,16 @@ package com.fullwall.Citizens.Utils;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import org.bukkit.Location;
 
 import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.PropertyHandler;
+import com.fullwall.Citizens.Citizens;
 
 public class PropertyPool {
+	public static Logger log = Logger.getLogger("Minecraft");
 	public static final PropertyHandler settings = new PropertyHandler(
 			"plugins/Citizens/Citizens.settings");
 	public static final PropertyHandler texts = new PropertyHandler(
@@ -110,6 +113,19 @@ public class PropertyPool {
 			array.add(Integer.parseInt(s));
 		}
 		return array;
+	}
+	public static Location getLocationFromName(String name) {
+		String[] values = PropertyPool.locations.getString(name).split(",");
+		if (values.length != 6) { 
+			log.info("gotLocationFromName didn't have 6 values in values variable!");
+			return null;
+		}else{
+		Location loc = new Location(Citizens.plugin.getServer().getWorld(
+				values[0]), Double.parseDouble(values[1]),
+				Double.parseDouble(values[2]), Double.parseDouble(values[3]),
+				Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+		return loc;
+		}
 	}
 
 	public static void changeName(String name, String changeTo) {

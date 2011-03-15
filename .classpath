@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Users/Bertie/Desktop/stuff/bukkitdev/Bukkit/Server/bukkit.jar" sourcepath="C:/Users/Admin/Desktop/git/Bukkit"/>
-	<classpathentry kind="lib" path="C:/Users/Bertie/Desktop/stuff/bukkitdev/Bukkit/Server/Permissions.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Bertie/Desktop/stuff/bukkitdev/workspace/Craftbook/lib/Craftbukkit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Bertie/Desktop/stuff/bukkitdev/Bukkit/Server/Help.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Bertie/Desktop/stuff/bukkitdev/Bukkit/Server/plugins/iConomy.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/David/Citizens/bukkit-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/David/Citizens/craftbukkit-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/David/Citizens/Help.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/David/Citizens/iConomy.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/David/Citizens/Permissions.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -42,7 +42,7 @@ public class NPCManager {
 	}
 
 	public void registerBasicNPC(String name, NPCType type) {
-		Location loc = StringUtils.getLocationFromName(name);
+		Location loc = PropertyPool.getLocationFromName(name);
 		String uniqueID = generateID(NPCType.BASIC);
 
 		String colour = StringUtils.getColourFromString(name);
@@ -55,7 +55,7 @@ public class NPCManager {
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
-		ArrayList<Integer> items = StringUtils.getItemsFromFile(name);
+		ArrayList<Integer> items = PropertyPool.getItemsFromFile(name);
 		NPCDataManager.addItems(npc, items);
 
 		PropertyPool.getSetText(name);
