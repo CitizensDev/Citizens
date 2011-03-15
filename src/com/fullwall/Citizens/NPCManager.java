@@ -95,11 +95,20 @@ public class NPCManager {
 		return list;
 	}
 
-	public static void rotateNPCToPlayer(HumanNPC NPC, Player player) {
-		Location loc = NPC.getBukkitEntity().getLocation();
-		float yaw = player.getLocation().getYaw() % 360 - 180;
-		NPC.moveTo(loc.getX(), loc.getY(), loc.getZ(), yaw, loc.getPitch());
-	}
+    public static void rotateNPCToPlayer(HumanNPC NPC, Player player) {
+        Location loc = NPC.getBukkitEntity().getLocation();
+        double xDiff = player.getLocation().getX() - loc.getX();
+        double yDiff = player.getLocation().getY() - loc.getY();
+        double zDiff = player.getLocation().getZ() - loc.getZ();
+        double DistanceXZ = Math.sqrt(xDiff*xDiff+zDiff*zDiff);
+        double DistanceY = Math.sqrt(DistanceXZ*DistanceXZ+yDiff*yDiff);
+        double yaw = (Math.acos(xDiff/DistanceXZ)*180/Math.PI);
+        double pitch = (Math.acos(yDiff/DistanceY)*180/Math.PI)-90;
+        if(zDiff < 0.0){
+                yaw = yaw + (Math.abs(180 - yaw)*2);
+        }
+        NPC.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float)yaw-90, (float)pitch);
+}
 
 	public void despawnNPC(String name, String uniqueID) {
 		BasicUIDs.remove(name);
