@@ -362,6 +362,8 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		sender.sendMessage("§8/§cnpc §bmove §e- §amoves an NPC to your location.");
 		sender.sendMessage("§8/§cnpc §btp §e- §aTeleports you to the location of an NPC.");
 		sender.sendMessage("§8/§cnpc §bcopy §e- §aMakes of copy of the NPC on your location.");
+		sender.sendMessage("§8/§cnpc §bgetid §e- §aGets the ID of the selected NPC.");
+		sender.sendMessage("§8/§cnpc §bselect [id] §e- §aSelects an NPC with the given ID.");
 		
 		sender.sendMessage("§b-------------------------------");
 		sender.sendMessage("§fPlugin made by fullwall and NeonMaster.");
