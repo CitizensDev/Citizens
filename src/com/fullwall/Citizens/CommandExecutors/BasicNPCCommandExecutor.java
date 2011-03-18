@@ -125,7 +125,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				sender.sendMessage(noPermissionsMessage);
 			return true;
 		} else if (args.length == 2 && (args[0].equals("item"))) {
-			if (hasPermission("citizens..general.setitem", sender)) {
+			if (hasPermission("citizens.general.setitem", sender)) {
 				if (validateSelected((Player)sender)) {
 					setItemInHand(sender, args);
 				}else{
@@ -138,7 +138,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				&& (args[0].equals("torso") || args[0].equals("legs")
 						|| args[0].equals("helmet") || args[0].equals("boots"))) {
 			if (sender instanceof Player) {
-			if (hasPermission("citizens..general.setitem", sender)) {
+			if (hasPermission("citizens.general.setitem", sender)) {
 				if (validateSelected((Player)sender)) {
 					setArmor(sender, args);
 				}else{
@@ -174,7 +174,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				sender.sendMessage(noPermissionsMessage);
 			return true;
 		}else if (args.length == 1 && (args[0].equals("copy"))) {
-			if (hasPermission("citizens..general.copy", sender)) {
+			if (hasPermission("citizens.general.copy", sender)) {
 				if (validateSelected((Player)sender)) {
 					Player p = (Player)sender;
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
@@ -186,7 +186,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				sender.sendMessage(noPermissionsMessage);
 			return true;
 		}else if (args.length == 1 && (args[0].equals("getid"))) {
-			if (hasPermission("citizens..general.getid", sender)) {
+			if (hasPermission("citizens.general.getid", sender)) {
 				if (validateSelected((Player)sender)) {
 					Player p = (Player)sender;
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
@@ -198,7 +198,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				sender.sendMessage(noPermissionsMessage);
 			return true;
 		}else if (args.length == 2 && (args[0].equals("select"))) {
-			if (hasPermission("citizens..general.select", sender)) {
+			if (hasPermission("citizens.general.select", sender)) {
 				Player p = (Player)sender;
 				HumanNPC n = NPCManager.getNPC(args[1]);
 				if(n==null){
@@ -211,7 +211,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				sender.sendMessage(noPermissionsMessage);
 			return true;
 		}else if (args.length == 1 && (args[0].equals("getowner"))) {
-			if (hasPermission("citizens..general.getowner", sender)) {
+			if (hasPermission("citizens.general.getowner", sender)) {
 				if (validateSelected((Player)sender)) {
 					Player p = (Player)sender;
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
@@ -223,7 +223,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				sender.sendMessage(noPermissionsMessage);
 			return true;
 		}else if (args.length == 2 && (args[0].equals("setowner"))) {
-			if (hasPermission("citizens..general.setowner", sender)) {
+			if (hasPermission("citizens.general.setowner", sender)) {
 				if (validateSelected((Player)sender)) {
 					Player p = (Player)sender;
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
@@ -272,13 +272,13 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		Player p = (Player)sender;
 		if (args.length == 2 && args[1].equals("all")) {
 			plugin.handler.removeAllNPCs();
-			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared...");
+			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			PropertyPool.locations.setString("currentID", ""+0);
 			PropertyPool.locations.removeKey("list");
 		} else {
 			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 			plugin.handler.removeNPC(Integer.valueOf(NPCManager.NPCSelected.get(p.getName())));
-			sender.sendMessage(ChatColor.GRAY + n.getName() + " disappeared...");
+			sender.sendMessage(ChatColor.GRAY + n.getName() + " disappeared.");
 		}
 		NPCManager.NPCSelected.remove(p.getName());
 	}
