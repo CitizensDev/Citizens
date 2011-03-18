@@ -154,9 +154,10 @@ public class PropertyPool {
 		}
 	}
 
-	public static void changeName(int UID, String changeTo) {
+	public static void changeName(int UID, String changeFrom, String changeTo) {
 		//ID's Remain the same, no need for this.
-		
+		PropertyPool.locations.setString("list", PropertyPool.locations
+				.getString("list").replace((""+UID+"_"+changeFrom + ","), ""));
 		//ArrayList<String> texts = PropertyPool.getText(UID);
 		//String colour = PropertyPool.getColour(UID);
 		//ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);

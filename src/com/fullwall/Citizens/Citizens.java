@@ -174,11 +174,11 @@ public class Citizens extends JavaPlugin {
 					name = UID + "_" + name;
 					PropertyPool.locations.setString(""+UID, PropertyPool.locations.getString(oldName));
 					PropertyPool.locations.removeKey(oldName);
-					PropertyPool.colours.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.colours.setString(""+UID, PropertyPool.colours.getString(oldName));
 					PropertyPool.colours.removeKey(oldName);
-					PropertyPool.items.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.items.setString(""+UID, PropertyPool.items.getString(oldName));
 					PropertyPool.items.removeKey(oldName);
-					PropertyPool.texts.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.texts.setString(""+UID, PropertyPool.texts.getString(oldName));
 					PropertyPool.texts.removeKey(oldName);
 					PropertyPool.locations.setString("list", PropertyPool.locations.getString("list").replace(oldName,name));
 					list = PropertyPool.locations.getString("list").split(",");
@@ -186,6 +186,7 @@ public class Citizens extends JavaPlugin {
 				//
 				Location loc = PropertyPool.getLocationFromName(Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
+					Citizens.log.info("Adding: " + name.split("_",2)[1] + " " + name.split("_",2)[0]);
 					handler.spawnExcistingNPC(name.split("_",2)[1], Integer.valueOf(name.split("_")[0]));
 					ArrayList<String> text = PropertyPool.getText(Integer.valueOf(name.split("_")[0]));
 					if (text != null)
