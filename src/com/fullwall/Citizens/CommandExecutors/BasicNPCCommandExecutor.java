@@ -185,6 +185,31 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			} else
 				sender.sendMessage(noPermissionsMessage);
 			return true;
+		}else if (args.length == 1 && (args[0].equals("getid"))) {
+			if (hasPermission("citizens..general.getid", sender)) {
+				if (validateSelected((Player)sender)) {
+					Player p = (Player)sender;
+					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+					p.sendMessage("The ID of this NPC is: " + n.getUID());
+				}else{
+					sender.sendMessage("Must have a NPC selected (right click).");
+				}
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
+		}else if (args.length == 2 && (args[0].equals("select"))) {
+			if (hasPermission("citizens..general.select", sender)) {
+				Player p = (Player)sender;
+				HumanNPC n = NPCManager.getNPC(args[1]);
+				if(n==null){
+					sender.sendMessage("No NPC with this ID: " + args[1]);
+				}else{
+					NPCManager.NPCSelected.put(p.getName(), ""+n.getUID());
+					p.sendMessage("Selected NPC with ID: " + n.getUID() + " Name: " + n.getName());
+				}
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
 		}
 		return false;
 	}

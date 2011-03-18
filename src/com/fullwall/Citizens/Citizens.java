@@ -143,6 +143,12 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc copy",
 					"Copies the selected NPC.", this,
 					"citizens.general.copy");
+			helpPlugin.registerCommand("npc getid",
+					"Gets the ID of the selected NPC.", this,
+					"citizens.general.getid");
+			helpPlugin.registerCommand("npc select [id]",
+					"Selects the NPC with the given id.", this,
+					"citizens.general.select");
 		}
 	}
 
