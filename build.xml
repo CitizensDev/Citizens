@@ -33,7 +33,7 @@
         description="generate the distribution" >
     <!-- Create the distribution directory -->
     <!-- Put everything in ${build} into the Citizens-${DSTAMP}.jar file -->
-    <jar jarfile="${releases}/Citizens-${DSTAMP}.jar" basedir="${build}">
+    <jar jarfile="Citizens.jar" basedir="${build}">
     <zipfileset dir="." includes="*.yml"/>
     </jar>
   </target>
