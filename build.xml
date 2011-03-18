@@ -17,7 +17,7 @@
 
   <target name="compile" depends="init" description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" encoding="UTF-8" >
+    <javac srcdir="${src}" destdir="${build}" encoding="Cp1252" >
  	   <classpath>
  	    	<pathelement path="${libs}"/>
  	    	<pathelement location="${libs}/iConomy.jar"/>
@@ -33,7 +33,7 @@
         description="generate the distribution" >
     <!-- Create the distribution directory -->
     <!-- Put everything in ${build} into the Citizens-${DSTAMP}.jar file -->
-    <jar jarfile="Citizens.jar" basedir="${build}" encoding="UTF-8">
+    <jar jarfile="Citizens.jar" basedir="${build}" encoding="Cp1252">
     <zipfileset dir="." includes="*.yml"/>
     </jar>
   </target>
