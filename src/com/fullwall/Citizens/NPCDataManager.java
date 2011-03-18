@@ -23,12 +23,12 @@ public class NPCDataManager extends NPCManager {
 			Material chestplate = Material.getMaterial(items.get(2));
 			Material leggings = Material.getMaterial(items.get(3));
 			Material boots = Material.getMaterial(items.get(4));
-
-			inv.setItemInHand(new ItemStack(inHand));
-			inv.setHelmet(new ItemStack(helmet));
-			inv.setChestplate(new ItemStack(chestplate));
-			inv.setLeggings(new ItemStack(leggings));
-			inv.setBoots(new ItemStack(boots));
+			
+			inv.setItemInHand(new ItemStack(inHand,1));
+			inv.setHelmet(new ItemStack(helmet,1));
+			inv.setChestplate(new ItemStack(chestplate,1));
+			inv.setLeggings(new ItemStack(leggings,1));
+			inv.setBoots(new ItemStack(boots,1));
 		}
 	}
 

@@ -26,6 +26,7 @@ public class NPCManager {
 	private ConcurrentHashMap<String, ArrayList<String>> TraderUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
 	private ConcurrentHashMap<String, ArrayList<String>> GuardUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
 	public static ConcurrentHashMap<String, ArrayList<String>> GlobalUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
+	public static ConcurrentHashMap<String, String> NPCSelected = new ConcurrentHashMap<String, String>();
 	public Random ran = new Random(
 			new Random(new Random(new Random(new Random(System
 					.currentTimeMillis()).nextLong()).nextLong()).nextLong())
@@ -41,41 +42,51 @@ public class NPCManager {
 		ALL, BASIC, TRADER, GUARD, QUEST, HEALER
 	}
 
-	public void registerBasicNPC(String name, NPCType type) {
-		Location loc = PropertyPool.getLocationFromName(name);
-		String uniqueID = generateID(NPCType.BASIC);
+	public void registerBasicNPC(String name, NPCType type, int UID) {
+		Location loc = PropertyPool.getLocationFromID(UID);
+		//String uniqueID = generateID(NPCType.BASIC);
 
-		String colour = StringUtils.getColourFromString(name);
+		String colour = PropertyPool.getColour(UID);//StringUtils.getColourFromString(name);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
 		if (!colour.isEmpty() && !colour.equals("§f"))
 			npcName = colour + name;
+		
+		if(Citizens.convertUnderscores == true){
+			String[] brokenName = npcName.split("_");
+			for(int i = 0; i < brokenName.length; i++){
+				if(i == 0) npcName = brokenName[i];
+				else npcName += " " + brokenName[i];
+			}
+		}
 
-		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(uniqueID, npcName,
+		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(""+UID, npcName,
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
-				loc.getYaw(), 0.0F);
+				loc.getYaw(), 0.0F, UID);
 
-		ArrayList<Integer> items = PropertyPool.getItemsFromFile(name);
+		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
 		NPCDataManager.addItems(npc, items);
 
-		PropertyPool.getSetText(name);
-		saveToFile(name, loc, colour, items);
-		registerUID(type, uniqueID, name);
-		list.put(uniqueID, npc);
+		PropertyPool.getSetText(UID);
+		saveToFile(name, loc, colour, items, UID);
+		registerUID(type, ""+UID, name);
+		list.put(""+UID, npc);
 	}
 
-	public void registerBasicNPC(String name, Location loc, NPCType type) {
-		PropertyPool.saveLocation(name, loc);
-		registerBasicNPC(name, type);
+	public int registerBasicNPC(String name, Location loc, NPCType type) {
+		int UID = PropertyPool.getNewNpcID();
+		PropertyPool.saveLocation(name, loc, UID);
+		registerBasicNPC(name, type, UID);
+		return UID;
 	}
 
-	public static void setBasicNPCText(String name, ArrayList<String> text) {
-		BasicNPCTexts.put(name, text);
-		PropertyPool.saveText(name, text);
+	public static void setBasicNPCText(int UID, ArrayList<String> text) {
+		BasicNPCTexts.put(""+UID, text);
+		PropertyPool.saveText(UID, text);
 	}
 
-	public static ArrayList<String> getBasicNPCText(String name) {
-		return BasicNPCTexts.get(name);
+	public static ArrayList<String> getBasicNPCText(int UID) {
+		return BasicNPCTexts.get(""+UID);
 	}
 
 	public void moveNPC(String uniqueID, Location loc) {
@@ -111,44 +122,49 @@ public class NPCManager {
 }
 
 	public void despawnNPC(String name, String uniqueID) {
-		BasicUIDs.remove(name);
-		TraderUIDs.remove(name);
-		GuardUIDs.remove(name);
-		GlobalUIDs.remove(name);
+		BasicUIDs.remove(uniqueID);
+		TraderUIDs.remove(uniqueID);
+		GuardUIDs.remove(uniqueID);
+		GlobalUIDs.remove(uniqueID);
 		NPCSpawner.RemoveBasicHumanNpc(list.get(uniqueID));
 		list.remove(uniqueID);
 	}
 
-	public void removeNPC(String name, String uniqueID) {
-		BasicUIDs.remove(name);
-		TraderUIDs.remove(name);
-		GuardUIDs.remove(name);
-		GlobalUIDs.remove(name);
-		NPCSpawner.RemoveBasicHumanNpc(list.get(uniqueID));
-		list.remove(uniqueID);
+	public void removeNPC(String name, int UID) {
+		BasicUIDs.remove(""+UID);
+		TraderUIDs.remove(""+UID);
+		GuardUIDs.remove(""+UID);
+		GlobalUIDs.remove(""+UID);
+		String actualName = NPCManager.getNPC(""+UID).getName();
+		NPCSpawner.RemoveBasicHumanNpc(list.get(""+UID));
+		list.remove(""+UID);
 		PropertyPool.colours.removeKey(name);
 		PropertyPool.items.removeKey(name);
-		PropertyPool.locations.removeKey(name);
+		PropertyPool.locations.removeKey(""+UID);
 		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace((name + ","), ""));
+				.getString("list").replace((""+UID+"_"+actualName + ","), ""));
 		PropertyPool.texts.removeKey(name);
+	}
+	
+	public void removeNPCForRespawn(int UID){
+		NPCSpawner.RemoveBasicHumanNpc(list.get(""+UID));
 	}
 
 	private void saveToFile(String name, Location loc, String colour,
-			ArrayList<Integer> items) {
-		PropertyPool.saveLocation(name, loc);
-		PropertyPool.saveColour(name, colour);
-		PropertyPool.saveItems(name, items);
+			ArrayList<Integer> items, int UID) {
+		PropertyPool.saveLocation(name, loc, UID);
+		PropertyPool.saveColour(UID, colour);
+		PropertyPool.saveItems(UID, items);
 	}
 
 	private void registerUID(NPCType type, String uniqueID, String name) {
 		ArrayList<String> existingUIDs = new ArrayList<String>();
 		switch (type) {
 		case BASIC:
-			if (BasicUIDs.containsKey(name))
-				existingUIDs = BasicUIDs.get(name);
+			if (BasicUIDs.containsKey(uniqueID))
+				existingUIDs = BasicUIDs.get(uniqueID);
 			existingUIDs.add(uniqueID);
-			BasicUIDs.put(name, existingUIDs);
+			BasicUIDs.put(uniqueID, existingUIDs);
 			break;
 		case TRADER:
 			if (TraderUIDs.containsKey(name))

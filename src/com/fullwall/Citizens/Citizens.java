@@ -41,6 +41,7 @@ public class Citizens extends JavaPlugin {
 	public static String NPCColour = "§f";
 	public static String chatFormat = "[%name%]: ";
 	public static String buildNumber = "1";
+	public static boolean convertUnderscores = false;
 
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static boolean talkWhenClose = false;
@@ -68,8 +69,8 @@ public class Citizens extends JavaPlugin {
 		plugin = this;
 
 		Permission.initialize(getServer());
-		setupNPCs();
 		setupVariables();
+		setupNPCs();
 		setupHelp();
 
 		BasicNPCCommandExecutor executor = new BasicNPCCommandExecutor(this);
@@ -139,6 +140,9 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc tp [name]",
 					"Teleports you to the location of an NPC.", this,
 					"citizens.general.move");
+			helpPlugin.registerCommand("npc copy",
+					"Copies the selected NPC.", this,
+					"citizens.general.copy");
 		}
 	}
 
@@ -148,17 +152,39 @@ public class Citizens extends JavaPlugin {
 		followingEnabled = PropertyPool.settings.getBoolean("enable-following");
 		talkWhenClose = PropertyPool.settings.getBoolean("talk-when-close");
 		chatFormat = PropertyPool.settings.getString("chat-format");
+		if(!PropertyPool.settings.keyExists("underscores-to-spaces"))PropertyPool.settings.setBoolean("underscores-to-spaces", true);
+		convertUnderscores = PropertyPool.settings.getBoolean("underscores-to-spaces");
 	}
 
 	private void setupNPCs() {
 		String[] list = PropertyPool.locations.getString("list").split(",");
-		for (String name : list) {
-			Location loc = PropertyPool.getLocationFromName(name);
-			if (loc != null) {
-				handler.spawnNPC(name, loc);
-				ArrayList<String> text = PropertyPool.getText(name);
-				if (text != null)
-					handler.setNPCText(name, text);
+		if(list.length > 0 && list[0] != ""){
+			for (String name : list) {
+				
+				//Conversion from old to new save format:
+				if(name.split("_",2).length == 1 && !name.split("_",2)[0].isEmpty()){
+					int UID = PropertyPool.getNewNpcID();
+					String oldName = name;
+					name = UID + "_" + name;
+					PropertyPool.locations.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.locations.removeKey(oldName);
+					PropertyPool.colours.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.colours.removeKey(oldName);
+					PropertyPool.items.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.items.removeKey(oldName);
+					PropertyPool.texts.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.texts.removeKey(oldName);
+					PropertyPool.locations.setString("list", PropertyPool.locations.getString("list").replace(oldName,name));
+					list = PropertyPool.locations.getString("list").split(",");
+				}
+				//
+				Location loc = PropertyPool.getLocationFromName(Integer.valueOf(name.split("_")[0]));
+				if (loc != null) {
+					handler.spawnExcistingNPC(name.split("_",2)[1], Integer.valueOf(name.split("_")[0]));
+					ArrayList<String> text = PropertyPool.getText(Integer.valueOf(name.split("_")[0]));
+					if (text != null)
+						handler.setNPCText(Integer.valueOf(name.split("_")[0]), text);
+				}
 			}
 		}
 	}
