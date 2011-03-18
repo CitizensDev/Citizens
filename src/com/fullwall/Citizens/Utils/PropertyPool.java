@@ -22,6 +22,8 @@ public class PropertyPool {
 			"plugins/Citizens/Basic NPCs/Citizens.colours");
 	public static final PropertyHandler items = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.items");
+	public static final PropertyHandler owners = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.owners");
 
 	public static void saveLocation(String name, Location loc, int UID) {
 		String location = loc.getWorld().getName() + "," + loc.getX() + ","
@@ -53,6 +55,14 @@ public class PropertyPool {
 			}
 		}
 		texts.setString(""+UID, adding);
+	}
+	
+	public static void setNPCOwner(int UID, String name){
+		owners.setString(""+UID, name);
+	}
+	
+	public static String getNPCOwner(int UID){
+		return owners.getString(""+UID);
 	}
 	
 	public static int getNewNpcID(){

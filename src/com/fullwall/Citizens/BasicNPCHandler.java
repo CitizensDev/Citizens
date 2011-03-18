@@ -33,6 +33,14 @@ public class BasicNPCHandler extends NPCManager {
 		super.setBasicNPCText(UID, text);
 		PropertyPool.saveText(UID, text);
 	}
+	
+	public void setOwner(int UID, String name){
+		PropertyPool.setNPCOwner(UID,name);
+	}
+	
+	public String getOwner(int UID){
+		return PropertyPool.getNPCOwner(UID);
+	}
 
 	public void setName(int UID, String changeTo) {
 		HumanNPC n = super.getNPC(""+UID);

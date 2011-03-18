@@ -149,6 +149,12 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc select [id]",
 					"Selects the NPC with the given id.", this,
 					"citizens.general.select");
+			helpPlugin.registerCommand("npc getowner",
+					"Gets the owner of the selected NPC.", this,
+					"citizens.general.getowner");
+			helpPlugin.registerCommand("npc setowner [name]",
+					"Sets the owner of the selected NPC.", this,
+					"citizens.general.setowner");
 		}
 	}
 
@@ -186,7 +192,6 @@ public class Citizens extends JavaPlugin {
 				//
 				Location loc = PropertyPool.getLocationFromName(Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					Citizens.log.info("Adding: " + name.split("_",2)[1] + " " + name.split("_",2)[0]);
 					handler.spawnExcistingNPC(name.split("_",2)[1], Integer.valueOf(name.split("_")[0]));
 					ArrayList<String> text = PropertyPool.getText(Integer.valueOf(name.split("_")[0]));
 					if (text != null)

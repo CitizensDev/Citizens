@@ -138,9 +138,10 @@ public class NPCManager {
 		String actualName = NPCManager.getNPC(""+UID).getName();
 		NPCSpawner.RemoveBasicHumanNpc(list.get(""+UID));
 		list.remove(""+UID);
-		PropertyPool.colours.removeKey(name);
-		PropertyPool.items.removeKey(name);
+		PropertyPool.colours.removeKey(""+UID);
+		PropertyPool.items.removeKey(""+UID);
 		PropertyPool.locations.removeKey(""+UID);
+		PropertyPool.owners.removeKey(""+UID);
 		PropertyPool.locations.setString("list", PropertyPool.locations
 				.getString("list").replace((""+UID+"_"+actualName + ","), ""));
 		PropertyPool.texts.removeKey(name);

@@ -210,6 +210,31 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			} else
 				sender.sendMessage(noPermissionsMessage);
 			return true;
+		}else if (args.length == 1 && (args[0].equals("getowner"))) {
+			if (hasPermission("citizens..general.getowner", sender)) {
+				if (validateSelected((Player)sender)) {
+					Player p = (Player)sender;
+					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+					p.sendMessage("The owner of this NPC is: " + PropertyPool.getNPCOwner(n.getUID()));
+				}else{
+					sender.sendMessage("Must have a NPC selected (right click).");
+				}
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
+		}else if (args.length == 2 && (args[0].equals("setowner"))) {
+			if (hasPermission("citizens..general.setowner", sender)) {
+				if (validateSelected((Player)sender)) {
+					Player p = (Player)sender;
+					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+					PropertyPool.setNPCOwner(n.getUID(),args[1]);
+					p.sendMessage("The owner of NPC: " + n.getName() + " is now: " + args[1]);
+				}else{
+					sender.sendMessage("Must have a NPC selected (right click).");
+				}
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
 		}
 		return false;
 	}
@@ -230,6 +255,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		}
 		int UID = plugin.handler.spawnNPC(args[1], p.getLocation());
 		plugin.handler.setNPCText(UID, texts);
+		plugin.handler.setOwner(UID,p.getName());
 		p.sendMessage(ChatColor.GOLD + "The NPC " + args[1] + " was born!");
 	}
 
@@ -364,6 +390,8 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		sender.sendMessage("§8/§cnpc §bcopy §e- §aMakes of copy of the NPC on your location.");
 		sender.sendMessage("§8/§cnpc §bgetid §e- §aGets the ID of the selected NPC.");
 		sender.sendMessage("§8/§cnpc §bselect [id] §e- §aSelects an NPC with the given ID.");
+		sender.sendMessage("§8/§cnpc §bgetowner §e- §aGets the owner of the selected NPC.");
+		sender.sendMessage("§8/§cnpc §bsetowner [name] §e- §aSets the owner of the selected NPC.");
 		
 		sender.sendMessage("§b-------------------------------");
 		sender.sendMessage("§fPlugin made by fullwall and NeonMaster.");
