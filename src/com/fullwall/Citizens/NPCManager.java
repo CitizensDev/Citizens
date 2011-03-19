@@ -21,12 +21,12 @@ import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 public class NPCManager {
 
 	private Citizens plugin;
-	public ConcurrentHashMap<String, ArrayList<String>> BasicUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
-	public static ConcurrentHashMap<String, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<String, ArrayList<String>>();
-	private ConcurrentHashMap<String, ArrayList<String>> TraderUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
-	private ConcurrentHashMap<String, ArrayList<String>> GuardUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
-	public static ConcurrentHashMap<String, ArrayList<String>> GlobalUIDs = new ConcurrentHashMap<String, ArrayList<String>>();
-	public static ConcurrentHashMap<String, String> NPCSelected = new ConcurrentHashMap<String, String>();
+	public ConcurrentHashMap<Integer, String> BasicUIDs = new ConcurrentHashMap<Integer, String>();
+	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
+	private ConcurrentHashMap<Integer, String> TraderUIDs = new ConcurrentHashMap<Integer, String>();
+	private ConcurrentHashMap<Integer, String> GuardUIDs = new ConcurrentHashMap<Integer, String>();
+	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
+	public static ConcurrentHashMap<String, Integer> NPCSelected = new ConcurrentHashMap<String, Integer>();
 	public Random ran = new Random(
 			new Random(new Random(new Random(new Random(System
 					.currentTimeMillis()).nextLong()).nextLong()).nextLong())
@@ -60,17 +60,17 @@ public class NPCManager {
 			}
 		}
 
-		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(""+UID, npcName,
+		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(UID, npcName,
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
-				loc.getYaw(), 0.0F, UID);
+				loc.getYaw(), 0.0F);
 
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
 		NPCDataManager.addItems(npc, items);
 
 		PropertyPool.getSetText(UID);
 		saveToFile(name, loc, colour, items, UID);
-		registerUID(type, ""+UID, name);
-		list.put(""+UID, npc);
+		registerUID(type, UID, name);
+		list.put(UID, npc);
 	}
 
 	public int registerBasicNPC(String name, Location loc, NPCType type) {
@@ -81,21 +81,21 @@ public class NPCManager {
 	}
 
 	public static void setBasicNPCText(int UID, ArrayList<String> text) {
-		BasicNPCTexts.put(""+UID, text);
+		BasicNPCTexts.put(UID, text);
 		PropertyPool.saveText(UID, text);
 	}
 
 	public static ArrayList<String> getBasicNPCText(int UID) {
-		return BasicNPCTexts.get(""+UID);
+		return BasicNPCTexts.get(UID);
 	}
 
-	public void moveNPC(String uniqueID, Location loc) {
-		HumanNPC npc = list.get(uniqueID);
+	public void moveNPC(int UID, Location loc) {
+		HumanNPC npc = list.get(UID);
 		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
 	}
 
-	public static HumanNPC getNPC(String uniqueID) {
-		return list.get(uniqueID);
+	public static HumanNPC getNPC(int UID) {
+		return list.get(UID);
 	}
 
 	public static HumanNPC getNPC(Entity entity) {
@@ -121,34 +121,34 @@ public class NPCManager {
         NPC.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float)yaw-90, (float)pitch);
 }
 
-	public void despawnNPC(String name, String uniqueID) {
-		BasicUIDs.remove(uniqueID);
-		TraderUIDs.remove(uniqueID);
-		GuardUIDs.remove(uniqueID);
-		GlobalUIDs.remove(uniqueID);
-		NPCSpawner.RemoveBasicHumanNpc(list.get(uniqueID));
-		list.remove(uniqueID);
+	public void despawnNPC(int UID) {
+		BasicUIDs.remove(UID);
+		TraderUIDs.remove(UID);
+		GuardUIDs.remove(UID);
+		GlobalUIDs.remove(UID);
+		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
+		list.remove(UID);
 	}
 
-	public void removeNPC(String name, int UID) {
-		BasicUIDs.remove(""+UID);
-		TraderUIDs.remove(""+UID);
-		GuardUIDs.remove(""+UID);
-		GlobalUIDs.remove(""+UID);
-		String actualName = NPCManager.getNPC(""+UID).getName();
-		NPCSpawner.RemoveBasicHumanNpc(list.get(""+UID));
-		list.remove(""+UID);
-		PropertyPool.colours.removeKey(""+UID);
-		PropertyPool.items.removeKey(""+UID);
-		PropertyPool.locations.removeKey(""+UID);
-		PropertyPool.owners.removeKey(""+UID);
+	public void removeNPC(int UID) {
+		BasicUIDs.remove(UID);
+		TraderUIDs.remove(UID);
+		GuardUIDs.remove(UID);
+		GlobalUIDs.remove(UID);
+		String actualName = NPCManager.getNPC(UID).getName();
+		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
+		list.remove(UID);
+		PropertyPool.colours.removeKey(UID);
+		PropertyPool.items.removeKey(UID);
+		PropertyPool.locations.removeKey(UID);
+		PropertyPool.owners.removeKey(UID);
 		PropertyPool.locations.setString("list", PropertyPool.locations
 				.getString("list").replace((""+UID+"_"+actualName + ","), ""));
-		PropertyPool.texts.removeKey(name);
+		PropertyPool.texts.removeKey(UID);
 	}
 	
 	public void removeNPCForRespawn(int UID){
-		NPCSpawner.RemoveBasicHumanNpc(list.get(""+UID));
+		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 	}
 
 	private void saveToFile(String name, Location loc, String colour,
@@ -158,34 +158,34 @@ public class NPCManager {
 		PropertyPool.saveItems(UID, items);
 	}
 
-	private void registerUID(NPCType type, String uniqueID, String name) {
-		ArrayList<String> existingUIDs = new ArrayList<String>();
+	private void registerUID(NPCType type, int UID, String name) {
+		//ArrayList<String> existingUIDs = new ArrayList<String>();
 		switch (type) {
 		case BASIC:
-			if (BasicUIDs.containsKey(uniqueID))
-				existingUIDs = BasicUIDs.get(uniqueID);
-			existingUIDs.add(uniqueID);
-			BasicUIDs.put(uniqueID, existingUIDs);
+			//if (BasicUIDs.containsKey(UID))
+			//	existingUIDs = BasicUIDs.get(UID);
+			//existingUIDs.add(name);
+			BasicUIDs.put(UID, name);
 			break;
 		case TRADER:
-			if (TraderUIDs.containsKey(name))
-				existingUIDs = TraderUIDs.get(name);
-			existingUIDs.add(uniqueID);
-			TraderUIDs.put(name, existingUIDs);
+			//if (TraderUIDs.containsKey(name))
+			//	existingUIDs = TraderUIDs.get(name);
+			//existingUIDs.add(uniqueID);
+			TraderUIDs.put(UID, name);
 			break;
 		case GUARD:
-			if (GuardUIDs.containsKey(name))
-				existingUIDs = GuardUIDs.get(name);
-			existingUIDs.add(uniqueID);
-			GuardUIDs.put(name, existingUIDs);
+			//if (GuardUIDs.containsKey(name))
+			//	existingUIDs = GuardUIDs.get(name);
+			//existingUIDs.add(uniqueID);
+			GuardUIDs.put(UID, name);
 			break;
 		case QUEST:
 		case HEALER:
 		}
-		if (GlobalUIDs.containsKey(name))
-			existingUIDs = GlobalUIDs.get(name);
-		existingUIDs.add(uniqueID);
-		GlobalUIDs.put(name, existingUIDs);
+		//if (GlobalUIDs.containsKey(name))
+		//	existingUIDs = GlobalUIDs.get(name);
+		//existingUIDs.add(uniqueID);
+		GlobalUIDs.put(UID, name);
 	}
 
 	private String generateID(NPCType type) {
@@ -216,7 +216,7 @@ public class NPCManager {
 		return UID;
 	}
 
-	public ConcurrentHashMap<String, ArrayList<String>> getBasicUIDs() {
+	public ConcurrentHashMap<Integer, String> getBasicUIDs() {
 		return BasicUIDs;
 	}
 }

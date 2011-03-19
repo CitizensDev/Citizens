@@ -13,7 +13,7 @@ public class TickTask implements Runnable {
 
 	private Citizens plugin;
 	private double range;
-	private HashMap<String, HashMap<String, Boolean>> hasSaidText = new HashMap<String, HashMap<String, Boolean>>();
+	private HashMap<Integer, HashMap<String, Boolean>> hasSaidText = new HashMap<Integer, HashMap<String, Boolean>>();
 
 	public TickTask(Citizens plugin, double range) {
 		this.plugin = plugin;
@@ -25,8 +25,7 @@ public class TickTask implements Runnable {
 		for (Player p : plugin.getServer().getOnlinePlayers()) {
 			// TODO: MUST BE CHANGED TO USE ONLY BASIC UIDs FOR TALKING -
 			// OTHERWISE IT'LL USE GUARDS ETC.
-			for (Entry<String, HumanNPC> entry : NPCManager.getNPCList()
-					.entrySet()) {
+			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList().entrySet()) {
 				{
 					if (checkLocation(entry.getValue().getBukkitEntity()
 							.getLocation(), p.getLocation())) {

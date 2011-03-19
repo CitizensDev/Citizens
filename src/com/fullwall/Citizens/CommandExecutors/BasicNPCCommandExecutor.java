@@ -200,11 +200,11 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		}else if (args.length == 2 && (args[0].equals("select"))) {
 			if (hasPermission("citizens.general.select", sender)) {
 				Player p = (Player)sender;
-				HumanNPC n = NPCManager.getNPC(args[1]);
+				HumanNPC n = NPCManager.getNPC(Integer.valueOf(args[1]));
 				if(n==null){
 					sender.sendMessage("No NPC with this ID: " + args[1]);
 				}else{
-					NPCManager.NPCSelected.put(p.getName(), ""+n.getUID());
+					NPCManager.NPCSelected.put(p.getName(), n.getUID());
 					p.sendMessage("Selected NPC with ID: " + n.getUID() + " Name: " + n.getName());
 				}
 			} else
@@ -215,7 +215,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender)) {
 					Player p = (Player)sender;
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
-					p.sendMessage("The owner of this NPC is: " + PropertyPool.getNPCOwner(n.getUID()));
+					p.sendMessage("The owner of this NPC is: §c" + PropertyPool.getNPCOwner(n.getUID()));
 				}else{
 					sender.sendMessage("Must have a NPC selected (right click).");
 				}
@@ -228,7 +228,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					Player p = (Player)sender;
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 					PropertyPool.setNPCOwner(n.getUID(),args[1]);
-					p.sendMessage("The owner of NPC: " + n.getName() + " is now: " + args[1]);
+					p.sendMessage("The owner of NPC: §c" + n.getName() + "§f is now: §c" + args[1]);
 				}else{
 					sender.sendMessage("Must have a NPC selected (right click).");
 				}
@@ -273,7 +273,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		if (args.length == 2 && args[1].equals("all")) {
 			plugin.handler.removeAllNPCs();
 			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
-			PropertyPool.locations.setString("currentID", ""+0);
+			PropertyPool.locations.setInt("currentID", 0);
 			PropertyPool.locations.removeKey("list");
 		} else {
 			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
@@ -365,7 +365,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		String colour = PropertyPool.getColour(NPC.getUID());
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(NPC.getUID());
 		int newUID = plugin.handler.spawnNPC(NPC.getName(),p.getLocation());
-		HumanNPC newNPC = NPCManager.getNPC(""+newUID);
+		HumanNPC newNPC = NPCManager.getNPC(newUID);
 		PropertyPool.saveColour(newUID, colour);
 		PropertyPool.saveText(newUID, texts);
 		PropertyPool.saveItems(newUID, items);
@@ -408,7 +408,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	}
 	
 	public boolean validateSelected(Player p){
-		if(NPCManager.NPCSelected.get(p.getName()) != null && !NPCManager.NPCSelected.get(p.getName()).isEmpty()){
+		if(NPCManager.NPCSelected.get(p.getName()) != null && !NPCManager.NPCSelected.get(p.getName()).toString().isEmpty()){
 			return true;
 		}
 		return false;

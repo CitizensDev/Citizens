@@ -60,8 +60,8 @@ public class NPCSpawner {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static HumanNPC SpawnBasicHumanNpc(String uniqueId, String name,
-			World world, double x, double y, double z, float yaw, float pitch, int UID) {
+	public static HumanNPC SpawnBasicHumanNpc(int UID, String name,
+			World world, double x, double y, double z, float yaw, float pitch) {
 		try {
 			WorldServer ws = GetWorldServer(world);
 			MinecraftServer ms = GetMinecraftServer(ws.getServer());
@@ -87,7 +87,7 @@ public class NPCSpawner {
 			margs[0] = eh;
 			method.invoke(ws, margs);
 
-			return new HumanNPC(eh, uniqueId, name, UID);
+			return new HumanNPC(eh, UID, name);
 
 		} catch (Exception e) {
 			e.printStackTrace();

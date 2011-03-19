@@ -96,9 +96,17 @@ public final class PropertyHandler {
 		this.properties.remove(key);
 		save();
 	}
+	
+	public void removeKey(int key) {
+		removeKey(""+key);
+	}
 
 	public boolean keyExists(String key) {
 		return this.properties.containsKey(key);
+	}
+	
+	public boolean keyExists(int key) {
+		return keyExists(""+key);
 	}
 
 	public String getString(String key) {
@@ -108,6 +116,10 @@ public final class PropertyHandler {
 
 		return "";
 	}
+	
+	public String getString(int key) {
+		return getString(""+key);
+	}
 
 	public String getString(String key, String value) {
 		if (this.properties.containsKey(key)) {
@@ -116,10 +128,18 @@ public final class PropertyHandler {
 		setString(key, value);
 		return value;
 	}
+	
+	public String getString(int key, String value) {
+		return getString(""+key,value);
+	}
 
 	public void setString(String key, String value) {
 		this.properties.setProperty(key, value);
 		save();
+	}
+	
+	public void setString(int key, String value) {
+		setString(""+key,value);
 	}
 
 	public int getInt(String key) {
@@ -129,19 +149,30 @@ public final class PropertyHandler {
 
 		return 0;
 	}
+	
+	public int getInt(int key) {
+		return getInt(""+key);
+	}
 
 	public int getInt(String key, int value) {
 		if (this.properties.containsKey(key)) {
 			return Integer.parseInt(this.properties.getProperty(key));
 		}
-
 		setInt(key, value);
 		return value;
+	}
+	
+	public int getInt(int key, int value) {
+		return getInt(""+key,value);
 	}
 
 	public void setInt(String key, int value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		save();
+	}
+	
+	public void setInt(int key, int value) {
+		setInt(""+key,value);
 	}
 
 	public double getDouble(String key) {
@@ -150,6 +181,10 @@ public final class PropertyHandler {
 		}
 
 		return 0;
+	}
+	
+	public double getDouble(int key) {
+		return getDouble(""+key);
 	}
 
 	public double getDouble(String key, double value) {
@@ -160,10 +195,18 @@ public final class PropertyHandler {
 		setDouble(key, value);
 		return value;
 	}
+	
+	public double getDouble(int key, double value) {
+		return getDouble(""+key,value);
+	}
 
 	public void setDouble(String key, double value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		save();
+	}
+	
+	public void setDouble(int key, double value) {
+		setDouble(""+key,value);
 	}
 
 	public long getLong(String key) {
@@ -172,6 +215,10 @@ public final class PropertyHandler {
 		}
 
 		return 0;
+	}
+
+	public long getLong(int key) {
+		return getLong(""+key);
 	}
 
 	public long getLong(String key, long value) {
@@ -183,9 +230,17 @@ public final class PropertyHandler {
 		return value;
 	}
 
+	public long getLong(int key, long value) {
+		return getLong(""+key,value);
+	}
+
 	public void setLong(String key, long value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		save();
+	}
+
+	public void setLong(int key, long value) {
+		setLong(""+key,value);
 	}
 
 	public boolean getBoolean(String key) {
@@ -194,6 +249,10 @@ public final class PropertyHandler {
 		}
 
 		return false;
+	}
+	
+	public boolean getBoolean(int key) {
+		return getBoolean(""+key);
 	}
 
 	public boolean getBoolean(String key, boolean value) {
@@ -204,9 +263,17 @@ public final class PropertyHandler {
 		setBoolean(key, value);
 		return value;
 	}
+	
+	public boolean getBoolean(int key, boolean value) {
+		return getBoolean(""+key,value);
+	}
 
 	public void setBoolean(String key, boolean value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		save();
+	}
+	
+	public void setBoolean(int key, boolean value) {
+		getBoolean(""+key,value);
 	}
 }

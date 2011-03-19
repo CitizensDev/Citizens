@@ -13,8 +13,8 @@ public class HumanNPC extends NPC {
     @SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
 
-    public HumanNPC(CraftNPC entity, String uniqueId, String name, int UID) {
-        super(uniqueId, name, UID);
+    public HumanNPC(CraftNPC entity, int UID, String name) {
+        super(UID, name);
 
         this.mcEntity = entity;
     }

@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyPool {
 	public static Logger log = Logger.getLogger("Minecraft");
@@ -29,7 +30,7 @@ public class PropertyPool {
 		String location = loc.getWorld().getName() + "," + loc.getX() + ","
 				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
 				+ loc.getPitch();
-		locations.setString(""+UID, location);
+		locations.setString(UID, location);
 		if (!locations.getString("list").contains(""+UID+"_"+name))
 			locations.setString("list", locations.getString("list") + ""+UID+"_"+name
 					+ ",");
@@ -40,11 +41,11 @@ public class PropertyPool {
 		for (Integer i : items2) {
 			toSave += "" + i + ",";
 		}
-		items.setString(""+UID, toSave);
+		items.setString(UID, toSave);
 	}
 
 	public static void saveColour(int UID, String colour) {
-		colours.setString(""+UID, "" + colour);
+		colours.setString(UID, "" + colour);
 	}
 
 	public static void saveText(int UID, ArrayList<String> text) {
@@ -54,28 +55,28 @@ public class PropertyPool {
 				adding += string + ";";
 			}
 		}
-		texts.setString(""+UID, adding);
+		texts.setString(UID, adding);
 	}
 	
 	public static void setNPCOwner(int UID, String name){
-		owners.setString(""+UID, name);
+		owners.setString(UID, name);
 	}
 	
 	public static String getNPCOwner(int UID){
-		return owners.getString(""+UID);
+		return owners.getString(UID);
 	}
 	
 	public static int getNewNpcID(){
 		if (locations.getString("currentID").isEmpty()){
-			locations.setString("currentID", ""+0);
+			locations.setInt("currentID", 0);
 		}
 		int returnResult = Integer.valueOf(locations.getString("currentID"));
-		locations.setString("currentID", ""+(returnResult+1));
+		locations.setInt("currentID", (returnResult+1));
 		return returnResult;
 	}
 
 	public static void getSetText(int UID) {
-		String current = texts.getString(""+UID);
+		String current = texts.getString(UID);
 		if (!current.isEmpty()) {
 			ArrayList<String> text = new ArrayList<String>();
 			for (String string : current.split(";")) {
@@ -86,7 +87,7 @@ public class PropertyPool {
 	}
 
 	public static ArrayList<String> getText(int UID) {
-		String current = texts.getString(""+UID);
+		String current = texts.getString(UID);
 		if (!current.isEmpty()) {
 			ArrayList<String> text = new ArrayList<String>();
 			for (String string : current.split(";")) {
@@ -98,17 +99,18 @@ public class PropertyPool {
 	}
 
 	public static String getColour(int UID) {
-		return colours.getString(""+UID);
+		return colours.getString(UID);
 	}
 
-	public void removeFromFiles(String name) {
-		PropertyPool.colours.removeKey(name);
-		PropertyPool.items.removeKey(name);
-		PropertyPool.locations.removeKey(name);
+	public void removeFromFiles(int UID) {
+		PropertyPool.colours.removeKey(UID);
+		PropertyPool.items.removeKey(UID);
+		PropertyPool.locations.removeKey(UID);
+		HumanNPC NPC = NPCManager.getNPC(UID);
 		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace(name + ",", ""));
-		PropertyPool.texts.removeKey(name);
-		NPCManager.BasicNPCTexts.remove(name);
+				.getString("list").replace(""+UID+"_"+NPC.getName() + ",", ""));
+		PropertyPool.texts.removeKey(UID);
+		NPCManager.BasicNPCTexts.remove(UID);
 	}
 
 	public static String getDefaultText() {
@@ -126,10 +128,10 @@ public class PropertyPool {
 
 	public static ArrayList<Integer> getItemsFromFile(int UID) {
 		ArrayList<Integer> array = new ArrayList<Integer>();
-		String current = items.getString(""+UID);
+		String current = items.getString(UID);
 		if (current.isEmpty()) {
 			current = "0,0,0,0,0,";
-			items.setString(""+UID, current);
+			items.setString(UID, current);
 		}
 		for (String s : current.split(",")) {
 			array.add(Integer.parseInt(s));
@@ -137,7 +139,7 @@ public class PropertyPool {
 		return array;
 	}
 	public static Location getLocationFromName(int UID) {
-		String[] values = PropertyPool.locations.getString(""+UID).split(",");
+		String[] values = PropertyPool.locations.getString(UID).split(",");
 		if (values.length != 6) { 
 			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"+values.length);
 			return null;
@@ -151,7 +153,7 @@ public class PropertyPool {
 	}
 	
 	public static Location getLocationFromID(int UID) {
-		String[] values = PropertyPool.locations.getString(""+UID).split(",");
+		String[] values = PropertyPool.locations.getString(UID).split(",");
 		if (values.length != 6) { 
 			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"+values.length);
 			return null;
@@ -167,7 +169,7 @@ public class PropertyPool {
 	public static void changeName(int UID, String changeFrom, String changeTo) {
 		//ID's Remain the same, no need for this.
 		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace((""+UID+"_"+changeFrom + ","), ""));
+				.getString("list").replace((UID+"_"+changeFrom + ","), ""));
 		//ArrayList<String> texts = PropertyPool.getText(UID);
 		//String colour = PropertyPool.getColour(UID);
 		//ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);

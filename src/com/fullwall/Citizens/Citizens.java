@@ -84,9 +84,10 @@ public class Citizens extends JavaPlugin {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new TickTask(this, range), 5, delay);
 		}
+		log.info("[" + pdfFile.getName() + "]: loaded " + NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
-				+ ") loaded");
+				+ ") loaded ");
 	}
 
 	@Override
@@ -178,13 +179,13 @@ public class Citizens extends JavaPlugin {
 					int UID = PropertyPool.getNewNpcID();
 					String oldName = name;
 					name = UID + "_" + name;
-					PropertyPool.locations.setString(""+UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.locations.setString(UID, PropertyPool.locations.getString(oldName));
 					PropertyPool.locations.removeKey(oldName);
-					PropertyPool.colours.setString(""+UID, PropertyPool.colours.getString(oldName));
+					PropertyPool.colours.setString(UID, PropertyPool.colours.getString(oldName));
 					PropertyPool.colours.removeKey(oldName);
-					PropertyPool.items.setString(""+UID, PropertyPool.items.getString(oldName));
+					PropertyPool.items.setString(UID, PropertyPool.items.getString(oldName));
 					PropertyPool.items.removeKey(oldName);
-					PropertyPool.texts.setString(""+UID, PropertyPool.texts.getString(oldName));
+					PropertyPool.texts.setString(UID, PropertyPool.texts.getString(oldName));
 					PropertyPool.texts.removeKey(oldName);
 					PropertyPool.locations.setString("list", PropertyPool.locations.getString("list").replace(oldName,name));
 					list = PropertyPool.locations.getString("list").split(",");

@@ -5,13 +5,11 @@ import com.fullwall.Citizens.Citizens;
 
 public class NPC {
 
-    private String uniqueId;
     private String name;
     private int UID;
 
-    public NPC(String uniqueId, String name, int UID)
+    public NPC(int UID, String name)
     {
-        this.uniqueId = uniqueId;
         this.name = name;
         this.UID = UID;
     }
@@ -42,12 +40,6 @@ public class NPC {
     public int getUID()
     {
     	return this.UID;
-    }
-
-
-    public String getUniqueId()
-    {
-        return this.uniqueId;
     }
 
 }

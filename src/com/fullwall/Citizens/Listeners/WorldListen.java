@@ -24,15 +24,14 @@ public class WorldListen extends WorldListener {
 
 	@Override
 	public void onChunkUnloaded(ChunkUnloadEvent e) {
-		for (Entry<String, ArrayList<String>> i : NPCManager.GlobalUIDs
-				.entrySet()) {
-			HumanNPC npc = NPCManager.getNPC(i.getValue().get(0));
+		for (Entry<Integer, String> i : NPCManager.GlobalUIDs.entrySet()) {
+			HumanNPC npc = NPCManager.getNPC(i.getKey());
 			if (npc != null
 					&& npc.getBukkitEntity().getLocation().getBlock()
 							.getChunk().equals(e.getChunk())) {
 				NPCLocation loc = new NPCLocation(plugin, npc.getBukkitEntity()
 						.getLocation());
-				toRespawn.put(loc, i.getKey());
+				toRespawn.put(loc, i.getValue());
 				plugin.handler.despawnNPC(i.getKey());
 			}
 		}

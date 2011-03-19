@@ -43,14 +43,14 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	public void setName(int UID, String changeTo) {
-		HumanNPC n = super.getNPC(""+UID);
+		HumanNPC n = super.getNPC(UID);
 		PropertyPool.changeName(UID, n.getName(), changeTo);
 		super.removeNPCForRespawn(UID);
 		super.registerBasicNPC(changeTo, NPCType.BASIC, UID);
 	}
 
 	public void setColour(int UID, String colourChange) {
-		HumanNPC n = super.getNPC(""+UID);
+		HumanNPC n = super.getNPC(UID);
 		PropertyPool.saveColour(UID, colourChange.replace("&","§"));//changeName(UID, colourChange.replace("§", "&") + n.getName());
 		super.removeNPCForRespawn(UID);
 		super.registerBasicNPC(n.getName(), NPCType.BASIC, UID);
@@ -71,7 +71,7 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void setItemInHand(int UID, String material) {
 		Material mat = StringUtils.parseMaterial(material);
-		HumanNPC NPC = super.getNPC(""+UID);
+		HumanNPC NPC = super.getNPC(UID);
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
 		items.set(0, mat.getId());
 		NPCDataManager.addItems(NPC, items);
@@ -97,30 +97,30 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	public void removeNPC(int UID) {
-		super.removeNPC(NPCManager.getNPC(""+UID).getName(), UID);
+		super.removeNPC(UID);
 		if(PropertyPool.locations.getString("list").isEmpty()){
 			PropertyPool.locations.removeKey("list");
-			PropertyPool.locations.setString("currentID", ""+0);
+			PropertyPool.locations.setInt("currentID", 0);
 		}
 	}
 
 	public void removeAllNPCs() {
-		for (Entry<String, ArrayList<String>> i : super.BasicUIDs.entrySet()) {
-			super.removeNPC(i.getKey(), Integer.valueOf(i.getValue().get(0)));
+		for (Entry<Integer, String> i : super.BasicUIDs.entrySet()) {
+			super.removeNPC(i.getKey());
 		}
 	}
 
 	public void despawnAllNPCs() {
-		for (Entry<String, ArrayList<String>> i : super.BasicUIDs.entrySet()) {
-			super.despawnNPC(i.getKey(), i.getValue().get(0));
+		for (Entry<Integer, String> i : super.BasicUIDs.entrySet()) {
+			super.despawnNPC(i.getKey());
 		}
 	}
 
-	public void despawnNPC(String name) {
-		super.despawnNPC(name, BasicUIDs.get(name).get(0));
+	public void despawnNPC(int UID) {
+		super.despawnNPC(UID);
 	}
 
 	public void moveNPC(int UID, Location loc) {
-		super.moveNPC(""+UID, loc);
+		super.moveNPC(UID, loc);
 	}
 }

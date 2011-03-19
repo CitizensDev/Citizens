@@ -4,7 +4,7 @@ import java.util.HashMap;
 import org.bukkit.entity.Entity;
 
 @SuppressWarnings("serial")
-public class NPCList extends HashMap<String, HumanNPC> {
+public class NPCList extends HashMap<Integer, HumanNPC> {
 
     public boolean containsBukkitEntity(Entity entity)
     {
