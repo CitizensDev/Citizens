@@ -398,10 +398,10 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 
 	}
 
-	public boolean validateName(String name, CommandSender sender) {
-		if (!plugin.validateName(name)) {
-			sender.sendMessage(ChatColor.GRAY + "Couldn't find the NPC called "
-					+ name + ".");
+	public boolean validateUID(int UID, CommandSender sender) {
+		if (!plugin.validateUID(UID)) {
+			sender.sendMessage(ChatColor.GRAY + "Couldn't find the NPC with id "
+					+ UID + ".");
 			return false;
 		}
 		return true;

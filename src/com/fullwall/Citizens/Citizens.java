@@ -220,8 +220,8 @@ public class Citizens extends JavaPlugin {
 			return true;
 	}
 
-	public boolean validateName(String name) {
-		if (NPCManager.GlobalUIDs.containsKey(name)) {
+	public boolean validateUID(int UID) {
+		if (NPCManager.GlobalUIDs.containsKey(UID)) {
 			return true;
 		} else
 			return false;
