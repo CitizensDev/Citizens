@@ -32,10 +32,12 @@ public class NPCManager {
 					.currentTimeMillis()).nextLong()).nextLong()).nextLong())
 					.nextLong());
 	private static NPCList list;
+	public static NPCManager me;
 
 	public NPCManager(Citizens plugin) {
 		this.plugin = plugin;
 		NPCManager.list = new NPCList();
+		me = this;
 	}
 
 	public enum NPCType {
@@ -60,7 +62,7 @@ public class NPCManager {
 			}
 		}
 
-		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(UID, npcName,
+		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(UID, npcName, 
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
@@ -70,6 +72,7 @@ public class NPCManager {
 		PropertyPool.getSetText(UID);
 		saveToFile(name, loc, colour, items, UID);
 		registerUID(type, UID, name);
+		npc.setType(type);
 		list.put(UID, npc);
 	}
 
@@ -151,7 +154,7 @@ public class NPCManager {
 				.getString("list").replace((""+UID+"_"+actualName + ","), ""));
 	}
 	
-	public void removeNPCForRespawn(int UID){
+	public static void removeNPCForRespawn(int UID){
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 	}
 

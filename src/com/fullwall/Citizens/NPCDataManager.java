@@ -2,6 +2,7 @@ package com.fullwall.Citizens;
 
 import java.util.ArrayList;
 
+import com.fullwall.Citizens.Utils.PropertyPool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -16,19 +17,37 @@ public class NPCDataManager extends NPCManager {
 
 	public static void addItems(HumanNPC npc, ArrayList<Integer> items) {
 		if (items != null) {
-			PlayerInventory inv = npc.getBukkitEntity().getInventory();
+			Material matHand = Material.getMaterial(items.get(0));
+			Material matHelm = Material.getMaterial(items.get(1));
+			Material matTorso = Material.getMaterial(items.get(2));
+			Material matLegs = Material.getMaterial(items.get(3));
+			Material matBoots = Material.getMaterial(items.get(4));
 
-			Material inHand = Material.getMaterial(items.get(0));
-			Material helmet = Material.getMaterial(items.get(1));
-			Material chestplate = Material.getMaterial(items.get(2));
-			Material leggings = Material.getMaterial(items.get(3));
-			Material boots = Material.getMaterial(items.get(4));
 			
-			inv.setItemInHand(new ItemStack(inHand,1));
-			inv.setHelmet(new ItemStack(helmet,1));
-			inv.setChestplate(new ItemStack(chestplate,1));
-			inv.setLeggings(new ItemStack(leggings,1));
-			inv.setBoots(new ItemStack(boots,1));
+			
+			HumanNPC NPC = npc;
+			if (!matHelm.equals(Material.AIR))
+				NPC.getBukkitEntity().getInventory().setHelmet(new ItemStack(matHelm, 1));
+			
+			if (!matBoots.equals(Material.AIR))
+				NPC.getBukkitEntity().getInventory().setBoots(new ItemStack(matBoots, 1));
+			else
+				NPC.getBukkitEntity().getInventory().setBoots(new ItemStack(Material.AIR, 1));
+			
+			if (!matLegs.equals(Material.AIR))
+				NPC.getBukkitEntity().getInventory().setLeggings(new ItemStack(matLegs, 1));
+			else
+				NPC.getBukkitEntity().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
+			
+			if (!matTorso.equals(Material.AIR))
+				NPC.getBukkitEntity().getInventory().setChestplate(new ItemStack(matTorso, 1));
+			else
+				NPC.getBukkitEntity().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
+				
+			if (!matHand.equals(Material.AIR))
+				NPC.getBukkitEntity().getInventory().setItem(0, new ItemStack(matHand,1));
+			
+			PropertyPool.items.setString(NPC.getUID(), ""+items.get(0)+","+items.get(1)+","+items.get(2)+","+items.get(3)+","+items.get(4)+",");
 		}
 	}
 

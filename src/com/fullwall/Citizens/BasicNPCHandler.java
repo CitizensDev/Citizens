@@ -73,15 +73,20 @@ public class BasicNPCHandler extends NPCManager {
 		Material mat = StringUtils.parseMaterial(material);
 		HumanNPC NPC = super.getNPC(UID);
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
+		int olditem = items.get(0);
 		items.set(0, mat.getId());
 		NPCDataManager.addItems(NPC, items);
+		if((olditem != 0 && items.get(0) == 0)){
+			super.removeNPCForRespawn(NPC.getUID());
+			super.registerBasicNPC(NPC.getName(), NPC.getType(), NPC.getUID());
+		}
 	}
 
 	public void setItemInSlot(Player p, String[] args) {
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		Material mat = StringUtils.parseMaterial(args[1]);
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(n.getUID());
-		Citizens.log.info("Recieved items: " + items);
+		int oldhelmet = items.get(1);
 		if (args[0].equalsIgnoreCase("helmet")) {
 			items.set(1, mat.getId());
 		} else if (args[0].equalsIgnoreCase("torso")) {
@@ -91,9 +96,13 @@ public class BasicNPCHandler extends NPCManager {
 		} else if (args[0].equalsIgnoreCase("boots")) {
 			items.set(4, mat.getId());
 		}
-		Citizens.log.info("Outgoing items: " + items);
 		PropertyPool.saveItems(n.getUID(), items);
 		NPCDataManager.addItems(n, items);
+		Citizens.log.info("HelmetTo0: " +oldhelmet+ " : "+ items.get(1));
+		if((oldhelmet != 0 && items.get(1) == 0)){
+			super.removeNPCForRespawn(n.getUID());
+			super.registerBasicNPC(n.getName(), n.getType(), n.getUID());
+		}
 	}
 
 	public void removeNPC(int UID) {

@@ -1,12 +1,14 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.NPCManager;
 
 
 public class NPC {
 
     private String name;
     private int UID;
+    private NPCManager.NPCType type;
 
     public NPC(int UID, String name)
     {
@@ -40,6 +42,14 @@ public class NPC {
     public int getUID()
     {
     	return this.UID;
+    }
+    
+    public void setType(NPCManager.NPCType type){
+    	this.type = type;
+    }
+    
+    public NPCManager.NPCType getType(){
+    	return this.type;
     }
 
 }

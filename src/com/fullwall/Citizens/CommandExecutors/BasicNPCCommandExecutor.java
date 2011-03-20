@@ -206,6 +206,11 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		}else if (args.length == 2 && (args[0].equals("select"))) {
 			if (hasPermission("citizens.general.select", sender)) {
 				Player p = (Player)sender;
+				// BUILD CHECK
+				if(!Character.isDigit(args[1].charAt(0))){
+					p.sendMessage(ChatColor.RED + "The ID must be a number.");
+					return true;
+				}
 				HumanNPC n = NPCManager.getNPC(Integer.valueOf(args[1]));
 				if(n==null){
 					sender.sendMessage(ChatColor.RED + "No NPC with this ID: " + args[1]);

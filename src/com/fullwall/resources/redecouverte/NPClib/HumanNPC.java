@@ -7,6 +7,8 @@ import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 
+import com.fullwall.Citizens.Citizens;
+
 public class HumanNPC extends NPC {
 
     private CraftNPC mcEntity;

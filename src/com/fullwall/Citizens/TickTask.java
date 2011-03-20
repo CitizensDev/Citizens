@@ -29,7 +29,6 @@ public class TickTask implements Runnable {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList().entrySet()) {
 				{
 					if (checkLocation(entry.getValue().getBukkitEntity().getLocation(), p.getLocation())) {
-						
 						if(PropertyPool.getNPCLookWhenClose(entry.getValue().getUID()) == true){
 							NPCManager.rotateNPCToPlayer(entry.getValue(), p);
 						}

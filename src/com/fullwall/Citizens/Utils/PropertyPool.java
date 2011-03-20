@@ -79,9 +79,7 @@ public class PropertyPool {
 	}
 	
 	public static void setNPCLookWhenClose(int UID, boolean look){
-		Citizens.log.info("setNPCLookWhenClose1: " + look);
 		lookat.setBoolean(UID,look);
-		Citizens.log.info("setNPCLookWhenClose1: " + lookat.getBoolean(UID));
 	}
 	
 	public static boolean getNPCLookWhenClose(int UID){

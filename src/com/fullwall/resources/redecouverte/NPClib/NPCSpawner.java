@@ -60,7 +60,7 @@ public class NPCSpawner {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static HumanNPC SpawnBasicHumanNpc(int UID, String name,
+	public static HumanNPC SpawnBasicHumanNpc(int UID, String name, 
 			World world, double x, double y, double z, float yaw, float pitch) {
 		try {
 			WorldServer ws = GetWorldServer(world);
