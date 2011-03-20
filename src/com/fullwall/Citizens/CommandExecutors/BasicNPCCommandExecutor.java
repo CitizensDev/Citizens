@@ -49,7 +49,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 						HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 						moveNPC(sender, n.getName(), Integer.valueOf(NPCManager.NPCSelected.get(p.getName())));
 					}else{
-						sender.sendMessage("Must have a NPC selected (right click).");
+						sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 					}
 				} else
 					sender.sendMessage(noPermissionsMessage);
@@ -62,7 +62,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender) || (args.length == 2 && args[1].equals("all"))) {
 					removeNPC(args, sender);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -75,7 +75,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					Player p = (Player)sender;
 					NPCManager.NPCSelected.remove(p.getName());
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -87,7 +87,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender)) {
 					setColour(args, sender);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -97,7 +97,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender)) {
 					addText(args, sender);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -109,7 +109,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					setText(args, sender);
 					
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -119,7 +119,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender)) {
 					resetText(args, sender);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -129,7 +129,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender)) {
 					setItemInHand(sender, args);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -142,7 +142,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				if (validateSelected((Player)sender)) {
 					setArmor(sender, args);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -158,7 +158,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					p.teleportTo((PropertyPool.getLocationFromName(n.getUID())));
 					sender.sendMessage("Teleported you to the NPC named "+n.getName()+" Enjoy!");
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 				}else{
 					sender.sendMessage(noPermissionsMessage);
@@ -167,9 +167,15 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			  sender.sendMessage(mustBeIngameMessage);
 			}
 			return true;
-		}else if (command.getName().equals("citizens") && args.length == 1 && (args[0].equals("help"))) {
+		}else if ((command.getName().equals("citizens") || command.getName().equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
 			if (hasPermission("citizens.help", sender)) {
 				sendHelp(sender);
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
+		}else if ((command.getName().equals("citizens") || command.getName().equals("npc")) && args.length == 2 && (args[0].equals("help"))) {
+			if (hasPermission("citizens.help", sender)) {
+				sendHelpPage(sender,args[1]);
 			} else
 				sender.sendMessage(noPermissionsMessage);
 			return true;
@@ -180,7 +186,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 					copyNPC(n,p);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -192,7 +198,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 					p.sendMessage("The ID of this NPC is: " + n.getUID());
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -202,7 +208,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 				Player p = (Player)sender;
 				HumanNPC n = NPCManager.getNPC(Integer.valueOf(args[1]));
 				if(n==null){
-					sender.sendMessage("No NPC with this ID: " + args[1]);
+					sender.sendMessage(ChatColor.RED + "No NPC with this ID: " + args[1]);
 				}else{
 					NPCManager.NPCSelected.put(p.getName(), n.getUID());
 					p.sendMessage("Selected NPC with ID: " + n.getUID() + " Name: " + n.getName());
@@ -217,7 +223,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 					p.sendMessage("The owner of this NPC is: §c" + PropertyPool.getNPCOwner(n.getUID()));
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -230,7 +236,29 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 					PropertyPool.setNPCOwner(n.getUID(),args[1]);
 					p.sendMessage("The owner of NPC: §c" + n.getName() + "§f is now: §c" + args[1]);
 				}else{
-					sender.sendMessage("Must have a NPC selected (right click).");
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
+				}
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
+		}else if (args.length == 2 && (args[0].equals("talkwhenclose"))) {
+			if (hasPermission("citizens.general.talkwhenclose", sender)) {
+				if (validateSelected((Player)sender)) {
+					Player p = (Player)sender;
+					ChangeTalkWhenClose(p,args[1]);
+				}else{
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
+				}
+			} else
+				sender.sendMessage(noPermissionsMessage);
+			return true;
+		}else if (args.length == 2 && (args[0].equals("lookatplayers"))) {
+			if (hasPermission("citizens.general.lookatplayers", sender)) {
+				if (validateSelected((Player)sender)) {
+					Player p = (Player)sender;
+					ChangeLookWhenClose(p,args[1]);
+				}else{
+					sender.sendMessage(ChatColor.RED + "Must have a NPC selected (right click).");
 				}
 			} else
 				sender.sendMessage(noPermissionsMessage);
@@ -265,7 +293,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			PropertyPool.saveLocation(name, loc, UID);
 		}
 		plugin.handler.moveNPC(UID, ((Player) sender).getLocation());
-		sender.sendMessage(name + " is enroute to your location!");
+		sender.sendMessage(ChatColor.GREEN + name + " is enroute to your location!");
 	}
 
 	private void removeNPC(String[] args, CommandSender sender) {
@@ -371,6 +399,24 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		PropertyPool.saveItems(newUID, items);
 		NPCDataManager.addItems(newNPC, items);
 	}
+	
+	private void ChangeTalkWhenClose(Player p, String bool){
+		boolean talk = false;
+		if(bool.equals("true")) talk = true;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		PropertyPool.setNPCTalkWhenClose(n.getUID(), talk);
+		if(talk == true) p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName() + " will now talk to nearby players.");
+		else if(talk == false) p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName() + " will not talk to nearby players.");
+	}
+	
+	private void ChangeLookWhenClose(Player p, String bool){
+		boolean look = false;
+		if(bool.equals("true")) look = true;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		PropertyPool.setNPCLookWhenClose(n.getUID(), look);
+		if(look == true) p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName() + " will now look at players.");
+		else if(look == false) p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName() + " will not look at players.");
+	}
 
 	private void sendHelp(CommandSender sender) {
 		// remove, reset, add, color
@@ -379,23 +425,48 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
 		sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
 		sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
-		sender.sendMessage("§8/§cnpc §bname [new name] §e- §achanges the name of an NPC.");
-		sender.sendMessage("§8/§cnpc §bremove [all] §e- §adeletes and despawns the NPC(s).");
-		sender.sendMessage("§8/§cnpc §breset §e- §aresets the messages of an NPC.");
-		sender.sendMessage("§8/§cnpc §bcolo(u)r [&(code)] §e- §aedits the color of an NPC's name.");
-		sender.sendMessage("§8/§cnpc §bitem [id|item name] §e- §asets the in-hand item of an NPC.");
-		sender.sendMessage("§8/§cnpc §bhelmet|torso|legs|boots [id|item name] §e- §asets the item slot of an NPC.");
-		sender.sendMessage("§8/§cnpc §bmove §e- §amoves an NPC to your location.");
-		sender.sendMessage("§8/§cnpc §btp §e- §aTeleports you to the location of an NPC.");
-		sender.sendMessage("§8/§cnpc §bcopy §e- §aMakes of copy of the NPC on your location.");
-		sender.sendMessage("§8/§cnpc §bgetid §e- §aGets the ID of the selected NPC.");
-		sender.sendMessage("§8/§cnpc §bselect [id] §e- §aSelects an NPC with the given ID.");
-		sender.sendMessage("§8/§cnpc §bgetowner §e- §aGets the owner of the selected NPC.");
-		sender.sendMessage("§8/§cnpc §bsetowner [name] §e- §aSets the owner of the selected NPC.");
-		
-		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§fPlugin made by fullwall and NeonMaster.");
+		sender.sendMessage("§fUse the command /citizens help [page] for more info.");
 
+	}
+	
+	private void sendHelpPage(CommandSender sender, String page) {
+		int pageNr = Integer.valueOf(page);
+		switch(pageNr){
+			case 1:
+				sender.sendMessage("§fCitizens v1.07 Help");
+				sender.sendMessage("§b-------------------------------");
+				sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
+				sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
+				sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
+				sender.sendMessage("§fUse the command /citizens help [page] for more info.");
+				break;
+			case 2:
+				sender.sendMessage("§8/§cnpc §bname [new name] §e- §achanges the name of an NPC.");
+				sender.sendMessage("§8/§cnpc §bremove [all] §e- §adeletes and despawns the NPC(s).");
+				sender.sendMessage("§8/§cnpc §breset §e- §aresets the messages of an NPC.");
+				sender.sendMessage("§8/§cnpc §bcolo(u)r [&(code)] §e- §aedits the color of an NPC's name.");
+				sender.sendMessage("§8/§cnpc §bitem [id|item name] §e- §asets the in-hand item of an NPC.");
+				sender.sendMessage("§8/§cnpc §bhelmet|torso|legs|boots [id|item name] §e- §asets the item slot of an NPC.");
+				break;
+			case 3:
+				sender.sendMessage("§8/§cnpc §bmove §e- §amoves an NPC to your location.");
+				sender.sendMessage("§8/§cnpc §btp §e- §aTeleports you to the location of an NPC.");
+				sender.sendMessage("§8/§cnpc §bcopy §e- §aMakes of copy of the NPC on your location.");
+				sender.sendMessage("§8/§cnpc §bgetid §e- §aGets the ID of the selected NPC.");
+				sender.sendMessage("§8/§cnpc §bselect [id] §e- §aSelects an NPC with the given ID.");
+				sender.sendMessage("§8/§cnpc §bgetowner §e- §aGets the owner of the selected NPC.");
+				break;
+			case 4:
+				sender.sendMessage("§8/§cnpc §bsetowner [name] §e- §aSets the owner of the selected NPC.");
+				sender.sendMessage("§8/§cnpc §btalkwhenclose [true|false] §e- §aMake a NPC talk to players.");
+				sender.sendMessage("§8/§cnpc §blookatplayers [true|false] §e- §aMake a NPC look at players.");
+				sender.sendMessage("§b-------------------------------");
+				sender.sendMessage("§fPlugin made by fullwall, NeonMaster and TheMPC.");
+				break;
+			default:
+				sender.sendMessage("§fThe number of pages is 4, page: "+pageNr+" is not availible.");
+				break;
+		}
 	}
 
 	public boolean validateUID(int UID, CommandSender sender) {

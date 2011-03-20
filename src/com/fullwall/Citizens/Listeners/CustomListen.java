@@ -7,6 +7,7 @@ import org.bukkit.event.Event.Type;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
+import com.fullwall.Citizens.Utils.PropertyPool;
 
 public class CustomListen extends CustomEventListener {
 	private Citizens plugin;
@@ -28,7 +29,7 @@ public class CustomListen extends CustomEventListener {
 		if (e.isCancelled() == true)
 			return;
 		if (plugin.shouldShowText(e.getPlayer().getItemInHand().getTypeId()) == true) {
-			if (!Citizens.followingEnabled) {
+			if (!PropertyPool.getNPCLookWhenClose(e.getNPC().getUID())) {
 				Location loc = e.getNPC().getBukkitEntity().getLocation();
 				float yaw = e.getPlayer().getLocation().getYaw() % 360 - 180;
 				e.getNPC().moveTo(loc.getX(), loc.getY(), loc.getZ(), yaw,

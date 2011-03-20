@@ -274,6 +274,6 @@ public final class PropertyHandler {
 	}
 	
 	public void setBoolean(int key, boolean value) {
-		getBoolean(""+key,value);
+		setBoolean(""+key,value);
 	}
 }

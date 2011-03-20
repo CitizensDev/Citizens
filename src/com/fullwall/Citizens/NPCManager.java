@@ -76,6 +76,8 @@ public class NPCManager {
 	public int registerBasicNPC(String name, Location loc, NPCType type) {
 		int UID = PropertyPool.getNewNpcID();
 		PropertyPool.saveLocation(name, loc, UID);
+		PropertyPool.setNPCLookWhenClose(UID, Citizens.defaultFollowingEnabled);
+		PropertyPool.setNPCTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
 		registerBasicNPC(name, type, UID);
 		return UID;
 	}
@@ -142,9 +144,11 @@ public class NPCManager {
 		PropertyPool.items.removeKey(UID);
 		PropertyPool.locations.removeKey(UID);
 		PropertyPool.owners.removeKey(UID);
+		PropertyPool.lookat.removeKey(UID);
+		PropertyPool.talkWhenClose.removeKey(UID);
+		PropertyPool.texts.removeKey(UID);
 		PropertyPool.locations.setString("list", PropertyPool.locations
 				.getString("list").replace((""+UID+"_"+actualName + ","), ""));
-		PropertyPool.texts.removeKey(UID);
 	}
 	
 	public void removeNPCForRespawn(int UID){
@@ -159,32 +163,19 @@ public class NPCManager {
 	}
 
 	private void registerUID(NPCType type, int UID, String name) {
-		//ArrayList<String> existingUIDs = new ArrayList<String>();
 		switch (type) {
 		case BASIC:
-			//if (BasicUIDs.containsKey(UID))
-			//	existingUIDs = BasicUIDs.get(UID);
-			//existingUIDs.add(name);
 			BasicUIDs.put(UID, name);
 			break;
 		case TRADER:
-			//if (TraderUIDs.containsKey(name))
-			//	existingUIDs = TraderUIDs.get(name);
-			//existingUIDs.add(uniqueID);
 			TraderUIDs.put(UID, name);
 			break;
 		case GUARD:
-			//if (GuardUIDs.containsKey(name))
-			//	existingUIDs = GuardUIDs.get(name);
-			//existingUIDs.add(uniqueID);
 			GuardUIDs.put(UID, name);
 			break;
 		case QUEST:
 		case HEALER:
 		}
-		//if (GlobalUIDs.containsKey(name))
-		//	existingUIDs = GlobalUIDs.get(name);
-		//existingUIDs.add(uniqueID);
 		GlobalUIDs.put(UID, name);
 	}
 

@@ -25,6 +25,10 @@ public class PropertyPool {
 			"plugins/Citizens/Basic NPCs/Citizens.items");
 	public static final PropertyHandler owners = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.owners");
+	public static final PropertyHandler talkWhenClose = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
+	public static final PropertyHandler lookat = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.lookat");
 
 	public static void saveLocation(String name, Location loc, int UID) {
 		String location = loc.getWorld().getName() + "," + loc.getX() + ","
@@ -64,6 +68,24 @@ public class PropertyPool {
 	
 	public static String getNPCOwner(int UID){
 		return owners.getString(UID);
+	}
+	
+	public static void setNPCTalkWhenClose(int UID, boolean talk){
+		talkWhenClose.setBoolean(UID,talk);
+	}
+	
+	public static boolean getNPCTalkWhenClose(int UID){
+		return talkWhenClose.getBoolean(UID);
+	}
+	
+	public static void setNPCLookWhenClose(int UID, boolean look){
+		Citizens.log.info("setNPCLookWhenClose1: " + look);
+		lookat.setBoolean(UID,look);
+		Citizens.log.info("setNPCLookWhenClose1: " + lookat.getBoolean(UID));
+	}
+	
+	public static boolean getNPCLookWhenClose(int UID){
+		return lookat.getBoolean(UID);
 	}
 	
 	public static int getNewNpcID(){

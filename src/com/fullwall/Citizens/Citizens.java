@@ -36,7 +36,7 @@ public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
 	private static final String codename = "Helpers";
 
-	public static boolean followingEnabled = true;
+	public static boolean defaultFollowingEnabled = true;
 	public static boolean useNPCColours = true;
 	public static String NPCColour = "§f";
 	public static String chatFormat = "[%name%]: ";
@@ -44,7 +44,7 @@ public class Citizens extends JavaPlugin {
 	public static boolean convertUnderscores = false;
 
 	public static Logger log = Logger.getLogger("Minecraft");
-	public static boolean talkWhenClose = false;
+	public static boolean defaultTalkWhenClose = false;
 	public static iConomy economy = null;
 	
 	@Override
@@ -80,10 +80,8 @@ public class Citizens extends JavaPlugin {
 		int delay = PropertyPool.settings.getInt("tick-delay");
 		double range = PropertyPool.settings.getDouble("look-range");
 
-		if (followingEnabled) {
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new TickTask(this, range), 5, delay);
-		}
+		getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickTask(this, range), 5, delay);
+		
 		log.info("[" + pdfFile.getName() + "]: loaded " + NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
@@ -156,16 +154,27 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc setowner [name]",
 					"Sets the owner of the selected NPC.", this,
 					"citizens.general.setowner");
+			helpPlugin.registerCommand("npc talkwhenclose [true|false]",
+					"Enable or disable if a NPC talks when aproached.", this,
+					"citizens.general.talkwhenclose");
+			helpPlugin.registerCommand("npc lookatplayers [true|false]",
+					"Enable or disable if a NPC looks at near players.", this,
+					"citizens.general.lookatplayers");
 		}
 	}
 
 	private void setupVariables() {
+		if(!PropertyPool.settings.keyExists("underscores-to-spaces"))PropertyPool.settings.setBoolean("underscores-to-spaces", true);
+		if(!PropertyPool.settings.keyExists("default-enable-following"))PropertyPool.settings.setBoolean("default-enable-following", true);
+		if(!PropertyPool.settings.keyExists("default-talk-when-close"))PropertyPool.settings.setBoolean("default-talk-when-close", false);
+		if(!PropertyPool.settings.keyExists("enable-following"))PropertyPool.settings.removeKey("enable-following");
+		if(!PropertyPool.settings.keyExists("talk-when-close"))PropertyPool.settings.removeKey("talk-when-close");
+		
 		useNPCColours = PropertyPool.settings.getBoolean("use-npc-colours");
 		NPCColour = PropertyPool.settings.getString("npc-colour");
-		followingEnabled = PropertyPool.settings.getBoolean("enable-following");
-		talkWhenClose = PropertyPool.settings.getBoolean("talk-when-close");
+		defaultFollowingEnabled = PropertyPool.settings.getBoolean("default-enable-following");
+		defaultTalkWhenClose = PropertyPool.settings.getBoolean("default-talk-when-close");
 		chatFormat = PropertyPool.settings.getString("chat-format");
-		if(!PropertyPool.settings.keyExists("underscores-to-spaces"))PropertyPool.settings.setBoolean("underscores-to-spaces", true);
 		convertUnderscores = PropertyPool.settings.getBoolean("underscores-to-spaces");
 	}
 
@@ -187,6 +196,8 @@ public class Citizens extends JavaPlugin {
 					PropertyPool.items.removeKey(oldName);
 					PropertyPool.texts.setString(UID, PropertyPool.texts.getString(oldName));
 					PropertyPool.texts.removeKey(oldName);
+					PropertyPool.lookat.setBoolean(UID, true);
+					PropertyPool.talkWhenClose.setBoolean(UID, false);
 					PropertyPool.locations.setString("list", PropertyPool.locations.getString("list").replace(oldName,name));
 					list = PropertyPool.locations.getString("list").split(",");
 				}

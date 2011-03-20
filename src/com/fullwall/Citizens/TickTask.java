@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TickTask implements Runnable {
@@ -27,10 +28,13 @@ public class TickTask implements Runnable {
 			// OTHERWISE IT'LL USE GUARDS ETC.
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList().entrySet()) {
 				{
-					if (checkLocation(entry.getValue().getBukkitEntity()
-							.getLocation(), p.getLocation())) {
-						NPCManager.rotateNPCToPlayer(entry.getValue(), p);
-						if (Citizens.talkWhenClose
+					if (checkLocation(entry.getValue().getBukkitEntity().getLocation(), p.getLocation())) {
+						
+						if(PropertyPool.getNPCLookWhenClose(entry.getValue().getUID()) == true){
+							NPCManager.rotateNPCToPlayer(entry.getValue(), p);
+						}
+						
+						if (PropertyPool.getNPCTalkWhenClose(entry.getValue().getUID())
 								&& (!hasSaidText.containsKey(entry.getKey()) || (!hasSaidText
 										.get(entry.getKey()).containsKey(
 												p.getName()) || hasSaidText
@@ -42,7 +46,7 @@ public class TickTask implements Runnable {
 							players.put(p.getName(), true);
 							hasSaidText.put(entry.getKey(), players);
 						}
-					} else if (Citizens.talkWhenClose
+					} else if (PropertyPool.getNPCTalkWhenClose(entry.getValue().getUID())
 							&& hasSaidText.containsKey(entry.getKey())
 							&& hasSaidText.get(entry.getKey()).containsKey(
 									p.getName())

@@ -30,10 +30,14 @@ public class MessageUtils {
 			text = PropertyPool.getDefaultText();
 		if (!text.isEmpty()) {
 			if (Citizens.useNPCColours)
-				text = "[" + npc.getName() + "]: " + text;
+				text = Citizens.chatFormat.replace("&", "§").replace("%name%",
+						npc.getSpacedName())
+						+ text;
 			else
-				text = "[" + Citizens.NPCColour + name + ChatColor.WHITE
-						+ "]: " + text;
+				text = Citizens.chatFormat.replace("%name%",
+						Citizens.NPCColour + name + ChatColor.WHITE).replace(
+						"&", "§")
+						+ text;
 			((Player) entity).sendMessage(text);
 		}
 	}
