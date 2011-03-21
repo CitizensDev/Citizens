@@ -29,15 +29,17 @@ public class PropertyPool {
 			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
 	public static final PropertyHandler lookat = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.lookat");
+	public static final PropertyHandler economy = new PropertyHandler(
+			"plugins/Citizens/Citizens.economy");
 
 	public static void saveLocation(String name, Location loc, int UID) {
 		String location = loc.getWorld().getName() + "," + loc.getX() + ","
 				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
 				+ loc.getPitch();
 		locations.setString(UID, location);
-		if (!locations.getString("list").contains(""+UID+"_"+name))
-			locations.setString("list", locations.getString("list") + ""+UID+"_"+name
-					+ ",");
+		if (!locations.getString("list").contains("" + UID + "_" + name))
+			locations.setString("list", locations.getString("list") + "" + UID
+					+ "_" + name + ",");
 	}
 
 	public static void saveItems(int UID, ArrayList<Integer> items2) {
@@ -54,44 +56,44 @@ public class PropertyPool {
 
 	public static void saveText(int UID, ArrayList<String> text) {
 		String adding = "";
-		if(text != null){
+		if (text != null) {
 			for (String string : text) {
 				adding += string + ";";
 			}
 		}
 		texts.setString(UID, adding);
 	}
-	
-	public static void setNPCOwner(int UID, String name){
+
+	public static void setNPCOwner(int UID, String name) {
 		owners.setString(UID, name);
 	}
-	
-	public static String getNPCOwner(int UID){
+
+	public static String getNPCOwner(int UID) {
 		return owners.getString(UID);
 	}
-	
-	public static void setNPCTalkWhenClose(int UID, boolean talk){
-		talkWhenClose.setBoolean(UID,talk);
+
+	public static void setNPCTalkWhenClose(int UID, boolean talk) {
+		talkWhenClose.setBoolean(UID, talk);
 	}
-	
-	public static boolean getNPCTalkWhenClose(int UID){
+
+	public static boolean getNPCTalkWhenClose(int UID) {
 		return talkWhenClose.getBoolean(UID);
 	}
-	
-	public static void setNPCLookWhenClose(int UID, boolean look){
-		lookat.setBoolean(UID,look);
+
+	public static void setNPCLookWhenClose(int UID, boolean look) {
+		lookat.setBoolean(UID, look);
 	}
-	
-	public static boolean getNPCLookWhenClose(int UID){
+
+	public static boolean getNPCLookWhenClose(int UID) {
 		return lookat.getBoolean(UID);
 	}
-	
-	public static int getNewNpcID(){
-		if (locations.getString("currentID").isEmpty()){
+
+	public static int getNewNpcID() {
+		if (locations.getString("currentID").isEmpty()) {
 			locations.setInt("currentID", 0);
 		}
 		int returnResult = Integer.valueOf(locations.getString("currentID"));
-		locations.setInt("currentID", (returnResult+1));
+		locations.setInt("currentID", (returnResult + 1));
 		return returnResult;
 	}
 
@@ -127,8 +129,10 @@ public class PropertyPool {
 		PropertyPool.items.removeKey(UID);
 		PropertyPool.locations.removeKey(UID);
 		HumanNPC NPC = NPCManager.getNPC(UID);
-		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace(""+UID+"_"+NPC.getName() + ",", ""));
+		PropertyPool.locations.setString(
+				"list",
+				PropertyPool.locations.getString("list").replace(
+						"" + UID + "_" + NPC.getName() + ",", ""));
 		PropertyPool.texts.removeKey(UID);
 		NPCManager.BasicNPCTexts.remove(UID);
 	}
@@ -158,43 +162,61 @@ public class PropertyPool {
 		}
 		return array;
 	}
+
 	public static Location getLocationFromName(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
-		if (values.length != 6) { 
-			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"+values.length);
+		if (values.length != 6) {
+			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"
+					+ values.length);
 			return null;
-		}else{
-		Location loc = new Location(Citizens.plugin.getServer().getWorld(
-				values[0]), Double.parseDouble(values[1]),
-				Double.parseDouble(values[2]), Double.parseDouble(values[3]),
-				Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-		return loc;
+		} else {
+			Location loc = new Location(Citizens.plugin.getServer().getWorld(
+					values[0]), Double.parseDouble(values[1]),
+					Double.parseDouble(values[2]),
+					Double.parseDouble(values[3]), Float.parseFloat(values[4]),
+					Float.parseFloat(values[5]));
+			return loc;
 		}
 	}
-	
+
 	public static Location getLocationFromID(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
-		if (values.length != 6) { 
-			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"+values.length);
+		if (values.length != 6) {
+			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"
+					+ values.length);
 			return null;
-		}else{
-		Location loc = new Location(Citizens.plugin.getServer().getWorld(
-				values[0]), Double.parseDouble(values[1]),
-				Double.parseDouble(values[2]), Double.parseDouble(values[3]),
-				Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-		return loc;
+		} else {
+			Location loc = new Location(Citizens.plugin.getServer().getWorld(
+					values[0]), Double.parseDouble(values[1]),
+					Double.parseDouble(values[2]),
+					Double.parseDouble(values[3]), Float.parseFloat(values[4]),
+					Float.parseFloat(values[5]));
+			return loc;
 		}
 	}
 
 	public static void changeName(int UID, String changeFrom, String changeTo) {
-		//ID's Remain the same, no need for this.
+		// ID's Remain the same, no need for this.
 		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace((UID+"_"+changeFrom + ","), ""));
-		//ArrayList<String> texts = PropertyPool.getText(UID);
-		//String colour = PropertyPool.getColour(UID);
-		//ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
-		//PropertyPool.saveColour(UID, colour);
-		//PropertyPool.saveText(UID, texts);
-		//PropertyPool.saveItems(UID, items);
+				.getString("list").replace((UID + "_" + changeFrom + ","), ""));
+		// ArrayList<String> texts = PropertyPool.getText(UID);
+		// String colour = PropertyPool.getColour(UID);
+		// ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
+		// PropertyPool.saveColour(UID, colour);
+		// PropertyPool.saveText(UID, texts);
+		// PropertyPool.saveItems(UID, items);
+	}
+
+	public static boolean checkiConomyEnabled() {
+		return economy.getBoolean("use-iconomy");
+	}
+
+	public static int getPrice(String operation) {
+		return economy.getInt(operation);
+	}
+
+	public static int getCurrencyID(String string) {
+		int ID = economy.getInt(string);
+		return ID == -1 ? 1 : ID;
 	}
 }
