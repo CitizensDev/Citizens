@@ -23,11 +23,16 @@ public class IconomyInterface {
 		return getBalance(player.getName()) > price;
 	}
 
-	public static void pay(Player player, Operation op) {
+	public static int pay(Player player, Operation op) {
 		int price = PropertyPool.getPrice(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-iconomy");
 		Account acc = iConomy.getBank().getAccount(player.getName());
 		acc.subtract(price);
+		return price;
+	}
+
+	public static String getCurrency() {
+		return iConomy.getBank().getCurrency();
 	}
 }

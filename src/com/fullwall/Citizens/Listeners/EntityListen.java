@@ -47,9 +47,10 @@ public class EntityListen extends EntityListener {
 
 		if (npc != null && event.getTarget() instanceof Player) {
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
-				Player p = (Player)event.getTarget();
+				Player p = (Player) event.getTarget();
 				NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-				Citizens.log.info(p.getName()+" selected NPC " + npc.getName() + " : " + npc.getUID());
+				// Citizens.log.info(p.getName()+" selected NPC " +
+				// npc.getName() + " : " + npc.getUID());
 				CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
 						npc.getName(), MessageUtils.getText(npc, e.getTarget(),
 								plugin), npc, Reason.RIGHT_CLICK,

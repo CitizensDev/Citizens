@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Economy;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,7 +20,7 @@ public class ItemInterface {
 		return player.getInventory().contains(currencyID, price);
 	}
 
-	public static void pay(Player player, Operation op) {
+	public static int pay(Player player, Operation op) {
 		int price = PropertyPool.getPrice(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-item");
@@ -48,5 +49,14 @@ public class ItemInterface {
 				}
 			}
 		}
+		return price;
+	}
+
+	public static String getCurrency(Operation op) {
+		int ID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
+				.replace("_", "-")
+				+ "-item-currency-id");
+		return Material.getMaterial(ID) != null ? Material.getMaterial(ID)
+				.name() : "";
 	}
 }

@@ -1,7 +1,5 @@
 package com.fullwall.Citizens.Economy;
 
-import java.util.EnumMap;
-
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -13,8 +11,6 @@ public class EconomyHandler {
 	public enum Operation {
 		BASIC_NPC_CREATE
 	}
-
-	public static EnumMap<Operation, String> OperationMapping;
 
 	public static void setiConomyEnable(boolean value) {
 		iConomyEnabled = value;
@@ -31,10 +27,17 @@ public class EconomyHandler {
 			return ItemInterface.hasEnough(player, op);
 	}
 
-	public static void pay(Operation op, Player player) {
+	public static int pay(Operation op, Player player) {
 		if (iConomyEnabled && useiConomy)
-			IconomyInterface.pay(player, op);
+			return IconomyInterface.pay(player, op);
 		else
-			ItemInterface.pay(player, op);
+			return ItemInterface.pay(player, op);
+	}
+
+	public static String getPaymentType(Operation op) {
+		if (iConomyEnabled && useiConomy)
+			return IconomyInterface.getCurrency();
+		else
+			return ItemInterface.getCurrency(op);
 	}
 }

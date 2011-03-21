@@ -20,7 +20,6 @@ import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.Utils.PropertyPool;
-import com.fullwall.Citizens.Utils.StringUtils;
 
 /**
  * Citizens for Bukkit
@@ -46,11 +45,11 @@ public class Citizens extends JavaPlugin {
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static boolean defaultTalkWhenClose = false;
 	public static iConomy economy = null;
-	
+
 	@Override
 	public void onLoad() {
 	}
-	
+
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGED, l, Event.Priority.Normal,
@@ -80,9 +79,11 @@ public class Citizens extends JavaPlugin {
 		int delay = PropertyPool.settings.getInt("tick-delay");
 		double range = PropertyPool.settings.getDouble("look-range");
 
-		getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickTask(this, range), 5, delay);
-		
-		log.info("[" + pdfFile.getName() + "]: loaded " + NPCManager.GlobalUIDs.size() + " NPC's");
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new TickTask(this, range), 5, delay);
+
+		log.info("[" + pdfFile.getName() + "]: loaded "
+				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
 				+ ") loaded ");
@@ -101,7 +102,7 @@ public class Citizens extends JavaPlugin {
 				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
 				+ ") disabled");
 	}
-	
+
 	private void setupHelp() {
 		Plugin test = getServer().getPluginManager().getPlugin("Help");
 		if (test != null) {
@@ -139,9 +140,8 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc tp [name]",
 					"Teleports you to the location of an NPC.", this,
 					"citizens.general.move");
-			helpPlugin.registerCommand("npc copy",
-					"Copies the selected NPC.", this,
-					"citizens.general.copy");
+			helpPlugin.registerCommand("npc copy", "Copies the selected NPC.",
+					this, "citizens.general.copy");
 			helpPlugin.registerCommand("npc getid",
 					"Gets the ID of the selected NPC.", this,
 					"citizens.general.getid");
@@ -164,50 +164,70 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupVariables() {
-		if(!PropertyPool.settings.keyExists("underscores-to-spaces"))PropertyPool.settings.setBoolean("underscores-to-spaces", true);
-		if(!PropertyPool.settings.keyExists("default-enable-following"))PropertyPool.settings.setBoolean("default-enable-following", true);
-		if(!PropertyPool.settings.keyExists("default-talk-when-close"))PropertyPool.settings.setBoolean("default-talk-when-close", false);
-		if(!PropertyPool.settings.keyExists("enable-following"))PropertyPool.settings.removeKey("enable-following");
-		if(!PropertyPool.settings.keyExists("talk-when-close"))PropertyPool.settings.removeKey("talk-when-close");
-		
+		if (!PropertyPool.settings.keyExists("underscores-to-spaces"))
+			PropertyPool.settings.setBoolean("underscores-to-spaces", true);
+		if (!PropertyPool.settings.keyExists("default-enable-following"))
+			PropertyPool.settings.setBoolean("default-enable-following", true);
+		if (!PropertyPool.settings.keyExists("default-talk-when-close"))
+			PropertyPool.settings.setBoolean("default-talk-when-close", false);
+		if (!PropertyPool.settings.keyExists("enable-following"))
+			PropertyPool.settings.removeKey("enable-following");
+		if (!PropertyPool.settings.keyExists("talk-when-close"))
+			PropertyPool.settings.removeKey("talk-when-close");
+
 		useNPCColours = PropertyPool.settings.getBoolean("use-npc-colours");
 		NPCColour = PropertyPool.settings.getString("npc-colour");
-		defaultFollowingEnabled = PropertyPool.settings.getBoolean("default-enable-following");
-		defaultTalkWhenClose = PropertyPool.settings.getBoolean("default-talk-when-close");
+		defaultFollowingEnabled = PropertyPool.settings
+				.getBoolean("default-enable-following");
+		defaultTalkWhenClose = PropertyPool.settings
+				.getBoolean("default-talk-when-close");
 		chatFormat = PropertyPool.settings.getString("chat-format");
-		convertUnderscores = PropertyPool.settings.getBoolean("underscores-to-spaces");
+		convertUnderscores = PropertyPool.settings
+				.getBoolean("underscores-to-spaces");
 	}
 
 	private void setupNPCs() {
 		String[] list = PropertyPool.locations.getString("list").split(",");
-		if(list.length > 0 && list[0] != ""){
+		if (list.length > 0 && list[0] != "") {
 			for (String name : list) {
-				
-				//Conversion from old to new save format:
-				if(name.split("_",2).length == 1 && !name.split("_",2)[0].isEmpty()){
+
+				// Conversion from old to new save format:
+				if (name.split("_", 2).length == 1
+						&& !name.split("_", 2)[0].isEmpty()) {
 					int UID = PropertyPool.getNewNpcID();
 					String oldName = name;
 					name = UID + "_" + name;
-					PropertyPool.locations.setString(UID, PropertyPool.locations.getString(oldName));
+					PropertyPool.locations.setString(UID,
+							PropertyPool.locations.getString(oldName));
 					PropertyPool.locations.removeKey(oldName);
-					PropertyPool.colours.setString(UID, PropertyPool.colours.getString(oldName));
+					PropertyPool.colours.setString(UID,
+							PropertyPool.colours.getString(oldName));
 					PropertyPool.colours.removeKey(oldName);
-					PropertyPool.items.setString(UID, PropertyPool.items.getString(oldName));
+					PropertyPool.items.setString(UID,
+							PropertyPool.items.getString(oldName));
 					PropertyPool.items.removeKey(oldName);
-					PropertyPool.texts.setString(UID, PropertyPool.texts.getString(oldName));
+					PropertyPool.texts.setString(UID,
+							PropertyPool.texts.getString(oldName));
 					PropertyPool.texts.removeKey(oldName);
 					PropertyPool.lookat.setBoolean(UID, true);
 					PropertyPool.talkWhenClose.setBoolean(UID, false);
-					PropertyPool.locations.setString("list", PropertyPool.locations.getString("list").replace(oldName,name));
+					PropertyPool.locations.setString(
+							"list",
+							PropertyPool.locations.getString("list").replace(
+									oldName, name));
 					list = PropertyPool.locations.getString("list").split(",");
 				}
 				//
-				Location loc = PropertyPool.getLocationFromName(Integer.valueOf(name.split("_")[0]));
+				Location loc = PropertyPool.getLocationFromName(Integer
+						.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					handler.spawnExcistingNPC(name.split("_",2)[1], Integer.valueOf(name.split("_")[0]));
-					ArrayList<String> text = PropertyPool.getText(Integer.valueOf(name.split("_")[0]));
+					handler.spawnExcistingNPC(name.split("_", 2)[1],
+							Integer.valueOf(name.split("_")[0]));
+					ArrayList<String> text = PropertyPool.getText(Integer
+							.valueOf(name.split("_")[0]));
 					if (text != null)
-						handler.setNPCText(Integer.valueOf(name.split("_")[0]), text);
+						handler.setNPCText(Integer.valueOf(name.split("_")[0]),
+								text);
 				}
 			}
 		}
