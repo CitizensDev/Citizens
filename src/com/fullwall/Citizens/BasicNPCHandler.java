@@ -3,6 +3,7 @@ package com.fullwall.Citizens;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -85,6 +86,10 @@ public class BasicNPCHandler extends NPCManager {
 	public void setItemInSlot(Player p, String[] args) {
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		Material mat = StringUtils.parseMaterial(args[1]);
+		if(mat == null){
+			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
+			return;
+		}
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(n.getUID());
 		int oldhelmet = items.get(1);
 		if (args[0].equalsIgnoreCase("helmet")) {
@@ -98,7 +103,6 @@ public class BasicNPCHandler extends NPCManager {
 		}
 		PropertyPool.saveItems(n.getUID(), items);
 		NPCDataManager.addItems(n, items);
-		Citizens.log.info("HelmetTo0: " +oldhelmet+ " : "+ items.get(1));
 		if((oldhelmet != 0 && items.get(1) == 0)){
 			super.removeNPCForRespawn(n.getUID());
 			super.registerBasicNPC(n.getName(), n.getType(), n.getUID());
