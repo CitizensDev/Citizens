@@ -63,6 +63,14 @@ public class PropertyPool {
 		}
 		texts.setString(UID, adding);
 	}
+	
+	public static void saveLookWhenClose(int UID, boolean value){
+		lookat.setBoolean(UID, value);
+	}
+	
+	public static void saveTalkWhenClose(int UID, boolean value){
+		talkWhenClose.setBoolean(UID, value);
+	}
 
 	public static void setNPCOwner(int UID, String name) {
 		owners.setString(UID, name);

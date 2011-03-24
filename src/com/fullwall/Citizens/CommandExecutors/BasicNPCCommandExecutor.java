@@ -470,11 +470,15 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		ArrayList<String> texts = PropertyPool.getText(NPC.getUID());
 		String colour = PropertyPool.getColour(NPC.getUID());
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(NPC.getUID());
+		boolean lookatplayers = PropertyPool.getNPCLookWhenClose(NPC.getUID());
+		boolean talkwhenclose = PropertyPool.getNPCTalkWhenClose(NPC.getUID());
 		int newUID = plugin.handler.spawnNPC(NPC.getName(), p.getLocation());
 		HumanNPC newNPC = NPCManager.getNPC(newUID);
 		PropertyPool.saveColour(newUID, colour);
 		PropertyPool.saveText(newUID, texts);
 		PropertyPool.saveItems(newUID, items);
+		PropertyPool.saveLookWhenClose(newUID,lookatplayers);
+		PropertyPool.saveTalkWhenClose(newUID,talkwhenclose);
 		NPCDataManager.addItems(newNPC, items);
 	}
 

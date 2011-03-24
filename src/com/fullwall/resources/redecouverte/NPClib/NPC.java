@@ -1,5 +1,7 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
+import org.bukkit.ChatColor;
+
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCManager;
 
@@ -29,14 +31,14 @@ public class NPC {
     		for(int i = 0; i < brokenName.length; i++){
 				if(i == 0) returnName = brokenName[i];
 				else returnName += "_" + brokenName[i];
-			}return returnName;
+			}return ChatColor.stripColor(returnName);
     	}
-        return this.name;
+        return ChatColor.stripColor(this.name);
     }
     
     public String getSpacedName()
     {
-    	return this.name;
+    	return ChatColor.stripColor(this.name);
     }
     
     public int getUID()

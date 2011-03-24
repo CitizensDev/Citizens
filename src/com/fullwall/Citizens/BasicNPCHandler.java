@@ -52,13 +52,15 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void setColour(int UID, String colourChange) {
 		HumanNPC n = super.getNPC(UID);
-		PropertyPool.saveColour(UID, colourChange.replace("&","§"));//changeName(UID, colourChange.replace("§", "&") + n.getName());
+		PropertyPool.saveColour(UID, colourChange.replace("&","§"));
 		super.removeNPCForRespawn(UID);
+		Citizens.log.info("SetColor Name: " + n.getName());
 		super.registerBasicNPC(n.getName(), NPCType.BASIC, UID);
 	}
 
 	public void addNPCText(int UID, String text) {
 		ArrayList<String> texts = super.getBasicNPCText(UID);
+		if(texts == null) texts = new ArrayList<String>();
 		texts.add(text);
 		texts = StringUtils.colourise(texts);
 		super.setBasicNPCText(UID, texts);

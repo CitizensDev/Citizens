@@ -96,6 +96,10 @@ public class NPCManager {
 
 	public void moveNPC(int UID, Location loc) {
 		HumanNPC npc = list.get(UID);
+		String location = loc.getWorld().getName() + "," + loc.getX() + ","
+			+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
+			+ loc.getPitch();
+		PropertyPool.locations.setString(UID, location);
 		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
 	}
 
