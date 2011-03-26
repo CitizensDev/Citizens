@@ -63,12 +63,12 @@ public class PropertyPool {
 		}
 		texts.setString(UID, adding);
 	}
-	
-	public static void saveLookWhenClose(int UID, boolean value){
+
+	public static void saveLookWhenClose(int UID, boolean value) {
 		lookat.setBoolean(UID, value);
 	}
-	
-	public static void saveTalkWhenClose(int UID, boolean value){
+
+	public static void saveTalkWhenClose(int UID, boolean value) {
 		talkWhenClose.setBoolean(UID, value);
 	}
 
@@ -226,5 +226,9 @@ public class PropertyPool {
 	public static int getCurrencyID(String string) {
 		int ID = economy.getInt(string);
 		return ID == -1 ? 1 : ID;
+	}
+
+	public static boolean checkEconomyEnabled() {
+		return economy.getBoolean("use-economy");
 	}
 }

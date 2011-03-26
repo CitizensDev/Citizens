@@ -21,7 +21,7 @@ public class BasicNPCHandler extends NPCManager {
 		return super.registerBasicNPC(name, loc, NPCType.BASIC);
 	}
 	
-	public void spawnExcistingNPC(String name, int UID) {
+	public void spawnExistingNPC(String name, int UID) {
 		super.registerBasicNPC(name, NPCType.BASIC, UID);
 	}
 

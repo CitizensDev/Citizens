@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Utils.PropertyPool;
 
 public class EconomyHandler {
+	private static boolean useEconomy = true;
 	private static boolean iConomyEnabled = false;
 	private static boolean useiConomy = false;
 
@@ -17,14 +18,22 @@ public class EconomyHandler {
 	}
 
 	public static void setUpVariables() {
+		useEconomy = PropertyPool.checkEconomyEnabled();
 		useiConomy = PropertyPool.checkiConomyEnabled();
 	}
 
 	public static boolean canBuy(Operation op, Player player) {
-		if (useiConomy && iConomyEnabled)
-			return IconomyInterface.hasEnough(player, op);
-		else
-			return ItemInterface.hasEnough(player, op);
+		if (useEconomy) {
+			if (useiConomy && iConomyEnabled)
+				return IconomyInterface.hasEnough(player, op);
+			else
+				return ItemInterface.hasEnough(player, op);
+		} else
+			return true;
+	}
+
+	public static boolean useEconomy() {
+		return useEconomy;
 	}
 
 	public static int pay(Operation op, Player player) {
@@ -39,5 +48,12 @@ public class EconomyHandler {
 			return IconomyInterface.getCurrency();
 		else
 			return ItemInterface.getCurrency(op);
+	}
+
+	public static String getRemainder(Operation op, Player player) {
+		if (iConomyEnabled && useiConomy)
+			return IconomyInterface.getRemainder(op, player);
+		else
+			return ItemInterface.getRemainder(op, player);
 	}
 }

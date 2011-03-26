@@ -59,4 +59,22 @@ public class ItemInterface {
 		return Material.getMaterial(ID) != null ? Material.getMaterial(ID)
 				.name() : "";
 	}
+
+	public static String getRemainder(Operation op, Player player) {
+		int price = PropertyPool.getPrice(op.toString().toLowerCase()
+				.replace("_", "-")
+				+ "-item");
+		int currencyID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
+				.replace("_", "-")
+				+ "-item-currency-id");
+		PlayerInventory inv = player.getInventory();
+		int current = price;
+		for (ItemStack i : inv.getContents()) {
+			if (i.getTypeId() == currencyID) {
+				int amount = i.getAmount();
+				current -= amount;
+			}
+		}
+		return "" + current;
+	}
 }

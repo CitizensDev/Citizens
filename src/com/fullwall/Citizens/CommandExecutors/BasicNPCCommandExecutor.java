@@ -39,13 +39,24 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		if (args.length >= 2 && args[0].equals("create")) {
 			if (sender instanceof Player) {
 				if (hasPermission("citizens.basic.create", sender)) {
-					if (EconomyHandler.canBuy(Operation.BASIC_NPC_CREATE,
-							(Player) sender)) {
+					if (!EconomyHandler.useEconomy()
+							|| EconomyHandler
+									.canBuy(Operation.BASIC_NPC_CREATE,
+											(Player) sender)) {
 						createNPC(args, (Player) sender);
-					} else
+					} else if (EconomyHandler.useEconomy()) {
 						sender.sendMessage(notEnoughMoneyMessage);
-				} else
-					sender.sendMessage(noPermissionsMessage);
+					}
+				} else if (EconomyHandler.useEconomy())
+					sender.sendMessage(noPermissionsMessage
+							+ " You need "
+							+ EconomyHandler
+									.getRemainder(Operation.BASIC_NPC_CREATE,
+											(Player) sender)
+							+ " more "
+							+ EconomyHandler
+									.getPaymentType(Operation.BASIC_NPC_CREATE)
+							+ "(s).");
 				return true;
 			} else {
 				sender.sendMessage(mustBeIngameMessage);
@@ -295,42 +306,64 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			} else
 				sender.sendMessage(noPermissionsMessage);
 			return true;
-		}else{
+		} else {
 			if (args.length >= 2 && args[0].equals("move"))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc move");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc move");
 			else if (args.length >= 3 && args[0].equals("remove"))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc remove OR /npc remove all");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc remove OR /npc remove all");
 			else if (args.length >= 3 && args[0].equals("name"))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc name [name]");
-			else if (args.length >= 3 && (args[0].equals("colour") || args[0].equals("color")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc color [color]");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc name [name]");
+			else if (args.length >= 3
+					&& (args[0].equals("colour") || args[0].equals("color")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc color [color]");
 			else if (args.length >= 2 && (args[0].equals("reset")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc reset");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc reset");
 			else if (args.length >= 3 && (args[0].equals("item")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc item [id|item name]");
-			else if (args.length >= 3 && (args[0].equals("torso") || args[0].equals("legs") || args[0].equals("helmet") || args[0].equals("boots")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc "+args[0]+" [id|item name]");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc item [id|item name]");
+			else if (args.length >= 3
+					&& (args[0].equals("torso") || args[0].equals("legs")
+							|| args[0].equals("helmet") || args[0]
+							.equals("boots")))
+				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc "
+						+ args[0] + " [id|item name]");
 			else if (args.length >= 2 && args[0].equals("tp"))
 				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc tp");
-			else if ((command.getName().equals("citizens") || command.getName().equals("npc")) && args.length >= 3 && (args[0].equals("help")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc help [page number]");
+			else if ((command.getName().equals("citizens") || command.getName()
+					.equals("npc"))
+					&& args.length >= 3
+					&& (args[0].equals("help")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc help [page number]");
 			else if (args.length >= 2 && (args[0].equals("copy")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc copy");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc copy");
 			else if (args.length >= 2 && (args[0].equals("getid")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc getid");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc getid");
 			else if (args.length >= 3 && (args[0].equals("select")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc select [id]");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc select [id]");
 			else if (args.length >= 2 && (args[0].equals("getowner")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc getowner");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc getowner");
 			else if (args.length >= 3 && (args[0].equals("setowner")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc setowner [player name]");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc setowner [player name]");
 			else if (args.length >= 3 && (args[0].equals("talkwhenclose")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc talkwhenclose [true|false]");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc talkwhenclose [true|false]");
 			else if (args.length >= 3 && (args[0].equals("lookatplayers")))
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc lookatplayers [true|false]");
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc lookatplayers [true|false]");
 			else
 				return false;
-			
+
 			return true;
 		}
 	}
@@ -477,8 +510,8 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		PropertyPool.saveColour(newUID, colour);
 		PropertyPool.saveText(newUID, texts);
 		PropertyPool.saveItems(newUID, items);
-		PropertyPool.saveLookWhenClose(newUID,lookatplayers);
-		PropertyPool.saveTalkWhenClose(newUID,talkwhenclose);
+		PropertyPool.saveLookWhenClose(newUID, lookatplayers);
+		PropertyPool.saveTalkWhenClose(newUID, talkwhenclose);
 		NPCDataManager.addItems(newNPC, items);
 	}
 

@@ -39,7 +39,7 @@ public class Citizens extends JavaPlugin {
 	public static boolean useNPCColours = true;
 	public static String NPCColour = "§f";
 	public static String chatFormat = "[%name%]: ";
-	public static String buildNumber = "1";
+	public static String buildNumber = "2";
 	public static boolean convertUnderscores = false;
 
 	public static Logger log = Logger.getLogger("Minecraft");
@@ -221,7 +221,7 @@ public class Citizens extends JavaPlugin {
 				Location loc = PropertyPool.getLocationFromName(Integer
 						.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					handler.spawnExcistingNPC(name.split("_", 2)[1],
+					handler.spawnExistingNPC(name.split("_", 2)[1],
 							Integer.valueOf(name.split("_")[0]));
 					ArrayList<String> text = PropertyPool.getText(Integer
 							.valueOf(name.split("_")[0]));
