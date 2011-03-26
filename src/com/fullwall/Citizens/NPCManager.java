@@ -25,6 +25,7 @@ public class NPCManager {
 	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
 	private ConcurrentHashMap<Integer, String> TraderUIDs = new ConcurrentHashMap<Integer, String>();
 	private ConcurrentHashMap<Integer, String> GuardUIDs = new ConcurrentHashMap<Integer, String>();
+	private ConcurrentHashMap<Integer, String> QuesterUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<String, Integer> NPCSelected = new ConcurrentHashMap<String, Integer>();
 	public Random ran = new Random(
@@ -32,12 +33,12 @@ public class NPCManager {
 					.currentTimeMillis()).nextLong()).nextLong()).nextLong())
 					.nextLong());
 	private static NPCList list;
-	public static NPCManager me;
+	public static NPCManager manager;
 
 	public NPCManager(Citizens plugin) {
 		this.plugin = plugin;
 		NPCManager.list = new NPCList();
-		me = this;
+		manager = this;
 	}
 
 	public enum NPCType {
@@ -46,23 +47,23 @@ public class NPCManager {
 
 	public void registerBasicNPC(String name, NPCType type, int UID) {
 		Location loc = PropertyPool.getLocationFromID(UID);
-		//String uniqueID = generateID(NPCType.BASIC);
+		// String uniqueID = generateID(NPCType.BASIC);
 
-		String colour = PropertyPool.getColour(UID);//StringUtils.getColourFromString(name);
+		String colour = PropertyPool.getColour(UID);// StringUtils.getColourFromString(name);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
 		if (!colour.isEmpty() && !colour.equals("§f"))
 			npcName = colour + name;
-		
-		if(Citizens.convertUnderscores == true){
+		if (Citizens.convertUnderscores == true) {
 			String[] brokenName = npcName.split("_");
-			for(int i = 0; i < brokenName.length; i++){
-				if(i == 0) npcName = brokenName[i];
-				else npcName += " " + brokenName[i];
+			for (int i = 0; i < brokenName.length; i++) {
+				if (i == 0)
+					npcName = brokenName[i];
+				else
+					npcName += " " + brokenName[i];
 			}
 		}
-
-		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(UID, npcName, 
+		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(UID, npcName,
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
@@ -94,15 +95,6 @@ public class NPCManager {
 		return BasicNPCTexts.get(UID);
 	}
 
-	public void moveNPC(int UID, Location loc) {
-		HumanNPC npc = list.get(UID);
-		String location = loc.getWorld().getName() + "," + loc.getX() + ","
-			+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
-			+ loc.getPitch();
-		PropertyPool.locations.setString(UID, location);
-		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
-	}
-
 	public static HumanNPC getNPC(int UID) {
 		return list.get(UID);
 	}
@@ -115,20 +107,30 @@ public class NPCManager {
 		return list;
 	}
 
-    public static void rotateNPCToPlayer(HumanNPC NPC, Player player) {
-        Location loc = NPC.getBukkitEntity().getLocation();
-        double xDiff = player.getLocation().getX() - loc.getX();
-        double yDiff = player.getLocation().getY() - loc.getY();
-        double zDiff = player.getLocation().getZ() - loc.getZ();
-        double DistanceXZ = Math.sqrt(xDiff*xDiff+zDiff*zDiff);
-        double DistanceY = Math.sqrt(DistanceXZ*DistanceXZ+yDiff*yDiff);
-        double yaw = (Math.acos(xDiff/DistanceXZ)*180/Math.PI);
-        double pitch = (Math.acos(yDiff/DistanceY)*180/Math.PI)-90;
-        if(zDiff < 0.0){
-                yaw = yaw + (Math.abs(180 - yaw)*2);
-        }
-        NPC.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float)yaw-90, (float)pitch);
-}
+	public void moveNPC(int UID, Location loc) {
+		HumanNPC npc = list.get(UID);
+		String location = loc.getWorld().getName() + "," + loc.getX() + ","
+				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
+				+ loc.getPitch();
+		PropertyPool.locations.setString(UID, location);
+		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
+	}
+
+	public static void rotateNPCToPlayer(HumanNPC NPC, Player player) {
+		Location loc = NPC.getBukkitEntity().getLocation();
+		double xDiff = player.getLocation().getX() - loc.getX();
+		double yDiff = player.getLocation().getY() - loc.getY();
+		double zDiff = player.getLocation().getZ() - loc.getZ();
+		double DistanceXZ = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+		double DistanceY = Math.sqrt(DistanceXZ * DistanceXZ + yDiff * yDiff);
+		double yaw = (Math.acos(xDiff / DistanceXZ) * 180 / Math.PI);
+		double pitch = (Math.acos(yDiff / DistanceY) * 180 / Math.PI) - 90;
+		if (zDiff < 0.0) {
+			yaw = yaw + (Math.abs(180 - yaw) * 2);
+		}
+		NPC.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
+				(float) pitch);
+	}
 
 	public void despawnNPC(int UID) {
 		BasicUIDs.remove(UID);
@@ -154,19 +156,18 @@ public class NPCManager {
 		PropertyPool.lookat.removeKey(UID);
 		PropertyPool.talkWhenClose.removeKey(UID);
 		PropertyPool.texts.removeKey(UID);
-		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace((""+UID+"_"+actualName + ","), ""));
+		PropertyPool.locations.setString(
+				"list",
+				PropertyPool.locations.getString("list").replace(
+						("" + UID + "_" + actualName + ","), ""));
 	}
-	
-	public static void removeNPCForRespawn(int UID){
+
+	public static void removeNPCForRespawn(int UID) {
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 	}
 
-	private void saveToFile(String name, Location loc, String colour,
-			ArrayList<Integer> items, int UID) {
-		PropertyPool.saveLocation(name, loc, UID);
-		PropertyPool.saveColour(UID, colour);
-		PropertyPool.saveItems(UID, items);
+	public ConcurrentHashMap<Integer, String> getBasicUIDs() {
+		return BasicUIDs;
 	}
 
 	private void registerUID(NPCType type, int UID, String name) {
@@ -181,40 +182,54 @@ public class NPCManager {
 			GuardUIDs.put(UID, name);
 			break;
 		case QUEST:
+			QuesterUIDs.put(UID, name);
+			break;
 		case HEALER:
 		}
 		GlobalUIDs.put(UID, name);
 	}
 
-	private String generateID(NPCType type) {
-		boolean found = false;
+	private String generateUID(NPCType type) {
+		boolean notFound = false;
+		// Change this to an integer return?
 		String UID = "";
-		while (found != true) {
+		while (notFound != true) {
 			UID = "" + ran.nextInt();
 			switch (type) {
 			case BASIC:
 				if (!BasicUIDs.containsKey(UID)) {
-					found = true;
+					notFound = true;
 					break;
 				}
 			case TRADER:
 				if (!GuardUIDs.containsKey(UID)) {
-					found = true;
+					notFound = true;
 					break;
 				}
 			case GUARD:
 				if (!GuardUIDs.containsKey(UID)) {
-					found = true;
+					notFound = true;
 					break;
 				}
 			case QUEST:
+				if (!QuesterUIDs.containsKey(UID)) {
+					notFound = true;
+					break;
+				}
 			case HEALER:
 			}
 		}
 		return UID;
 	}
 
-	public ConcurrentHashMap<Integer, String> getBasicUIDs() {
-		return BasicUIDs;
+	private void saveToFile(String name, Location loc, String colour,
+			ArrayList<Integer> items, int UID) {
+		PropertyPool.saveLocation(name, loc, UID);
+		PropertyPool.saveColour(UID, colour);
+		PropertyPool.saveItems(UID, items);
+	}
+
+	public static boolean isNPC(Entity entity) {
+		return list.getBasicHumanNpc(entity) != null;
 	}
 }

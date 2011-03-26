@@ -266,5 +266,4 @@ public class Citizens extends JavaPlugin {
 		}
 		return true;
 	}
-
 }

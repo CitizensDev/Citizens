@@ -72,28 +72,28 @@ public class PropertyPool {
 		talkWhenClose.setBoolean(UID, value);
 	}
 
-	public static void setNPCOwner(int UID, String name) {
-		owners.setString(UID, name);
-	}
-
 	public static String getNPCOwner(int UID) {
 		return owners.getString(UID);
 	}
 
-	public static void setNPCTalkWhenClose(int UID, boolean talk) {
-		talkWhenClose.setBoolean(UID, talk);
+	public static void setNPCOwner(int UID, String name) {
+		owners.setString(UID, name);
 	}
 
 	public static boolean getNPCTalkWhenClose(int UID) {
 		return talkWhenClose.getBoolean(UID);
 	}
 
-	public static void setNPCLookWhenClose(int UID, boolean look) {
-		lookat.setBoolean(UID, look);
+	public static void setNPCTalkWhenClose(int UID, boolean talk) {
+		talkWhenClose.setBoolean(UID, talk);
 	}
 
 	public static boolean getNPCLookWhenClose(int UID) {
 		return lookat.getBoolean(UID);
+	}
+
+	public static void setNPCLookWhenClose(int UID, boolean look) {
+		lookat.setBoolean(UID, look);
 	}
 
 	public static int getNewNpcID() {
@@ -103,17 +103,6 @@ public class PropertyPool {
 		int returnResult = Integer.valueOf(locations.getString("currentID"));
 		locations.setInt("currentID", (returnResult + 1));
 		return returnResult;
-	}
-
-	public static void getSetText(int UID) {
-		String current = texts.getString(UID);
-		if (!current.isEmpty()) {
-			ArrayList<String> text = new ArrayList<String>();
-			for (String string : current.split(";")) {
-				text.add(string);
-			}
-			NPCManager.setBasicNPCText(UID, text);
-		}
 	}
 
 	public static ArrayList<String> getText(int UID) {
@@ -126,6 +115,17 @@ public class PropertyPool {
 			return text;
 		} else
 			return null;
+	}
+
+	public static void getSetText(int UID) {
+		String current = texts.getString(UID);
+		if (!current.isEmpty()) {
+			ArrayList<String> text = new ArrayList<String>();
+			for (String string : current.split(";")) {
+				text.add(string);
+			}
+			NPCManager.setBasicNPCText(UID, text);
+		}
 	}
 
 	public static String getColour(int UID) {
@@ -203,8 +203,21 @@ public class PropertyPool {
 		}
 	}
 
+	public static int getPrice(String operation) {
+		return economy.getInt(operation);
+	}
+
+	public static int getCurrencyID(String string) {
+		int ID = economy.getInt(string);
+		return ID == -1 ? 1 : ID;
+	}
+
+	public static boolean checkEconomyEnabled() {
+		return economy.getBoolean("use-economy");
+	}
+
 	public static void changeName(int UID, String changeFrom, String changeTo) {
-		// ID's Remain the same, no need for this.
+		// IDs Remain the same, no need for this.
 		PropertyPool.locations.setString("list", PropertyPool.locations
 				.getString("list").replace((UID + "_" + changeFrom + ","), ""));
 		// ArrayList<String> texts = PropertyPool.getText(UID);
@@ -217,18 +230,5 @@ public class PropertyPool {
 
 	public static boolean checkiConomyEnabled() {
 		return economy.getBoolean("use-iconomy");
-	}
-
-	public static int getPrice(String operation) {
-		return economy.getInt(operation);
-	}
-
-	public static int getCurrencyID(String string) {
-		int ID = economy.getInt(string);
-		return ID == -1 ? 1 : ID;
-	}
-
-	public static boolean checkEconomyEnabled() {
-		return economy.getBoolean("use-economy");
 	}
 }
