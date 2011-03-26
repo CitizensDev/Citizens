@@ -29,8 +29,14 @@ public class HumanNPC extends NPC {
         return this.mcEntity;
     }
 
+    // For Teleportation
     public void moveTo(double x, double y, double z, float yaw, float pitch) {
         this.mcEntity.c(x, y, z, yaw, pitch);
+    }
+    
+    // For NPC movement
+    public void moveNPC(double x, double y, double z){
+    	this.mcEntity.c(x, y, z);
     }
 
     public void attackLivingEntity(LivingEntity ent) {
