@@ -36,6 +36,11 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
+		String debugAdd = "";
+		for(int i = 0; i < args.length; i++){
+			debugAdd += args[i];
+		}
+		Citizens.log.info("Command Debug: " + debugAdd + " : " + commandLabel);
 		if (args.length >= 2 && args[0].equals("create")) {
 			if (sender instanceof Player) {
 				if (hasPermission("citizens.basic.create", sender)) {

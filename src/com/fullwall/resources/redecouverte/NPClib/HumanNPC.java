@@ -15,8 +15,14 @@ public class HumanNPC extends NPC {
     private CraftNPC mcEntity;
     private double fallingSpeed = 0.0;
     private double GravityPerSecond = 9.81;
-    private double movementSpeed = 0.35;
+    private double movementSpeed = 0.2;
     private double privateSpace = 1.5;
+
+    private double targetX = 0.0;
+    private double targetY = 0.0;
+    private double targetZ = 0.0;
+    private Player targetPlayer = null;
+    private boolean hasTarget = false;
     @SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
 
@@ -44,9 +50,38 @@ public class HumanNPC extends NPC {
     	this.mcEntity.c(x, y, z);
     }
     
-    public void moveNPCTowardsPlayer(Player p){
-    	double xDiff = p.getLocation().getX() - this.mcEntity.locX;
-    	double zDiff = p.getLocation().getZ() - this.mcEntity.locZ;
+    public void setTarget(double x, double y, double z){
+    	targetX = x;
+    	targetY = y;
+    	targetZ = z;
+    	hasTarget = true;
+    	targetPlayer = null;
+    }
+    
+    public void setTarget(Player p){
+    	targetPlayer = p;
+    	hasTarget = false;
+    }
+    
+    public void removeTarget(){
+    	hasTarget = false;
+    	targetPlayer = null;
+    }
+    
+    public void updateMovement(){
+    	if(hasTarget == true || targetPlayer != null) this.moveNPCTowardsTarget();
+    	this.applyGravity();
+    }
+    
+    public void moveNPCTowardsTarget(){
+    	double tX = targetX;
+    	double tZ = targetZ;
+    	if(targetPlayer != null){
+    		tX = targetPlayer.getLocation().getX();
+    		tZ = targetPlayer.getLocation().getZ();
+    	}
+    	double xDiff = tX - this.mcEntity.locX;
+    	double zDiff = tZ - this.mcEntity.locZ;
     	double length = Math.sqrt(xDiff*xDiff+zDiff*zDiff);
     	xDiff = (xDiff / length) * movementSpeed;
     	zDiff = (zDiff / length) * movementSpeed;
@@ -59,6 +94,8 @@ public class HumanNPC extends NPC {
     		if(Math.abs(xDiff2 - xDiff) > 0.01 || Math.abs(zDiff2 - zDiff) > 0.01){
     			this.jumpNPC();
     		}
+    	}else{
+    		this.hasTarget = false;
     	}
     }
     
