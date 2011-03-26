@@ -45,6 +45,9 @@ public class TickTask implements Runnable {
 							players.put(p.getName(), true);
 							hasSaidText.put(entry.getKey(), players);
 						}
+						// Moves the NPC towards the player (WALKING&Jumping)
+						//entry.getValue().moveNPCTowardsPlayer(p);
+						
 					} else if (PropertyPool.getNPCTalkWhenClose(entry.getValue().getUID())
 							&& hasSaidText.containsKey(entry.getKey())
 							&& hasSaidText.get(entry.getKey()).containsKey(

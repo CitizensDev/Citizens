@@ -6,6 +6,7 @@ import net.minecraft.server.EntityLiving;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 
@@ -14,6 +15,8 @@ public class HumanNPC extends NPC {
     private CraftNPC mcEntity;
     private double fallingSpeed = 0.0;
     private double GravityPerSecond = 9.81;
+    private double movementSpeed = 0.35;
+    private double privateSpace = 1.5;
     @SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
 
@@ -39,6 +42,29 @@ public class HumanNPC extends NPC {
     // For NPC movement
     public void moveNPC(double x, double y, double z){
     	this.mcEntity.c(x, y, z);
+    }
+    
+    public void moveNPCTowardsPlayer(Player p){
+    	double xDiff = p.getLocation().getX() - this.mcEntity.locX;
+    	double zDiff = p.getLocation().getZ() - this.mcEntity.locZ;
+    	double length = Math.sqrt(xDiff*xDiff+zDiff*zDiff);
+    	xDiff = (xDiff / length) * movementSpeed;
+    	zDiff = (zDiff / length) * movementSpeed;
+    	if(length > privateSpace){
+    		double prevX = this.mcEntity.locX;
+    		double prevZ = this.mcEntity.locZ;
+    		this.moveNPC(xDiff, 0, zDiff);
+    		double xDiff2 = this.mcEntity.locX - prevX;
+    		double zDiff2 = this.mcEntity.locZ - prevZ;
+    		if(Math.abs(xDiff2 - xDiff) > 0.01 || Math.abs(zDiff2 - zDiff) > 0.01){
+    			this.jumpNPC();
+    		}
+    	}
+    }
+    
+    public void jumpNPC(){
+    	if(fallingSpeed == 0.0)
+    		fallingSpeed = 0.59;
     }
     
     public void applyGravity(){
