@@ -12,6 +12,8 @@ import com.fullwall.Citizens.Citizens;
 public class HumanNPC extends NPC {
 
     private CraftNPC mcEntity;
+    private double fallingSpeed = 0.0;
+    private double GravityPerSecond = 9.81;
     @SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
 
@@ -37,6 +39,15 @@ public class HumanNPC extends NPC {
     // For NPC movement
     public void moveNPC(double x, double y, double z){
     	this.mcEntity.c(x, y, z);
+    }
+    
+    public void applyGravity(){
+    	fallingSpeed -= GravityPerSecond / 100;
+    	double prevY = this.mcEntity.locY;
+    	this.mcEntity.c(0, fallingSpeed, 0);
+    	double diff = this.mcEntity.locY - prevY;
+    	if(diff - fallingSpeed > 0.01)
+    		fallingSpeed = 0.0;
     }
 
     public void attackLivingEntity(LivingEntity ent) {

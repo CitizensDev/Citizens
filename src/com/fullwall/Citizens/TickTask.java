@@ -55,6 +55,11 @@ public class TickTask implements Runnable {
 				}
 			}
 		}
+		// Obviously outside the player for loop, otherwise gravity would be applied more then once per tick.
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList().entrySet()) {
+			HumanNPC NPC = entry.getValue();
+			NPC.applyGravity();
+		}
 	}
 
 	private boolean checkLocation(Location loc, Location ploc) {
