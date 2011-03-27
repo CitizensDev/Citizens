@@ -1,6 +1,5 @@
 package com.fullwall.Citizens.Listeners;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 

@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nijiko.coelho.iConomy.iConomy;
 
 import com.fullwall.Citizens.CommandExecutors.BasicNPCCommandExecutor;
+import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
@@ -40,8 +41,8 @@ public class Citizens extends JavaPlugin {
 	public static String NPCColour = "§f";
 	public static String chatFormat = "[%name%]: ";
 	public static String buildNumber = "2";
-	public static boolean convertUnderscores = false;
-	public static String convertToSpaceChar = ",";
+	public static boolean convertSlashes = false;
+	public static String convertToSpaceChar = "/";
 
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static boolean defaultTalkWhenClose = false;
@@ -83,7 +84,7 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(this, range), 5, delay);
 
-		log.info("[" + pdfFile.getName() + "]: loaded "
+		log.info("[" + pdfFile.getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
@@ -165,8 +166,9 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupVariables() {
-		if (!PropertyPool.settings.keyExists("underscores-to-spaces"))
-			PropertyPool.settings.setBoolean("underscores-to-spaces", true);
+		EconomyHandler.setUpVariables();
+		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
+			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
 		if (!PropertyPool.settings.keyExists("default-enable-following"))
 			PropertyPool.settings.setBoolean("default-enable-following", true);
 		if (!PropertyPool.settings.keyExists("default-talk-when-close"))
@@ -183,15 +185,13 @@ public class Citizens extends JavaPlugin {
 		defaultTalkWhenClose = PropertyPool.settings
 				.getBoolean("default-talk-when-close");
 		chatFormat = PropertyPool.settings.getString("chat-format");
-		convertUnderscores = PropertyPool.settings
-				.getBoolean("underscores-to-spaces");
+		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
 	}
 
 	private void setupNPCs() {
 		String[] list = PropertyPool.locations.getString("list").split(",");
 		if (list.length > 0 && list[0] != "") {
 			for (String name : list) {
-
 				// Conversion from old to new save format:
 				if (name.split("_", 2).length == 1
 						&& !name.split("_", 2)[0].isEmpty()) {
@@ -229,6 +229,8 @@ public class Citizens extends JavaPlugin {
 					if (text != null)
 						handler.setNPCText(Integer.valueOf(name.split("_")[0]),
 								text);
+				} else {
+					PropertyPool.deleteNameFromList(name);
 				}
 			}
 		}

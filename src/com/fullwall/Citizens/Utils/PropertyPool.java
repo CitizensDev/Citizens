@@ -133,15 +133,15 @@ public class PropertyPool {
 	}
 
 	public void removeFromFiles(int UID) {
-		PropertyPool.colours.removeKey(UID);
-		PropertyPool.items.removeKey(UID);
-		PropertyPool.locations.removeKey(UID);
+		colours.removeKey(UID);
+		items.removeKey(UID);
+		locations.removeKey(UID);
 		HumanNPC NPC = NPCManager.getNPC(UID);
-		PropertyPool.locations.setString(
+		locations.setString(
 				"list",
-				PropertyPool.locations.getString("list").replace(
+				locations.getString("list").replace(
 						"" + UID + "_" + NPC.getName() + ",", ""));
-		PropertyPool.texts.removeKey(UID);
+		texts.removeKey(UID);
 		NPCManager.BasicNPCTexts.remove(UID);
 	}
 
@@ -218,8 +218,10 @@ public class PropertyPool {
 
 	public static void changeName(int UID, String changeFrom, String changeTo) {
 		// IDs Remain the same, no need for this.
-		PropertyPool.locations.setString("list", PropertyPool.locations
-				.getString("list").replace((UID + "_" + changeFrom + ","), ""));
+		locations.setString(
+				"list",
+				locations.getString("list").replace(
+						(UID + "_" + changeFrom + ","), ""));
 		// ArrayList<String> texts = PropertyPool.getText(UID);
 		// String colour = PropertyPool.getColour(UID);
 		// ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
@@ -230,5 +232,10 @@ public class PropertyPool {
 
 	public static boolean checkiConomyEnabled() {
 		return economy.getBoolean("use-iconomy");
+	}
+
+	public static void deleteNameFromList(String name) {
+		locations.setString("list",
+				locations.getString("list").replace(name + ",", ""));
 	}
 }

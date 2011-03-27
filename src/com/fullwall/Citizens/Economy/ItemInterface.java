@@ -17,7 +17,16 @@ public class ItemInterface {
 		int currencyID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-item-currency-id");
-		return player.getInventory().contains(currencyID, price);
+		int current = 0;
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i.getTypeId() == currencyID) {
+				current += i.getAmount();
+				if (current > price) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static int pay(Player player, Operation op) {

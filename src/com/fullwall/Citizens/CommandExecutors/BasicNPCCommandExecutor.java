@@ -36,11 +36,6 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
-		String debugAdd = "";
-		for(int i = 0; i < args.length; i++){
-			debugAdd += args[i];
-		}
-		Citizens.log.info("Command Debug: " + debugAdd + " : " + commandLabel);
 		if (args.length >= 2 && args[0].equals("create")) {
 			if (sender instanceof Player) {
 				if (hasPermission("citizens.basic.create", sender)) {
@@ -181,7 +176,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		} else if (args.length >= 1 && args[0].equals("tp")) {
 			Player p = null;
 			if (sender instanceof Player) {
-				if (hasPermission("citizens.tp", sender)) {
+				if (hasPermission("citizens.general.tp", sender)) {
 					if (validateSelected((Player) sender)) {
 						p = (Player) sender;
 						HumanNPC npc = NPCManager.getNPC(NPCManager.NPCSelected
@@ -391,11 +386,17 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		plugin.handler.setNPCText(UID, texts);
 		plugin.handler.setOwner(UID, p.getName());
 		p.sendMessage(ChatColor.GOLD + "The NPC " + args[1] + " was born!");
-		int paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE, p);
-		if (paid > 0)
-			p.sendMessage(ChatColor.GREEN + "Paid " + paid + " "
-					+ EconomyHandler.getPaymentType(Operation.BASIC_NPC_CREATE)
-					+ " for " + args[1] + ".");
+		if (EconomyHandler.useEconomy()) {
+			int paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE, p);
+			if (paid > 0)
+				p.sendMessage(ChatColor.GREEN
+						+ "Paid "
+						+ paid
+						+ " "
+						+ EconomyHandler
+								.getPaymentType(Operation.BASIC_NPC_CREATE)
+						+ " for " + args[1] + ".");
+		}
 	}
 
 	private void moveNPC(CommandSender sender, String name, int UID) {

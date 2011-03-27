@@ -54,7 +54,7 @@ public class NPCManager {
 		String npcName = name;
 		if (!colour.isEmpty() && !colour.equals("§f"))
 			npcName = colour + name;
-		if (Citizens.convertUnderscores == true) {
+		if (Citizens.convertSlashes == true) {
 			String[] brokenName = npcName.split(Citizens.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0)
