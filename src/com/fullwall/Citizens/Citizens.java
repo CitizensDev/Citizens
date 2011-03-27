@@ -253,6 +253,21 @@ public class Citizens extends JavaPlugin {
 		} else
 			return true;
 	}
+	
+	public boolean canSelect(Integer type) {
+		String[] items = PropertyPool.settings.getString("select-item")
+				.split(",");
+		ArrayList<String> item = new ArrayList<String>();
+		for (String s : items) {
+			item.add(s);
+		}
+		if (item.contains("" + type) || item.contains("*"))
+			return true;
+		else if (type == 0 && item.contains("0"))
+			return true;
+		else
+			return false;
+	}
 
 	public boolean validateUID(int UID) {
 		if (NPCManager.GlobalUIDs.containsKey(UID)) {

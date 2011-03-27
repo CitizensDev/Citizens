@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -48,7 +49,6 @@ public class EntityListen extends EntityListener {
 		if (npc != null && event.getTarget() instanceof Player) {
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
-				NPCManager.NPCSelected.put(p.getName(), npc.getUID());
 				// Citizens.log.info(p.getName()+" selected NPC " +
 				// npc.getName() + " : " + npc.getUID());
 				CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
@@ -56,7 +56,12 @@ public class EntityListen extends EntityListener {
 								plugin), npc, Reason.RIGHT_CLICK,
 						(Player) e.getTarget());
 				plugin.getServer().getPluginManager().callEvent(ev);
+				if(plugin.canSelect(p.getItemInHand().getTypeId()) == true){
+					NPCManager.NPCSelected.put(p.getName(), npc.getUID());
+					p.sendMessage(ChatColor.GREEN + "You selected NPC [" + npc.getName() + "], ID [" + npc.getUID() + "]");
+				}
 			} else if (e.getNpcReason() == NpcTargetReason.CLOSEST_PLAYER) {
+				
 			}
 		}
 	}
