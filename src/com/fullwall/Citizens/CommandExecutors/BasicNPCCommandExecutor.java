@@ -508,6 +508,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	private void copyNPC(HumanNPC NPC, Player p) {
 		ArrayList<String> texts = PropertyPool.getText(NPC.getUID());
 		String colour = PropertyPool.getColour(NPC.getUID());
+		String owner = PropertyPool.getNPCOwner(NPC.getUID());
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(NPC.getUID());
 		boolean lookatplayers = PropertyPool.getNPCLookWhenClose(NPC.getUID());
 		boolean talkwhenclose = PropertyPool.getNPCTalkWhenClose(NPC.getUID());
@@ -518,6 +519,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		PropertyPool.saveItems(newUID, items);
 		PropertyPool.saveLookWhenClose(newUID, lookatplayers);
 		PropertyPool.saveTalkWhenClose(newUID, talkwhenclose);
+		PropertyPool.setNPCOwner(newUID, owner);
 		NPCDataManager.addItems(newNPC, items);
 	}
 
