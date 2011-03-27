@@ -31,6 +31,8 @@ public class PropertyPool {
 			"plugins/Citizens/Basic NPCs/Citizens.lookat");
 	public static final PropertyHandler economy = new PropertyHandler(
 			"plugins/Citizens/Citizens.economy");
+	public static final PropertyHandler itemlookups = new PropertyHandler(
+			"plugins/Citizens/Citizens.itemlookup");
 
 	public static void saveLocation(String name, Location loc, int UID) {
 		String location = loc.getWorld().getName() + "," + loc.getX() + ","

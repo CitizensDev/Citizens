@@ -1,0 +1,17 @@
+#If set to false, all NPCs will be free of charge
+use-economy=false
+
+#If set to true, Nijikokun's iConomy plugin will be used for economy handling.
+use-iconomy=false
+
+#Settings are in groups of two: one for item prices, one for iConomy prices.
+#The iConomy prices have "-iconomy" on the end, and items have "-item".
+
+#The item-currency-id property states what type of item id should be used if not
+#using iConomy. 
+
+#iConomy prices check the user's balance for the amount, the item prices #check if the #player has enough of the specified item using item-currency-id in their inventory.
+
+basic-npc-create-item-currency-id=1
+basic-npc-create-item=100
+basic-npc-create-iconomy=100

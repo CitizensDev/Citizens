@@ -1,0 +1,14 @@
+#Minecraft Properties File
+#Sun Mar 27 17:13:45 CEST 2011
+default-text=Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me\!;I'm bored.;
+npc-colour=\u00A7f
+chat-format=[%name%]\: 
+default-talk-when-close=false
+select-item=280,
+use-npc-colours=true
+tick-delay=1
+items=340,
+look-range=4
+default-enable-following=true
+slashes-to-spaces=true
+item-list-on=true

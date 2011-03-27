@@ -74,6 +74,7 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void setItemInHand(int UID, String material) {
 		Material mat = StringUtils.parseMaterial(material);
+		if(mat == null) mat = StringUtils.parseMaterial(PropertyPool.itemlookups.getString(material));
 		HumanNPC NPC = super.getNPC(UID);
 		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
 		int olditem = items.get(0);
@@ -88,6 +89,7 @@ public class BasicNPCHandler extends NPCManager {
 	public void setItemInSlot(Player p, String[] args) {
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		Material mat = StringUtils.parseMaterial(args[1]);
+		if(mat == null) mat = StringUtils.parseMaterial(PropertyPool.itemlookups.getString(args[1]));
 		if(mat == null){
 			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
 			return;
