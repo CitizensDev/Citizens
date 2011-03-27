@@ -139,7 +139,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			} else
 				sender.sendMessage(noPermissionsMessage);
 			return true;
-		} else if (args.length == 2 && (args[0].equals("reset"))) {
+		} else if (args.length == 1 && (args[0].equals("reset"))) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (validateSelected((Player) sender)) {
 					resetText(args, sender);
@@ -498,7 +498,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	private void setItemInHand(CommandSender sender, String[] args) {
 		Player p = (Player) sender;
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
-		plugin.handler.setItemInHand(n.getUID(), args[1]);
+		plugin.handler.setItemInHand(p, n.getUID(), args[1]);
 	}
 
 	private void setArmor(CommandSender sender, String[] args) {
