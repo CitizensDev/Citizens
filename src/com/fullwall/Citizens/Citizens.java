@@ -53,6 +53,9 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
+        BasicNPCCommandExecutor executor = new BasicNPCCommandExecutor(this);
+		this.getCommand("npc").setExecutor(executor);
+		this.getCommand("citizens").setExecutor(executor);
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGED, l, Event.Priority.Normal,
 				this);
@@ -73,10 +76,6 @@ public class Citizens extends JavaPlugin {
 		setupVariables();
 		setupNPCs();
 		setupHelp();
-
-		BasicNPCCommandExecutor executor = new BasicNPCCommandExecutor(this);
-		this.getCommand("npc").setExecutor(executor);
-		this.getCommand("citizens").setExecutor(executor);
 
 		int delay = PropertyPool.settings.getInt("tick-delay");
 		double range = PropertyPool.settings.getDouble("look-range");
