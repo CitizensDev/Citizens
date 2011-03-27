@@ -41,6 +41,7 @@ public class Citizens extends JavaPlugin {
 	public static String chatFormat = "[%name%]: ";
 	public static String buildNumber = "2";
 	public static boolean convertUnderscores = false;
+	public static String convertToSpaceChar = ",";
 
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static boolean defaultTalkWhenClose = false;

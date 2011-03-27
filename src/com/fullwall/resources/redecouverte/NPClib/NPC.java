@@ -30,7 +30,7 @@ public class NPC {
     		String[] brokenName = this.name.split(" ");
     		for(int i = 0; i < brokenName.length; i++){
 				if(i == 0) returnName = brokenName[i];
-				else returnName += "_" + brokenName[i];
+				else returnName += Citizens.convertToSpaceChar + brokenName[i];
 			}return ChatColor.stripColor(returnName);
     	}
         return ChatColor.stripColor(this.name);
