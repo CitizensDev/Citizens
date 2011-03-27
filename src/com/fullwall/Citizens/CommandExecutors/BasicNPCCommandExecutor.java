@@ -15,6 +15,7 @@ import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.NPCManager.NPCType;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -111,7 +112,8 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 			if (hasPermission("citizens.general.colour", sender)
 					|| hasPermission("citizens.general.color", sender)) {
 				if (validateSelected((Player) sender)) {
-					setColour(args, sender);
+					Player p = (Player) sender;
+					setColour(args, p);
 				} else {
 					sender.sendMessage(mustHaveNPCSelectedMessage);
 				}
@@ -435,12 +437,11 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		return;
 	}
 
-	private void setColour(String[] args, CommandSender sender) {
+	private void setColour(String[] args, Player p) {
 		if (args[1].indexOf('&') != 0) {
-			sender.sendMessage(ChatColor.GRAY + "Use an & to specify "
+			p.sendMessage(ChatColor.GRAY + "Use an & to specify "
 					+ args[0] + ".");
 		} else {
-			Player p = (Player) sender;
 			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
 					.getName()));
 			plugin.handler.setColour(n.getUID(), args[1]);
@@ -520,7 +521,10 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		PropertyPool.saveLookWhenClose(newUID, lookatplayers);
 		PropertyPool.saveTalkWhenClose(newUID, talkwhenclose);
 		PropertyPool.setNPCOwner(newUID, owner);
-		NPCDataManager.addItems(newNPC, items);
+		//NPCDataManager.addItems(newNPC, items);
+		String name = newNPC.getName();
+		NPCManager.removeNPCForRespawn(newUID);
+		plugin.handler.spawnExistingNPC(name, newUID);
 	}
 
 	private void changeTalkWhenClose(Player p, String bool) {
