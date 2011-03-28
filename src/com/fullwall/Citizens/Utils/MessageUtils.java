@@ -19,7 +19,7 @@ public class MessageUtils {
 	}
 
 	public static void sendText(HumanNPC npc, Entity entity, Citizens plugin) {
-		String name = StringUtils.stripColour(npc.getName());
+		String name = StringUtils.stripColour(npc.getSpacedName());
 		int UID = npc.getUID();
 		ArrayList<String> array = NPCManager.getBasicNPCText(UID);
 		String text = "";
