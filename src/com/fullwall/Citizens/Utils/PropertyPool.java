@@ -188,6 +188,25 @@ public class PropertyPool {
 			return loc;
 		}
 	}
+	
+
+	
+	public static Location getActualLocationFromName(int UID) {
+		String[] values = PropertyPool.locations.getString(UID).split(",");
+		if (values.length != 6) {
+			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"
+					+ values.length);
+			return null;
+		} else {
+			Location loc = new Location(Citizens.plugin.getServer().getWorld(
+					values[0]), NPCManager.getNPC(UID).getX(),
+					NPCManager.getNPC(UID).getY(),
+					NPCManager.getNPC(UID).getZ(), 
+					Float.parseFloat(values[4]),
+					Float.parseFloat(values[5]));
+			return loc;
+		}
+	}
 
 	public static Location getLocationFromID(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");

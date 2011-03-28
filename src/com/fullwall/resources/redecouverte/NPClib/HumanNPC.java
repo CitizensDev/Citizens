@@ -69,7 +69,7 @@ public class HumanNPC extends NPC {
 	public void updateMovement() {
 		if (this.hasTarget == true || this.targetPlayer != null)
 			this.moveNPCTowardsTarget();
-		this.applyGravity();
+		//this.applyGravity();
 	}
 
 	public void moveNPCTowardsTarget() {
