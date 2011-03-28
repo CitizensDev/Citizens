@@ -20,13 +20,13 @@ public class BasicNPCHandler extends NPCManager {
 	public int spawnNPC(String name, Location loc) {
 		return super.registerBasicNPC(name, loc, NPCType.BASIC);
 	}
-	
+
 	public void spawnExistingNPC(String name, int UID) {
 		super.registerBasicNPC(name, NPCType.BASIC, UID);
 	}
 
 	public void spawnNPC(String name) {
-		//super.registerBasicNPC(name, NPCType.BASIC);
+		// super.registerBasicNPC(name, NPCType.BASIC);
 	}
 
 	public void setNPCText(int UID, ArrayList<String> text) {
@@ -34,12 +34,12 @@ public class BasicNPCHandler extends NPCManager {
 		super.setBasicNPCText(UID, text);
 		PropertyPool.saveText(UID, text);
 	}
-	
-	public void setOwner(int UID, String name){
-		PropertyPool.setNPCOwner(UID,name);
+
+	public void setOwner(int UID, String name) {
+		PropertyPool.setNPCOwner(UID, name);
 	}
-	
-	public String getOwner(int UID){
+
+	public String getOwner(int UID) {
 		return PropertyPool.getNPCOwner(UID);
 	}
 
@@ -52,7 +52,7 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void setColour(int UID, String colourChange) {
 		HumanNPC n = super.getNPC(UID);
-		PropertyPool.saveColour(UID, colourChange.replace("&","§"));
+		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
 		super.removeNPCForRespawn(UID);
 		Citizens.log.info("SetColor Name: " + n.getName());
 		super.registerBasicNPC(n.getName(), NPCType.BASIC, UID);
@@ -60,7 +60,8 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void addNPCText(int UID, String text) {
 		ArrayList<String> texts = super.getBasicNPCText(UID);
-		if(texts == null) texts = new ArrayList<String>();
+		if (texts == null)
+			texts = new ArrayList<String>();
 		texts.add(text);
 		texts = StringUtils.colourise(texts);
 		super.setBasicNPCText(UID, texts);
@@ -74,8 +75,11 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void setItemInHand(Player p, int UID, String material) {
 		Material mat = StringUtils.parseMaterial(material);
-		if(mat == null && !PropertyPool.itemlookups.getString(material).isEmpty()) mat = StringUtils.parseMaterial(PropertyPool.itemlookups.getString(material));
-		if(mat == null){
+		if (mat == null
+				&& !PropertyPool.itemlookups.getString(material).isEmpty())
+			mat = StringUtils.parseMaterial(PropertyPool.itemlookups
+					.getString(material));
+		if (mat == null) {
 			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
 			return;
 		}
@@ -84,7 +88,7 @@ public class BasicNPCHandler extends NPCManager {
 		int olditem = items.get(0);
 		items.set(0, mat.getId());
 		NPCDataManager.addItems(NPC, items);
-		if((olditem != 0 && items.get(0) == 0)){
+		if ((olditem != 0 && items.get(0) == 0)) {
 			super.removeNPCForRespawn(NPC.getUID());
 			super.registerBasicNPC(NPC.getName(), NPC.getType(), NPC.getUID());
 		}
@@ -93,8 +97,11 @@ public class BasicNPCHandler extends NPCManager {
 	public void setItemInSlot(Player p, String[] args) {
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		Material mat = StringUtils.parseMaterial(args[1]);
-		if(mat == null && !PropertyPool.itemlookups.getString(args[1]).isEmpty()) mat = StringUtils.parseMaterial(PropertyPool.itemlookups.getString(args[1]));
-		if(mat == null){
+		if (mat == null
+				&& !PropertyPool.itemlookups.getString(args[1]).isEmpty())
+			mat = StringUtils.parseMaterial(PropertyPool.itemlookups
+					.getString(args[1]));
+		if (mat == null) {
 			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
 			return;
 		}
@@ -111,7 +118,7 @@ public class BasicNPCHandler extends NPCManager {
 		}
 		PropertyPool.saveItems(n.getUID(), items);
 		NPCDataManager.addItems(n, items);
-		if((oldhelmet != 0 && items.get(1) == 0)){
+		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			super.removeNPCForRespawn(n.getUID());
 			super.registerBasicNPC(n.getName(), n.getType(), n.getUID());
 		}
@@ -119,20 +126,20 @@ public class BasicNPCHandler extends NPCManager {
 
 	public void removeNPC(int UID) {
 		super.removeNPC(UID);
-		if(PropertyPool.locations.getString("list").isEmpty()){
+		if (PropertyPool.locations.getString("list").isEmpty()) {
 			PropertyPool.locations.removeKey("list");
 			PropertyPool.locations.setInt("currentID", 0);
 		}
 	}
 
 	public void removeAllNPCs() {
-		for (Entry<Integer, String> i : super.BasicUIDs.entrySet()) {
+		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
 			super.removeNPC(i.getKey());
 		}
 	}
 
 	public void despawnAllNPCs() {
-		for (Entry<Integer, String> i : super.BasicUIDs.entrySet()) {
+		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
 			super.despawnNPC(i.getKey());
 		}
 	}

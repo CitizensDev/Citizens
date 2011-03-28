@@ -21,12 +21,8 @@ import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 public class NPCManager {
 
 	private Citizens plugin;
-	public ConcurrentHashMap<Integer, String> BasicUIDs = new ConcurrentHashMap<Integer, String>();
-	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
-	private ConcurrentHashMap<Integer, String> TraderUIDs = new ConcurrentHashMap<Integer, String>();
-	private ConcurrentHashMap<Integer, String> GuardUIDs = new ConcurrentHashMap<Integer, String>();
-	private ConcurrentHashMap<Integer, String> QuesterUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
+	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
 	public static ConcurrentHashMap<String, Integer> NPCSelected = new ConcurrentHashMap<String, Integer>();
 	public Random ran = new Random(
 			new Random(new Random(new Random(new Random(System
@@ -72,7 +68,7 @@ public class NPCManager {
 
 		PropertyPool.getSetText(UID);
 		saveToFile(name, loc, colour, items, UID);
-		registerUID(type, UID, name);
+		registerUID(UID, name);
 		npc.setType(type);
 		list.put(UID, npc);
 	}
@@ -133,18 +129,12 @@ public class NPCManager {
 	}
 
 	public void despawnNPC(int UID) {
-		BasicUIDs.remove(UID);
-		TraderUIDs.remove(UID);
-		GuardUIDs.remove(UID);
 		GlobalUIDs.remove(UID);
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
 	}
 
 	public void removeNPC(int UID) {
-		BasicUIDs.remove(UID);
-		TraderUIDs.remove(UID);
-		GuardUIDs.remove(UID);
 		GlobalUIDs.remove(UID);
 		String actualName = NPCManager.getNPC(UID).getName();
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
@@ -167,25 +157,10 @@ public class NPCManager {
 	}
 
 	public ConcurrentHashMap<Integer, String> getBasicUIDs() {
-		return BasicUIDs;
+		return GlobalUIDs;
 	}
 
-	private void registerUID(NPCType type, int UID, String name) {
-		switch (type) {
-		case BASIC:
-			BasicUIDs.put(UID, name);
-			break;
-		case TRADER:
-			TraderUIDs.put(UID, name);
-			break;
-		case GUARD:
-			GuardUIDs.put(UID, name);
-			break;
-		case QUEST:
-			QuesterUIDs.put(UID, name);
-			break;
-		case HEALER:
-		}
+	private void registerUID(int UID, String name) {
 		GlobalUIDs.put(UID, name);
 	}
 
@@ -195,28 +170,9 @@ public class NPCManager {
 		String UID = "";
 		while (notFound != true) {
 			UID = "" + ran.nextInt();
-			switch (type) {
-			case BASIC:
-				if (!BasicUIDs.containsKey(UID)) {
-					notFound = true;
-					break;
-				}
-			case TRADER:
-				if (!GuardUIDs.containsKey(UID)) {
-					notFound = true;
-					break;
-				}
-			case GUARD:
-				if (!GuardUIDs.containsKey(UID)) {
-					notFound = true;
-					break;
-				}
-			case QUEST:
-				if (!QuesterUIDs.containsKey(UID)) {
-					notFound = true;
-					break;
-				}
-			case HEALER:
+			if (!GlobalUIDs.containsKey(UID)) {
+				notFound = true;
+				break;
 			}
 		}
 		return UID;
