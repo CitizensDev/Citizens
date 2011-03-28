@@ -2,6 +2,8 @@ package com.fullwall.Citizens.Listeners;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -15,7 +17,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class WorldListen extends WorldListener {
 
 	private Citizens plugin;
-	private HashMap<NPCLocation, String> toRespawn = new HashMap<NPCLocation, String>();
+	private ConcurrentHashMap<NPCLocation, String> toRespawn = new ConcurrentHashMap<NPCLocation, String>();
 
 	public WorldListen(Citizens plugin) {
 		this.plugin = plugin;
@@ -42,8 +44,8 @@ public class WorldListen extends WorldListener {
 					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
 					.equals(e.getChunk())) {
 				plugin.handler.spawnNPC(i.getValue(), i.getKey().getLocation());
+				toRespawn.remove(i.getKey());
 			}
 		}
 	}
-
 }
