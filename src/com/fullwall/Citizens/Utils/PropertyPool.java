@@ -188,22 +188,18 @@ public class PropertyPool {
 			return loc;
 		}
 	}
-	
 
-	
 	public static Location getActualLocationFromName(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
 		if (values.length != 6) {
-			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"
+			log.info("getLocationFromName didn't have 6 values in values variable! Length:"
 					+ values.length);
 			return null;
 		} else {
 			Location loc = new Location(Citizens.plugin.getServer().getWorld(
-					values[0]), NPCManager.getNPC(UID).getX(),
-					NPCManager.getNPC(UID).getY(),
-					NPCManager.getNPC(UID).getZ(), 
-					Float.parseFloat(values[4]),
-					Float.parseFloat(values[5]));
+					values[0]), NPCManager.getNPC(UID).getX(), NPCManager
+					.getNPC(UID).getY(), NPCManager.getNPC(UID).getZ(),
+					Float.parseFloat(values[4]), Float.parseFloat(values[5]));
 			return loc;
 		}
 	}
@@ -211,7 +207,7 @@ public class PropertyPool {
 	public static Location getLocationFromID(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
 		if (values.length != 6) {
-			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"
+			log.info("getLocationFromName didn't have 6 values in values variable! Length:"
 					+ values.length);
 			return null;
 		} else {
@@ -258,5 +254,18 @@ public class PropertyPool {
 	public static void deleteNameFromList(String name) {
 		locations.setString("list",
 				locations.getString("list").replace(name + ",", ""));
+	}
+
+	public static void saveFiles() {
+		settings.save();
+		texts.save();
+		locations.save();
+		colours.save();
+		owners.save();
+		items.save();
+		talkWhenClose.save();
+		lookat.save();
+		economy.save();
+		itemlookups.save();
 	}
 }

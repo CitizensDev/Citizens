@@ -40,7 +40,7 @@ public class Citizens extends JavaPlugin {
 	public static boolean useNPCColours = true;
 	public static String NPCColour = "§f";
 	public static String chatFormat = "[%name%]: ";
-	public static String buildNumber = "2";
+	public static String buildNumber = "4";
 	public static boolean convertSlashes = false;
 	public static String convertToSpaceChar = "/";
 
@@ -53,7 +53,7 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
-        BasicNPCCommandExecutor executor = new BasicNPCCommandExecutor(this);
+		BasicNPCCommandExecutor executor = new BasicNPCCommandExecutor(this);
 		this.getCommand("npc").setExecutor(executor);
 		this.getCommand("citizens").setExecutor(executor);
 		PluginManager pm = getServer().getPluginManager();
@@ -86,7 +86,7 @@ public class Citizens extends JavaPlugin {
 		log.info("[" + pdfFile.getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
+				+ pdfFile.getVersion() + "_" + buildNumber + "c] (" + codename
 				+ ") loaded ");
 	}
 
@@ -94,13 +94,9 @@ public class Citizens extends JavaPlugin {
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		handler.despawnAllNPCs();
-		PropertyPool.locations.save();
-		PropertyPool.texts.save();
-		PropertyPool.items.save();
-		PropertyPool.colours.save();
-		PropertyPool.settings.save();
+		PropertyPool.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "_" + buildNumber + "] (" + codename
+				+ pdfFile.getVersion() + "_" + buildNumber + "c] (" + codename
 				+ ") disabled");
 	}
 
@@ -252,10 +248,10 @@ public class Citizens extends JavaPlugin {
 		} else
 			return true;
 	}
-	
+
 	public boolean canSelect(Integer type) {
-		String[] items = PropertyPool.settings.getString("select-item")
-				.split(",");
+		String[] items = PropertyPool.settings.getString("select-item").split(
+				",");
 		ArrayList<String> item = new ArrayList<String>();
 		for (String s : items) {
 			item.add(s);

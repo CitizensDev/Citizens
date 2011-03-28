@@ -10,12 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.NPCDataManager;
 import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
-import com.fullwall.Citizens.NPCManager.NPCType;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
