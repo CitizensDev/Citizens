@@ -129,4 +129,15 @@ public class HumanNPC extends NPC {
 		this.mcEntity.animateArmSwing();
 	}
 
+	public double getX(){
+		return this.mcEntity.locX;
+	}
+
+	public double getY(){
+		return this.mcEntity.locY;
+	}
+
+	public double getZ(){
+		return this.mcEntity.locZ;
+	}
 }
