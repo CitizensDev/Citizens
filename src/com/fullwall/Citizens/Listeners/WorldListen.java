@@ -1,8 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
-import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -24,7 +22,19 @@ public class WorldListen extends WorldListener {
 	}
 
 	@Override
-	public void onChunkUnloaded(ChunkUnloadEvent e) {
+	public void onChunkLoad(ChunkLoadEvent e) {
+		for (Entry<NPCLocation, String> i : toRespawn.entrySet()) {
+			if (e.getChunk().getWorld()
+					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
+					.equals(e.getChunk())) {
+				plugin.handler.spawnNPC(i.getValue(), i.getKey().getLocation());
+				toRespawn.remove(i.getKey());
+			}
+		}
+	}
+
+	@Override
+	public void onChunkUnload(ChunkUnloadEvent e) {
 		for (Entry<Integer, String> i : NPCManager.GlobalUIDs.entrySet()) {
 			HumanNPC npc = NPCManager.getNPC(i.getKey());
 			if (npc != null
@@ -34,17 +44,6 @@ public class WorldListen extends WorldListener {
 						.getLocation());
 				toRespawn.put(loc, i.getValue());
 				plugin.handler.despawnNPC(i.getKey());
-			}
-		}
-	}
-
-	public void onChunkLoaded(ChunkLoadEvent e) {
-		for (Entry<NPCLocation, String> i : toRespawn.entrySet()) {
-			if (e.getChunk().getWorld()
-					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
-					.equals(e.getChunk())) {
-				plugin.handler.spawnNPC(i.getValue(), i.getKey().getLocation());
-				toRespawn.remove(i.getKey());
 			}
 		}
 	}

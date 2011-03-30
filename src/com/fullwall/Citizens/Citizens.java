@@ -40,7 +40,7 @@ public class Citizens extends JavaPlugin {
 	public static boolean useNPCColours = true;
 	public static String NPCColour = "§f";
 	public static String chatFormat = "[%name%]: ";
-	public static String buildNumber = "4";
+	public static String buildNumber = "5";
 	public static boolean convertSlashes = false;
 	public static String convertToSpaceChar = "/";
 
@@ -57,15 +57,14 @@ public class Citizens extends JavaPlugin {
 		this.getCommand("npc").setExecutor(executor);
 		this.getCommand("citizens").setExecutor(executor);
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.ENTITY_DAMAGED, l, Event.Priority.Normal,
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, l, Event.Priority.Normal,
 				this);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, l, Event.Priority.Normal,
 				this);
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, cl, Event.Priority.Normal,
 				this);
-		pm.registerEvent(Event.Type.CHUNK_LOADED, wl, Event.Priority.Normal,
-				this);
-		pm.registerEvent(Event.Type.CHUNK_UNLOADED, wl, Event.Priority.Normal,
+		pm.registerEvent(Event.Type.CHUNK_LOAD, wl, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.CHUNK_UNLOAD, wl, Event.Priority.Normal,
 				this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE,
 				pl, Event.Priority.Monitor, this);
@@ -86,7 +85,7 @@ public class Citizens extends JavaPlugin {
 		log.info("[" + pdfFile.getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "_" + buildNumber + "c] (" + codename
+				+ pdfFile.getVersion() + "d_" + buildNumber + "] (" + codename
 				+ ") loaded ");
 	}
 
@@ -96,7 +95,7 @@ public class Citizens extends JavaPlugin {
 		handler.despawnAllNPCs();
 		PropertyPool.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "_" + buildNumber + "c] (" + codename
+				+ pdfFile.getVersion() + "d_" + buildNumber + "] (" + codename
 				+ ") disabled");
 	}
 

@@ -181,7 +181,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 						p = (Player) sender;
 						HumanNPC npc = NPCManager.getNPC(NPCManager.NPCSelected
 								.get(p.getName()));
-						p.teleportTo((PropertyPool.getLocationFromName(npc
+						p.teleport((PropertyPool.getLocationFromName(npc
 								.getUID())));
 						sender.sendMessage("Teleported you to the NPC named "
 								+ npc.getName() + ". Enjoy!");
@@ -437,8 +437,8 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 
 	private void setColour(String[] args, Player p) {
 		if (args[1].indexOf('&') != 0) {
-			p.sendMessage(ChatColor.GRAY + "Use an & to specify "
-					+ args[0] + ".");
+			p.sendMessage(ChatColor.GRAY + "Use an & to specify " + args[0]
+					+ ".");
 		} else {
 			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
 					.getName()));
@@ -519,7 +519,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 		PropertyPool.saveLookWhenClose(newUID, lookatplayers);
 		PropertyPool.saveTalkWhenClose(newUID, talkwhenclose);
 		PropertyPool.setNPCOwner(newUID, owner);
-		//NPCDataManager.addItems(newNPC, items);
+		// NPCDataManager.addItems(newNPC, items);
 		String name = newNPC.getName();
 		NPCManager.removeNPCForRespawn(newUID);
 		plugin.handler.spawnExistingNPC(name, newUID);

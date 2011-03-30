@@ -34,6 +34,10 @@ public class HumanNPC extends NPC {
 		return (HumanEntity) this.mcEntity.getBukkitEntity();
 	}
 
+	public CraftNPC getMinecraftEntity() {
+		return this.mcEntity;
+	}
+
 	protected CraftNPC getMCEntity() {
 		return this.mcEntity;
 	}
@@ -69,7 +73,7 @@ public class HumanNPC extends NPC {
 	public void updateMovement() {
 		if (this.hasTarget == true || this.targetPlayer != null)
 			this.moveNPCTowardsTarget();
-		//this.applyGravity();
+		// this.applyGravity();
 	}
 
 	public void moveNPCTowardsTarget() {
@@ -129,15 +133,15 @@ public class HumanNPC extends NPC {
 		this.mcEntity.animateArmSwing();
 	}
 
-	public double getX(){
+	public double getX() {
 		return this.mcEntity.locX;
 	}
 
-	public double getY(){
+	public double getY() {
 		return this.mcEntity.locY;
 	}
 
-	public double getZ(){
+	public double getZ() {
 		return this.mcEntity.locZ;
 	}
 }

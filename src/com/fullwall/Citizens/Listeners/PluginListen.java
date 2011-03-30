@@ -1,6 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
-import org.bukkit.event.server.PluginEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 
@@ -18,7 +18,7 @@ public class PluginListen extends ServerListener {
 	}
 
 	@Override
-	public void onPluginEnabled(PluginEvent event) {
+	public void onPluginEnable(PluginEnableEvent event) {
 		if (Citizens.economy == null) {
 			Plugin iConomy = (plugin).getServer().getPluginManager()
 					.getPlugin("iConomy");
