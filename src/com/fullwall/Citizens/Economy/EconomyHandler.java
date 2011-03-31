@@ -37,23 +37,32 @@ public class EconomyHandler {
 	}
 
 	public static int pay(Operation op, Player player) {
-		if (iConomyEnabled && useiConomy)
-			return IconomyInterface.pay(player, op);
-		else
-			return ItemInterface.pay(player, op);
+		if (useEconomy) {
+			if (iConomyEnabled && useiConomy)
+				return IconomyInterface.pay(player, op);
+			else
+				return ItemInterface.pay(player, op);
+		} else
+			return 0;
 	}
 
 	public static String getPaymentType(Operation op) {
-		if (iConomyEnabled && useiConomy)
-			return IconomyInterface.getCurrency();
-		else
-			return ItemInterface.getCurrency(op);
+		if (useEconomy) {
+			if (iConomyEnabled && useiConomy)
+				return IconomyInterface.getCurrency();
+			else
+				return ItemInterface.getCurrency(op);
+		} else
+			return "None";
 	}
 
 	public static String getRemainder(Operation op, Player player) {
-		if (iConomyEnabled && useiConomy)
-			return IconomyInterface.getRemainder(op, player);
-		else
-			return ItemInterface.getRemainder(op, player);
+		if (useEconomy) {
+			if (iConomyEnabled && useiConomy)
+				return IconomyInterface.getRemainder(op, player);
+			else
+				return ItemInterface.getRemainder(op, player);
+		} else
+			return "0";
 	}
 }
