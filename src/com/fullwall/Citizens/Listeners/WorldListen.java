@@ -27,7 +27,8 @@ public class WorldListen extends WorldListener {
 			if (e.getChunk().getWorld()
 					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
 					.equals(e.getChunk())) {
-				plugin.handler.spawnNPC(i.getValue(), i.getKey().getLocation());
+				plugin.handler.spawnExistingNPC(i.getValue(), i.getKey()
+						.getUID());
 				toRespawn.remove(i.getKey());
 			}
 		}
@@ -41,7 +42,7 @@ public class WorldListen extends WorldListener {
 					&& npc.getBukkitEntity().getLocation().getBlock()
 							.getChunk().equals(e.getChunk())) {
 				NPCLocation loc = new NPCLocation(plugin, npc.getBukkitEntity()
-						.getLocation());
+						.getLocation(), npc.getUID());
 				toRespawn.put(loc, i.getValue());
 				plugin.handler.despawnNPC(i.getKey());
 			}

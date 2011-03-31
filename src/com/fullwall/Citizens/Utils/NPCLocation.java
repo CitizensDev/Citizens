@@ -13,8 +13,9 @@ public class NPCLocation {
 	private float pitch;
 	private String world;
 	private Citizens plugin;
+	private int UID;
 
-	public NPCLocation(Citizens plugin, Location loc) {
+	public NPCLocation(Citizens plugin, Location loc, int UID) {
 		this.plugin = plugin;
 		this.x = loc.getBlockX();
 		this.y = loc.getBlockY();
@@ -22,6 +23,7 @@ public class NPCLocation {
 		this.pitch = loc.getPitch();
 		this.yaw = loc.getYaw();
 		this.world = loc.getWorld().getName();
+		this.UID = UID;
 	}
 
 	public int getZ() {
@@ -30,6 +32,10 @@ public class NPCLocation {
 
 	public int getX() {
 		return this.x;
+	}
+
+	public int getUID() {
+		return this.UID;
 	}
 
 	public Location getLocation() {

@@ -85,7 +85,7 @@ public class Citizens extends JavaPlugin {
 		log.info("[" + pdfFile.getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "d_" + buildNumber + "] (" + codename
+				+ pdfFile.getVersion() + "e_" + buildNumber + "] (" + codename
 				+ ") loaded ");
 	}
 
@@ -95,7 +95,7 @@ public class Citizens extends JavaPlugin {
 		handler.despawnAllNPCs();
 		PropertyPool.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "d_" + buildNumber + "] (" + codename
+				+ pdfFile.getVersion() + "e_" + buildNumber + "] (" + codename
 				+ ") disabled");
 	}
 

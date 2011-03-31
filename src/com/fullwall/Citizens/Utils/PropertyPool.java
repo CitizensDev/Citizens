@@ -257,7 +257,6 @@ public class PropertyPool {
 	}
 
 	public static void saveFiles() {
-		settings.save();
 		texts.save();
 		locations.save();
 		colours.save();
@@ -265,7 +264,5 @@ public class PropertyPool {
 		items.save();
 		talkWhenClose.save();
 		lookat.save();
-		economy.save();
-		itemlookups.save();
 	}
 }

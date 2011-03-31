@@ -14,6 +14,7 @@ import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -22,6 +23,7 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 	private Citizens plugin;
 	private String noPermissionsMessage = ChatColor.RED
 			+ "You don't have permission to use that command.";
+	@SuppressWarnings("unused")
 	private String notEnoughMoneyMessage = ChatColor.GRAY
 			+ "You don't have enough money to do that.";
 	private String mustBeIngameMessage = "You must use this command ingame";
@@ -44,18 +46,12 @@ public class BasicNPCCommandExecutor implements CommandExecutor {
 											(Player) sender)) {
 						createNPC(args, (Player) sender);
 					} else if (EconomyHandler.useEconomy()) {
-						sender.sendMessage(notEnoughMoneyMessage);
+						sender.sendMessage(MessageUtils.getNoMoneyMessage(
+								Operation.BASIC_NPC_CREATE, args[1],
+								(Player) sender));
 					}
-				} else if (EconomyHandler.useEconomy())
-					sender.sendMessage(noPermissionsMessage
-							+ " You need "
-							+ EconomyHandler
-									.getRemainder(Operation.BASIC_NPC_CREATE,
-											(Player) sender)
-							+ " more "
-							+ EconomyHandler
-									.getPaymentType(Operation.BASIC_NPC_CREATE)
-							+ "(s).");
+				} else
+					sender.sendMessage(noPermissionsMessage);
 				return true;
 			} else {
 				sender.sendMessage(mustBeIngameMessage);

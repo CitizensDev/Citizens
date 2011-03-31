@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCManager;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
@@ -65,5 +67,15 @@ public class MessageUtils {
 			return text;
 		}
 		return "";
+	}
+
+	public static String getNoMoneyMessage(Operation op, String name, Player p) {
+		String message = "";
+		message = ChatColor.RED + "You need "
+				+ EconomyHandler.getRemainder(Operation.BASIC_NPC_CREATE, p)
+				+ " more "
+				+ EconomyHandler.getPaymentType(Operation.BASIC_NPC_CREATE)
+				+ "(s) to do that.";
+		return message;
 	}
 }
