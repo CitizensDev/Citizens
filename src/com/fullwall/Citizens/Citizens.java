@@ -150,6 +150,9 @@ public class Citizens extends JavaPlugin {
 			helpPlugin.registerCommand("npc setowner [name]",
 					"Sets the owner of the selected NPC.", this,
 					"citizens.general.setowner");
+			helpPlugin.registerCommand("npc addowner [name]",
+					"Adds an owner to the selected NPC.", this,
+					"citizens.general.addowner");
 			helpPlugin.registerCommand("npc talkwhenclose [true|false]",
 					"Enable or disable if a NPC talks when aproached.", this,
 					"citizens.general.talkwhenclose");

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.PropertyHandler;
@@ -80,6 +82,17 @@ public class PropertyPool {
 
 	public static void setNPCOwner(int UID, String name) {
 		owners.setString(UID, name);
+	}
+
+	public static void addNPCOwner(int UID, String name, Player p) {
+		String[] npcOwners = getNPCOwner(UID).split(",");
+		for(int i = 0; i < npcOwners.length; i++){
+			if(npcOwners[i].equals(name) == true){
+				p.sendMessage(ChatColor.RED + "This NPC already is owned by that player.");
+				return;
+			}
+		}
+		owners.setString(UID, getNPCOwner(UID) + "," + name);
 	}
 
 	public static boolean getNPCTalkWhenClose(int UID) {
