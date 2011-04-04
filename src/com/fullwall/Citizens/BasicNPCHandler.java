@@ -54,7 +54,6 @@ public class BasicNPCHandler extends NPCManager {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
 		super.removeNPCForRespawn(UID);
-		Citizens.log.info("SetColor Name: " + n.getName());
 		super.registerBasicNPC(n.getName(), NPCType.BASIC, UID);
 	}
 

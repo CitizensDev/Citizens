@@ -8,6 +8,8 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Traders.TraderNPC;
+
 public class HumanNPC extends NPC {
 
 	private CraftNPC mcEntity;
@@ -21,13 +23,18 @@ public class HumanNPC extends NPC {
 	private double targetZ = 0.0;
 	private Player targetPlayer = null;
 	private boolean hasTarget = false;
+	private boolean isTrader = false;
+
+	private TraderNPC traderNPC;
+	private boolean isFree;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
 
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
-
 		this.mcEntity = entity;
+		traderNPC = new TraderNPC(entity, UID, name);
 	}
 
 	public HumanEntity getBukkitEntity() {
@@ -38,8 +45,24 @@ public class HumanNPC extends NPC {
 		return this.mcEntity;
 	}
 
+	public TraderNPC getTraderNPC() {
+		return this.traderNPC;
+	}
+
 	protected CraftNPC getMCEntity() {
 		return this.mcEntity;
+	}
+
+	public void setTrader(boolean enable) {
+		this.isTrader = enable;
+	}
+
+	public boolean isFree() {
+		return this.isFree;
+	}
+
+	public void setFree(boolean free) {
+		this.isFree = free;
 	}
 
 	// For Teleportation

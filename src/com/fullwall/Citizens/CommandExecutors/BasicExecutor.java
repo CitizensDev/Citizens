@@ -1,0 +1,763 @@
+package com.fullwall.Citizens.CommandExecutors;
+
+import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.NPCManager;
+import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+
+public class BasicExecutor implements CommandExecutor {
+
+	private Citizens plugin;
+	private String noPermissionsMessage = ChatColor.RED
+			+ "You don't have permission to use that command.";
+	@SuppressWarnings("unused")
+	private String notEnoughMoneyMessage = ChatColor.GRAY
+			+ "You don't have enough money to do that.";
+	private String mustBeIngameMessage = "You must use this command ingame";
+	private String mustHaveNPCSelectedMessage = ChatColor.GRAY
+			+ "You must have an NPC selected (right click).";
+	private String notOwnerMessage = ChatColor.RED
+			+ "You are not the owner of this NPC.";
+
+	public BasicExecutor(Citizens plugin) {
+		this.plugin = plugin;
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+			String commandLabel, String[] args) {
+		if (sender instanceof Player) {
+
+		} else {
+			sender.sendMessage(mustBeIngameMessage);
+			return false;
+		}
+
+		Player p = (Player) sender;
+		HumanNPC n = null;
+		if (validateSelected(p))
+			n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+
+		if (args.length >= 2 && args[0].equals("create")) {
+			if (hasPermission("citizens.basic.create", sender)) {
+				if (!EconomyHandler.useEconomy()
+						|| EconomyHandler.canBuy(Operation.BASIC_NPC_CREATE, p)) {
+					createNPC(args, p);
+				} else if (EconomyHandler.useEconomy()) {
+					sender.sendMessage(MessageUtils.getNoMoneyMessage(
+							Operation.BASIC_NPC_CREATE, args[1], p));
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 1 && (args[0].equals("move"))) {
+			if (hasPermission("citizens.general.move", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.move",
+									sender)) {
+						moveNPC(sender, n.getName(),
+								Integer.valueOf(NPCManager.NPCSelected.get(p
+										.getName())));
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if ((args.length == 1 || args.length == 2)
+				&& args[0].equals("remove")) {
+			if (hasPermission("citizens.general.remove.singular", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.remove.singular",
+									sender)) {
+						removeNPC(args, sender);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else if (hasPermission("citizens.general.remove.all", sender)) {
+				if (args.length == 2 && args[1].equals("all")) {
+					removeNPC(args, sender);
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && args[0].equals("name")) {
+			if (hasPermission("citizens.general.setname", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.setname",
+									sender)) {
+						setName(args, sender);
+						NPCManager.NPCSelected.remove(p.getName());
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2
+				&& (args[0].equals("colour") || args[0].equals("color"))) {
+			if (hasPermission("citizens.general.colour", sender)
+					|| hasPermission("citizens.general.color", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.color",
+									sender)) {
+						setColour(args, p);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length >= 2 && args[0].equals("add")) {
+			if (hasPermission("citizens.basic.settext", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.basic.settext",
+									sender)) {
+						addText(args, sender);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length >= 2 && args[0].equals("set")) {
+			if (hasPermission("citizens.basic.settext", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.basic.settext",
+									sender)) {
+						setText(args, sender);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 1 && (args[0].equals("reset"))) {
+			if (hasPermission("citizens.basic.settext", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.basic.settext",
+									sender)) {
+						resetText(args, sender);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && (args[0].equals("item"))) {
+			if (hasPermission("citizens.general.setitem", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.setitem",
+									sender)) {
+						setItemInHand(sender, args);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2
+				&& (args[0].equals("torso") || args[0].equals("legs")
+						|| args[0].equals("helmet") || args[0].equals("boots"))) {
+			if (hasPermission("citizens.general.setitem", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.setitem",
+									sender)) {
+						setArmor(sender, args);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length >= 1 && args[0].equals("tp")) {
+			if (hasPermission("citizens.general.tp", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.tp",
+									sender)) {
+						p.teleport((PropertyPool.getLocationFromName(n.getUID())));
+						sender.sendMessage("Teleported you to the NPC named "
+								+ n.getName() + ". Enjoy!");
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if ((command.getName().equals("citizens") || command.getName()
+				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
+			if (hasPermission("citizens.help", sender)) {
+				sendHelp(sender);
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if ((command.getName().equals("citizens") || command.getName()
+				.equals("npc")) && args.length == 2 && (args[0].equals("help"))) {
+			if (hasPermission("citizens.help", sender)) {
+				sendHelpPage(sender, args[1]);
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 1 && (args[0].equals("copy"))) {
+			if (hasPermission("citizens.general.copy", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.copy",
+									sender)) {
+						copyNPC(n, p);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 1 && (args[0].equals("getid"))) {
+			if (hasPermission("citizens.general.getid", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.getid",
+									sender)) {
+						p.sendMessage("The ID of this NPC is: " + n.getUID());
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && (args[0].equals("select"))) {
+			if (hasPermission("citizens.general.select", sender)) {
+				// BUILD CHECK
+				if (!Character.isDigit(args[1].charAt(0))) {
+					p.sendMessage(ChatColor.RED + "The ID must be a number.");
+					return true;
+				}
+				n = NPCManager.getNPC(Integer.valueOf(args[1]));
+				if (n == null) {
+					sender.sendMessage(ChatColor.RED + "No NPC with the ID "
+							+ args[1] + ".");
+				} else {
+					NPCManager.NPCSelected.put(p.getName(), n.getUID());
+					p.sendMessage("Selected NPC with ID: " + n.getUID()
+							+ " Name: " + n.getName() + ".");
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 1 && (args[0].equals("getowner"))) {
+			if (hasPermission("citizens.general.getowner", sender)) {
+				if (n != null) {
+					p.sendMessage("The owner of this NPC is: §c"
+							+ PropertyPool.getNPCOwner(n.getUID()) + ".");
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && (args[0].equals("setowner"))) {
+			if (hasPermission("citizens.general.setowner", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.setowner",
+									sender)) {
+						PropertyPool.setNPCOwner(n.getUID(), args[1]);
+						p.sendMessage("The owner of NPC: §c" + n.getName()
+								+ "§f is now: §c" + args[1] + ".");
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && (args[0].equals("addowner"))) {
+			if (hasPermission("citizens.general.addowner", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission("citizens.admin.general.addowner",
+									sender)) {
+						PropertyPool.addNPCOwner(n.getUID(), args[1], p);
+						p.sendMessage("Added " + args[1]
+								+ " to the owner list of " + n.getName() + ".");
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && (args[0].equals("talkwhenclose"))) {
+			if (hasPermission("citizens.general.talkwhenclose", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission(
+									"citizens.admin.general.talkwhenclose",
+									sender)) {
+						changeTalkWhenClose(p, args[1]);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args.length == 2 && (args[0].equals("lookatplayers"))) {
+			if (hasPermission("citizens.general.lookatplayers", sender)) {
+				if (n != null) {
+					if (validateOwnership(n.getUID(), p)
+							|| hasPermission(
+									"citizens.admin.general.lookatplayers",
+									sender)) {
+						changeLookWhenClose(p, args[1]);
+					} else {
+						sender.sendMessage(notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(noPermissionsMessage);
+			}
+			return true;
+
+		} else {
+			if (args.length >= 2 && args[0].equals("move"))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc move");
+			else if (args.length >= 3 && args[0].equals("remove"))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc remove OR /npc remove all");
+			else if (args.length >= 3 && args[0].equals("name"))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc name [name]");
+			else if (args.length >= 3
+					&& (args[0].equals("colour") || args[0].equals("color")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc color [color]");
+			else if (args.length >= 2 && (args[0].equals("reset")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc reset");
+			else if (args.length >= 3 && (args[0].equals("item")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc item [id|item name]");
+			else if (args.length >= 3
+					&& (args[0].equals("torso") || args[0].equals("legs")
+							|| args[0].equals("helmet") || args[0]
+							.equals("boots")))
+				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc "
+						+ args[0] + " [id|item name]");
+			else if (args.length >= 2 && args[0].equals("tp"))
+				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc tp");
+			else if ((command.getName().equals("citizens") || command.getName()
+					.equals("npc"))
+					&& args.length >= 3
+					&& (args[0].equals("help")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc help [page number]");
+			else if (args.length >= 2 && (args[0].equals("copy")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc copy");
+			else if (args.length >= 2 && (args[0].equals("getid")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc getid");
+			else if (args.length >= 3 && (args[0].equals("select")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc select [id]");
+			else if (args.length >= 2 && (args[0].equals("getowner")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc getowner");
+			else if (args.length >= 3 && (args[0].equals("setowner")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc setowner [player name]");
+			else if (args.length >= 3 && (args[0].equals("addowner")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc addowner [player name]");
+			else if (args.length >= 3 && (args[0].equals("talkwhenclose")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc talkwhenclose [true|false]");
+			else if (args.length >= 3 && (args[0].equals("lookatplayers")))
+				sender.sendMessage(ChatColor.RED
+						+ "Incorrect Syntax: /npc lookatplayers [true|false]");
+			else
+				return false;
+
+			return true;
+		}
+	}
+
+	private void createNPC(String[] args, Player p) {
+		String text = "";
+		ArrayList<String> texts = new ArrayList<String>();
+		if (args.length >= 3) {
+			int i = 0;
+			for (String s : args) {
+				if (i == 2 && !s.isEmpty() && !s.equals(";"))
+					text += s;
+				if (i > 2 && !s.isEmpty() && !s.equals(";"))
+					text += " " + s;
+				i += 1;
+			}
+			texts.add(text);
+		}
+		int UID = plugin.handler.spawnNPC(args[1], p.getLocation());
+		plugin.handler.setNPCText(UID, texts);
+		plugin.handler.setOwner(UID, p.getName());
+		p.sendMessage(ChatColor.GOLD + "The NPC " + args[1] + " was born!");
+		if (EconomyHandler.useEconomy()) {
+			int paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE, p);
+			if (paid > 0)
+				p.sendMessage(ChatColor.GREEN
+						+ "Paid "
+						+ paid
+						+ " "
+						+ EconomyHandler
+								.getPaymentType(Operation.BASIC_NPC_CREATE)
+						+ " for " + args[1] + ".");
+		}
+	}
+
+	private void moveNPC(CommandSender sender, String name, int UID) {
+		Location loc = PropertyPool.getLocationFromID(UID);
+		if (loc != null) {
+			PropertyPool.saveLocation(name, loc, UID);
+		}
+		plugin.handler.moveNPC(UID, ((Player) sender).getLocation());
+		sender.sendMessage(ChatColor.GREEN + name
+				+ " is enroute to your location!");
+	}
+
+	private void removeNPC(String[] args, CommandSender sender) {
+		Player p = (Player) sender;
+		if (args.length == 2 && args[1].equals("all")) {
+			plugin.handler.removeAllNPCs();
+			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
+			PropertyPool.locations.setInt("currentID", 0);
+			PropertyPool.locations.removeKey("list");
+		} else {
+			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
+					.getName()));
+			plugin.handler.removeNPC(Integer.valueOf(NPCManager.NPCSelected
+					.get(p.getName())));
+			sender.sendMessage(ChatColor.GRAY + n.getName() + " disappeared.");
+		}
+		NPCManager.NPCSelected.remove(p.getName());
+	}
+
+	private void setName(String[] args, CommandSender sender) {
+		Player p = (Player) sender;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		plugin.handler.setName(n.getUID(), args[1]);
+		sender.sendMessage(ChatColor.GREEN + n.getName()
+				+ "'s name was set to " + args[1] + ".");
+		return;
+	}
+
+	private void setColour(String[] args, Player p) {
+		if (args[1].indexOf('&') != 0) {
+			p.sendMessage(ChatColor.GRAY + "Use an & to specify " + args[0]
+					+ ".");
+		} else {
+			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
+					.getName()));
+			plugin.handler.setColour(n.getUID(), args[1]);
+		}
+	}
+
+	private void addText(String[] args, CommandSender sender) {
+		Player p = (Player) sender;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		String text = "";
+		int i = 0;
+		for (String s : args) {
+			if (i == 1 && !s.isEmpty() && !s.equals(";")) {
+				text += s;
+			}
+			if (i > 1 && !s.isEmpty() && !s.equals(";")) {
+				text += " " + s;
+			}
+			i += 1;
+		}
+		plugin.handler.addNPCText(n.getUID(), text);
+		sender.sendMessage(ChatColor.GREEN + text + " was added to "
+				+ n.getName() + "'s text.");
+	}
+
+	private void setText(String[] args, CommandSender sender) {
+		Player p = (Player) sender;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		String text = "";
+		if (args.length >= 2) {
+			int i = 0;
+			for (String s : args) {
+				if (i == 1 && !s.isEmpty() && !s.equals(";"))
+					text += s;
+				if (i > 1 && !s.isEmpty() && !s.equals(";"))
+					text += " " + s;
+				i += 1;
+			}
+		}
+		ArrayList<String> texts = new ArrayList<String>();
+		texts.add(text);
+		plugin.handler.setNPCText(n.getUID(), texts);
+		sender.sendMessage(ChatColor.GREEN + n.getName()
+				+ "'s text was set to " + text);
+
+	}
+
+	private void resetText(String[] args, CommandSender sender) {
+		Player p = (Player) sender;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		plugin.handler.resetText(n.getUID());
+		sender.sendMessage(ChatColor.GREEN + n.getName() + "'s text was reset!");
+	}
+
+	private void setItemInHand(CommandSender sender, String[] args) {
+		Player p = (Player) sender;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		plugin.handler.setItemInHand(p, n.getUID(), args[1]);
+	}
+
+	private void setArmor(CommandSender sender, String[] args) {
+		plugin.handler.setItemInSlot((Player) sender, args);
+	}
+
+	private void copyNPC(HumanNPC NPC, Player p) {
+		ArrayList<String> texts = PropertyPool.getText(NPC.getUID());
+		String colour = PropertyPool.getColour(NPC.getUID());
+		String owner = PropertyPool.getNPCOwner(NPC.getUID());
+		ArrayList<Integer> items = PropertyPool.getItemsFromFile(NPC.getUID());
+		boolean lookatplayers = PropertyPool.getNPCLookWhenClose(NPC.getUID());
+		boolean talkwhenclose = PropertyPool.getNPCTalkWhenClose(NPC.getUID());
+		int newUID = plugin.handler.spawnNPC(NPC.getName(), p.getLocation());
+		HumanNPC newNPC = NPCManager.getNPC(newUID);
+		PropertyPool.saveColour(newUID, colour);
+		PropertyPool.saveText(newUID, texts);
+		PropertyPool.saveItems(newUID, items);
+		PropertyPool.saveLookWhenClose(newUID, lookatplayers);
+		PropertyPool.saveTalkWhenClose(newUID, talkwhenclose);
+		PropertyPool.setNPCOwner(newUID, owner);
+		// NPCDataManager.addItems(newNPC, items);
+		String name = newNPC.getName();
+		NPCManager.removeNPCForRespawn(newUID);
+		plugin.handler.spawnExistingNPC(name, newUID);
+	}
+
+	private void changeTalkWhenClose(Player p, String bool) {
+		boolean talk = false;
+		if (bool.equals("true"))
+			talk = true;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		PropertyPool.setNPCTalkWhenClose(n.getUID(), talk);
+		if (talk == true)
+			p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName()
+					+ " will now talk to nearby players.");
+		else if (talk == false)
+			p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName()
+					+ " will not talk to nearby players.");
+	}
+
+	private void changeLookWhenClose(Player p, String bool) {
+		boolean look = false;
+		if (bool.equals("true"))
+			look = true;
+		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+		PropertyPool.setNPCLookWhenClose(n.getUID(), look);
+		if (look == true)
+			p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName()
+					+ " will now look at players.");
+		else if (look == false)
+			p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName()
+					+ " will not look at players.");
+	}
+
+	private void sendHelp(CommandSender sender) {
+		// remove, reset, add, color
+		sender.sendMessage("§fCitizens v1.07 Help");
+		sender.sendMessage("§b-------------------------------");
+		sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
+		sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
+		sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
+		sender.sendMessage("§fUse the command /citizens help [page] for more info.");
+
+	}
+
+	private void sendHelpPage(CommandSender sender, String page) {
+		int pageNum = Integer.valueOf(page);
+		switch (pageNum) {
+		case 1:
+			sender.sendMessage("§fCitizens v1.07 Help");
+			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
+			sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
+			sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
+			sender.sendMessage("§fUse the command /citizens help [page] for more info.");
+			break;
+		case 2:
+			sender.sendMessage("§8/§cnpc §bname [new name] §e- §achanges the name of an NPC.");
+			sender.sendMessage("§8/§cnpc §bremove [all] §e- §adeletes and despawns the NPC(s).");
+			sender.sendMessage("§8/§cnpc §breset §e- §aresets the messages of an NPC.");
+			sender.sendMessage("§8/§cnpc §bcolo(u)r [&(code)] §e- §aedits the color of an NPC's name.");
+			sender.sendMessage("§8/§cnpc §bitem [id|item name] §e- §asets the in-hand item of an NPC.");
+			sender.sendMessage("§8/§cnpc §bhelmet|torso|legs|boots [id|item name] §e- §asets the item slot of an NPC.");
+			break;
+		case 3:
+			sender.sendMessage("§8/§cnpc §bmove §e- §amoves an NPC to your location.");
+			sender.sendMessage("§8/§cnpc §btp §e- §ateleports you to the location of an NPC.");
+			sender.sendMessage("§8/§cnpc §bcopy §e- §amakes of copy of the NPC on your location.");
+			sender.sendMessage("§8/§cnpc §bgetid §e- §agets the ID of the selected NPC.");
+			sender.sendMessage("§8/§cnpc §bselect [id] §e- §aselects an NPC with the given ID.");
+			sender.sendMessage("§8/§cnpc §bgetowner §e- §agets the owner of the selected NPC.");
+			break;
+		case 4:
+			sender.sendMessage("§8/§cnpc §bsetowner [name] §e- §asets the owner of the selected NPC.");
+			sender.sendMessage("§8/§cnpc §btalkwhenclose [true|false] §e- §amake a NPC talk to players.");
+			sender.sendMessage("§8/§cnpc §blookatplayers [true|false] §e- §amake a NPC look at players.");
+			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("§fPlugin made by fullwall, NeonMaster and TheMPC.");
+			break;
+		default:
+			sender.sendMessage("§fThe number of pages is 4, page: " + pageNum
+					+ " is not available.");
+			break;
+		}
+	}
+
+	public boolean validateUID(int UID, CommandSender sender) {
+		if (!plugin.validateUID(UID)) {
+			sender.sendMessage(ChatColor.GRAY
+					+ "Couldn't find the NPC with id " + UID + ".");
+			return false;
+		}
+		return true;
+	}
+
+	public boolean validateSelected(Player p) {
+		if (NPCManager.NPCSelected.get(p.getName()) != null
+				&& !NPCManager.NPCSelected.get(p.getName()).toString()
+						.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean validateOwnership(int UID, Player p) {
+		String[] npcOwners = PropertyPool.getNPCOwner(UID).split(",");
+		for (int i = 0; i < npcOwners.length; i++) {
+			if (npcOwners[i].equals(p.getName()))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean hasPermission(String permission, CommandSender sender) {
+		return !(sender instanceof Player)
+				|| Permission.generic((Player) sender, permission);
+	}
+}
