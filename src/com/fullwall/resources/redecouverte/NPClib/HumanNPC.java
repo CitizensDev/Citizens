@@ -8,6 +8,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Traders.TraderNPC;
 
 public class HumanNPC extends NPC {
@@ -25,7 +26,7 @@ public class HumanNPC extends NPC {
 	private boolean hasTarget = false;
 	private boolean isTrader = false;
 
-	private TraderNPC traderNPC;
+	protected TraderNPC traderNPC;
 	private boolean isFree;
 
 	@SuppressWarnings("unused")
@@ -34,7 +35,7 @@ public class HumanNPC extends NPC {
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
 		this.mcEntity = entity;
-		traderNPC = new TraderNPC(entity, UID, name);
+		this.traderNPC = new TraderNPC(this);
 	}
 
 	public HumanEntity getBukkitEntity() {
@@ -51,6 +52,10 @@ public class HumanNPC extends NPC {
 
 	protected CraftNPC getMCEntity() {
 		return this.mcEntity;
+	}
+
+	public boolean isTrader() {
+		return this.isTrader;
 	}
 
 	public void setTrader(boolean enable) {

@@ -50,7 +50,7 @@ public class TraderTask implements Runnable {
 		for (ItemStack i : npc.getBukkitEntity().getInventory().getContents()) {
 			if (!(previousNPCInv.getItem(count).equals(i))) {
 				found = true;
-				handleNPCItemClicked(i);
+				handleNPCItemClicked(i, count);
 				break;
 			}
 			count += 1;
@@ -59,7 +59,7 @@ public class TraderTask implements Runnable {
 		if (!found) {
 			for (ItemStack i : player.getInventory().getContents()) {
 				if (!(previousPlayerInv.getItem(count).equals(i))) {
-					handlePlayerItemClicked(i);
+					handlePlayerItemClicked(i, count);
 					break;
 				}
 				count += 1;
@@ -67,11 +67,33 @@ public class TraderTask implements Runnable {
 		}
 		previousNPCInv = npc.getBukkitEntity().getInventory();
 		previousPlayerInv = player.getInventory();
+		player.getHandle().inventory.b((net.minecraft.server.ItemStack) null);
 	}
 
-	private void handlePlayerItemClicked(ItemStack i) {
+	private void handleNPCItemClicked(ItemStack i, int slot) {
+		npc.getBukkitEntity().getInventory()
+				.setItem(slot, previousNPCInv.getItem(slot));
+		if (!npc.getTraderNPC().isBuyable(i.getTypeId())) {
+			return;
+		}
+		ItemStack toBuy = npc.getTraderNPC().getBuyable(i.getTypeId());
+		int amount = npc.getBukkitEntity().getInventory().getItem(slot)
+				.getAmount();
+		if (amount - toBuy.getAmount() <= 0) {
+			return;
+		}
 	}
 
-	private void handleNPCItemClicked(ItemStack i) {
+	private void handlePlayerItemClicked(ItemStack i, int slot) {
+		player.getInventory().setItem(slot, previousPlayerInv.getItem(slot));
+		if (!npc.getTraderNPC().isSellable(i.getTypeId())) {
+			return;
+		}
+		ItemStack toSell = npc.getTraderNPC().getSellable(i.getTypeId());
+		int amount = npc.getBukkitEntity().getInventory().getItem(slot)
+				.getAmount();
+		if (amount - toSell.getAmount() <= 0) {
+			return;
+		}
 	}
 }

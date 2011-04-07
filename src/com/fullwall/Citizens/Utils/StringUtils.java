@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-
 public class StringUtils {
 
 	public static String getColourFromString(String s) {

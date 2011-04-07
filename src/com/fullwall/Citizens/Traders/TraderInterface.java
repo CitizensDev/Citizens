@@ -7,7 +7,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
+import com.fullwall.Citizens.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderInterface {
@@ -20,7 +20,7 @@ public class TraderInterface {
 
 	public static void handleRightClick(HumanNPC NPC, Player player) {
 		if (NPC.isFree()) {
-			if (!BasicExecutor.validateOwnership(NPC.getUID(), player)) {
+			if (!NPCManager.validateOwnership(NPC.getUID(), player)) {
 				TraderTask task = new TraderTask(NPC, player, Citizens.plugin);
 				int id = Citizens.plugin.getServer().getScheduler()
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);

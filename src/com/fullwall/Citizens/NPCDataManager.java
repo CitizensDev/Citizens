@@ -26,6 +26,9 @@ public class NPCDataManager extends NPCManager {
 			if (!matHelm.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setHelmet(new ItemStack(matHelm, 1));
+			else
+				NPC.getBukkitEntity().getInventory()
+						.setHelmet(new ItemStack(Material.AIR, 1));
 
 			if (!matBoots.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()

@@ -188,4 +188,22 @@ public class NPCManager {
 	public static boolean isNPC(Entity entity) {
 		return list.getBasicHumanNpc(entity) != null;
 	}
+
+	public static boolean validateSelected(Player p) {
+		if (NPCManager.NPCSelected.get(p.getName()) != null
+				&& !NPCManager.NPCSelected.get(p.getName()).toString()
+						.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean validateOwnership(int UID, Player p) {
+		String[] npcOwners = PropertyPool.getNPCOwner(UID).split(",");
+		for (int i = 0; i < npcOwners.length; i++) {
+			if (npcOwners[i].equals(p.getName()))
+				return true;
+		}
+		return false;
+	}
 }

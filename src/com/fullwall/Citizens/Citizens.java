@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.nijiko.coelho.iConomy.iConomy;
 
 import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
+import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Listeners.CustomListen;
@@ -60,6 +61,9 @@ public class Citizens extends JavaPlugin {
 
 		TraderExecutor traderExecutor = new TraderExecutor(this);
 		this.getCommand("trader").setExecutor(traderExecutor);
+
+		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
+		this.getCommand("toggle").setExecutor(togglerExecutor);
 
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, l, Event.Priority.Normal,

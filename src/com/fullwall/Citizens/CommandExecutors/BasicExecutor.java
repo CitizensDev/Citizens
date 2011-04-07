@@ -21,16 +21,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class BasicExecutor implements CommandExecutor {
 
 	private Citizens plugin;
-	private String noPermissionsMessage = ChatColor.RED
-			+ "You don't have permission to use that command.";
-	@SuppressWarnings("unused")
-	private String notEnoughMoneyMessage = ChatColor.GRAY
-			+ "You don't have enough money to do that.";
-	private String mustBeIngameMessage = "You must use this command ingame";
-	private String mustHaveNPCSelectedMessage = ChatColor.GRAY
-			+ "You must have an NPC selected (right click).";
-	private String notOwnerMessage = ChatColor.RED
-			+ "You are not the owner of this NPC.";
 
 	public BasicExecutor(Citizens plugin) {
 		this.plugin = plugin;
@@ -40,15 +30,14 @@ public class BasicExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
 		if (sender instanceof Player) {
-
 		} else {
-			sender.sendMessage(mustBeIngameMessage);
-			return false;
+			sender.sendMessage(MessageUtils.mustBeIngameMessage);
+			return true;
 		}
 
 		Player p = (Player) sender;
 		HumanNPC n = null;
-		if (validateSelected(p))
+		if (NPCManager.validateSelected(p))
 			n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 
 		if (args.length >= 2 && args[0].equals("create")) {
@@ -61,27 +50,27 @@ public class BasicExecutor implements CommandExecutor {
 							Operation.BASIC_NPC_CREATE, args[1], p));
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && (args[0].equals("move"))) {
 			if (hasPermission("citizens.general.move", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.move",
 									sender)) {
 						moveNPC(sender, n.getName(),
 								Integer.valueOf(NPCManager.NPCSelected.get(p
 										.getName())));
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -89,43 +78,43 @@ public class BasicExecutor implements CommandExecutor {
 				&& args[0].equals("remove")) {
 			if (hasPermission("citizens.general.remove.singular", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.remove.singular",
 									sender)) {
 						removeNPC(args, sender);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else if (hasPermission("citizens.general.remove.all", sender)) {
 				if (args.length == 2 && args[1].equals("all")) {
 					removeNPC(args, sender);
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("name")) {
 			if (hasPermission("citizens.general.setname", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.setname",
 									sender)) {
 						setName(args, sender);
 						NPCManager.NPCSelected.remove(p.getName());
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -134,90 +123,90 @@ public class BasicExecutor implements CommandExecutor {
 			if (hasPermission("citizens.general.colour", sender)
 					|| hasPermission("citizens.general.color", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.color",
 									sender)) {
 						setColour(args, p);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length >= 2 && args[0].equals("add")) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.basic.settext",
 									sender)) {
 						addText(args, sender);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length >= 2 && args[0].equals("set")) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.basic.settext",
 									sender)) {
 						setText(args, sender);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && (args[0].equals("reset"))) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.basic.settext",
 									sender)) {
 						resetText(args, sender);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && (args[0].equals("item"))) {
 			if (hasPermission("citizens.general.setitem", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.setitem",
 									sender)) {
 						setItemInHand(sender, args);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -226,38 +215,38 @@ public class BasicExecutor implements CommandExecutor {
 						|| args[0].equals("helmet") || args[0].equals("boots"))) {
 			if (hasPermission("citizens.general.setitem", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.setitem",
 									sender)) {
 						setArmor(sender, args);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length >= 1 && args[0].equals("tp")) {
 			if (hasPermission("citizens.general.tp", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.tp",
 									sender)) {
 						p.teleport((PropertyPool.getLocationFromName(n.getUID())));
 						sender.sendMessage("Teleported you to the NPC named "
 								+ n.getName() + ". Enjoy!");
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -266,7 +255,7 @@ public class BasicExecutor implements CommandExecutor {
 			if (hasPermission("citizens.help", sender)) {
 				sendHelp(sender);
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -275,43 +264,43 @@ public class BasicExecutor implements CommandExecutor {
 			if (hasPermission("citizens.help", sender)) {
 				sendHelpPage(sender, args[1]);
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && (args[0].equals("copy"))) {
 			if (hasPermission("citizens.general.copy", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.copy",
 									sender)) {
 						copyNPC(n, p);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && (args[0].equals("getid"))) {
 			if (hasPermission("citizens.general.getid", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.getid",
 									sender)) {
 						p.sendMessage("The ID of this NPC is: " + n.getUID());
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -332,7 +321,7 @@ public class BasicExecutor implements CommandExecutor {
 							+ " Name: " + n.getName() + ".");
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -342,88 +331,88 @@ public class BasicExecutor implements CommandExecutor {
 					p.sendMessage("The owner of this NPC is: §c"
 							+ PropertyPool.getNPCOwner(n.getUID()) + ".");
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && (args[0].equals("setowner"))) {
 			if (hasPermission("citizens.general.setowner", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.setowner",
 									sender)) {
 						PropertyPool.setNPCOwner(n.getUID(), args[1]);
 						p.sendMessage("The owner of NPC: §c" + n.getName()
 								+ "§f is now: §c" + args[1] + ".");
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && (args[0].equals("addowner"))) {
 			if (hasPermission("citizens.general.addowner", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission("citizens.admin.general.addowner",
 									sender)) {
 						PropertyPool.addNPCOwner(n.getUID(), args[1], p);
 						p.sendMessage("Added " + args[1]
 								+ " to the owner list of " + n.getName() + ".");
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && (args[0].equals("talkwhenclose"))) {
 			if (hasPermission("citizens.general.talkwhenclose", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission(
 									"citizens.admin.general.talkwhenclose",
 									sender)) {
 						changeTalkWhenClose(p, args[1]);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && (args[0].equals("lookatplayers"))) {
 			if (hasPermission("citizens.general.lookatplayers", sender)) {
 				if (n != null) {
-					if (validateOwnership(n.getUID(), p)
+					if (NPCManager.validateOwnership(n.getUID(), p)
 							|| hasPermission(
 									"citizens.admin.general.lookatplayers",
 									sender)) {
 						changeLookWhenClose(p, args[1]);
 					} else {
-						sender.sendMessage(notOwnerMessage);
+						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
 				} else {
-					sender.sendMessage(mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else {
-				sender.sendMessage(noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -736,24 +725,6 @@ public class BasicExecutor implements CommandExecutor {
 			return false;
 		}
 		return true;
-	}
-
-	public boolean validateSelected(Player p) {
-		if (NPCManager.NPCSelected.get(p.getName()) != null
-				&& !NPCManager.NPCSelected.get(p.getName()).toString()
-						.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
-
-	public static boolean validateOwnership(int UID, Player p) {
-		String[] npcOwners = PropertyPool.getNPCOwner(UID).split(",");
-		for (int i = 0; i < npcOwners.length; i++) {
-			if (npcOwners[i].equals(p.getName()))
-				return true;
-		}
-		return false;
 	}
 
 	public boolean hasPermission(String permission, CommandSender sender) {

@@ -13,6 +13,15 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
+	public static String noPermissionsMessage = ChatColor.RED
+			+ "You don't have permission to use that command.";
+	public static String notEnoughMoneyMessage = ChatColor.GRAY
+			+ "You don't have enough money to do that.";
+	public static String mustBeIngameMessage = "You must use this command ingame";
+	public static String mustHaveNPCSelectedMessage = ChatColor.GRAY
+			+ "You must have an NPC selected (right click).";
+	public static String notOwnerMessage = ChatColor.RED
+			+ "You are not the owner of this NPC.";
 
 	public static String stripWhite(String check) {
 		if (check.equals("§f"))
