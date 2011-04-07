@@ -2,9 +2,6 @@ package com.fullwall.Citizens.Traders;
 
 import java.util.ArrayList;
 
-import org.bukkit.inventory.ItemStack;
-
-import com.fullwall.resources.redecouverte.NPClib.CraftNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC {
@@ -30,8 +27,24 @@ public class TraderNPC {
 		return this.buying;
 	}
 
+	public Buyable getBuyable(int itemID) {
+		for (Buyable b : buying) {
+			if (b.getBuying().getTypeId() == itemID)
+				return b;
+		}
+		return null;
+	}
+
 	public ArrayList<Sellable> getSellables() {
 		return this.selling;
+	}
+
+	public Sellable getSellable(int itemID) {
+		for (Sellable s : selling) {
+			if (s.getSelling().getTypeId() == itemID)
+				return s;
+		}
+		return null;
 	}
 
 	public void removeBuyable(int index, boolean item) {
@@ -84,21 +97,5 @@ public class TraderNPC {
 				return true;
 		}
 		return false;
-	}
-
-	public ItemStack getBuyable(int itemID) {
-		for (Buyable b : buying) {
-			if (b.getBuying().getTypeId() == itemID)
-				return b.getBuying();
-		}
-		return null;
-	}
-
-	public ItemStack getSellable(int itemID) {
-		for (Sellable s : selling) {
-			if (s.getSelling().getTypeId() == itemID)
-				return s.getSelling();
-		}
-		return null;
 	}
 }

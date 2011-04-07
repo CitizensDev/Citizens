@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Economy;
 
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
 
 public class EconomyHandler {
@@ -10,7 +11,7 @@ public class EconomyHandler {
 	private static boolean useiConomy = false;
 
 	public enum Operation {
-		BASIC_NPC_CREATE
+		BASIC_NPC_CREATE, TRADER_NPC_CREATE
 	}
 
 	public static void setiConomyEnable(boolean value) {
@@ -20,6 +21,10 @@ public class EconomyHandler {
 	public static void setUpVariables() {
 		useEconomy = PropertyPool.checkEconomyEnabled();
 		useiConomy = PropertyPool.checkiConomyEnabled();
+	}
+
+	public static boolean useEconomy() {
+		return useEconomy;
 	}
 
 	public static boolean canBuy(Operation op, Player player) {
@@ -32,8 +37,14 @@ public class EconomyHandler {
 			return true;
 	}
 
-	public static boolean useEconomy() {
-		return useEconomy;
+	public static boolean canBuy(ItemPrice price, Player player) {
+		if (useEconomy) {
+			if (price.isIconomy() && useiConomy && iConomyEnabled)
+				return IconomyInterface.hasEnough(price, player);
+			else
+				return ItemInterface.hasEnough(price, player);
+		} else
+			return true;
 	}
 
 	public static int pay(Operation op, Player player) {

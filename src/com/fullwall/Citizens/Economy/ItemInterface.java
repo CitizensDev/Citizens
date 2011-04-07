@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
 
 public class ItemInterface {
@@ -22,6 +23,19 @@ public class ItemInterface {
 			if (i.getTypeId() == currencyID) {
 				current += i.getAmount();
 				if (current > price) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean hasEnough(ItemPrice price, Player player) {
+		int current = 0;
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i.getTypeId() == price.getItemID()) {
+				current += i.getAmount();
+				if (current > price.getPrice()) {
 					return true;
 				}
 			}

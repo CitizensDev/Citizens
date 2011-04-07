@@ -19,4 +19,12 @@ public class ItemPrice {
 	public boolean isIconomy() {
 		return this.iConomy;
 	}
+
+	public int getPrice() {
+		return this.price;
+	}
+
+	public int getItemID() {
+		return this.itemID;
+	}
 }

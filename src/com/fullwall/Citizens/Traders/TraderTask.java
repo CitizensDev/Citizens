@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderTask implements Runnable {
@@ -29,6 +30,7 @@ public class TraderTask implements Runnable {
 	}
 
 	public void kill() {
+		npc.setFree(true);
 		plugin.getServer().getScheduler().cancelTask(taskID);
 		int index = TraderInterface.tasks.indexOf(taskID);
 		if (index != -1)
@@ -39,7 +41,6 @@ public class TraderTask implements Runnable {
 	public void run() {
 		if (player == null
 				|| player.getHandle().activeContainer == player.getHandle().defaultContainer) {
-			npc.setFree(true);
 			kill();
 			return;
 		}
@@ -76,10 +77,13 @@ public class TraderTask implements Runnable {
 		if (!npc.getTraderNPC().isBuyable(i.getTypeId())) {
 			return;
 		}
-		ItemStack toBuy = npc.getTraderNPC().getBuyable(i.getTypeId());
+		Buyable buyable = npc.getTraderNPC().getBuyable(i.getTypeId());
 		int amount = npc.getBukkitEntity().getInventory().getItem(slot)
 				.getAmount();
-		if (amount - toBuy.getAmount() <= 0) {
+		if (amount - buyable.getBuying().getAmount() <= 0) {
+			return;
+		}
+		if (!EconomyHandler.canBuy(buyable.getPrice(), player)) {
 			return;
 		}
 	}
@@ -89,10 +93,14 @@ public class TraderTask implements Runnable {
 		if (!npc.getTraderNPC().isSellable(i.getTypeId())) {
 			return;
 		}
-		ItemStack toSell = npc.getTraderNPC().getSellable(i.getTypeId());
+		Sellable sellable = npc.getTraderNPC().getSellable(i.getTypeId());
 		int amount = npc.getBukkitEntity().getInventory().getItem(slot)
 				.getAmount();
-		if (amount - toSell.getAmount() <= 0) {
+		if (amount - sellable.getSelling().getAmount() <= 0) {
+			return;
+		}
+		if (!EconomyHandler.canBuy(sellable.getPrice(),
+				(Player) npc.getBukkitEntity())) {
 			return;
 		}
 	}
