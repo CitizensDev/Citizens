@@ -8,9 +8,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.NPCManager;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyPool {

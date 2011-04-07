@@ -8,7 +8,7 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldListener;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.NPCManager;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.NPCLocation;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 

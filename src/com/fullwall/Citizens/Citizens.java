@@ -22,6 +22,8 @@ import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
+import com.fullwall.Citizens.NPCs.BasicNPCHandler;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.PropertyPool;
 
 /**
@@ -38,16 +40,20 @@ public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
 	private static final String codename = "Helpers";
 
-	public static boolean defaultFollowingEnabled = true;
-	public static boolean useNPCColours = true;
-	public static String NPCColour = "§f";
+	public static int tickDelay = 1;
+	public static double npcRange = 5;
+
 	public static String chatFormat = "[%name%]: ";
-	public static String buildNumber = "5";
-	public static boolean convertSlashes = false;
 	public static String convertToSpaceChar = "/";
+	public static String buildNumber = "5";
+	public static String NPCColour = "§f";
+
+	public static boolean convertSlashes = false;
+	public static boolean defaultFollowingEnabled = true;
+	public static boolean defaultTalkWhenClose = false;
+	public static boolean useNPCColours = true;
 
 	public static Logger log = Logger.getLogger("Minecraft");
-	public static boolean defaultTalkWhenClose = false;
 	public static iConomy economy = null;
 
 	@Override
@@ -65,6 +71,7 @@ public class Citizens extends JavaPlugin {
 		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
 		this.getCommand("toggle").setExecutor(togglerExecutor);
 
+		// Register our events.
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, l, Event.Priority.Normal,
 				this);
@@ -77,19 +84,18 @@ public class Citizens extends JavaPlugin {
 				this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE,
 				pl, Event.Priority.Monitor, this);
+
 		PluginDescriptionFile pdfFile = this.getDescription();
-		plugin = this;
 
 		Permission.initialize(getServer());
 		setupVariables();
+		// Reinitialise existing NPCs.
 		setupNPCs();
+		// Compatibility with Help plugin.
 		setupHelp();
 
-		int delay = PropertyPool.settings.getInt("tick-delay");
-		double range = PropertyPool.settings.getDouble("look-range");
-
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(this, range), 5, delay);
+				new TickTask(this, npcRange), 5, tickDelay);
 
 		log.info("[" + pdfFile.getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPC's");
@@ -102,6 +108,7 @@ public class Citizens extends JavaPlugin {
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		handler.despawnAllNPCs();
+		// Save the local copy of our files to disk.
 		PropertyPool.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "e_" + buildNumber + "] (" + codename
@@ -172,6 +179,9 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupVariables() {
+		// Used for static access to this object.
+		plugin = this;
+
 		EconomyHandler.setUpVariables();
 		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
 			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
@@ -192,13 +202,17 @@ public class Citizens extends JavaPlugin {
 				.getBoolean("default-talk-when-close");
 		chatFormat = PropertyPool.settings.getString("chat-format");
 		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
+		tickDelay = PropertyPool.settings.getInt("tick-delay");
+		npcRange = PropertyPool.settings.getDouble("look-range");
 	}
 
 	private void setupNPCs() {
+		// Start reloading old NPCs from the config files.
 		String[] list = PropertyPool.locations.getString("list").split(",");
 		if (list.length > 0 && list[0] != "") {
 			for (String name : list) {
 				// Conversion from old to new save format:
+				// Maybe ready to remove now? For next release anyways.
 				if (name.split("_", 2).length == 1
 						&& !name.split("_", 2)[0].isEmpty()) {
 					int UID = PropertyPool.getNewNpcID();
@@ -224,7 +238,6 @@ public class Citizens extends JavaPlugin {
 									oldName, name));
 					list = PropertyPool.locations.getString("list").split(",");
 				}
-				//
 				Location loc = PropertyPool.getLocationFromName(Integer
 						.valueOf(name.split("_")[0]));
 				if (loc != null) {
@@ -242,6 +255,7 @@ public class Citizens extends JavaPlugin {
 		}
 	}
 
+	// Checks if an item ID can be used as the get text tool.
 	public boolean shouldShowText(Integer type) {
 		if (PropertyPool.settings.getBoolean("item-list-on") == true) {
 			String[] items = PropertyPool.settings.getString("items")
@@ -260,6 +274,7 @@ public class Citizens extends JavaPlugin {
 			return true;
 	}
 
+	// Checks if an item ID can be used as the select tool.
 	public boolean canSelect(Integer type) {
 		String[] items = PropertyPool.settings.getString("select-item").split(
 				",");
@@ -275,6 +290,7 @@ public class Citizens extends JavaPlugin {
 			return false;
 	}
 
+	// Checks for a valid UID
 	public boolean validateUID(int UID) {
 		if (NPCManager.GlobalUIDs.containsKey(UID)) {
 			return true;

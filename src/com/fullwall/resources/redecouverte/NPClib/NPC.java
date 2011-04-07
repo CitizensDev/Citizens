@@ -3,7 +3,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 import org.bukkit.ChatColor;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.NPCManager;
+import com.fullwall.Citizens.NPCs.NPCManager;
 
 public class NPC {
 
