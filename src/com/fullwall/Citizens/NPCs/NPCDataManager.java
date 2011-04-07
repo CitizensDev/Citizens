@@ -24,6 +24,7 @@ public class NPCDataManager extends NPCManager {
 			Material matBoots = Material.getMaterial(items.get(4));
 
 			HumanNPC NPC = npc;
+			// TODO: reduce the long if-tree.
 			if (!matHelm.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setHelmet(new ItemStack(matHelm, 1));
@@ -55,6 +56,9 @@ public class NPCDataManager extends NPCManager {
 			if (!matHand.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setItem(0, new ItemStack(matHand, 1));
+			else
+				NPC.getBukkitEntity().getInventory()
+						.setItem(0, new ItemStack(Material.AIR, 1));
 
 			PropertyPool.items.setString(NPC.getUID(), "" + items.get(0) + ","
 					+ items.get(1) + "," + items.get(2) + "," + items.get(3)

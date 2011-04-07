@@ -19,10 +19,9 @@ public class TogglerExecutor implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	// perhaps can be removed once Xenogelion includes chat syntax recognition
-	// make the plugin a totally chat based thing. EG: buy a feature, now the
+	// perhaps can be removed. EG: buy a feature, now the
 	// chat syntax gets unlocked, and you can do things like
-	// "Hi, I want to trade" etc. without having to toggle functionality
+	// "Hi, I want to trade" etc. without having to toggle functionality.
 	// this is good for now I guess.
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

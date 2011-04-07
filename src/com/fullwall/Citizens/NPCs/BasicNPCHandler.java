@@ -9,12 +9,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.NPCs.NPCManager.NPCType;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicNPCHandler extends NPCManager {
+
 	public BasicNPCHandler(Citizens plugin) {
 		super(plugin);
 	}
@@ -27,22 +27,40 @@ public class BasicNPCHandler extends NPCManager {
 		super.registerBasicNPC(name, NPCType.BASIC, UID);
 	}
 
-	public void spawnNPC(String name) {
-		// super.registerBasicNPC(name, NPCType.BASIC);
+	public void moveNPC(int UID, Location loc) {
+		super.moveNPC(UID, loc);
 	}
 
-	public void setNPCText(int UID, ArrayList<String> text) {
-		text = StringUtils.colourise(text);
-		super.setBasicNPCText(UID, text);
-		PropertyPool.saveText(UID, text);
+	public void despawnNPC(int UID) {
+		super.despawnNPC(UID);
 	}
 
-	public void setOwner(int UID, String name) {
-		PropertyPool.setNPCOwner(UID, name);
+	public void despawnAllNPCs() {
+		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
+			super.despawnNPC(i.getKey());
+		}
+	}
+
+	public void removeNPC(int UID) {
+		super.removeNPC(UID);
+		if (PropertyPool.locations.getString("list").isEmpty()) {
+			PropertyPool.locations.removeKey("list");
+			PropertyPool.locations.setInt("currentID", 0);
+		}
+	}
+
+	public void removeAllNPCs() {
+		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
+			super.removeNPC(i.getKey());
+		}
 	}
 
 	public String getOwner(int UID) {
 		return PropertyPool.getNPCOwner(UID);
+	}
+
+	public void setOwner(int UID, String name) {
+		PropertyPool.setNPCOwner(UID, name);
 	}
 
 	public void setName(int UID, String changeTo) {
@@ -52,6 +70,7 @@ public class BasicNPCHandler extends NPCManager {
 		super.registerBasicNPC(changeTo, NPCType.BASIC, UID);
 	}
 
+	// TODO: maybe remove this, since it changes the skin URL.
 	public void setColour(int UID, String colourChange) {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
@@ -69,11 +88,18 @@ public class BasicNPCHandler extends NPCManager {
 		PropertyPool.saveText(UID, texts);
 	}
 
+	public void setNPCText(int UID, ArrayList<String> text) {
+		text = StringUtils.colourise(text);
+		super.setBasicNPCText(UID, text);
+		PropertyPool.saveText(UID, text);
+	}
+
 	public void resetText(int UID) {
 		ArrayList<String> a = new ArrayList<String>();
 		super.setBasicNPCText(UID, a);
 	}
 
+	// Perhaps merge this with setItemInSlot.
 	public void setItemInHand(Player p, int UID, String material) {
 		Material mat = StringUtils.parseMaterial(material);
 		if (mat == null
@@ -120,36 +146,9 @@ public class BasicNPCHandler extends NPCManager {
 		PropertyPool.saveItems(n.getUID(), items);
 		NPCDataManager.addItems(n, items);
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
+			// Despawn the old NPC, register our new one.
 			super.removeNPCForRespawn(n.getUID());
 			super.registerBasicNPC(n.getName(), n.getType(), n.getUID());
 		}
-	}
-
-	public void removeNPC(int UID) {
-		super.removeNPC(UID);
-		if (PropertyPool.locations.getString("list").isEmpty()) {
-			PropertyPool.locations.removeKey("list");
-			PropertyPool.locations.setInt("currentID", 0);
-		}
-	}
-
-	public void removeAllNPCs() {
-		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
-			super.removeNPC(i.getKey());
-		}
-	}
-
-	public void despawnAllNPCs() {
-		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
-			super.despawnNPC(i.getKey());
-		}
-	}
-
-	public void despawnNPC(int UID) {
-		super.despawnNPC(UID);
-	}
-
-	public void moveNPC(int UID, Location loc) {
-		super.moveNPC(UID, loc);
 	}
 }

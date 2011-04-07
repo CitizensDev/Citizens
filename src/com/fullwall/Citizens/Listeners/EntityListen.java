@@ -30,6 +30,7 @@ public class EntityListen extends EntityListener {
 
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
+		// Prevent NPCs from getting damaged.
 		if (!(event instanceof EntityDamageByEntityEvent))
 			return;
 		EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
@@ -47,43 +48,23 @@ public class EntityListen extends EntityListener {
 		HumanNPC npc = NPCManager.getNPC(e.getEntity());
 
 		if (npc != null && event.getTarget() instanceof Player) {
+			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
-				// Citizens.log.info(p.getName()+" selected NPC " +
-				// npc.getName() + " : " + npc.getUID());
+				// Dispatch text event.
 				CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
 						npc.getName(), MessageUtils.getText(npc, e.getTarget(),
 								plugin), npc, Reason.RIGHT_CLICK,
 						(Player) e.getTarget());
 				plugin.getServer().getPluginManager().callEvent(ev);
-				if(plugin.canSelect(p.getItemInHand().getTypeId()) == true){
-					NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-					p.sendMessage(ChatColor.GREEN + "You selected NPC [" + npc.getName() + "], ID [" + npc.getUID() + "]");
-				}
-			} else if (e.getNpcReason() == NpcTargetReason.CLOSEST_PLAYER) {
-				
-			}
-		}
-	}
 
-	@SuppressWarnings("unused")
-	private float pointToPoint(double xa, double za, double xb, double zb) {
-		double deg = 0;
-		double x = xa - xb;
-		double y = za - zb;
-		if (x > 0) {
-			if (y > 0) {
-				deg = Math.tan(x / y);
-			} else {
-				deg = 90 + Math.tan(y / x);
-			}
-		} else {
-			if (y > 0) {
-				deg = 270 + Math.tan(y / x);
-			} else {
-				deg = 180 + Math.tan(x / y);
+				// If we're using a selection tool, select the NPC as well.
+				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true) {
+					NPCManager.NPCSelected.put(p.getName(), npc.getUID());
+					p.sendMessage(ChatColor.GREEN + "You selected NPC ["
+							+ npc.getName() + "], ID [" + npc.getUID() + "]");
+				}
 			}
 		}
-		return (float) deg;
 	}
 }

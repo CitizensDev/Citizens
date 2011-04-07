@@ -12,12 +12,14 @@ import com.fullwall.Citizens.Utils.PropertyPool;
 public class ItemInterface {
 
 	public static boolean hasEnough(Player player, Operation op) {
+		// Get the price/currency from the enum name.
 		int price = PropertyPool.getPrice(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-item");
 		int currencyID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-item-currency-id");
+		// The current count.
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i.getTypeId() == currencyID) {

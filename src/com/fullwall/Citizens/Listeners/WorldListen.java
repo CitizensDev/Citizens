@@ -22,20 +22,8 @@ public class WorldListen extends WorldListener {
 	}
 
 	@Override
-	public void onChunkLoad(ChunkLoadEvent e) {
-		for (Entry<NPCLocation, String> i : toRespawn.entrySet()) {
-			if (e.getChunk().getWorld()
-					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
-					.equals(e.getChunk())) {
-				plugin.handler.spawnExistingNPC(i.getValue(), i.getKey()
-						.getUID());
-				toRespawn.remove(i.getKey());
-			}
-		}
-	}
-
-	@Override
 	public void onChunkUnload(ChunkUnloadEvent e) {
+		// Stores NPC location/name for later respawn.
 		for (Entry<Integer, String> i : NPCManager.GlobalUIDs.entrySet()) {
 			HumanNPC npc = NPCManager.getNPC(i.getKey());
 			if (npc != null
@@ -45,6 +33,20 @@ public class WorldListen extends WorldListener {
 						.getLocation(), npc.getUID());
 				toRespawn.put(loc, i.getValue());
 				plugin.handler.despawnNPC(i.getKey());
+			}
+		}
+	}
+
+	@Override
+	public void onChunkLoad(ChunkLoadEvent e) {
+		// Respawns any existing NPCs in the loaded chunk
+		for (Entry<NPCLocation, String> i : toRespawn.entrySet()) {
+			if (e.getChunk().getWorld()
+					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
+					.equals(e.getChunk())) {
+				plugin.handler.spawnExistingNPC(i.getValue(), i.getKey()
+						.getUID());
+				toRespawn.remove(i.getKey());
 			}
 		}
 	}

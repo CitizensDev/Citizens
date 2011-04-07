@@ -671,10 +671,10 @@ public class BasicExecutor implements CommandExecutor {
 			look = true;
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		PropertyPool.setNPCLookWhenClose(n.getUID(), look);
-		if (look == true)
+		if (look)
 			p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName()
 					+ " will now look at players.");
-		else if (look == false)
+		else if (!look)
 			p.sendMessage(ChatColor.GREEN + "The NPC: " + n.getName()
 					+ " will not look at players.");
 	}

@@ -10,6 +10,7 @@ public class EconomyHandler {
 	private static boolean iConomyEnabled = false;
 	private static boolean useiConomy = false;
 
+	// Common buying operations
 	public enum Operation {
 		BASIC_NPC_CREATE, TRADER_NPC_CREATE
 	}
