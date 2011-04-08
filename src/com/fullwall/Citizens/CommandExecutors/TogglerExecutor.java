@@ -26,8 +26,7 @@ public class TogglerExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
-		if (sender instanceof Player) {
-		} else {
+		if (!(sender instanceof Player)) {
 			sender.sendMessage(MessageUtils.mustBeIngameMessage);
 			return true;
 		}
@@ -51,13 +50,20 @@ public class TogglerExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args[0].equals("trader")) {
-				npc.setTrader(!npc.isTrader());
-				if (npc.isTrader())
-					p.sendMessage(ChatColor.GREEN + "" + npc.getSpacedName()
-							+ " is now a trader!");
-				else
-					p.sendMessage(ChatColor.GREEN + "" + npc.getSpacedName()
-							+ " has stopped being a trader.");
+				if (BasicExecutor.hasPermission("citizens.trader.create",
+						sender)) {
+					npc.setTrader(!npc.isTrader());
+					if (npc.isTrader())
+						p.sendMessage(ChatColor.YELLOW + ""
+								+ npc.getSpacedName() + ChatColor.GREEN
+								+ " is now a trader!");
+					else
+						p.sendMessage(ChatColor.YELLOW + ""
+								+ npc.getSpacedName() + ChatColor.GREEN
+								+ " has stopped being a trader.");
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 			}
 		}
 		return false;

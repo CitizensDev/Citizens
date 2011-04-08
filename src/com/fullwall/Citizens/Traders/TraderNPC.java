@@ -7,6 +7,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class TraderNPC {
 
 	private HumanNPC npc;
+	private int balance;
 
 	public TraderNPC(HumanNPC npc) {
 		this.npc = npc;
@@ -21,6 +22,14 @@ public class TraderNPC {
 
 	public void addSellable(Sellable selling) {
 		this.selling.add(selling);
+	}
+
+	public int getBalance() {
+		return this.balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
 	}
 
 	public ArrayList<Buyable> getBuyables() {
