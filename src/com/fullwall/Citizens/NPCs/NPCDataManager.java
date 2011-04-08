@@ -29,36 +29,31 @@ public class NPCDataManager extends NPCManager {
 				NPC.getBukkitEntity().getInventory()
 						.setHelmet(new ItemStack(matHelm, 1));
 			else
-				NPC.getBukkitEntity().getInventory()
-						.setHelmet(new ItemStack(Material.AIR, 1));
+				NPC.getBukkitEntity().getInventory().setHelmet(null);
 
 			if (!matBoots.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setBoots(new ItemStack(matBoots, 1));
 			else
-				NPC.getBukkitEntity().getInventory()
-						.setBoots(new ItemStack(Material.AIR, 1));
+				NPC.getBukkitEntity().getInventory().setBoots(null);
 
 			if (!matLegs.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setLeggings(new ItemStack(matLegs, 1));
 			else
-				NPC.getBukkitEntity().getInventory()
-						.setLeggings(new ItemStack(Material.AIR, 1));
+				NPC.getBukkitEntity().getInventory().setLeggings(null);
 
 			if (!matTorso.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setChestplate(new ItemStack(matTorso, 1));
 			else
-				NPC.getBukkitEntity().getInventory()
-						.setChestplate(new ItemStack(Material.AIR, 1));
+				NPC.getBukkitEntity().getInventory().setChestplate(null);
 
 			if (!matHand.equals(Material.AIR))
 				NPC.getBukkitEntity().getInventory()
 						.setItem(0, new ItemStack(matHand, 1));
 			else
-				NPC.getBukkitEntity().getInventory()
-						.setItem(0, new ItemStack(Material.AIR, 1));
+				NPC.getBukkitEntity().getInventory().setItem(0, null);
 
 			PropertyPool.items.setString(NPC.getUID(), "" + items.get(0) + ","
 					+ items.get(1) + "," + items.get(2) + "," + items.get(3)

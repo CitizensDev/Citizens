@@ -238,7 +238,7 @@ public class Citizens extends JavaPlugin {
 									oldName, name));
 					list = PropertyPool.locations.getString("list").split(",");
 				}
-				Location loc = PropertyPool.getLocationFromName(Integer
+				Location loc = PropertyPool.getLocationFromID(Integer
 						.valueOf(name.split("_")[0]));
 				if (loc != null) {
 					handler.spawnExistingNPC(name.split("_", 2)[1],

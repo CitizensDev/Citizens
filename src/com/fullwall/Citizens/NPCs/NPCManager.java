@@ -38,11 +38,7 @@ public class NPCManager {
 		manager = this;
 	}
 
-	public enum NPCType {
-		ALL, BASIC, TRADER, GUARD, QUEST, HEALER
-	}
-
-	public void registerBasicNPC(String name, NPCType type, int UID) {
+	public void registerBasicNPC(String name, int UID) {
 		Location loc = PropertyPool.getLocationFromID(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
@@ -70,16 +66,15 @@ public class NPCManager {
 		PropertyPool.getSetText(UID);
 		saveToFile(name, loc, colour, items, UID);
 		registerUID(UID, name);
-		npc.setType(type);
 		list.put(UID, npc);
 	}
 
-	public int registerBasicNPC(String name, Location loc, NPCType type) {
+	public int registerBasicNPC(String name, Location loc) {
 		int UID = PropertyPool.getNewNpcID();
 		PropertyPool.saveLocation(name, loc, UID);
 		PropertyPool.setNPCLookWhenClose(UID, Citizens.defaultFollowingEnabled);
 		PropertyPool.setNPCTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
-		registerBasicNPC(name, type, UID);
+		registerBasicNPC(name, UID);
 		return UID;
 	}
 
@@ -165,14 +160,14 @@ public class NPCManager {
 		GlobalUIDs.put(UID, name);
 	}
 
-	private String generateUID(NPCType type) {
-		boolean notFound = false;
+	private String generateUID() {
+		boolean found = false;
 		// Change this to an integer return?
 		String UID = "";
-		while (notFound != true) {
+		while (found != true) {
 			UID = "" + ran.nextInt();
 			if (!GlobalUIDs.containsKey(UID)) {
-				notFound = true;
+				found = true;
 				break;
 			}
 		}

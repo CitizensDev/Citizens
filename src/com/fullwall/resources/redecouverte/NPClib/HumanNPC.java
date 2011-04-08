@@ -8,7 +8,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Traders.TraderNPC;
 
 public class HumanNPC extends NPC {
@@ -54,20 +53,20 @@ public class HumanNPC extends NPC {
 		return this.mcEntity;
 	}
 
-	public boolean isTrader() {
-		return this.isTrader;
-	}
-
 	public void setTrader(boolean enable) {
 		this.isTrader = enable;
 	}
 
-	public boolean isFree() {
-		return this.isFree;
+	public boolean isTrader() {
+		return this.isTrader;
 	}
 
 	public void setFree(boolean free) {
 		this.isFree = free;
+	}
+
+	public boolean isFree() {
+		return this.isFree;
 	}
 
 	// For Teleportation
@@ -91,17 +90,6 @@ public class HumanNPC extends NPC {
 	public void setTarget(Player p) {
 		this.targetPlayer = p;
 		this.hasTarget = false;
-	}
-
-	public void removeTarget() {
-		this.hasTarget = false;
-		this.targetPlayer = null;
-	}
-
-	public void updateMovement() {
-		if (this.hasTarget == true || this.targetPlayer != null)
-			this.moveNPCTowardsTarget();
-		// this.applyGravity();
 	}
 
 	public void moveNPCTowardsTarget() {
@@ -129,6 +117,29 @@ public class HumanNPC extends NPC {
 		} else {
 			this.hasTarget = false;
 		}
+	}
+
+	public void removeTarget() {
+		this.hasTarget = false;
+		this.targetPlayer = null;
+	}
+
+	public double getX() {
+		return this.mcEntity.locX;
+	}
+
+	public double getY() {
+		return this.mcEntity.locY;
+	}
+
+	public double getZ() {
+		return this.mcEntity.locZ;
+	}
+
+	public void updateMovement() {
+		if (this.hasTarget == true || this.targetPlayer != null)
+			this.moveNPCTowardsTarget();
+		// this.applyGravity();
 	}
 
 	public void jumpNPC() {
@@ -159,17 +170,5 @@ public class HumanNPC extends NPC {
 
 	public void animateArmSwing() {
 		this.mcEntity.animateArmSwing();
-	}
-
-	public double getX() {
-		return this.mcEntity.locX;
-	}
-
-	public double getY() {
-		return this.mcEntity.locY;
-	}
-
-	public double getZ() {
-		return this.mcEntity.locZ;
 	}
 }

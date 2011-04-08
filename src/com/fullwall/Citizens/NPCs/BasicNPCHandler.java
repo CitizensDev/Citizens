@@ -20,11 +20,11 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	public int spawnNPC(String name, Location loc) {
-		return super.registerBasicNPC(name, loc, NPCType.BASIC);
+		return super.registerBasicNPC(name, loc);
 	}
 
 	public void spawnExistingNPC(String name, int UID) {
-		super.registerBasicNPC(name, NPCType.BASIC, UID);
+		super.registerBasicNPC(name, UID);
 	}
 
 	public void moveNPC(int UID, Location loc) {
@@ -67,7 +67,7 @@ public class BasicNPCHandler extends NPCManager {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.changeName(UID, n.getName(), changeTo);
 		super.removeNPCForRespawn(UID);
-		super.registerBasicNPC(changeTo, NPCType.BASIC, UID);
+		super.registerBasicNPC(changeTo, UID);
 	}
 
 	// TODO: maybe remove this, since it changes the skin URL.
@@ -75,7 +75,7 @@ public class BasicNPCHandler extends NPCManager {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
 		super.removeNPCForRespawn(UID);
-		super.registerBasicNPC(n.getName(), NPCType.BASIC, UID);
+		super.registerBasicNPC(n.getName(), UID);
 	}
 
 	public void addNPCText(int UID, String text) {
@@ -117,7 +117,7 @@ public class BasicNPCHandler extends NPCManager {
 		NPCDataManager.addItems(NPC, items);
 		if ((olditem != 0 && items.get(0) == 0)) {
 			super.removeNPCForRespawn(NPC.getUID());
-			super.registerBasicNPC(NPC.getName(), NPC.getType(), NPC.getUID());
+			super.registerBasicNPC(NPC.getName(), NPC.getUID());
 		}
 	}
 
@@ -148,7 +148,7 @@ public class BasicNPCHandler extends NPCManager {
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.
 			super.removeNPCForRespawn(n.getUID());
-			super.registerBasicNPC(n.getName(), n.getType(), n.getUID());
+			super.registerBasicNPC(n.getName(), n.getUID());
 		}
 	}
 }

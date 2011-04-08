@@ -86,9 +86,10 @@ public class PropertyPool {
 
 	public static void addNPCOwner(int UID, String name, Player p) {
 		String[] npcOwners = getNPCOwner(UID).split(",");
-		for(int i = 0; i < npcOwners.length; i++){
-			if(npcOwners[i].equals(name) == true){
-				p.sendMessage(ChatColor.RED + "This NPC already is owned by that player.");
+		for (int i = 0; i < npcOwners.length; i++) {
+			if (npcOwners[i].equals(name) == true) {
+				p.sendMessage(ChatColor.RED
+						+ "This NPC already is owned by that player.");
 				return;
 			}
 		}
@@ -184,22 +185,6 @@ public class PropertyPool {
 			array.add(Integer.parseInt(s));
 		}
 		return array;
-	}
-
-	public static Location getLocationFromName(int UID) {
-		String[] values = PropertyPool.locations.getString(UID).split(",");
-		if (values.length != 6) {
-			log.info("gotLocationFromName didn't have 6 values in values variable! Length:"
-					+ values.length);
-			return null;
-		} else {
-			Location loc = new Location(Citizens.plugin.getServer().getWorld(
-					values[0]), Double.parseDouble(values[1]),
-					Double.parseDouble(values[2]),
-					Double.parseDouble(values[3]), Float.parseFloat(values[4]),
-					Float.parseFloat(values[5]));
-			return loc;
-		}
 	}
 
 	public static Location getActualLocationFromName(int UID) {
