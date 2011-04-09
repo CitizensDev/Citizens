@@ -89,8 +89,21 @@ public class Citizens extends JavaPlugin {
 
 		Permission.initialize(getServer());
 		setupVariables();
-		// Reinitialise existing NPCs.
-		setupNPCs();
+
+		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
+		// loaded. This means that multiworld will now work without hacky
+		// workarounds.
+		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
+				new Runnable() {
+					@Override
+					public void run() {
+						setupNPCs();
+					}
+				}) == -1) {
+			log.info("[Citizens]: Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
+			setupNPCs();
+		}
+
 		// Compatibility with Help plugin.
 		setupHelp();
 
@@ -100,7 +113,7 @@ public class Citizens extends JavaPlugin {
 		log.info("[" + pdfFile.getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "e_" + buildNumber + "] (" + codename
+				+ pdfFile.getVersion() + "g_" + buildNumber + "] (" + codename
 				+ ") loaded ");
 	}
 
@@ -111,7 +124,7 @@ public class Citizens extends JavaPlugin {
 		// Save the local copy of our files to disk.
 		PropertyPool.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "e_" + buildNumber + "] (" + codename
+				+ pdfFile.getVersion() + "g_" + buildNumber + "] (" + codename
 				+ ") disabled");
 	}
 
