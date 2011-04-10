@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class EconomyHandler {
 	private static boolean useEconomy = true;
@@ -48,12 +49,43 @@ public class EconomyHandler {
 			return true;
 	}
 
+	public static boolean canBuy(ItemPrice price, HumanNPC npc) {
+		if (useEconomy) {
+			if (price.isIconomy() && useiConomy && iConomyEnabled)
+				return IconomyInterface.hasEnough(price, npc);
+			else
+				return ItemInterface.hasEnough(price,
+						(Player) npc.getBukkitEntity());
+		} else
+			return true;
+	}
+
 	public static int pay(Operation op, Player player) {
 		if (useEconomy) {
 			if (iConomyEnabled && useiConomy)
 				return IconomyInterface.pay(player, op);
 			else
 				return ItemInterface.pay(player, op);
+		} else
+			return 0;
+	}
+
+	public static int pay(ItemPrice price, HumanNPC npc) {
+		if (useEconomy) {
+			if (price.isIconomy() && iConomyEnabled && useiConomy)
+				return IconomyInterface.pay(npc, price);
+			else
+				return ItemInterface.pay((Player) npc.getBukkitEntity(), price);
+		} else
+			return 0;
+	}
+
+	public static int pay(ItemPrice price, Player player) {
+		if (useEconomy) {
+			if (price.isIconomy() && iConomyEnabled && useiConomy)
+				return IconomyInterface.pay(player, price);
+			else
+				return ItemInterface.pay(player, price);
 		} else
 			return 0;
 	}
@@ -77,4 +109,5 @@ public class EconomyHandler {
 		} else
 			return "0";
 	}
+
 }

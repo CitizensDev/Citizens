@@ -8,6 +8,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class ItemInterface {
 
@@ -45,6 +46,32 @@ public class ItemInterface {
 		return false;
 	}
 
+	public static String getCurrency(Operation op) {
+		int ID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
+				.replace("_", "-")
+				+ "-item-currency-id");
+		return Material.getMaterial(ID) != null ? Material.getMaterial(ID)
+				.name() : "";
+	}
+
+	public static String getRemainder(Operation op, Player player) {
+		int price = PropertyPool.getPrice(op.toString().toLowerCase()
+				.replace("_", "-")
+				+ "-item");
+		int currencyID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
+				.replace("_", "-")
+				+ "-item-currency-id");
+		PlayerInventory inv = player.getInventory();
+		int current = price;
+		for (ItemStack i : inv.getContents()) {
+			if (i.getTypeId() == currencyID) {
+				int amount = i.getAmount();
+				current -= amount;
+			}
+		}
+		return "" + current;
+	}
+
 	public static int pay(Player player, Operation op) {
 		int price = PropertyPool.getPrice(op.toString().toLowerCase()
 				.replace("_", "-")
@@ -77,29 +104,26 @@ public class ItemInterface {
 		return price;
 	}
 
-	public static String getCurrency(Operation op) {
-		int ID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
-				.replace("_", "-")
-				+ "-item-currency-id");
-		return Material.getMaterial(ID) != null ? Material.getMaterial(ID)
-				.name() : "";
-	}
-
-	public static String getRemainder(Operation op, Player player) {
-		int price = PropertyPool.getPrice(op.toString().toLowerCase()
-				.replace("_", "-")
-				+ "-item");
-		int currencyID = PropertyPool.getCurrencyID(op.toString().toLowerCase()
-				.replace("_", "-")
-				+ "-item-currency-id");
+	public static int pay(Player player, ItemPrice price) {
 		PlayerInventory inv = player.getInventory();
-		int current = price;
+		int currencyID = price.getItemID();
+		int current = price.getPrice();
 		for (ItemStack i : inv.getContents()) {
 			if (i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
+				int toChange = 0;
 				current -= amount;
+				if (current < 0) {
+					toChange -= current;
+				}
+				if (toChange == 0)
+					i = null;
+				else {
+					i.setAmount(toChange);
+					break;
+				}
 			}
 		}
-		return "" + current;
+		return price.getPrice();
 	}
 }

@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Traders;
 
+import java.util.HashMap;
+
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -86,6 +88,18 @@ public class TraderTask implements Runnable {
 		if (!EconomyHandler.canBuy(buyable.getPrice(), player)) {
 			return;
 		}
+		ItemStack transfer = buyable.getBuying();
+		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
+				transfer);
+		if (unbought.size() >= 1) {
+			player.getInventory().setContents(previousPlayerInv.getContents());
+			return;
+		}
+		EconomyHandler.pay(buyable.getPrice(), player);
+		npc.getBukkitEntity()
+				.getInventory()
+				.setContents(
+						sortInventory(npc.getBukkitEntity().getInventory()));
 	}
 
 	private void handlePlayerItemClicked(ItemStack i, int slot) {
@@ -99,9 +113,25 @@ public class TraderTask implements Runnable {
 		if (amount - sellable.getSelling().getAmount() <= 0) {
 			return;
 		}
-		if (!EconomyHandler.canBuy(sellable.getPrice(),
-				(Player) npc.getBukkitEntity())) {
+		if (!EconomyHandler.canBuy(sellable.getPrice(), npc)) {
 			return;
 		}
+		ItemStack transfer = sellable.getSelling();
+		HashMap<Integer, ItemStack> unsold = npc.getBukkitEntity()
+				.getInventory().addItem(transfer);
+		if (unsold.size() >= 1) {
+			npc.getBukkitEntity().getInventory()
+					.setContents(previousNPCInv.getContents());
+			return;
+		}
+		EconomyHandler.pay(sellable.getPrice(), npc);
+		npc.getBukkitEntity()
+				.getInventory()
+				.setContents(
+						sortInventory(npc.getBukkitEntity().getInventory()));
+	}
+
+	public ItemStack[] sortInventory(PlayerInventory inventory) {
+		return InventorySorter.sortInventory(inventory.getContents());
 	}
 }
