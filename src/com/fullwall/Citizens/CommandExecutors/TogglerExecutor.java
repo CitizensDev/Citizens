@@ -7,8 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TogglerExecutor implements CommandExecutor {
@@ -30,17 +34,18 @@ public class TogglerExecutor implements CommandExecutor {
 			sender.sendMessage(MessageUtils.mustBeIngameMessage);
 			return true;
 		}
-		Player p = (Player) sender;
+		Player player = (Player) sender;
 		HumanNPC npc = null;
 		if (NPCManager.validateSelected((Player) sender))
-			npc = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+			npc = NPCManager
+					.getNPC(NPCManager.NPCSelected.get(player.getName()));
 		else {
-			p.sendMessage(ChatColor.RED
+			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
-		if (!NPCManager.validateOwnership(npc.getUID(), p)) {
-			p.sendMessage(MessageUtils.notOwnerMessage);
+		if (!NPCManager.validateOwnership(npc.getUID(), player)) {
+			player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		}
 
@@ -52,20 +57,47 @@ public class TogglerExecutor implements CommandExecutor {
 			if (args[0].equals("trader")) {
 				if (BasicExecutor.hasPermission("citizens.trader.create",
 						sender)) {
-					npc.setTrader(!npc.isTrader());
-					if (npc.isTrader())
-						p.sendMessage(ChatColor.YELLOW + ""
-								+ npc.getSpacedName() + ChatColor.GREEN
-								+ " is now a trader!");
+					if (!TraderPropertyPool.isTrader(npc.getUID()))
+						buyTrader(npc, player);
 					else
-						p.sendMessage(ChatColor.YELLOW + ""
-								+ npc.getSpacedName() + ChatColor.GREEN
-								+ " has stopped being a trader.");
+						toggleTrader(npc, player);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				return true;
 			}
 		}
 		return false;
+	}
+
+	private void buyTrader(HumanNPC npc, Player player) {
+		if (!EconomyHandler.useEconomy()
+				|| EconomyHandler.canBuy(Operation.TRADER_NPC_CREATE, player)) {
+			if (EconomyHandler.useEconomy()) {
+				int paid = EconomyHandler.pay(Operation.TRADER_NPC_CREATE,
+						player);
+				if (paid > 0)
+					player.sendMessage(MessageUtils.getPaidMessage(
+							Operation.TRADER_NPC_CREATE, paid,
+							npc.getSpacedName(), "trader", true));
+				NPCManager.registerTraderNPC(npc.getUID());
+				toggleTrader(npc, player);
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(
+					Operation.TRADER_NPC_CREATE, player));
+			return;
+		}
+	}
+
+	private void toggleTrader(HumanNPC npc, Player player) {
+		npc.setTrader(!npc.isTrader());
+		if (npc.isTrader())
+			player.sendMessage(StringUtils.yellowify(npc.getSpacedName(),
+					ChatColor.GREEN) + " is now a trader!");
+		else
+			player.sendMessage(StringUtils.yellowify(npc.getSpacedName(),
+					ChatColor.GREEN) + " has stopped being a trader.");
+		TraderPropertyPool.saveTrader(npc.getUID(), npc.isTrader());
 	}
 }

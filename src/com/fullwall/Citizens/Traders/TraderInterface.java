@@ -13,6 +13,10 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class TraderInterface {
 	public static ArrayList<Integer> tasks = new ArrayList<Integer>();
 
+	public enum Mode {
+		NORMAL, STOCK, INFINITE
+	}
+
 	public static void showInventory(HumanNPC NPC, Player player) {
 		((CraftPlayer) player).getHandle()
 				.a(NPC.getMinecraftEntity().inventory);
@@ -21,7 +25,16 @@ public class TraderInterface {
 	public static void handleRightClick(HumanNPC NPC, Player player) {
 		if (NPC.isFree()) {
 			if (!NPCManager.validateOwnership(NPC.getUID(), player)) {
-				TraderTask task = new TraderTask(NPC, player, Citizens.plugin);
+				TraderTask task = new TraderTask(NPC, player, Citizens.plugin,
+						Mode.NORMAL);
+				int id = Citizens.plugin.getServer().getScheduler()
+						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
+				tasks.add(id);
+				task.addID(id);
+				NPC.setFree(false);
+			} else {
+				TraderTask task = new TraderTask(NPC, player, Citizens.plugin,
+						Mode.STOCK);
 				int id = Citizens.plugin.getServer().getScheduler()
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);

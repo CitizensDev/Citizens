@@ -8,7 +8,6 @@ import org.bukkit.inventory.PlayerInventory;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class ItemInterface {
 

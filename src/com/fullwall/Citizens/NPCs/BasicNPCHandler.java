@@ -111,7 +111,7 @@ public class BasicNPCHandler extends NPCManager {
 			return;
 		}
 		HumanNPC NPC = super.getNPC(UID);
-		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
+		ArrayList<Integer> items = PropertyPool.getItems(UID);
 		int olditem = items.get(0);
 		items.set(0, mat.getId());
 		NPCDataManager.addItems(NPC, items);
@@ -132,7 +132,7 @@ public class BasicNPCHandler extends NPCManager {
 			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
 			return;
 		}
-		ArrayList<Integer> items = PropertyPool.getItemsFromFile(n.getUID());
+		ArrayList<Integer> items = PropertyPool.getItems(n.getUID());
 		int oldhelmet = items.get(1);
 		if (args[0].equalsIgnoreCase("helmet")) {
 			items.set(1, mat.getId());

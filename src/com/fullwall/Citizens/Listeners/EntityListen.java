@@ -11,7 +11,9 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
@@ -57,12 +59,21 @@ public class EntityListen extends EntityListener {
 								plugin), npc, Reason.RIGHT_CLICK,
 						(Player) e.getTarget());
 				plugin.getServer().getPluginManager().callEvent(ev);
-
+				if (npc.isTrader()) {
+					TraderInterface.handleRightClick(npc, p);
+				}
 				// If we're using a selection tool, select the NPC as well.
-				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true) {
+				// Check if we haven't already selected the NPC too.
+				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true
+						&& !NPCManager.validateSelected(p, npc)) {
 					NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-					p.sendMessage(ChatColor.GREEN + "You selected NPC ["
-							+ npc.getName() + "], ID [" + npc.getUID() + "]");
+					p.sendMessage(ChatColor.GREEN
+							+ "You selected NPC ["
+							+ StringUtils.yellowify(npc.getSpacedName(),
+									ChatColor.GREEN)
+							+ "], ID ["
+							+ StringUtils.yellowify("" + npc.getUID(),
+									ChatColor.GREEN) + "]");
 				}
 			}
 		}

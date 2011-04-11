@@ -44,4 +44,8 @@ public class StringUtils {
 		}
 		return mat;
 	}
+
+	public static String yellowify(String string, ChatColor temp) {
+		return ChatColor.YELLOW + string + temp;
+	}
 }

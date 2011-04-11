@@ -25,6 +25,7 @@ import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 
 /**
  * Citizens for Bukkit
@@ -45,7 +46,6 @@ public class Citizens extends JavaPlugin {
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
-	public static String buildNumber = "5";
 	public static String NPCColour = "§f";
 
 	public static boolean convertSlashes = false;
@@ -110,11 +110,8 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(this, npcRange), 5, tickDelay);
 
-		log.info("[" + pdfFile.getName() + "]: Loaded "
-				+ NPCManager.GlobalUIDs.size() + " NPC's");
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "g_" + buildNumber + "] (" + codename
-				+ ") loaded ");
+				+ pdfFile.getVersion() + "g] (" + codename + ") loaded ");
 	}
 
 	@Override
@@ -122,10 +119,10 @@ public class Citizens extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		handler.despawnAllNPCs();
 		// Save the local copy of our files to disk.
-		PropertyPool.saveFiles();
+		PropertyPool.saveAll();
+		TraderPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "g_" + buildNumber + "] (" + codename
-				+ ") disabled");
+				+ pdfFile.getVersion() + "g] (" + codename + ") disabled");
 	}
 
 	private void setupHelp() {
@@ -266,6 +263,8 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
+		log.info("[" + this.getDescription().getName() + "]: Loaded "
+				+ NPCManager.GlobalUIDs.size() + " NPC's");
 	}
 
 	// Checks if an item ID can be used as the get text tool.

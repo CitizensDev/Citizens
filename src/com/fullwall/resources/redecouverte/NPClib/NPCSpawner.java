@@ -99,7 +99,6 @@ public class NPCSpawner {
 	public static void RemoveBasicHumanNpc(HumanNPC npc) {
 		try {
 			npc.getMCEntity().world.e(npc.getMCEntity());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

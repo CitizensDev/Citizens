@@ -10,6 +10,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
@@ -78,13 +79,37 @@ public class MessageUtils {
 		return "";
 	}
 
-	public static String getNoMoneyMessage(Operation op, String name, Player p) {
+	public static String getNoMoneyMessage(Operation op, Player player) {
 		String message = "";
-		message = ChatColor.RED + "You need "
-				+ EconomyHandler.getRemainder(Operation.BASIC_NPC_CREATE, p)
-				+ " more "
+		message = ChatColor.RED
+				+ "You need "
+				+ EconomyHandler.getRemainder(Operation.BASIC_NPC_CREATE,
+						player) + " more "
 				+ EconomyHandler.getPaymentType(Operation.BASIC_NPC_CREATE)
 				+ "(s) to do that.";
+		return message;
+	}
+
+	public static String getPaidMessage(Operation op, int paid, String npcName,
+			String type, boolean useType) {
+		String message = "";
+		message = ChatColor.GREEN + "Paid "
+				+ StringUtils.yellowify("" + paid, ChatColor.GREEN) + " "
+				+ EconomyHandler.getPaymentType(Operation.TRADER_NPC_CREATE)
+				+ " for ";
+		if (useType)
+			message += StringUtils.yellowify(npcName, ChatColor.GREEN)
+					+ " to become a "
+					+ StringUtils.yellowify(type, ChatColor.GREEN) + ".";
+		else
+			message += StringUtils.yellowify(npcName, ChatColor.GREEN) + ".";
+		return message;
+	}
+
+	public static String getPriceMessage(ItemPrice price) {
+		String message = "";
+		message += ChatColor.YELLOW + "" + price.getPrice() + " "
+				+ EconomyHandler.getCurrency(price) + "(s)";
 		return message;
 	}
 }

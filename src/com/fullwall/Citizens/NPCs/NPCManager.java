@@ -12,8 +12,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCList;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
@@ -30,12 +32,10 @@ public class NPCManager {
 					.currentTimeMillis()).nextLong()).nextLong()).nextLong())
 					.nextLong());
 	private static NPCList list;
-	public static NPCManager manager;
 
 	public NPCManager(Citizens plugin) {
 		this.plugin = plugin;
 		NPCManager.list = new NPCList();
-		manager = this;
 	}
 
 	public void registerBasicNPC(String name, int UID) {
@@ -60,10 +60,12 @@ public class NPCManager {
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
-		ArrayList<Integer> items = PropertyPool.getItemsFromFile(UID);
+		ArrayList<Integer> items = PropertyPool.getItems(UID);
 		NPCDataManager.addItems(npc, items);
 
 		PropertyPool.getSetText(UID);
+		if (TraderPropertyPool.isTrader(UID))
+			npc.setTrader(TraderPropertyPool.getTraderState(UID));
 		saveToFile(name, loc, colour, items, UID);
 		registerUID(UID, name);
 		list.put(UID, npc);
@@ -76,6 +78,10 @@ public class NPCManager {
 		PropertyPool.setNPCTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
 		registerBasicNPC(name, UID);
 		return UID;
+	}
+
+	public static void registerTraderNPC(int UID) {
+
 	}
 
 	public static void setBasicNPCText(int UID, ArrayList<String> text) {
@@ -186,10 +192,32 @@ public class NPCManager {
 	}
 
 	public static boolean validateSelected(Player p) {
-		if (NPCManager.NPCSelected.get(p.getName()) != null
-				&& !NPCManager.NPCSelected.get(p.getName()).toString()
-						.isEmpty()) {
+		if (NPCSelected.get(p.getName()) != null
+				&& !NPCSelected.get(p.getName()).toString().isEmpty()) {
 			return true;
+		}
+		return false;
+	}
+
+	public static boolean validateSelected(Player p, HumanNPC npc) {
+		if (NPCSelected.get(p.getName()) != null
+				&& !NPCSelected.get(p.getName()).toString().isEmpty()) {
+			if (NPCSelected.get(p.getName()).equals(npc.getUID()))
+				return true;
+		}
+		return false;
+	}
+
+	// Overloaded method to add an optional permission string parameter (admin
+	// overrides).
+	public static boolean validateOwnership(int UID, Player p, String permission) {
+		if (Permission.generic(p,
+				permission.replace("citizens.", "citizens.admin.")))
+			return true;
+		String[] npcOwners = PropertyPool.getNPCOwner(UID).split(",");
+		for (int i = 0; i < npcOwners.length; i++) {
+			if (npcOwners[i].equals(p.getName()))
+				return true;
 		}
 		return false;
 	}

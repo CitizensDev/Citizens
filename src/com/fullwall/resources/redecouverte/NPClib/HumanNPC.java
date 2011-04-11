@@ -25,8 +25,8 @@ public class HumanNPC extends NPC {
 	private boolean hasTarget = false;
 	private boolean isTrader = false;
 
-	protected TraderNPC traderNPC;
-	private boolean isFree;
+	public TraderNPC traderNPC = new TraderNPC(this);
+	private boolean isFree = true;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
@@ -34,7 +34,6 @@ public class HumanNPC extends NPC {
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
 		this.mcEntity = entity;
-		this.traderNPC = new TraderNPC(this);
 	}
 
 	public HumanEntity getBukkitEntity() {
