@@ -5,6 +5,7 @@ import java.util.HashMap;
 import net.minecraft.server.InventoryPlayer;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
@@ -15,7 +16,6 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Traders.TraderInterface.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.StopWatch;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -29,78 +29,65 @@ public class TraderTask implements Runnable {
 	private Mode mode;
 
 	private boolean debug = true;
-	
+
 	public TraderTask(HumanNPC NPC, Player player, Citizens plugin, Mode mode) {
 		this.npc = NPC;
 		this.player = (CraftPlayer) player;
 		this.plugin = plugin;
-		
 		// Create the inventory objects
-		previousNPCInv = new CraftInventoryPlayer( new InventoryPlayer( null ) );
-		previousPlayerInv = new CraftInventoryPlayer( new InventoryPlayer( null ) );
-		
+		this.previousNPCInv = new CraftInventoryPlayer(
+				new InventoryPlayer(null));
+		this.previousPlayerInv = new CraftInventoryPlayer(new InventoryPlayer(
+				null));
 		// clone the items to the newly created inventory objects
-		clonePlayerInventory( npc.getBukkitEntity().getInventory(), this.previousNPCInv );
-		clonePlayerInventory( player.getInventory(), this.previousPlayerInv );
-		
+		clonePlayerInventory(npc.getBukkitEntity().getInventory(),
+				this.previousNPCInv);
+		clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
+
 		this.mode = mode;
 		sendJoinMessage();
 	}
-	private void log( String msg )
-	{
-		if ( debug == true )
-			System.out.println( "Citizens: TraderTask." + msg );
+
+	private void log(String msg) {
+		if (debug == true)
+			System.out.println("Citizens: TraderTask." + msg);
 	}
-	/*
-	 * cloneItemStack
-	 * - Creates a new copy of the ItemStack from the source.
-	 * 
-	 * @ source - the source to be cloned
-	 * 
-	 * returns: the cloned ItemStack
-	 */
-	private ItemStack cloneItemStack( ItemStack source )
-	{
-		if ( source == null ) // sanity check
+
+	// returns a clone of the passed itemstack.
+	private ItemStack cloneItemStack(ItemStack source) {
+		if (source == null)
 			return null;
-		
-		/* might have to add different ways to create ItemStacks depending on which item is being cloned,
-		 * but this should take care of almost all items.
-		 */
-		ItemStack clone = new ItemStack( source.getType(),
-							   source.getAmount(),
-				               source.getDurability(),
-							   ( source.getData() != null ? source.getData().getData() : null ) );
+
+		// might need to use getMaxDurability/Amount later.
+		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
+				source.getDurability(), (source.getData() != null ? source
+						.getData().getData() : null));
 		return clone;
 	}
-	/*
-	 * clonePlayerInventory
-	 * - Clones all ItemStack objects inside the source PlayerInventory object to the target PlayerInventory
-	 * object.
-	 * 
-	 * @ source - the source to be cloned
-	 * @ target - the target ItemStack
-	 * 
-	 * returns: nothing
-	 */
-	private void clonePlayerInventory( PlayerInventory source, PlayerInventory target )
-	{
-		log( "clonePlayerInventory() cloning PlayerInventory." );
-		StopWatch stopwatch = new StopWatch();
-		stopwatch.start();
-		
-		ItemStack[] contents = new ItemStack[ source.getContents().length ];
-		System.arraycopy( source.getContents(), 0, contents, 0, contents.length );
-		target.setContents( contents );
-		
-		target.setHelmet( cloneItemStack( source.getHelmet() ) );
-		target.setChestplate( cloneItemStack( source.getChestplate() ) );
-		target.setLeggings( cloneItemStack( source.getLeggings() ) );
-		target.setBoots( cloneItemStack( source.getBoots() ) );
-		target.setItemInHand( cloneItemStack( source.getItemInHand() ) );
-		
-		stopwatch.stop();
-		log( "clonePlayerInventory() finished cloning PlayerInventory - took: " + stopwatch.getElapsedTime() );
+
+	// Clones the first passed PlayerInventory object to the second one.
+	private void clonePlayerInventory(PlayerInventory source,
+			PlayerInventory target) {
+		ItemStack[] contents = new ItemStack[source.getContents().length];
+		System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
+		target.setContents(contents);
+		/*
+		 * don't think these are necessary.
+		 * target.setHelmet(cloneItemStack(source.getHelmet()));
+		 * target.setChestplate(cloneItemStack(source.getChestplate()));
+		 * target.setLeggings(cloneItemStack(source.getLeggings()));
+		 * target.setBoots(cloneItemStack(source.getBoots()));
+		 * target.setItemInHand(cloneItemStack(source.getItemInHand()));
+		 */
+	}
+
+	public int checkIfContentsNull(PlayerInventory check) {
+		int count = 0;
+		for (ItemStack i : check.getContents()) {
+			if (i == null || i.getType() == Material.AIR)
+				count += 1;
+		}
+		return count;
 	}
 
 	public void addID(int ID) {
@@ -130,31 +117,40 @@ public class TraderTask implements Runnable {
 		if (mode == Mode.STOCK)
 			return;
 		int count = 0;
+
 		boolean found = false;
 		for (ItemStack i : npc.getBukkitEntity().getInventory().getContents()) {
-			if (!(previousNPCInv.getItem(count).equals(i))) {
+			if (!previousNPCInv.getItem(count).equals(i)) {
 				found = true;
 				handleNPCItemClicked(count);
 				break;
 			}
 			count += 1;
 		}
+
 		count = 0;
 		if (!found) {
 			for (ItemStack i : player.getInventory().getContents()) {
-				if (!(previousPlayerInv.getItem(count).equals(i))) {
+				if (!previousPlayerInv.getItem(count).equals(i)) {
 					handlePlayerItemClicked(count);
 					break;
 				}
 				count += 1;
 			}
 		}
-		
-		clonePlayerInventory( npc.getBukkitEntity().getInventory(), this.previousNPCInv );
-		clonePlayerInventory( player.getInventory(), this.previousPlayerInv );
+
+		clonePlayerInventory(npc.getBukkitEntity().getInventory(),
+				this.previousNPCInv);
+		clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
 
 		// Set the itemstack in the player's cursor to null.
 		player.getHandle().inventory.b((net.minecraft.server.ItemStack) null);
+	}
+
+	public boolean checkNullItemStack(ItemStack item) {
+		if (item == null || item.getType() == Material.AIR)
+			return true;
+		return false;
 	}
 
 	private void sendJoinMessage() {
@@ -191,9 +187,15 @@ public class TraderTask implements Runnable {
 	}
 
 	private void handleNPCItemClicked(int slot) {
+		log("PNI: " + checkIfContentsNull(previousNPCInv));
+		log("CNI: " + checkIfContentsNull(npc.getBukkitEntity().getInventory()));
+		log("NPI: "
+				+ (previousNPCInv.getItem(slot) == null || previousNPCInv
+						.getItem(slot).getType() == Material.AIR));
 		npc.getBukkitEntity().getInventory()
 				.setItem(slot, previousNPCInv.getItem(slot));
 		ItemStack i = npc.getBukkitEntity().getInventory().getItem(slot);
+		log("NI: " + (i == null || i.getType() == Material.AIR));
 		if (!(npc.getTraderNPC().isBuyable(i.getTypeId()))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being sold here.");
@@ -248,8 +250,12 @@ public class TraderTask implements Runnable {
 	}
 
 	private void handlePlayerItemClicked(int slot) {
+		log("PPI: "
+				+ (previousPlayerInv.getItem(slot) == null || previousPlayerInv
+						.getItem(slot).getType() == Material.AIR));
 		player.getInventory().setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = player.getInventory().getItem(slot);
+		log("PI: " + (i == null || i.getType() == Material.AIR));
 		if (!npc.getTraderNPC().isSellable(i.getTypeId())) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't available for purchase.");
