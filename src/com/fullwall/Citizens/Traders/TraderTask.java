@@ -5,7 +5,6 @@ import java.util.HashMap;
 import net.minecraft.server.InventoryPlayer;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
@@ -27,8 +26,7 @@ public class TraderTask implements Runnable {
 	private PlayerInventory previousNPCInv;
 	private PlayerInventory previousPlayerInv;
 	private Mode mode;
-
-	private boolean debug = true;
+	private boolean stop = false;
 
 	public TraderTask(HumanNPC NPC, Player player, Citizens plugin, Mode mode) {
 		this.npc = NPC;
@@ -48,46 +46,12 @@ public class TraderTask implements Runnable {
 		sendJoinMessage();
 	}
 
-	private void log(String msg) {
-		if (debug == true)
-			System.out.println("Citizens: TraderTask." + msg);
-	}
-
-	// returns a clone of the passed itemstack.
-	private ItemStack cloneItemStack(ItemStack source) {
-		if (source == null)
-			return null;
-
-		// might need to use getMaxDurability/Amount later.
-		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
-				source.getDurability(), (source.getData() != null ? source
-						.getData().getData() : null));
-		return clone;
-	}
-
 	// Clones the first passed PlayerInventory object to the second one.
 	private void clonePlayerInventory(PlayerInventory source,
 			PlayerInventory target) {
 		ItemStack[] contents = new ItemStack[source.getContents().length];
 		System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
 		target.setContents(contents);
-		/*
-		 * don't think these are necessary.
-		 * target.setHelmet(cloneItemStack(source.getHelmet()));
-		 * target.setChestplate(cloneItemStack(source.getChestplate()));
-		 * target.setLeggings(cloneItemStack(source.getLeggings()));
-		 * target.setBoots(cloneItemStack(source.getBoots()));
-		 * target.setItemInHand(cloneItemStack(source.getItemInHand()));
-		 */
-	}
-
-	public int checkIfContentsNull(PlayerInventory check) {
-		int count = 0;
-		for (ItemStack i : check.getContents()) {
-			if (i == null || i.getType() == Material.AIR)
-				count += 1;
-		}
-		return count;
 	}
 
 	public void addID(int ID) {
@@ -95,6 +59,7 @@ public class TraderTask implements Runnable {
 	}
 
 	public void kill() {
+		stop = true;
 		npc.setFree(true);
 		plugin.getServer().getScheduler().cancelTask(taskID);
 		sendLeaveMessage();
@@ -105,6 +70,8 @@ public class TraderTask implements Runnable {
 
 	@Override
 	public void run() {
+		if (stop)
+			return;
 		if (npc == null
 				|| player == null
 				|| player.getHandle().activeContainer == player.getHandle().defaultContainer) {
@@ -120,7 +87,9 @@ public class TraderTask implements Runnable {
 
 		boolean found = false;
 		for (ItemStack i : npc.getBukkitEntity().getInventory().getContents()) {
-			if (!previousNPCInv.getItem(count).equals(i)) {
+			if (!previousNPCInv.getItem(count).equals(i)
+					&& previousNPCInv.getItem(count).getTypeId() == player
+							.getHandle().inventory.j().id) {
 				found = true;
 				handleNPCItemClicked(count);
 				break;
@@ -131,7 +100,9 @@ public class TraderTask implements Runnable {
 		count = 0;
 		if (!found) {
 			for (ItemStack i : player.getInventory().getContents()) {
-				if (!previousPlayerInv.getItem(count).equals(i)) {
+				if (!previousPlayerInv.getItem(count).equals(i)
+						&& previousPlayerInv.getItem(count).getTypeId() == player
+								.getHandle().inventory.j().id) {
 					handlePlayerItemClicked(count);
 					break;
 				}
@@ -145,12 +116,6 @@ public class TraderTask implements Runnable {
 
 		// Set the itemstack in the player's cursor to null.
 		player.getHandle().inventory.b((net.minecraft.server.ItemStack) null);
-	}
-
-	public boolean checkNullItemStack(ItemStack item) {
-		if (item == null || item.getType() == Material.AIR)
-			return true;
-		return false;
 	}
 
 	private void sendJoinMessage() {
@@ -187,15 +152,9 @@ public class TraderTask implements Runnable {
 	}
 
 	private void handleNPCItemClicked(int slot) {
-		log("PNI: " + checkIfContentsNull(previousNPCInv));
-		log("CNI: " + checkIfContentsNull(npc.getBukkitEntity().getInventory()));
-		log("NPI: "
-				+ (previousNPCInv.getItem(slot) == null || previousNPCInv
-						.getItem(slot).getType() == Material.AIR));
 		npc.getBukkitEntity().getInventory()
 				.setItem(slot, previousNPCInv.getItem(slot));
 		ItemStack i = npc.getBukkitEntity().getInventory().getItem(slot);
-		log("NI: " + (i == null || i.getType() == Material.AIR));
 		if (!(npc.getTraderNPC().isBuyable(i.getTypeId()))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being sold here.");
@@ -250,15 +209,11 @@ public class TraderTask implements Runnable {
 	}
 
 	private void handlePlayerItemClicked(int slot) {
-		log("PPI: "
-				+ (previousPlayerInv.getItem(slot) == null || previousPlayerInv
-						.getItem(slot).getType() == Material.AIR));
 		player.getInventory().setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = player.getInventory().getItem(slot);
-		log("PI: " + (i == null || i.getType() == Material.AIR));
 		if (!npc.getTraderNPC().isSellable(i.getTypeId())) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
-					ChatColor.RED) + " isn't available for purchase.");
+					ChatColor.RED) + " isn't being purchased here.");
 			return;
 		}
 		Sellable sellable = npc.getTraderNPC().getSellable(i.getTypeId());
