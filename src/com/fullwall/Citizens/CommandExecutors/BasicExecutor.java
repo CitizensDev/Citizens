@@ -235,7 +235,7 @@ public class BasicExecutor implements CommandExecutor {
 								.getUID())));
 						sender.sendMessage(ChatColor.GREEN
 								+ "Teleported you to the NPC named "
-								+ StringUtils.yellowify(npc.getSpacedName(),
+								+ StringUtils.yellowify(npc.getStrippedName(),
 										ChatColor.GREEN) + ". Enjoy!");
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
@@ -322,7 +322,7 @@ public class BasicExecutor implements CommandExecutor {
 							+ StringUtils.yellowify("" + npc.getUID(),
 									ChatColor.GREEN)
 							+ " Name: "
-							+ StringUtils.yellowify(npc.getSpacedName(),
+							+ StringUtils.yellowify(npc.getStrippedName(),
 									ChatColor.GREEN) + ".");
 				}
 			} else {
@@ -354,7 +354,7 @@ public class BasicExecutor implements CommandExecutor {
 						PropertyPool.setNPCOwner(npc.getUID(), args[1]);
 						player.sendMessage(ChatColor.GREEN
 								+ "The owner of NPC: §c"
-								+ StringUtils.yellowify(npc.getSpacedName(),
+								+ StringUtils.yellowify(npc.getStrippedName(),
 										ChatColor.GREEN)
 								+ " is now: "
 								+ StringUtils.yellowify(args[1],
@@ -381,7 +381,7 @@ public class BasicExecutor implements CommandExecutor {
 								+ StringUtils.yellowify(args[1],
 										ChatColor.GREEN)
 								+ " to the owner list of "
-								+ StringUtils.yellowify(npc.getSpacedName(),
+								+ StringUtils.yellowify(npc.getStrippedName(),
 										ChatColor.GREEN) + ".");
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
@@ -612,7 +612,7 @@ public class BasicExecutor implements CommandExecutor {
 		sender.sendMessage(ChatColor.GREEN
 				+ text
 				+ " was added to "
-				+ StringUtils.yellowify(n.getSpacedName() + "'s",
+				+ StringUtils.yellowify(n.getStrippedName() + "'s",
 						ChatColor.GREEN) + " text.");
 	}
 
@@ -620,7 +620,7 @@ public class BasicExecutor implements CommandExecutor {
 		Player p = (Player) sender;
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		plugin.handler.resetText(n.getUID());
-		sender.sendMessage(StringUtils.yellowify(n.getSpacedName() + "'s",
+		sender.sendMessage(StringUtils.yellowify(n.getStrippedName() + "'s",
 				ChatColor.GREEN) + " text was reset!");
 	}
 
@@ -671,11 +671,11 @@ public class BasicExecutor implements CommandExecutor {
 		PropertyPool.setNPCTalkWhenClose(n.getUID(), talk);
 		if (talk)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getSpacedName(), ChatColor.GREEN)
+					+ StringUtils.yellowify(n.getStrippedName(), ChatColor.GREEN)
 					+ " will now talk to nearby players.");
 		else if (!talk)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getSpacedName(), ChatColor.GREEN)
+					+ StringUtils.yellowify(n.getStrippedName(), ChatColor.GREEN)
 					+ " will stop talking to nearby players.");
 	}
 
@@ -687,11 +687,11 @@ public class BasicExecutor implements CommandExecutor {
 		PropertyPool.setNPCLookWhenClose(n.getUID(), look);
 		if (look)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getSpacedName(), ChatColor.GREEN)
+					+ StringUtils.yellowify(n.getStrippedName(), ChatColor.GREEN)
 					+ " will now look at players.");
 		else if (!look)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getSpacedName(), ChatColor.GREEN)
+					+ StringUtils.yellowify(n.getStrippedName(), ChatColor.GREEN)
 					+ " will stop looking at players.");
 	}
 

@@ -52,6 +52,20 @@ public class TraderTask implements Runnable {
 		ItemStack[] contents = new ItemStack[source.getContents().length];
 		System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
 		target.setContents(contents);
+
+		target.setHelmet(cloneItemStack(source.getHelmet()));
+		target.setChestplate(cloneItemStack(source.getChestplate()));
+		target.setLeggings(cloneItemStack(source.getLeggings()));
+		target.setBoots(cloneItemStack(source.getBoots()));
+	}
+
+	private ItemStack cloneItemStack(ItemStack source) {
+		if (source == null) // sanity check
+			return null;
+		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
+				source.getDurability(), (source.getData() != null ? source
+						.getData().getData() : null));
+		return clone;
 	}
 
 	public void addID(int ID) {
@@ -129,7 +143,7 @@ public class TraderTask implements Runnable {
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD
 					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getSpacedName(), ChatColor.GOLD)
+					+ StringUtils.yellowify(npc.getStrippedName(), ChatColor.GOLD)
 					+ " started.");
 			break;
 		}
@@ -145,7 +159,7 @@ public class TraderTask implements Runnable {
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD
 					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getSpacedName(), ChatColor.GOLD)
+					+ StringUtils.yellowify(npc.getStrippedName(), ChatColor.GOLD)
 					+ " finished.");
 			break;
 		}

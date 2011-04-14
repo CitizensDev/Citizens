@@ -69,7 +69,7 @@ public class EntityListen extends EntityListener {
 					NPCManager.NPCSelected.put(p.getName(), npc.getUID());
 					p.sendMessage(ChatColor.GREEN
 							+ "You selected NPC ["
-							+ StringUtils.yellowify(npc.getSpacedName(),
+							+ StringUtils.yellowify(npc.getStrippedName(),
 									ChatColor.GREEN)
 							+ "], ID ["
 							+ StringUtils.yellowify("" + npc.getUID(),

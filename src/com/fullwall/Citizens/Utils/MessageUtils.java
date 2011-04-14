@@ -31,7 +31,7 @@ public class MessageUtils {
 	}
 
 	public static void sendText(HumanNPC npc, Entity entity, Citizens plugin) {
-		String name = StringUtils.stripColour(npc.getSpacedName());
+		String name = StringUtils.stripColour(npc.getStrippedName());
 		int UID = npc.getUID();
 		ArrayList<String> array = NPCManager.getBasicNPCText(UID);
 		String text = "";
@@ -43,7 +43,7 @@ public class MessageUtils {
 		if (!text.isEmpty()) {
 			if (Citizens.useNPCColours)
 				text = Citizens.chatFormat.replace("&", "§").replace("%name%",
-						npc.getSpacedName())
+						npc.getStrippedName())
 						+ text;
 			else
 				text = Citizens.chatFormat.replace("%name%",
@@ -55,7 +55,7 @@ public class MessageUtils {
 	}
 
 	public static String getText(HumanNPC npc, Entity entity, Citizens plugin) {
-		String name = StringUtils.stripColour(npc.getSpacedName());
+		String name = StringUtils.stripColour(npc.getStrippedName());
 		int UID = npc.getUID();
 		ArrayList<String> array = NPCManager.getBasicNPCText(UID);
 		String text = "";
@@ -67,7 +67,7 @@ public class MessageUtils {
 		if (!text.isEmpty()) {
 			if (Citizens.useNPCColours) {
 				text = Citizens.chatFormat.replace("&", "§").replace("%name%",
-						npc.getSpacedName())
+						npc.getStrippedName())
 						+ text;
 			} else
 				text = Citizens.chatFormat.replace("%name%",

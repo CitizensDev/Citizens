@@ -42,6 +42,7 @@ public class Citizens extends JavaPlugin {
 	private static final String codename = "Helpers";
 
 	public static int tickDelay = 1;
+	public static int saveDelay = 100;
 	public static double npcRange = 5;
 
 	public static String chatFormat = "[%name%]: ";
@@ -108,7 +109,15 @@ public class Citizens extends JavaPlugin {
 		setupHelp();
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(this, npcRange), 5, tickDelay);
+				new TickTask(this, npcRange), tickDelay, tickDelay);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new Runnable() {
+					@Override
+					public void run() {
+						PropertyPool.saveAll();
+						TraderPropertyPool.saveAll();
+					}
+				}, saveDelay, saveDelay);
 
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "g] (" + codename + ") loaded ");
@@ -213,6 +222,7 @@ public class Citizens extends JavaPlugin {
 		chatFormat = PropertyPool.settings.getString("chat-format");
 		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
 		tickDelay = PropertyPool.settings.getInt("tick-delay");
+		saveDelay = PropertyPool.settings.getInt("save-tick-delay");
 		npcRange = PropertyPool.settings.getDouble("look-range");
 	}
 

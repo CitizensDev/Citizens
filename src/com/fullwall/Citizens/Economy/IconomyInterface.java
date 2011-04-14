@@ -18,6 +18,13 @@ public class IconomyInterface {
 			return false;
 	}
 
+	public static double getBalance(String name) {
+		if (iConomy.getBank().hasAccount(name))
+			return iConomy.getBank().getAccount(name).getBalance();
+		else
+			return -1;
+	}
+
 	public static String getCurrency() {
 		return iConomy.getBank().getCurrency();
 	}
@@ -63,5 +70,13 @@ public class IconomyInterface {
 		iConomy.getBank().getAccount(player.getName())
 				.subtract(price.getPrice());
 		return price.getPrice();
+	}
+
+	public static void give(Player player, int amount) {
+		iConomy.getBank().getAccount(player.getName()).add(amount);
+	}
+
+	public static void pay(Player player, int amount) {
+		iConomy.getBank().getAccount(player.getName()).subtract(amount);
 	}
 }

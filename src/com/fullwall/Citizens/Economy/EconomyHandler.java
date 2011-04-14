@@ -121,4 +121,7 @@ public class EconomyHandler {
 			return "0";
 	}
 
+	public static boolean useIconomy() {
+		return (useiConomy && useEconomy && iConomyEnabled);
+	}
 }

@@ -33,7 +33,7 @@ public class NPC {
 		return ChatColor.stripColor(this.name);
 	}
 
-	public String getSpacedName() {
+	public String getStrippedName() {
 		return ChatColor.stripColor(this.name);
 	}
 

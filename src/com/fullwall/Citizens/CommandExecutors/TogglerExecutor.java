@@ -79,7 +79,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (paid > 0)
 					player.sendMessage(MessageUtils.getPaidMessage(
 							Operation.TRADER_NPC_CREATE, paid,
-							npc.getSpacedName(), "trader", true));
+							npc.getStrippedName(), "trader", true));
 				NPCManager.registerTraderNPC(npc.getUID());
 				toggleTrader(npc, player);
 			}
@@ -93,10 +93,10 @@ public class TogglerExecutor implements CommandExecutor {
 	private void toggleTrader(HumanNPC npc, Player player) {
 		npc.setTrader(!npc.isTrader());
 		if (npc.isTrader())
-			player.sendMessage(StringUtils.yellowify(npc.getSpacedName(),
+			player.sendMessage(StringUtils.yellowify(npc.getStrippedName(),
 					ChatColor.GREEN) + " is now a trader!");
 		else
-			player.sendMessage(StringUtils.yellowify(npc.getSpacedName(),
+			player.sendMessage(StringUtils.yellowify(npc.getStrippedName(),
 					ChatColor.GREEN) + " has stopped being a trader.");
 		TraderPropertyPool.saveTrader(npc.getUID(), npc.isTrader());
 	}
