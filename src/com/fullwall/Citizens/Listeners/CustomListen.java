@@ -28,11 +28,9 @@ public class CustomListen extends CustomEventListener {
 		CitizensBasicNPCEvent e = (CitizensBasicNPCEvent) ev;
 		if (e.isCancelled() == true)
 			return;
-		if (plugin.shouldShowText(e.getPlayer().getItemInHand().getTypeId()) == true) {
-			if (!PropertyPool.getNPCLookWhenClose(e.getNPC().getUID())) {
-				NPCManager.rotateNPCToPlayer(e.getNPC(), e.getPlayer());
-			}
-			e.getPlayer().sendMessage(e.getText());
+		if (!PropertyPool.getLookWhenClose(e.getNPC().getUID())) {
+			NPCManager.rotateNPCToPlayer(e.getNPC(), e.getPlayer());
 		}
+		e.getPlayer().sendMessage(e.getText());
 	}
 }

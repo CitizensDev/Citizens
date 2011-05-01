@@ -15,6 +15,10 @@ public class Buyable {
 		return this.buying;
 	}
 
+	public Integer getBuyingId() {
+		return this.buying.getTypeId();
+	}
+
 	public ItemPrice getPrice() {
 		return this.price;
 	}

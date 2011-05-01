@@ -7,6 +7,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -23,7 +24,10 @@ public class TraderInterface {
 	}
 
 	public static void handleRightClick(HumanNPC NPC, Player player) {
-		if (NPC.isFree()) {
+		if (NPC.getTraderNPC().isFree()) {
+			if (!BasicExecutor.hasPermission("citizens.trader.stock", player)) {
+				return;
+			}
 			if (!NPCManager.validateOwnership(NPC.getUID(), player)) {
 				TraderTask task = new TraderTask(NPC, player, Citizens.plugin,
 						Mode.NORMAL);
@@ -31,7 +35,7 @@ public class TraderInterface {
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);
 				task.addID(id);
-				NPC.setFree(false);
+				NPC.getTraderNPC().setFree(false);
 			} else {
 				TraderTask task = new TraderTask(NPC, player, Citizens.plugin,
 						Mode.STOCK);
@@ -39,7 +43,7 @@ public class TraderInterface {
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);
 				task.addID(id);
-				NPC.setFree(false);
+				NPC.getTraderNPC().setFree(false);
 			}
 			showInventory(NPC, player);
 		} else

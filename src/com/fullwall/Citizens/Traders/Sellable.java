@@ -15,6 +15,10 @@ public class Sellable {
 		return this.selling;
 	}
 
+	public Integer getSellingId() {
+		return this.selling.getTypeId();
+	}
+
 	public ItemPrice getPrice() {
 		return this.price;
 	}

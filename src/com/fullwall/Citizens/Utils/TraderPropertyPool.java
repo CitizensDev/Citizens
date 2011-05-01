@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.PropertyHandler;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderPropertyPool {
 	public static final PropertyHandler traders = new PropertyHandler(
@@ -21,6 +22,8 @@ public class TraderPropertyPool {
 			"plugins/Citizens/Traders/Citizens.selling");
 	public static final PropertyHandler balances = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.balances");
+	public static final PropertyHandler unlimiteds = new PropertyHandler(
+			"plugins/Citizens/Traders/Citizens.unlimited");
 
 	public static void saveAll() {
 		traders.save();
@@ -28,6 +31,7 @@ public class TraderPropertyPool {
 		buying.save();
 		selling.save();
 		balances.save();
+		unlimiteds.save();
 	}
 
 	public static void saveTrader(int UID, boolean state) {
@@ -79,6 +83,21 @@ public class TraderPropertyPool {
 
 	public static int getBalance(int UID) {
 		return balances.getInt(UID);
+	}
+
+	public static void saveUnlimited(int UID, boolean unlimited) {
+		unlimiteds.setBoolean(UID, unlimited);
+	}
+
+	public static boolean getUnlimited(int UID) {
+		return unlimiteds.getBoolean(UID);
+	}
+
+	public static void saveTraderState(HumanNPC npc) {
+		saveTrader(npc.getUID(), npc.isTrader());
+		saveInventory(npc.getUID(), npc.getBukkitEntity().getInventory());
+		saveBalance(npc.getUID(), npc.getTraderNPC().getBalance());
+		saveUnlimited(npc.getUID(), npc.getTraderNPC().isUnlimited());
 	}
 
 }

@@ -11,35 +11,34 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyPool {
 	public static Logger log = Logger.getLogger("Minecraft");
-	public static final PropertyHandler settings = new PropertyHandler(
-			"plugins/Citizens/Citizens.settings");
+	public static final PropertyHandler colours = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.colours");
 	public static final PropertyHandler economy = new PropertyHandler(
 			"plugins/Citizens/Citizens.economy");
 	public static final PropertyHandler itemlookups = new PropertyHandler(
 			"plugins/Citizens/Citizens.itemlookup");
-	public static final PropertyHandler texts = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Citizens.texts");
-	public static final PropertyHandler locations = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Citizens.locations");
-	public static final PropertyHandler colours = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Citizens.colours");
 	public static final PropertyHandler items = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.items");
-	public static final PropertyHandler owners = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Citizens.owners");
-	public static final PropertyHandler talkWhenClose = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
+	public static final PropertyHandler locations = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.locations");
 	public static final PropertyHandler lookat = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.lookat");
+	public static final PropertyHandler owners = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.owners");
+	public static final PropertyHandler settings = new PropertyHandler(
+			"plugins/Citizens/Citizens.settings");
+	public static final PropertyHandler talkwhenclose = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
+	public static final PropertyHandler texts = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.texts");
 
 	public static Location getActualLocationFromName(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
 		if (values.length != 6) {
-			log.info("getLocationFromName didn't have 6 values in values variable! Length:"
+			log.info("getLocationFromName didn't have 6 values in values variable! Length: "
 					+ values.length);
 			return null;
 		} else {
@@ -54,7 +53,7 @@ public class PropertyPool {
 	public static Location getLocationFromID(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
 		if (values.length != 6) {
-			log.info("getLocationFromName didn't have 6 values in values variable! Length:"
+			log.info("getLocationFromName didn't have 6 values in values variable! Length: "
 					+ values.length);
 			return null;
 		} else {
@@ -152,11 +151,11 @@ public class PropertyPool {
 		texts.setString(UID, adding);
 	}
 
-	public static boolean getNPCLookWhenClose(int UID) {
+	public static boolean getLookWhenClose(int UID) {
 		return lookat.getBoolean(UID);
 	}
 
-	public static void setNPCLookWhenClose(int UID, boolean look) {
+	public static void setLookWhenClose(int UID, boolean look) {
 		lookat.setBoolean(UID, look);
 	}
 
@@ -164,28 +163,28 @@ public class PropertyPool {
 		lookat.setBoolean(UID, value);
 	}
 
-	public static boolean getNPCTalkWhenClose(int UID) {
-		return talkWhenClose.getBoolean(UID);
+	public static boolean getTalkWhenClose(int UID) {
+		return talkwhenclose.getBoolean(UID);
 	}
 
-	public static void setNPCTalkWhenClose(int UID, boolean talk) {
-		talkWhenClose.setBoolean(UID, talk);
+	public static void setTalkWhenClose(int UID, boolean talk) {
+		talkwhenclose.setBoolean(UID, talk);
 	}
 
 	public static void saveTalkWhenClose(int UID, boolean value) {
-		talkWhenClose.setBoolean(UID, value);
+		talkwhenclose.setBoolean(UID, value);
 	}
 
-	public static String getNPCOwner(int UID) {
+	public static String getOwner(int UID) {
 		return owners.getString(UID);
 	}
 
-	public static void setNPCOwner(int UID, String name) {
+	public static void setOwner(int UID, String name) {
 		owners.setString(UID, name);
 	}
 
-	public static void addNPCOwner(int UID, String name, Player p) {
-		String[] npcOwners = getNPCOwner(UID).split(",");
+	public static void addOwner(int UID, String name, Player p) {
+		String[] npcOwners = getOwner(UID).split(",");
 		for (int i = 0; i < npcOwners.length; i++) {
 			if (npcOwners[i].equals(name) == true) {
 				p.sendMessage(ChatColor.RED
@@ -193,7 +192,7 @@ public class PropertyPool {
 				return;
 			}
 		}
-		owners.setString(UID, getNPCOwner(UID) + "," + name);
+		owners.setString(UID, getOwner(UID) + "," + name);
 	}
 
 	public static int getNewNpcID() {
@@ -205,14 +204,6 @@ public class PropertyPool {
 		return returnResult;
 	}
 
-	public static boolean checkEconomyEnabled() {
-		return economy.getBoolean("use-economy");
-	}
-
-	public static boolean checkiConomyEnabled() {
-		return economy.getBoolean("use-iconomy");
-	}
-
 	public static int getPrice(String operation) {
 		return economy.getInt(operation);
 	}
@@ -220,6 +211,14 @@ public class PropertyPool {
 	public static int getCurrencyID(String string) {
 		int ID = economy.getInt(string);
 		return ID == -1 ? 1 : ID;
+	}
+
+	public static boolean checkEconomyEnabled() {
+		return economy.getBoolean("use-economy");
+	}
+
+	public static boolean checkiConomyEnabled() {
+		return economy.getBoolean("use-iconomy");
 	}
 
 	public static void changeName(int UID, String changeFrom, String changeTo) {
@@ -241,20 +240,28 @@ public class PropertyPool {
 		colours.save();
 		owners.save();
 		items.save();
-		talkWhenClose.save();
+		talkwhenclose.save();
 		lookat.save();
 	}
 
-	public void removeFromFiles(int UID) {
+	public static void saveBasicNPCState(String name, Location loc,
+			String colour, ArrayList<Integer> items, int UID) {
+		saveLocation(name, loc, UID);
+		saveColour(UID, colour);
+		saveItems(UID, items);
+	}
+
+	public static void removeFromFiles(String name, int UID) {
 		colours.removeKey(UID);
 		items.removeKey(UID);
 		locations.removeKey(UID);
-		HumanNPC NPC = NPCManager.getNPC(UID);
 		locations.setString(
 				"list",
 				locations.getString("list").replace(
-						"" + UID + "_" + NPC.getName() + ",", ""));
+						"" + UID + "_" + name + ",", ""));
+		owners.removeKey(UID);
+		lookat.removeKey(UID);
+		talkwhenclose.removeKey(UID);
 		texts.removeKey(UID);
-		NPCManager.BasicNPCTexts.remove(UID);
 	}
 }

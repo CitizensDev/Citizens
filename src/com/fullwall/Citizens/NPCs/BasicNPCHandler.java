@@ -20,11 +20,11 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	public int spawnNPC(String name, Location loc) {
-		return super.registerBasicNPC(name, loc);
+		return super.registerNPC(name, loc);
 	}
 
 	public void spawnExistingNPC(String name, int UID) {
-		super.registerBasicNPC(name, UID);
+		super.registerNPC(name, UID);
 	}
 
 	public void moveNPC(int UID, Location loc) {
@@ -56,18 +56,18 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	public String getOwner(int UID) {
-		return PropertyPool.getNPCOwner(UID);
+		return PropertyPool.getOwner(UID);
 	}
 
 	public void setOwner(int UID, String name) {
-		PropertyPool.setNPCOwner(UID, name);
+		PropertyPool.setOwner(UID, name);
 	}
 
 	public void setName(int UID, String changeTo) {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.changeName(UID, n.getName(), changeTo);
 		super.removeNPCForRespawn(UID);
-		super.registerBasicNPC(changeTo, UID);
+		super.registerNPC(changeTo, UID);
 	}
 
 	// TODO: maybe remove this, since it changes the skin URL.
@@ -75,7 +75,7 @@ public class BasicNPCHandler extends NPCManager {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
 		super.removeNPCForRespawn(UID);
-		super.registerBasicNPC(n.getName(), UID);
+		super.registerNPC(n.getName(), UID);
 	}
 
 	public void addNPCText(int UID, String text) {
@@ -102,10 +102,6 @@ public class BasicNPCHandler extends NPCManager {
 	// Perhaps merge this with setItemInSlot.
 	public void setItemInHand(Player p, int UID, String material) {
 		Material mat = StringUtils.parseMaterial(material);
-		if (mat == null
-				&& !PropertyPool.itemlookups.getString(material).isEmpty())
-			mat = StringUtils.parseMaterial(PropertyPool.itemlookups
-					.getString(material));
 		if (mat == null) {
 			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
 			return;
@@ -117,17 +113,13 @@ public class BasicNPCHandler extends NPCManager {
 		NPCDataManager.addItems(NPC, items);
 		if ((olditem != 0 && items.get(0) == 0)) {
 			super.removeNPCForRespawn(NPC.getUID());
-			super.registerBasicNPC(NPC.getName(), NPC.getUID());
+			super.registerNPC(NPC.getName(), NPC.getUID());
 		}
 	}
 
 	public void setItemInSlot(Player p, String[] args) {
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		Material mat = StringUtils.parseMaterial(args[1]);
-		if (mat == null
-				&& !PropertyPool.itemlookups.getString(args[1]).isEmpty())
-			mat = StringUtils.parseMaterial(PropertyPool.itemlookups
-					.getString(args[1]));
 		if (mat == null) {
 			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
 			return;
@@ -148,7 +140,7 @@ public class BasicNPCHandler extends NPCManager {
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.
 			super.removeNPCForRespawn(n.getUID());
-			super.registerBasicNPC(n.getName(), n.getUID());
+			super.registerNPC(n.getName(), n.getUID());
 		}
 	}
 }

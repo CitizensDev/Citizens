@@ -30,14 +30,16 @@ public class StringUtils {
 		return newText;
 	}
 
-	public static Material parseMaterial(String string) {
-		Material mat = Material.matchMaterial(string);
+	public static Material parseMaterial(String material) {
+		Material mat = Material.matchMaterial(material);
 		if (mat == null) {
-			if (Character.isDigit(string.charAt(0))) {
-				mat = Material.getMaterial(Integer.parseInt(string));
-				if (mat == null) {
-					return mat;
-				}
+			if (Character.isDigit(material.charAt(0))) {
+				mat = Material.getMaterial(Integer.parseInt(material));
+				if (mat == null
+						&& !PropertyPool.itemlookups.getString(material)
+								.isEmpty())
+					mat = parseMaterial(PropertyPool.itemlookups
+							.getString(material));
 			} else {
 				return mat;
 			}

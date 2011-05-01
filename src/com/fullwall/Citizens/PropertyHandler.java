@@ -59,6 +59,7 @@ public final class PropertyHandler {
 		try {
 			log.info(this.fileName + " not found! Creating empty file at "
 					+ file.getPath() + ".");
+			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
 			log.log(Level.SEVERE, "Unable to create " + file.getPath(), ex);

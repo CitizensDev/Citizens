@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -27,10 +28,8 @@ public class NPCManager {
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
 	public static ConcurrentHashMap<String, Integer> NPCSelected = new ConcurrentHashMap<String, Integer>();
-	public Random ran = new Random(
-			new Random(new Random(new Random(new Random(System
-					.currentTimeMillis()).nextLong()).nextLong()).nextLong())
-					.nextLong());
+	public Random ran = new Random(new Random(new Random(new Random(
+			System.currentTimeMillis()).nextLong()).nextLong()).nextLong());
 	private static NPCList list;
 
 	public NPCManager(Citizens plugin) {
@@ -38,7 +37,7 @@ public class NPCManager {
 		NPCManager.list = new NPCList();
 	}
 
-	public void registerBasicNPC(String name, int UID) {
+	public void registerNPC(String name, int UID) {
 		Location loc = PropertyPool.getLocationFromID(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
@@ -64,24 +63,30 @@ public class NPCManager {
 		NPCDataManager.addItems(npc, items);
 
 		PropertyPool.getSetText(UID);
-		if (TraderPropertyPool.isTrader(UID))
-			npc.setTrader(TraderPropertyPool.getTraderState(UID));
-		saveToFile(name, loc, colour, items, UID);
+		if (TraderPropertyPool.isTrader(UID)) {
+			loadTrader(npc, npc.getTraderNPC(), UID);
+		}
+		PropertyPool.saveBasicNPCState(name, loc, colour, items, UID);
 		registerUID(UID, name);
 		list.put(UID, npc);
 	}
 
-	public int registerBasicNPC(String name, Location loc) {
+	public int registerNPC(String name, Location loc) {
 		int UID = PropertyPool.getNewNpcID();
 		PropertyPool.saveLocation(name, loc, UID);
-		PropertyPool.setNPCLookWhenClose(UID, Citizens.defaultFollowingEnabled);
-		PropertyPool.setNPCTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
-		registerBasicNPC(name, UID);
+		PropertyPool.setLookWhenClose(UID, Citizens.defaultFollowingEnabled);
+		PropertyPool.setTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
+		registerNPC(name, UID);
 		return UID;
 	}
 
-	public static void registerTraderNPC(int UID) {
-
+	private void loadTrader(HumanNPC npc, TraderNPC trader, int UID) {
+		npc.setTrader(TraderPropertyPool.getTraderState(UID));
+		npc.getBukkitEntity()
+				.getInventory()
+				.setContents(TraderPropertyPool.getInventory(UID).getContents());
+		trader.setBalance(TraderPropertyPool.getBalance(UID));
+		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
 	}
 
 	public static void setBasicNPCText(int UID, ArrayList<String> text) {
@@ -141,17 +146,7 @@ public class NPCManager {
 		String actualName = NPCManager.getNPC(UID).getName();
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
-		PropertyPool.colours.removeKey(UID);
-		PropertyPool.items.removeKey(UID);
-		PropertyPool.locations.removeKey(UID);
-		PropertyPool.owners.removeKey(UID);
-		PropertyPool.lookat.removeKey(UID);
-		PropertyPool.talkWhenClose.removeKey(UID);
-		PropertyPool.texts.removeKey(UID);
-		PropertyPool.locations.setString(
-				"list",
-				PropertyPool.locations.getString("list").replace(
-						("" + UID + "_" + actualName + ","), ""));
+		PropertyPool.removeFromFiles(actualName, UID);
 	}
 
 	public static void removeNPCForRespawn(int UID) {
@@ -178,13 +173,6 @@ public class NPCManager {
 			}
 		}
 		return UID;
-	}
-
-	private void saveToFile(String name, Location loc, String colour,
-			ArrayList<Integer> items, int UID) {
-		PropertyPool.saveLocation(name, loc, UID);
-		PropertyPool.saveColour(UID, colour);
-		PropertyPool.saveItems(UID, items);
 	}
 
 	public static boolean isNPC(Entity entity) {
@@ -214,7 +202,7 @@ public class NPCManager {
 		if (Permission.generic(p,
 				permission.replace("citizens.", "citizens.admin.")))
 			return true;
-		String[] npcOwners = PropertyPool.getNPCOwner(UID).split(",");
+		String[] npcOwners = PropertyPool.getOwner(UID).split(",");
 		for (int i = 0; i < npcOwners.length; i++) {
 			if (npcOwners[i].equals(p.getName()))
 				return true;
@@ -223,7 +211,7 @@ public class NPCManager {
 	}
 
 	public static boolean validateOwnership(int UID, Player p) {
-		String[] npcOwners = PropertyPool.getNPCOwner(UID).split(",");
+		String[] npcOwners = PropertyPool.getOwner(UID).split(",");
 		for (int i = 0; i < npcOwners.length; i++) {
 			if (npcOwners[i].equals(p.getName()))
 				return true;

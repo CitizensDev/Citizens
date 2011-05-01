@@ -36,12 +36,12 @@ public class TickTask implements Runnable {
 					if (checkLocation(entry.getValue().getBukkitEntity()
 							.getLocation(), p.getLocation())) {
 						// If auto-rotate is true, rotate
-						if (PropertyPool.getNPCLookWhenClose(entry.getValue()
+						if (PropertyPool.getLookWhenClose(entry.getValue()
 								.getUID()) == true) {
 							NPCManager.rotateNPCToPlayer(entry.getValue(), p);
 						}
 						// If auto-talk is true
-						if (PropertyPool.getNPCTalkWhenClose(entry.getValue()
+						if (PropertyPool.getTalkWhenClose(entry.getValue()
 								.getUID())
 						// If we haven't already spoken to the player.
 								&& (!hasSaidText.containsKey(entry.getKey()) || (!hasSaidText
@@ -61,7 +61,7 @@ public class TickTask implements Runnable {
 
 					} // We're out of range, so if player has been talked to,
 						// reset its talked-to state.
-					else if (PropertyPool.getNPCTalkWhenClose(entry.getValue()
+					else if (PropertyPool.getTalkWhenClose(entry.getValue()
 							.getUID())
 							&& hasSaidText.containsKey(entry.getKey())
 							&& hasSaidText.get(entry.getKey()).containsKey(

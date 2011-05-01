@@ -1,10 +1,13 @@
 package com.fullwall.Citizens.CommandExecutors;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
@@ -12,6 +15,7 @@ import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderExecutor implements CommandExecutor {
@@ -47,7 +51,7 @@ public class TraderExecutor implements CommandExecutor {
 		if (!npc.isTrader()) {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a trader yet.");
 			return true;
-		} else {// trader balance add/subtract [amt]
+		} else {
 			if (args.length == 3 && args[0].equals("balance")) {
 				if (BasicExecutor.hasPermission("citizens.trader.balance",
 						sender)) {
@@ -56,7 +60,7 @@ public class TraderExecutor implements CommandExecutor {
 							player.sendMessage(ChatColor.GRAY
 									+ "This server is not using an economy plugin.");
 						else
-							changeNPCBalance(player, npc, args);
+							changeBalance(player, npc, args);
 					} catch (NumberFormatException e) {
 						player.sendMessage(ChatColor.RED
 								+ "Invalid balance change amount entered.");
@@ -64,12 +68,88 @@ public class TraderExecutor implements CommandExecutor {
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				return true;
+			} else if (args.length == 3
+					&& (args[0].contains("b") || args[0].contains("s"))) {
+				// trader buy/sell item1/remove 2ndarg (if it has a ':' its an
+				// item, else iconomy)
+				if (BasicExecutor
+						.hasPermission("citizens.trader.stock", sender)) {
+					changeTraderBuySell(npc, player, args[1], args[2],
+							args[0].contains("s"));
+				} else
+					player.sendMessage(MessageUtils.noPermissionsMessage);
+				return true;
 			}
+			TraderPropertyPool.saveTraderState(npc);
 		}
 		return false;
 	}
 
-	private void changeNPCBalance(Player player, HumanNPC npc, String[] args)
+	private void changeTraderBuySell(HumanNPC npc, Player player, String item,
+			String price, boolean selling) {
+		if (item.contains("rem")) {
+			Material mat = StringUtils.parseMaterial(price);
+			if (mat == null) {
+				player.sendMessage(ChatColor.RED
+						+ "Invalid item ID or name specified.");
+				return;
+			}
+			if (selling) {
+				if (npc.getTraderNPC().getSellable(mat.getId()) == null) {
+					player.sendMessage(ChatColor.RED
+							+ "The NPC is not currently selling that item.");
+					return;
+				} else {
+					npc.traderNPC.removeSellable(mat.getId());
+					player.sendMessage(ChatColor.GREEN
+							+ "Removed "
+							+ StringUtils.yellowify(mat.name(), ChatColor.GREEN)
+							+ " from the NPC's selling list.");
+				}
+			} else {
+				if (npc.getTraderNPC().getBuyable(mat.getId()) == null) {
+					player.sendMessage(ChatColor.RED
+							+ "The NPC is not currently buying that item.");
+					return;
+				} else {
+					npc.traderNPC.removeBuyable(mat.getId());
+					player.sendMessage(ChatColor.GREEN
+							+ "Removed "
+							+ StringUtils.yellowify(mat.name(), ChatColor.GREEN)
+							+ " from the NPC's buying list.");
+				}
+			}
+			return;
+		}
+		String[] split = item.split(":");
+		ItemStack stack = createItemStack(split);
+		if (stack == null) {
+			player.sendMessage(ChatColor.RED
+					+ "Invalid item ID or name specified.");
+			return;
+		}
+	}
+
+	private ItemStack createItemStack(String[] split) {
+		int amount = 1;
+		int data = 0;
+		Material mat = StringUtils.parseMaterial(split[0]);
+		if (mat == null) {
+			return null;
+		}
+		if (split.length > 1)
+			amount = Integer.parseInt(split[1]);
+		if (split.length > 2)
+			data = Integer.parseInt(split[2]);
+		ItemStack stack = new ItemStack(mat, amount);
+		if (data > 0) {
+			MaterialData mdata = new MaterialData(data);
+			stack.setData(mdata);
+		}
+		return stack;
+	}
+
+	private void changeBalance(Player player, HumanNPC npc, String[] args)
 			throws NumberFormatException {
 		int amount = Integer.valueOf(args[2]);
 		if (args[1].equals("give")) {

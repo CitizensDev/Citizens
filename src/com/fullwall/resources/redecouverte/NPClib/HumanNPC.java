@@ -1,9 +1,6 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
-import java.lang.reflect.Field;
 import java.util.logging.Logger;
-import net.minecraft.server.EntityLiving;
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -26,7 +23,6 @@ public class HumanNPC extends NPC {
 	private boolean isTrader = false;
 
 	public TraderNPC traderNPC = new TraderNPC(this);
-	private boolean isFree = true;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
@@ -60,22 +56,14 @@ public class HumanNPC extends NPC {
 		return this.isTrader;
 	}
 
-	public void setFree(boolean free) {
-		this.isFree = free;
-	}
-
-	public boolean isFree() {
-		return this.isFree;
-	}
-
 	// For Teleportation
 	public void moveTo(double x, double y, double z, float yaw, float pitch) {
-		this.mcEntity.c(x, y, z, yaw, pitch);
+		this.mcEntity.setPositionRotation(x, y, z, yaw, pitch);
 	}
 
 	// For NPC movement
 	public void moveNPC(double x, double y, double z) {
-		this.mcEntity.c(x, y, z);
+		this.mcEntity.setPosition(x, y, z);
 	}
 
 	public void setTarget(double x, double y, double z) {
@@ -149,7 +137,7 @@ public class HumanNPC extends NPC {
 	public void applyGravity() {
 		fallingSpeed -= GravityPerSecond / 100;
 		double prevY = this.mcEntity.locY;
-		this.mcEntity.c(0, fallingSpeed, 0);
+		this.mcEntity.f(0, fallingSpeed, 0);
 		double diff = this.mcEntity.locY - prevY;
 		if (diff - fallingSpeed > 0.01)
 			fallingSpeed = 0.0;
@@ -158,10 +146,14 @@ public class HumanNPC extends NPC {
 	public void attackLivingEntity(LivingEntity ent) {
 		try {
 			this.mcEntity.animateArmSwing();
-			Field f = CraftLivingEntity.class.getDeclaredField("entity");
-			f.setAccessible(true);
-			EntityLiving lEntity = (EntityLiving) f.get(ent);
-			this.mcEntity.h(lEntity);
+			/*
+			 * Field f = CraftLivingEntity.class.getDeclaredField("entity");
+			 * f.setAccessible(true); EntityLiving lEntity = (EntityLiving)
+			 * f.get(ent); this.mcEntity.h(lEntity); Probably have to find the
+			 * minecraft code that simply attacks an entity (so as to include
+			 * item damage bonuses)
+			 */
+			ent.damage(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -169,5 +161,9 @@ public class HumanNPC extends NPC {
 
 	public void animateArmSwing() {
 		this.mcEntity.animateArmSwing();
+	}
+
+	public void actHurt() {
+		this.mcEntity.actHurt();
 	}
 }

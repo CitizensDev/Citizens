@@ -1,27 +1,32 @@
 package com.fullwall.Citizens.Traders;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC {
 
-	private HumanNPC npc;
-	private int balance;
-
 	public TraderNPC(HumanNPC npc) {
 		this.npc = npc;
 	}
 
-	private ArrayList<Buyable> buying = new ArrayList<Buyable>();
-	private ArrayList<Sellable> selling = new ArrayList<Sellable>();
+	private HumanNPC npc;
+
+	private int balance;
+
+	private boolean unlimited = false;
+	private boolean free = true;
+
+	private HashMap<Integer, Buyable> buying = new HashMap<Integer, Buyable>();
+	private HashMap<Integer, Sellable> selling = new HashMap<Integer, Sellable>();
 
 	public void addBuyable(Buyable buying) {
-		this.buying.add(buying);
+		this.buying.put(buying.getBuyingId(), buying);
 	}
 
 	public void addSellable(Sellable selling) {
-		this.selling.add(selling);
+		this.selling.put(selling.getSellingId(), selling);
 	}
 
 	public int getBalance() {
@@ -32,90 +37,57 @@ public class TraderNPC {
 		this.balance = balance;
 	}
 
-	public ArrayList<Buyable> getBuyables() {
-		return this.buying;
+	public Collection<Buyable> getBuyables() {
+		return this.buying.values();
 	}
 
 	public Buyable getBuyable(int itemID) {
 		if (checkBuyingIntegrity()) {
-			for (Buyable b : buying) {
-				if (b.getBuying().getTypeId() == itemID)
-					return b;
-			}
+			if (buying.containsKey(itemID))
+				return buying.get(itemID);
 		}
 		return null;
 	}
 
-	public ArrayList<Sellable> getSellables() {
-		return this.selling;
+	public Collection<Sellable> getSellables() {
+		return this.selling.values();
 	}
 
 	public Sellable getSellable(int itemID) {
 		if (checkSellingIntegrity()) {
-			for (Sellable s : selling) {
-				if (s.getSelling().getTypeId() == itemID)
-					return s;
-			}
+			if (selling.containsKey(itemID))
+				return selling.get(itemID);
 		}
 		return null;
 	}
 
-	public void removeBuyable(int index, boolean item) {
+	public void removeBuyable(int ID) {
 		if (checkBuyingIntegrity()) {
-			if (!item)
-				this.buying.remove(index);
-			else {
-				int count = 0;
-				boolean found = false;
-				for (Buyable b : buying) {
-					if (b.getBuying().getTypeId() == index) {
-						found = true;
-						break;
-					}
-					count += 1;
-				}
-				if (found)
-					this.buying.remove(count);
-			}
+			if (buying.containsKey(ID))
+				this.buying.remove(ID);
 		}
 	}
 
-	public void removeSellable(int index, boolean item) {
+	public void removeSellable(int ID) {
 		if (checkSellingIntegrity()) {
-			if (!item)
-				this.selling.remove(index);
-			else {
-				int count = 0;
-				boolean found = false;
-				for (Sellable s : selling) {
-					if (s.getSelling().getTypeId() == index) {
-						found = true;
-						break;
-					}
-					count += 1;
-				}
-				if (found)
-					this.selling.remove(count);
-			}
+			if (selling.containsKey(ID))
+				this.selling.remove(ID);
 		}
 	}
 
 	public boolean isBuyable(int itemID) {
 		if (checkBuyingIntegrity()) {
-			for (Buyable b : buying) {
-				if (b.getBuying().getTypeId() == itemID)
-					return true;
-			}
+			if (buying.containsKey(itemID))
+				return true;
+
 		}
 		return false;
 	}
 
 	public boolean isSellable(int itemID) {
 		if (checkSellingIntegrity()) {
-			for (Sellable s : selling) {
-				if (s.getSelling().getTypeId() == itemID)
-					return true;
-			}
+			if (selling.containsKey(itemID))
+				return true;
 		}
 		return false;
 	}
@@ -130,5 +102,21 @@ public class TraderNPC {
 		if (this.selling == null || this.selling.isEmpty())
 			return false;
 		return true;
+	}
+
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+
+	public boolean isFree() {
+		return this.free;
+	}
+
+	public void setUnlimited(boolean unlimited) {
+		this.unlimited = unlimited;
+	}
+
+	public boolean isUnlimited() {
+		return this.unlimited;
 	}
 }

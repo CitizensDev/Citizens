@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Traders;
 import java.util.HashMap;
 
 import net.minecraft.server.InventoryPlayer;
+import net.minecraft.server.Packet103SetSlot;
 
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -16,12 +17,15 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Traders.TraderInterface.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderTask implements Runnable {
 	private HumanNPC npc;
 	private CraftPlayer player;
 	private int taskID;
+	private int previousNPCClickedSlot = 0;
+	private int previousPlayerClickedSlot = 0;
 	private Citizens plugin;
 	private PlayerInventory previousNPCInv;
 	private PlayerInventory previousPlayerInv;
@@ -74,9 +78,10 @@ public class TraderTask implements Runnable {
 
 	public void kill() {
 		stop = true;
-		npc.setFree(true);
+		this.npc.getTraderNPC().setFree(true);
 		plugin.getServer().getScheduler().cancelTask(taskID);
 		sendLeaveMessage();
+		TraderPropertyPool.saveTraderState(npc);
 		int index = TraderInterface.tasks.indexOf(taskID);
 		if (index != -1)
 			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));
@@ -86,6 +91,8 @@ public class TraderTask implements Runnable {
 	public void run() {
 		if (stop)
 			return;
+		if (mode == Mode.STOCK)
+			return;
 		if (npc == null
 				|| player == null
 				|| player.getHandle().activeContainer == player.getHandle().defaultContainer) {
@@ -94,8 +101,6 @@ public class TraderTask implements Runnable {
 		}
 		// If the player cursor is empty (no itemstack in it).
 		if (player.getHandle().inventory.j() == null)
-			return;
-		if (mode == Mode.STOCK)
 			return;
 		int count = 0;
 
@@ -130,6 +135,9 @@ public class TraderTask implements Runnable {
 
 		// Set the itemstack in the player's cursor to null.
 		player.getHandle().inventory.b((net.minecraft.server.ItemStack) null);
+		// Get rid of the picture on the cursor.
+		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
+		player.getHandle().netServerHandler.sendPacket(packet);
 	}
 
 	private void sendJoinMessage() {
@@ -143,8 +151,8 @@ public class TraderTask implements Runnable {
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD
 					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getStrippedName(), ChatColor.GOLD)
-					+ " started.");
+					+ StringUtils.yellowify(npc.getStrippedName(),
+							ChatColor.GOLD) + " started.");
 			break;
 		}
 	}
@@ -159,13 +167,14 @@ public class TraderTask implements Runnable {
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD
 					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getStrippedName(), ChatColor.GOLD)
-					+ " finished.");
+					+ StringUtils.yellowify(npc.getStrippedName(),
+							ChatColor.GOLD) + " finished.");
 			break;
 		}
 	}
 
 	private void handleNPCItemClicked(int slot) {
+
 		npc.getBukkitEntity().getInventory()
 				.setItem(slot, previousNPCInv.getItem(slot));
 		ItemStack i = npc.getBukkitEntity().getInventory().getItem(slot);
@@ -175,6 +184,19 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		Buyable buyable = npc.getTraderNPC().getBuyable(i.getTypeId());
+		if (previousNPCClickedSlot == slot) {
+			player.sendMessage(ChatColor.AQUA
+					+ "Buying "
+					+ StringUtils.yellowify(buyable.getBuying().getAmount()
+							+ " " + buyable.getBuying().getType().name(),
+							ChatColor.AQUA)
+					+ "(s) at "
+					+ StringUtils.yellowify(
+							MessageUtils.getPriceMessage(buyable.getPrice()),
+							ChatColor.AQUA) + ".");
+			return;
+		}
+		previousNPCClickedSlot = slot;
 		int amount = npc.getBukkitEntity().getInventory().getItem(slot)
 				.getAmount();
 		if (amount - buyable.getBuying().getAmount() <= 0) {
@@ -206,16 +228,7 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		EconomyHandler.pay(buyable.getPrice(), player);
-		player.sendMessage(ChatColor.GREEN
-				+ "Bought "
-				+ StringUtils
-						.yellowify(buyable.getBuying().getAmount() + " "
-								+ buyable.getBuying().getType().name(),
-								ChatColor.GREEN)
-				+ "(s) at "
-				+ StringUtils.yellowify(
-						MessageUtils.getPriceMessage(buyable.getPrice()),
-						ChatColor.GREEN) + " per stack.");
+		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		npc.getBukkitEntity()
 				.getInventory()
 				.setContents(
@@ -231,6 +244,19 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		Sellable sellable = npc.getTraderNPC().getSellable(i.getTypeId());
+		if (previousPlayerClickedSlot == slot) {
+			player.sendMessage(ChatColor.AQUA
+					+ "Selling "
+					+ StringUtils.yellowify(sellable.getSelling().getAmount()
+							+ " " + sellable.getSelling().getType().name(),
+							ChatColor.AQUA)
+					+ "(s) at "
+					+ StringUtils.yellowify(
+							MessageUtils.getPriceMessage(sellable.getPrice()),
+							ChatColor.AQUA) + ".");
+			return;
+		}
+		previousPlayerClickedSlot = slot;
 		int amount = player.getInventory().getItem(slot).getAmount();
 		if (amount - sellable.getSelling().getAmount() <= 0) {
 			player.sendMessage(ChatColor.RED
@@ -262,15 +288,7 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		EconomyHandler.pay(sellable.getPrice(), npc);
-		player.sendMessage(ChatColor.GREEN
-				+ "Sold "
-				+ StringUtils.yellowify(sellable.getSelling().getAmount() + " "
-						+ sellable.getSelling().getType().name(),
-						ChatColor.GREEN)
-				+ "(s) at "
-				+ StringUtils.yellowify(
-						MessageUtils.getPriceMessage(sellable.getPrice()),
-						ChatColor.GREEN) + " per stack.");
+		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		npc.getBukkitEntity()
 				.getInventory()
 				.setContents(

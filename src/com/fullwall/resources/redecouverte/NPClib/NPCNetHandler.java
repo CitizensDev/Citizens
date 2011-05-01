@@ -21,11 +21,11 @@ public class NPCNetHandler extends NetServerHandler {
 	}
 
 	@Override
-	public void a(String s) {
+	public void a(Packet10Flying packet10flying) {
 	}
 
 	@Override
-	public void a(Packet10Flying packet10flying) {
+	public void sendMessage(String s) {
 	}
 
 	@Override
@@ -49,10 +49,6 @@ public class NPCNetHandler extends NetServerHandler {
 	}
 
 	@Override
-	public void b(Packet packet) {
-	}
-
-	@Override
 	public void a(Packet16BlockItemSwitch packet16blockitemswitch) {
 	}
 
@@ -73,17 +69,7 @@ public class NPCNetHandler extends NetServerHandler {
 	}
 
 	@Override
-	public int b() {
-		return 0;
-	}
-
-	@Override
-	public void b(String s) {
-	}
-
-	@Override
-	public String c() {
-		return "";
+	public void sendPacket(Packet packet) {
 	}
 
 	@Override
@@ -104,6 +90,11 @@ public class NPCNetHandler extends NetServerHandler {
 
 	@Override
 	public void a(Packet106Transaction packet106transaction) {
+	}
+
+	@Override
+	public int b() {
+		return super.b();
 	}
 
 	@Override

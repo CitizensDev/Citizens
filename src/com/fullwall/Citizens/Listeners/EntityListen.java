@@ -53,27 +53,38 @@ public class EntityListen extends EntityListener {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
+				boolean found = false;
 				// Dispatch text event.
-				CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
-						npc.getName(), MessageUtils.getText(npc, e.getTarget(),
-								plugin), npc, Reason.RIGHT_CLICK,
-						(Player) e.getTarget());
-				plugin.getServer().getPluginManager().callEvent(ev);
+				if (plugin.shouldShowText(p.getItemInHand().getTypeId()) == true) {
+					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
+							npc.getName(), MessageUtils.getText(npc,
+									e.getTarget(), plugin), npc,
+							Reason.RIGHT_CLICK, (Player) e.getTarget());
+					plugin.getServer().getPluginManager().callEvent(ev);
+					found = true;
+				}
 				if (npc.isTrader()) {
 					TraderInterface.handleRightClick(npc, p);
+					found = true;
 				}
+				if (found)
+					return;
 				// If we're using a selection tool, select the NPC as well.
 				// Check if we haven't already selected the NPC too.
-				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true
-						&& !NPCManager.validateSelected(p, npc)) {
-					NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-					p.sendMessage(ChatColor.GREEN
-							+ "You selected NPC ["
-							+ StringUtils.yellowify(npc.getStrippedName(),
-									ChatColor.GREEN)
-							+ "], ID ["
-							+ StringUtils.yellowify("" + npc.getUID(),
-									ChatColor.GREEN) + "]");
+				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true) {
+					if (!NPCManager.validateSelected(p, npc)) {
+						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
+						p.sendMessage(ChatColor.GREEN
+								+ "You selected NPC ["
+								+ StringUtils.yellowify(npc.getStrippedName(),
+										ChatColor.GREEN)
+								+ "], ID ["
+								+ StringUtils.yellowify("" + npc.getUID(),
+										ChatColor.GREEN) + "]");
+					} else {
+						p.sendMessage(ChatColor.GREEN
+								+ "That NPC is already selected!");
+					}
 				}
 			}
 		}

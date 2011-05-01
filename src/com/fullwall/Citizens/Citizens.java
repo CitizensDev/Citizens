@@ -38,16 +38,18 @@ public class Citizens extends JavaPlugin {
 	public final WorldListen wl = new WorldListen(this);
 	public final PluginListen pl = new PluginListen(this);
 	public final BasicNPCHandler handler = new BasicNPCHandler(this);
+
 	public static Citizens plugin;
-	private static final String codename = "Helpers";
 
 	public static int tickDelay = 1;
-	public static int saveDelay = 100;
+	public static int saveDelay = 72000;
+
 	public static double npcRange = 5;
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
 	public static String NPCColour = "§f";
+	private static final String codename = "Helpers";
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
@@ -104,7 +106,6 @@ public class Citizens extends JavaPlugin {
 			log.info("[Citizens]: Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
 			setupNPCs();
 		}
-
 		// Compatibility with Help plugin.
 		setupHelp();
 
@@ -114,13 +115,15 @@ public class Citizens extends JavaPlugin {
 				new Runnable() {
 					@Override
 					public void run() {
+						log.info("[Citizens]: Saving npc files to disk...");
 						PropertyPool.saveAll();
 						TraderPropertyPool.saveAll();
+						log.info("[Citizens]: Saved.");
 					}
 				}, saveDelay, saveDelay);
 
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "g] (" + codename + ") loaded ");
+				+ pdfFile.getVersion() + "i] (" + codename + ") loaded");
 	}
 
 	@Override
@@ -131,7 +134,7 @@ public class Citizens extends JavaPlugin {
 		PropertyPool.saveAll();
 		TraderPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "g] (" + codename + ") disabled");
+				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
 	}
 
 	private void setupHelp() {
@@ -221,15 +224,18 @@ public class Citizens extends JavaPlugin {
 				.getBoolean("default-talk-when-close");
 		chatFormat = PropertyPool.settings.getString("chat-format");
 		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
-		tickDelay = PropertyPool.settings.getInt("tick-delay");
-		saveDelay = PropertyPool.settings.getInt("save-tick-delay");
-		npcRange = PropertyPool.settings.getDouble("look-range");
+		if (PropertyPool.settings.keyExists("tick-delay"))
+			tickDelay = PropertyPool.settings.getInt("tick-delay");
+		if (PropertyPool.settings.keyExists("save-tick-delay"))
+			saveDelay = PropertyPool.settings.getInt("save-tick-delay");
+		if (PropertyPool.settings.keyExists("look-range"))
+			npcRange = PropertyPool.settings.getDouble("look-range");
 	}
 
 	private void setupNPCs() {
 		// Start reloading old NPCs from the config files.
 		String[] list = PropertyPool.locations.getString("list").split(",");
-		if (list.length > 0 && list[0] != "") {
+		if (list.length > 0 && !list[0].isEmpty()) {
 			for (String name : list) {
 				// Conversion from old to new save format:
 				// Maybe ready to remove now? For next release anyways.
@@ -251,7 +257,7 @@ public class Citizens extends JavaPlugin {
 							PropertyPool.texts.getString(oldName));
 					PropertyPool.texts.removeKey(oldName);
 					PropertyPool.lookat.setBoolean(UID, true);
-					PropertyPool.talkWhenClose.setBoolean(UID, false);
+					PropertyPool.talkwhenclose.setBoolean(UID, false);
 					PropertyPool.locations.setString(
 							"list",
 							PropertyPool.locations.getString("list").replace(
@@ -274,7 +280,7 @@ public class Citizens extends JavaPlugin {
 			}
 		}
 		log.info("[" + this.getDescription().getName() + "]: Loaded "
-				+ NPCManager.GlobalUIDs.size() + " NPC's");
+				+ NPCManager.GlobalUIDs.size() + " NPCs.");
 	}
 
 	// Checks if an item ID can be used as the get text tool.
