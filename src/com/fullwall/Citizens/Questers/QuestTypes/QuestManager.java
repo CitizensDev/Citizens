@@ -6,14 +6,16 @@ public class QuestManager {
 		// go from one place to another
 		LOCATION,
 		// deliver an item to another NPC
-		DELIVERY, 
+		DELIVERY,
 		// kill a certain amount of players
-		PLAYER_COMBAT, 
+		PLAYER_COMBAT,
 		// kill a certain type/number of monsters
 		MONSTER_COMBAT,
 		// travel a certain distance
-		DISTANCE, 
-		// destory a certain type/number of blocks
-		DESTROY
+		DISTANCE,
+		// destroy a certain type/number of blocks
+		DESTROY,
+		// place a certain type/number of blocks
+		BUILD
 	}
 }
