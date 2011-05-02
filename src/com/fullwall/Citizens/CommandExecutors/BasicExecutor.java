@@ -13,6 +13,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -512,7 +513,8 @@ public class BasicExecutor implements CommandExecutor {
 					+ "NPC name length is too long. The limit is 15 characters.");
 			return;
 		}
-		int UID = plugin.handler.spawnNPC(args[1], player.getLocation());
+		int UID = plugin.handler.spawnNPC(args[1], player.getLocation(),
+				player.getName());
 		plugin.handler.setNPCText(UID, texts);
 		plugin.handler.setOwner(UID, player.getName());
 		player.sendMessage(ChatColor.GREEN + "The NPC "
@@ -565,7 +567,7 @@ public class BasicExecutor implements CommandExecutor {
 					+ "NPCs can't have names longer than 16 characters.");
 			return;
 		}
-		plugin.handler.setName(n.getUID(), name);
+		plugin.handler.setName(n.getUID(), name, n.getOwner());
 		sender.sendMessage(ChatColor.GREEN
 				+ StringUtils.yellowify(n.getName(), ChatColor.GREEN)
 				+ "'s name was set to "
@@ -580,7 +582,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else {
 			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
 					.getName()));
-			plugin.handler.setColour(n.getUID(), args[1]);
+			plugin.handler.setColour(n.getUID(), args[1], n.getOwner());
 		}
 	}
 
@@ -658,22 +660,20 @@ public class BasicExecutor implements CommandExecutor {
 		ArrayList<Integer> items = PropertyPool.getItems(NPC.getUID());
 		boolean lookatplayers = PropertyPool.getLookWhenClose(NPC.getUID());
 		boolean talkwhenclose = PropertyPool.getTalkWhenClose(NPC.getUID());
-		int newUID = plugin.handler.spawnNPC(NPC.getName(), p.getLocation());
+		int newUID = plugin.handler.spawnNPC(NPC.getName(), p.getLocation(),
+				p.getName());
 
 		HumanNPC newNPC = NPCManager.getNPC(newUID);
-
-		PropertyPool.saveColour(newUID, colour);
-		PropertyPool.saveText(newUID, texts);
-		PropertyPool.saveItems(newUID, items);
-		PropertyPool.saveLookWhenClose(newUID, lookatplayers);
-		PropertyPool.saveTalkWhenClose(newUID, talkwhenclose);
-		PropertyPool.setOwner(newUID, owner);
+		newNPC.setNPCData(new NPCData(newNPC.getName(), newNPC.getUID(), newNPC
+				.getLocation(), colour, items, texts, lookatplayers,
+				talkwhenclose, owner));
+		PropertyPool.saveBasicNPCState(newUID, newNPC.getNPCData());
 
 		// NPCDataManager.addItems(newNPC, items);
 
 		String name = newNPC.getName();
 		NPCManager.removeNPCForRespawn(newUID);
-		plugin.handler.spawnExistingNPC(name, newUID);
+		plugin.handler.spawnExistingNPC(name, newUID, newNPC.getOwner());
 	}
 
 	private void changeTalkWhenClose(Player p, String bool) {

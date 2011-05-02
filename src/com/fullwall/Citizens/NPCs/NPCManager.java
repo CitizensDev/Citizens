@@ -37,7 +37,7 @@ public class NPCManager {
 		NPCManager.list = new NPCList();
 	}
 
-	public void registerNPC(String name, int UID) {
+	public void registerNPC(String name, int UID, String owner) {
 		Location loc = PropertyPool.getLocationFromID(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
@@ -66,17 +66,21 @@ public class NPCManager {
 		if (TraderPropertyPool.isTrader(UID)) {
 			loadTrader(npc, npc.getTraderNPC(), UID);
 		}
-		PropertyPool.saveBasicNPCState(name, loc, colour, items, UID);
+		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
+				.get(UID), Citizens.defaultFollowingEnabled,
+				Citizens.defaultTalkWhenClose, owner));
+		PropertyPool.setOwner(UID, owner);
+		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
 		registerUID(UID, name);
 		list.put(UID, npc);
 	}
 
-	public int registerNPC(String name, Location loc) {
+	public int registerNPC(String name, Location loc, String owner) {
 		int UID = PropertyPool.getNewNpcID();
 		PropertyPool.saveLocation(name, loc, UID);
 		PropertyPool.setLookWhenClose(UID, Citizens.defaultFollowingEnabled);
 		PropertyPool.setTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
-		registerNPC(name, UID);
+		registerNPC(name, UID, owner);
 		return UID;
 	}
 

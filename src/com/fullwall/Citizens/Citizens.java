@@ -267,8 +267,9 @@ public class Citizens extends JavaPlugin {
 				Location loc = PropertyPool.getLocationFromID(Integer
 						.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					handler.spawnExistingNPC(name.split("_", 2)[1],
-							Integer.valueOf(name.split("_")[0]));
+					handler.spawnExistingNPC(name.split("_", 2)[1], Integer
+							.valueOf(name.split("_")[0]), PropertyPool
+							.getOwner(Integer.valueOf(name.split("_")[0])));
 					ArrayList<String> text = PropertyPool.getText(Integer
 							.valueOf(name.split("_")[0]));
 					if (text != null)

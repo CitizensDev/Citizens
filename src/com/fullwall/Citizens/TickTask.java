@@ -28,46 +28,50 @@ public class TickTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
-			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
-					.entrySet()) {
-				{
-					// If the player is within 'seeing' range
-					if (checkLocation(entry.getValue().getBukkitEntity()
-							.getLocation(), p.getLocation())) {
-						// If auto-rotate is true, rotate
-						if (PropertyPool.getLookWhenClose(entry.getValue()
-								.getUID()) == true) {
-							NPCManager.rotateNPCToPlayer(entry.getValue(), p);
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
+				.entrySet()) {
+			{
+				HumanNPC npc = entry.getValue();
+				int UID = npc.getUID();
+				int entityID = entry.getKey();
+				for (Player p : plugin.getServer().getOnlinePlayers()) {
+					String name = p.getName();
+					if (PropertyPool.getLookWhenClose(UID)
+							|| PropertyPool.getTalkWhenClose(UID)) {
+						// If the player is within 'seeing' range
+						if (checkLocation(npc.getBukkitEntity().getLocation(),
+								p.getLocation())) {
+							// If auto-rotate is true, rotate
+							if (PropertyPool.getLookWhenClose(UID)) {
+								NPCManager.rotateNPCToPlayer(npc, p);
+							}
+							// If auto-talk is true
+							if (PropertyPool.getTalkWhenClose(UID)
+									// If we haven't already spoken to the
+									// player.
+									&& (hasSaidText.get(entityID) == null || (hasSaidText
+											.get(entityID).get(name) == null || hasSaidText
+											.get(entityID).get(name) == false))) {
+								MessageUtils.sendText(npc, p, plugin);
+								// Add the players to the sent text list.
+								HashMap<String, Boolean> players = new HashMap<String, Boolean>();
+								if (hasSaidText.get(entityID) != null)
+									players = hasSaidText.get(entityID);
+								players.put(name, true);
+								hasSaidText.put(entityID, players);
+							}
+							// Moves the NPC towards the player
+							// (WALKING&Jumping)
+							// entry.getValue().setTarget(p);
 						}
-						// If auto-talk is true
-						if (PropertyPool.getTalkWhenClose(entry.getValue()
-								.getUID())
-						// If we haven't already spoken to the player.
-								&& (!hasSaidText.containsKey(entry.getKey()) || (!hasSaidText
-										.get(entry.getKey()).containsKey(
-												p.getName()) || hasSaidText
-										.get(entry.getKey()).get(p.getName()) == false))) {
-							MessageUtils.sendText(entry.getValue(), p, plugin);
-							// Add the players to the sent text list.
-							HashMap<String, Boolean> players = new HashMap<String, Boolean>();
-							if (hasSaidText.containsKey(entry.getKey()))
-								players = hasSaidText.get(entry.getKey());
-							players.put(p.getName(), true);
-							hasSaidText.put(entry.getKey(), players);
-						}
-						// Moves the NPC towards the player (WALKING&Jumping)
-						// entry.getValue().setTarget(p);
-
-					} // We're out of range, so if player has been talked to,
+					} // We're out of range, so if player has been talked
+						// to,
 						// reset its talked-to state.
-					else if (PropertyPool.getTalkWhenClose(entry.getValue()
-							.getUID())
-							&& hasSaidText.containsKey(entry.getKey())
-							&& hasSaidText.get(entry.getKey()).containsKey(
-									p.getName())
-							&& hasSaidText.get(entry.getKey()).get(p.getName()) == true) {
-						hasSaidText.get(entry.getKey()).put(p.getName(), false);
+					else if (PropertyPool.getTalkWhenClose(UID)
+							&& hasSaidText.get(entityID) != null
+							&& hasSaidText.get(entityID).get(name) != null
+							&& hasSaidText.get(entityID).get(name) == true) {
+						hasSaidText.get(entityID).put(name, false);
 					}
 				}
 			}
@@ -84,12 +88,15 @@ public class TickTask implements Runnable {
 
 	// Checks whether two locations are within seeing distance of each other.
 	private boolean checkLocation(Location loc, Location playerLocation) {
-		if ((playerLocation.getX() <= loc.getX() + range && playerLocation
-				.getX() >= loc.getX() - range)
-				&& (playerLocation.getY() >= loc.getY() - range && playerLocation
-						.getY() <= loc.getY() + range)
-				&& (playerLocation.getZ() >= loc.getZ() - range && playerLocation
-						.getZ() <= loc.getZ() + range))
+		double pX = playerLocation.getX();
+		double pY = playerLocation.getY();
+		double pZ = playerLocation.getZ();
+		double lX = loc.getX();
+		double lY = loc.getY();
+		double lZ = loc.getZ();
+		if ((pX <= lX + range && pX >= lX - range)
+				&& (pY >= lY - range && pY <= lY + range)
+				&& (pZ >= lZ - range && pZ <= lZ + range))
 			return true;
 		else
 			return false;

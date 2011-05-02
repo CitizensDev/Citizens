@@ -14,8 +14,9 @@ public class NPCLocation {
 	private String world;
 	private Citizens plugin;
 	private int UID;
+	private String owner;
 
-	public NPCLocation(Citizens plugin, Location loc, int UID) {
+	public NPCLocation(Citizens plugin, Location loc, int UID, String owner) {
 		this.plugin = plugin;
 		this.x = loc.getBlockX();
 		this.y = loc.getBlockY();
@@ -24,6 +25,7 @@ public class NPCLocation {
 		this.yaw = loc.getYaw();
 		this.world = loc.getWorld().getName();
 		this.UID = UID;
+		this.owner = owner;
 	}
 
 	public int getZ() {
@@ -41,5 +43,9 @@ public class NPCLocation {
 	public Location getLocation() {
 		return new Location(plugin.getServer().getWorld(this.world), x, y, z,
 				pitch, yaw);
+	}
+
+	public String getOwner() {
+		return this.owner;
 	}
 }

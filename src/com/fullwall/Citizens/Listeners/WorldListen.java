@@ -30,7 +30,7 @@ public class WorldListen extends WorldListener {
 					&& npc.getBukkitEntity().getLocation().getBlock()
 							.getChunk().equals(e.getChunk())) {
 				NPCLocation loc = new NPCLocation(plugin, npc.getBukkitEntity()
-						.getLocation(), npc.getUID());
+						.getLocation(), npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, i.getValue());
 				plugin.handler.despawnNPC(i.getKey());
 			}
@@ -41,12 +41,13 @@ public class WorldListen extends WorldListener {
 	public void onChunkLoad(ChunkLoadEvent e) {
 		// Respawns any existing NPCs in the loaded chunk
 		for (Entry<NPCLocation, String> i : toRespawn.entrySet()) {
+			NPCLocation tempLoc = i.getKey();
 			if (e.getChunk().getWorld()
-					.getChunkAt(i.getKey().getX(), i.getKey().getZ())
+					.getChunkAt(tempLoc.getX(), tempLoc.getZ())
 					.equals(e.getChunk())) {
-				plugin.handler.spawnExistingNPC(i.getValue(), i.getKey()
-						.getUID());
-				toRespawn.remove(i.getKey());
+				plugin.handler.spawnExistingNPC(i.getValue(), tempLoc.getUID(),
+						tempLoc.getOwner());
+				toRespawn.remove(tempLoc);
 			}
 		}
 	}

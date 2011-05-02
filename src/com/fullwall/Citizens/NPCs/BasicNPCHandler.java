@@ -19,12 +19,12 @@ public class BasicNPCHandler extends NPCManager {
 		super(plugin);
 	}
 
-	public int spawnNPC(String name, Location loc) {
-		return super.registerNPC(name, loc);
+	public int spawnNPC(String name, Location loc, String owner) {
+		return super.registerNPC(name, loc, owner);
 	}
 
-	public void spawnExistingNPC(String name, int UID) {
-		super.registerNPC(name, UID);
+	public void spawnExistingNPC(String name, int UID, String owner) {
+		super.registerNPC(name, UID, owner);
 	}
 
 	public void moveNPC(int UID, Location loc) {
@@ -63,19 +63,19 @@ public class BasicNPCHandler extends NPCManager {
 		PropertyPool.setOwner(UID, name);
 	}
 
-	public void setName(int UID, String changeTo) {
+	public void setName(int UID, String changeTo, String owner) {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.changeName(UID, n.getName(), changeTo);
 		super.removeNPCForRespawn(UID);
-		super.registerNPC(changeTo, UID);
+		super.registerNPC(changeTo, UID, owner);
 	}
 
 	// TODO: maybe remove this, since it changes the skin URL.
-	public void setColour(int UID, String colourChange) {
+	public void setColour(int UID, String colourChange, String owner) {
 		HumanNPC n = super.getNPC(UID);
 		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
 		super.removeNPCForRespawn(UID);
-		super.registerNPC(n.getName(), UID);
+		super.registerNPC(n.getName(), UID, owner);
 	}
 
 	public void addNPCText(int UID, String text) {
@@ -113,7 +113,7 @@ public class BasicNPCHandler extends NPCManager {
 		NPCDataManager.addItems(NPC, items);
 		if ((olditem != 0 && items.get(0) == 0)) {
 			super.removeNPCForRespawn(NPC.getUID());
-			super.registerNPC(NPC.getName(), NPC.getUID());
+			super.registerNPC(NPC.getName(), NPC.getUID(), NPC.getOwner());
 		}
 	}
 
@@ -140,7 +140,7 @@ public class BasicNPCHandler extends NPCManager {
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.
 			super.removeNPCForRespawn(n.getUID());
-			super.registerNPC(n.getName(), n.getUID());
+			super.registerNPC(n.getName(), n.getUID(), n.getOwner());
 		}
 	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
 
 public class PropertyPool {
@@ -244,11 +245,14 @@ public class PropertyPool {
 		lookat.save();
 	}
 
-	public static void saveBasicNPCState(String name, Location loc,
-			String colour, ArrayList<Integer> items, int UID) {
-		saveLocation(name, loc, UID);
-		saveColour(UID, colour);
-		saveItems(UID, items);
+	public static void saveBasicNPCState(int UID, NPCData npcdata) {
+		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
+		saveColour(UID, npcdata.getColour());
+		saveItems(UID, npcdata.getItems());
+		saveText(UID, npcdata.getTexts());
+		saveLookWhenClose(UID, npcdata.isLookClose());
+		saveTalkWhenClose(UID, npcdata.isTalkClose());
+		setOwner(UID, npcdata.getOwner());
 	}
 
 	public static void removeFromFiles(String name, int UID) {
