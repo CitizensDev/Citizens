@@ -208,6 +208,8 @@ public class Citizens extends JavaPlugin {
 		plugin = this;
 
 		EconomyHandler.setUpVariables();
+		if(!PropertyPool.settings.keyExists("max-NPCs-per-player"))
+			PropertyPool.settings.setInt("max-NPCs-per-player", 10);
 		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
 			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
 		if (!PropertyPool.settings.keyExists("default-enable-following"))

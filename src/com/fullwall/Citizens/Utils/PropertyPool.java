@@ -35,6 +35,20 @@ public class PropertyPool {
 			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
 	public static final PropertyHandler texts = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.texts");
+	public static final PropertyHandler counts = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Citizens.counts");
+
+	public static int getMaxNPCsPerPlayer() {
+		return settings.getInt("max-NPCs-per-player");
+	}
+
+	public static int getNPCAmountPerPlayer(String name) {
+		return counts.getInt(name);
+	}
+
+	public static void saveNPCAmountPerPlayer(String name, int totalNPCs) {
+		counts.setInt(name, totalNPCs);
+	}
 
 	public static Location getActualLocationFromName(int UID) {
 		String[] values = PropertyPool.locations.getString(UID).split(",");
@@ -243,6 +257,7 @@ public class PropertyPool {
 		items.save();
 		talkwhenclose.save();
 		lookat.save();
+		counts.save();
 	}
 
 	public static void saveBasicNPCState(int UID, NPCData npcdata) {
@@ -267,9 +282,6 @@ public class PropertyPool {
 		lookat.removeKey(UID);
 		talkwhenclose.removeKey(UID);
 		texts.removeKey(UID);
-	}
-
-	public static int getMaxNPCsPerPlayer() {
-		return settings.getInt("max-NPCs-per-player");
+		counts.removeKey(name);
 	}
 }

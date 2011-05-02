@@ -513,23 +513,32 @@ public class BasicExecutor implements CommandExecutor {
 					+ "NPC name length is too long. The limit is 15 characters.");
 			return;
 		}
-		int UID = plugin.handler.spawnNPC(args[1], player.getLocation(),
-				player.getName());
-		plugin.handler.setNPCText(UID, texts);
-		plugin.handler.setOwner(UID, player.getName());
-		player.sendMessage(ChatColor.GREEN + "The NPC "
-				+ StringUtils.yellowify(args[1], ChatColor.GREEN)
-				+ " was born!");
-		if (EconomyHandler.useEconomy()) {
-			int paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE, player);
-			if (paid > 0)
-				player.sendMessage(MessageUtils.getPaidMessage(
-						Operation.BASIC_NPC_CREATE, paid, args[1], "", false));
+		if (PropertyPool.getNPCAmountPerPlayer(player.getName()) <= PropertyPool
+				.getMaxNPCsPerPlayer()) {
+			int UID = plugin.handler.spawnNPC(args[1], player.getLocation(),
+					player.getName());
+			PropertyPool.saveNPCAmountPerPlayer(player.getName(), PropertyPool.getNPCAmountPerPlayer(player.getName()) + 1);
+			plugin.handler.setNPCText(UID, texts);
+			plugin.handler.setOwner(UID, player.getName());
+			player.sendMessage(ChatColor.GREEN + "The NPC "
+					+ StringUtils.yellowify(args[1], ChatColor.GREEN)
+					+ " was born!");
+			if (EconomyHandler.useEconomy()) {
+				int paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE,
+						player);
+				if (paid > 0)
+					player.sendMessage(MessageUtils.getPaidMessage(
+							Operation.BASIC_NPC_CREATE, paid, args[1], "",
+							false));
+			}
+			NPCManager.NPCSelected.put(player.getName(), UID);
+			player.sendMessage(ChatColor.GREEN + "You selected NPC ["
+					+ StringUtils.yellowify(args[1], ChatColor.GREEN)
+					+ "], ID ["
+					+ StringUtils.yellowify("" + UID, ChatColor.GREEN) + "]");
+		} else {
+			player.sendMessage("You have reached the NPC-creation limit.");
 		}
-		NPCManager.NPCSelected.put(player.getName(), UID);
-		player.sendMessage(ChatColor.GREEN + "You selected NPC ["
-				+ StringUtils.yellowify(args[1], ChatColor.GREEN) + "], ID ["
-				+ StringUtils.yellowify("" + UID, ChatColor.GREEN) + "]");
 	}
 
 	private void moveNPC(CommandSender sender, String name, int UID) {
