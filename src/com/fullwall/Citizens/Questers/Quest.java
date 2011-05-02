@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public abstract interface Quest {
+public interface Quest {
 
 	// returns the NPC who gave the quest
 	public HumanNPC getQuestGiver();
