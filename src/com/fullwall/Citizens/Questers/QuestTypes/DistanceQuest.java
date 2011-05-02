@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
+import com.fullwall.Citizens.Questers.Reward;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -11,11 +12,14 @@ public class DistanceQuest implements Quest {
 	private HumanNPC questGiver;
 	private int distanceTraveled;
 	private Goal goal;
+	private Reward reward;
 
-	public DistanceQuest(HumanNPC questGiver, int distanceTraveled, Goal goal) {
+	public DistanceQuest(HumanNPC questGiver, int distanceTraveled, Goal goal,
+			Reward reward) {
 		this.questGiver = questGiver;
 		this.distanceTraveled = distanceTraveled;
 		this.goal = goal;
+		this.reward = reward;
 	}
 
 	public int getDistanceTraveled() {
@@ -67,5 +71,20 @@ public class DistanceQuest implements Quest {
 	public boolean isCompleted() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Reward getReward() {
+		return reward;
+	}
+
+	@Override
+	public void setReward(Reward reward) {
+		this.reward = reward;
+	}
+
+	@Override
+	public void rewardPlayer(Player player, Reward reward) {
+		// TODO put stuff here
 	}
 }
