@@ -40,6 +40,7 @@ public class TraderExecutor implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		HumanNPC npc = null;
+		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender))
 			npc = NPCManager
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
@@ -72,7 +73,7 @@ public class TraderExecutor implements CommandExecutor {
 					}
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
-				return true;
+				returnval = true;
 			} else if (args.length == 3
 					&& (args[0].contains("b") || args[0].contains("s"))) {
 				// trader buy/sell item1/remove 2ndarg (if it has a ':' its an
@@ -83,11 +84,33 @@ public class TraderExecutor implements CommandExecutor {
 							args[0].contains("s"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
-				return true;
+				returnval = true;
+			} else if (args.length == 2 && (args[0].contains("unl"))) {
+				if (BasicExecutor.hasPermission(
+						"citizens.admin.unlimitedtrader", sender)) {
+					changeUnlimited(npc, sender, args[1]);
+				} else
+					player.sendMessage(MessageUtils.noPermissionsMessage);
+				returnval = true;
 			}
 			TraderPropertyPool.saveTraderState(npc);
 		}
-		return false;
+		return returnval;
+	}
+
+	private void changeUnlimited(HumanNPC npc, CommandSender sender,
+			String unlimited) {
+		if (unlimited.equals("true") || unlimited.equals("on")) {
+			npc.getTraderNPC().setUnlimited(true);
+			sender.sendMessage(ChatColor.GREEN
+					+ "The trader will now have unlimited stock!");
+		} else if (unlimited.equals("false") || unlimited.equals("off")) {
+			npc.getTraderNPC().setUnlimited(false);
+			sender.sendMessage(ChatColor.GREEN
+					+ "The trader has stopped having unlimited stock.");
+		} else
+			sender.sendMessage(ChatColor.GREEN
+					+ "Incorrect unlimited type entered. Valid values are true, on, false, off.");
 	}
 
 	private void changeTraderBuySell(HumanNPC npc, Player player, String item,

@@ -17,6 +17,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TogglerExecutor implements CommandExecutor {
 
+	@SuppressWarnings("unused")
 	private Citizens plugin;
 
 	public TogglerExecutor(Citizens plugin) {
@@ -36,6 +37,7 @@ public class TogglerExecutor implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		HumanNPC npc = null;
+		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender))
 			npc = NPCManager
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
@@ -64,10 +66,11 @@ public class TogglerExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-				return true;
+				returnval = true;
 			}
+			TraderPropertyPool.saveTraderState(npc);
 		}
-		return false;
+		return returnval;
 	}
 
 	private void buyTrader(HumanNPC npc, Player player) {
@@ -76,10 +79,9 @@ public class TogglerExecutor implements CommandExecutor {
 			if (EconomyHandler.useEconomy()) {
 				int paid = EconomyHandler.pay(Operation.TRADER_NPC_CREATE,
 						player);
-				if (paid != 0)
-					player.sendMessage(MessageUtils.getPaidMessage(
-							Operation.TRADER_NPC_CREATE, paid,
-							npc.getStrippedName(), "trader", true));
+				player.sendMessage(MessageUtils.getPaidMessage(
+						Operation.TRADER_NPC_CREATE, paid,
+						npc.getStrippedName(), "trader", true));
 				toggleTrader(npc, player);
 			}
 		} else if (EconomyHandler.useEconomy()) {
@@ -91,7 +93,6 @@ public class TogglerExecutor implements CommandExecutor {
 
 	private void toggleTrader(HumanNPC npc, Player player) {
 		npc.setTrader(!npc.isTrader());
-		TraderPropertyPool.saveTrader(npc.getUID(), npc.isTrader());
 		if (npc.isTrader())
 			player.sendMessage(StringUtils.yellowify(npc.getStrippedName(),
 					ChatColor.GREEN) + " is now a trader!");

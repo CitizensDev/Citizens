@@ -219,21 +219,23 @@ public class Citizens extends JavaPlugin {
 		if (!PropertyPool.settings.keyExists("talk-when-close"))
 			PropertyPool.settings.removeKey("talk-when-close");
 
-		maxNPCsPerPlayer = PropertyPool.settings.getInt("max-NPCs-per-player");
-		useNPCColours = PropertyPool.settings.getBoolean("use-npc-colours");
-		NPCColour = PropertyPool.settings.getString("npc-colour");
+		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
 		defaultFollowingEnabled = PropertyPool.settings
 				.getBoolean("default-enable-following");
 		defaultTalkWhenClose = PropertyPool.settings
 				.getBoolean("default-talk-when-close");
+		useNPCColours = PropertyPool.settings.getBoolean("use-npc-colours");
 		chatFormat = PropertyPool.settings.getString("chat-format");
-		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
+		NPCColour = PropertyPool.settings.getString("npc-colour");
+		if (PropertyPool.settings.keyExists("look-range"))
+			npcRange = PropertyPool.settings.getDouble("look-range");
+		if (PropertyPool.settings.keyExists("max-npcs-per-player"))
+			maxNPCsPerPlayer = PropertyPool.settings
+					.getInt("max-npcs-per-player");
 		if (PropertyPool.settings.keyExists("tick-delay"))
 			tickDelay = PropertyPool.settings.getInt("tick-delay");
 		if (PropertyPool.settings.keyExists("save-tick-delay"))
 			saveDelay = PropertyPool.settings.getInt("save-tick-delay");
-		if (PropertyPool.settings.keyExists("look-range"))
-			npcRange = PropertyPool.settings.getDouble("look-range");
 	}
 
 	private void setupNPCs() {

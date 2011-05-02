@@ -72,6 +72,7 @@ public class NPCManager {
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner));
 		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
+
 		registerUID(UID, name);
 		list.put(UID, npc);
 	}
@@ -92,6 +93,7 @@ public class NPCManager {
 				.setContents(TraderPropertyPool.getInventory(UID).getContents());
 		trader.setBalance(TraderPropertyPool.getBalance(UID));
 		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
+		TraderPropertyPool.saveTraderState(npc);
 	}
 
 	public static void setBasicNPCText(int UID, ArrayList<String> text) {

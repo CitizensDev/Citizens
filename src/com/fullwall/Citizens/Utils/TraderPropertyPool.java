@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.PropertyHandler;
+import com.fullwall.Citizens.Traders.Buyable;
+import com.fullwall.Citizens.Traders.ItemPrice;
+import com.fullwall.Citizens.Traders.Sellable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderPropertyPool {
@@ -93,11 +96,30 @@ public class TraderPropertyPool {
 		return unlimiteds.getBoolean(UID);
 	}
 
+	// TODO
+	public static void addBuyable(Buyable b) {
+		// buying.setBoolean(UID, unlimited);
+	}
+
+	public static ArrayList<Buyable> getBuyables(int UID) {
+		ArrayList<Buyable> buyables = new ArrayList<Buyable>();
+		return buyables;
+	}
+
+	public static void addSellable(Sellable s) {
+		// buying.setBoolean(UID, unlimited);
+	}
+
+	public static ArrayList<Sellable> getSellables(int UID) {
+		ArrayList<Sellable> sellables = new ArrayList<Sellable>();
+		return sellables;
+	}
+
 	public static void saveTraderState(HumanNPC npc) {
-		saveTrader(npc.getUID(), npc.isTrader());
+		if (isTrader(npc.getUID()))
+			saveTrader(npc.getUID(), npc.isTrader());
 		saveInventory(npc.getUID(), npc.getBukkitEntity().getInventory());
 		saveBalance(npc.getUID(), npc.getTraderNPC().getBalance());
 		saveUnlimited(npc.getUID(), npc.getTraderNPC().isUnlimited());
 	}
-
 }
