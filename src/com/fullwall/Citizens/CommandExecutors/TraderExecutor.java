@@ -12,6 +12,7 @@ import org.bukkit.material.MaterialData;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.IconomyInterface;
+import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -153,10 +154,9 @@ public class TraderExecutor implements CommandExecutor {
 			throws NumberFormatException {
 		int amount = Integer.valueOf(args[2]);
 		if (args[1].equals("give")) {
-			if (IconomyInterface.playerHasEnough(player.getName(), amount)) {
-				npc.getTraderNPC().setBalance(
-						npc.getTraderNPC().getBalance() + amount);
-				IconomyInterface.pay(player, amount);
+			if (EconomyHandler.canBuy(new Payment(amount, true), player)) {
+				EconomyHandler.pay(new Payment(-amount, true), npc);
+				EconomyHandler.pay(new Payment(amount, true), player);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
 						+ StringUtils.yellowify("" + amount, ChatColor.YELLOW)
@@ -185,10 +185,9 @@ public class TraderExecutor implements CommandExecutor {
 								ChatColor.RED) + "(s).");
 			}
 		} else if (args[1].equals("take")) {
-			if (npc.getTraderNPC().getBalance() - amount > 0) {
-				npc.getTraderNPC().setBalance(
-						npc.getTraderNPC().getBalance() - amount);
-				IconomyInterface.give(player, amount);
+			if (EconomyHandler.canBuy(new Payment(amount, true), npc)) {
+				EconomyHandler.pay(new Payment(amount, true), npc);
+				EconomyHandler.pay(new Payment(-amount, true), player);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
 						+ StringUtils.yellowify("" + amount, ChatColor.YELLOW)

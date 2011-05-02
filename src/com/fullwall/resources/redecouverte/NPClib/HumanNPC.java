@@ -1,10 +1,13 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
+
+import org.bukkit.Location;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.Traders.TraderNPC;
 
 public class HumanNPC extends NPC {
@@ -23,6 +26,7 @@ public class HumanNPC extends NPC {
 	private boolean isTrader = false;
 
 	public TraderNPC traderNPC = new TraderNPC(this);
+	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
@@ -165,5 +169,21 @@ public class HumanNPC extends NPC {
 
 	public void actHurt() {
 		this.mcEntity.actHurt();
+	}
+
+	public String getOwner() {
+		return this.npcdata.getOwner();
+	}
+
+	public void setNPCData(NPCData npcdata) {
+		this.npcdata = npcdata;
+	}
+
+	public Location getLocation() {
+		return getBukkitEntity().getLocation();
+	}
+
+	public NPCData getNPCData() {
+		return npcdata;
 	}
 }

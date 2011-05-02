@@ -3,7 +3,6 @@ package com.fullwall.Citizens.Economy;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
-import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijiko.coelho.iConomy.iConomy;
@@ -44,12 +43,12 @@ public class IconomyInterface {
 		return playerHasEnough(player.getName(), price);
 	}
 
-	public static boolean hasEnough(ItemPrice price, Player player) {
-		return playerHasEnough(player.getName(), price.getPrice());
+	public static boolean hasEnough(Payment payment, Player player) {
+		return playerHasEnough(player.getName(), payment.getPrice());
 	}
 
-	public static boolean hasEnough(ItemPrice price, HumanNPC npc) {
-		return npc.getTraderNPC().getBalance() > price.getPrice();
+	public static boolean hasEnough(Payment payment, HumanNPC npc) {
+		return npc.getTraderNPC().getBalance() > payment.getPrice();
 	}
 
 	public static int pay(Player player, Operation op) {
@@ -60,23 +59,15 @@ public class IconomyInterface {
 		return price;
 	}
 
-	public static int pay(HumanNPC npc, ItemPrice price) {
+	public static int pay(HumanNPC npc, Payment payment) {
 		npc.getTraderNPC().setBalance(
-				npc.getTraderNPC().getBalance() - price.getPrice());
-		return price.getPrice();
+				npc.getTraderNPC().getBalance() - payment.getPrice());
+		return payment.getPrice();
 	}
 
-	public static int pay(Player player, ItemPrice price) {
+	public static int pay(Player player, Payment payment) {
 		iConomy.getBank().getAccount(player.getName())
-				.subtract(price.getPrice());
-		return price.getPrice();
-	}
-
-	public static void give(Player player, int amount) {
-		iConomy.getBank().getAccount(player.getName()).add(amount);
-	}
-
-	public static void pay(Player player, int amount) {
-		iConomy.getBank().getAccount(player.getName()).subtract(amount);
+				.subtract(payment.getPrice());
+		return payment.getPrice();
 	}
 }

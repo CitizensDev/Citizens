@@ -32,12 +32,12 @@ public class ItemInterface {
 		return false;
 	}
 
-	public static boolean hasEnough(ItemPrice price, Player player) {
+	public static boolean hasEnough(Payment payment, Player player) {
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
-			if (i.getTypeId() == price.getItemID()) {
+			if (i.getTypeId() == payment.getItem().getTypeId()) {
 				current += i.getAmount();
-				if (current > price.getPrice()) {
+				if (current > payment.getPrice()) {
 					return true;
 				}
 			}
@@ -124,5 +124,28 @@ public class ItemInterface {
 			}
 		}
 		return price.getPrice();
+	}
+
+	public static int pay(Player player, Payment payment) {
+		PlayerInventory inv = player.getInventory();
+		int currencyID = payment.getItem().getTypeId();
+		int current = payment.getPrice();
+		for (ItemStack i : inv.getContents()) {
+			if (i.getTypeId() == currencyID) {
+				int amount = i.getAmount();
+				int toChange = 0;
+				current -= amount;
+				if (current < 0) {
+					toChange -= current;
+				}
+				if (toChange == 0)
+					i = null;
+				else {
+					i.setAmount(toChange);
+					break;
+				}
+			}
+		}
+		return payment.getPrice();
 	}
 }

@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -108,8 +110,14 @@ public class MessageUtils {
 
 	public static String getPriceMessage(ItemPrice price) {
 		String message = "";
-		message += ChatColor.YELLOW + "" + price.getPrice() + " "
-				+ EconomyHandler.getCurrency(price) + "(s)";
+		message += ChatColor.YELLOW
+				+ ""
+				+ price.getPrice()
+				+ " "
+				+ EconomyHandler
+						.getCurrency(new Payment(price.getPrice(),
+								new ItemStack(price.getItemID(), 1), price
+										.isIconomy())) + "(s)";
 		return message;
 	}
 }

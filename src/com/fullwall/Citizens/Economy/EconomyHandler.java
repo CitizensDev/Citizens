@@ -3,7 +3,6 @@ package com.fullwall.Citizens.Economy;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -30,9 +29,13 @@ public class EconomyHandler {
 		return useEconomy;
 	}
 
+	public static boolean useIconomy() {
+		return (useiConomy && useEconomy && iConomyEnabled);
+	}
+
 	public static boolean canBuy(Operation op, Player player) {
 		if (useEconomy) {
-			if (useiConomy && iConomyEnabled)
+			if (useIconomy())
 				return IconomyInterface.hasEnough(player, op);
 			else
 				return ItemInterface.hasEnough(player, op);
@@ -40,22 +43,22 @@ public class EconomyHandler {
 			return true;
 	}
 
-	public static boolean canBuy(ItemPrice price, Player player) {
+	public static boolean canBuy(Payment payment, Player player) {
 		if (useEconomy) {
-			if (price.isIconomy() && useiConomy && iConomyEnabled)
-				return IconomyInterface.hasEnough(price, player);
+			if (payment.isiConomy() && useIconomy())
+				return IconomyInterface.hasEnough(payment, player);
 			else
-				return ItemInterface.hasEnough(price, player);
+				return ItemInterface.hasEnough(payment, player);
 		} else
 			return true;
 	}
 
-	public static boolean canBuy(ItemPrice price, HumanNPC npc) {
+	public static boolean canBuy(Payment payment, HumanNPC npc) {
 		if (useEconomy) {
-			if (price.isIconomy() && useiConomy && iConomyEnabled)
-				return IconomyInterface.hasEnough(price, npc);
+			if (payment.isiConomy() && useIconomy())
+				return IconomyInterface.hasEnough(payment, npc);
 			else
-				return ItemInterface.hasEnough(price,
+				return ItemInterface.hasEnough(payment,
 						(Player) npc.getBukkitEntity());
 		} else
 			return true;
@@ -63,7 +66,7 @@ public class EconomyHandler {
 
 	public static int pay(Operation op, Player player) {
 		if (useEconomy) {
-			if (iConomyEnabled && useiConomy)
+			if (useIconomy())
 				return IconomyInterface.pay(player, op);
 			else
 				return ItemInterface.pay(player, op);
@@ -71,29 +74,30 @@ public class EconomyHandler {
 			return 0;
 	}
 
-	public static int pay(ItemPrice price, HumanNPC npc) {
+	public static int pay(Payment payment, HumanNPC npc) {
 		if (useEconomy) {
-			if (price.isIconomy() && iConomyEnabled && useiConomy)
-				return IconomyInterface.pay(npc, price);
+			if (payment.isiConomy() && useIconomy())
+				return IconomyInterface.pay(npc, payment);
 			else
-				return ItemInterface.pay((Player) npc.getBukkitEntity(), price);
+				return ItemInterface.pay((Player) npc.getBukkitEntity(),
+						payment);
 		} else
 			return 0;
 	}
 
-	public static int pay(ItemPrice price, Player player) {
+	public static int pay(Payment payment, Player player) {
 		if (useEconomy) {
-			if (price.isIconomy() && iConomyEnabled && useiConomy)
-				return IconomyInterface.pay(player, price);
+			if (payment.isiConomy() && useIconomy())
+				return IconomyInterface.pay(player, payment);
 			else
-				return ItemInterface.pay(player, price);
+				return ItemInterface.pay(player, payment);
 		} else
 			return 0;
 	}
 
 	public static String getPaymentType(Operation op) {
 		if (useEconomy) {
-			if (iConomyEnabled && useiConomy)
+			if (useIconomy())
 				return IconomyInterface.getCurrency();
 			else
 				return ItemInterface.getCurrency(op);
@@ -103,7 +107,7 @@ public class EconomyHandler {
 
 	public static String getRemainder(Operation op, Player player) {
 		if (useEconomy) {
-			if (iConomyEnabled && useiConomy)
+			if (useIconomy())
 				return IconomyInterface.getRemainder(op, player);
 			else
 				return ItemInterface.getRemainder(op, player);
@@ -111,17 +115,14 @@ public class EconomyHandler {
 			return "0";
 	}
 
-	public static String getCurrency(ItemPrice price) {
+	public static String getCurrency(Payment payment) {
 		if (useEconomy) {
-			if (price.isIconomy() && iConomyEnabled && useiConomy)
+			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.getCurrency();
 			else
-				return Material.getMaterial(price.getItemID()).name();
+				return Material.getMaterial(payment.getItem().getTypeId())
+						.name();
 		} else
 			return "0";
-	}
-
-	public static boolean useIconomy() {
-		return (useiConomy && useEconomy && iConomyEnabled);
 	}
 }

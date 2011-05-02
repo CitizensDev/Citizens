@@ -14,6 +14,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.Traders.TraderInterface.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -207,7 +208,7 @@ public class TraderTask implements Runnable {
 							ChatColor.RED) + "(s) on the clicked stack.");
 			return;
 		}
-		if (!EconomyHandler.canBuy(buyable.getPrice(), player)) {
+		if (!EconomyHandler.canBuy(new Payment(buyable.getPrice()), player)) {
 			player.sendMessage(ChatColor.RED
 					+ "You don't have enough money to buy "
 					+ StringUtils.yellowify(buyable.getBuying().getAmount()
@@ -227,7 +228,7 @@ public class TraderTask implements Runnable {
 							ChatColor.RED) + "(s).");
 			return;
 		}
-		EconomyHandler.pay(buyable.getPrice(), player);
+		EconomyHandler.pay(new Payment(buyable.getPrice()), player);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		npc.getBukkitEntity()
 				.getInventory()
@@ -266,7 +267,7 @@ public class TraderTask implements Runnable {
 							ChatColor.RED) + "(s).");
 			return;
 		}
-		if (!EconomyHandler.canBuy(sellable.getPrice(), npc)) {
+		if (!EconomyHandler.canBuy(new Payment(sellable.getPrice()), npc)) {
 			player.sendMessage(ChatColor.RED
 					+ "Not enough money available to buy "
 					+ StringUtils.yellowify(sellable.getSelling().getAmount()
@@ -287,7 +288,7 @@ public class TraderTask implements Runnable {
 							ChatColor.RED) + "(s) to the current stock.");
 			return;
 		}
-		EconomyHandler.pay(sellable.getPrice(), npc);
+		EconomyHandler.pay(new Payment(sellable.getPrice()), npc);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		npc.getBukkitEntity()
 				.getInventory()
