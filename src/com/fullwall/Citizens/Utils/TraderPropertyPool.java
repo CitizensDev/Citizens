@@ -10,7 +10,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Traders.Buyable;
-import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Sellable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -56,8 +55,12 @@ public class TraderPropertyPool {
 	public static void saveInventory(int UID, PlayerInventory inv) {
 		String save = "";
 		for (ItemStack i : inv.getContents()) {
-			save += i.getTypeId() + "/" + i.getAmount() + "/"
-					+ ((i.getData() == null) ? 0 : i.getData().getData()) + ",";
+			if (i == null)
+				save += 0 + "/" + 1 + "/" + 0 + ",";
+			else
+				save += i.getTypeId() + "/" + i.getAmount() + "/"
+						+ ((i.getData() == null) ? 0 : i.getData().getData())
+						+ ",";
 		}
 		inventories.setString(UID, save);
 	}
@@ -67,8 +70,12 @@ public class TraderPropertyPool {
 		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
-			array.add(new ItemStack(parse(split[0]), parse(split[1]),
-					(short) 0, (byte) parse(split[2])));
+			if (!split[0].equals("0"))
+				array.add(new ItemStack(parse(split[0]), parse(split[1]),
+						(short) 0, (byte) parse(split[2])));
+			else
+				array.add(null);
+
 		}
 		PlayerInventory inv = new CraftInventoryPlayer(
 				new InventoryPlayer(null));

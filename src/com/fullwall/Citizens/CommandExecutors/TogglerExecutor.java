@@ -79,9 +79,10 @@ public class TogglerExecutor implements CommandExecutor {
 			if (EconomyHandler.useEconomy()) {
 				int paid = EconomyHandler.pay(Operation.TRADER_NPC_CREATE,
 						player);
-				player.sendMessage(MessageUtils.getPaidMessage(
-						Operation.TRADER_NPC_CREATE, paid,
-						npc.getStrippedName(), "trader", true));
+				if (paid > 0)
+					player.sendMessage(MessageUtils.getPaidMessage(
+							Operation.TRADER_NPC_CREATE, paid,
+							npc.getStrippedName(), "trader", true));
 				toggleTrader(npc, player);
 			}
 		} else if (EconomyHandler.useEconomy()) {
