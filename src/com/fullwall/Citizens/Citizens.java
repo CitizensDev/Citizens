@@ -43,6 +43,7 @@ public class Citizens extends JavaPlugin {
 
 	public static int tickDelay = 1;
 	public static int saveDelay = 72000;
+	public static int maxNPCsPerPlayer = 10;
 
 	public static double npcRange = 5;
 
@@ -216,6 +217,7 @@ public class Citizens extends JavaPlugin {
 		if (!PropertyPool.settings.keyExists("talk-when-close"))
 			PropertyPool.settings.removeKey("talk-when-close");
 
+		maxNPCsPerPlayer = PropertyPool.settings.getInt("max-NPCs-per-player");
 		useNPCColours = PropertyPool.settings.getBoolean("use-npc-colours");
 		NPCColour = PropertyPool.settings.getString("npc-colour");
 		defaultFollowingEnabled = PropertyPool.settings
