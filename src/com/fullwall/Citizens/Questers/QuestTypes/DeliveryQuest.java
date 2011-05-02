@@ -5,7 +5,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
-import com.fullwall.Citizens.Questers.Reward;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -14,15 +13,13 @@ public class DeliveryQuest implements Quest {
 	private HumanNPC deliverToNPC;
 	private ItemStack itemToDeliver;
 	private Goal goal;
-	private Reward reward;
 
 	public DeliveryQuest(HumanNPC questGiver, HumanNPC deliverToNPC,
-			ItemStack itemToDeliver, Goal goal, Reward reward) {
+			ItemStack itemToDeliver, Goal goal) {
 		this.questGiver = questGiver;
 		this.deliverToNPC = deliverToNPC;
 		this.itemToDeliver = itemToDeliver;
 		this.goal = goal;
-		this.reward = reward;
 	}
 
 	public ItemStack getItemToDeliver() {
@@ -82,21 +79,5 @@ public class DeliveryQuest implements Quest {
 	@Override
 	public void setQuestGiver(HumanNPC questGiver) {
 		this.questGiver = questGiver;
-	}
-
-	@Override
-	public Reward getReward() {
-		return reward;
-	}
-
-	@Override
-	public void setReward(Reward reward) {
-		this.reward = reward;
-	}
-
-	@Override
-	public void rewardPlayer(Player player, Reward reward) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
-import com.fullwall.Citizens.Questers.Reward;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -16,15 +15,13 @@ public class DestroyQuest implements Quest {
 	private Block[] blocksDestroyed;
 	private ItemStack tool;
 	private Goal goal;
-	private Reward reward;
 
 	public DestroyQuest(HumanNPC questGiver, Block[] blocksDestroyed,
-			ItemStack tool, Goal goal, Reward reward) {
+			ItemStack tool, Goal goal) {
 		this.questGiver = questGiver;
 		this.blocksDestroyed = blocksDestroyed;
 		this.tool = tool;
 		this.goal = goal;
-		this.reward = reward;
 	}
 
 	public Block[] getBlocksDestroyed() {
@@ -38,12 +35,12 @@ public class DestroyQuest implements Quest {
 	public void setBlockToDestroy(Block blockTypeToDestroy) {
 		this.blockTypeToDestroy = blockTypeToDestroy;
 	}
-
-	public ItemStack getTool() {
+	
+	public ItemStack getTool(){
 		return tool;
 	}
-
-	public void setTool(ItemStack tool) {
+	
+	public void setTool(ItemStack tool){
 		this.tool = tool;
 	}
 
@@ -88,21 +85,5 @@ public class DestroyQuest implements Quest {
 	public boolean isCompleted() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public Reward getReward() {
-		return reward;
-	}
-
-	@Override
-	public void setReward(Reward reward) {
-		this.reward = reward;
-	}
-
-	@Override
-	public void rewardPlayer(Player player, Reward reward) {
-		// TODO Auto-generated method stub
-		
 	}
 }

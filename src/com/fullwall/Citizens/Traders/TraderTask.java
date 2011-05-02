@@ -175,26 +175,19 @@ public class TraderTask implements Runnable {
 	}
 
 	private void handleNPCItemClicked(int slot) {
-
 		npc.getBukkitEntity().getInventory()
 				.setItem(slot, previousNPCInv.getItem(slot));
 		ItemStack i = npc.getBukkitEntity().getInventory().getItem(slot);
-		if (!(npc.getTraderNPC().isBuyable(i.getTypeId()))) {
+		if (!(npc.getTraderNPC().isBuyable(i.getTypeId(), i.getData()))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being sold here.");
 			return;
 		}
 		Buyable buyable = npc.getTraderNPC().getBuyable(i.getTypeId());
 		if (previousNPCClickedSlot == slot) {
-			player.sendMessage(ChatColor.AQUA
-					+ "Buying "
-					+ StringUtils.yellowify(buyable.getBuying().getAmount()
-							+ " " + buyable.getBuying().getType().name(),
-							ChatColor.AQUA)
-					+ "(s) at "
-					+ StringUtils.yellowify(
-							MessageUtils.getPriceMessage(buyable.getPrice()),
-							ChatColor.AQUA) + ".");
+			player.sendMessage(ChatColor.AQUA + "Buying "
+					+ MessageUtils.getStockableMessage(buyable, ChatColor.AQUA)
+					+ ".");
 			return;
 		}
 		previousNPCClickedSlot = slot;
@@ -239,7 +232,7 @@ public class TraderTask implements Runnable {
 	private void handlePlayerItemClicked(int slot) {
 		player.getInventory().setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = player.getInventory().getItem(slot);
-		if (!npc.getTraderNPC().isSellable(i.getTypeId())) {
+		if (!npc.getTraderNPC().isSellable(i.getTypeId(), i.getData())) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being purchased here.");
 			return;
@@ -248,13 +241,9 @@ public class TraderTask implements Runnable {
 		if (previousPlayerClickedSlot == slot) {
 			player.sendMessage(ChatColor.AQUA
 					+ "Selling "
-					+ StringUtils.yellowify(sellable.getSelling().getAmount()
-							+ " " + sellable.getSelling().getType().name(),
-							ChatColor.AQUA)
-					+ "(s) at "
-					+ StringUtils.yellowify(
-							MessageUtils.getPriceMessage(sellable.getPrice()),
-							ChatColor.AQUA) + ".");
+					+ MessageUtils
+							.getStockableMessage(sellable, ChatColor.AQUA)
+					+ ".");
 			return;
 		}
 		previousPlayerClickedSlot = slot;

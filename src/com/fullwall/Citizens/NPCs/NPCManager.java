@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -69,7 +71,6 @@ public class NPCManager {
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner));
-		PropertyPool.setOwner(UID, owner);
 		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
 		registerUID(UID, name);
 		list.put(UID, npc);

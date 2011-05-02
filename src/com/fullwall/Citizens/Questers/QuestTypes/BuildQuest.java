@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
-import com.fullwall.Citizens.Questers.Reward;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -14,14 +13,12 @@ public class BuildQuest implements Quest {
 	private Block blockTypeToPlace;
 	private Block[] blocksPlaced;
 	private Goal goal;
-	private Reward reward;
 
 	public BuildQuest(HumanNPC questGiver, Block[] blocksPlaced,
-			Goal goal, Reward reward) {
+			Goal goal) {
 		this.questGiver = questGiver;
 		this.blocksPlaced = blocksPlaced;
 		this.goal = goal;
-		this.reward = reward;
 	}
 
 	public Block[] getBlocksPlaced() {
@@ -77,21 +74,5 @@ public class BuildQuest implements Quest {
 	public boolean isCompleted() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public Reward getReward() {
-		return reward;
-	}
-
-	@Override
-	public void setReward(Reward reward) {
-		this.reward = reward;
-	}
-
-	@Override
-	public void rewardPlayer(Player player, Reward reward) {
-		// TODO Auto-generated method stub
-		
 	}
 }

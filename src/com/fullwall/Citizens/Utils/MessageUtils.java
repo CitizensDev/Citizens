@@ -12,7 +12,9 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Traders.Buyable;
 import com.fullwall.Citizens.Traders.ItemPrice;
+import com.fullwall.Citizens.Traders.Sellable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
@@ -117,7 +119,23 @@ public class MessageUtils {
 				+ EconomyHandler
 						.getCurrency(new Payment(price.getPrice(),
 								new ItemStack(price.getItemID(), 1), price
-										.isIconomy())) + "(s)";
+										.isiConomy())) + "(s)";
 		return message;
+	}
+
+	public static String getStockableMessage(Buyable b, ChatColor colour) {
+		return StringUtils.yellowify(b.getBuying().getAmount() + " "
+				+ b.getBuying().getType().name(), colour)
+				+ "(s) at "
+				+ StringUtils.yellowify(
+						MessageUtils.getPriceMessage(b.getPrice()), colour);
+	}
+
+	public static String getStockableMessage(Sellable s, ChatColor colour) {
+		return StringUtils.yellowify(s.getSelling().getAmount() + " "
+				+ s.getSelling().getType().name(), colour)
+				+ "(s) at "
+				+ StringUtils.yellowify(
+						MessageUtils.getPriceMessage(s.getPrice()), colour);
 	}
 }

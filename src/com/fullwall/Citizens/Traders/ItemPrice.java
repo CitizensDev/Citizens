@@ -4,27 +4,49 @@ public class ItemPrice {
 	private boolean iConomy = false;
 	private int price = 0;
 	private int itemID = 1;
+	private int data;
 
 	public ItemPrice(int price) {
-		this.price = price;
-		this.iConomy = true;
+		this.setPrice(price);
+		this.setiConomy(true);
 	}
 
-	public ItemPrice(int itemID, int price) {
-		this.price = price;
-		this.itemID = itemID;
-		this.iConomy = false;
-	}
-
-	public boolean isIconomy() {
-		return this.iConomy;
+	public ItemPrice(int price, int itemID, int data) {
+		this.setData(data);
+		this.setPrice(price);
+		this.setItemID(itemID);
+		this.setiConomy(false);
 	}
 
 	public int getPrice() {
 		return this.price;
 	}
 
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 	public int getItemID() {
 		return this.itemID;
+	}
+
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+
+	public void setiConomy(boolean iConomy) {
+		this.iConomy = iConomy;
+	}
+
+	public boolean isiConomy() {
+		return iConomy;
+	}
+
+	public void setData(int data) {
+		this.data = data;
+	}
+
+	public int getData() {
+		return data;
 	}
 }

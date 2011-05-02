@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
-import com.fullwall.Citizens.Questers.Reward;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -16,16 +15,14 @@ public class MonsterCombatQuest implements Quest {
 	private CreatureType monster;
 	private ItemStack weapon;
 	private Goal goal;
-	private Reward reward;
 
 	public MonsterCombatQuest(HumanNPC questGiver, Player killer,
-			CreatureType monster, ItemStack weapon, Goal goal, Reward reward) {
+			CreatureType monster, ItemStack weapon, Goal goal) {
 		this.questGiver = questGiver;
 		this.killer = killer;
 		this.monster = monster;
 		this.weapon = weapon;
 		this.goal = goal;
-		this.reward = reward;
 	}
 
 	public CreatureType getMonster() {
@@ -84,21 +81,5 @@ public class MonsterCombatQuest implements Quest {
 	public boolean isCompleted() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public Reward getReward() {
-		return reward;
-	}
-
-	@Override
-	public void setReward(Reward reward) {
-		this.reward = reward;
-	}
-
-	@Override
-	public void rewardPlayer(Player player, Reward reward) {
-		// TODO Auto-generated method stub
-		
 	}
 }

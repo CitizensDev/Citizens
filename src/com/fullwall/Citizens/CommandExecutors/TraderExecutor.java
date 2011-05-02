@@ -14,6 +14,9 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Traders.Buyable;
+import com.fullwall.Citizens.Traders.ItemPrice;
+import com.fullwall.Citizens.Traders.Sellable;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -21,6 +24,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderExecutor implements CommandExecutor {
 
+	@SuppressWarnings("unused")
 	private Citizens plugin;
 
 	public TraderExecutor(Citizens plugin) {
@@ -128,6 +132,35 @@ public class TraderExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED
 					+ "Invalid item ID or name specified.");
 			return;
+		}
+		split = price.split(":");
+		ItemStack cost = null;
+		if (split.length != 1) {
+			cost = createItemStack(split);
+			if (cost == null) {
+				player.sendMessage(ChatColor.RED
+						+ "Invalid item ID or name specified.");
+				return;
+			}
+		}
+		int data = Citizens.MAGIC_DATA_VALUE;
+		if (stack.getData() != null)
+			data = stack.getData().getData();
+		ItemPrice itemPrice = new ItemPrice(stack.getAmount(),
+				stack.getTypeId(), data);
+		itemPrice.setiConomy(cost == null);
+		if (selling) {
+			Sellable s = new Sellable(stack, itemPrice);
+			npc.getTraderNPC().addSellable(s);
+			player.sendMessage(ChatColor.GREEN + "The NPC is now selling "
+					+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
+					+ ".");
+		} else {
+			Buyable b = new Buyable(stack, itemPrice);
+			npc.getTraderNPC().addBuyable(b);
+			player.sendMessage(ChatColor.GREEN + "The NPC is now buying "
+					+ MessageUtils.getStockableMessage(b, ChatColor.GREEN)
+					+ ".");
 		}
 	}
 

@@ -50,7 +50,6 @@ public class Citizens extends JavaPlugin {
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
 	public static String NPCColour = "§f";
-	private static final String codename = "Helpers";
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
@@ -59,6 +58,9 @@ public class Citizens extends JavaPlugin {
 
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static iConomy economy = null;
+
+	public static final int MAGIC_DATA_VALUE = 1564;
+	private static final String codename = "Helpers";
 
 	@Override
 	public void onLoad() {

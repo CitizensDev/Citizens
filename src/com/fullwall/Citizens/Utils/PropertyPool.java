@@ -268,8 +268,8 @@ public class PropertyPool {
 		talkwhenclose.removeKey(UID);
 		texts.removeKey(UID);
 	}
-	
-	public static int getMaxNPCsPerPlayer(){
+
+	public static int getMaxNPCsPerPlayer() {
 		return settings.getInt("max-NPCs-per-player");
 	}
 }
