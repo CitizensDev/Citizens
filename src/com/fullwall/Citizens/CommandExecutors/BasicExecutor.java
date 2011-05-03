@@ -259,11 +259,19 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if ((command.getName().equals("citizens") || command.getName()
-				.equals("npc")) && args.length == 2 && (args[0].equals("help"))) {
-			if (hasPermission("citizens.help", sender)) {
-				sendHelpPage(sender, args[1]);
-			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				.equals("npc")) && args.length == 3) {
+			if (args[0].equals("basic") && args[1].equals("help")) {
+				if (hasPermission("citizens.basic.help", sender)) {
+					sendBasicHelpPage(sender, args[2]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+			} else if (args[0].equals("trader") && args[1].equals("help")){
+				if (hasPermission("citizens.trader.help", sender)) {
+					sendTraderHelpPage(sender, args[2]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 			}
 			return true;
 
@@ -699,36 +707,34 @@ public class BasicExecutor implements CommandExecutor {
 		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
 		PropertyPool.setLookWhenClose(n.getUID(), look);
 		if (look)
-			p.sendMessage(ChatColor.GREEN
-					+ "The NPC: "
-					+ StringUtils.yellowify(n.getStrippedName()) + " will now look at players.");
+			p.sendMessage(ChatColor.GREEN + "The NPC: "
+					+ StringUtils.yellowify(n.getStrippedName())
+					+ " will now look at players.");
 		else if (!look)
-			p.sendMessage(ChatColor.GREEN
-					+ "The NPC: "
-					+ StringUtils.yellowify(n.getStrippedName()) + " will stop looking at players.");
+			p.sendMessage(ChatColor.GREEN + "The NPC: "
+					+ StringUtils.yellowify(n.getStrippedName())
+					+ " will stop looking at players.");
 	}
 
 	private void sendHelp(CommandSender sender) {
 		// remove, reset, add, color
-		sender.sendMessage("§fCitizens v1.07 Help");
+		sender.sendMessage("§fCitizens v1.0.8 Help");
 		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
-		sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
-		sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
-		sender.sendMessage("§fUse the command /citizens help [page] for more info.");
+		sender.sendMessage("§8/§cnpc §btoggle [basic|trader] §e- §atoggle the state of an NPC");
+		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC");
 
 	}
 
-	private void sendHelpPage(CommandSender sender, String page) {
+	private void sendBasicHelpPage(CommandSender sender, String page) {
 		int pageNum = Integer.valueOf(page);
 		switch (pageNum) {
 		case 1:
-			sender.sendMessage("§fCitizens v1.07 Help");
+			sender.sendMessage("§fCitizens v1.0.8 Basic Help");
 			sender.sendMessage("§b-------------------------------");
 			sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
 			sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
 			sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
-			sender.sendMessage("§fUse the command /citizens help [page] for more info.");
+			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
 			break;
 		case 2:
 			sender.sendMessage("§8/§cnpc §bname [new name] §e- §achanges the name of an NPC.");
@@ -751,10 +757,27 @@ public class BasicExecutor implements CommandExecutor {
 			sender.sendMessage("§8/§cnpc §btalkwhenclose [true|false] §e- §amake a NPC talk to players.");
 			sender.sendMessage("§8/§cnpc §blookatplayers [true|false] §e- §amake a NPC look at players.");
 			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§fPlugin made by fullwall, NeonMaster and TheMPC.");
+			sender.sendMessage("§fPlugin made by fullwall, NeonMaster, TheMPC, and aPunch");
 			break;
 		default:
 			sender.sendMessage("§fThe total number of pages is 4, page: "
+					+ pageNum + " is not available.");
+			break;
+		}
+	}
+	
+	// TODO Add commands
+	private void sendTraderHelpPage(CommandSender sender, String page) {
+		int pageNum = Integer.valueOf(page);
+		switch (pageNum) {
+		case 1:
+			sender.sendMessage("§fCitizens v1.0.8 Trader Help");
+			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("ADD COMMANDS HERE");
+			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
+			break;
+		default:
+			sender.sendMessage("§fThe total number of pages is 1, page: "
 					+ pageNum + " is not available.");
 			break;
 		}
