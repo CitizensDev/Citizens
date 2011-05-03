@@ -4,9 +4,9 @@ import com.fullwall.Citizens.PropertyHandler;
 
 public class QuesterPropertyPool {
 	public static final PropertyHandler questers = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.questers");
+			"plugins/Citizens/Questers/Citizens.questers");
 	public static final PropertyHandler questSettings = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.questSettings");
+			"plugins/Citizens/Questers/Citizens.questSettings");
 
 	public static void saveAll() {
 		questers.save();
