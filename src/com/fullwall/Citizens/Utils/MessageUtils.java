@@ -99,7 +99,7 @@ public class MessageUtils {
 				+ "Paid "
 				+ StringUtils.yellowify(EconomyHandler.getPaymentType(
 						Operation.TRADER_NPC_CREATE, "" + paid),
-						ChatColor.GREEN) + " " + " for ";
+						ChatColor.GREEN) + " for ";
 		if (useType)
 			message += StringUtils.yellowify(npcName, ChatColor.GREEN)
 					+ " to become a "
