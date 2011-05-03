@@ -71,9 +71,13 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equals("quester")) {
-				// quest toggle here
+				sender.sendMessage("QUESTS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else if (args[0].equals("healer")) {
-				// healer toggle here
+				sender.sendMessage("HEALERS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+			} else if (args[0].equals("guard")) {
+				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+			} else if (args[0].equals("wizard")) {
+				sender.sendMessage("WIZARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "Entered npc type was not recognised.");
