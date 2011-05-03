@@ -22,16 +22,15 @@ public class CustomListen extends CustomEventListener {
 		if (!ev.getType().equals(Type.CUSTOM_EVENT)) {
 			return;
 		}
-
-		if (!ev.getEventName().equals("CitizensBasicNPCEvent")) {
-			return;
+		if (ev.getEventName().equals("CitizensBasicNPCEvent")) {
+			CitizensBasicNPCEvent e = (CitizensBasicNPCEvent) ev;
+			if (e.isCancelled() == true)
+				return;
+			if (!PropertyPool.getLookWhenClose(e.getNPC().getUID())) {
+				NPCManager.rotateNPCToPlayer(e.getNPC(), e.getPlayer());
+			}
+			if (!e.getText().isEmpty())
+				e.getPlayer().sendMessage(e.getText());
 		}
-		CitizensBasicNPCEvent e = (CitizensBasicNPCEvent) ev;
-		if (e.isCancelled() == true)
-			return;
-		if (!PropertyPool.getLookWhenClose(e.getNPC().getUID())) {
-			NPCManager.rotateNPCToPlayer(e.getNPC(), e.getPlayer());
-		}
-		e.getPlayer().sendMessage(e.getText());
 	}
 }

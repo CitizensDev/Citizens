@@ -76,11 +76,11 @@ public class TraderPropertyPool {
 						(short) 0, (byte) parse(split[2])));
 			else
 				array.add(null);
-
 		}
 		PlayerInventory inv = new CraftInventoryPlayer(
 				new InventoryPlayer(null));
-		inv.setContents((ItemStack[]) array.toArray());
+		ItemStack[] stacks = inv.getContents();
+		inv.setContents(array.toArray(stacks));
 		return inv;
 	}
 

@@ -54,10 +54,10 @@ public class ItemPrice {
 
 	public String toString() {
 		String ret = "";
-		ret += (iConomy ? "" + price + Citizens.separatorChar + iConomy : ""
-				+ price + Citizens.separatorChar + itemID
-				+ Citizens.separatorChar + data + Citizens.separatorChar
-				+ iConomy);
+		ret += (iConomy ? "" + price + Citizens.separatorChar + iConomy
+				+ Citizens.separatorChar : "" + price + Citizens.separatorChar
+				+ itemID + Citizens.separatorChar + data
+				+ Citizens.separatorChar + iConomy + Citizens.separatorChar);
 		return ret;
 	}
 }

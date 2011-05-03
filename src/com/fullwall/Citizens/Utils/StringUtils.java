@@ -54,6 +54,14 @@ public class StringUtils {
 		}
 	}
 
+	public static String yellowify(String string) {
+		return ChatColor.YELLOW + string + ChatColor.GREEN;
+	}
+
+	public static String yellowify(double string) {
+		return ChatColor.YELLOW + "" + string + ChatColor.GREEN;
+	}
+
 	public static String yellowify(String string, ChatColor temp) {
 		return ChatColor.YELLOW + string + temp;
 	}

@@ -92,15 +92,13 @@ public class TraderTask implements Runnable {
 
 	@Override
 	public void run() {
-		if (stop)
-			return;
-		if (mode == Mode.STOCK)
-			return;
 		if (npc == null || player == null
-				|| eplayer.activeContainer == eplayer.defaultContainer) {
+				|| eplayer.activeContainer == eplayer.defaultContainer && !stop) {
 			kill();
 			return;
 		}
+		if (mode == Mode.STOCK)
+			return;
 		// If the player cursor is empty (no itemstack in it).
 		if (player.getHandle().inventory.j() == null)
 			return;

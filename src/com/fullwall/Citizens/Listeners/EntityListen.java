@@ -74,14 +74,12 @@ public class EntityListen extends EntityListener {
 				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true) {
 					if (!NPCManager.validateSelected(p, npc)) {
 						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-						p.sendMessage(ChatColor.GREEN
-								+ "You selected NPC ["
-								+ StringUtils.yellowify(npc.getStrippedName(),
-										ChatColor.GREEN)
+						p.sendMessage(ChatColor.GREEN + "You selected NPC ["
+								+ StringUtils.yellowify(npc.getStrippedName())
 								+ "], ID ["
-								+ StringUtils.yellowify("" + npc.getUID(),
-										ChatColor.GREEN) + "]");
-					} else if (plugin.canSelectAny()) {
+								+ StringUtils.yellowify("" + npc.getUID())
+								+ "]");
+					} else if (!found && plugin.canSelectAny()) {
 						p.sendMessage(ChatColor.GREEN
 								+ "That NPC is already selected!");
 					}

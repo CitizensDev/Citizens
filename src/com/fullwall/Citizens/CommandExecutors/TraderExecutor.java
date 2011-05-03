@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.CommandExecutors;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -77,7 +79,7 @@ public class TraderExecutor implements CommandExecutor {
 					&& (args[0].contains("b") || args[0].contains("s"))) {
 				if (BasicExecutor
 						.hasPermission("citizens.trader.stock", sender)) {
-					changeTraderBuySell(npc, player, args[1], args[2],
+					changeTraderBuySell(player, npc, args[1], args[2],
 							args[0].contains("s"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -93,8 +95,7 @@ public class TraderExecutor implements CommandExecutor {
 					&& (args[1].contains("s") || args[1].contains("b"))) {
 				if (BasicExecutor
 						.hasPermission("citizens.trader.stock", sender)) {
-					changeTraderBuySell(npc, player, args[1], args[2],
-							args[0].contains("s"));
+					displayList(player, npc, args, args[1].contains("s"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
@@ -102,6 +103,33 @@ public class TraderExecutor implements CommandExecutor {
 			TraderPropertyPool.saveTraderState(npc);
 		}
 		return returnval;
+	}
+
+	private void displayList(Player player, HumanNPC npc, String[] args,
+			boolean selling) {
+		ArrayList<Stockable> stock = npc.getTraderNPC().getStockables(selling);
+		String keyword = "";
+		if (selling)
+			keyword = "Selling";
+		else
+			keyword = "Buying";
+		// have to paginate.
+		int page = 0;
+		if (stock.size() > 4 && args.length == 3) {
+			page = Integer.parseInt(args[2]);
+		} else {
+			player.sendMessage(ChatColor.GOLD + "NPC " + keyword
+					+ " List (Page "
+					+ StringUtils.yellowify(page, ChatColor.GOLD) + " of "
+					+ StringUtils.yellowify(stock.size() / 4, ChatColor.YELLOW)
+					+ ")");
+			player.sendMessage(ChatColor.AQUA
+					+ "-------------------------------");
+			int startPoint = 4 * page - 1;
+			for (int i = startPoint; i != startPoint + 3; ++i) {
+				Stockable s = stock.get(i);
+			}
+		}
 	}
 
 	private void changeUnlimited(HumanNPC npc, CommandSender sender,
@@ -119,7 +147,7 @@ public class TraderExecutor implements CommandExecutor {
 					+ "Incorrect unlimited type entered. Valid values are true, on, false, off.");
 	}
 
-	private void changeTraderBuySell(HumanNPC npc, Player player, String item,
+	private void changeTraderBuySell(Player player, HumanNPC npc, String item,
 			String price, boolean selling) {
 		if (item.contains("rem")) {
 			Material mat = StringUtils.parseMaterial(price);
@@ -135,9 +163,8 @@ public class TraderExecutor implements CommandExecutor {
 					return;
 				} else {
 					npc.traderNPC.removeStockable(mat.getId(), true);
-					player.sendMessage(ChatColor.GREEN
-							+ "Removed "
-							+ StringUtils.yellowify(mat.name(), ChatColor.GREEN)
+					player.sendMessage(ChatColor.GREEN + "Removed "
+							+ StringUtils.yellowify(mat.name())
 							+ " from the NPC's selling list.");
 				}
 			} else {
@@ -147,9 +174,8 @@ public class TraderExecutor implements CommandExecutor {
 					return;
 				} else {
 					npc.traderNPC.removeStockable(mat.getId(), false);
-					player.sendMessage(ChatColor.GREEN
-							+ "Removed "
-							+ StringUtils.yellowify(mat.name(), ChatColor.GREEN)
+					player.sendMessage(ChatColor.GREEN + "Removed "
+							+ StringUtils.yellowify(mat.name())
 							+ " from the NPC's buying list.");
 				}
 			}
@@ -221,12 +247,10 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(amount, true), player);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
-						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(amount),
-								ChatColor.GREEN)
+						+ StringUtils.yellowify(IconomyInterface
+								.getCurrency(amount))
 						+ " to "
-						+ StringUtils.yellowify(npc.getStrippedName(),
-								ChatColor.GREEN)
+						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
 						+ StringUtils.yellowify(
 								IconomyInterface.getBalance(player.getName()),
@@ -247,16 +271,13 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(-amount, true), player);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
-						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(amount),
-								ChatColor.GREEN)
+						+ StringUtils.yellowify(IconomyInterface
+								.getCurrency(amount))
 						+ " from "
-						+ StringUtils.yellowify(npc.getStrippedName(),
-								ChatColor.GREEN)
+						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
-						+ StringUtils.yellowify(
-								IconomyInterface.getBalance(player.getName()),
-								ChatColor.GREEN) + ".");
+						+ StringUtils.yellowify(IconomyInterface
+								.getBalance(player.getName())) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "The NPC doesn't have enough money for that! It needs "

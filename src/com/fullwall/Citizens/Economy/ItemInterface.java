@@ -22,7 +22,7 @@ public class ItemInterface {
 		// The current count.
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
-			if (i.getTypeId() == currencyID) {
+			if (i != null && i.getTypeId() == currencyID) {
 				current += i.getAmount();
 				if (current > price) {
 					return true;
@@ -35,7 +35,7 @@ public class ItemInterface {
 	public static boolean hasEnough(Payment payment, Player player) {
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
-			if (i.getTypeId() == payment.getItem().getTypeId()) {
+			if (i != null && i.getTypeId() == payment.getItem().getTypeId()) {
 				current += i.getAmount();
 				if (current > payment.getPrice()) {
 					return true;
@@ -63,7 +63,7 @@ public class ItemInterface {
 		PlayerInventory inv = player.getInventory();
 		int current = price;
 		for (ItemStack i : inv.getContents()) {
-			if (i.getTypeId() == currencyID) {
+			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
 				current -= amount;
 			}
@@ -81,7 +81,7 @@ public class ItemInterface {
 		PlayerInventory inv = player.getInventory();
 		int current = price;
 		for (ItemStack i : inv.getContents()) {
-			if (i.getTypeId() == currencyID) {
+			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
 				int toChange = 0;
 				current -= amount;
@@ -108,7 +108,7 @@ public class ItemInterface {
 		int currencyID = price.getItemID();
 		int current = price.getPrice();
 		for (ItemStack i : inv.getContents()) {
-			if (i.getTypeId() == currencyID) {
+			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
 				int toChange = 0;
 				current -= amount;
@@ -131,7 +131,7 @@ public class ItemInterface {
 		int currencyID = payment.getItem().getTypeId();
 		int current = payment.getPrice();
 		for (ItemStack i : inv.getContents()) {
-			if (i.getTypeId() == currencyID) {
+			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
 				int toChange = 0;
 				current -= amount;

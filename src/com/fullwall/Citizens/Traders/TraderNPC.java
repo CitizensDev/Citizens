@@ -65,6 +65,16 @@ public class TraderNPC {
 		return stockables;
 	}
 
+	public ArrayList<Stockable> getStockables(boolean selling) {
+		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
+		if (checkStockingIntegrity()) {
+			for (Stockable s : stocking.values())
+				if (selling == s.isSelling())
+					stockables.add(s);
+		}
+		return stockables;
+	}
+
 	public void removeStockable(int ID, boolean selling) {
 		Stockable s = null;
 		if (checkStockingIntegrity()) {

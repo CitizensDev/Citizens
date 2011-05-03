@@ -41,10 +41,10 @@ public class Stockable {
 				+ Citizens.separatorChar
 				+ stocking.getAmount()
 				+ Citizens.separatorChar
-				+ (stocking.getData() == null ? 0 : stocking.getData()
-						.getData()) + "-";
+				+ (stocking.getData() == null ? "0" : stocking.getData()
+						.getData()) + Citizens.separatorChar + "-";
 		ret += price.toString() + "-";
-		ret += selling;
+		ret += selling + "-";
 		return ret;
 	}
 
