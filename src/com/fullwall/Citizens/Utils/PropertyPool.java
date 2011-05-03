@@ -41,6 +41,13 @@ public class PropertyPool {
 	public static int getMaxNPCsPerPlayer() {
 		return settings.getInt("max-NPCs-per-player");
 	}
+	
+	public static boolean isInfinite(){
+		if(settings.getInt("max-NPCs-per-player") == 0){
+			return true;
+		}
+		return false;
+	}
 
 	public static int getNPCAmountPerPlayer(String name) {
 		return counts.getInt(name);
