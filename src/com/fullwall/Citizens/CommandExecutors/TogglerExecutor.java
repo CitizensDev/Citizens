@@ -67,6 +67,8 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+			} else if (args[0].equals("quester")) {
+				// quest toggle here
 			}
 			TraderPropertyPool.saveTraderState(npc);
 		}

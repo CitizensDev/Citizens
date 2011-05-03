@@ -513,11 +513,12 @@ public class BasicExecutor implements CommandExecutor {
 					+ "NPC name length is too long. The limit is 15 characters.");
 			return;
 		}
-		if (PropertyPool.getNPCAmountPerPlayer(player.getName()) <= PropertyPool
+		if (PropertyPool.getNPCAmountPerPlayer(player.getName()) < PropertyPool
 				.getMaxNPCsPerPlayer()) {
 			int UID = plugin.handler.spawnNPC(args[1], player.getLocation(),
 					player.getName());
-			PropertyPool.saveNPCAmountPerPlayer(player.getName(), PropertyPool.getNPCAmountPerPlayer(player.getName()) + 1);
+			PropertyPool.saveNPCAmountPerPlayer(player.getName(),
+					PropertyPool.getNPCAmountPerPlayer(player.getName()) + 1);
 			plugin.handler.setNPCText(UID, texts);
 			plugin.handler.setOwner(UID, player.getName());
 			player.sendMessage(ChatColor.GREEN + "The NPC "
@@ -537,7 +538,11 @@ public class BasicExecutor implements CommandExecutor {
 					+ "], ID ["
 					+ StringUtils.yellowify("" + UID, ChatColor.GREEN) + "]");
 		} else {
-			player.sendMessage("You have reached the NPC-creation limit.");
+			player.sendMessage(ChatColor.GREEN
+					+ "You have reached the NPC-creation limit of "
+					+ StringUtils.yellowify(
+							"" + PropertyPool.getMaxNPCsPerPlayer(),
+							ChatColor.GREEN) + ".");
 		}
 	}
 
