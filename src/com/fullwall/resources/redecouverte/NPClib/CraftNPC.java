@@ -33,7 +33,6 @@ public class CraftNPC extends EntityPlayer {
 				"npc mgr", new NetHandler() {
 					@Override
 					public boolean c() {
-						Citizens.log.info("!!!");
 						return false;
 					}
 				});
