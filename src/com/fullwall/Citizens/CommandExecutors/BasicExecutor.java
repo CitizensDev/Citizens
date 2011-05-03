@@ -514,7 +514,7 @@ public class BasicExecutor implements CommandExecutor {
 			return;
 		}
 		if (PropertyPool.getNPCAmountPerPlayer(player.getName()) < PropertyPool
-				.getMaxNPCsPerPlayer() || PropertyPool.isInfinite()) {
+				.getMaxNPCsPerPlayer() || PropertyPool.settings.getInt("max-NPCs-per-player") == 0) {
 			int UID = plugin.handler.spawnNPC(args[1], player.getLocation(),
 					player.getName());
 			PropertyPool.saveNPCAmountPerPlayer(player.getName(),
