@@ -17,7 +17,7 @@ commands:
         description: Toggles between various NPC states.
         usage: |
                         The command was not recognised. The correct syntax is
-                        /<command> [type]
+                        /<command> [trader|wizard|healer|guard|quester]
     citizens:
         description: Performs Citizens-related commands.
         usage: |

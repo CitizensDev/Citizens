@@ -720,7 +720,7 @@ public class BasicExecutor implements CommandExecutor {
 		// remove, reset, add, color
 		sender.sendMessage("§fCitizens v1.0.8 Help");
 		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§8/§cnpc §btoggle [basic|trader] §e- §atoggle the state of an NPC");
+		sender.sendMessage("§8/§cnpc §btoggle [trader|quester|wizard|guard|healer] §e- §atoggle the state of an NPC");
 		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC");
 
 	}

@@ -56,9 +56,7 @@ public class TogglerExecutor implements CommandExecutor {
 					+ "You didn't specify an NPC type to toggle.");
 			return true;
 		} else {
-			if (args[0].equals("basic")) {
-				toggleTrader(npc, player);
-			} else if (args[0].equals("trader")) {
+			if (args[0].equals("trader")) {
 				if (BasicExecutor.hasPermission("citizens.trader.create",
 						sender)) {
 					if (!TraderPropertyPool.isTrader(npc.getUID()))
