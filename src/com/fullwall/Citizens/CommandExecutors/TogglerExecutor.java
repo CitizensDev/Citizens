@@ -69,6 +69,10 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equals("quester")) {
 				// quest toggle here
+			} else {
+				player.sendMessage(ChatColor.RED
+						+ "Entered npc type was not recognised.");
+				return true;
 			}
 			TraderPropertyPool.saveTraderState(npc);
 		}

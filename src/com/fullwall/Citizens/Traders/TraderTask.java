@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Traders;
 
 import java.util.HashMap;
 
+import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.InventoryPlayer;
 import net.minecraft.server.Packet103SetSlot;
 
@@ -32,10 +33,12 @@ public class TraderTask implements Runnable {
 	private PlayerInventory previousPlayerInv;
 	private Mode mode;
 	private boolean stop = false;
+	private EntityPlayer eplayer;
 
 	public TraderTask(HumanNPC NPC, Player player, Citizens plugin, Mode mode) {
 		this.npc = NPC;
 		this.player = (CraftPlayer) player;
+		this.eplayer = this.player.getHandle();
 		this.plugin = plugin;
 		// Create the inventory objects
 		this.previousNPCInv = new CraftInventoryPlayer(
@@ -79,12 +82,12 @@ public class TraderTask implements Runnable {
 	public void kill() {
 		stop = true;
 		this.npc.getTraderNPC().setFree(true);
-		plugin.getServer().getScheduler().cancelTask(taskID);
 		sendLeaveMessage();
 		TraderPropertyPool.saveTraderState(npc);
 		int index = TraderInterface.tasks.indexOf(taskID);
 		if (index != -1)
 			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));
+		plugin.getServer().getScheduler().cancelTask(taskID);
 	}
 
 	@Override
@@ -93,9 +96,8 @@ public class TraderTask implements Runnable {
 			return;
 		if (mode == Mode.STOCK)
 			return;
-		if (npc == null
-				|| player == null
-				|| player.getHandle().activeContainer == player.getHandle().defaultContainer) {
+		if (npc == null || player == null
+				|| eplayer.activeContainer == eplayer.defaultContainer) {
 			kill();
 			return;
 		}
@@ -107,10 +109,10 @@ public class TraderTask implements Runnable {
 		boolean found = false;
 		for (ItemStack i : npc.getInventory().getContents()) {
 			if (!previousNPCInv.getItem(count).equals(i)
-					&& previousNPCInv.getItem(count).getTypeId() == player
-							.getHandle().inventory.j().id) {
+					&& previousNPCInv.getItem(count).getTypeId() == eplayer.inventory
+							.j().id) {
 				found = true;
-				handleNPCItemClicked(count);
+				handleNPCItemClicked(count, npc.getInventory());
 				break;
 			}
 			count += 1;
@@ -120,9 +122,9 @@ public class TraderTask implements Runnable {
 		if (!found) {
 			for (ItemStack i : player.getInventory().getContents()) {
 				if (!previousPlayerInv.getItem(count).equals(i)
-						&& previousPlayerInv.getItem(count).getTypeId() == player
-								.getHandle().inventory.j().id) {
-					handlePlayerItemClicked(count);
+						&& previousPlayerInv.getItem(count).getTypeId() == eplayer.inventory
+								.j().id) {
+					handlePlayerItemClicked(count, player.getInventory());
 					break;
 				}
 				count += 1;
@@ -133,10 +135,10 @@ public class TraderTask implements Runnable {
 		clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
 
 		// Set the itemstack in the player's cursor to null.
-		player.getHandle().inventory.b((net.minecraft.server.ItemStack) null);
+		eplayer.inventory.b((net.minecraft.server.ItemStack) null);
 		// Get rid of the picture on the cursor.
 		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
-		player.getHandle().netServerHandler.sendPacket(packet);
+		eplayer.netServerHandler.sendPacket(packet);
 	}
 
 	private void sendJoinMessage() {
@@ -172,9 +174,9 @@ public class TraderTask implements Runnable {
 		}
 	}
 
-	private void handleNPCItemClicked(int slot) {
-		npc.getInventory().setItem(slot, previousNPCInv.getItem(slot));
-		ItemStack i = npc.getInventory().getItem(slot);
+	private void handleNPCItemClicked(int slot, PlayerInventory npcInv) {
+		npcInv.setItem(slot, previousNPCInv.getItem(slot));
+		ItemStack i = npcInv.getItem(slot);
 		if (!(npc.getTraderNPC().isStockable(i.getTypeId(), i.getData(), false))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being sold here.");
@@ -191,7 +193,7 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		previousNPCClickedSlot = slot;
-		int amount = npc.getInventory().getItem(slot).getAmount();
+		int amount = npcInv.getItem(slot).getAmount();
 		if (amount - buying.getAmount() <= 0) {
 			player.sendMessage(ChatColor.RED
 					+ "Need at least "
@@ -219,12 +221,12 @@ public class TraderTask implements Runnable {
 		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
-		npc.getInventory().setContents(sortInventory(npc.getInventory()));
+		npcInv.setContents(sortInventory(npc.getInventory()));
 	}
 
-	private void handlePlayerItemClicked(int slot) {
-		player.getInventory().setItem(slot, previousPlayerInv.getItem(slot));
-		ItemStack i = player.getInventory().getItem(slot);
+	private void handlePlayerItemClicked(int slot, PlayerInventory playerInv) {
+		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
+		ItemStack i = playerInv.getItem(slot);
 		if (!npc.getTraderNPC().isStockable(i.getTypeId(), i.getData(), true)) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being purchased here.");
@@ -241,7 +243,7 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		previousPlayerClickedSlot = slot;
-		int amount = player.getInventory().getItem(slot).getAmount();
+		int amount = playerInv.getItem(slot).getAmount();
 		if (amount - selling.getAmount() <= 0) {
 			player.sendMessage(ChatColor.RED
 					+ "You need to click on at a stack of at least "

@@ -15,6 +15,8 @@ import net.minecraft.server.WorldServer;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
 
+import com.fullwall.Citizens.Citizens;
+
 public class CraftNPC extends EntityPlayer {
 
 	@SuppressWarnings("unused")
@@ -31,7 +33,8 @@ public class CraftNPC extends EntityPlayer {
 				"npc mgr", new NetHandler() {
 					@Override
 					public boolean c() {
-						return true;
+						Citizens.log.info("!!!");
+						return false;
 					}
 				});
 		this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
