@@ -3,7 +3,6 @@ package com.fullwall.Citizens.Questers.QuestTypes;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -13,12 +12,10 @@ public class LocationQuest implements Quest {
 	private HumanNPC endNPC;
 	private Location startLocation;
 	private Location endLocation;
-	private Goal goal;
 
-	public LocationQuest(HumanNPC questGiver, HumanNPC endNPC, Goal goal) {
+	public LocationQuest(HumanNPC questGiver, HumanNPC endNPC) {
 		this.questGiver = questGiver;
 		this.endNPC = endNPC;
-		this.goal = goal;
 	}
 
 	public HumanNPC getEndNPC() {
@@ -66,16 +63,6 @@ public class LocationQuest implements Quest {
 	@Override
 	public QuestType getType() {
 		return QuestType.LOCATION;
-	}
-
-	@Override
-	public Goal getGoal() {
-		return goal;
-	}
-
-	@Override
-	public void setGoal(Goal goal) {
-		this.goal = goal;
 	}
 
 	@Override

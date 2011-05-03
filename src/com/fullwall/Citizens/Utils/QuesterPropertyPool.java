@@ -1,4 +1,4 @@
-package com.fullwall.Citizens.Questers;
+package com.fullwall.Citizens.Utils;
 
 import com.fullwall.Citizens.PropertyHandler;
 

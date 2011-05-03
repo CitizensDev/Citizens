@@ -4,7 +4,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -14,14 +13,12 @@ public class DestroyQuest implements Quest {
 	private Block blockTypeToDestroy;
 	private Block[] blocksDestroyed;
 	private ItemStack tool;
-	private Goal goal;
 
 	public DestroyQuest(HumanNPC questGiver, Block[] blocksDestroyed,
-			ItemStack tool, Goal goal) {
+			ItemStack tool) {
 		this.questGiver = questGiver;
 		this.blocksDestroyed = blocksDestroyed;
 		this.tool = tool;
-		this.goal = goal;
 	}
 
 	public Block[] getBlocksDestroyed() {
@@ -35,12 +32,12 @@ public class DestroyQuest implements Quest {
 	public void setBlockToDestroy(Block blockTypeToDestroy) {
 		this.blockTypeToDestroy = blockTypeToDestroy;
 	}
-	
-	public ItemStack getTool(){
+
+	public ItemStack getTool() {
 		return tool;
 	}
-	
-	public void setTool(ItemStack tool){
+
+	public void setTool(ItemStack tool) {
 		this.tool = tool;
 	}
 
@@ -63,16 +60,6 @@ public class DestroyQuest implements Quest {
 	@Override
 	public QuestType getType() {
 		return QuestType.DESTROY;
-	}
-
-	@Override
-	public Goal getGoal() {
-		return goal;
-	}
-
-	@Override
-	public void setGoal(Goal goal) {
-		this.goal = goal;
 	}
 
 	@Override

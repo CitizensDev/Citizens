@@ -3,7 +3,6 @@ package com.fullwall.Citizens.Questers.QuestTypes;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Questers.Goal;
 import com.fullwall.Citizens.Questers.Quest;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -13,15 +12,13 @@ public class PlayerCombatQuest implements Quest {
 	private Player killer;
 	private Player victim;
 	private ItemStack weapon;
-	private Goal goal;
 
 	public PlayerCombatQuest(HumanNPC questGiver, Player killer, Player victim,
-			ItemStack weapon, Goal goal) {
+			ItemStack weapon) {
 		this.questGiver = questGiver;
 		this.killer = killer;
 		this.victim = victim;
 		this.weapon = weapon;
-		this.goal = goal;
 	}
 
 	@Override
@@ -36,16 +33,6 @@ public class PlayerCombatQuest implements Quest {
 	@Override
 	public QuestType getType() {
 		return QuestType.PLAYER_COMBAT;
-	}
-
-	@Override
-	public Goal getGoal() {
-		return goal;
-	}
-
-	@Override
-	public void setGoal(Goal goal) {
-		this.goal = goal;
 	}
 
 	@Override
