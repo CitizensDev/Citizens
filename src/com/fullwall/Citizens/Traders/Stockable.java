@@ -2,6 +2,8 @@ package com.fullwall.Citizens.Traders;
 
 import org.bukkit.inventory.ItemStack;
 
+import com.fullwall.Citizens.Citizens;
+
 public class Stockable {
 	private ItemStack stocking;
 	private ItemPrice price;
@@ -31,5 +33,22 @@ public class Stockable {
 
 	public boolean isSelling() {
 		return selling;
+	}
+
+	public String toString() {
+		String ret = "";
+		ret += stocking.getTypeId()
+				+ Citizens.separatorChar
+				+ stocking.getAmount()
+				+ Citizens.separatorChar
+				+ (stocking.getData() == null ? 0 : stocking.getData()
+						.getData()) + "-";
+		ret += price.toString() + "-";
+		ret += selling;
+		return ret;
+	}
+
+	public Check createCheck() {
+		return new Check(getStockingId(), isSelling());
 	}
 }

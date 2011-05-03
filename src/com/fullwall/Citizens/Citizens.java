@@ -60,8 +60,9 @@ public class Citizens extends JavaPlugin {
 	public static iConomy economy = null;
 
 	public static Logger log = Logger.getLogger("Minecraft");
+	public static String separatorChar = "/";
 
-	public static final int MAGIC_DATA_VALUE = 1564;
+	public static final int MAGIC_DATA_VALUE = -1;
 	private static final String codename = "Helpers";
 
 	@Override

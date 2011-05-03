@@ -1,17 +1,19 @@
 package com.fullwall.Citizens.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.server.InventoryPlayer;
 
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Traders.Check;
+import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -102,20 +104,67 @@ public class TraderPropertyPool {
 		return unlimiteds.getBoolean(UID);
 	}
 
-	// TODO
-	public static void addStockable(Stockable s) {
-		Check check = new Check(s.getStockingId(), s.isSelling());
-		// buying.setBoolean(UID, unlimited);
+	public static void addStockable(int UID, Stockable s) {
+		String write = "";
+		write += s.toString() + "||";
+		stocking.setString(UID, write);
 	}
 
-	public static void saveStockables(HashMap<Check, Stockable> stocking) {
-		for (Entry<Check, Stockable> entry : stocking.entrySet()) {
-			addStockable(entry.getValue());
+	public static void removeStockable(int UID, Stockable s) {
+		String write = "";
+		write += s.toString() + "||";
+		String read = stocking.getString(UID);
+		read.replace(write, "");
+		stocking.setString(UID, read);
+	}
+
+	public static void saveStockables(int UID,
+			ConcurrentHashMap<Check, Stockable> stockables) {
+		for (Entry<Check, Stockable> entry : stockables.entrySet()) {
+			addStockable(UID, entry.getValue());
 		}
 	}
 
-	public static HashMap<Check, Stockable> getStockables(int UID) {
-		HashMap<Check, Stockable> stockables = new HashMap<Check, Stockable>();
+	public static ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
+		ConcurrentHashMap<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
+		int i = 0;
+		for (String s : stocking.getString(UID).split("||")) {
+			i = 0;
+			ItemStack stack = new ItemStack(37);
+			ItemPrice price = new ItemPrice(0);
+			boolean selling = false;
+			for (String main : s.split("-")) {
+				switch (i) {
+				case 0:
+					String[] split = main.split("/");
+					MaterialData data = new MaterialData(
+							Integer.parseInt(split[2]));
+					stack = new ItemStack(Integer.parseInt(split[0]),
+							Integer.parseInt(split[1]));
+					if (data != null)
+						stack.setData(data);
+					break;
+				case 1:
+					String[] parts = main.split("/");
+					if (parts.length == 2) {
+						price = new ItemPrice(Integer.parseInt(parts[0]));
+						price.setiConomy(Boolean.parseBoolean(parts[1]));
+					} else {
+						price = new ItemPrice(Integer.parseInt(parts[0]),
+								Integer.parseInt(parts[1]),
+								Integer.parseInt(parts[2]));
+						price.setiConomy(Boolean.parseBoolean(parts[3]));
+					}
+					break;
+				case 2:
+					selling = Boolean.parseBoolean(main);
+					break;
+				}
+				i += 1;
+			}
+			Stockable stock = new Stockable(stack, price, selling);
+			stockables.put(stock.createCheck(), stock);
+		}
 		return stockables;
 	}
 

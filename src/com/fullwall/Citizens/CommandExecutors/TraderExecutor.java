@@ -75,8 +75,6 @@ public class TraderExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 3
 					&& (args[0].contains("b") || args[0].contains("s"))) {
-				// trader buy/sell item1/remove 2ndarg (if it has a ':' its an
-				// item, else iconomy)
 				if (BasicExecutor
 						.hasPermission("citizens.trader.stock", sender)) {
 					changeTraderBuySell(npc, player, args[1], args[2],
@@ -88,6 +86,15 @@ public class TraderExecutor implements CommandExecutor {
 				if (BasicExecutor.hasPermission(
 						"citizens.admin.unlimitedtrader", sender)) {
 					changeUnlimited(npc, sender, args[1]);
+				} else
+					player.sendMessage(MessageUtils.noPermissionsMessage);
+				returnval = true;
+			} else if (args.length == 3 && args[0].contains("list")
+					&& (args[1].contains("s") || args[1].contains("b"))) {
+				if (BasicExecutor
+						.hasPermission("citizens.trader.stock", sender)) {
+					changeTraderBuySell(npc, player, args[1], args[2],
+							args[0].contains("s"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;

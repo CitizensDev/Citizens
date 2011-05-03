@@ -16,20 +16,20 @@ public class StopWatch {
 	private boolean running = false;
 
 	public void start() {
-		this.startTime = System.currentTimeMillis();
+		this.startTime = System.nanoTime();
 		this.running = true;
 	}
 
 	public void stop() {
-		this.stopTime = System.currentTimeMillis();
+		this.stopTime = System.nanoTime();
 		this.running = false;
 	}
 
-	// elapsed time in milliseconds
+	// elapsed time in nanoseconds
 	public long getElapsedTime() {
 		long elapsed;
 		if (running) {
-			elapsed = (System.currentTimeMillis() - startTime);
+			elapsed = (System.nanoTime() - startTime);
 		} else {
 			elapsed = (stopTime - startTime);
 		}
@@ -40,9 +40,9 @@ public class StopWatch {
 	public long getElapsedTimeSecs() {
 		long elapsed;
 		if (running) {
-			elapsed = ((System.currentTimeMillis() - startTime) / 1000);
+			elapsed = ((System.nanoTime() - startTime) / 10000);
 		} else {
-			elapsed = ((stopTime - startTime) / 1000);
+			elapsed = ((stopTime - startTime) / 100000);
 		}
 		return elapsed;
 	}

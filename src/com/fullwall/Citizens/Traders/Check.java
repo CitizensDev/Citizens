@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Traders;
 
+import com.fullwall.Citizens.Citizens;
+
 public class Check {
 	private int itemID;
 	private boolean selling;
@@ -23,5 +25,9 @@ public class Check {
 
 	public boolean isSelling() {
 		return selling;
+	}
+
+	public String toString() {
+		return "" + itemID + Citizens.separatorChar + selling;
 	}
 }

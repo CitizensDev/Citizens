@@ -92,6 +92,7 @@ public class NPCManager {
 				TraderPropertyPool.getInventory(UID).getContents());
 		trader.setBalance(TraderPropertyPool.getBalance(UID));
 		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
+		trader.setStocking(TraderPropertyPool.getStockables(UID));
 		TraderPropertyPool.saveTraderState(npc);
 	}
 

@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Traders;
 
+import com.fullwall.Citizens.Citizens;
+
 public class ItemPrice {
 	private boolean iConomy = false;
 	private int price = 0;
@@ -48,5 +50,14 @@ public class ItemPrice {
 
 	public int getData() {
 		return data;
+	}
+
+	public String toString() {
+		String ret = "";
+		ret += (iConomy ? "" + price + Citizens.separatorChar + iConomy : ""
+				+ price + Citizens.separatorChar + itemID
+				+ Citizens.separatorChar + data + Citizens.separatorChar
+				+ iConomy);
+		return ret;
 	}
 }

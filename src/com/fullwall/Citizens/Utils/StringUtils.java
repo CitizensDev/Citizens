@@ -33,18 +33,25 @@ public class StringUtils {
 	public static Material parseMaterial(String material) {
 		Material mat = Material.matchMaterial(material);
 		if (mat == null) {
-			if (Character.isDigit(material.charAt(0))) {
+			if (!PropertyPool.itemlookups.getString(material).isEmpty()) {
+				mat = parseMaterial(PropertyPool.itemlookups
+						.getString(material));
+			} else if (isNumber(material)) {
 				mat = Material.getMaterial(Integer.parseInt(material));
-				if (mat == null
-						&& !PropertyPool.itemlookups.getString(material)
-								.isEmpty())
-					mat = parseMaterial(PropertyPool.itemlookups
-							.getString(material));
 			} else {
 				return mat;
 			}
 		}
 		return mat;
+	}
+
+	private static boolean isNumber(String material) {
+		try {
+			Integer.parseInt(material);
+			return true;
+		} catch (Exception ex) {
+			return false;
+		}
 	}
 
 	public static String yellowify(String string, ChatColor temp) {

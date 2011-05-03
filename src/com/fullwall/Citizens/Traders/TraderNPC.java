@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Traders;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.material.MaterialData;
 
@@ -14,7 +15,6 @@ public class TraderNPC {
 		this.npc = npc;
 	}
 
-	@SuppressWarnings("unused")
 	private HumanNPC npc;
 
 	private int balance;
@@ -22,7 +22,7 @@ public class TraderNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
 
-	private HashMap<Check, Stockable> stocking = new HashMap<Check, Stockable>();
+	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
 
 	public int getBalance() {
 		return this.balance;
@@ -32,11 +32,11 @@ public class TraderNPC {
 		this.balance = balance;
 	}
 
-	public HashMap<Check, Stockable> getStocking() {
+	public ConcurrentHashMap<Check, Stockable> getStocking() {
 		return stocking;
 	}
 
-	public void setStocking(HashMap<Check, Stockable> stocking) {
+	public void setStocking(ConcurrentHashMap<Check, Stockable> stocking) {
 		this.stocking = stocking;
 	}
 
@@ -44,7 +44,7 @@ public class TraderNPC {
 		this.getStocking().put(
 				new Check(stocking.getStockingId(), stocking.isSelling()),
 				stocking);
-		TraderPropertyPool.saveStockables(this.getStocking());
+		TraderPropertyPool.saveStockables(npc.getUID(), getStocking());
 	}
 
 	public Stockable getStockable(int itemID, boolean selling) {
@@ -55,12 +55,26 @@ public class TraderNPC {
 		return null;
 	}
 
-	public void removeStockable(int ID, boolean selling) {
+	public ArrayList<Stockable> getStockables(int itemID, boolean selling) {
+		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
 		if (checkStockingIntegrity()) {
-			if (getStocking().get(new Check(ID, selling)) != null)
-				this.getStocking().remove(new Check(ID, selling));
+			for (Stockable s : stocking.values())
+				if (itemID == s.getStockingId() && selling == s.isSelling())
+					stockables.add(s);
 		}
-		TraderPropertyPool.saveStockables(getStocking());
+		return stockables;
+	}
+
+	public void removeStockable(int ID, boolean selling) {
+		Stockable s = null;
+		if (checkStockingIntegrity()) {
+			if (getStocking().get(new Check(ID, selling)) != null) {
+				s = getStocking().get(new Check(ID, selling));
+				TraderPropertyPool.removeStockable(npc.getUID(), s);
+				this.getStocking().remove(new Check(ID, selling));
+			}
+		}
+
 	}
 
 	public boolean isStockable(int itemID, MaterialData data, boolean selling) {
