@@ -59,7 +59,7 @@ public class EconomyHandler {
 				return IconomyInterface.hasEnough(payment, npc);
 			else
 				return ItemInterface.hasEnough(payment,
-						(Player) npc.getBukkitEntity());
+						(Player) npc.getPlayer());
 		} else
 			return true;
 	}
@@ -79,7 +79,7 @@ public class EconomyHandler {
 			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.pay(npc, payment);
 			else
-				return ItemInterface.pay((Player) npc.getBukkitEntity(),
+				return ItemInterface.pay((Player) npc.getPlayer(),
 						payment);
 		} else
 			return 0;
@@ -95,10 +95,10 @@ public class EconomyHandler {
 			return 0;
 	}
 
-	public static String getPaymentType(Operation op) {
+	public static String getPaymentType(Operation op, String amount) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.getCurrency();
+				return IconomyInterface.getCurrency(amount);
 			else
 				return ItemInterface.getCurrency(op);
 		} else
@@ -118,7 +118,7 @@ public class EconomyHandler {
 	public static String getCurrency(Payment payment) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
-				return IconomyInterface.getCurrency();
+				return IconomyInterface.getCurrency(payment.getPrice());
 			else
 				return Material.getMaterial(payment.getItem().getTypeId())
 						.name();

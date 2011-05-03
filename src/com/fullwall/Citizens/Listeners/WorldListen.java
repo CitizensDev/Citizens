@@ -27,10 +27,10 @@ public class WorldListen extends WorldListener {
 		for (Entry<Integer, String> i : NPCManager.GlobalUIDs.entrySet()) {
 			HumanNPC npc = NPCManager.getNPC(i.getKey());
 			if (npc != null
-					&& npc.getBukkitEntity().getLocation().getBlock()
-							.getChunk().equals(e.getChunk())) {
-				NPCLocation loc = new NPCLocation(plugin, npc.getBukkitEntity()
-						.getLocation(), npc.getUID(), npc.getOwner());
+					&& npc.getLocation().getBlock().getChunk()
+							.equals(e.getChunk())) {
+				NPCLocation loc = new NPCLocation(plugin, npc.getLocation(),
+						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, i.getValue());
 				plugin.handler.despawnNPC(i.getKey());
 			}

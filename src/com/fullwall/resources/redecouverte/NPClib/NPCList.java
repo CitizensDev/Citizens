@@ -10,7 +10,7 @@ public class NPCList extends HashMap<Integer, HumanNPC> {
     {
         for(HumanNPC bnpc : this.values())
         {
-            if(bnpc.getBukkitEntity().getEntityId() == entity.getEntityId())
+            if(bnpc.getPlayer().getEntityId() == entity.getEntityId())
                 return true;
         }
 
@@ -21,7 +21,7 @@ public class NPCList extends HashMap<Integer, HumanNPC> {
     {
         for(HumanNPC bnpc : this.values())
         {
-            if(bnpc.getBukkitEntity().getEntityId() == entity.getEntityId())
+            if(bnpc.getPlayer().getEntityId() == entity.getEntityId())
                 return bnpc;
         }
 

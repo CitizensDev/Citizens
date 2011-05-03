@@ -12,7 +12,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nijiko.coelho.iConomy.iConomy;
+import com.iConomy.iConomy;
 
 import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
 import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
@@ -56,8 +56,9 @@ public class Citizens extends JavaPlugin {
 	public static boolean defaultTalkWhenClose = false;
 	public static boolean useNPCColours = true;
 
-	public static Logger log = Logger.getLogger("Minecraft");
 	public static iConomy economy = null;
+
+	public static Logger log = Logger.getLogger("Minecraft");
 
 	public static final int MAGIC_DATA_VALUE = 1564;
 	private static final String codename = "Helpers";
@@ -208,7 +209,7 @@ public class Citizens extends JavaPlugin {
 		plugin = this;
 
 		EconomyHandler.setUpVariables();
-		if(!PropertyPool.settings.keyExists("max-NPCs-per-player"))
+		if (!PropertyPool.settings.keyExists("max-NPCs-per-player"))
 			PropertyPool.settings.setInt("max-NPCs-per-player", 10);
 		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
 			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
@@ -309,6 +310,25 @@ public class Citizens extends JavaPlugin {
 				return false;
 		} else
 			return true;
+	}
+
+	public boolean canSelectAny() {
+		String[] items = PropertyPool.settings.getString("select-item").split(
+				",");
+		ArrayList<String> item = new ArrayList<String>();
+		for (String s : items) {
+			item.add(s);
+		}
+		if (item.contains("*"))
+			return true;
+		items = PropertyPool.settings.getString("items").split(",");
+		item = new ArrayList<String>();
+		for (String s : items) {
+			item.add(s);
+		}
+		if (item.contains("*"))
+			return true;
+		return false;
 	}
 
 	// Checks if an item ID can be used as the select tool.

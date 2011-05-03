@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.Traders.TraderNPC;
@@ -19,6 +20,7 @@ public class HumanNPC extends NPC {
 	private double privateSpace = 1.5;
 
 	private double targetX = 0.0;
+	@SuppressWarnings("unused")
 	private double targetY = 0.0;
 	private double targetZ = 0.0;
 	private Player targetPlayer = null;
@@ -36,7 +38,7 @@ public class HumanNPC extends NPC {
 		this.mcEntity = entity;
 	}
 
-	public HumanEntity getBukkitEntity() {
+	public HumanEntity getPlayer() {
 		return (HumanEntity) this.mcEntity.getBukkitEntity();
 	}
 
@@ -180,10 +182,14 @@ public class HumanNPC extends NPC {
 	}
 
 	public Location getLocation() {
-		return getBukkitEntity().getLocation();
+		return getPlayer().getLocation();
 	}
 
 	public NPCData getNPCData() {
 		return npcdata;
+	}
+
+	public PlayerInventory getInventory() {
+		return getPlayer().getInventory();
 	}
 }

@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 
-import com.nijiko.coelho.iConomy.iConomy;
+import com.iConomy.iConomy;
 
 public class PluginListen extends ServerListener {
 

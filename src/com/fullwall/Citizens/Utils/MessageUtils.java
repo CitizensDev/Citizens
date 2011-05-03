@@ -12,9 +12,8 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Traders.Buyable;
 import com.fullwall.Citizens.Traders.ItemPrice;
-import com.fullwall.Citizens.Traders.Sellable;
+import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
@@ -87,20 +86,20 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.RED
 				+ "You need "
-				+ EconomyHandler.getRemainder(Operation.BASIC_NPC_CREATE,
-						player) + " more "
-				+ EconomyHandler.getPaymentType(Operation.BASIC_NPC_CREATE)
-				+ "(s) to do that.";
+				+ EconomyHandler.getPaymentType(Operation.BASIC_NPC_CREATE,
+						EconomyHandler.getRemainder(Operation.BASIC_NPC_CREATE,
+								player)) + " more to do that.";
 		return message;
 	}
 
 	public static String getPaidMessage(Operation op, int paid, String npcName,
 			String type, boolean useType) {
 		String message = "";
-		message = ChatColor.GREEN + "Paid "
-				+ StringUtils.yellowify("" + paid, ChatColor.GREEN) + " "
-				+ EconomyHandler.getPaymentType(Operation.TRADER_NPC_CREATE)
-				+ " for ";
+		message = ChatColor.GREEN
+				+ "Paid "
+				+ StringUtils.yellowify(EconomyHandler.getPaymentType(
+						Operation.TRADER_NPC_CREATE, "" + paid),
+						ChatColor.GREEN) + " " + " for ";
 		if (useType)
 			message += StringUtils.yellowify(npcName, ChatColor.GREEN)
 					+ " to become a "
@@ -113,27 +112,16 @@ public class MessageUtils {
 	public static String getPriceMessage(ItemPrice price) {
 		String message = "";
 		message += ChatColor.YELLOW
-				+ ""
-				+ price.getPrice()
-				+ " "
 				+ EconomyHandler
 						.getCurrency(new Payment(price.getPrice(),
 								new ItemStack(price.getItemID(), 1), price
-										.isiConomy())) + "(s)";
+										.isiConomy()));
 		return message;
 	}
 
-	public static String getStockableMessage(Buyable b, ChatColor colour) {
-		return StringUtils.yellowify(b.getBuying().getAmount() + " "
-				+ b.getBuying().getType().name(), colour)
-				+ "(s) at "
-				+ StringUtils.yellowify(
-						MessageUtils.getPriceMessage(b.getPrice()), colour);
-	}
-
-	public static String getStockableMessage(Sellable s, ChatColor colour) {
-		return StringUtils.yellowify(s.getSelling().getAmount() + " "
-				+ s.getSelling().getType().name(), colour)
+	public static String getStockableMessage(Stockable s, ChatColor colour) {
+		return StringUtils.yellowify(s.getStocking().getAmount() + " "
+				+ s.getStocking().getType().name(), colour)
 				+ "(s) at "
 				+ StringUtils.yellowify(
 						MessageUtils.getPriceMessage(s.getPrice()), colour);

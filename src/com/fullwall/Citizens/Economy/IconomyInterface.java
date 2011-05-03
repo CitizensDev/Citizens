@@ -5,35 +5,39 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.nijiko.coelho.iConomy.iConomy;
-import com.nijiko.coelho.iConomy.system.Account;
+import com.iConomy.iConomy;
+import com.iConomy.system.Account;
 
 public class IconomyInterface {
 
 	public static boolean playerHasEnough(String name, double amount) {
-		if (iConomy.getBank().hasAccount(name))
-			return iConomy.getBank().getAccount(name).hasEnough(amount);
+		if (iConomy.hasAccount(name))
+			return iConomy.getAccount(name).getHoldings().hasEnough(amount);
 		else
 			return false;
 	}
 
 	public static double getBalance(String name) {
-		if (iConomy.getBank().hasAccount(name))
-			return iConomy.getBank().getAccount(name).getBalance();
+		if (iConomy.hasAccount(name))
+			return iConomy.getAccount(name).getHoldings().balance();
 		else
 			return -1;
 	}
 
-	public static String getCurrency() {
-		return iConomy.getBank().getCurrency();
+	public static String getCurrency(String amount) {
+		return iConomy.format(Double.parseDouble(amount));
+	}
+
+	public static String getCurrency(double price) {
+		return iConomy.format(price);
 	}
 
 	public static String getRemainder(Operation op, Player player) {
 		int price = PropertyPool.getPrice(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-iconomy");
-		Account acc = iConomy.getBank().getAccount(player.getName());
-		return "" + (price - acc.getBalance());
+		Account acc = iConomy.getAccount(player.getName());
+		return "" + (price - acc.getHoldings().balance());
 	}
 
 	public static boolean hasEnough(Player player, Operation op) {
@@ -55,7 +59,7 @@ public class IconomyInterface {
 		int price = PropertyPool.getPrice(op.toString().toLowerCase()
 				.replace("_", "-")
 				+ "-iconomy");
-		iConomy.getBank().getAccount(player.getName()).subtract(price);
+		iConomy.getAccount(player.getName()).getHoldings().subtract(price);
 		return price;
 	}
 
@@ -66,7 +70,7 @@ public class IconomyInterface {
 	}
 
 	public static int pay(Player player, Payment payment) {
-		iConomy.getBank().getAccount(player.getName())
+		iConomy.getAccount(player.getName()).getHoldings()
 				.subtract(payment.getPrice());
 		return payment.getPrice();
 	}

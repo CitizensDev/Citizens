@@ -14,9 +14,8 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Traders.Buyable;
 import com.fullwall.Citizens.Traders.ItemPrice;
-import com.fullwall.Citizens.Traders.Sellable;
+import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -123,24 +122,24 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 			if (selling) {
-				if (npc.getTraderNPC().getSellable(mat.getId()) == null) {
+				if (npc.getTraderNPC().getStockable(mat.getId(), true) == null) {
 					player.sendMessage(ChatColor.RED
 							+ "The NPC is not currently selling that item.");
 					return;
 				} else {
-					npc.traderNPC.removeSellable(mat.getId());
+					npc.traderNPC.removeStockable(mat.getId(), true);
 					player.sendMessage(ChatColor.GREEN
 							+ "Removed "
 							+ StringUtils.yellowify(mat.name(), ChatColor.GREEN)
 							+ " from the NPC's selling list.");
 				}
 			} else {
-				if (npc.getTraderNPC().getBuyable(mat.getId()) == null) {
+				if (npc.getTraderNPC().getStockable(mat.getId(), false) == null) {
 					player.sendMessage(ChatColor.RED
 							+ "The NPC is not currently buying that item.");
 					return;
 				} else {
-					npc.traderNPC.removeBuyable(mat.getId());
+					npc.traderNPC.removeStockable(mat.getId(), false);
 					player.sendMessage(ChatColor.GREEN
 							+ "Removed "
 							+ StringUtils.yellowify(mat.name(), ChatColor.GREEN)
@@ -172,17 +171,17 @@ public class TraderExecutor implements CommandExecutor {
 		ItemPrice itemPrice = new ItemPrice(stack.getAmount(),
 				stack.getTypeId(), data);
 		itemPrice.setiConomy(cost == null);
+		Stockable s = new Stockable(stack, itemPrice, false);
 		if (selling) {
-			Sellable s = new Sellable(stack, itemPrice);
-			npc.getTraderNPC().addSellable(s);
+			s.setSelling(true);
+			npc.getTraderNPC().addStockable(s);
 			player.sendMessage(ChatColor.GREEN + "The NPC is now selling "
 					+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
 					+ ".");
 		} else {
-			Buyable b = new Buyable(stack, itemPrice);
-			npc.getTraderNPC().addBuyable(b);
+			npc.getTraderNPC().addStockable(s);
 			player.sendMessage(ChatColor.GREEN + "The NPC is now buying "
-					+ MessageUtils.getStockableMessage(b, ChatColor.GREEN)
+					+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
 					+ ".");
 		}
 	}
@@ -215,30 +214,25 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(amount, true), player);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
-						+ StringUtils.yellowify("" + amount, ChatColor.YELLOW)
 						+ StringUtils.yellowify(
-								" " + IconomyInterface.getCurrency(),
+								IconomyInterface.getCurrency(amount),
 								ChatColor.GREEN)
-						+ "(s) to "
+						+ " to "
 						+ StringUtils.yellowify(npc.getStrippedName(),
 								ChatColor.GREEN)
 						+ ". Your balance is now "
 						+ StringUtils.yellowify(
-								""
-										+ IconomyInterface.getBalance(player
-												.getName()), ChatColor.GREEN)
-						+ ".");
+								IconomyInterface.getBalance(player.getName()),
+								ChatColor.GREEN) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "You don't have enough money for that! Need "
+						+ " "
 						+ StringUtils.yellowify(
-								""
-										+ (amount - IconomyInterface
-												.getBalance(player.getName())),
-								ChatColor.RED)
-						+ " more "
-						+ StringUtils.yellowify(IconomyInterface.getCurrency(),
-								ChatColor.RED) + "(s).");
+								IconomyInterface.getCurrency(amount
+										- IconomyInterface.getBalance(player
+												.getName())), ChatColor.RED)
+						+ " more.");
 			}
 		} else if (args[1].equals("take")) {
 			if (EconomyHandler.canBuy(new Payment(amount, true), npc)) {
@@ -246,28 +240,23 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(-amount, true), player);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
-						+ StringUtils.yellowify("" + amount, ChatColor.YELLOW)
 						+ StringUtils.yellowify(
-								" " + IconomyInterface.getCurrency(),
+								IconomyInterface.getCurrency(amount),
 								ChatColor.GREEN)
-						+ "(s) from "
+						+ " from "
 						+ StringUtils.yellowify(npc.getStrippedName(),
 								ChatColor.GREEN)
 						+ ". Your balance is now "
 						+ StringUtils.yellowify(
-								""
-										+ IconomyInterface.getBalance(player
-												.getName()), ChatColor.GREEN)
-						+ ".");
+								IconomyInterface.getBalance(player.getName()),
+								ChatColor.GREEN) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "The NPC doesn't have enough money for that! It needs "
-						+ StringUtils.yellowify(""
-								+ (amount - npc.getTraderNPC().getBalance()),
-								ChatColor.RED)
-						+ " more "
-						+ StringUtils.yellowify(IconomyInterface.getCurrency(),
-								ChatColor.RED) + "(s).");
+						+ StringUtils.yellowify(
+								IconomyInterface.getCurrency(amount
+										- npc.getTraderNPC().getBalance()),
+								ChatColor.RED) + " more in its balance.");
 			}
 		} else
 			player.sendMessage(ChatColor.RED + "Invalid argument type "

@@ -48,7 +48,7 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 			Reason reason, Player player) {
 		super("CitizensBasicNPCEvent");
 		this.NPC = npc;
-		this.location = npc.getBukkitEntity().getLocation();
+		this.location = npc.getLocation();
 		this.name = name;
 		this.text = text;
 		this.reason = reason;

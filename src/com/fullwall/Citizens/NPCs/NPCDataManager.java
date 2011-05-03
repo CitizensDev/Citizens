@@ -23,39 +23,33 @@ public class NPCDataManager extends NPCManager {
 			Material matLegs = Material.getMaterial(items.get(3));
 			Material matBoots = Material.getMaterial(items.get(4));
 
-			HumanNPC NPC = npc;
 			// TODO: reduce the long if-tree.
 			if (!matHelm.equals(Material.AIR))
-				NPC.getBukkitEntity().getInventory()
-						.setHelmet(new ItemStack(matHelm, 1));
+				npc.getInventory().setHelmet(new ItemStack(matHelm, 1));
 			else
-				NPC.getBukkitEntity().getInventory().setHelmet(null);
+				npc.getInventory().setHelmet(null);
 
 			if (!matBoots.equals(Material.AIR))
-				NPC.getBukkitEntity().getInventory()
-						.setBoots(new ItemStack(matBoots, 1));
+				npc.getInventory().setBoots(new ItemStack(matBoots, 1));
 			else
-				NPC.getBukkitEntity().getInventory().setBoots(null);
+				npc.getInventory().setBoots(null);
 
 			if (!matLegs.equals(Material.AIR))
-				NPC.getBukkitEntity().getInventory()
-						.setLeggings(new ItemStack(matLegs, 1));
+				npc.getInventory().setLeggings(new ItemStack(matLegs, 1));
 			else
-				NPC.getBukkitEntity().getInventory().setLeggings(null);
+				npc.getInventory().setLeggings(null);
 
 			if (!matTorso.equals(Material.AIR))
-				NPC.getBukkitEntity().getInventory()
-						.setChestplate(new ItemStack(matTorso, 1));
+				npc.getInventory().setChestplate(new ItemStack(matTorso, 1));
 			else
-				NPC.getBukkitEntity().getInventory().setChestplate(null);
+				npc.getInventory().setChestplate(null);
 
 			if (!matHand.equals(Material.AIR))
-				NPC.getBukkitEntity().getInventory()
-						.setItem(0, new ItemStack(matHand, 1));
+				npc.getInventory().setItem(0, new ItemStack(matHand, 1));
 			else
-				NPC.getBukkitEntity().getInventory().setItem(0, null);
+				npc.getInventory().setItem(0, null);
 
-			PropertyPool.items.setString(NPC.getUID(), "" + items.get(0) + ","
+			PropertyPool.items.setString(npc.getUID(), "" + items.get(0) + ","
 					+ items.get(1) + "," + items.get(2) + "," + items.get(3)
 					+ "," + items.get(4) + ",");
 		}

@@ -39,8 +39,7 @@ public class TickTask implements Runnable {
 					if (PropertyPool.getLookWhenClose(UID)
 							|| PropertyPool.getTalkWhenClose(UID)) {
 						// If the player is within 'seeing' range
-						if (checkLocation(npc.getBukkitEntity().getLocation(),
-								p.getLocation())) {
+						if (checkLocation(npc.getLocation(), p.getLocation())) {
 							// If auto-rotate is true, rotate
 							if (PropertyPool.getLookWhenClose(UID)) {
 								NPCManager.rotateNPCToPlayer(npc, p);

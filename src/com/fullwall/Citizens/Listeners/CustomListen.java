@@ -10,6 +10,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.PropertyPool;
 
 public class CustomListen extends CustomEventListener {
+	@SuppressWarnings("unused")
 	private Citizens plugin;
 
 	public CustomListen(Citizens plugin) {

@@ -1,11 +1,11 @@
 package com.fullwall.Citizens.Traders;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC {
@@ -22,16 +22,7 @@ public class TraderNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
 
-	private HashMap<Integer, Buyable> buying = new HashMap<Integer, Buyable>();
-	private HashMap<Integer, Sellable> selling = new HashMap<Integer, Sellable>();
-
-	public void addBuyable(Buyable buying) {
-		this.buying.put(buying.getBuyingId(), buying);
-	}
-
-	public void addSellable(Sellable selling) {
-		this.selling.put(selling.getSellingId(), selling);
-	}
+	private HashMap<Check, Stockable> stocking = new HashMap<Check, Stockable>();
 
 	public int getBalance() {
 		return this.balance;
@@ -41,58 +32,42 @@ public class TraderNPC {
 		this.balance = balance;
 	}
 
-	public Collection<Buyable> getBuyables() {
-		return this.buying.values();
+	public HashMap<Check, Stockable> getStocking() {
+		return stocking;
 	}
 
-	public Buyable getBuyable(int itemID) {
-		if (checkBuyingIntegrity()) {
-			if (buying.get(itemID) != null)
-				return buying.get(itemID);
+	public void setStocking(HashMap<Check, Stockable> stocking) {
+		this.stocking = stocking;
+	}
+
+	public void addStockable(Stockable stocking) {
+		this.getStocking().put(
+				new Check(stocking.getStockingId(), stocking.isSelling()),
+				stocking);
+		TraderPropertyPool.saveStockables(this.getStocking());
+	}
+
+	public Stockable getStockable(int itemID, boolean selling) {
+		if (checkStockingIntegrity()) {
+			if (getStocking().get(new Check(itemID, selling)) != null)
+				return getStocking().get(new Check(itemID, selling));
 		}
 		return null;
 	}
 
-	public Collection<Sellable> getSellables() {
-		return this.selling.values();
-	}
-
-	public Sellable getSellable(int itemID) {
-		if (checkSellingIntegrity()) {
-			if (selling.get(itemID) != null)
-				return selling.get(itemID);
+	public void removeStockable(int ID, boolean selling) {
+		if (checkStockingIntegrity()) {
+			if (getStocking().get(new Check(ID, selling)) != null)
+				this.getStocking().remove(new Check(ID, selling));
 		}
-		return null;
+		TraderPropertyPool.saveStockables(getStocking());
 	}
 
-	public void removeBuyable(int ID) {
-		if (checkBuyingIntegrity()) {
-			if (buying.get(ID) != null)
-				this.buying.remove(ID);
-		}
-	}
-
-	public void removeSellable(int ID) {
-		if (checkSellingIntegrity()) {
-			if (selling.get(ID) != null)
-				this.selling.remove(ID);
-		}
-	}
-
-	public boolean isBuyable(int itemID, MaterialData data) {
-		if (checkBuyingIntegrity()) {
-			if (buying.get(itemID) != null) {
-				if (checkData(buying.get(itemID).getBuying().getData(), data))
-					return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isSellable(int itemID, MaterialData data) {
-		if (checkSellingIntegrity()) {
-			if (selling.get(itemID) != null) {
-				if (checkData(selling.get(itemID).getSelling().getData(), data))
+	public boolean isStockable(int itemID, MaterialData data, boolean selling) {
+		if (checkStockingIntegrity()) {
+			if (getStocking().get(new Check(itemID, selling)) != null) {
+				if (checkData(getStocking().get(new Check(itemID, selling))
+						.getStocking().getData(), data))
 					return true;
 			}
 		}
@@ -111,14 +86,8 @@ public class TraderNPC {
 		return false;
 	}
 
-	public boolean checkBuyingIntegrity() {
-		if (this.buying == null || this.buying.isEmpty())
-			return false;
-		return true;
-	}
-
-	public boolean checkSellingIntegrity() {
-		if (this.selling == null || this.selling.isEmpty())
+	public boolean checkStockingIntegrity() {
+		if (this.getStocking() == null || this.getStocking().isEmpty())
 			return false;
 		return true;
 	}

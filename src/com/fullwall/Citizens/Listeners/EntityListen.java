@@ -67,7 +67,7 @@ public class EntityListen extends EntityListener {
 					TraderInterface.handleRightClick(npc, p);
 					found = true;
 				}
-				if (found)
+				if (found && !plugin.canSelectAny())
 					return;
 				// If we're using a selection tool, select the NPC as well.
 				// Check if we haven't already selected the NPC too.
@@ -81,7 +81,7 @@ public class EntityListen extends EntityListener {
 								+ "], ID ["
 								+ StringUtils.yellowify("" + npc.getUID(),
 										ChatColor.GREEN) + "]");
-					} else {
+					} else if (plugin.canSelectAny()) {
 						p.sendMessage(ChatColor.GREEN
 								+ "That NPC is already selected!");
 					}

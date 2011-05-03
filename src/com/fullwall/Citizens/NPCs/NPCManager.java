@@ -88,9 +88,8 @@ public class NPCManager {
 
 	private void loadTrader(HumanNPC npc, TraderNPC trader, int UID) {
 		npc.setTrader(TraderPropertyPool.getTraderState(UID));
-		npc.getBukkitEntity()
-				.getInventory()
-				.setContents(TraderPropertyPool.getInventory(UID).getContents());
+		npc.getInventory().setContents(
+				TraderPropertyPool.getInventory(UID).getContents());
 		trader.setBalance(TraderPropertyPool.getBalance(UID));
 		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
 		TraderPropertyPool.saveTraderState(npc);
@@ -126,8 +125,8 @@ public class NPCManager {
 		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
 	}
 
-	public static void rotateNPCToPlayer(HumanNPC NPC, Player player) {
-		Location loc = NPC.getBukkitEntity().getLocation();
+	public static void rotateNPCToPlayer(HumanNPC npc, Player player) {
+		Location loc = npc.getLocation();
 		double xDiff = player.getLocation().getX() - loc.getX();
 		double yDiff = player.getLocation().getY() - loc.getY();
 		double zDiff = player.getLocation().getZ() - loc.getZ();
@@ -138,7 +137,7 @@ public class NPCManager {
 		if (zDiff < 0.0) {
 			yaw = yaw + (Math.abs(180 - yaw) * 2);
 		}
-		NPC.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
+		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
 				(float) pitch);
 	}
 
