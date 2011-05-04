@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.PropertyHandler;
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
 
@@ -59,9 +59,9 @@ public class PropertyPool {
 					+ values.length);
 			return null;
 		} else {
-			Location loc = new Location(Citizens.plugin.getServer().getWorld(
-					values[0]), NPCManager.getNPC(UID).getX(), NPCManager
-					.getNPC(UID).getY(), NPCManager.getNPC(UID).getZ(),
+			Location loc = new Location(Bukkit.getServer().getWorld(values[0]),
+					NPCManager.getNPC(UID).getX(), NPCManager.getNPC(UID)
+							.getY(), NPCManager.getNPC(UID).getZ(),
 					Float.parseFloat(values[4]), Float.parseFloat(values[5]));
 			return loc;
 		}
@@ -74,8 +74,8 @@ public class PropertyPool {
 					+ values.length);
 			return null;
 		} else {
-			Location loc = new Location(Citizens.plugin.getServer().getWorld(
-					values[0]), Double.parseDouble(values[1]),
+			Location loc = new Location(Bukkit.getServer().getWorld(values[0]),
+					Double.parseDouble(values[1]),
 					Double.parseDouble(values[2]),
 					Double.parseDouble(values[3]), Float.parseFloat(values[4]),
 					Float.parseFloat(values[5]));

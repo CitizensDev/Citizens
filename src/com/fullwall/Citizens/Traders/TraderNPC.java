@@ -105,6 +105,7 @@ public class TraderNPC {
 			data = first.getData();
 		if (second != null)
 			data2 = second.getData();
+		Citizens.log.info(data + " " + data2);
 		if (data == data2 || data == Citizens.MAGIC_DATA_VALUE)
 			return true;
 		return false;

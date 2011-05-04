@@ -95,13 +95,14 @@ public class TraderPropertyPool {
 
 	public static void addStockable(int UID, Stockable s) {
 		String write = "";
-		write += s.toString() + "||";
-		stocking.setString(UID, write);
+		write += s.toString() + ";";
+		String read = stocking.getString(UID);
+		stocking.setString(UID, read + write);
 	}
 
 	public static void removeStockable(int UID, Stockable s) {
 		String write = "";
-		write += s.toString() + "||";
+		write += s.toString() + ";";
 		String read = stocking.getString(UID);
 		read.replace(write, "");
 		stocking.setString(UID, read);
@@ -117,7 +118,9 @@ public class TraderPropertyPool {
 	public static ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
 		ConcurrentHashMap<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
 		int i = 0;
-		for (String s : stocking.getString(UID).split("||")) {
+		for (String s : stocking.getString(UID).split(";")) {
+			if (s.isEmpty())
+				continue;
 			i = 0;
 			ItemStack stack = new ItemStack(37);
 			ItemPrice price = new ItemPrice(0);

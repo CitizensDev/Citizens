@@ -257,16 +257,19 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if ((command.getName().equals("citizens") || command.getName()
-				.equals("npc")) && args.length == 3) {
+				.equals("npc")) && args.length >= 2) {
+			int page = 1;
+			if (args.length == 3)
+				page = Integer.parseInt(args[2]);
 			if (args[0].equals("basic") && args[1].equals("help")) {
 				if (hasPermission("citizens.basic.help", sender)) {
-					sendBasicHelpPage(sender, args[2]);
+					sendBasicHelpPage(sender, page);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else if (args[0].equals("trader") && args[1].equals("help")) {
 				if (hasPermission("citizens.trader.help", sender)) {
-					sendTraderHelpPage(sender, args[2]);
+					sendTraderHelpPage(sender, page);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -805,12 +808,11 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param sender
 	 * @param page
 	 */
-	private void sendBasicHelpPage(CommandSender sender, String page) {
-		int pageNum = Integer.valueOf(page);
-		switch (pageNum) {
+	private void sendBasicHelpPage(CommandSender sender, int page) {
+		switch (page) {
 		case 1:
-			sender.sendMessage("§fCitizens " + Citizens.getVersion()
-					+ " Basic Help");
+			sender.sendMessage(ChatColor.GOLD + "Citizens "
+					+ Citizens.getVersion() + " Basic Help");
 			sender.sendMessage("§b-------------------------------");
 			sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
 			sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
@@ -838,11 +840,13 @@ public class BasicExecutor implements CommandExecutor {
 			sender.sendMessage("§8/§cnpc §btalkwhenclose [true|false] §e- §amake a NPC talk to players.");
 			sender.sendMessage("§8/§cnpc §blookatplayers [true|false] §e- §amake a NPC look at players.");
 			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§fPlugin made by fullwall, NeonMaster, TheMPC, and aPunch");
+			sender.sendMessage(ChatColor.GRAY
+					+ "Plugin made by fullwall, NeonMaster, TheMPC, and aPunch");
 			break;
 		default:
-			sender.sendMessage("§fThe total number of pages is 4, page: "
-					+ pageNum + " is not available.");
+			sender.sendMessage(ChatColor.GRAY
+					+ "The total number of pages is 4, page: " + page
+					+ " is not available.");
 			break;
 		}
 	}
@@ -853,12 +857,11 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param sender
 	 * @param page
 	 */
-	private void sendTraderHelpPage(CommandSender sender, String page) {
-		int pageNum = Integer.valueOf(page);
-		switch (pageNum) {
+	private void sendTraderHelpPage(CommandSender sender, int page) {
+		switch (page) {
 		case 1:
-			sender.sendMessage("§fCitizens " + Citizens.getVersion()
-					+ " Trader Help");
+			sender.sendMessage(ChatColor.GOLD + "Citizens "
+					+ Citizens.getVersion() + " Trader Help");
 			sender.sendMessage("§b-------------------------------");
 			sender.sendMessage("§8/§ctrader §blist [buy/sell] (page) §e- §alists the selected trader's buy/selling list (paged).");
 			sender.sendMessage("§8/§ctrader §b[buy/sell] [itemID(:amount:data)] [itemID(:amount:data)]§e- §astarts an npc stocking a given item. Put no : in the second argument for iConomy.");
@@ -866,17 +869,19 @@ public class BasicExecutor implements CommandExecutor {
 			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
 			break;
 		case 2:
-			sender.sendMessage("§fCitizens " + Citizens.getVersion()
-					+ " Trader Help");
+			sender.sendMessage(ChatColor.GOLD + "Citizens "
+					+ Citizens.getVersion() + " Trader Help");
 			sender.sendMessage("§b-------------------------------");
 			sender.sendMessage("§8/§ctrader §bbalance [give/take] [amount] §e- §aif using iConomy, controls a trader's money.");
 			sender.sendMessage("§8/§ctrader §bunlimited [true/false] §e- §asets whether a trader has unlimited stock.");
 			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§fPlugin made by fullwall, NeonMaster, TheMPC, and aPunch");
+			sender.sendMessage(ChatColor.GRAY
+					+ "Plugin made by fullwall, NeonMaster, TheMPC, and aPunch");
 			break;
 		default:
-			sender.sendMessage("§fThe total number of pages is 2, page: "
-					+ pageNum + " is not available.");
+			sender.sendMessage(ChatColor.GRAY
+					+ "The total number of pages is 2, page: " + page
+					+ " is not available.");
 			break;
 		}
 	}

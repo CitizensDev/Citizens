@@ -7,7 +7,7 @@ public class HealerPropertyPool {
 	public static final PropertyHandler healers = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.healers");
 	public static final PropertyHandler strength = new PropertyHandler(
-			"plugin/Citizens/Healers/Citizens.strength");
+			"plugins/Citizens/Healers/Citizens.strength");
 
 	public static void saveAll() {
 		healers.save();
@@ -40,7 +40,7 @@ public class HealerPropertyPool {
 			saveStrength(npc.getUID(), getStrength(npc.getUID()));
 		}
 	}
-	
+
 	public static boolean getHealerState(int UID) {
 		return healers.getBoolean(UID);
 	}
