@@ -7,7 +7,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
  */
 public class HealerNPC {
 	private HumanNPC npc;
-	private int healPower;
+	private int strength;
 	
 	public HealerNPC(HumanNPC npc){
 		this.npc = npc;
@@ -15,17 +15,17 @@ public class HealerNPC {
 	
 	/**
 	 * 
-	 * @return the remaining power that a healer has
+	 * @return the remaining strength that a healer has
 	 */
-	public int getHealPower(){
-		return healPower;
+	public int getStrength(){
+		return strength;
 	}
 	
 	/**
 	 * 
-	 * @param healPower the remaining power of a healer
+	 * @param strength the remaining strength of a healer
 	 */
-	public void setHealPower(int healPower){
-		this.healPower = healPower;
+	public void setStrength(int strength){
+		this.strength = strength;
 	}
 }

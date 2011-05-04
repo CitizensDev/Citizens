@@ -7,12 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerExecutor implements CommandExecutor {
@@ -53,32 +51,9 @@ public class HealerExecutor implements CommandExecutor {
 				if (BasicExecutor.hasPermission("citizens.healer.strength",
 						sender)) {
 					displayHealerStrength(player, npc, args);
-				} else
+				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
-				returnval = true;
-			} else if (args.length == 3
-					&& (args[0].contains("b") || args[0].contains("s"))) {
-				if (BasicExecutor
-						.hasPermission("citizens.trader.stock", sender)) {
-					changeTraderStock(player, npc, args[1], args[2],
-							args[0].contains("s"));
-				} else
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-				returnval = true;
-			} else if (args.length == 2 && (args[0].contains("unl"))) {
-				if (BasicExecutor.hasPermission(
-						"citizens.admin.unlimitedtrader", sender)) {
-					changeUnlimited(npc, sender, args[1]);
-				} else
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-				returnval = true;
-			} else if (args.length == 3 && args[0].contains("list")
-					&& (args[1].contains("s") || args[1].contains("b"))) {
-				if (BasicExecutor
-						.hasPermission("citizens.trader.stock", sender)) {
-					displayList(player, npc, args, args[1].contains("s"));
-				} else
-					player.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			}
 			HealerPropertyPool.saveHealerState(npc);

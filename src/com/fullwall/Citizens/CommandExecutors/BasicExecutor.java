@@ -732,7 +732,7 @@ public class BasicExecutor implements CommandExecutor {
 		HumanNPC newNPC = NPCManager.getNPC(newUID);
 		newNPC.setNPCData(new NPCData(newNPC.getName(), newNPC.getUID(), newNPC
 				.getLocation(), colour, items, texts, lookatplayers,
-				talkwhenclose, owner));
+				talkwhenclose, owner, newNPC.getBalance()));
 		PropertyPool.saveBasicNPCState(newUID, newNPC.getNPCData());
 
 		// NPCDataManager.addItems(newNPC, items);

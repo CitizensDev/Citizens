@@ -40,4 +40,8 @@ public class HealerPropertyPool {
 			saveStrength(npc.getUID(), getStrength(npc.getUID()));
 		}
 	}
+	
+	public static boolean getHealerState(int UID) {
+		return healers.getBoolean(UID);
+	}
 }

@@ -264,6 +264,7 @@ public class PropertyPool {
 	}
 
 	public static void saveBasicNPCState(int UID, NPCData npcdata) {
+		saveBalance(UID, npcdata.getBalance());
 		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
 		saveColour(UID, npcdata.getColour());
 		saveItems(UID, npcdata.getItems());
@@ -288,7 +289,7 @@ public class PropertyPool {
 		counts.removeKey(name);
 		balances.removeKey(UID);
 	}
-	
+
 	public static void saveBalance(int UID, int balance) {
 		balances.setInt(UID, balance);
 	}
