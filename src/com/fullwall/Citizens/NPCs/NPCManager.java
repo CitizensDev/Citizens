@@ -64,16 +64,15 @@ public class NPCManager {
 				loc.getYaw(), 0.0F);
 
 		ArrayList<Integer> items = PropertyPool.getItems(UID);
-		NPCDataManager.addItems(npc, items);
 
-		PropertyPool.getSetText(UID);
+		loadBasic(npc, UID, items);
+		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
 		if (TraderPropertyPool.isTrader(UID)) {
 			loadTrader(npc, npc.getTraderNPC(), UID);
 		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
-				Citizens.defaultTalkWhenClose, owner));
-		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
+				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
 
 		registerUID(UID, name);
 		list.put(UID, npc);
@@ -111,6 +110,12 @@ public class NPCManager {
 		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
 		trader.setStocking(TraderPropertyPool.getStockables(UID));
 		TraderPropertyPool.saveTraderState(npc);
+	}
+
+	private void loadBasic(HumanNPC npc, int UID, ArrayList<Integer> items) {
+		NPCDataManager.addItems(npc, items);
+		PropertyPool.getSetText(UID);
+		npc.setBalance(npc.getBalance());
 	}
 
 	/**
