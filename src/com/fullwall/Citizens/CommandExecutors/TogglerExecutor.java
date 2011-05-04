@@ -113,6 +113,10 @@ public class TogglerExecutor implements CommandExecutor {
 							npc.getStrippedName(), "trader", true));
 				toggleTrader(npc, player);
 				TraderPropertyPool.saveTrader(npc.getUID(), true);
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+				return;
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
