@@ -13,7 +13,7 @@ public class EconomyHandler {
 
 	// Parsed and used as settings for Citizens.economy.
 	public enum Operation {
-		BASIC_NPC_CREATE, TRADER_NPC_CREATE;
+		BASIC_NPC_CREATE, TRADER_NPC_CREATE, HEALER_NPC_CREATE;
 
 		/**
 		 * Changes an operation enum to a string value for use in settings

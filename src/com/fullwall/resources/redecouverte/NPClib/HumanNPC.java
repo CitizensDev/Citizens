@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.fullwall.Citizens.Healers.HealerNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.Traders.TraderNPC;
 
@@ -26,8 +27,10 @@ public class HumanNPC extends NPC {
 	private Player targetPlayer = null;
 	private boolean hasTarget = false;
 	private boolean isTrader = false;
+	private boolean isHealer = false;
 
 	public TraderNPC traderNPC = new TraderNPC(this);
+	public HealerNPC healerNPC = new HealerNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -50,6 +53,10 @@ public class HumanNPC extends NPC {
 		return this.traderNPC;
 	}
 
+	public HealerNPC getHealerNPC() {
+		return this.healerNPC;
+	}
+
 	protected CraftNPC getMCEntity() {
 		return this.mcEntity;
 	}
@@ -60,6 +67,14 @@ public class HumanNPC extends NPC {
 
 	public boolean isTrader() {
 		return this.isTrader;
+	}
+
+	public void setHealer(boolean enable) {
+		this.isHealer = enable;
+	}
+
+	public boolean isHealer() {
+		return this.isHealer;
 	}
 
 	// For Teleportation

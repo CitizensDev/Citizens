@@ -10,6 +10,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -71,7 +72,14 @@ public class TogglerExecutor implements CommandExecutor {
 			} else if (args[0].equals("quester")) {
 				sender.sendMessage("QUESTS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else if (args[0].equals("healer")) {
-				sender.sendMessage("HEALERS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+				if (BasicExecutor.hasPermission("citizens.healer.create",
+						sender)) {
+					if (!HealerPropertyPool.isHealer(npc.getUID())) {
+						buyHealer(npc, player);
+					} else {
+						toggleHealer(npc, player);
+					}
+				}
 			} else if (args[0].equals("guard")) {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else if (args[0].equals("wizard")) {
@@ -114,6 +122,33 @@ public class TogglerExecutor implements CommandExecutor {
 	}
 
 	/**
+	 * Buys a healer using the economy interface. Toggles the npc to a healer
+	 * afterwards.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
+	private void buyHealer(HumanNPC npc, Player player) {
+		if (!EconomyHandler.useEconomy()
+				|| EconomyHandler.canBuy(Operation.HEALER_NPC_CREATE, player)) {
+			if (EconomyHandler.useEconomy()) {
+				int paid = EconomyHandler.pay(Operation.HEALER_NPC_CREATE,
+						player);
+				if (paid > 0)
+					player.sendMessage(MessageUtils.getPaidMessage(
+							Operation.HEALER_NPC_CREATE, paid,
+							npc.getStrippedName(), "healer", true));
+				toggleHealer(npc, player);
+				HealerPropertyPool.saveHealer(npc.getUID(), true);
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(
+					Operation.HEALER_NPC_CREATE, player));
+			return;
+		}
+	}
+	
+	/**
 	 * Toggles whether the selected npc is a trader or not.
 	 * 
 	 * @param npc
@@ -127,5 +162,22 @@ public class TogglerExecutor implements CommandExecutor {
 		else
 			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " has stopped being a trader.");
+	}
+	
+	/**
+	 * Toggles whether the selected npc is a healer or not.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
+	private void toggleHealer(HumanNPC npc, Player player) {
+		npc.setHealer(!npc.isHealer());
+		if (npc.isHealer()) {
+			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
+					+ " is now a healer!");
+		} else {
+			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
+					+ " has stopped being a healer.");
+		}
 	}
 }
