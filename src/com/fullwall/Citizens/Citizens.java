@@ -140,7 +140,7 @@ public class Citizens extends JavaPlugin {
 				}, saveDelay, saveDelay);
 
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "] (" + codename + ") loaded");
+				+ pdfFile.getVersion() + "i] (" + codename + ") loaded");
 	}
 
 	@Override

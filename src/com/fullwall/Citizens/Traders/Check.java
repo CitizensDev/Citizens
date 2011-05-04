@@ -33,7 +33,33 @@ public class Check {
 		return selling;
 	}
 
+	@Override
 	public String toString() {
 		return "" + itemID + Citizens.separatorChar + selling;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + itemID;
+		result = prime * result + (selling ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Check other = (Check) obj;
+		if (itemID != other.itemID)
+			return false;
+		if (selling != other.selling)
+			return false;
+		return true;
 	}
 }

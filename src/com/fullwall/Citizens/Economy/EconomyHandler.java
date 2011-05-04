@@ -1,6 +1,5 @@
 package com.fullwall.Citizens.Economy;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -214,8 +213,7 @@ public class EconomyHandler {
 			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.getCurrency(payment.getPrice());
 			else
-				return Material.getMaterial(payment.getItem().getTypeId())
-						.name();
+				return ItemInterface.getCurrency(payment);
 		} else
 			return "0";
 	}

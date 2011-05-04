@@ -32,8 +32,8 @@ public class TraderTask implements Runnable {
 	private PlayerInventory previousNPCInv;
 	private PlayerInventory previousPlayerInv;
 	private Mode mode;
-	private boolean stop = false;
 	private EntityPlayer eplayer;
+	private boolean stop;
 
 	/**
 	 * Gets run every tick, checks the inventory for changes.
@@ -62,17 +62,20 @@ public class TraderTask implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
 		if (npc == null || player == null
-				|| eplayer.activeContainer == eplayer.defaultContainer && !stop) {
+				|| eplayer.activeContainer == eplayer.defaultContainer) {
 			kill();
 			return;
 		}
+		if (stop)
+			return;
 		if (mode == Mode.STOCK)
 			return;
 		// If the player cursor is empty (no itemstack in it).
 		if (player.getHandle().inventory.j() == null)
 			return;
+		stop = true;
 		int count = 0;
 
 		boolean found = false;
@@ -108,6 +111,7 @@ public class TraderTask implements Runnable {
 		// Get rid of the picture on the cursor.
 		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
 		eplayer.netServerHandler.sendPacket(packet);
+		stop = false;
 	}
 
 	private void handleNPCItemClicked(int slot, PlayerInventory npcInv) {
@@ -121,7 +125,8 @@ public class TraderTask implements Runnable {
 		Stockable stockable = npc.getTraderNPC().getStockable(i.getTypeId(),
 				false);
 		ItemStack buying = stockable.getStocking();
-		if (previousNPCClickedSlot == slot) {
+		if (previousNPCClickedSlot != slot) {
+			previousNPCClickedSlot = slot;
 			player.sendMessage(ChatColor.AQUA
 					+ "Buying "
 					+ MessageUtils.getStockableMessage(stockable,
@@ -140,7 +145,7 @@ public class TraderTask implements Runnable {
 		}
 		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), player)) {
 			player.sendMessage(ChatColor.RED
-					+ "You don't have enough money to buy "
+					+ "Not enough money to buy "
 					+ StringUtils.yellowify(buying.getAmount() + " "
 							+ buying.getType().name(), ChatColor.RED) + "(s).");
 			return;
@@ -150,7 +155,7 @@ public class TraderTask implements Runnable {
 		if (unbought.size() >= 1) {
 			player.getInventory().setContents(previousPlayerInv.getContents());
 			player.sendMessage(ChatColor.RED
-					+ "You don't have enough room in your inventory to add "
+					+ "Not enough room in your inventory to add "
 					+ StringUtils.yellowify(buying.getAmount() + " "
 							+ buying.getType().name(), ChatColor.RED) + "(s).");
 			return;
@@ -171,7 +176,8 @@ public class TraderTask implements Runnable {
 		Stockable stockable = npc.getTraderNPC().getStockable(i.getTypeId(),
 				true);
 		ItemStack selling = stockable.getStocking();
-		if (previousPlayerClickedSlot == slot) {
+		if (previousPlayerClickedSlot != slot) {
+			previousPlayerClickedSlot = slot;
 			player.sendMessage(ChatColor.AQUA
 					+ "Selling "
 					+ MessageUtils.getStockableMessage(stockable,
@@ -182,9 +188,10 @@ public class TraderTask implements Runnable {
 		int amount = playerInv.getItem(slot).getAmount();
 		if (amount - selling.getAmount() <= 0) {
 			player.sendMessage(ChatColor.RED
-					+ "You need to click on at a stack of at least "
+					+ "Need at least "
 					+ StringUtils.yellowify(selling.getAmount() + " "
-							+ selling.getType().name(), ChatColor.RED) + "(s).");
+							+ selling.getType().name(), ChatColor.RED)
+					+ "(s) on the clicked stack.");
 			return;
 		}
 		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
@@ -211,7 +218,7 @@ public class TraderTask implements Runnable {
 	}
 
 	public ItemStack[] sortInventory(PlayerInventory inventory) {
-		return InventorySorter.sortInventory(inventory.getContents());
+		return InventorySorter.sortItemStack(inventory.getContents());
 	}
 
 	public void addID(int ID) {

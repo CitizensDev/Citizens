@@ -108,8 +108,9 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param UID
 	 * @param name
 	 */
-	public void setOwner(int UID, String name) {
-		PropertyPool.setOwner(UID, name);
+	public void setOwner(HumanNPC npc, String name) {
+		PropertyPool.setOwner(npc.getUID(), name);
+		npc.getNPCData().setOwner(name);
 	}
 
 	/**

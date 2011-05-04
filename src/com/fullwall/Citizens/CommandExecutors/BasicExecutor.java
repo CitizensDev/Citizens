@@ -359,12 +359,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setowner")) {
-						PropertyPool.setOwner(npc.getUID(), args[1]);
-						player.sendMessage(ChatColor.GREEN
-								+ "The owner of NPC: §c"
-								+ StringUtils.yellowify(npc.getStrippedName())
-								+ " is now: " + StringUtils.yellowify(args[1])
-								+ ".");
+						setOwner(player, npc, args[1]);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -382,6 +377,7 @@ public class BasicExecutor implements CommandExecutor {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.addowner")) {
 						PropertyPool.addOwner(npc.getUID(), args[1], player);
+						npc.getNPCData().setOwner(player.getName());
 						player.sendMessage(ChatColor.GREEN + "Added "
 								+ StringUtils.yellowify(args[1])
 								+ " to the owner list of "
@@ -497,6 +493,14 @@ public class BasicExecutor implements CommandExecutor {
 		}
 	}
 
+	private void setOwner(Player player, HumanNPC npc, String name) {
+		PropertyPool.setOwner(npc.getUID(), name);
+		player.sendMessage(ChatColor.GREEN + "The owner of NPC: "
+				+ StringUtils.yellowify(npc.getStrippedName()) + " is now: "
+				+ StringUtils.yellowify(name) + ".");
+		npc.getNPCData().setOwner(name);
+	}
+
 	/**
 	 * Creates an NPC given a string array, containing the name of the NPC and
 	 * optional text to be added to it.
@@ -531,7 +535,7 @@ public class BasicExecutor implements CommandExecutor {
 			PropertyPool.saveNPCAmountPerPlayer(player.getName(),
 					PropertyPool.getNPCAmountPerPlayer(player.getName()) + 1);
 			plugin.handler.setNPCText(UID, texts);
-			plugin.handler.setOwner(UID, player.getName());
+			plugin.handler.setOwner(NPCManager.getNPC(UID), player.getName());
 			player.sendMessage(ChatColor.GREEN + "The NPC "
 					+ StringUtils.yellowify(args[1]) + " was born!");
 			if (EconomyHandler.useEconomy()) {
@@ -797,7 +801,7 @@ public class BasicExecutor implements CommandExecutor {
 	private void sendHelp(CommandSender sender) {
 		sender.sendMessage("§fCitizens " + Citizens.getVersion() + " Help");
 		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§8/§btoggle [trader|quester|wizard|guard|healer] §e- §atoggles the state of an NPC.");
+		sender.sendMessage("§8/§ctoggle [trader|quester|wizard|guard|healer] §e- §atoggles the state of an NPC.");
 		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC.");
 
 	}

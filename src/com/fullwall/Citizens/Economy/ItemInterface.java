@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Economy;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -64,10 +65,21 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getCurrency(Operation op) {
+		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int ID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		return Material.getMaterial(ID) != null ? Material.getMaterial(ID)
-				.name() : "";
+		return Material.getMaterial(ID) != null ? price + " "
+				+ Material.getMaterial(ID).name() + ChatColor.GREEN + "(s)"
+				: "";
+	}
+
+	public static String getCurrency(Payment payment) {
+		return Material.getMaterial(payment.getItem().getTypeId()) != null ? payment
+				.getPrice()
+				+ " "
+				+ Material.getMaterial(payment.getItem().getTypeId()).name()
+				+ ChatColor.AQUA + "(s)"
+				: "";
 	}
 
 	/**

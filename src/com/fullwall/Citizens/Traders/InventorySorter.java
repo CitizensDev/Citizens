@@ -1,6 +1,5 @@
 package com.fullwall.Citizens.Traders;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class InventorySorter {
@@ -10,67 +9,47 @@ public class InventorySorter {
 	 * @param stack
 	 * @return
 	 */
-	public static ItemStack[] sortInventory(ItemStack[] stack) {
-		int end = stack.length - 1;
-		int start = 0;
+	public static ItemStack[] sortItemStack(ItemStack[] stack) {
+		return sortItemStack(stack, 0, stack.length);
+	}
+
+	public static ItemStack[] sortItemStack(ItemStack[] stack, int start,
+			int end) {
 		stack = stackItems(stack, start, end);
-		boolean doMore = true;
-		int n = end;
-		while (doMore) {
-			n--;
-			doMore = false; // assume this is our last pass over the array
-			for (int i = start; i < n; i++) {
-				if (stack[i].getTypeId() > stack[i + 1].getTypeId()) {
-					// exchange elements
-					ItemStack temp = stack[i];
-					stack[i] = stack[i + 1];
-					stack[i + 1] = temp;
-					doMore = true; // after an exchange, must look again
-				}
-			}
-		}
+		recQuickSort(stack, start, end - 1);
 		return stack;
 	}
 
 	private static ItemStack[] stackItems(ItemStack[] items, int start, int end) {
 		for (int i = start; i < end; i++) {
 			ItemStack item = items[i];
-
 			// Avoid infinite stacks and stacks with durability
 			if (item == null || item.getAmount() <= 0
-					|| item.getType().equals(Material.AIR)) {
+					|| ItemType.shouldNotStack(item.getTypeId())) {
 				continue;
 			}
-
-			// Ignore buckets
-			if (item.getTypeId() >= 325 && item.getTypeId() <= 327) {
-				continue;
-			}
-
 			if (item.getAmount() < 64) {
 				int needed = 64 - item.getAmount(); // Number of needed items
 													// until 64
-
 				// Find another stack of the same type
 				for (int j = i + 1; j < end; j++) {
 					ItemStack item2 = items[j];
-
 					// Avoid infinite stacks and stacks with durability
 					if (item2 == null || item2.getAmount() <= 0
-							|| item2.getType() == Material.AIR) {
+							|| ItemType.shouldNotStack(item.getTypeId())) {
 						continue;
 					}
-
 					// Same type?
 					// Blocks store their color in the damage value
 					if (item2.getTypeId() == item.getTypeId()
-							&& (item.getData() == item2.getData())
-							&& (item.getDurability() == item2.getDurability())) {
+							&& (!ItemType.usesDamageValue(item.getTypeId()) || item
+									.getDurability() == item2.getDurability())) {
 						// This stack won't fit in the parent stack
 						if (item2.getAmount() > needed) {
 							item.setAmount(64);
 							item2.setAmount(item2.getAmount() - needed);
 							break;
+							// This stack will
 						} else {
 							item.setAmount(item.getAmount() + item2.getAmount());
 							needed = 64 - item.getAmount();
@@ -82,4 +61,76 @@ public class InventorySorter {
 		}
 		return items;
 	}
+
+	private static void swap(ItemStack[] list, int first, int second) {
+		ItemStack temp;
+
+		temp = list[first];
+		list[first] = list[second];
+		list[second] = temp;
+	}
+
+	private static class ComparableIS {
+		private ItemStack item;
+
+		public ComparableIS(ItemStack item) {
+			this.item = item;
+		}
+
+		public int compareTo(ItemStack check) {
+			if (check == null)
+				return 0;
+			if (item == null)
+				return 0;
+			// Type ID first
+			if (item.getTypeId() > check.getTypeId()) {
+				return 1;
+			} else if (item.getTypeId() < check.getTypeId()) {
+				return -1;
+			} else if (item.getTypeId() == check.getTypeId()) {
+				// Wool, dye, slabs, and logs next
+				if (ItemType.usesDamageValue(item.getTypeId())) {
+					if (item.getDurability() < check.getDurability()) {
+						return 1;
+					} else if (item.getDurability() > check.getDurability()) {
+						return -1;
+					}
+				}
+				// Stack size
+				if (item.getAmount() < check.getAmount()) {
+					return -1;
+				} else if (item.getAmount() > check.getAmount()) {
+					return 1;
+				}
+			}
+			return 0;
+		}
+	}
+
+	private static int partition(ItemStack[] list, int first, int last) {
+		ItemStack pivot;
+		int smallIndex;
+		swap(list, first, (first + last) / 2);
+		pivot = list[first];
+		smallIndex = first;
+		for (int index = first + 1; index <= last; index++) {
+			ComparableIS compElem = new ComparableIS(list[index]);
+			if (compElem.compareTo(pivot) < 0) {
+				smallIndex++;
+				swap(list, smallIndex, index);
+			}
+		}
+		swap(list, first, smallIndex);
+		return smallIndex;
+
+	}
+
+	private static void recQuickSort(ItemStack[] list, int first, int last) {
+		if (first < last) {
+			int pivotLocation = partition(list, first, last);
+			recQuickSort(list, first, pivotLocation - 1);
+			recQuickSort(list, pivotLocation + 1, last);
+		}
+	}
+
 }
