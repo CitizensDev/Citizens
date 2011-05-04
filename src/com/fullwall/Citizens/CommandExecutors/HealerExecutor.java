@@ -54,10 +54,11 @@ public class HealerExecutor implements CommandExecutor {
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-			} 
-			returnval = true;
+				returnval = true;
+			}
+			HealerPropertyPool.saveHealerState(npc);
 		}
-		HealerPropertyPool.saveHealerState(npc);
+		return returnval;
 	}
 
 	private void displayHealerStrength(Player player, HumanNPC npc,
