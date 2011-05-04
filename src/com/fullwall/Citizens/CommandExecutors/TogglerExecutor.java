@@ -79,7 +79,10 @@ public class TogglerExecutor implements CommandExecutor {
 					} else {
 						toggleHealer(npc, player);
 					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				returnval = true;
 			} else if (args[0].equals("guard")) {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else if (args[0].equals("wizard")) {

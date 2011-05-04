@@ -64,7 +64,7 @@ public class HealerExecutor implements CommandExecutor {
 			String[] args) {
 		player.sendMessage(ChatColor.GREEN
 				+ npc.getStrippedName()
-				+ "has "
+				+ " has "
 				+ StringUtils.yellowify(
 						"" + HealerPropertyPool.getStrength(npc.getUID()),
 						ChatColor.GREEN) + " strength remaining.");
