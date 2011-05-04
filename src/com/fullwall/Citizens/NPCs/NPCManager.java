@@ -68,7 +68,6 @@ public class NPCManager {
 		ArrayList<Integer> items = PropertyPool.getItems(UID);
 
 		loadBasic(npc, UID, items);
-		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
 		if (TraderPropertyPool.isTrader(UID)) {
 			loadTrader(npc, npc.getTraderNPC(), UID);
 		}
@@ -78,6 +77,7 @@ public class NPCManager {
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
+		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
 
 		registerUID(UID, name);
 		list.put(UID, npc);
@@ -129,7 +129,7 @@ public class NPCManager {
 	private void loadBasic(HumanNPC npc, int UID, ArrayList<Integer> items) {
 		NPCDataManager.addItems(npc, items);
 		PropertyPool.getSetText(UID);
-		npc.setBalance(npc.getBalance());
+		npc.setBalance(PropertyPool.getBalance(UID));
 	}
 
 	/**

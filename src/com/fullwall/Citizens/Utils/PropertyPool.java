@@ -230,6 +230,14 @@ public class PropertyPool {
 		return ID == -1 ? 1 : ID;
 	}
 
+	public static void saveBalance(int UID, int balance) {
+		balances.setInt(UID, balance);
+	}
+
+	public static int getBalance(int UID) {
+		return balances.getInt(UID);
+	}
+
 	public static boolean checkEconomyEnabled() {
 		return economy.getBoolean("use-economy");
 	}
@@ -263,17 +271,6 @@ public class PropertyPool {
 		balances.save();
 	}
 
-	public static void saveBasicNPCState(int UID, NPCData npcdata) {
-		saveBalance(UID, npcdata.getBalance());
-		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
-		saveColour(UID, npcdata.getColour());
-		saveItems(UID, npcdata.getItems());
-		saveText(UID, npcdata.getTexts());
-		saveLookWhenClose(UID, npcdata.isLookClose());
-		saveTalkWhenClose(UID, npcdata.isTalkClose());
-		setOwner(UID, npcdata.getOwner());
-	}
-
 	public static void removeFromFiles(String name, int UID) {
 		colours.removeKey(UID);
 		items.removeKey(UID);
@@ -290,11 +287,14 @@ public class PropertyPool {
 		balances.removeKey(UID);
 	}
 
-	public static void saveBalance(int UID, int balance) {
-		balances.setInt(UID, balance);
-	}
-	
-	public static int getBalance(int UID) {
-		return balances.getInt(UID);
+	public static void saveBasicNPCState(int UID, NPCData npcdata) {
+		saveBalance(UID, npcdata.getBalance());
+		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
+		saveColour(UID, npcdata.getColour());
+		saveItems(UID, npcdata.getItems());
+		saveText(UID, npcdata.getTexts());
+		saveLookWhenClose(UID, npcdata.isLookClose());
+		saveTalkWhenClose(UID, npcdata.isTalkClose());
+		setOwner(UID, npcdata.getOwner());
 	}
 }
