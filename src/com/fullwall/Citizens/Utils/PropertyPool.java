@@ -293,7 +293,7 @@ public class PropertyPool {
 	public static void saveBalance(int UID, int balance) {
 		balances.setInt(UID, balance);
 	}
-
+	
 	public static int getBalance(int UID) {
 		return balances.getInt(UID);
 	}

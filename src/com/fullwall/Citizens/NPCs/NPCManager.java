@@ -72,6 +72,9 @@ public class NPCManager {
 		if (TraderPropertyPool.isTrader(UID)) {
 			loadTrader(npc, npc.getTraderNPC(), UID);
 		}
+		if (HealerPropertyPool.isHealer(UID)) {
+			loadHealer(npc, npc.getHealerNPC(), UID);
+		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
@@ -79,12 +82,7 @@ public class NPCManager {
 		registerUID(UID, name);
 		list.put(UID, npc);
 		TraderPropertyPool.saveTraderState(npc);
-	}
-
-	private void loadBasic(HumanNPC npc, int UID, ArrayList<Integer> items) {
-		NPCDataManager.addItems(npc, items);
-		PropertyPool.getSetText(UID);
-		npc.setBalance(npc.getBalance());
+		HealerPropertyPool.saveHealerState(npc);
 	}
 
 	/**
@@ -121,6 +119,13 @@ public class NPCManager {
 		TraderPropertyPool.saveTraderState(npc);
 	}
 
+	/**
+	 * Loads basic data for an npc.
+	 * 
+	 * @param npc
+	 * @param UID
+	 * @param items
+	 */
 	private void loadBasic(HumanNPC npc, int UID, ArrayList<Integer> items) {
 		NPCDataManager.addItems(npc, items);
 		PropertyPool.getSetText(UID);

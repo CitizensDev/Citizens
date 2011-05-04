@@ -41,7 +41,6 @@ public class HealerExecutor implements CommandExecutor {
 		if (!NPCManager.validateOwnership(player, npc.getUID())) {
 			player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
-
 		}
 		if (!npc.isHealer()) {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a healer yet.");
