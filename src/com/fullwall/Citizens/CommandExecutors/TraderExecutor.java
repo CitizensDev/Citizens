@@ -346,7 +346,7 @@ public class TraderExecutor implements CommandExecutor {
 						+ "The NPC doesn't have enough money for that! It needs "
 						+ StringUtils.yellowify(
 								IconomyInterface.getCurrency(amount
-										- npc.getTraderNPC().getBalance()),
+										- npc.getBalance()),
 								ChatColor.RED) + " more in its balance.");
 			}
 		} else

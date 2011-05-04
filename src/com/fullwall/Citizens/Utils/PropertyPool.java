@@ -37,6 +37,8 @@ public class PropertyPool {
 			"plugins/Citizens/Basic NPCs/Citizens.texts");
 	public static final PropertyHandler counts = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.counts");
+	public static final PropertyHandler balances = new PropertyHandler(
+	"plugins/Citizens/Traders/Citizens.balances");
 
 	public static int getMaxNPCsPerPlayer() {
 		return settings.getInt("max-NPCs-per-player");
@@ -258,6 +260,7 @@ public class PropertyPool {
 		talkwhenclose.save();
 		lookat.save();
 		counts.save();
+		balances.save();
 	}
 
 	public static void saveBasicNPCState(int UID, NPCData npcdata) {
@@ -283,5 +286,14 @@ public class PropertyPool {
 		talkwhenclose.removeKey(UID);
 		texts.removeKey(UID);
 		counts.removeKey(name);
+		balances.removeKey(UID);
+	}
+	
+	public static void saveBalance(int UID, int balance) {
+		balances.setInt(UID, balance);
+	}
+
+	public static int getBalance(int UID) {
+		return balances.getInt(UID);
 	}
 }

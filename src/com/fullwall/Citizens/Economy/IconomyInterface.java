@@ -104,7 +104,7 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static boolean hasEnough(Payment payment, HumanNPC npc) {
-		return npc.getTraderNPC().getBalance() > payment.getPrice();
+		return npc.getBalance() > payment.getPrice();
 	}
 
 	/**
@@ -128,8 +128,8 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static int pay(HumanNPC npc, Payment payment) {
-		npc.getTraderNPC().setBalance(
-				npc.getTraderNPC().getBalance() - payment.getPrice());
+		npc.setBalance(
+				npc.getBalance() - payment.getPrice());
 		return payment.getPrice();
 	}
 

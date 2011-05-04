@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.iConomy.iConomy;
 
 import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
+import com.fullwall.Citizens.CommandExecutors.HealerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
@@ -25,6 +26,7 @@ import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 
@@ -81,6 +83,9 @@ public class Citizens extends JavaPlugin {
 
 		TraderExecutor traderExecutor = new TraderExecutor(this);
 		this.getCommand("trader").setExecutor(traderExecutor);
+		
+		HealerExecutor healerExecutor = new HealerExecutor(this);
+		this.getCommand("healer").setExecutor(healerExecutor);
 
 		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
 		this.getCommand("toggle").setExecutor(togglerExecutor);
@@ -145,6 +150,7 @@ public class Citizens extends JavaPlugin {
 		// Save the local copy of our files to disk.
 		PropertyPool.saveAll();
 		TraderPropertyPool.saveAll();
+		HealerPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
 	}

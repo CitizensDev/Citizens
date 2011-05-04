@@ -24,8 +24,6 @@ public class TraderPropertyPool {
 			"plugins/Citizens/Traders/Citizens.inventories");
 	public static final PropertyHandler stocking = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.stocking");
-	public static final PropertyHandler balances = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.balances");
 	public static final PropertyHandler unlimiteds = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.unlimited");
 
@@ -33,7 +31,6 @@ public class TraderPropertyPool {
 		traders.save();
 		inventories.save();
 		stocking.save();
-		balances.save();
 		unlimiteds.save();
 	}
 
@@ -86,14 +83,6 @@ public class TraderPropertyPool {
 
 	private static int parse(String passed) {
 		return Integer.parseInt(passed);
-	}
-
-	public static void saveBalance(int UID, int balance) {
-		balances.setInt(UID, balance);
-	}
-
-	public static int getBalance(int UID) {
-		return balances.getInt(UID);
 	}
 
 	public static void saveUnlimited(int UID, boolean unlimited) {
@@ -172,7 +161,7 @@ public class TraderPropertyPool {
 		if (isTrader(npc.getUID()))
 			saveTrader(npc.getUID(), npc.isTrader());
 		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
-		saveBalance(npc.getUID(), npc.getTraderNPC().getBalance());
+		PropertyPool.saveBalance(npc.getUID(), npc.getBalance());
 		saveUnlimited(npc.getUID(), npc.getTraderNPC().isUnlimited());
 	}
 }

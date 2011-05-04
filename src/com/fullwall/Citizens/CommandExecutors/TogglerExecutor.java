@@ -60,11 +60,11 @@ public class TogglerExecutor implements CommandExecutor {
 			if (args[0].equals("trader")) {
 				if (BasicExecutor.hasPermission("citizens.trader.create",
 						sender)) {
-					if (!TraderPropertyPool.isTrader(npc.getUID()))
+					if (!TraderPropertyPool.isTrader(npc.getUID())) {
 						buyTrader(npc, player);
-					else
-						sender.sendMessage(ChatColor.RED
-								+ "That NPC is already a trader!");
+					} else {
+						toggleTrader(npc, player);
+					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -147,7 +147,7 @@ public class TogglerExecutor implements CommandExecutor {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Toggles whether the selected npc is a trader or not.
 	 * 
@@ -163,7 +163,7 @@ public class TogglerExecutor implements CommandExecutor {
 			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " has stopped being a trader.");
 	}
-	
+
 	/**
 	 * Toggles whether the selected npc is a healer or not.
 	 * 

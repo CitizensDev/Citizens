@@ -22,20 +22,10 @@ public class TraderNPC {
 
 	private HumanNPC npc;
 
-	private int balance;
-
 	private boolean unlimited = false;
 	private boolean free = true;
 
 	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
-
-	public int getBalance() {
-		return this.balance;
-	}
-
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
 
 	public ConcurrentHashMap<Check, Stockable> getStocking() {
 		return stocking;
