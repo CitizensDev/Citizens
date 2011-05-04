@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -12,6 +13,7 @@ import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.TraderInterface;
+import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -32,13 +34,66 @@ public class EntityListen extends EntityListener {
 
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
-		// Prevent NPCs from getting damaged.
-		if (!(event instanceof EntityDamageByEntityEvent))
-			return;
-		EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
-		if (e.getEntity() instanceof Player && e.getDamager() instanceof Player
-				&& NPCManager.getNPC(e.getEntity()) != null) {
-			e.setCancelled(true);
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
+			HumanNPC npc = NPCManager.getNPC(e.getEntity());
+			if (e.getEntity() instanceof Player
+					&& e.getDamager() instanceof Player && npc != null) {
+				e.setCancelled(true);
+			}
+			if (npc.isHealer()) {
+				Entity entity = e.getDamager();
+				if (entity instanceof Player) {
+					Player player = (Player) entity;
+					int playerHealth = player.getHealth();
+					int healerHealth = HealerPropertyPool.getStrength(npc
+							.getUID());
+					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
+						if (playerHealth <= 19) {
+							if (healerHealth >= 1) {
+								player.setHealth(playerHealth + 2);
+								HealerPropertyPool.saveStrength(npc.getUID(),
+										healerHealth - 1);
+								player.sendMessage(ChatColor.GREEN
+										+ "You drained health from the healer "
+										+ StringUtils.yellowify(
+												npc.getStrippedName(),
+												ChatColor.GREEN) + ".");
+							} else {
+								player.sendMessage(StringUtils.yellowify(
+										npc.getStrippedName(), ChatColor.GREEN)
+										+ " does not have enough health remaining for you to take.");
+							}
+						} else {
+							player.sendMessage(ChatColor.GREEN
+									+ "You are fully healed.");
+						}
+					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
+						if (playerHealth >= 1) {
+							if (healerHealth < 19) {
+								player.setHealth(playerHealth - 1);
+								HealerPropertyPool.saveStrength(npc.getUID(),
+										healerHealth + 2);
+								player.sendMessage(ChatColor.GREEN
+										+ "You donated some health to the healer "
+										+ StringUtils.yellowify(
+												npc.getStrippedName(),
+												ChatColor.GREEN) + ".");
+							} else {
+								player.sendMessage(StringUtils.yellowify(
+										npc.getStrippedName(), ChatColor.GREEN)
+										+ " is fully healed.");
+							}
+						} else {
+							player.sendMessage(ChatColor.GREEN
+									+ "You do not have enough health remaining to heal "
+									+ StringUtils.yellowify(
+											npc.getStrippedName(),
+											ChatColor.GREEN));
+						}
+					}
+				}
+			}
 		}
 	}
 

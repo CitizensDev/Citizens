@@ -147,7 +147,11 @@ public class TogglerExecutor implements CommandExecutor {
 							Operation.HEALER_NPC_CREATE, paid,
 							npc.getStrippedName(), "healer", true));
 				toggleHealer(npc, player);
+				HealerPropertyPool.saveStrength(npc.getUID(), 20);
 				HealerPropertyPool.saveHealer(npc.getUID(), true);
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(

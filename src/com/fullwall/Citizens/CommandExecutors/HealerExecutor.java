@@ -49,7 +49,7 @@ public class HealerExecutor implements CommandExecutor {
 			if (args.length == 1 && args[0].equals("strength")) {
 				if (BasicExecutor.hasPermission("citizens.healer.strength",
 						sender)) {
-					displayHealerStrength(player, npc, args);
+					displayHealerStrength(player, npc);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -60,8 +60,7 @@ public class HealerExecutor implements CommandExecutor {
 		return returnval;
 	}
 
-	private void displayHealerStrength(Player player, HumanNPC npc,
-			String[] args) {
+	private void displayHealerStrength(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ npc.getStrippedName()
 				+ " has "

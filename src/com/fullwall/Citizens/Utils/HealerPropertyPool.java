@@ -36,7 +36,7 @@ public class HealerPropertyPool {
 
 	public static void saveHealerState(HumanNPC npc) {
 		if (isHealer(npc.getUID())) {
-			saveHealer(npc.getUID(), npc.isTrader());
+			saveHealer(npc.getUID(), npc.isHealer());
 			saveStrength(npc.getUID(), getStrength(npc.getUID()));
 		}
 	}

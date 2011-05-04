@@ -47,6 +47,8 @@ public class Citizens extends JavaPlugin {
 	public static int tickDelay = 1;
 	public static int saveDelay = 72000;
 	public static int maxNPCsPerPlayer = 10;
+	public static int healerGiveHealthItem = 35;
+	public static int healerTakeHealthItem = 276;
 
 	public static double npcRange = 5;
 
@@ -83,7 +85,7 @@ public class Citizens extends JavaPlugin {
 
 		TraderExecutor traderExecutor = new TraderExecutor(this);
 		this.getCommand("trader").setExecutor(traderExecutor);
-		
+
 		HealerExecutor healerExecutor = new HealerExecutor(this);
 		this.getCommand("healer").setExecutor(healerExecutor);
 
@@ -231,6 +233,10 @@ public class Citizens extends JavaPlugin {
 		EconomyHandler.setUpVariables();
 		if (!PropertyPool.settings.keyExists("max-NPCs-per-player"))
 			PropertyPool.settings.setInt("max-NPCs-per-player", 10);
+		if (!PropertyPool.settings.keyExists("healer-give-health-item"))
+			PropertyPool.settings.setInt("healer-give-health-item", 35);
+		if (!PropertyPool.settings.keyExists("healer-take-health-item"))
+			PropertyPool.settings.setInt("healer-take-health-item", 276);
 		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
 			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
 		if (!PropertyPool.settings.keyExists("default-enable-following"))
@@ -255,6 +261,12 @@ public class Citizens extends JavaPlugin {
 		if (PropertyPool.settings.keyExists("max-npcs-per-player"))
 			maxNPCsPerPlayer = PropertyPool.settings
 					.getInt("max-npcs-per-player");
+		if (PropertyPool.settings.keyExists("healer-give-health-item"))
+			healerGiveHealthItem = PropertyPool.settings
+					.getInt("healer-give-health-item");
+		if (PropertyPool.settings.keyExists("healer-take-health-item"))
+			healerTakeHealthItem = PropertyPool.settings
+					.getInt("healer-take-health-item");
 		if (PropertyPool.settings.keyExists("tick-delay"))
 			tickDelay = PropertyPool.settings.getInt("tick-delay");
 		if (PropertyPool.settings.keyExists("save-tick-delay"))
