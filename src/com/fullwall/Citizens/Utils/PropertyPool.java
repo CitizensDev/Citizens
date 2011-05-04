@@ -38,7 +38,7 @@ public class PropertyPool {
 	public static final PropertyHandler counts = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.counts");
 	public static final PropertyHandler balances = new PropertyHandler(
-	"plugins/Citizens/Traders/Citizens.balances");
+			"plugins/Citizens/Traders/Citizens.balances");
 
 	public static int getMaxNPCsPerPlayer() {
 		return settings.getInt("max-NPCs-per-player");

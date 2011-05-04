@@ -19,7 +19,7 @@ public class HumanNPC extends NPC {
 	private double GravityPerSecond = 9.81;
 	private double movementSpeed = 0.2;
 	private double privateSpace = 1.5;
-	
+
 	private int balance;
 
 	private double targetX = 0.0;
@@ -209,7 +209,7 @@ public class HumanNPC extends NPC {
 	public PlayerInventory getInventory() {
 		return getPlayer().getInventory();
 	}
-	
+
 	public int getBalance() {
 		return this.balance;
 	}

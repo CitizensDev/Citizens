@@ -121,6 +121,12 @@ public class NPCManager {
 		TraderPropertyPool.saveTraderState(npc);
 	}
 
+	private void loadBasic(HumanNPC npc, int UID, ArrayList<Integer> items) {
+		NPCDataManager.addItems(npc, items);
+		PropertyPool.getSetText(UID);
+		npc.setBalance(npc.getBalance());
+	}
+
 	/**
 	 * Loads healer data for an npc.
 	 * 
