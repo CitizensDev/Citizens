@@ -79,7 +79,7 @@ public class TraderExecutor implements CommandExecutor {
 					&& (args[0].contains("b") || args[0].contains("s"))) {
 				if (BasicExecutor
 						.hasPermission("citizens.trader.stock", sender)) {
-					changeTraderBuySell(player, npc, args[1], args[2],
+					changeTraderStock(player, npc, args[1], args[2],
 							args[0].contains("s"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -135,7 +135,18 @@ public class TraderExecutor implements CommandExecutor {
 					+ "-------------------------------");
 			int startPoint = 4 * page - 1;
 			for (int i = startPoint; i != startPoint + 3; ++i) {
-				Stockable s = stock.get(i);
+				if ((stock.size() - 1) >= i) {
+					Stockable s = stock.get(i);
+					player.sendMessage(ChatColor.GREEN
+							+ keyword
+							+ " "
+							+ MessageUtils.getStockableMessage(s,
+									ChatColor.GREEN) + ".");
+				} else {
+					player.sendMessage(ChatColor.AQUA
+							+ "-------------------------------");
+					break;
+				}
 			}
 		}
 	}
@@ -171,7 +182,7 @@ public class TraderExecutor implements CommandExecutor {
 	 * @param price
 	 * @param selling
 	 */
-	private void changeTraderBuySell(Player player, HumanNPC npc, String item,
+	private void changeTraderStock(Player player, HumanNPC npc, String item,
 			String price, boolean selling) {
 		if (item.contains("rem")) {
 			Material mat = StringUtils.parseMaterial(price);
@@ -229,6 +240,19 @@ public class TraderExecutor implements CommandExecutor {
 				stack.getTypeId(), data);
 		itemPrice.setiConomy(cost == null);
 		Stockable s = new Stockable(stack, itemPrice, false);
+		if (npc.getTraderNPC().isStocked(s)) {
+			if (selling)
+				player.sendMessage(ChatColor.RED
+						+ "The trader is already selling that at "
+						+ MessageUtils.getStockableMessage(s, ChatColor.RED)
+						+ ".");
+			else
+				player.sendMessage(ChatColor.RED
+						+ "The trader is already buying that at "
+						+ MessageUtils.getStockableMessage(s, ChatColor.RED)
+						+ ".");
+			return;
+		}
 		if (selling) {
 			s.setSelling(true);
 			npc.getTraderNPC().addStockable(s);

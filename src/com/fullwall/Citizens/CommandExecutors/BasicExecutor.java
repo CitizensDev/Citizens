@@ -860,11 +860,22 @@ public class BasicExecutor implements CommandExecutor {
 			sender.sendMessage("§fCitizens " + Citizens.getVersion()
 					+ " Trader Help");
 			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("ADD COMMANDS HERE");
+			sender.sendMessage("§8/§ctrader §blist [buy/sell] (page) §e- §alists the selected trader's buy/selling list (paged).");
+			sender.sendMessage("§8/§ctrader §b[buy/sell] [itemID(:amount:data)] [itemID(:amount:data)]§e- §astarts an npc stocking a given item. Put no : in the second argument for iConomy.");
+			sender.sendMessage("§8/§ctrader §b[buy/sell] [remove] [item ID] §e- §astops the given item ID from being stocked.");
 			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
 			break;
+		case 2:
+			sender.sendMessage("§fCitizens " + Citizens.getVersion()
+					+ " Trader Help");
+			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("§8/§ctrader §bbalance [give/take] [amount] §e- §aif using iConomy, controls a trader's money.");
+			sender.sendMessage("§8/§ctrader §bunlimited [true/false] §e- §asets whether a trader has unlimited stock.");
+			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("§fPlugin made by fullwall, NeonMaster, TheMPC, and aPunch");
+			break;
 		default:
-			sender.sendMessage("§fThe total number of pages is 1, page: "
+			sender.sendMessage("§fThe total number of pages is 2, page: "
 					+ pageNum + " is not available.");
 			break;
 		}

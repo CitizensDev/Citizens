@@ -113,7 +113,7 @@ public class TraderTask implements Runnable {
 	private void handleNPCItemClicked(int slot, PlayerInventory npcInv) {
 		npcInv.setItem(slot, previousNPCInv.getItem(slot));
 		ItemStack i = npcInv.getItem(slot);
-		if (!(npc.getTraderNPC().isStockable(i.getTypeId(), i.getData(), false))) {
+		if (!(npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), false))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being sold here.");
 			return;
@@ -163,7 +163,7 @@ public class TraderTask implements Runnable {
 	private void handlePlayerItemClicked(int slot, PlayerInventory playerInv) {
 		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = playerInv.getItem(slot);
-		if (!npc.getTraderNPC().isStockable(i.getTypeId(), i.getData(), true)) {
+		if (!npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), true)) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being purchased here.");
 			return;

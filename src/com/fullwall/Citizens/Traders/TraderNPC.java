@@ -92,7 +92,7 @@ public class TraderNPC {
 
 	}
 
-	public boolean isStockable(int itemID, MaterialData data, boolean selling) {
+	public boolean isStocked(int itemID, MaterialData data, boolean selling) {
 		if (checkStockingIntegrity()) {
 			if (getStocking().get(new Check(itemID, selling)) != null) {
 				if (checkData(getStocking().get(new Check(itemID, selling))
@@ -101,6 +101,11 @@ public class TraderNPC {
 			}
 		}
 		return false;
+	}
+
+	public boolean isStocked(Stockable s) {
+		return isStocked(s.getStockingId(), s.getStocking().getData(),
+				s.isSelling());
 	}
 
 	private boolean checkData(MaterialData first, MaterialData second) {
