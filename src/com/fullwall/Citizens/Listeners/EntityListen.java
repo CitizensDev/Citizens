@@ -55,10 +55,10 @@ public class EntityListen extends EntityListener {
 				Player p = (Player) event.getTarget();
 				boolean found = false;
 				// Dispatch text event.
-				if (plugin.shouldShowText(p.getItemInHand().getTypeId()) == true) {
+				if (plugin.validateTool("items", p.getItemInHand().getTypeId()) == true) {
 					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
 							npc.getName(), MessageUtils.getText(npc,
-									e.getTarget(), plugin), npc,
+									(Player) e.getTarget(), plugin), npc,
 							Reason.RIGHT_CLICK, (Player) e.getTarget());
 					plugin.getServer().getPluginManager().callEvent(ev);
 					found = true;
@@ -71,8 +71,9 @@ public class EntityListen extends EntityListener {
 					return;
 				// If we're using a selection tool, select the NPC as well.
 				// Check if we haven't already selected the NPC too.
-				if (plugin.canSelect(p.getItemInHand().getTypeId()) == true) {
-					if (!NPCManager.validateSelected(p, npc)) {
+				if (plugin.validateTool("select-item", p.getItemInHand()
+						.getTypeId()) == true) {
+					if (!NPCManager.validateSelected(p, npc.getUID())) {
 						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
 						p.sendMessage(ChatColor.GREEN + "You selected NPC ["
 								+ StringUtils.yellowify(npc.getStrippedName())

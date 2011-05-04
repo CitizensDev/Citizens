@@ -15,6 +15,12 @@ public class NPCDataManager extends NPCManager {
 		super(plugin);
 	}
 
+	/**
+	 * Adds items to an npc so that they are visible.
+	 * 
+	 * @param npc
+	 * @param items
+	 */
 	public static void addItems(HumanNPC npc, ArrayList<Integer> items) {
 		if (items != null) {
 			Material matHand = Material.getMaterial(items.get(0));
@@ -54,9 +60,4 @@ public class NPCDataManager extends NPCManager {
 					+ "," + items.get(4) + ",");
 		}
 	}
-
-	public ArrayList<Object> getAllBasicData(String name) {
-		return new ArrayList<Object>();
-	}
-
 }

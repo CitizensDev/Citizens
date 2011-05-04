@@ -64,6 +64,7 @@ public class Citizens extends JavaPlugin {
 
 	public static final int MAGIC_DATA_VALUE = -1;
 	private static final String codename = "Helpers";
+	public static String version = "";
 
 	@Override
 	public void onLoad() {
@@ -99,6 +100,7 @@ public class Citizens extends JavaPlugin {
 				pl, Event.Priority.Monitor, this);
 
 		PluginDescriptionFile pdfFile = this.getDescription();
+		version = pdfFile.getVersion();
 
 		Permission.initialize(getServer());
 		setupVariables();
@@ -147,6 +149,9 @@ public class Citizens extends JavaPlugin {
 				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
 	}
 
+	/**
+	 * Provides a help menu for use with tkelly's help plugin.
+	 */
 	private void setupHelp() {
 		Plugin test = getServer().getPluginManager().getPlugin("Help");
 		if (test != null) {
@@ -210,6 +215,9 @@ public class Citizens extends JavaPlugin {
 		}
 	}
 
+	/**
+	 * Sets up miscellaneous variables, mostly reading from property files.
+	 */
 	private void setupVariables() {
 		// Used for static access to this object.
 		plugin = this;
@@ -299,25 +307,12 @@ public class Citizens extends JavaPlugin {
 				+ NPCManager.GlobalUIDs.size() + " NPCs.");
 	}
 
-	// Checks if an item ID can be used as the get text tool.
-	public boolean shouldShowText(Integer type) {
-		if (PropertyPool.settings.getBoolean("item-list-on") == true) {
-			String[] items = PropertyPool.settings.getString("items")
-					.split(",");
-			ArrayList<String> item = new ArrayList<String>();
-			for (String s : items) {
-				item.add(s);
-			}
-			if (item.contains("" + type) || item.contains("*"))
-				return true;
-			else if (type == 0 && item.contains("0"))
-				return true;
-			else
-				return false;
-		} else
-			return true;
-	}
-
+	/**
+	 * If "*" is used as a tool for anything (little bit of a hack for
+	 * displaying selection notifications).
+	 * 
+	 * @return Whether "*" is used.
+	 */
 	public boolean canSelectAny() {
 		String[] items = PropertyPool.settings.getString("select-item").split(
 				",");
@@ -337,23 +332,37 @@ public class Citizens extends JavaPlugin {
 		return false;
 	}
 
-	// Checks if an item ID can be used as the select tool.
-	public boolean canSelect(Integer type) {
-		String[] items = PropertyPool.settings.getString("select-item").split(
-				",");
-		ArrayList<String> item = new ArrayList<String>();
-		for (String s : items) {
-			item.add(s);
-		}
-		if (item.contains("" + type) || item.contains("*"))
+	/**
+	 * Returns whether the given item ID is usable as a tool.
+	 * 
+	 * @param key
+	 *            , type
+	 * @return Whether the ID is used for a tool.
+	 */
+	public boolean validateTool(String key, int type) {
+		if (PropertyPool.settings.getBoolean("item-list-on")) {
+			String[] items = PropertyPool.settings.getString(key).split(",");
+			ArrayList<String> item = new ArrayList<String>();
+			for (String s : items) {
+				item.add(s);
+			}
+			if (item.contains("" + type) || item.contains("*"))
+				return true;
+			else if (type == 0 && item.contains("0"))
+				return true;
+			else
+				return false;
+		} else
 			return true;
-		else if (type == 0 && item.contains("0"))
-			return true;
-		else
-			return false;
 	}
 
-	// Checks for a valid UID
+	/**
+	 * Checks if UID is being used by an NPC.
+	 * 
+	 * @param UID
+	 *            to check.
+	 * @return Whether it is used.
+	 */
 	public boolean validateUID(int UID) {
 		if (NPCManager.GlobalUIDs.containsKey(UID)) {
 			return true;
@@ -361,6 +370,13 @@ public class Citizens extends JavaPlugin {
 			return false;
 	}
 
+	/**
+	 * A method used for iConomy support.
+	 * 
+	 * @param iConomy
+	 *            plugin
+	 * @return
+	 */
 	public static boolean setiConomy(iConomy plugin) {
 		if (economy == null) {
 			economy = plugin;
@@ -368,5 +384,14 @@ public class Citizens extends JavaPlugin {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Returns the current version of Citizens as specified in the plugin.yml.
+	 * 
+	 * @return
+	 */
+	public static String getVersion() {
+		return version;
 	}
 }

@@ -18,34 +18,46 @@ public class TraderInterface {
 		NORMAL, STOCK, INFINITE
 	}
 
-	public static void showInventory(HumanNPC NPC, Player player) {
+	/**
+	 * Uses craftbukkit methods to show a player an npc's inventory screen.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
+	public static void showInventory(HumanNPC npc, Player player) {
 		((CraftPlayer) player).getHandle()
-				.a(NPC.getMinecraftEntity().inventory);
+				.a(npc.getMinecraftEntity().inventory);
 	}
 
-	public static void handleRightClick(HumanNPC NPC, Player player) {
-		if (NPC.getTraderNPC().isFree()) {
+	/**
+	 * Handles what happens when an npc gets right clicked.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
+	public static void handleRightClick(HumanNPC npc, Player player) {
+		if (npc.getTraderNPC().isFree()) {
 			if (!BasicExecutor.hasPermission("citizens.trader.stock", player)) {
 				return;
 			}
-			if (!NPCManager.validateOwnership(NPC.getUID(), player)) {
-				TraderTask task = new TraderTask(NPC, player, Citizens.plugin,
+			if (!NPCManager.validateOwnership(player, npc.getUID())) {
+				TraderTask task = new TraderTask(npc, player, Citizens.plugin,
 						Mode.NORMAL);
 				int id = Citizens.plugin.getServer().getScheduler()
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);
 				task.addID(id);
-				NPC.getTraderNPC().setFree(false);
+				npc.getTraderNPC().setFree(false);
 			} else {
-				TraderTask task = new TraderTask(NPC, player, Citizens.plugin,
+				TraderTask task = new TraderTask(npc, player, Citizens.plugin,
 						Mode.STOCK);
 				int id = Citizens.plugin.getServer().getScheduler()
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);
 				task.addID(id);
-				NPC.getTraderNPC().setFree(false);
+				npc.getTraderNPC().setFree(false);
 			}
-			showInventory(NPC, player);
+			showInventory(npc, player);
 		} else
 			player.sendMessage(ChatColor.RED
 					+ "Only one person may be served at a time!");

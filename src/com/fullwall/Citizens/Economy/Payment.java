@@ -11,12 +11,28 @@ public class Payment {
 	private ItemStack item;
 	private boolean iConomy;
 
+	/**
+	 * Defines a payment, which can be either iConomy or an item payment. This
+	 * constructor defines an item payment.
+	 * 
+	 * @param price
+	 * @param item
+	 * @param iConomy
+	 */
 	public Payment(int price, ItemStack item, boolean iConomy) {
 		this.setPrice(price);
 		this.setItem(item);
 		this.setiConomy(iConomy);
 	}
 
+	/**
+	 * Defines a payment, which can be either iConomy or an item payment. This
+	 * constructor defines an iConomy payment.
+	 * 
+	 * @param price
+	 * @param item
+	 * @param iConomy
+	 */
 	public Payment(int price, boolean iConomy) {
 		this.setPrice(price);
 		this.setItem(null);

@@ -4,6 +4,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class InventorySorter {
+	/**
+	 * Sorts an inventory. Used for trader npcs.
+	 * 
+	 * @param stack
+	 * @return
+	 */
 	public static ItemStack[] sortInventory(ItemStack[] stack) {
 		int end = stack.length - 1;
 		int start = 0;

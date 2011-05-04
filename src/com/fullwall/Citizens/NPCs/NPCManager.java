@@ -1,8 +1,6 @@
 package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,19 +11,16 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
-import com.fullwall.Citizens.Economy.EconomyHandler;
-import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.PropertyPool;
-import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCList;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
-@SuppressWarnings("unused")
 public class NPCManager {
 
+	@SuppressWarnings("unused")
 	private Citizens plugin;
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
@@ -39,6 +34,13 @@ public class NPCManager {
 		NPCManager.list = new NPCList();
 	}
 
+	/**
+	 * Spawns a new npc and registers it.
+	 * 
+	 * @param name
+	 * @param UID
+	 * @param owner
+	 */
 	public void registerNPC(String name, int UID, String owner) {
 		Location loc = PropertyPool.getLocationFromID(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
@@ -77,6 +79,14 @@ public class NPCManager {
 		list.put(UID, npc);
 	}
 
+	/**
+	 * Registers a new npc.
+	 * 
+	 * @param name
+	 * @param loc
+	 * @param owner
+	 * @return
+	 */
 	public int registerNPC(String name, Location loc, String owner) {
 		int UID = PropertyPool.getNewNpcID();
 		PropertyPool.saveLocation(name, loc, UID);
@@ -86,6 +96,13 @@ public class NPCManager {
 		return UID;
 	}
 
+	/**
+	 * Loads trader data for an npc.
+	 * 
+	 * @param npc
+	 * @param trader
+	 * @param UID
+	 */
 	private void loadTrader(HumanNPC npc, TraderNPC trader, int UID) {
 		npc.setTrader(TraderPropertyPool.getTraderState(UID));
 		npc.getInventory().setContents(
@@ -96,36 +113,76 @@ public class NPCManager {
 		TraderPropertyPool.saveTraderState(npc);
 	}
 
+	/**
+	 * Sets an npc's text to the given texts.
+	 * 
+	 * @param UID
+	 * @param text
+	 */
 	public static void setBasicNPCText(int UID, ArrayList<String> text) {
 		BasicNPCTexts.put(UID, text);
 		PropertyPool.saveText(UID, text);
 	}
 
+	/**
+	 * Returns an npc's text.
+	 * 
+	 * @param UID
+	 * @return
+	 */
 	public static ArrayList<String> getBasicNPCText(int UID) {
 		return BasicNPCTexts.get(UID);
 	}
 
+	/**
+	 * Gets an npc from a UID.
+	 * 
+	 * @param UID
+	 * @return
+	 */
 	public static HumanNPC getNPC(int UID) {
 		return list.get(UID);
 	}
 
+	/**
+	 * Gets an npc from an entity.
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	public static HumanNPC getNPC(Entity entity) {
 		return list.getBasicHumanNpc(entity);
 	}
 
+	/**
+	 * Gets the list of npcs.
+	 * 
+	 * @return
+	 */
 	public static NPCList getNPCList() {
 		return list;
 	}
 
-	public void moveNPC(int UID, Location loc) {
-		HumanNPC npc = list.get(UID);
+	/**
+	 * Moves an npc to a location.
+	 * 
+	 * @param npc
+	 * @param loc
+	 */
+	public void moveNPC(HumanNPC npc, Location loc) {
 		String location = loc.getWorld().getName() + "," + loc.getX() + ","
 				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
 				+ loc.getPitch();
-		PropertyPool.locations.setString(UID, location);
+		PropertyPool.locations.setString(npc.getUID(), location);
 		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
 	}
 
+	/**
+	 * Rotates an npc.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
 	public static void rotateNPCToPlayer(HumanNPC npc, Player player) {
 		Location loc = npc.getLocation();
 		double xDiff = player.getLocation().getX() - loc.getX();
@@ -142,12 +199,22 @@ public class NPCManager {
 				(float) pitch);
 	}
 
+	/**
+	 * Despawns an npc.
+	 * 
+	 * @param UID
+	 */
 	public void despawnNPC(int UID) {
 		GlobalUIDs.remove(UID);
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
 	}
 
+	/**
+	 * Removes an npc.
+	 * 
+	 * @param UID
+	 */
 	public void removeNPC(int UID) {
 		GlobalUIDs.remove(UID);
 		String actualName = NPCManager.getNPC(UID).getName();
@@ -156,18 +223,35 @@ public class NPCManager {
 		PropertyPool.removeFromFiles(actualName, UID);
 	}
 
+	/**
+	 * Removes an npc, but not from the properties.
+	 * 
+	 * @param UID
+	 */
 	public static void removeNPCForRespawn(int UID) {
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 	}
 
+	/**
+	 * Gets the global list of UIDs.
+	 * 
+	 * @return
+	 */
 	public ConcurrentHashMap<Integer, String> getBasicUIDs() {
 		return GlobalUIDs;
 	}
 
+	/**
+	 * Registers a UID in the global list.
+	 * 
+	 * @param UID
+	 * @param name
+	 */
 	private void registerUID(int UID, String name) {
 		GlobalUIDs.put(UID, name);
 	}
 
+	@SuppressWarnings("unused")
 	private String generateUID() {
 		boolean found = false;
 		// Change this to an integer return?
@@ -182,10 +266,22 @@ public class NPCManager {
 		return UID;
 	}
 
+	/**
+	 * Checks if a given entity is an npc.
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	public static boolean isNPC(Entity entity) {
 		return list.getBasicHumanNpc(entity) != null;
 	}
 
+	/**
+	 * Checks if a player has an npc selected.
+	 * 
+	 * @param p
+	 * @return
+	 */
 	public static boolean validateSelected(Player p) {
 		if (NPCSelected.get(p.getName()) != null
 				&& !NPCSelected.get(p.getName()).toString().isEmpty()) {
@@ -194,10 +290,17 @@ public class NPCManager {
 		return false;
 	}
 
-	public static boolean validateSelected(Player p, HumanNPC npc) {
+	/**
+	 * Checks if the player has selected the given npc.
+	 * 
+	 * @param p
+	 * @param npc
+	 * @return
+	 */
+	public static boolean validateSelected(Player p, int UID) {
 		if (NPCSelected.get(p.getName()) != null
 				&& !NPCSelected.get(p.getName()).toString().isEmpty()) {
-			if (NPCSelected.get(p.getName()).equals(npc.getUID()))
+			if (NPCSelected.get(p.getName()).equals(UID))
 				return true;
 		}
 		return false;
@@ -205,7 +308,7 @@ public class NPCManager {
 
 	// Overloaded method to add an optional permission string parameter (admin
 	// overrides).
-	public static boolean validateOwnership(int UID, Player p, String permission) {
+	public static boolean validateOwnership(Player p, int UID, String permission) {
 		if (Permission.generic(p,
 				permission.replace("citizens.", "citizens.admin.")))
 			return true;
@@ -217,7 +320,14 @@ public class NPCManager {
 		return false;
 	}
 
-	public static boolean validateOwnership(int UID, Player p) {
+	/**
+	 * Checks if a player owns a given npc.
+	 * 
+	 * @param UID
+	 * @param p
+	 * @return
+	 */
+	public static boolean validateOwnership(Player p, int UID) {
 		String[] npcOwners = PropertyPool.getOwner(UID).split(",");
 		for (int i = 0; i < npcOwners.length; i++) {
 			if (npcOwners[i].equals(p.getName()))

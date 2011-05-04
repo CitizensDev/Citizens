@@ -3,7 +3,6 @@ package com.fullwall.Citizens.Utils;
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,31 +32,29 @@ public class MessageUtils {
 		return check;
 	}
 
-	public static void sendText(HumanNPC npc, Entity entity, Citizens plugin) {
-		String name = StringUtils.stripColour(npc.getStrippedName());
-		int UID = npc.getUID();
-		ArrayList<String> array = NPCManager.getBasicNPCText(UID);
-		String text = "";
-		if (array != null && array.size() > 0) {
-			text = array.get(plugin.handler.ran.nextInt(array.size()));
-		}
-		if (text.isEmpty())
-			text = PropertyPool.getDefaultText();
-		if (!text.isEmpty()) {
-			if (Citizens.useNPCColours)
-				text = Citizens.chatFormat.replace("&", "§").replace("%name%",
-						npc.getStrippedName())
-						+ text;
-			else
-				text = Citizens.chatFormat.replace("%name%",
-						Citizens.NPCColour + name + ChatColor.WHITE).replace(
-						"&", "§")
-						+ text;
-			((Player) entity).sendMessage(text);
-		}
+	/**
+	 * Parses a basic npc's text for sending.
+	 * 
+	 * @param npc
+	 * @param player
+	 * @param plugin
+	 */
+	public static void sendText(HumanNPC npc, Player player, Citizens plugin) {
+		String text = getText(npc, player, plugin);
+		if (!text.isEmpty())
+			((Player) player).sendMessage(text);
+
 	}
 
-	public static String getText(HumanNPC npc, Entity entity, Citizens plugin) {
+	/**
+	 * Gets the text to be said for a basic npc.
+	 * 
+	 * @param npc
+	 * @param player
+	 * @param plugin
+	 * @return
+	 */
+	public static String getText(HumanNPC npc, Player player, Citizens plugin) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
 		int UID = npc.getUID();
 		ArrayList<String> array = NPCManager.getBasicNPCText(UID);
@@ -82,6 +79,13 @@ public class MessageUtils {
 		return "";
 	}
 
+	/**
+	 * Formats the not enough money message for an operation.
+	 * 
+	 * @param op
+	 * @param player
+	 * @return
+	 */
 	public static String getNoMoneyMessage(Operation op, Player player) {
 		String message = "";
 		message = ChatColor.RED
@@ -92,6 +96,16 @@ public class MessageUtils {
 		return message;
 	}
 
+	/**
+	 * Formats the paid message for an operation.
+	 * 
+	 * @param op
+	 * @param paid
+	 * @param npcName
+	 * @param type
+	 * @param useType
+	 * @return
+	 */
 	public static String getPaidMessage(Operation op, int paid, String npcName,
 			String type, boolean useType) {
 		String message = "";
@@ -107,6 +121,12 @@ public class MessageUtils {
 		return message;
 	}
 
+	/**
+	 * Formats the price message for an ItemPrice.
+	 * 
+	 * @param price
+	 * @return
+	 */
 	public static String getPriceMessage(ItemPrice price) {
 		String message = "";
 		message += ChatColor.YELLOW
@@ -117,6 +137,13 @@ public class MessageUtils {
 		return message;
 	}
 
+	/**
+	 * Formats the ItemStack contained in a stockable to a string.
+	 * 
+	 * @param s
+	 * @param colour
+	 * @return
+	 */
 	public static String getStockableMessage(Stockable s, ChatColor colour) {
 		return StringUtils.yellowify(s.getStocking().getAmount() + " "
 				+ s.getStocking().getType().name(), colour)

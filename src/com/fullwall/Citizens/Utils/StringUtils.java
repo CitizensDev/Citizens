@@ -54,19 +54,45 @@ public class StringUtils {
 		}
 	}
 
+	/**
+	 * Makes a string yellow, with a trailing green colour.
+	 * 
+	 * @param string
+	 * @return
+	 */
 	public static String yellowify(String string) {
 		return ChatColor.YELLOW + string + ChatColor.GREEN;
 	}
 
+	/**
+	 * Makes a double a yellow string with a trailing green colour.
+	 * 
+	 * @param string
+	 * @return
+	 */
 	public static String yellowify(double string) {
 		return ChatColor.YELLOW + "" + string + ChatColor.GREEN;
 	}
 
-	public static String yellowify(String string, ChatColor temp) {
-		return ChatColor.YELLOW + string + temp;
+	/**
+	 * Makes a string yellow, with a given colour trailing.
+	 * 
+	 * @param string
+	 * @param trailing
+	 * @return
+	 */
+	public static String yellowify(String string, ChatColor trailing) {
+		return ChatColor.YELLOW + string + trailing;
 	}
 
-	public static String yellowify(double string, ChatColor temp) {
-		return ChatColor.YELLOW + "" + string + temp;
+	/**
+	 * Makes a double a yellow string, with a given colour trailing.
+	 * 
+	 * @param string
+	 * @param trailing
+	 * @return
+	 */
+	public static String yellowify(double string, ChatColor trailing) {
+		return ChatColor.YELLOW + "" + string + trailing;
 	}
 }

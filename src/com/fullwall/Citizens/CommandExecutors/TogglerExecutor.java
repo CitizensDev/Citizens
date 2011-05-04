@@ -46,7 +46,7 @@ public class TogglerExecutor implements CommandExecutor {
 					+ MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
-		if (!NPCManager.validateOwnership(npc.getUID(), player)) {
+		if (!NPCManager.validateOwnership(player, npc.getUID())) {
 			player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		}
@@ -86,6 +86,13 @@ public class TogglerExecutor implements CommandExecutor {
 		return returnval;
 	}
 
+	/**
+	 * Buys a trader using the economy interface. Toggles the npc to a trader
+	 * afterwards.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
 	private void buyTrader(HumanNPC npc, Player player) {
 		if (!EconomyHandler.useEconomy()
 				|| EconomyHandler.canBuy(Operation.TRADER_NPC_CREATE, player)) {
@@ -106,6 +113,12 @@ public class TogglerExecutor implements CommandExecutor {
 		}
 	}
 
+	/**
+	 * Toggles whether the selected npc is a trader or not.
+	 * 
+	 * @param npc
+	 * @param player
+	 */
 	private void toggleTrader(HumanNPC npc, Player player) {
 		npc.setTrader(!npc.isTrader());
 		if (npc.isTrader())

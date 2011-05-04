@@ -9,6 +9,13 @@ public class Stockable {
 	private ItemPrice price;
 	private boolean selling;
 
+	/**
+	 * Represents an item that the npc can buy or sell.
+	 * 
+	 * @param stocking
+	 * @param price
+	 * @param selling
+	 */
 	public Stockable(ItemStack stocking, ItemPrice price, boolean selling) {
 		this.stocking = stocking;
 		this.price = price;

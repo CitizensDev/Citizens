@@ -35,8 +35,16 @@ public class TraderTask implements Runnable {
 	private boolean stop = false;
 	private EntityPlayer eplayer;
 
-	public TraderTask(HumanNPC NPC, Player player, Citizens plugin, Mode mode) {
-		this.npc = NPC;
+	/**
+	 * Gets run every tick, checks the inventory for changes.
+	 * 
+	 * @param npc
+	 * @param player
+	 * @param plugin
+	 * @param mode
+	 */
+	public TraderTask(HumanNPC npc, Player player, Citizens plugin, Mode mode) {
+		this.npc = npc;
 		this.player = (CraftPlayer) player;
 		this.eplayer = this.player.getHandle();
 		this.plugin = plugin;
@@ -51,43 +59,6 @@ public class TraderTask implements Runnable {
 
 		this.mode = mode;
 		sendJoinMessage();
-	}
-
-	// Clones the first passed PlayerInventory object to the second one.
-	private void clonePlayerInventory(PlayerInventory source,
-			PlayerInventory target) {
-		ItemStack[] contents = new ItemStack[source.getContents().length];
-		System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
-		target.setContents(contents);
-
-		target.setHelmet(cloneItemStack(source.getHelmet()));
-		target.setChestplate(cloneItemStack(source.getChestplate()));
-		target.setLeggings(cloneItemStack(source.getLeggings()));
-		target.setBoots(cloneItemStack(source.getBoots()));
-	}
-
-	private ItemStack cloneItemStack(ItemStack source) {
-		if (source == null) // sanity check
-			return null;
-		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
-				source.getDurability(), (source.getData() != null ? source
-						.getData().getData() : null));
-		return clone;
-	}
-
-	public void addID(int ID) {
-		this.taskID = ID;
-	}
-
-	public void kill() {
-		stop = true;
-		this.npc.getTraderNPC().setFree(true);
-		sendLeaveMessage();
-		TraderPropertyPool.saveTraderState(npc);
-		int index = TraderInterface.tasks.indexOf(taskID);
-		if (index != -1)
-			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));
-		plugin.getServer().getScheduler().cancelTask(taskID);
 	}
 
 	@Override
@@ -137,39 +108,6 @@ public class TraderTask implements Runnable {
 		// Get rid of the picture on the cursor.
 		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
 		eplayer.netServerHandler.sendPacket(packet);
-	}
-
-	private void sendJoinMessage() {
-		switch (mode) {
-		case INFINITE:
-		case NORMAL:
-			player.sendMessage(ChatColor.GREEN + "Transaction log");
-			player.sendMessage(ChatColor.GOLD
-					+ "-------------------------------");
-			break;
-		case STOCK:
-			player.sendMessage(ChatColor.GOLD
-					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getStrippedName(),
-							ChatColor.GOLD) + " started.");
-			break;
-		}
-	}
-
-	private void sendLeaveMessage() {
-		switch (mode) {
-		case INFINITE:
-		case NORMAL:
-			player.sendMessage(ChatColor.GOLD
-					+ "-------------------------------");
-			break;
-		case STOCK:
-			player.sendMessage(ChatColor.GOLD
-					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getStrippedName(),
-							ChatColor.GOLD) + " finished.");
-			break;
-		}
 	}
 
 	private void handleNPCItemClicked(int slot, PlayerInventory npcInv) {
@@ -274,5 +212,75 @@ public class TraderTask implements Runnable {
 
 	public ItemStack[] sortInventory(PlayerInventory inventory) {
 		return InventorySorter.sortInventory(inventory.getContents());
+	}
+
+	public void addID(int ID) {
+		this.taskID = ID;
+	}
+
+	public void kill() {
+		stop = true;
+		this.npc.getTraderNPC().setFree(true);
+		sendLeaveMessage();
+		TraderPropertyPool.saveTraderState(npc);
+		int index = TraderInterface.tasks.indexOf(taskID);
+		if (index != -1)
+			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));
+		plugin.getServer().getScheduler().cancelTask(taskID);
+	}
+
+	private void sendJoinMessage() {
+		switch (mode) {
+		case INFINITE:
+		case NORMAL:
+			player.sendMessage(ChatColor.GREEN + "Transaction log");
+			player.sendMessage(ChatColor.GOLD
+					+ "-------------------------------");
+			break;
+		case STOCK:
+			player.sendMessage(ChatColor.GOLD
+					+ "Stocking of "
+					+ StringUtils.yellowify(npc.getStrippedName(),
+							ChatColor.GOLD) + " started.");
+			break;
+		}
+	}
+
+	private void sendLeaveMessage() {
+		switch (mode) {
+		case INFINITE:
+		case NORMAL:
+			player.sendMessage(ChatColor.GOLD
+					+ "-------------------------------");
+			break;
+		case STOCK:
+			player.sendMessage(ChatColor.GOLD
+					+ "Stocking of "
+					+ StringUtils.yellowify(npc.getStrippedName(),
+							ChatColor.GOLD) + " finished.");
+			break;
+		}
+	}
+
+	private ItemStack cloneItemStack(ItemStack source) {
+		if (source == null) // sanity check
+			return null;
+		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
+				source.getDurability(), (source.getData() != null ? source
+						.getData().getData() : null));
+		return clone;
+	}
+
+	// Clones the first passed PlayerInventory object to the second one.
+	private void clonePlayerInventory(PlayerInventory source,
+			PlayerInventory target) {
+		ItemStack[] contents = new ItemStack[source.getContents().length];
+		System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
+		target.setContents(contents);
+
+		target.setHelmet(cloneItemStack(source.getHelmet()));
+		target.setChestplate(cloneItemStack(source.getChestplate()));
+		target.setLeggings(cloneItemStack(source.getLeggings()));
+		target.setBoots(cloneItemStack(source.getBoots()));
 	}
 }

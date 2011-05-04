@@ -16,6 +16,19 @@ public class NPCData {
 	private boolean talkClose;
 	private String owner;
 
+	/**
+	 * Acts as a container for various npc data.
+	 * 
+	 * @param name
+	 * @param UID
+	 * @param loc
+	 * @param colour
+	 * @param items
+	 * @param texts
+	 * @param lookClose
+	 * @param talkClose
+	 * @param owner
+	 */
 	public NPCData(String name, int UID, Location loc, String colour,
 			ArrayList<Integer> items, ArrayList<String> texts,
 			boolean lookClose, boolean talkClose, String owner) {

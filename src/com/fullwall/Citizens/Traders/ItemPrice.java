@@ -8,11 +8,25 @@ public class ItemPrice {
 	private int itemID = 1;
 	private int data;
 
+	/**
+	 * Represents a price, which can be iConomy or an item. This constructs an
+	 * iConomy price.
+	 * 
+	 * @param price
+	 */
 	public ItemPrice(int price) {
 		this.setPrice(price);
 		this.setiConomy(true);
 	}
 
+	/**
+	 * Represents a price, which can be iConomy or an item. This constructs an
+	 * item price.
+	 * 
+	 * @param price
+	 * @param itemID
+	 * @param data
+	 */
 	public ItemPrice(int price, int itemID, int data) {
 		this.setData(data);
 		this.setPrice(price);

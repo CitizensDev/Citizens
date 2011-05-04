@@ -32,8 +32,10 @@ public class TickTask implements Runnable {
 				.entrySet()) {
 			{
 				HumanNPC npc = entry.getValue();
+				npc.updateMovement();
 				int UID = npc.getUID();
 				int entityID = entry.getKey();
+
 				for (Player p : plugin.getServer().getOnlinePlayers()) {
 					String name = p.getName();
 					if (PropertyPool.getLookWhenClose(UID)
@@ -74,14 +76,6 @@ public class TickTask implements Runnable {
 					}
 				}
 			}
-		}
-		// Obviously outside the player for loop, otherwise gravity would be
-		// applied more then once per tick.
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
-				.entrySet()) {
-			HumanNPC NPC = entry.getValue();
-			// This also updates gravity, don't remove.
-			NPC.updateMovement();
 		}
 	}
 

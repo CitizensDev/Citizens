@@ -6,6 +6,12 @@ public class Check {
 	private int itemID;
 	private boolean selling;
 
+	/**
+	 * Used to distinguish between stockables in a hashmap.
+	 * 
+	 * @param itemID
+	 * @param selling
+	 */
 	public Check(int itemID, boolean selling) {
 		this.setItemID(itemID);
 		this.setSelling(selling);

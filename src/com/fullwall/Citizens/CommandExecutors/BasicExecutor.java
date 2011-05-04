@@ -61,11 +61,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 1 && (args[0].equals("move"))) {
 			if (hasPermission("citizens.general.move", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.move")) {
-						moveNPC(sender, npc.getName(),
-								Integer.valueOf(NPCManager.NPCSelected
-										.get(player.getName())));
+						moveNPC(sender, npc.getName(), npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -81,9 +79,9 @@ public class BasicExecutor implements CommandExecutor {
 				&& args[0].equals("remove")) {
 			if (hasPermission("citizens.general.remove.singular", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.remove.singular")) {
-						removeNPC(args, sender);
+						removeNPC(args, sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -92,7 +90,7 @@ public class BasicExecutor implements CommandExecutor {
 				}
 			} else if (hasPermission("citizens.general.remove.all", sender)) {
 				if (args.length == 2 && args[1].equals("all")) {
-					removeNPC(args, sender);
+					removeNPC(args, sender, npc);
 				} else {
 					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
@@ -104,9 +102,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2 && args[0].equals("name")) {
 			if (hasPermission("citizens.general.setname", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setname")) {
-						setName(args[1], sender);
+						setName(args[1], sender, npc);
 						NPCManager.NPCSelected.remove(player.getName());
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
@@ -124,11 +122,11 @@ public class BasicExecutor implements CommandExecutor {
 			if (hasPermission("citizens.general.colour", sender)
 					|| hasPermission("citizens.general.color", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.colour")
-							|| NPCManager.validateOwnership(npc.getUID(),
-									player, "citizens.general.color")) {
-						setColour(args, player);
+							|| NPCManager.validateOwnership(player,
+									npc.getUID(), "citizens.general.color")) {
+						setColour(args, player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -143,9 +141,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length >= 2 && args[0].equals("add")) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.basic.settext")) {
-						addText(args, sender);
+						addText(args, sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -160,9 +158,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length >= 2 && args[0].equals("set")) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.basic.settext")) {
-						setText(args, sender);
+						setText(args, sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -177,9 +175,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 1 && (args[0].equals("reset"))) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.basic.settext")) {
-						resetText(args, sender);
+						resetText(args, sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -194,9 +192,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2 && (args[0].equals("item"))) {
 			if (hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setitem")) {
-						setItemInHand(sender, args);
+						setItemInHand(args[1], sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -213,9 +211,9 @@ public class BasicExecutor implements CommandExecutor {
 						|| args[0].equals("helmet") || args[0].equals("boots"))) {
 			if (hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setitem")) {
-						setArmor(sender, args);
+						setArmor(args, sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -230,7 +228,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length >= 1 && args[0].equals("tp")) {
 			if (hasPermission("citizens.general.tp", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.tp")) {
 						player.teleport((PropertyPool.getLocationFromID(npc
 								.getUID())));
@@ -266,7 +264,7 @@ public class BasicExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-			} else if (args[0].equals("trader") && args[1].equals("help")){
+			} else if (args[0].equals("trader") && args[1].equals("help")) {
 				if (hasPermission("citizens.trader.help", sender)) {
 					sendTraderHelpPage(sender, args[2]);
 				} else {
@@ -278,9 +276,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 1 && (args[0].equals("copy"))) {
 			if (hasPermission("citizens.general.copy", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.copy")) {
-						copyNPC(npc, player);
+						copyNPC(npc.getUID(), npc.getName(), player);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -295,7 +293,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 1 && (args[0].equals("getid"))) {
 			if (hasPermission("citizens.general.getid", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.getid")) {
 						player.sendMessage(ChatColor.GREEN
 								+ "The ID of this NPC is: "
@@ -356,7 +354,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2 && (args[0].equals("setowner"))) {
 			if (hasPermission("citizens.general.setowner", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setowner")) {
 						PropertyPool.setOwner(npc.getUID(), args[1]);
 						player.sendMessage(ChatColor.GREEN
@@ -378,7 +376,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2 && (args[0].equals("addowner"))) {
 			if (hasPermission("citizens.general.addowner", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.addowner")) {
 						PropertyPool.addOwner(npc.getUID(), args[1], player);
 						player.sendMessage(ChatColor.GREEN + "Added "
@@ -400,9 +398,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2 && (args[0].equals("talkwhenclose"))) {
 			if (hasPermission("citizens.general.talkwhenclose", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.talkwhenclose")) {
-						changeTalkWhenClose(player, args[1]);
+						changeTalkWhenClose(args[1], player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -417,9 +415,9 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2 && (args[0].equals("lookatplayers"))) {
 			if (hasPermission("citizens.general.lookatplayers", sender)) {
 				if (npc != null) {
-					if (NPCManager.validateOwnership(npc.getUID(), player,
+					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.lookatplayers")) {
-						changeLookWhenClose(player, args[1]);
+						changeLookWhenClose(args[1], player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -496,6 +494,13 @@ public class BasicExecutor implements CommandExecutor {
 		}
 	}
 
+	/**
+	 * Creates an NPC given a string array, containing the name of the NPC and
+	 * optional text to be added to it.
+	 * 
+	 * @param args
+	 * @param player
+	 */
 	private void createNPC(String[] args, Player player) {
 		String text = "";
 		ArrayList<String> texts = new ArrayList<String>();
@@ -512,7 +517,7 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		if (args[1].length() > 16) {
 			player.sendMessage(ChatColor.RED
-					+ "NPC name length is too long. The limit is 15 characters.");
+					+ "NPC name length is too long. The limit is 16 characters.");
 			return;
 		}
 		if (PropertyPool.getNPCAmountPerPlayer(player.getName()) < PropertyPool
@@ -546,17 +551,30 @@ public class BasicExecutor implements CommandExecutor {
 		}
 	}
 
-	private void moveNPC(CommandSender sender, String name, int UID) {
-		Location loc = PropertyPool.getLocationFromID(UID);
+	/**
+	 * Moves the selected NPC to the current location of a player.
+	 * 
+	 * @param sender
+	 * @param name
+	 * @param npc
+	 */
+	private void moveNPC(CommandSender sender, String name, HumanNPC npc) {
+		Location loc = PropertyPool.getLocationFromID(npc.getUID());
 		if (loc != null) {
-			PropertyPool.saveLocation(name, loc, UID);
+			PropertyPool.saveLocation(name, loc, npc.getUID());
 		}
-		plugin.handler.moveNPC(UID, ((Player) sender).getLocation());
+		plugin.handler.moveNPC(npc, ((Player) sender).getLocation());
 		sender.sendMessage(StringUtils.yellowify(name)
 				+ " is enroute to your location!");
 	}
 
-	private void removeNPC(String[] args, CommandSender sender) {
+	/**
+	 * Removes the selected NPC (can optionally be all NPCs).
+	 * 
+	 * @param args
+	 * @param sender
+	 */
+	private void removeNPC(String[] args, CommandSender sender, HumanNPC npc) {
 		Player p = (Player) sender;
 		if (args.length == 2 && args[1].equals("all")) {
 			plugin.handler.removeAllNPCs();
@@ -564,43 +582,55 @@ public class BasicExecutor implements CommandExecutor {
 			PropertyPool.locations.setInt("currentID", 0);
 			PropertyPool.locations.removeKey("list");
 		} else {
-			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
-					.getName()));
-			plugin.handler.removeNPC(Integer.valueOf(NPCManager.NPCSelected
-					.get(p.getName())));
-			sender.sendMessage(ChatColor.GRAY + n.getName() + " disappeared.");
+			plugin.handler.removeNPC(npc.getUID());
+			sender.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 		}
 		NPCManager.NPCSelected.remove(p.getName());
 	}
 
-	private void setName(String name, CommandSender sender) {
-		Player p = (Player) sender;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+	/**
+	 * Renames the selected NPC.
+	 * 
+	 * @param name
+	 * @param sender
+	 */
+	private void setName(String name, CommandSender sender, HumanNPC npc) {
 		if (name.length() > 16) {
 			sender.sendMessage(ChatColor.RED
 					+ "NPCs can't have names longer than 16 characters.");
 			return;
 		}
-		plugin.handler.setName(n.getUID(), name, n.getOwner());
-		sender.sendMessage(ChatColor.GREEN + StringUtils.yellowify(n.getName())
-				+ "'s name was set to " + StringUtils.yellowify(name) + ".");
+		plugin.handler.setName(npc.getUID(), name, npc.getOwner());
+		sender.sendMessage(ChatColor.GREEN
+				+ StringUtils.yellowify(npc.getName()) + "'s name was set to "
+				+ StringUtils.yellowify(name) + ".");
 		return;
 	}
 
-	private void setColour(String[] args, Player p) {
-		if (args[1].indexOf('&') != 0) {
-			p.sendMessage(ChatColor.GRAY + "Use an & to specify " + args[0]
+	/**
+	 * Sets the colour of the selected NPC's name.
+	 * 
+	 * @param args
+	 * @param player
+	 * @param npc
+	 */
+	private void setColour(String[] args, Player player, HumanNPC npc) {
+		if (!args[1].substring(0, 1).equals("&")) {
+			player.sendMessage(ChatColor.RED + "Use an & to specify " + args[0]
 					+ ".");
 		} else {
-			HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p
-					.getName()));
-			plugin.handler.setColour(n.getUID(), args[1], n.getOwner());
+			plugin.handler.setColour(npc.getUID(), args[1], npc.getOwner());
 		}
 	}
 
-	private void setText(String[] args, CommandSender sender) {
-		Player p = (Player) sender;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+	/**
+	 * Resets the selected NPC's text to a given text.
+	 * 
+	 * @param args
+	 * @param sender
+	 * @param npc
+	 */
+	private void setText(String[] args, CommandSender sender, HumanNPC npc) {
 		String text = "";
 		if (args.length >= 2) {
 			int i = 0;
@@ -614,15 +644,21 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		ArrayList<String> texts = new ArrayList<String>();
 		texts.add(text);
-		plugin.handler.setNPCText(n.getUID(), texts);
-		sender.sendMessage(ChatColor.GREEN + StringUtils.yellowify(n.getName())
-				+ "'s text was set to " + StringUtils.yellowify(text) + ".");
+		plugin.handler.setNPCText(npc.getUID(), texts);
+		sender.sendMessage(ChatColor.GREEN
+				+ StringUtils.yellowify(npc.getName()) + "'s text was set to "
+				+ StringUtils.yellowify(text) + ".");
 
 	}
 
-	private void addText(String[] args, CommandSender sender) {
-		Player p = (Player) sender;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
+	/**
+	 * Adds text to the selected NPC's text, picked randomly on right click.
+	 * 
+	 * @param args
+	 * @param sender
+	 * @param npc
+	 */
+	private void addText(String[] args, CommandSender sender, HumanNPC npc) {
 		String text = "";
 		int i = 0;
 		for (String s : args) {
@@ -634,42 +670,64 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			i += 1;
 		}
-		plugin.handler.addNPCText(n.getUID(), text);
+		plugin.handler.addNPCText(npc.getUID(), text);
 		sender.sendMessage(StringUtils.yellowify(text) + " was added to "
-				+ StringUtils.yellowify(n.getStrippedName() + "'s") + " text.");
+				+ StringUtils.yellowify(npc.getStrippedName() + "'s")
+				+ " text.");
 	}
 
-	private void resetText(String[] args, CommandSender sender) {
-		Player p = (Player) sender;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
-		plugin.handler.resetText(n.getUID());
-		sender.sendMessage(StringUtils.yellowify(n.getStrippedName() + "'s")
+	/**
+	 * Clears all of an NPC's text.
+	 * 
+	 * @param args
+	 * @param sender
+	 * @param npc
+	 */
+	private void resetText(String[] args, CommandSender sender, HumanNPC npc) {
+		plugin.handler.resetText(npc.getUID());
+		sender.sendMessage(StringUtils.yellowify(npc.getStrippedName() + "'s")
 				+ " text was reset!");
 	}
 
-	// TODO - should pull from player's inventory to prevent misuse.
-	private void setItemInHand(CommandSender sender, String[] args) {
-		Player p = (Player) sender;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
-		plugin.handler.setItemInHand(p, n.getUID(), args[1]);
+	/**
+	 * Sets the selected npc's item in hand.
+	 * 
+	 * @param name
+	 * @param sender
+	 * @param npc
+	 */
+	private void setItemInHand(String name, CommandSender sender, HumanNPC npc) {
+		plugin.handler.setItemInHand((Player) sender, npc, name);
 	}
 
-	// TODO - see above.
-	private void setArmor(CommandSender sender, String[] args) {
-		plugin.handler.setItemInSlot((Player) sender, args);
+	/**
+	 * Sets the armor of a given type of the npc.
+	 * 
+	 * @param args
+	 * @param sender
+	 * @param npc
+	 */
+	private void setArmor(String[] args, CommandSender sender, HumanNPC npc) {
+		plugin.handler.setItemInSlot(args, (Player) sender, npc);
 	}
 
 	// Ugh, ugly. Maybe we should palm the PropertyPool functions off to
 	// somewhere else.
-	private void copyNPC(HumanNPC NPC, Player p) {
-		ArrayList<String> texts = PropertyPool.getText(NPC.getUID());
-		String colour = PropertyPool.getColour(NPC.getUID());
-		String owner = PropertyPool.getOwner(NPC.getUID());
-		ArrayList<Integer> items = PropertyPool.getItems(NPC.getUID());
-		boolean lookatplayers = PropertyPool.getLookWhenClose(NPC.getUID());
-		boolean talkwhenclose = PropertyPool.getTalkWhenClose(NPC.getUID());
-		int newUID = plugin.handler.spawnNPC(NPC.getName(), p.getLocation(),
-				p.getName());
+	/**
+	 * Copies an npc's data and position to another npc.
+	 * 
+	 * @param npc
+	 * @param p
+	 */
+	private void copyNPC(int UID, String name, Player p) {
+		ArrayList<String> texts = PropertyPool.getText(UID);
+		String colour = PropertyPool.getColour(UID);
+		String owner = PropertyPool.getOwner(UID);
+		ArrayList<Integer> items = PropertyPool.getItems(UID);
+		boolean lookatplayers = PropertyPool.getLookWhenClose(UID);
+		boolean talkwhenclose = PropertyPool.getTalkWhenClose(UID);
+		int newUID = plugin.handler
+				.spawnNPC(name, p.getLocation(), p.getName());
 
 		HumanNPC newNPC = NPCManager.getNPC(newUID);
 		newNPC.setNPCData(new NPCData(newNPC.getName(), newNPC.getUID(), newNPC
@@ -679,57 +737,80 @@ public class BasicExecutor implements CommandExecutor {
 
 		// NPCDataManager.addItems(newNPC, items);
 
-		String name = newNPC.getName();
+		String newName = newNPC.getName();
 		NPCManager.removeNPCForRespawn(newUID);
-		plugin.handler.spawnExistingNPC(name, newUID, newNPC.getOwner());
+		plugin.handler.spawnExistingNPC(newName, newUID, newNPC.getOwner());
 	}
 
-	private void changeTalkWhenClose(Player p, String bool) {
+	/**
+	 * Changes whether the selected npc will talk when a player gets near.
+	 * 
+	 * @param bool
+	 * @param p
+	 * @param npc
+	 */
+	private void changeTalkWhenClose(String bool, Player p, HumanNPC npc) {
 		boolean talk = false;
 		if (bool.equals("true"))
 			talk = true;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
-		PropertyPool.setTalkWhenClose(n.getUID(), talk);
+		PropertyPool.setTalkWhenClose(npc.getUID(), talk);
 		if (talk)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getStrippedName())
+					+ StringUtils.yellowify(npc.getStrippedName())
 					+ " will now talk to nearby players.");
 		else if (!talk)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getStrippedName())
+					+ StringUtils.yellowify(npc.getStrippedName())
 					+ " will stop talking to nearby players.");
 	}
 
-	private void changeLookWhenClose(Player p, String bool) {
+	/**
+	 * Changes whether the selected npc will look at nearby players.
+	 * 
+	 * @param bool
+	 * @param p
+	 * @param npc
+	 */
+	private void changeLookWhenClose(String bool, Player p, HumanNPC npc) {
 		boolean look = false;
 		if (bool.equals("true"))
 			look = true;
-		HumanNPC n = NPCManager.getNPC(NPCManager.NPCSelected.get(p.getName()));
-		PropertyPool.setLookWhenClose(n.getUID(), look);
+		PropertyPool.setLookWhenClose(npc.getUID(), look);
 		if (look)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getStrippedName())
+					+ StringUtils.yellowify(npc.getStrippedName())
 					+ " will now look at players.");
 		else if (!look)
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(n.getStrippedName())
+					+ StringUtils.yellowify(npc.getStrippedName())
 					+ " will stop looking at players.");
 	}
 
+	/**
+	 * Sends the help page for /citizens help.
+	 * 
+	 * @param sender
+	 */
 	private void sendHelp(CommandSender sender) {
-		// remove, reset, add, color
-		sender.sendMessage("§fCitizens v1.0.8 Help");
+		sender.sendMessage("§fCitizens " + Citizens.getVersion() + " Help");
 		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§8/§cnpc §btoggle [trader|quester|wizard|guard|healer] §e- §atoggle the state of an NPC");
-		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC");
+		sender.sendMessage("§8/§cnpc §btoggle [trader|quester|wizard|guard|healer] §e- §atoggles the state of an NPC.");
+		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC.");
 
 	}
 
+	/**
+	 * Sends the help page for the basic npc type.
+	 * 
+	 * @param sender
+	 * @param page
+	 */
 	private void sendBasicHelpPage(CommandSender sender, String page) {
 		int pageNum = Integer.valueOf(page);
 		switch (pageNum) {
 		case 1:
-			sender.sendMessage("§fCitizens v1.0.8 Basic Help");
+			sender.sendMessage("§fCitizens " + Citizens.getVersion()
+					+ " Basic Help");
 			sender.sendMessage("§b-------------------------------");
 			sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
 			sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
@@ -765,13 +846,19 @@ public class BasicExecutor implements CommandExecutor {
 			break;
 		}
 	}
-	
-	// TODO Add commands
+
+	/**
+	 * Sends the help page for the trader npc type.
+	 * 
+	 * @param sender
+	 * @param page
+	 */
 	private void sendTraderHelpPage(CommandSender sender, String page) {
 		int pageNum = Integer.valueOf(page);
 		switch (pageNum) {
 		case 1:
-			sender.sendMessage("§fCitizens v1.0.8 Trader Help");
+			sender.sendMessage("§fCitizens " + Citizens.getVersion()
+					+ " Trader Help");
 			sender.sendMessage("§b-------------------------------");
 			sender.sendMessage("ADD COMMANDS HERE");
 			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
@@ -783,6 +870,13 @@ public class BasicExecutor implements CommandExecutor {
 		}
 	}
 
+	/**
+	 * Checks whether a UID has an npc attached to it.
+	 * 
+	 * @param UID
+	 * @param sender
+	 * @return
+	 */
 	public boolean validateUID(int UID, CommandSender sender) {
 		if (!plugin.validateUID(UID)) {
 			sender.sendMessage(ChatColor.GRAY
@@ -792,6 +886,13 @@ public class BasicExecutor implements CommandExecutor {
 		return true;
 	}
 
+	/**
+	 * Checks for permission given a permission string.
+	 * 
+	 * @param permission
+	 * @param sender
+	 * @return
+	 */
 	public static boolean hasPermission(String permission, CommandSender sender) {
 		return (!(sender instanceof Player) || Permission.generic(
 				(Player) sender, permission));

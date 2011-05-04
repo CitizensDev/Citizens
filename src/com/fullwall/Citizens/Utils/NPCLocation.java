@@ -16,6 +16,14 @@ public class NPCLocation {
 	private int UID;
 	private String owner;
 
+	/**
+	 * Used for respawning npcs.
+	 * 
+	 * @param plugin
+	 * @param loc
+	 * @param UID
+	 * @param owner
+	 */
 	public NPCLocation(Citizens plugin, Location loc, int UID, String owner) {
 		this.plugin = plugin;
 		this.x = loc.getBlockX();

@@ -10,6 +10,16 @@ import com.iConomy.system.Account;
 
 public class IconomyInterface {
 
+	public static String addendum = "-iconomy";
+
+	/**
+	 * Uses the iConomy methods to check whether a player has enough in their
+	 * account to pay.
+	 * 
+	 * @param name
+	 * @param amount
+	 * @return
+	 */
 	public static boolean playerHasEnough(String name, double amount) {
 		if (iConomy.hasAccount(name))
 			return iConomy.getAccount(name).getHoldings().hasEnough(amount);
@@ -17,6 +27,12 @@ public class IconomyInterface {
 			return false;
 	}
 
+	/**
+	 * Gets an iConomy balance.
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public static double getBalance(String name) {
 		if (iConomy.hasAccount(name))
 			return iConomy.getAccount(name).getHoldings().balance();
@@ -24,51 +40,106 @@ public class IconomyInterface {
 			return -1;
 	}
 
+	/**
+	 * Gets the iConomy currency.
+	 * 
+	 * @param amount
+	 * @return
+	 */
 	public static String getCurrency(String amount) {
 		return iConomy.format(Double.parseDouble(amount));
 	}
 
+	/**
+	 * Gets the iConomy currency.
+	 * 
+	 * @param price
+	 * @return
+	 */
 	public static String getCurrency(double price) {
 		return iConomy.format(price);
 	}
 
+	/**
+	 * Gets the remainder necessary for an operation to be completed.
+	 * 
+	 * @param op
+	 * @param player
+	 * @return
+	 */
 	public static String getRemainder(Operation op, Player player) {
-		int price = PropertyPool.getPrice(op.toString().toLowerCase()
-				.replace("_", "-")
-				+ "-iconomy");
+		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		Account acc = iConomy.getAccount(player.getName());
 		return "" + (price - acc.getHoldings().balance());
 	}
 
+	/**
+	 * Checks whether the player has enough money for an operation.
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
 	public static boolean hasEnough(Player player, Operation op) {
-		int price = PropertyPool.getPrice(op.toString().toLowerCase()
-				.replace("_", "-")
-				+ "-iconomy");
+		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		return playerHasEnough(player.getName(), price);
 	}
 
+	/**
+	 * Checks whether the player has enough money for a payment.
+	 * 
+	 * @param payment
+	 * @param player
+	 * @return
+	 */
 	public static boolean hasEnough(Payment payment, Player player) {
 		return playerHasEnough(player.getName(), payment.getPrice());
 	}
 
+	/**
+	 * Checks whether an npc has enough in its balance for a payment.
+	 * 
+	 * @param payment
+	 * @param npc
+	 * @return
+	 */
 	public static boolean hasEnough(Payment payment, HumanNPC npc) {
 		return npc.getTraderNPC().getBalance() > payment.getPrice();
 	}
 
+	/**
+	 * Pays for an operation using the player's money.
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
 	public static int pay(Player player, Operation op) {
-		int price = PropertyPool.getPrice(op.toString().toLowerCase()
-				.replace("_", "-")
-				+ "-iconomy");
+		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		iConomy.getAccount(player.getName()).getHoldings().subtract(price);
 		return price;
 	}
 
+	/**
+	 * Pays for a payment using the npc's money.
+	 * 
+	 * @param npc
+	 * @param payment
+	 * @return
+	 */
 	public static int pay(HumanNPC npc, Payment payment) {
 		npc.getTraderNPC().setBalance(
 				npc.getTraderNPC().getBalance() - payment.getPrice());
 		return payment.getPrice();
 	}
 
+	/**
+	 * Pays for a payment using the player's money.
+	 * 
+	 * @param player
+	 * @param payment
+	 * @return
+	 */
 	public static int pay(Player player, Payment payment) {
 		iConomy.getAccount(player.getName()).getHoldings()
 				.subtract(payment.getPrice());

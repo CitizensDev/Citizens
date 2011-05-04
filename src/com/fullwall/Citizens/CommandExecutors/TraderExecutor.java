@@ -50,7 +50,7 @@ public class TraderExecutor implements CommandExecutor {
 					+ MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
-		if (!NPCManager.validateOwnership(npc.getUID(), player)) {
+		if (!NPCManager.validateOwnership(player, npc.getUID())) {
 			player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 
@@ -105,6 +105,14 @@ public class TraderExecutor implements CommandExecutor {
 		return returnval;
 	}
 
+	/**
+	 * Displays a list of buying/selling items for the selected trader npc.
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param args
+	 * @param selling
+	 */
 	private void displayList(Player player, HumanNPC npc, String[] args,
 			boolean selling) {
 		ArrayList<Stockable> stock = npc.getTraderNPC().getStockables(selling);
@@ -132,6 +140,13 @@ public class TraderExecutor implements CommandExecutor {
 		}
 	}
 
+	/**
+	 * Sets whether the selected trader will have unlimited stock or not.
+	 * 
+	 * @param npc
+	 * @param sender
+	 * @param unlimited
+	 */
 	private void changeUnlimited(HumanNPC npc, CommandSender sender,
 			String unlimited) {
 		if (unlimited.equals("true") || unlimited.equals("on")) {
@@ -147,6 +162,15 @@ public class TraderExecutor implements CommandExecutor {
 					+ "Incorrect unlimited type entered. Valid values are true, on, false, off.");
 	}
 
+	/**
+	 * Adds an item to be stocked by the selected trader.
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param item
+	 * @param price
+	 * @param selling
+	 */
 	private void changeTraderBuySell(Player player, HumanNPC npc, String item,
 			String price, boolean selling) {
 		if (item.contains("rem")) {
@@ -219,6 +243,12 @@ public class TraderExecutor implements CommandExecutor {
 		}
 	}
 
+	/**
+	 * Creates an ItemStack from the given string ItemStack format.
+	 * 
+	 * @param split
+	 * @return
+	 */
 	private ItemStack createItemStack(String[] split) {
 		int amount = 1;
 		int data = 0;
@@ -238,6 +268,15 @@ public class TraderExecutor implements CommandExecutor {
 		return stack;
 	}
 
+	/**
+	 * Alters the selected trader's balance depending on the arguments given.
+	 * Balance is used for iConomy.
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param args
+	 * @throws NumberFormatException
+	 */
 	private void changeBalance(Player player, HumanNPC npc, String[] args)
 			throws NumberFormatException {
 		int amount = Integer.valueOf(args[2]);

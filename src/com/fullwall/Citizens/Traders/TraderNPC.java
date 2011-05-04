@@ -10,7 +10,12 @@ import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC {
-
+	/**
+	 * Holds information about a trader's stocked items, balance and whether it
+	 * is free/unlimited.
+	 * 
+	 * @param npc
+	 */
 	public TraderNPC(HumanNPC npc) {
 		this.npc = npc;
 	}
