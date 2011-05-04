@@ -7,21 +7,39 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public interface Quest {
 
-	// returns the NPC who gave the quest
+	/**
+	 * 
+	 * @return the NPC who gives out a quest
+	 */
 	public HumanNPC getQuestGiver();
 
-	// sets the NPC who gives a quest
+	/**
+	 * 
+	 * @param questGiver the NPC who gives out a quest
+	 */
 	public void setQuestGiver(HumanNPC questGiver);
 
-	// returns player involved in quest
+	/**
+	 * 
+	 * @return the player who is doing the questing
+	 */
 	public Player getPlayer();
 
-	// returns type of quest
+	/**
+	 * 
+	 * @return the type of quest it is
+	 */
 	public QuestType getType();
 
-	// returns the progress of a quest
+	/**
+	 * 
+	 * @return the progress of an active quest
+	 */
 	public String getProgress();
 
-	// returns true if quest has been completed
+	/**
+	 * 
+	 * @return true if a quest is complete
+	 */
 	public boolean isCompleted();
 }

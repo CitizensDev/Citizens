@@ -1,47 +1,56 @@
 package com.fullwall.Citizens.Questers.QuestTypes;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Questers.Quest;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
+/**
+ * Quest type involving a player traveling to a set location
+ */
 public class LocationQuest implements Quest {
 	private HumanNPC questGiver;
 	private HumanNPC endNPC;
-	private Location startLocation;
-	private Location endLocation;
+	private int distanceTraveled;
 
-	public LocationQuest(HumanNPC questGiver, HumanNPC endNPC) {
+	public LocationQuest(HumanNPC questGiver, HumanNPC endNPC,
+			int distanceTraveled) {
 		this.questGiver = questGiver;
 		this.endNPC = endNPC;
+		this.distanceTraveled = distanceTraveled;
+		distanceTraveled = questGiver.getLocation().getBlockX()
+				- endNPC.getLocation().getBlockX();
 	}
 
+	/**
+	 * 
+	 * @return the NPC that a player must travel to during a LocationQuest
+	 */
 	public HumanNPC getEndNPC() {
 		return endNPC;
 	}
 
+	/**
+	 * 
+	 * @param endNPC
+	 *            the NPC that a player must travel to during a LocationQuest
+	 */
 	public void setEndNPC(HumanNPC endNPC) {
 		this.endNPC = endNPC;
 	}
 
-	public Location getStartLocation() {
-		return startLocation;
+	/**
+	 * 
+	 * @return the distance traveled by a player during a LocationQuest
+	 */
+	public int getDistanceTraveled() {
+		return distanceTraveled;
 	}
 
-	public void setStartLocation(Location startLocation) {
-		this.startLocation = startLocation;
-	}
-
-	public Location getEndLocation() {
-		return endLocation;
-	}
-
-	public void setEndLocation(Location endLocation) {
-		this.endLocation = endLocation;
-	}
-
+	/**
+	 * Interface methods
+	 */
 	@Override
 	public String getProgress() {
 		// TODO Auto-generated method stub
