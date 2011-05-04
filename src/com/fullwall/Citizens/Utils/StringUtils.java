@@ -71,7 +71,7 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String yellowify(double string) {
-		return ChatColor.YELLOW + "" + string + ChatColor.GREEN;
+		return ChatColor.YELLOW + "" + (int) string + ChatColor.GREEN;
 	}
 
 	/**
@@ -93,6 +93,6 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String yellowify(double string, ChatColor trailing) {
-		return ChatColor.YELLOW + "" + string + trailing;
+		return ChatColor.YELLOW + "" + (int) string + trailing;
 	}
 }
