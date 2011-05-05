@@ -49,7 +49,7 @@ public class EntityListen extends EntityListener {
 					int healerHealth = HealerPropertyPool.getStrength(npc
 							.getUID());
 					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
-						if (playerHealth <= 19) {
+						if (playerHealth <= 9) {
 							if (healerHealth >= 1) {
 								player.setHealth(playerHealth + 1);
 								HealerPropertyPool.saveStrength(npc.getUID(),
@@ -70,7 +70,7 @@ public class EntityListen extends EntityListener {
 						}
 					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
 						if (playerHealth >= 1) {
-							if (healerHealth <= 19) {
+							if (healerHealth <= 9) {
 								player.setHealth(playerHealth - 1);
 								HealerPropertyPool.saveStrength(npc.getUID(),
 										healerHealth + 1);

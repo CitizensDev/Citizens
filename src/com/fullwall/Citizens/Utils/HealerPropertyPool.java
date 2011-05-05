@@ -62,4 +62,8 @@ public class HealerPropertyPool {
 	public static boolean getHealerState(int UID) {
 		return healers.getBoolean(UID);
 	}
+
+	public static int getMaxStrength(int UID) {
+		return getLevel(UID) * 10;
+	}
 }

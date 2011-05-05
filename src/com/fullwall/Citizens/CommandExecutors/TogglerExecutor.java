@@ -81,10 +81,10 @@ public class TogglerExecutor implements CommandExecutor {
 					} else {
 						toggleState(player, npc.getHealerNPC());
 					}
-					returnval = true;
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				returnval = true;
 			} else if (args[0].equals("guard")) {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 				returnval = true;
@@ -99,7 +99,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else {
 				player.sendMessage(ChatColor.RED
-						+ "Entered npc type was not recognised.");
+						+ "Entered npc type was not recognized.");
 				return true;
 			}
 		}
@@ -156,7 +156,6 @@ public class TogglerExecutor implements CommandExecutor {
 	 * @param npc
 	 * @param player
 	 */
-
 	private void toggleAll(HumanNPC npc, Player player, boolean on) {
 		if (on) {
 			if (!npc.isTrader()) {
