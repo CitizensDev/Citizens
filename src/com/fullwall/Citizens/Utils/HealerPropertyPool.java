@@ -14,6 +14,7 @@ public class HealerPropertyPool {
 	public static void saveAll() {
 		healers.save();
 		strength.save();
+		levels.save();
 	}
 
 	public static void saveHealer(int UID, boolean state) {
