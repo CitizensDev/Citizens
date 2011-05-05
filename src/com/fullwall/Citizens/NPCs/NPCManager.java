@@ -251,9 +251,10 @@ public class NPCManager {
 	public void removeNPC(int UID) {
 		GlobalUIDs.remove(UID);
 		String actualName = NPCManager.getNPC(UID).getName();
+		String playerName = NPCManager.getNPC(UID).getOwner();
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
-		PropertyPool.removeFromFiles(actualName, UID);
+		PropertyPool.removeFromFiles(actualName, playerName,UID);
 		TraderPropertyPool.removeFromFiles(UID);
 		QuesterPropertyPool.removeFromFiles(UID);
 		HealerPropertyPool.removeFromFiles(UID);

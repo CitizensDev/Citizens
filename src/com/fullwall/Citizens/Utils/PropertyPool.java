@@ -271,7 +271,7 @@ public class PropertyPool {
 		balances.save();
 	}
 
-	public static void removeFromFiles(String name, int UID) {
+	public static void removeFromFiles(String name, String playerName, int UID) {
 		colours.removeKey(UID);
 		items.removeKey(UID);
 		locations.removeKey(UID);
@@ -283,8 +283,8 @@ public class PropertyPool {
 		lookat.removeKey(UID);
 		talkwhenclose.removeKey(UID);
 		texts.removeKey(UID);
-		if (counts.keyExists(name))
-			counts.setInt(name, counts.getInt(name) - 1);
+		if (counts.keyExists(playerName))
+			counts.setInt(playerName, counts.getInt(playerName) - 1);
 		balances.removeKey(UID);
 	}
 
