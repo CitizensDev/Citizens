@@ -90,7 +90,6 @@ public class HealerExecutor implements CommandExecutor {
 						+ "'s Healer Status") + " ==========");
 		displayHealerStrength(player, npc);
 		displayHealerLevel(player, npc);
-		player.sendMessage(ChatColor.GREEN + "========================================");
 	}
 
 	private void levelUp(Player player, HumanNPC npc) {

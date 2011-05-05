@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -41,6 +42,9 @@ public class EntityListen extends EntityListener {
 			if (e.getEntity() instanceof Player
 					&& e.getDamager() instanceof Player && npc != null) {
 				e.setCancelled(true);
+			}
+			if(e.getEntity() instanceof Player && e.getDamager() instanceof Monster) {
+				return;
 			}
 			if (npc.isHealer()) {
 				Entity entity = e.getDamager();
