@@ -115,7 +115,7 @@ public class ItemInterface {
 		PlayerInventory inv = player.getInventory();
 		int current = price;
 		int count = 0;
-		for (ItemStack i : inv.getContents()) {
+		outer: for (ItemStack i : inv.getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
 				int toChange = 0;
@@ -131,6 +131,7 @@ public class ItemInterface {
 					i = null;
 				else {
 					i.setAmount(toChange);
+					break outer;
 				}
 				inv.setItem(count, i);
 			}
@@ -151,7 +152,7 @@ public class ItemInterface {
 		int currencyID = payment.getItem().getTypeId();
 		int current = payment.getPrice();
 		int count = 0;
-		for (ItemStack i : inv.getContents()) {
+		outer: for (ItemStack i : inv.getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
 				int toChange = 0;
@@ -163,6 +164,7 @@ public class ItemInterface {
 					i = null;
 				else {
 					i.setAmount(toChange);
+					break outer;
 				}
 				inv.setItem(count, i);
 			}

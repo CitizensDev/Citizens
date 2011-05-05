@@ -47,6 +47,12 @@ public class Payment {
 		this.setiConomy(price2.isiConomy());
 	}
 
+	public Payment(ItemStack stocking, boolean iConomy) {
+		this.setiConomy(iConomy);
+		this.setItem(stocking);
+		this.setPrice(stocking.getAmount());
+	}
+
 	public void setiConomy(boolean iConomy) {
 		this.iConomy = iConomy;
 	}

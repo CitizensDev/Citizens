@@ -161,6 +161,8 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player);
+		EconomyHandler.pay(new Payment(stockable.getStocking(), stockable
+				.getPrice().isiConomy()), npc);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		// npcInv.setContents(sortInventory(npc.getInventory()));
 	}
@@ -213,6 +215,8 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), npc);
+		EconomyHandler.pay(new Payment(stockable.getStocking(), stockable
+				.getPrice().isiConomy()), player);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		// npc.getInventory().setContents(sortInventory(npc.getInventory()));
 	}
