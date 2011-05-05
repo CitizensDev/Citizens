@@ -1,7 +1,6 @@
 package com.fullwall.Citizens.CommandExecutors;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,7 +35,6 @@ public class BasicExecutor implements CommandExecutor {
 			sender.sendMessage(MessageUtils.mustBeIngameMessage);
 			return true;
 		}
-
 		Player player = (Player) sender;
 		HumanNPC npc = null;
 		// Get the selected NPC, if any (required for most commands)
@@ -173,7 +171,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && (args[0].equals("reset"))) {
+		} else if (args.length == 1 && args[0].equals("reset")) {
 			if (hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -190,7 +188,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && (args[0].equals("item"))) {
+		} else if (args.length == 2 && args[0].equals("item")) {
 			if (hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -248,36 +246,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if ((command.getName().equals("citizens") || command.getName()
-				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
-			if (hasPermission("citizens.help", sender)) {
-				sendHelp(sender);
-			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
-			}
-			return true;
-
-		} else if ((command.getName().equals("citizens") || command.getName()
-				.equals("npc")) && args.length >= 2) {
-			int page = 1;
-			if (args.length == 3)
-				page = Integer.parseInt(args[2]);
-			if (args[0].equals("basic") && args[1].equals("help")) {
-				if (hasPermission("citizens.basic.help", sender)) {
-					sendBasicHelpPage(sender, page);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			} else if (args[0].equals("trader") && args[1].equals("help")) {
-				if (hasPermission("citizens.trader.help", sender)) {
-					sendTraderHelpPage(sender, page);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			}
-			return true;
-
-		} else if (args.length == 1 && (args[0].equals("copy"))) {
+		} else if (args.length == 1 && args[0].equals("copy")) {
 			if (hasPermission("citizens.general.copy", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -293,14 +262,13 @@ public class BasicExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-
-		} else if (args.length == 1 && (args[0].equals("getid"))) {
+		} else if (args.length == 1 && args[0].equals("id")) {
 			if (hasPermission("citizens.general.getid", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.getid")) {
 						player.sendMessage(ChatColor.GREEN
-								+ "The ID of this NPC is: "
+								+ "The ID of this NPC is "
 								+ StringUtils.yellowify("" + npc.getUID())
 								+ ".");
 					} else {
@@ -314,7 +282,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && (args[0].equals("select"))) {
+		} else if (args.length == 2 && args[0].equals("select")) {
 			if (hasPermission("citizens.general.select", sender)) {
 				// BUILD CHECK
 				if (!Character.isDigit(args[1].charAt(0))) {
@@ -329,9 +297,9 @@ public class BasicExecutor implements CommandExecutor {
 				} else {
 					NPCManager.NPCSelected.put(player.getName(), npc.getUID());
 					player.sendMessage(ChatColor.GREEN
-							+ "Selected NPC with ID: "
+							+ "Selected NPC with ID "
 							+ StringUtils.yellowify("" + npc.getUID())
-							+ " Name: "
+							+ ", name "
 							+ StringUtils.yellowify(npc.getStrippedName())
 							+ ".");
 				}
@@ -340,11 +308,11 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && (args[0].equals("getowner"))) {
+		} else if (args.length == 1 && args[0].equals("owner")) {
 			if (hasPermission("citizens.general.getowner", sender)) {
 				if (npc != null) {
 					player.sendMessage(ChatColor.GREEN
-							+ "The owner of this NPC is: "
+							+ "The owner of this NPC is "
 							+ StringUtils.yellowify(PropertyPool.getOwner(npc
 									.getUID())) + ".");
 				} else {
@@ -355,7 +323,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && (args[0].equals("setowner"))) {
+		} else if (args.length == 2 && args[0].equals("setowner")) {
 			if (hasPermission("citizens.general.setowner", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -371,8 +339,7 @@ public class BasicExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-
-		} else if (args.length == 2 && (args[0].equals("addowner"))) {
+		} else if (args.length == 2 && args[0].equals("addowner")) {
 			if (hasPermission("citizens.general.addowner", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -395,7 +362,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && (args[0].equals("talkwhenclose"))) {
+		} else if (args.length == 2 && args[0].equals("talkwhenclose")) {
 			if (hasPermission("citizens.general.talkwhenclose", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -412,7 +379,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && (args[0].equals("lookatplayers"))) {
+		} else if (args.length == 2 && args[0].equals("lookatplayers")) {
 			if (hasPermission("citizens.general.lookatplayers", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -426,6 +393,37 @@ public class BasicExecutor implements CommandExecutor {
 				}
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+
+		} else if ((command.getName().equals("citizens") || command.getName()
+				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
+			if (hasPermission("citizens.help", sender)) {
+				sendHelp(sender);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+
+		} else if ((command.getName().equals("citizens") || command.getName()
+				.equals("npc")) && args.length >= 2) {
+			if (args[1].equals("help")) {
+				int page = 1;
+				if (args.length == 3)
+					page = Integer.parseInt(args[2]);
+				if (args[0].equals("basic")) {
+					if (hasPermission("citizens.basic.help", sender)) {
+						sendBasicHelpPage(sender, page);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+				} else if (args[0].equals("trader")) {
+					if (hasPermission("citizens.trader.help", sender)) {
+						sendTraderHelpPage(sender, page);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+				}
 			}
 			return true;
 
@@ -492,14 +490,6 @@ public class BasicExecutor implements CommandExecutor {
 
 			return true;
 		}
-	}
-
-	private void setOwner(Player player, HumanNPC npc, String name) {
-		PropertyPool.setOwner(npc.getUID(), name);
-		player.sendMessage(ChatColor.GREEN + "The owner of NPC: "
-				+ StringUtils.yellowify(npc.getStrippedName()) + " is now: "
-				+ StringUtils.yellowify(name) + ".");
-		npc.getNPCData().setOwner(name);
 	}
 
 	/**
@@ -684,6 +674,14 @@ public class BasicExecutor implements CommandExecutor {
 				+ " text.");
 	}
 
+	private void setOwner(Player player, HumanNPC npc, String name) {
+		PropertyPool.setOwner(npc.getUID(), name);
+		player.sendMessage(ChatColor.GREEN + "The owner of "
+				+ StringUtils.yellowify(npc.getStrippedName()) + " is now "
+				+ StringUtils.yellowify(name) + ".");
+		npc.getNPCData().setOwner(name);
+	}
+
 	/**
 	 * Clears all of an NPC's text.
 	 * 
@@ -741,7 +739,7 @@ public class BasicExecutor implements CommandExecutor {
 		newNPC.setNPCData(new NPCData(newNPC.getName(), newNPC.getUID(), newNPC
 				.getLocation(), colour, items, texts, lookatplayers,
 				talkwhenclose, owner, newNPC.getBalance()));
-		PropertyPool.saveBasicNPCState(newUID, newNPC.getNPCData());
+		PropertyPool.saveState(newUID, newNPC.getNPCData());
 
 		// NPCDataManager.addItems(newNPC, items);
 
@@ -800,11 +798,12 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param sender
 	 */
 	private void sendHelp(CommandSender sender) {
-		sender.sendMessage("§fCitizens " + Citizens.getVersion() + " Help");
-		sender.sendMessage("§b-------------------------------");
-		sender.sendMessage("§8/§ctoggle [type] §e- §atoggles the state of an NPC.");
-		sender.sendMessage("§8/§ctoggle all [on/off] §e- §atoggles all types that the NPC is");
-		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC.");
+		sender.sendMessage("Â§fCitizens " + Citizens.getVersion() + " Help");
+		sender.sendMessage("Â§b-------------------------------");
+		sender.sendMessage("Â§8/Â§ctoggle [type] Â§e- Â§atoggles the state of an NPC.");
+		sender.sendMessage("Â§8/Â§ctoggle all [on/off] Â§e- atoggles all types that the NPC is.");
+
+		sender.sendMessage("Â§8/Â§ccitizens Â§b[basic|trader] help [page] Â§e- Â§aview help pages for each type of NPC.");
 
 	}
 
@@ -819,33 +818,33 @@ public class BasicExecutor implements CommandExecutor {
 		case 1:
 			sender.sendMessage(ChatColor.GOLD + "Citizens "
 					+ Citizens.getVersion() + " Basic Help");
-			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§8/§cnpc §bcreate (text) §e- §acreates an NPC at your location.");
-			sender.sendMessage("§8/§cnpc §bset [text] §e- §asets the text of an NPC.");
-			sender.sendMessage("§8/§cnpc §badd [text] §e- §aadds text to an NPC.");
-			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
+			sender.sendMessage("Â§b-------------------------------");
+			sender.sendMessage("Â§8/Â§cnpc Â§bcreate (text) Â§e- Â§acreates an NPC at your location.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bset [text] Â§e- Â§asets the text of an NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§badd [text] Â§e- Â§aadds text to an NPC.");
+			sender.sendMessage("Â§fUse the command /citizens [basic|trader] help [page] for more info.");
 			break;
 		case 2:
-			sender.sendMessage("§8/§cnpc §bname [new name] §e- §achanges the name of an NPC.");
-			sender.sendMessage("§8/§cnpc §bremove [all] §e- §adeletes and despawns the NPC(s).");
-			sender.sendMessage("§8/§cnpc §breset §e- §aresets the messages of an NPC.");
-			sender.sendMessage("§8/§cnpc §bcolo(u)r [&(code)] §e- §aedits the color of an NPC's name.");
-			sender.sendMessage("§8/§cnpc §bitem [id|item name] §e- §asets the in-hand item of an NPC.");
-			sender.sendMessage("§8/§cnpc §bhelmet|torso|legs|boots [id|item name] §e- §asets the item slot of an NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bname [new name] Â§e- Â§achanges the name of an NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bremove [all] Â§e- Â§adeletes and despawns the NPC(s).");
+			sender.sendMessage("Â§8/Â§cnpc Â§breset Â§e- Â§aresets the messages of an NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bcolo(u)r [&(code)] Â§e- Â§aedits the color of an NPC's name.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bitem [id|item name] Â§e- Â§asets the in-hand item of an NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bhelmet|torso|legs|boots [id|item name] Â§e- Â§asets the item slot of an NPC.");
 			break;
 		case 3:
-			sender.sendMessage("§8/§cnpc §bmove §e- §amoves an NPC to your location.");
-			sender.sendMessage("§8/§cnpc §btp §e- §ateleports you to the location of an NPC.");
-			sender.sendMessage("§8/§cnpc §bcopy §e- §amakes of copy of the NPC on your location.");
-			sender.sendMessage("§8/§cnpc §bgetid §e- §agets the ID of the selected NPC.");
-			sender.sendMessage("§8/§cnpc §bselect [id] §e- §aselects an NPC with the given ID.");
-			sender.sendMessage("§8/§cnpc §bgetowner §e- §agets the owner of the selected NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bmove Â§e- Â§amoves an NPC to your location.");
+			sender.sendMessage("Â§8/Â§cnpc Â§btp Â§e- Â§ateleports you to the location of an NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bcopy Â§e- Â§amakes of copy of the NPC on your location.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bgetid Â§e- Â§agets the ID of the selected NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bselect [id] Â§e- Â§aselects an NPC with the given ID.");
+			sender.sendMessage("Â§8/Â§cnpc Â§bgetowner Â§e- Â§agets the owner of the selected NPC.");
 			break;
 		case 4:
-			sender.sendMessage("§8/§cnpc §bsetowner [name] §e- §asets the owner of the selected NPC.");
-			sender.sendMessage("§8/§cnpc §btalkwhenclose [true|false] §e- §amake a NPC talk to players.");
-			sender.sendMessage("§8/§cnpc §blookatplayers [true|false] §e- §amake a NPC look at players.");
-			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("Â§8/Â§cnpc Â§bsetowner [name] Â§e- Â§asets the owner of the selected NPC.");
+			sender.sendMessage("Â§8/Â§cnpc Â§btalkwhenclose [true|false] Â§e- Â§amake a NPC talk to players.");
+			sender.sendMessage("Â§8/Â§cnpc Â§blookatplayers [true|false] Â§e- Â§amake a NPC look at players.");
+			sender.sendMessage("Â§b-------------------------------");
 			sender.sendMessage(ChatColor.GRAY
 					+ "Plugin made by fullwall, NeonMaster, TheMPC, and aPunch");
 			break;
@@ -868,19 +867,19 @@ public class BasicExecutor implements CommandExecutor {
 		case 1:
 			sender.sendMessage(ChatColor.GOLD + "Citizens "
 					+ Citizens.getVersion() + " Trader Help");
-			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§8/§ctrader §blist [buy/sell] (page) §e- §alists the selected trader's buy/selling list (paged).");
-			sender.sendMessage("§8/§ctrader §b[buy/sell] [itemID(:amount:data)] [itemID(:amount:data)]§e- §astarts an npc stocking a given item. Put no : in the second argument for iConomy.");
-			sender.sendMessage("§8/§ctrader §b[buy/sell] [remove] [item ID] §e- §astops the given item ID from being stocked.");
-			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
+			sender.sendMessage("Â§b-------------------------------");
+			sender.sendMessage("Â§8/Â§ctrader Â§blist [buy/sell] (page) Â§e- Â§alists the selected trader's buy/selling list (paged).");
+			sender.sendMessage("Â§8/Â§ctrader Â§b[buy/sell] [itemID(:amount:data)] [itemID(:amount:data)]Â§e- Â§astarts an npc stocking a given item. Put no : in the second argument for iConomy.");
+			sender.sendMessage("Â§8/Â§ctrader Â§b[buy/sell] [remove] [item ID] Â§e- Â§astops the given item ID from being stocked.");
+			sender.sendMessage("Â§fUse the command /citizens [basic|trader] help [page] for more info.");
 			break;
 		case 2:
 			sender.sendMessage(ChatColor.GOLD + "Citizens "
 					+ Citizens.getVersion() + " Trader Help");
-			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§8/§ctrader §bbalance [give/take] [amount] §e- §aif using iConomy, controls a trader's money.");
-			sender.sendMessage("§8/§ctrader §bunlimited [true/false] §e- §asets whether a trader has unlimited stock.");
-			sender.sendMessage("§b-------------------------------");
+			sender.sendMessage("Â§b-------------------------------");
+			sender.sendMessage("Â§8/Â§ctrader Â§bbalance [give/take] [amount] Â§e- Â§aif using iConomy, controls a trader's money.");
+			sender.sendMessage("Â§8/Â§ctrader Â§bunlimited [true/false] Â§e- Â§asets whether a trader has unlimited stock.");
+			sender.sendMessage("Â§b-------------------------------");
 			sender.sendMessage(ChatColor.GRAY
 					+ "Plugin made by fullwall, NeonMaster, TheMPC, and aPunch");
 			break;

@@ -160,11 +160,18 @@ public class TraderPropertyPool {
 		return stockables;
 	}
 
-	public static void saveTraderState(HumanNPC npc) {
+	public static void saveState(HumanNPC npc) {
 		if (isTrader(npc.getUID()))
 			saveTrader(npc.getUID(), npc.isTrader());
 		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
 		PropertyPool.saveBalance(npc.getUID(), npc.getBalance());
 		saveUnlimited(npc.getUID(), npc.getTraderNPC().isUnlimited());
+	}
+
+	public static void removeFromFiles(int UID) {
+		traders.removeKey(UID);
+		stocking.removeKey(UID);
+		inventories.removeKey(UID);
+		unlimiteds.removeKey(UID);
 	}
 }

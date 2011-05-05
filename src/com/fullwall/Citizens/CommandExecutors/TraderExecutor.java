@@ -100,7 +100,7 @@ public class TraderExecutor implements CommandExecutor {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
 			}
-			TraderPropertyPool.saveTraderState(npc);
+			TraderPropertyPool.saveState(npc);
 		}
 		return returnval;
 	}
@@ -240,31 +240,20 @@ public class TraderExecutor implements CommandExecutor {
 				stack.getTypeId(), data);
 		itemPrice.setiConomy(cost == null);
 		Stockable s = new Stockable(stack, itemPrice, false);
-		if (npc.getTraderNPC().isStocked(s)) {
-			if (selling)
-				player.sendMessage(ChatColor.RED
-						+ "The trader is already selling that at "
-						+ MessageUtils.getStockableMessage(s, ChatColor.RED)
-						+ ".");
-			else
-				player.sendMessage(ChatColor.RED
-						+ "The trader is already buying that at "
-						+ MessageUtils.getStockableMessage(s, ChatColor.RED)
-						+ ".");
-			return;
-		}
+		String keyword = "buying ";
 		if (selling) {
 			s.setSelling(true);
-			npc.getTraderNPC().addStockable(s);
-			player.sendMessage(ChatColor.GREEN + "The NPC is now selling "
-					+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
-					+ ".");
-		} else {
-			npc.getTraderNPC().addStockable(s);
-			player.sendMessage(ChatColor.GREEN + "The NPC is now buying "
-					+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
-					+ ".");
+			keyword = "selling ";
 		}
+		if (npc.getTraderNPC().isStocked(s)) {
+			player.sendMessage(ChatColor.RED + "The trader is already "
+					+ keyword + " that at "
+					+ MessageUtils.getStockableMessage(s, ChatColor.RED) + ".");
+			return;
+		}
+		npc.getTraderNPC().addStockable(s);
+		player.sendMessage(ChatColor.GREEN + "The NPC is now " + keyword
+				+ MessageUtils.getStockableMessage(s, ChatColor.GREEN) + ".");
 	}
 
 	/**
@@ -346,8 +335,8 @@ public class TraderExecutor implements CommandExecutor {
 						+ "The NPC doesn't have enough money for that! It needs "
 						+ StringUtils.yellowify(
 								IconomyInterface.getCurrency(amount
-										- npc.getBalance()),
-								ChatColor.RED) + " more in its balance.");
+										- npc.getBalance()), ChatColor.RED)
+						+ " more in its balance.");
 			}
 		} else
 			player.sendMessage(ChatColor.RED + "Invalid argument type "

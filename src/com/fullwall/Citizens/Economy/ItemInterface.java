@@ -30,7 +30,7 @@ public class ItemInterface {
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
 				current += i.getAmount();
-				if (current > price) {
+				if (current >= price) {
 					return true;
 				}
 			}
@@ -50,7 +50,7 @@ public class ItemInterface {
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == payment.getItem().getTypeId()) {
 				current += i.getAmount();
-				if (current > payment.getPrice()) {
+				if (current >= payment.getPrice()) {
 					return true;
 				}
 			}
@@ -64,21 +64,20 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static String getCurrency(Operation op) {
+	public static String getCurrency(Operation op, ChatColor colour) {
 		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int ID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
 		return Material.getMaterial(ID) != null ? price + " "
-				+ Material.getMaterial(ID).name() + ChatColor.GREEN + "(s)"
-				: "";
+				+ Material.getMaterial(ID).name() + colour + "(s)" : "";
 	}
 
-	public static String getCurrency(Payment payment) {
+	public static String getCurrency(Payment payment, ChatColor colour) {
 		return Material.getMaterial(payment.getItem().getTypeId()) != null ? payment
 				.getPrice()
 				+ " "
 				+ Material.getMaterial(payment.getItem().getTypeId()).name()
-				+ ChatColor.AQUA + "(s)"
+				+ colour + "(s)"
 				: "";
 	}
 
@@ -93,12 +92,10 @@ public class ItemInterface {
 		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		PlayerInventory inv = player.getInventory();
 		int current = price;
-		for (ItemStack i : inv.getContents()) {
+		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
-				int amount = i.getAmount();
-				current -= amount;
+				current -= i.getAmount();
 			}
 		}
 		return "" + current;
@@ -117,6 +114,7 @@ public class ItemInterface {
 				currencyAddendum));
 		PlayerInventory inv = player.getInventory();
 		int current = price;
+		int count = 0;
 		for (ItemStack i : inv.getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
@@ -133,9 +131,10 @@ public class ItemInterface {
 					i = null;
 				else {
 					i.setAmount(toChange);
-					break;
 				}
+				inv.setItem(count, i);
 			}
+			count += 1;
 		}
 		return price;
 	}
@@ -151,6 +150,7 @@ public class ItemInterface {
 		PlayerInventory inv = player.getInventory();
 		int currencyID = payment.getItem().getTypeId();
 		int current = payment.getPrice();
+		int count = 0;
 		for (ItemStack i : inv.getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
 				int amount = i.getAmount();
@@ -163,9 +163,10 @@ public class ItemInterface {
 					i = null;
 				else {
 					i.setAmount(toChange);
-					break;
 				}
+				inv.setItem(count, i);
 			}
+			count += 1;
 		}
 		return payment.getPrice();
 	}

@@ -13,6 +13,10 @@ public class QuesterPropertyPool {
 		questSettings.save();
 	}
 
+	public static void saveState() {
+
+	}
+
 	public static void saveQuester(int UID, boolean state) {
 		questers.setBoolean(UID, state);
 	}
@@ -27,5 +31,10 @@ public class QuesterPropertyPool {
 
 	public static void removeQuester(int UID) {
 		questers.removeKey(UID);
+	}
+
+	public static void removeFromFiles(int UID) {
+		questers.removeKey(UID);
+		questSettings.removeKey(UID);
 	}
 }

@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Economy;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -175,12 +176,13 @@ public class EconomyHandler {
 	 * @param amount
 	 * @return
 	 */
-	public static String getPaymentType(Operation op, String amount) {
+	public static String getPaymentType(Operation op, String amount,
+			ChatColor colour) {
 		if (useEconomy) {
 			if (useIconomy())
 				return IconomyInterface.getCurrency(amount);
 			else
-				return ItemInterface.getCurrency(op);
+				return ItemInterface.getCurrency(op, colour);
 		} else
 			return "None";
 	}
@@ -208,12 +210,12 @@ public class EconomyHandler {
 	 * @param payment
 	 * @return
 	 */
-	public static String getCurrency(Payment payment) {
+	public static String getCurrency(Payment payment, ChatColor colour) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.getCurrency(payment.getPrice());
 			else
-				return ItemInterface.getCurrency(payment);
+				return ItemInterface.getCurrency(payment, colour);
 		} else
 			return "0";
 	}

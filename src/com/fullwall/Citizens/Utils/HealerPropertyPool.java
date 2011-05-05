@@ -36,6 +36,14 @@ public class HealerPropertyPool {
 		return strength.getInt(UID);
 	}
 
+	public static void saveState(HumanNPC npc) {
+		if (isHealer(npc.getUID())) {
+			saveHealer(npc.getUID(), npc.isHealer());
+			saveStrength(npc.getUID(), getStrength(npc.getUID()));
+			saveLevel(npc.getUID(), getLevel(npc.getUID()));
+		}
+	}
+
 	public static void saveLevel(int UID, int level) {
 		levels.setInt(UID, level);
 	}
@@ -44,15 +52,13 @@ public class HealerPropertyPool {
 		return levels.getInt(UID);
 	}
 
-	public static void saveHealerState(HumanNPC npc) {
-		if (isHealer(npc.getUID())) {
-			saveHealer(npc.getUID(), npc.isHealer());
-			saveStrength(npc.getUID(), getStrength(npc.getUID()));
-			saveLevel(npc.getUID(), getLevel(npc.getUID()));
-		}
-	}
-
 	public static boolean getHealerState(int UID) {
 		return healers.getBoolean(UID);
+	}
+
+	public static void removeFromFiles(int UID) {
+		healers.removeKey(UID);
+		strength.removeKey(UID);
+		levels.removeKey(UID);
 	}
 }

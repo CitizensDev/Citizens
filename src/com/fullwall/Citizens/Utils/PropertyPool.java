@@ -283,11 +283,12 @@ public class PropertyPool {
 		lookat.removeKey(UID);
 		talkwhenclose.removeKey(UID);
 		texts.removeKey(UID);
-		counts.removeKey(name);
+		if (counts.keyExists(name))
+			counts.setInt(name, counts.getInt(name) - 1);
 		balances.removeKey(UID);
 	}
 
-	public static void saveBasicNPCState(int UID, NPCData npcdata) {
+	public static void saveState(int UID, NPCData npcdata) {
 		saveBalance(UID, npcdata.getBalance());
 		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
 		saveColour(UID, npcdata.getColour());

@@ -15,6 +15,7 @@ import com.fullwall.Citizens.Healers.HealerNPC;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCList;
@@ -77,12 +78,12 @@ public class NPCManager {
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
-		PropertyPool.saveBasicNPCState(UID, npc.getNPCData());
+		PropertyPool.saveState(UID, npc.getNPCData());
 
 		registerUID(UID, name);
 		list.put(UID, npc);
-		TraderPropertyPool.saveTraderState(npc);
-		HealerPropertyPool.saveHealerState(npc);
+		TraderPropertyPool.saveState(npc);
+		HealerPropertyPool.saveState(npc);
 	}
 
 	/**
@@ -116,7 +117,7 @@ public class NPCManager {
 		npc.setBalance(PropertyPool.getBalance(UID));
 		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
 		trader.setStocking(TraderPropertyPool.getStockables(UID));
-		TraderPropertyPool.saveTraderState(npc);
+		TraderPropertyPool.saveState(npc);
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class NPCManager {
 	public void loadHealer(HumanNPC npc, HealerNPC healer, int UID) {
 		npc.setHealer(HealerPropertyPool.getHealerState(UID));
 		healer.setStrength(HealerPropertyPool.getStrength(UID));
-		HealerPropertyPool.saveHealerState(npc);
+		HealerPropertyPool.saveState(npc);
 	}
 
 	/**
@@ -253,6 +254,9 @@ public class NPCManager {
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
 		PropertyPool.removeFromFiles(actualName, UID);
+		TraderPropertyPool.removeFromFiles(UID);
+		QuesterPropertyPool.removeFromFiles(UID);
+		HealerPropertyPool.removeFromFiles(UID);
 	}
 
 	/**

@@ -90,9 +90,11 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.RED
 				+ "You need "
-				+ EconomyHandler.getPaymentType(Operation.BASIC_NPC_CREATE,
-						EconomyHandler.getRemainder(Operation.BASIC_NPC_CREATE,
-								player)) + " more to do that.";
+				+ StringUtils.yellowify(EconomyHandler.getPaymentType(
+						Operation.BASIC_NPC_CREATE, EconomyHandler
+								.getRemainder(Operation.BASIC_NPC_CREATE,
+										player), ChatColor.RED), ChatColor.RED)
+				+ " more to do that.";
 		return message;
 	}
 
@@ -112,7 +114,7 @@ public class MessageUtils {
 		message = ChatColor.GREEN
 				+ "Paid "
 				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
-						+ paid)) + " for ";
+						+ paid, ChatColor.GREEN)) + " for ";
 		if (useType)
 			message += StringUtils.yellowify(npcName) + " to become a "
 					+ StringUtils.yellowify(type) + ".";
@@ -127,13 +129,12 @@ public class MessageUtils {
 	 * @param price
 	 * @return
 	 */
-	public static String getPriceMessage(ItemPrice price) {
+	public static String getPriceMessage(ItemPrice price, ChatColor colour) {
 		String message = "";
-		message += ChatColor.YELLOW
-				+ EconomyHandler
-						.getCurrency(new Payment(price.getPrice(),
-								new ItemStack(price.getItemID(), 1), price
-										.isiConomy()));
+		message += colour
+				+ StringUtils.yellowify(EconomyHandler.getCurrency(new Payment(
+						price.getPrice(), new ItemStack(price.getItemID(), 1),
+						price.isiConomy()), colour), colour);
 		return message;
 	}
 
@@ -147,8 +148,9 @@ public class MessageUtils {
 	public static String getStockableMessage(Stockable s, ChatColor colour) {
 		return StringUtils.yellowify(s.getStocking().getAmount() + " "
 				+ s.getStocking().getType().name(), colour)
-				+ "(s) at "
+				+ "(s) for "
 				+ StringUtils.yellowify(
-						MessageUtils.getPriceMessage(s.getPrice()), colour);
+						MessageUtils.getPriceMessage(s.getPrice(), colour),
+						colour);
 	}
 }

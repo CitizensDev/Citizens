@@ -6,10 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class TraderNPC {
+public class TraderNPC implements Toggleable {
 	/**
 	 * Holds information about a trader's stocked items, balance and whether it
 	 * is free/unlimited.
@@ -130,5 +131,30 @@ public class TraderNPC {
 
 	public boolean isUnlimited() {
 		return this.unlimited;
+	}
+
+	@Override
+	public void toggle() {
+		npc.setTrader(!npc.isTrader());
+	}
+
+	@Override
+	public boolean getToggle() {
+		return npc.isTrader();
+	}
+
+	@Override
+	public String getName() {
+		return npc.getStrippedName();
+	}
+
+	@Override
+	public String getType() {
+		return "trader";
+	}
+
+	@Override
+	public void saveState() {
+		TraderPropertyPool.saveState(npc);
 	}
 }

@@ -55,7 +55,7 @@ public class HealerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			HealerPropertyPool.saveHealerState(npc);
+			HealerPropertyPool.saveState(npc);
 		}
 		return returnval;
 	}

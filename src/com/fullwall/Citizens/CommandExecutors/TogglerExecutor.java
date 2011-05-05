@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -51,7 +52,6 @@ public class TogglerExecutor implements CommandExecutor {
 			player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		}
-
 		if (args.length == 0) {
 			sender.sendMessage(ChatColor.RED
 					+ "You didn't specify an NPC type to toggle.");
@@ -61,9 +61,10 @@ public class TogglerExecutor implements CommandExecutor {
 				if (BasicExecutor.hasPermission("citizens.trader.create",
 						sender)) {
 					if (!TraderPropertyPool.isTrader(npc.getUID())) {
-						buyTrader(npc, player);
+						buyState(player, npc.getTraderNPC(),
+								Operation.TRADER_NPC_CREATE);
 					} else {
-						toggleTrader(npc, player);
+						toggleState(player, npc.getTraderNPC());
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -75,128 +76,77 @@ public class TogglerExecutor implements CommandExecutor {
 				if (BasicExecutor.hasPermission("citizens.healer.create",
 						sender)) {
 					if (!HealerPropertyPool.isHealer(npc.getUID())) {
-						buyHealer(npc, player);
+						buyState(player, npc.getHealerNPC(),
+								Operation.HEALER_NPC_CREATE);
 					} else {
-						toggleHealer(npc, player);
+						toggleState(player, npc.getHealerNPC());
 					}
 					returnval = true;
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-
 			} else if (args[0].equals("guard")) {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+				returnval = true;
 			} else if (args[0].equals("wizard")) {
 				sender.sendMessage("WIZARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
-			} else if (args[0].equals("all")) {
-				if (args[1].equals("on")) {
-					toggleAllOn(npc, player);
-				} else if (args[1].equals("off")) {
-					toggleAllOff(npc, player);
-				}
+				returnval = true;
+			} else if (args.length == 2 && args[0].equals("all")) {
+				if (args[1].equals("on"))
+					toggleAll(npc, player, true);
+				else if (args[1].equals("off"))
+					toggleAll(npc, player, false);
 				returnval = true;
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "Entered npc type was not recognised.");
 				return true;
 			}
-			TraderPropertyPool.saveTraderState(npc);
 		}
 		return returnval;
 	}
 
 	/**
-	 * Buys a trader using the economy interface. Toggles the npc to a trader
-	 * afterwards.
+	 * Toggles an NPC state.
 	 * 
-	 * @param npc
 	 * @param player
+	 * @param toggleable
 	 */
-	private void buyTrader(HumanNPC npc, Player player) {
-		if (!EconomyHandler.useEconomy()
-				|| EconomyHandler.canBuy(Operation.TRADER_NPC_CREATE, player)) {
-			if (EconomyHandler.useEconomy()) {
-				int paid = EconomyHandler.pay(Operation.TRADER_NPC_CREATE,
-						player);
-				if (paid > 0)
-					player.sendMessage(MessageUtils.getPaidMessage(
-							Operation.TRADER_NPC_CREATE, paid,
-							npc.getStrippedName(), "trader", true));
-				toggleTrader(npc, player);
-				TraderPropertyPool.saveTrader(npc.getUID(), true);
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "Your server has not turned economy on for Citizens.");
-				return;
-			}
-		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(
-					Operation.TRADER_NPC_CREATE, player));
-			return;
-		}
-	}
-
-	/**
-	 * Buys a healer using the economy interface. Toggles the npc to a healer
-	 * afterwards.
-	 * 
-	 * @param npc
-	 * @param player
-	 */
-	private void buyHealer(HumanNPC npc, Player player) {
-		if (!EconomyHandler.useEconomy()
-				|| EconomyHandler.canBuy(Operation.HEALER_NPC_CREATE, player)) {
-			if (EconomyHandler.useEconomy()) {
-				int paid = EconomyHandler.pay(Operation.HEALER_NPC_CREATE,
-						player);
-				if (paid > 0)
-					player.sendMessage(MessageUtils.getPaidMessage(
-							Operation.HEALER_NPC_CREATE, paid,
-							npc.getStrippedName(), "healer", true));
-				toggleHealer(npc, player);
-				HealerPropertyPool.saveStrength(npc.getUID(), 20);
-				HealerPropertyPool.saveHealer(npc.getUID(), true);
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "Your server has not turned economy on for Citizens.");
-			}
-		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(
-					Operation.HEALER_NPC_CREATE, player));
-			return;
-		}
-	}
-
-	/**
-	 * Toggles whether the selected npc is a trader or not.
-	 * 
-	 * @param npc
-	 * @param player
-	 */
-	private void toggleTrader(HumanNPC npc, Player player) {
-		npc.setTrader(!npc.isTrader());
-		if (npc.isTrader())
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
-					+ " is now a trader!");
-		else
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
-					+ " has stopped being a trader.");
-	}
-
-	/**
-	 * Toggles whether the selected npc is a healer or not.
-	 * 
-	 * @param npc
-	 * @param player
-	 */
-	private void toggleHealer(HumanNPC npc, Player player) {
-		npc.setHealer(!npc.isHealer());
-		if (npc.isHealer()) {
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
-					+ " is now a healer!");
+	private void toggleState(Player player, Toggleable toggleable) {
+		toggleable.toggle();
+		toggleable.saveState();
+		if (toggleable.getToggle()) {
+			player.sendMessage(StringUtils.yellowify(toggleable.getName())
+					+ " is now a " + toggleable.getType() + "!");
 		} else {
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
-					+ " has stopped being a healer.");
+			player.sendMessage(StringUtils.yellowify(toggleable.getName())
+					+ " has stopped being a " + toggleable.getType() + ".");
+		}
+	}
+
+	/**
+	 * Buys an NPC state.
+	 * 
+	 * @param player
+	 * @param toggleable
+	 * @param op
+	 */
+	private void buyState(Player player, Toggleable toggleable, Operation op) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+			if (EconomyHandler.useEconomy()) {
+				int paid = EconomyHandler.pay(op, player);
+				if (paid > 0)
+					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
+							toggleable.getName(), toggleable.getType(), true));
+				toggleState(player, toggleable);
+				toggleable.saveState();
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			return;
 		}
 	}
 
@@ -206,27 +156,22 @@ public class TogglerExecutor implements CommandExecutor {
 	 * @param npc
 	 * @param player
 	 */
-	private void toggleAllOn(HumanNPC npc, Player player) {
-		if (!npc.isTrader()) {
-			toggleTrader(npc, player);
-		}
-		if (!npc.isHealer()) {
-			toggleHealer(npc, player);
-		}
-	}
 
-	/**
-	 * Turns the selected NPC back to the basic type
-	 * 
-	 * @param npc
-	 * @param player
-	 */
-	private void toggleAllOff(HumanNPC npc, Player player) {
-		if (npc.isTrader()) {
-			toggleTrader(npc, player);
-		}
-		if (npc.isHealer()) {
-			toggleHealer(npc, player);
+	private void toggleAll(HumanNPC npc, Player player, boolean on) {
+		if (on) {
+			if (!npc.isTrader()) {
+				toggleState(player, npc.getTraderNPC());
+			}
+			if (!npc.isHealer()) {
+				toggleState(player, npc.getHealerNPC());
+			}
+		} else {
+			if (npc.isTrader()) {
+				toggleState(player, npc.getTraderNPC());
+			}
+			if (npc.isHealer()) {
+				toggleState(player, npc.getHealerNPC());
+			}
 		}
 	}
 }
