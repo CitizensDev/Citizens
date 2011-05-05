@@ -88,6 +88,9 @@ public class TogglerExecutor implements CommandExecutor {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else if (args[0].equals("wizard")) {
 				sender.sendMessage("WIZARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+			} else if (args[0].equals("all")) {
+				toggleAll(npc, player);
+				returnval = true;
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "Entered npc type was not recognised.");
@@ -191,5 +194,10 @@ public class TogglerExecutor implements CommandExecutor {
 			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " has stopped being a healer.");
 		}
+	}
+
+	private void toggleAll(HumanNPC npc, Player player) {
+		toggleTrader(npc, player);
+		toggleHealer(npc, player);
 	}
 }

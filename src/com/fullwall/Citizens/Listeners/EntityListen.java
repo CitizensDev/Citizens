@@ -51,7 +51,7 @@ public class EntityListen extends EntityListener {
 					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
 						if (playerHealth <= 19) {
 							if (healerHealth >= 1) {
-								player.setHealth(playerHealth + 2);
+								player.setHealth(playerHealth + 1);
 								HealerPropertyPool.saveStrength(npc.getUID(),
 										healerHealth - 1);
 								player.sendMessage(ChatColor.GREEN
@@ -70,10 +70,10 @@ public class EntityListen extends EntityListener {
 						}
 					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
 						if (playerHealth >= 1) {
-							if (healerHealth < 19) {
+							if (healerHealth <= 19) {
 								player.setHealth(playerHealth - 1);
 								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth + 2);
+										healerHealth + 1);
 								player.sendMessage(ChatColor.GREEN
 										+ "You donated some health to the healer "
 										+ StringUtils.yellowify(
