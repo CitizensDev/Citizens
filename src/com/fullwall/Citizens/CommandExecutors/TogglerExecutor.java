@@ -89,7 +89,11 @@ public class TogglerExecutor implements CommandExecutor {
 			} else if (args[0].equals("wizard")) {
 				sender.sendMessage("WIZARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 			} else if (args[0].equals("all")) {
-				toggleAll(npc, player);
+				if (args[1].equals("on")) {
+					toggleAllOn(npc, player);
+				} else if (args[1].equals("off")) {
+					toggleAllOff(npc, player);
+				}
 				returnval = true;
 			} else {
 				player.sendMessage(ChatColor.RED
@@ -196,8 +200,33 @@ public class TogglerExecutor implements CommandExecutor {
 		}
 	}
 
-	private void toggleAll(HumanNPC npc, Player player) {
-		toggleTrader(npc, player);
-		toggleHealer(npc, player);
+	/**
+	 * Turns the selected NPC into all types of NPCs
+	 * 
+	 * @param npc
+	 * @param player
+	 */
+	private void toggleAllOn(HumanNPC npc, Player player) {
+		if (!npc.isTrader()) {
+			toggleTrader(npc, player);
+		}
+		if (!npc.isHealer()) {
+			toggleHealer(npc, player);
+		}
+	}
+
+	/**
+	 * Turns the selected NPC back to the basic type
+	 * 
+	 * @param npc
+	 * @param player
+	 */
+	private void toggleAllOff(HumanNPC npc, Player player) {
+		if (npc.isTrader()) {
+			toggleTrader(npc, player);
+		}
+		if (npc.isHealer()) {
+			toggleHealer(npc, player);
+		}
 	}
 }
