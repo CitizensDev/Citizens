@@ -8,6 +8,8 @@ public class HealerPropertyPool {
 			"plugins/Citizens/Healers/Citizens.healers");
 	public static final PropertyHandler strength = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.strength");
+	public static final PropertyHandler levels = new PropertyHandler(
+			"plugins/Citizens/Healers/Citizens.levels");
 
 	public static void saveAll() {
 		healers.save();
@@ -34,10 +36,19 @@ public class HealerPropertyPool {
 		return strength.getInt(UID);
 	}
 
+	public static void saveLevel(int UID, int level) {
+		levels.setInt(UID, level);
+	}
+
+	public static int getLevel(int UID) {
+		return levels.getInt(UID);
+	}
+
 	public static void saveHealerState(HumanNPC npc) {
 		if (isHealer(npc.getUID())) {
 			saveHealer(npc.getUID(), npc.isHealer());
 			saveStrength(npc.getUID(), getStrength(npc.getUID()));
+			saveLevel(npc.getUID(), getLevel(npc.getUID()));
 		}
 	}
 
