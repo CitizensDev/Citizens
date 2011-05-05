@@ -2,7 +2,6 @@ package com.fullwall.Citizens.Healers;
 
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -38,8 +37,9 @@ public class HealerNPC implements Toggleable {
 		npc.setHealer(!npc.isHealer());
 		if (npc.isHealer()) {
 			HealerPropertyPool.saveStrength(npc.getUID(), 20);
-		} 
-        
+		}
+	}
+
 	@Override
 	public boolean getToggle() {
 		return npc.isHealer();
