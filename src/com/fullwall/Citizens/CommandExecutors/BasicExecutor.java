@@ -801,7 +801,7 @@ public class BasicExecutor implements CommandExecutor {
 		sender.sendMessage("§fCitizens " + Citizens.getVersion() + " Help");
 		sender.sendMessage("§b-------------------------------");
 		sender.sendMessage("§8/§ctoggle [type] §e- §atoggles the state of an NPC.");
-		sender.sendMessage("§8/§ctoggle all [on/off] §e- atoggles all types that the NPC is.");
+		sender.sendMessage("§8/§ctoggle all [on/off] §e- toggles all types that the NPC is.");
 
 		sender.sendMessage("§8/§ccitizens §b[basic|trader] help [page] §e- §aview help pages for each type of NPC.");
 

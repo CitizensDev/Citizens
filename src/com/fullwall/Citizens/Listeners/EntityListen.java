@@ -3,12 +3,12 @@ package com.fullwall.Citizens.Listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
@@ -42,72 +42,74 @@ public class EntityListen extends EntityListener {
 			if (e.getEntity() instanceof Player
 					&& e.getDamager() instanceof Player && npc != null) {
 				e.setCancelled(true);
-			}
-			if(e.getEntity() instanceof Player && e.getDamager() instanceof Monster) {
-				return;
-			}
-			if (npc.isHealer()) {
-				Entity entity = e.getDamager();
-				if (entity instanceof Player) {
-					Player player = (Player) entity;
-					int playerHealth = player.getHealth();
-					int healerHealth = HealerPropertyPool.getStrength(npc
-							.getUID());
-					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
-						if (playerHealth <= 19) {
-							if (healerHealth >= 1) {
-								player.setHealth(playerHealth + 1);
-								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth - 1);
-								player.sendMessage(ChatColor.GREEN
-										+ "You drained health from the healer "
-										+ StringUtils.yellowify(npc
-												.getStrippedName()) + ".");
+				if (npc.isHealer()) {
+					Entity entity = e.getDamager();
+					if (entity instanceof Player) {
+						Player player = (Player) entity;
+						int playerHealth = player.getHealth();
+						int healerHealth = HealerPropertyPool.getStrength(npc
+								.getUID());
+						if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
+							if (playerHealth <= 19) {
+								if (healerHealth >= 1) {
+									player.setHealth(playerHealth + 1);
+									HealerPropertyPool.saveStrength(
+											npc.getUID(), healerHealth - 1);
+									player.sendMessage(ChatColor.GREEN
+											+ "You drained health from the healer "
+											+ StringUtils.yellowify(npc
+													.getStrippedName()) + ".");
+								} else {
+									player.sendMessage(StringUtils
+											.yellowify(npc.getStrippedName())
+											+ " does not have enough health remaining for you to take.");
+								}
 							} else {
-								player.sendMessage(StringUtils.yellowify(npc
-										.getStrippedName())
-										+ " does not have enough health remaining for you to take.");
-							}
-						} else {
-							player.sendMessage(ChatColor.GREEN
-									+ "You are fully healed.");
-						}
-					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
-						if (playerHealth >= 1) {
-							if (healerHealth < HealerPropertyPool
-									.getMaxStrength(npc.getUID())) {
-								player.setHealth(playerHealth - 1);
-								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth + 1);
 								player.sendMessage(ChatColor.GREEN
-										+ "You donated some health to the healer "
+										+ "You are fully healed.");
+							}
+						} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
+							if (playerHealth >= 1) {
+								if (healerHealth < HealerPropertyPool
+										.getMaxStrength(npc.getUID())) {
+									player.setHealth(playerHealth - 1);
+									HealerPropertyPool.saveStrength(
+											npc.getUID(), healerHealth + 1);
+									player.sendMessage(ChatColor.GREEN
+											+ "You donated some health to the healer "
+											+ StringUtils.yellowify(npc
+													.getStrippedName()) + ".");
+								} else {
+									player.sendMessage(StringUtils
+											.yellowify(npc.getStrippedName())
+											+ " is fully healed.");
+								}
+							} else {
+								player.sendMessage(ChatColor.GREEN
+										+ "You do not have enough health remaining to heal "
 										+ StringUtils.yellowify(npc
-												.getStrippedName()) + ".");
+												.getStrippedName()));
+							}
+						} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
+							if (healerHealth != HealerPropertyPool
+									.getMaxStrength(npc.getUID())) {
+								HealerPropertyPool.saveStrength(npc.getUID(),
+										HealerPropertyPool.getMaxStrength(npc
+												.getUID()));
+								player.sendMessage(ChatColor.GREEN
+										+ "You restored all of "
+										+ StringUtils.yellowify(npc
+												.getStrippedName())
+										+ "'s health.");
+								int x = player.getItemInHand().getAmount();
+								ItemStack diamondBlock = new ItemStack(
+										Material.DIAMOND_BLOCK, x - 1);
+								player.setItemInHand(diamondBlock);
 							} else {
 								player.sendMessage(StringUtils.yellowify(npc
 										.getStrippedName())
 										+ " is fully healed.");
 							}
-						} else {
-							player.sendMessage(ChatColor.GREEN
-									+ "You do not have enough health remaining to heal "
-									+ StringUtils.yellowify(npc
-											.getStrippedName()));
-						}
-					} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
-						if (healerHealth != HealerPropertyPool
-								.getMaxStrength(npc.getUID())) {
-							HealerPropertyPool.saveStrength(npc.getUID(),
-									HealerPropertyPool.getMaxStrength(npc
-											.getUID()));
-							player.sendMessage(ChatColor.GREEN
-									+ "You restored all of "
-									+ StringUtils.yellowify(npc
-											.getStrippedName()) + "'s health.");
-							player.setItemInHand(null);
-						} else {
-							player.sendMessage(StringUtils.yellowify(npc
-									.getStrippedName()) + " is fully healed.");
 						}
 					}
 				}
