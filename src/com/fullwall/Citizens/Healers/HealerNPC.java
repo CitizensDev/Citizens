@@ -36,6 +36,10 @@ public class HealerNPC implements Toggleable {
 	@Override
 	public void toggle() {
 		npc.setHealer(!npc.isHealer());
+		if (npc.isHealer()) {
+			HealerPropertyPool.saveStrength(npc.getUID(), 20);
+		}
+
 	}
 
 	@Override

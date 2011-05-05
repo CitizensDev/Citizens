@@ -160,6 +160,18 @@ public class TraderTask implements Runnable {
 							+ buying.getType().name(), ChatColor.RED) + "(s).");
 			return;
 		}
+		HashMap<Integer, ItemStack> ungiven = npc.getPlayer().getInventory()
+				.addItem(stockable.getStocking());
+		if (ungiven.size() >= 1) {
+			npc.getInventory().setContents(previousNPCInv.getContents());
+			player.getInventory().setContents(previousPlayerInv.getContents());
+			player.sendMessage(ChatColor.RED
+					+ "Not enough room in the npc's inventory to add "
+					+ StringUtils.yellowify(stockable.getStocking().getAmount()
+							+ " " + stockable.getStocking().getType().name(),
+							ChatColor.RED) + "(s).");
+			return;
+		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player);
 		EconomyHandler.pay(new Payment(stockable.getStocking(), stockable
 				.getPrice().isiConomy()), npc);
@@ -212,6 +224,18 @@ public class TraderTask implements Runnable {
 					+ StringUtils.yellowify(selling.getAmount() + " "
 							+ selling.getType().name(), ChatColor.RED)
 					+ "(s) to the current stock.");
+			return;
+		}
+		HashMap<Integer, ItemStack> ungiven = player.getInventory().addItem(
+				stockable.getStocking());
+		if (ungiven.size() >= 1) {
+			player.getInventory().setContents(previousPlayerInv.getContents());
+			npc.getInventory().setContents(previousNPCInv.getContents());
+			player.sendMessage(ChatColor.RED
+					+ "Not enough room in your inventory to add "
+					+ StringUtils.yellowify(stockable.getStocking().getAmount()
+							+ " " + stockable.getStocking().getType().name(),
+							ChatColor.RED) + "(s).");
 			return;
 		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), npc);

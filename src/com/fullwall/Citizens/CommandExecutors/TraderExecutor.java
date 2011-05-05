@@ -234,10 +234,10 @@ public class TraderExecutor implements CommandExecutor {
 			}
 		}
 		int data = Citizens.MAGIC_DATA_VALUE;
-		if (stack.getData() != null)
-			data = stack.getData().getData();
-		ItemPrice itemPrice = new ItemPrice(stack.getAmount(),
-				stack.getTypeId(), data);
+		if (cost.getData() != null)
+			data = cost.getData().getData();
+		ItemPrice itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(),
+				data);
 		itemPrice.setiConomy(cost == null);
 		Stockable s = new Stockable(stack, itemPrice, false);
 		String keyword = "buying ";
