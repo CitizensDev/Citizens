@@ -90,29 +90,37 @@ public class HealerExecutor implements CommandExecutor {
 						+ "'s Healer Status") + " ==========");
 		displayHealerStrength(player, npc);
 		displayHealerLevel(player, npc);
+		player.sendMessage(ChatColor.GREEN + "========================================");
 	}
 
 	private void levelUp(Player player, HumanNPC npc) {
 		if (EconomyHandler.useEconomy()) {
-			int level = HealerPropertyPool.getLevel(npc.getUID()) + 1;
+			int level = HealerPropertyPool.getLevel(npc.getUID());
 			int paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player);
 			if (paid > 0) {
-				player.sendMessage(getLevelUpPaidMessage(
-						Operation.HEALER_LEVEL_UP, npc, paid, level));
+				if (level < 10) {
+					HealerPropertyPool.saveLevel(npc.getUID(), level + 1);
+					player.sendMessage(getLevelUpPaidMessage(
+							Operation.HEALER_LEVEL_UP, npc, paid, level + 1));
+				} else {
+					player.sendMessage(StringUtils.yellowify(npc
+							.getStrippedName())
+							+ " has reached the maximum level.");
+				}
 			}
-			HealerPropertyPool.saveLevel(npc.getUID(), level);
+		} else {
+			player.sendMessage(ChatColor.GRAY
+					+ "Your server has not turned economy on for Citizens.");
 		}
 	}
 
 	private String getLevelUpPaidMessage(Operation op, HumanNPC npc, int paid,
 			int level) {
-		String message = "";
-		message = ChatColor.GREEN
+		String message = ChatColor.GREEN
 				+ "You have leveled up the healer "
 				+ StringUtils.yellowify(npc.getStrippedName())
 				+ " to "
-				+ StringUtils.yellowify("Level "
-						+ HealerPropertyPool.getLevel(npc.getUID()) + 1)
+				+ StringUtils.yellowify("Level " + level)
 				+ " for "
 				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
 						+ paid, ChatColor.GREEN)
