@@ -84,7 +84,7 @@ public class TraderTask implements Runnable {
 					&& previousNPCInv.getItem(count).getTypeId() == eplayer.inventory
 							.j().id) {
 				found = true;
-				handleItemClicked((Player) npc.getPlayer(), count, false);
+				handleNPCItemClicked(count, npc.getInventory());
 				break;
 			}
 			count += 1;
@@ -96,7 +96,7 @@ public class TraderTask implements Runnable {
 				if (!previousPlayerInv.getItem(count).equals(i)
 						&& previousPlayerInv.getItem(count).getTypeId() == eplayer.inventory
 								.j().id) {
-					handleItemClicked(player, count, true);
+					handlePlayerItemClicked(count, player.getInventory());
 					break;
 				}
 				count += 1;
@@ -114,79 +114,107 @@ public class TraderTask implements Runnable {
 		stop = false;
 	}
 
-	private void handleItemClicked(Player player, int slot, boolean selling) {
-		PlayerInventory inventory = player.getInventory();
-		PlayerInventory previous = previousNPCInv;
-		int previousSlot = previousNPCClickedSlot;
-
-		String keyword = "Buying";
-		String present = "Buy";
-		String past = "Bought";
-		if (selling) {
-			previous = previousPlayerInv;
-			previousSlot = previousPlayerClickedSlot;
-			keyword = "Selling";
-			present = "Sell";
-			past = "Sold";
-		}
-		inventory.setItem(slot, previous.getItem(slot));
-		ItemStack i = inventory.getItem(slot);
-		if (!(npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), selling))) {
+	private void handleNPCItemClicked(int slot, PlayerInventory npcInv) {
+		npcInv.setItem(slot, previousNPCInv.getItem(slot));
+		ItemStack i = npcInv.getItem(slot);
+		if (!(npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), false))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
-					ChatColor.RED)
-					+ " isn't being "
-					+ past.toLowerCase()
-					+ " here.");
+					ChatColor.RED) + " isn't being sold here.");
 			return;
 		}
 		Stockable stockable = npc.getTraderNPC().getStockable(i.getTypeId(),
-				selling);
-		ItemStack stocking = stockable.getStocking();
-		if (previousSlot != slot) {
-			if (!selling)
-				previousNPCClickedSlot = slot;
-			else
-				previousPlayerClickedSlot = slot;
+				false);
+		ItemStack buying = stockable.getStocking();
+		if (previousNPCClickedSlot != slot) {
+			previousNPCClickedSlot = slot;
 			player.sendMessage(ChatColor.AQUA
-					+ keyword
-					+ " "
+					+ "Buying "
 					+ MessageUtils.getStockableMessage(stockable,
 							ChatColor.AQUA) + ".");
 			return;
 		}
-		if (!selling)
-			previousNPCClickedSlot = slot;
-		else
-			previousPlayerClickedSlot = slot;
-
-		int amount = inventory.getItem(slot).getAmount();
-		if (amount - stocking.getAmount() <= 0) {
+		previousNPCClickedSlot = slot;
+		int amount = npcInv.getItem(slot).getAmount();
+		if (amount - buying.getAmount() <= 0) {
 			player.sendMessage(ChatColor.RED
 					+ "Need at least "
-					+ StringUtils.yellowify(stocking.getAmount() + " "
-							+ stocking.getType().name(), ChatColor.RED)
+					+ StringUtils.yellowify(buying.getAmount() + " "
+							+ buying.getType().name(), ChatColor.RED)
 					+ "(s) on the clicked stack.");
 			return;
 		}
 		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), player)) {
-			player.sendMessage(ChatColor.RED + "Not enough money to "
-					+ present.toLowerCase() + " that.");
+			player.sendMessage(ChatColor.RED
+					+ "Not enough money to buy "
+					+ StringUtils.yellowify(buying.getAmount() + " "
+							+ buying.getType().name(), ChatColor.RED) + "(s).");
 			return;
 		}
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
-				stocking);
+				buying);
 		if (unbought.size() >= 1) {
-			if (!selling)
-				inventory.setContents(previousPlayerInv.getContents());
-			else
-				inventory.setContents(previousNPCInv.getContents());
+			player.getInventory().setContents(previousPlayerInv.getContents());
 			player.sendMessage(ChatColor.RED
-					+ "Not enough room in the inventory to add that.");
+					+ "Not enough room in your inventory to add "
+					+ StringUtils.yellowify(buying.getAmount() + " "
+							+ buying.getType().name(), ChatColor.RED) + "(s).");
 			return;
 		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
-		inventory.setContents(sortInventory(inventory));
+		// npcInv.setContents(sortInventory(npc.getInventory()));
+	}
+
+	private void handlePlayerItemClicked(int slot, PlayerInventory playerInv) {
+		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
+		ItemStack i = playerInv.getItem(slot);
+		if (!npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), true)) {
+			player.sendMessage(StringUtils.yellowify(i.getType().name(),
+					ChatColor.RED) + " isn't being purchased here.");
+			return;
+		}
+		Stockable stockable = npc.getTraderNPC().getStockable(i.getTypeId(),
+				true);
+		ItemStack selling = stockable.getStocking();
+		if (previousPlayerClickedSlot != slot) {
+			previousPlayerClickedSlot = slot;
+			player.sendMessage(ChatColor.AQUA
+					+ "Selling "
+					+ MessageUtils.getStockableMessage(stockable,
+							ChatColor.AQUA) + ".");
+			return;
+		}
+		previousPlayerClickedSlot = slot;
+		int amount = playerInv.getItem(slot).getAmount();
+		if (amount - selling.getAmount() <= 0) {
+			player.sendMessage(ChatColor.RED
+					+ "Need at least "
+					+ StringUtils.yellowify(selling.getAmount() + " "
+							+ selling.getType().name(), ChatColor.RED)
+					+ "(s) on the clicked stack.");
+			return;
+		}
+		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
+			player.sendMessage(ChatColor.RED
+					+ "Not enough money available to buy "
+					+ StringUtils.yellowify(selling.getAmount() + " "
+							+ selling.getType().name(), ChatColor.RED) + "(s).");
+			return;
+		}
+		HashMap<Integer, ItemStack> unsold = npc.getInventory()
+				.addItem(selling);
+		if (unsold.size() >= 1) {
+			npc.getInventory().setContents(previousNPCInv.getContents());
+			player.sendMessage(ChatColor.RED
+					+ "Not enough room available to add "
+					+ StringUtils.yellowify(selling.getAmount() + " "
+							+ selling.getType().name(), ChatColor.RED)
+					+ "(s) to the current stock.");
+			return;
+		}
+		EconomyHandler.pay(new Payment(stockable.getPrice()), npc);
+		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
+		// npc.getInventory().setContents(sortInventory(npc.getInventory()));
 	}
 
 	public ItemStack[] sortInventory(PlayerInventory inventory) {

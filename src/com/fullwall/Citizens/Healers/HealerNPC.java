@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Healers;
 
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -55,5 +56,10 @@ public class HealerNPC implements Toggleable {
 	@Override
 	public void saveState() {
 		HealerPropertyPool.saveState(npc);
+	}
+
+	@Override
+	public void registerState() {
+		HealerPropertyPool.saveHealer(npc.getUID(), true);
 	}
 }

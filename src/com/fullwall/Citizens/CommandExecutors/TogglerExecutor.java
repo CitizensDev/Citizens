@@ -138,8 +138,8 @@ public class TogglerExecutor implements CommandExecutor {
 				if (paid > 0)
 					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
 							toggleable.getName(), toggleable.getType(), true));
+				toggleable.registerState();
 				toggleState(player, toggleable);
-				toggleable.saveState();
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "Your server has not turned economy on for Citizens.");

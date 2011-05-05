@@ -10,4 +10,6 @@ public interface Toggleable {
 	public String getType();
 
 	public void saveState();
+
+	public void registerState();
 }

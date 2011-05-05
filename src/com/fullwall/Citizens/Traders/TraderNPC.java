@@ -157,4 +157,9 @@ public class TraderNPC implements Toggleable {
 	public void saveState() {
 		TraderPropertyPool.saveState(npc);
 	}
+
+	@Override
+	public void registerState() {
+		TraderPropertyPool.saveTrader(npc.getUID(), true);
+	}
 }
