@@ -100,6 +100,13 @@ public class HelpUtils {
 				+ maxPages + ", page: " + page + " is not available.");
 	}
 
+	/**
+	 * Formats commands to fit a uniform style
+	 * 
+	 * @param sender
+	 * @param command
+	 * @param desc
+	 */
 	private static void formatCommand(CommandSender sender, String command,
 			String desc) {
 		sender.sendMessage(StringUtils.yellowify("/") + command

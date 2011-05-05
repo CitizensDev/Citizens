@@ -405,7 +405,7 @@ public class BasicExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-			// TODO replace all sendHelp() methods with ones from HelpUtil
+			// TODO replace all sendHelp() methods with ones from HelpUtils
 		} else if ((command.getName().equals("citizens") || command.getName()
 				.equals("npc")) && args.length >= 2) {
 			if (args[1].equals("help")) {
@@ -414,8 +414,8 @@ public class BasicExecutor implements CommandExecutor {
 					page = Integer.parseInt(args[2]);
 				if (args[0].equals("basic")) {
 					if (hasPermission("citizens.basic.help", sender)) {
-						//sendBasicHelpPage(sender, page);
-						HelpUtils.sendBasicHelpPage(sender, page);
+						sendBasicHelpPage(sender, page);
+						// HelpUtils.sendBasicHelpPage(sender, page);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
