@@ -13,6 +13,22 @@ public class HelpUtils {
 	 * @param sender
 	 */
 	public static void sendHelp(CommandSender sender) {
+		sender.sendMessage(ChatColor.GREEN
+				+ StringUtils.yellowify("==========[ ") + "Citizens Help"
+				+ StringUtils.yellowify(" ]=========="));
+		sender.sendMessage(ChatColor.GREEN + "  []"
+				+ StringUtils.yellowify(" - required") + "  ()"
+				+ StringUtils.yellowify(" - optional"));
+		sender.sendMessage(ChatColor.YELLOW
+				+ "=================================");
+		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
+		formatCommand(sender, "trader", "help [page]", "trader NPC help pages");
+		formatCommand(sender, "healer", "help", "healer NPC help page");
+		formatCommand(sender, "npc", "create [name]", "create a basic NPC");
+		formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
+		formatCommand(sender, "toggle", "[all] [on/off]",
+				"toggle all types for an NPC");
+		footer(sender);
 	}
 
 	/**
@@ -25,7 +41,7 @@ public class HelpUtils {
 		switch (page) {
 		case 1:
 			header(sender, "Basic", 1, 4);
-			formatCommand(sender, "create", "create an NPC");
+			formatCommand(sender, "npc", "create [name]", "create an NPC");
 			break;
 		case 2:
 			header(sender, "Basic", 2, 4);
@@ -37,7 +53,7 @@ public class HelpUtils {
 			header(sender, "Basic", 4, 4);
 			break;
 		default:
-			maxPages(sender, page, 4);
+			maxPagesMessage(sender, page, 4);
 			break;
 		}
 	}
@@ -57,7 +73,7 @@ public class HelpUtils {
 			header(sender, "Trader", page, 2);
 			break;
 		default:
-			maxPages(sender, page, 2);
+			maxPagesMessage(sender, page, 2);
 			break;
 		}
 	}
@@ -70,6 +86,10 @@ public class HelpUtils {
 	 */
 	public static void sendHealerHelp(CommandSender sender) {
 		header(sender, "Healer", 1, 1);
+		formatCommand(sender, "healer", "help", "view this menu");
+		formatCommand(sender, "healer", "status",
+				"view the health and level of a healer");
+		formatCommand(sender, "healer", "level-up", "move a healer one level up");
 	}
 
 	/**
@@ -88,6 +108,11 @@ public class HelpUtils {
 				+ ">" + StringUtils.yellowify(" ]=========="));
 	}
 
+	private static void footer(CommandSender sender) {
+		sender.sendMessage(ChatColor.DARK_GRAY
+				+ "=====[ fullwall, NeonMaster, TheMPC, aPunch ]=====");
+	}
+
 	/**
 	 * Sends the max-pages message
 	 * 
@@ -95,7 +120,8 @@ public class HelpUtils {
 	 * @param page
 	 * @param maxPages
 	 */
-	private static void maxPages(CommandSender sender, int page, int maxPages) {
+	private static void maxPagesMessage(CommandSender sender, int page,
+			int maxPages) {
 		sender.sendMessage(ChatColor.GRAY + "The total number of pages is "
 				+ maxPages + ", page: " + page + " is not available.");
 	}
@@ -108,8 +134,15 @@ public class HelpUtils {
 	 * @param desc
 	 */
 	private static void formatCommand(CommandSender sender, String command,
-			String desc) {
-		sender.sendMessage(StringUtils.yellowify("/") + command
-				+ StringUtils.yellowify(" - ") + desc);
+			String args, String desc) {
+		String message = "";
+		if (args.isEmpty()) {
+			message = StringUtils.yellowify("/") + command
+					+ StringUtils.yellowify(" - ") + desc;
+		} else {
+			message = StringUtils.yellowify("/") + command + ChatColor.RED
+					+ " " + args + StringUtils.yellowify(" - ") + desc;
+		}
+		sender.sendMessage(message);
 	}
 }

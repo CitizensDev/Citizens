@@ -18,6 +18,7 @@ import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
+import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -98,6 +99,14 @@ public class TraderExecutor implements CommandExecutor {
 					displayList(player, npc, args, args[1].contains("s"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
+				returnval = true;
+			} else if (args.length == 2 && args[0].equals("help")) {
+				if (BasicExecutor.hasPermission("citizens.trader.help", sender)) {
+					int page = Integer.parseInt(args[1]);
+					HelpUtils.sendTraderHelpPage(sender, page);
+				} else {
+					player.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			}
 			TraderPropertyPool.saveState(npc);

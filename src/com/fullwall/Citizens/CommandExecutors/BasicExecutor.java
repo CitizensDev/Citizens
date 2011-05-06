@@ -15,6 +15,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -399,32 +400,19 @@ public class BasicExecutor implements CommandExecutor {
 		} else if ((command.getName().equals("citizens") || command.getName()
 				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
 			if (hasPermission("citizens.help", sender)) {
-				sendHelp(sender);
+				HelpUtils.sendHelp(sender);
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-			// TODO replace all sendHelp() methods with ones from HelpUtils
-		} else if ((command.getName().equals("citizens") || command.getName()
-				.equals("npc")) && args.length >= 2) {
-			if (args[1].equals("help")) {
-				int page = 1;
-				if (args.length == 3)
-					page = Integer.parseInt(args[2]);
-				if (args[0].equals("basic")) {
-					if (hasPermission("citizens.basic.help", sender)) {
-						sendBasicHelpPage(sender, page);
-						// HelpUtils.sendBasicHelpPage(sender, page);
-					} else {
-						sender.sendMessage(MessageUtils.noPermissionsMessage);
-					}
-				} else if (args[0].equals("trader")) {
-					if (hasPermission("citizens.trader.help", sender)) {
-						sendTraderHelpPage(sender, page);
-					} else {
-						sender.sendMessage(MessageUtils.noPermissionsMessage);
-					}
-				}
+
+		} else if (args.length == 3 && args[0].equals("basic")
+				&& args[1].equals("help")) {
+			if (hasPermission("citizens.basic.help", sender)) {
+				int page = Integer.parseInt(args[2]);
+				HelpUtils.sendBasicHelpPage(sender, page);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
