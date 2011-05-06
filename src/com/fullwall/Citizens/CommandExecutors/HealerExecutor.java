@@ -11,6 +11,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
+import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -37,16 +38,16 @@ public class HealerExecutor implements CommandExecutor {
 			npc = NPCManager
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
 		else {
-			player.sendMessage(ChatColor.RED
+			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
 		if (!NPCManager.validateOwnership(player, npc.getUID())) {
-			player.sendMessage(MessageUtils.notOwnerMessage);
+			sender.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		}
 		if (!npc.isHealer()) {
-			player.sendMessage(ChatColor.RED + "Your NPC isn't a healer yet.");
+			sender.sendMessage(ChatColor.RED + "Your NPC isn't a healer yet.");
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equals("status")) {
@@ -54,7 +55,7 @@ public class HealerExecutor implements CommandExecutor {
 						sender)) {
 					displayStatus(player, npc);
 				} else {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 1 && args[0].equals("level-up")) {
@@ -62,9 +63,15 @@ public class HealerExecutor implements CommandExecutor {
 						.hasPermission("citizens.healer.level", sender)) {
 					levelUp(player, npc);
 				} else {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+			} else if (args.length == 1 && args[0].equals("help")) {
+				if (BasicExecutor.hasPermission("citizens.healer.help", sender)) {
+					HelpUtils.sendHealerHelp(sender);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 			}
 			HealerPropertyPool.saveState(npc);
 		}

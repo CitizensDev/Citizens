@@ -18,6 +18,7 @@ import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
+import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -98,6 +99,13 @@ public class TraderExecutor implements CommandExecutor {
 					changeUnlimited(npc, sender, args[1]);
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
+				returnval = true;
+			} else if (args.length == 1 && args[0].equals("help")) {
+				if (BasicExecutor.hasPermission("citizens.trader.help", sender)) {
+					HelpUtils.sendTraderHelpPage(sender);
+				} else {
+					player.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			}
 			TraderPropertyPool.saveState(npc);
@@ -233,12 +241,19 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 		}
-		if (cost == null && !EconomyHandler.useIconomy()) {
-			player.sendMessage(ChatColor.GRAY
-					+ "This server is not using iConomy, so the price cannot be an iConomy value. "
-					+ "If you meant to use an item as currency, "
-					+ "please format it in this format: item ID:amount(:data).");
-			return;
+		if (cost == null) {
+			if (!EconomyHandler.useIconomy()) {
+				player.sendMessage(ChatColor.GRAY
+						+ "This server is not using iConomy, so the price cannot be an iConomy value. "
+						+ "If you meant to use an item as currency, "
+						+ "please format it in this format: item ID:amount(:data).");
+				return;
+			} else if (split[0].contains(".")) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Citizens does not currently support iConomy secondary currency. "
+						+ "We will be working on it for a future update.");
+				return;
+			}
 		}
 		int data = Citizens.MAGIC_DATA_VALUE;
 		if (cost != null && cost.getData() != null)
