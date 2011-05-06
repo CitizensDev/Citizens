@@ -115,7 +115,7 @@ public class ItemInterface {
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
-				decreaseItemStack(player, currencyID, current, count);
+				current = decreaseItemStack(player, currencyID, current, count);
 				if (current <= 0)
 					break;
 			}
@@ -137,13 +137,13 @@ public class ItemInterface {
 		int current = payment.getPrice();
 		int count = 0;
 		if (slot != -1) {
-			decreaseItemStack(player, currencyID, current, slot);
+			current = decreaseItemStack(player, currencyID, current, slot);
 		}
 		if (current <= 0)
 			return payment.getPrice();
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
-				decreaseItemStack(player, currencyID, current, count);
+				current = decreaseItemStack(player, currencyID, current, count);
 				if (current <= 0)
 					break;
 			}

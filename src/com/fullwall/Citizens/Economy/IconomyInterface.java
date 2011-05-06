@@ -128,8 +128,7 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static int pay(HumanNPC npc, Payment payment) {
-		npc.setBalance(
-				npc.getBalance() - payment.getPrice());
+		npc.setBalance(npc.getBalance() - payment.getPrice());
 		return payment.getPrice();
 	}
 

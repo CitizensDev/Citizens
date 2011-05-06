@@ -71,10 +71,12 @@ public class ItemPrice {
 
 	public String toString() {
 		String ret = "";
-		ret += (iConomy ? "" + price + Citizens.separatorChar + iConomy
-				+ Citizens.separatorChar : "" + price + Citizens.separatorChar
-				+ itemID + Citizens.separatorChar + data
-				+ Citizens.separatorChar + iConomy + Citizens.separatorChar);
+		if (iConomy)
+			ret += "" + price + Citizens.separatorChar + iConomy;
+		else
+			ret += "" + price + Citizens.separatorChar + itemID
+					+ Citizens.separatorChar + data + Citizens.separatorChar
+					+ iConomy + Citizens.separatorChar;
 		return ret;
 	}
 

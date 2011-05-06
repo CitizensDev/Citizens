@@ -31,8 +31,8 @@ public class HumanNPC extends NPC {
 	private boolean isTrader = false;
 	private boolean isHealer = false;
 
-	public TraderNPC traderNPC = new TraderNPC(this);
-	public HealerNPC healerNPC = new HealerNPC(this);
+	private TraderNPC traderNPC = new TraderNPC(this);
+	private HealerNPC healerNPC = new HealerNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")

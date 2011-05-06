@@ -40,23 +40,18 @@ public class TraderInterface {
 			if (!BasicExecutor.hasPermission("citizens.trader.stock", player)) {
 				return;
 			}
-			if (!NPCManager.validateOwnership(player, npc.getUID())) {
-				TraderTask task = new TraderTask(npc, player, Citizens.plugin,
-						Mode.NORMAL);
-				int id = Citizens.plugin.getServer().getScheduler()
-						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
-				tasks.add(id);
-				task.addID(id);
-				npc.getTrader().setFree(false);
-			} else {
-				TraderTask task = new TraderTask(npc, player, Citizens.plugin,
-						Mode.STOCK);
-				int id = Citizens.plugin.getServer().getScheduler()
-						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
-				tasks.add(id);
-				task.addID(id);
-				npc.getTrader().setFree(false);
+			Mode mode = Mode.NORMAL;
+			if (NPCManager.validateOwnership(player, npc.getUID())) {
+				mode = Mode.STOCK;
+			} else if (npc.getTrader().isUnlimited()) {
+				mode = Mode.INFINITE;
 			}
+			TraderTask task = new TraderTask(npc, player, Citizens.plugin, mode);
+			int id = Citizens.plugin.getServer().getScheduler()
+					.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
+			tasks.add(id);
+			task.addID(id);
+			npc.getTrader().setFree(false);
 			showInventory(npc, player);
 		} else
 			player.sendMessage(ChatColor.RED

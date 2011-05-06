@@ -18,7 +18,6 @@ import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
-import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -51,13 +50,21 @@ public class TraderExecutor implements CommandExecutor {
 					+ MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
-		if (!NPCManager.validateOwnership(player, npc.getUID())) {
-			player.sendMessage(MessageUtils.notOwnerMessage);
-			return true;
-
-		}
 		if (!npc.isTrader()) {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a trader yet.");
+			return true;
+		}
+		if (args.length >= 2 && args[0].contains("list")
+				&& (args[1].contains("s") || args[1].contains("b"))) {
+			if (BasicExecutor.hasPermission("citizens.trader.stock", sender)) {
+				displayList(player, npc, args, args[1].contains("s"));
+			} else
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+			returnval = true;
+		}
+		if (!NPCManager.validateOwnership(player, npc.getUID())) {
+			if (!returnval)
+				player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		} else {
 			if (args.length == 3 && args[0].equals("balance")) {
@@ -77,11 +84,11 @@ public class TraderExecutor implements CommandExecutor {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
 			} else if (args.length == 3
-					&& (args[0].contains("b") || args[0].contains("s"))) {
+					&& (args[0].contains("buy") || args[0].contains("sell"))) {
 				if (BasicExecutor
 						.hasPermission("citizens.trader.stock", sender)) {
 					changeTraderStock(player, npc, args[1], args[2],
-							args[0].contains("s"));
+							args[0].contains("sell"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
@@ -91,21 +98,6 @@ public class TraderExecutor implements CommandExecutor {
 					changeUnlimited(npc, sender, args[1]);
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
-				returnval = true;
-			} else if (args.length == 3 && args[0].contains("list")
-					&& (args[1].contains("s") || args[1].contains("b"))) {
-				if (BasicExecutor
-						.hasPermission("citizens.trader.stock", sender)) {
-					displayList(player, npc, args, args[1].contains("s"));
-				} else
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-				returnval = true;
-			} else if (args.length == 1 && args[0].equals("help")) {
-				if (BasicExecutor.hasPermission("citizens.trader.help", sender)) {
-					HelpUtils.sendTraderHelpPage(sender);
-				} else {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-				}
 				returnval = true;
 			}
 			TraderPropertyPool.saveState(npc);
@@ -124,37 +116,47 @@ public class TraderExecutor implements CommandExecutor {
 	private void displayList(Player player, HumanNPC npc, String[] args,
 			boolean selling) {
 		ArrayList<Stockable> stock = npc.getTrader().getStockables(selling);
+		int page = 0;
+		int startPoint = 0;
+		int numPages = stock.size() / 4;
+		if (numPages == 0)
+			numPages = 1;
 		String keyword = "";
 		if (selling)
 			keyword = "Selling";
 		else
 			keyword = "Buying";
-		// have to paginate.
-		int page = 0;
+		if (stock.size() == 0) {
+			player.sendMessage(ChatColor.GRAY + "This NPC isn't "
+					+ keyword.toLowerCase() + " any items.");
+			return;
+		}
 		if (stock.size() > 4 && args.length == 3) {
 			page = Integer.parseInt(args[2]);
-		} else {
-			player.sendMessage(ChatColor.GOLD + "NPC " + keyword
-					+ " List (Page "
-					+ StringUtils.yellowify(page, ChatColor.GOLD) + " of "
-					+ StringUtils.yellowify(stock.size() / 4, ChatColor.YELLOW)
-					+ ")");
-			player.sendMessage(ChatColor.AQUA
-					+ "-------------------------------");
-			int startPoint = 4 * page - 1;
-			for (int i = startPoint; i != startPoint + 3; ++i) {
-				if ((stock.size() - 1) >= i) {
-					Stockable s = stock.get(i);
-					player.sendMessage(ChatColor.GREEN
-							+ keyword
-							+ " "
-							+ MessageUtils.getStockableMessage(s,
-									ChatColor.GREEN) + ".");
-				} else {
-					player.sendMessage(ChatColor.AQUA
-							+ "-------------------------------");
-					break;
-				}
+			startPoint = (4 * page) - 1;
+		}
+		if (startPoint > stock.size() - 1) {
+			player.sendMessage(ChatColor.RED
+					+ "Invalid page number. There are "
+					+ StringUtils.yellowify(numPages, ChatColor.RED)
+					+ " pages.");
+			return;
+		}
+		player.sendMessage(ChatColor.GOLD + "NPC " + keyword + " List (Page "
+				+ StringUtils.yellowify((page == 0 ? 1 : page), ChatColor.GOLD)
+				+ " of " + StringUtils.yellowify(numPages, ChatColor.GOLD)
+				+ ")");
+		player.sendMessage(ChatColor.AQUA + "-------------------------------");
+		for (int i = startPoint; i != startPoint + 3; ++i) {
+			if ((stock.size() - 1) >= i) {
+				Stockable s = stock.get(i);
+				player.sendMessage(ChatColor.GREEN + keyword + " "
+						+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
+						+ ".");
+			} else {
+				player.sendMessage(ChatColor.AQUA
+						+ "-------------------------------");
+				break;
 			}
 		}
 	}
@@ -199,28 +201,18 @@ public class TraderExecutor implements CommandExecutor {
 						+ "Invalid item ID or name specified.");
 				return;
 			}
-			if (selling) {
-				if (npc.getTrader().getStockable(mat.getId(), true) == null) {
-					player.sendMessage(ChatColor.RED
-							+ "The NPC is not currently selling that item.");
-					return;
-				} else {
-					npc.traderNPC.removeStockable(mat.getId(), true);
-					player.sendMessage(ChatColor.GREEN + "Removed "
-							+ StringUtils.yellowify(mat.name())
-							+ " from the NPC's selling list.");
-				}
+			String keyword = "buying";
+			if (selling)
+				keyword = "selling";
+			if (npc.getTrader().getStockable(mat.getId(), selling) == null) {
+				player.sendMessage(ChatColor.RED + "The NPC is not currently "
+						+ keyword + " that item.");
+				return;
 			} else {
-				if (npc.getTrader().getStockable(mat.getId(), false) == null) {
-					player.sendMessage(ChatColor.RED
-							+ "The NPC is not currently buying that item.");
-					return;
-				} else {
-					npc.traderNPC.removeStockable(mat.getId(), false);
-					player.sendMessage(ChatColor.GREEN + "Removed "
-							+ StringUtils.yellowify(mat.name())
-							+ " from the NPC's buying list.");
-				}
+				npc.getTrader().removeStockable(mat.getId(), selling);
+				player.sendMessage(ChatColor.GREEN + "Removed "
+						+ StringUtils.yellowify(mat.name())
+						+ " from the NPC's " + keyword + " list.");
 			}
 			return;
 		}
@@ -241,26 +233,36 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 		}
+		if (cost == null && !EconomyHandler.useIconomy()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "This server is not using iConomy, so the price cannot be an iConomy value. "
+					+ "If you meant to use an item as currency, "
+					+ "please format it in this format: item ID:amount(:data).");
+			return;
+		}
 		int data = Citizens.MAGIC_DATA_VALUE;
-		if (cost.getData() != null)
+		if (cost != null && cost.getData() != null)
 			data = cost.getData().getData();
-		ItemPrice itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(),
-				data);
+		ItemPrice itemPrice;
+		if (cost != null)
+			itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(), data);
+		else
+			itemPrice = new ItemPrice(Integer.parseInt(split[0]));
 		itemPrice.setiConomy(cost == null);
 		Stockable s = new Stockable(stack, itemPrice, false);
-		String keyword = "buying ";
+		String keyword = "buying";
 		if (selling) {
 			s.setSelling(true);
-			keyword = "selling ";
+			keyword = "selling";
 		}
 		if (npc.getTrader().isStocked(s)) {
-			player.sendMessage(ChatColor.RED + "The trader is already "
-					+ keyword + " that at "
+			player.sendMessage(ChatColor.RED + "Already " + keyword
+					+ " that at "
 					+ MessageUtils.getStockableMessage(s, ChatColor.RED) + ".");
 			return;
 		}
 		npc.getTrader().addStockable(s);
-		player.sendMessage(ChatColor.GREEN + "The NPC is now " + keyword
+		player.sendMessage(ChatColor.GREEN + "The NPC is now " + keyword + " "
 				+ MessageUtils.getStockableMessage(s, ChatColor.GREEN) + ".");
 	}
 
@@ -271,22 +273,26 @@ public class TraderExecutor implements CommandExecutor {
 	 * @return
 	 */
 	private ItemStack createItemStack(String[] split) {
-		int amount = 1;
-		int data = 0;
-		Material mat = StringUtils.parseMaterial(split[0]);
-		if (mat == null) {
+		try {
+			int amount = 1;
+			int data = 0;
+			Material mat = StringUtils.parseMaterial(split[0]);
+			if (mat == null) {
+				return null;
+			}
+			if (split.length > 1)
+				amount = Integer.parseInt(split[1]);
+			if (split.length > 2)
+				data = Integer.parseInt(split[2]);
+			ItemStack stack = new ItemStack(mat, amount);
+			if (data > 0) {
+				MaterialData mdata = new MaterialData(data);
+				stack.setData(mdata);
+			}
+			return stack;
+		} catch (NumberFormatException ex) {
 			return null;
 		}
-		if (split.length > 1)
-			amount = Integer.parseInt(split[1]);
-		if (split.length > 2)
-			data = Integer.parseInt(split[2]);
-		ItemStack stack = new ItemStack(mat, amount);
-		if (data > 0) {
-			MaterialData mdata = new MaterialData(data);
-			stack.setData(mdata);
-		}
-		return stack;
 	}
 
 	/**

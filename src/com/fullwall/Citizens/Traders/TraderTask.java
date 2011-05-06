@@ -126,11 +126,12 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		previousNPCClickedSlot = slot;
-		if (checkMiscellaneous(npcInv, stockable, slot, "buy"))
+		if (checkMiscellaneous(npcInv, stockable, slot, "buy", true))
 			return;
 		ItemStack buying = stockable.getStocking();
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
+
 		if (unbought.size() >= 1) {
 			restorePreviousState();
 			player.sendMessage(ChatColor.RED
@@ -139,13 +140,9 @@ public class TraderTask implements Runnable {
 					+ ".");
 			return;
 		}
-		EconomyHandler.pay(new Payment(stockable.getPrice()), player, slot);
-		if (mode != Mode.INFINITE)
-			EconomyHandler.pay(new Payment(buying, stockable.getPrice()
-					.isiConomy()), npc, -1);
-		if (!stockable.getPrice().isiConomy()) {
-			unbought = npc.getPlayer().getInventory()
-					.addItem(stockable.getPrice().getItemStack());
+		if (!stockable.isiConomy() && mode != Mode.INFINITE) {
+			unbought = npc.getInventory().addItem(
+					stockable.getPrice().getItemStack());
 			if (unbought.size() >= 1) {
 				restorePreviousState();
 				player.sendMessage(ChatColor.RED
@@ -153,9 +150,14 @@ public class TraderTask implements Runnable {
 						+ stockable.getString(ChatColor.RED) + ".");
 				return;
 			}
-		}
+		}// Buying 6 stones -> player receives 6
+			// Price is 2 stones -> player pays 2
+			// Npc must pay 6
+			// Npc receives 2.
+		EconomyHandler.pay(new Payment(stockable.getPrice()), player, -1);
+		if (mode != Mode.INFINITE)
+			EconomyHandler.pay(new Payment(buying, false), npc, slot);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
-		// npcInv.setContents(sortInventory(npc.getInventory()));
 	}
 
 	private void handlePlayerItemClicked(int slot, PlayerInventory playerInv) {
@@ -170,11 +172,14 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		previousPlayerClickedSlot = slot;
-		if (checkMiscellaneous(playerInv, stockable, slot, "sell"))
+		if (checkMiscellaneous(playerInv, stockable, slot, "sell", false))
 			return;
 		ItemStack selling = stockable.getStocking();
-		HashMap<Integer, ItemStack> unsold = npc.getInventory()
-				.addItem(selling);
+		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
+		if (mode != Mode.INFINITE) {
+			unsold = npc.getInventory().addItem(
+					stockable.getPrice().getItemStack());
+		}
 		if (unsold.size() >= 1) {
 			restorePreviousState();
 			player.sendMessage(ChatColor.RED
@@ -183,11 +188,7 @@ public class TraderTask implements Runnable {
 					+ " to the current stock.");
 			return;
 		}
-		if (mode != Mode.INFINITE)
-			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, slot);
-		EconomyHandler.pay(new Payment(selling, stockable.getPrice()
-				.isiConomy()), player, -1);
-		if (!stockable.getPrice().isiConomy()) {
+		if (!stockable.isiConomy()) {
 			unsold = player.getInventory().addItem(stockable.getStocking());
 			if (unsold.size() >= 1) {
 				restorePreviousState();
@@ -197,8 +198,11 @@ public class TraderTask implements Runnable {
 				return;
 			}
 		}
+		if (mode != Mode.INFINITE)
+			EconomyHandler.pay(new Payment(stockable.getStocking(), false),
+					npc, -1);
+		EconomyHandler.pay(new Payment(stockable.getPrice()), player, slot);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
-		// npc.getInventory().setContents(sortInventory(npc.getInventory()));
 	}
 
 	private void restorePreviousState() {
@@ -207,15 +211,43 @@ public class TraderTask implements Runnable {
 	}
 
 	private boolean checkMiscellaneous(PlayerInventory inv,
-			Stockable stockable, int slot, String keyword) {
+			Stockable stockable, int slot, String keyword, boolean buying) {
 		ItemStack stocking = stockable.getStocking();
-		if (inv.getItem(slot).getAmount() - stocking.getAmount() <= 0) {
-			sendNeedMoreMessage(stocking);
-			return false;
+		if (buying) {
+			if (inv.getItem(slot).getAmount() - stocking.getAmount() <= 0) {
+				sendNeedMoreMessage(stocking);
+				return true;
+			}
+		} else {
+			if (stockable.isiConomy()) {
+				if (inv.getItem(slot).getAmount()
+						- stockable.getPrice().getPrice() <= 0) {
+					sendNeedMoreMessage(stockable.getPrice().getItemStack());
+					return true;
+				}
+			}
 		}
-		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
-			sendNoMoneyMessage(stocking, keyword);
-			return true;
+		if (buying) {
+			if (!EconomyHandler.canBuy(new Payment(stockable.getStocking(),
+					false), npc)) {
+				sendNoMoneyMessage(stocking, keyword);
+				return true;
+			}
+			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()),
+					player)) {
+				sendNoMoneyMessage(stocking, keyword);
+				return true;
+			}
+		} else {
+			if (!EconomyHandler.canBuy(new Payment(stockable.getStocking(),
+					false), player)) {
+				sendNoMoneyMessage(stocking, keyword);
+				return true;
+			}
+			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
+				sendNoMoneyMessage(stocking, keyword);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -230,9 +262,16 @@ public class TraderTask implements Runnable {
 	}
 
 	private void sendStockableMessage(String keyword, Stockable stockable) {
-		player.sendMessage(ChatColor.AQUA + keyword
-				+ MessageUtils.getStockableMessage(stockable, ChatColor.AQUA)
-				+ ".");
+		if (stockable.isSelling())
+			player.sendMessage(ChatColor.AQUA
+					+ keyword
+					+ MessageUtils.getReverseStockableMessage(stockable,
+							ChatColor.AQUA) + ".");
+		else
+			player.sendMessage(ChatColor.AQUA
+					+ keyword
+					+ MessageUtils.getStockableMessage(stockable,
+							ChatColor.AQUA) + ".");
 	}
 
 	private void sendNeedMoreMessage(ItemStack stocking) {
@@ -250,10 +289,6 @@ public class TraderTask implements Runnable {
 			return null;
 		}
 		return npc.getTrader().getStockable(i.getTypeId(), selling);
-	}
-
-	public ItemStack[] sortInventory(PlayerInventory inventory) {
-		return InventorySorter.sortItemStack(inventory.getContents());
 	}
 
 	public void addID(int ID) {

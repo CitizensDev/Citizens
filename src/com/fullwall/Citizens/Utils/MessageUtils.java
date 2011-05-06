@@ -138,6 +138,24 @@ public class MessageUtils {
 		return message;
 	}
 
+	public static String getReverseStockableMessage(Stockable stockable,
+			ChatColor colour) {
+		if (!stockable.isiConomy())
+			return StringUtils.yellowify(
+					MessageUtils.getPriceMessage(stockable.getPrice(), colour),
+					colour)
+					+ " for "
+					+ StringUtils.yellowify(stockable.getStocking().getAmount()
+							+ " " + stockable.getStocking().getType().name(),
+							colour) + "(s)";
+		else
+			return StringUtils.yellowify(stockable.getStocking().getAmount()
+					+ " " + stockable.getStocking().getType().name(), colour)
+					+ "(s) for "
+					+ StringUtils.yellowify(MessageUtils.getPriceMessage(
+							stockable.getPrice(), colour), colour);
+	}
+
 	/**
 	 * Formats the ItemStack contained in a stockable to a string.
 	 * 

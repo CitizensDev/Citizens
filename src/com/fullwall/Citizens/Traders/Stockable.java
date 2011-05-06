@@ -24,6 +24,10 @@ public class Stockable {
 		this.setSelling(selling);
 	}
 
+	public Check createCheck() {
+		return new Check(getStockingId(), isSelling());
+	}
+
 	public ItemStack getStocking() {
 		return this.stocking;
 	}
@@ -44,6 +48,16 @@ public class Stockable {
 		return selling;
 	}
 
+	public boolean isiConomy() {
+		return price.isiConomy();
+	}
+
+	public String getString(ChatColor colour) {
+		return StringUtils.yellowify(getStocking().getAmount() + " "
+				+ getStocking().getType().name(), colour)
+				+ "(s)";
+	}
+
 	public String toString() {
 		String ret = "";
 		ret += stocking.getTypeId()
@@ -51,19 +65,9 @@ public class Stockable {
 				+ stocking.getAmount()
 				+ Citizens.separatorChar
 				+ (stocking.getData() == null ? "0" : stocking.getData()
-						.getData()) + Citizens.separatorChar + "-";
-		ret += price.toString() + "-";
-		ret += selling + "-";
+						.getData()) + Citizens.separatorChar + ",";
+		ret += price.toString() + ",";
+		ret += selling + ",";
 		return ret;
-	}
-
-	public Check createCheck() {
-		return new Check(getStockingId(), isSelling());
-	}
-
-	public String getString(ChatColor colour) {
-		return StringUtils.yellowify(getStocking().getAmount() + " "
-				+ getStocking().getType().name(), colour)
-				+ "(s)";
 	}
 }

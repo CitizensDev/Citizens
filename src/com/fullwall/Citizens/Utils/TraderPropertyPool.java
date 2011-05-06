@@ -93,11 +93,12 @@ public class TraderPropertyPool {
 		return unlimiteds.getBoolean(UID);
 	}
 
-	public static void addStockable(int UID, Stockable s) {
-		String write = "";
-		write += s.toString() + ";";
-		String read = stocking.getString(UID);
-		stocking.setString(UID, read + write);
+	public static String addToStockableString(int UID, String s, Stockable st) {
+		return s += st.toString() + ";";
+	}
+
+	public static void setStockables(int UID, String set) {
+		stocking.setString(UID, set);
 	}
 
 	public static void removeStockable(int UID, Stockable s) {
@@ -110,8 +111,10 @@ public class TraderPropertyPool {
 
 	public static void saveStockables(int UID,
 			ConcurrentHashMap<Check, Stockable> stockables) {
+		String string = "";
 		for (Entry<Check, Stockable> entry : stockables.entrySet()) {
-			addStockable(UID, entry.getValue());
+			string += addToStockableString(UID, string, entry.getValue());
+			setStockables(UID, string);
 		}
 	}
 
@@ -125,7 +128,7 @@ public class TraderPropertyPool {
 			ItemStack stack = new ItemStack(37);
 			ItemPrice price = new ItemPrice(0);
 			boolean selling = false;
-			for (String main : s.split("-")) {
+			for (String main : s.split(",")) {
 				switch (i) {
 				case 0:
 					String[] split = main.split("/");
