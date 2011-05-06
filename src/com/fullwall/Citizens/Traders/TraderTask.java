@@ -117,64 +117,43 @@ public class TraderTask implements Runnable {
 	private void handleNPCItemClicked(int slot, PlayerInventory npcInv) {
 		npcInv.setItem(slot, previousNPCInv.getItem(slot));
 		ItemStack i = npcInv.getItem(slot);
-		if (!(npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), false))) {
-			player.sendMessage(StringUtils.yellowify(i.getType().name(),
-					ChatColor.RED) + " isn't being sold here.");
+		Stockable stockable = getStockable(i, "sold", false);
+		if (stockable == null)
 			return;
-		}
-		Stockable stockable = npc.getTraderNPC().getStockable(i.getTypeId(),
-				false);
-		ItemStack buying = stockable.getStocking();
 		if (previousNPCClickedSlot != slot) {
 			previousNPCClickedSlot = slot;
-			player.sendMessage(ChatColor.AQUA
-					+ "Buying "
-					+ MessageUtils.getStockableMessage(stockable,
-							ChatColor.AQUA) + ".");
+			sendStockableMessage("Buying ", stockable);
 			return;
 		}
 		previousNPCClickedSlot = slot;
-		int amount = npcInv.getItem(slot).getAmount();
-		if (amount - buying.getAmount() <= 0) {
-			player.sendMessage(ChatColor.RED
-					+ "Need at least "
-					+ StringUtils.yellowify(buying.getAmount() + " "
-							+ buying.getType().name(), ChatColor.RED)
-					+ "(s) on the clicked stack.");
+		if (checkMiscellaneous(npcInv, stockable, slot, "buy"))
 			return;
-		}
-		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), player)) {
-			player.sendMessage(ChatColor.RED
-					+ "Not enough money to buy "
-					+ StringUtils.yellowify(buying.getAmount() + " "
-							+ buying.getType().name(), ChatColor.RED) + "(s).");
-			return;
-		}
+		ItemStack buying = stockable.getStocking();
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
 		if (unbought.size() >= 1) {
-			player.getInventory().setContents(previousPlayerInv.getContents());
+			restorePreviousState();
 			player.sendMessage(ChatColor.RED
 					+ "Not enough room in your inventory to add "
-					+ StringUtils.yellowify(buying.getAmount() + " "
-							+ buying.getType().name(), ChatColor.RED) + "(s).");
+					+ MessageUtils.getStackToString(buying, ChatColor.RED)
+					+ ".");
 			return;
 		}
-		HashMap<Integer, ItemStack> ungiven = npc.getPlayer().getInventory()
-				.addItem(stockable.getStocking());
-		if (ungiven.size() >= 1) {
-			npc.getInventory().setContents(previousNPCInv.getContents());
-			player.getInventory().setContents(previousPlayerInv.getContents());
-			player.sendMessage(ChatColor.RED
-					+ "Not enough room in the npc's inventory to add "
-					+ StringUtils.yellowify(stockable.getStocking().getAmount()
-							+ " " + stockable.getStocking().getType().name(),
-							ChatColor.RED) + "(s).");
-			return;
+		EconomyHandler.pay(new Payment(stockable.getPrice()), player, slot);
+		if (mode != Mode.INFINITE)
+			EconomyHandler.pay(new Payment(buying, stockable.getPrice()
+					.isiConomy()), npc, -1);
+		if (!stockable.getPrice().isiConomy()) {
+			unbought = npc.getPlayer().getInventory()
+					.addItem(stockable.getPrice().getItemStack());
+			if (unbought.size() >= 1) {
+				restorePreviousState();
+				player.sendMessage(ChatColor.RED
+						+ "Not enough room in the npc's inventory to add "
+						+ stockable.getString(ChatColor.RED) + ".");
+				return;
+			}
 		}
-		EconomyHandler.pay(new Payment(stockable.getPrice()), player);
-		EconomyHandler.pay(new Payment(stockable.getStocking(), stockable
-				.getPrice().isiConomy()), npc);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		// npcInv.setContents(sortInventory(npc.getInventory()));
 	}
@@ -182,67 +161,95 @@ public class TraderTask implements Runnable {
 	private void handlePlayerItemClicked(int slot, PlayerInventory playerInv) {
 		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = playerInv.getItem(slot);
-		if (!npc.getTraderNPC().isStocked(i.getTypeId(), i.getData(), true)) {
-			player.sendMessage(StringUtils.yellowify(i.getType().name(),
-					ChatColor.RED) + " isn't being purchased here.");
+		Stockable stockable = getStockable(i, "bought", true);
+		if (stockable == null)
 			return;
-		}
-		Stockable stockable = npc.getTraderNPC().getStockable(i.getTypeId(),
-				true);
-		ItemStack selling = stockable.getStocking();
 		if (previousPlayerClickedSlot != slot) {
 			previousPlayerClickedSlot = slot;
-			player.sendMessage(ChatColor.AQUA
-					+ "Selling "
-					+ MessageUtils.getStockableMessage(stockable,
-							ChatColor.AQUA) + ".");
+			sendStockableMessage("Selling ", stockable);
 			return;
 		}
 		previousPlayerClickedSlot = slot;
-		int amount = playerInv.getItem(slot).getAmount();
-		if (amount - selling.getAmount() <= 0) {
-			player.sendMessage(ChatColor.RED
-					+ "Need at least "
-					+ StringUtils.yellowify(selling.getAmount() + " "
-							+ selling.getType().name(), ChatColor.RED)
-					+ "(s) on the clicked stack.");
+		if (checkMiscellaneous(playerInv, stockable, slot, "sell"))
 			return;
-		}
-		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
-			player.sendMessage(ChatColor.RED
-					+ "Not enough money available to buy "
-					+ StringUtils.yellowify(selling.getAmount() + " "
-							+ selling.getType().name(), ChatColor.RED) + "(s).");
-			return;
-		}
+		ItemStack selling = stockable.getStocking();
 		HashMap<Integer, ItemStack> unsold = npc.getInventory()
 				.addItem(selling);
 		if (unsold.size() >= 1) {
-			npc.getInventory().setContents(previousNPCInv.getContents());
+			restorePreviousState();
 			player.sendMessage(ChatColor.RED
 					+ "Not enough room available to add "
-					+ StringUtils.yellowify(selling.getAmount() + " "
-							+ selling.getType().name(), ChatColor.RED)
-					+ "(s) to the current stock.");
+					+ MessageUtils.getStackToString(selling, ChatColor.RED)
+					+ " to the current stock.");
 			return;
 		}
-		HashMap<Integer, ItemStack> ungiven = player.getInventory().addItem(
-				stockable.getStocking());
-		if (ungiven.size() >= 1) {
-			player.getInventory().setContents(previousPlayerInv.getContents());
-			npc.getInventory().setContents(previousNPCInv.getContents());
-			player.sendMessage(ChatColor.RED
-					+ "Not enough room in your inventory to add "
-					+ StringUtils.yellowify(stockable.getStocking().getAmount()
-							+ " " + stockable.getStocking().getType().name(),
-							ChatColor.RED) + "(s).");
-			return;
+		if (mode != Mode.INFINITE)
+			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, slot);
+		EconomyHandler.pay(new Payment(selling, stockable.getPrice()
+				.isiConomy()), player, -1);
+		if (!stockable.getPrice().isiConomy()) {
+			unsold = player.getInventory().addItem(stockable.getStocking());
+			if (unsold.size() >= 1) {
+				restorePreviousState();
+				player.sendMessage(ChatColor.RED
+						+ "Not enough room in your inventory to add "
+						+ stockable.getString(ChatColor.RED) + ".");
+				return;
+			}
 		}
-		EconomyHandler.pay(new Payment(stockable.getPrice()), npc);
-		EconomyHandler.pay(new Payment(stockable.getStocking(), stockable
-				.getPrice().isiConomy()), player);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 		// npc.getInventory().setContents(sortInventory(npc.getInventory()));
+	}
+
+	private void restorePreviousState() {
+		player.getInventory().setContents(previousPlayerInv.getContents());
+		npc.getInventory().setContents(previousNPCInv.getContents());
+	}
+
+	private boolean checkMiscellaneous(PlayerInventory inv,
+			Stockable stockable, int slot, String keyword) {
+		ItemStack stocking = stockable.getStocking();
+		if (inv.getItem(slot).getAmount() - stocking.getAmount() <= 0) {
+			sendNeedMoreMessage(stocking);
+			return false;
+		}
+		if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
+			sendNoMoneyMessage(stocking, keyword);
+			return true;
+		}
+		return false;
+	}
+
+	private void sendNoMoneyMessage(ItemStack stocking, String keyword) {
+		player.sendMessage(ChatColor.RED
+				+ "Not enough money available to "
+				+ keyword
+				+ " "
+				+ StringUtils.yellowify(stocking.getAmount() + " "
+						+ stocking.getType().name(), ChatColor.RED) + "(s).");
+	}
+
+	private void sendStockableMessage(String keyword, Stockable stockable) {
+		player.sendMessage(ChatColor.AQUA + keyword
+				+ MessageUtils.getStockableMessage(stockable, ChatColor.AQUA)
+				+ ".");
+	}
+
+	private void sendNeedMoreMessage(ItemStack stocking) {
+		player.sendMessage(ChatColor.RED
+				+ "Need at least "
+				+ StringUtils.yellowify(stocking.getAmount() + " "
+						+ stocking.getType().name(), ChatColor.RED)
+				+ "(s) on the clicked stack.");
+	}
+
+	private Stockable getStockable(ItemStack i, String keyword, boolean selling) {
+		if (!(npc.getTrader().isStocked(i.getTypeId(), i.getData(), selling))) {
+			player.sendMessage(StringUtils.yellowify(i.getType().name(),
+					ChatColor.RED) + " isn't being " + keyword + " here.");
+			return null;
+		}
+		return npc.getTrader().getStockable(i.getTypeId(), selling);
 	}
 
 	public ItemStack[] sortInventory(PlayerInventory inventory) {
@@ -255,7 +262,7 @@ public class TraderTask implements Runnable {
 
 	public void kill() {
 		stop = true;
-		this.npc.getTraderNPC().setFree(true);
+		this.npc.getTrader().setFree(true);
 		sendLeaveMessage();
 		TraderPropertyPool.saveState(npc);
 		int index = TraderInterface.tasks.indexOf(taskID);

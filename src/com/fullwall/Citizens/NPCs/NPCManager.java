@@ -70,10 +70,10 @@ public class NPCManager {
 
 		loadBasic(npc, UID, items);
 		if (TraderPropertyPool.isTrader(UID)) {
-			loadTrader(npc, npc.getTraderNPC(), UID);
+			loadTrader(npc, npc.getTrader(), UID);
 		}
 		if (HealerPropertyPool.isHealer(UID)) {
-			loadHealer(npc, npc.getHealerNPC(), UID);
+			loadHealer(npc, npc.getHealer(), UID);
 		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,

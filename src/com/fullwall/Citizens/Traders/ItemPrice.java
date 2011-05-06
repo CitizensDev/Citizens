@@ -1,5 +1,8 @@
 package com.fullwall.Citizens.Traders;
 
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
 import com.fullwall.Citizens.Citizens;
 
 public class ItemPrice {
@@ -73,5 +76,11 @@ public class ItemPrice {
 				+ itemID + Citizens.separatorChar + data
 				+ Citizens.separatorChar + iConomy + Citizens.separatorChar);
 		return ret;
+	}
+
+	public ItemStack getItemStack() {
+		ItemStack item = new ItemStack(itemID, price);
+		item.setData(new MaterialData(data));
+		return item;
 	}
 }

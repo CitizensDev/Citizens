@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -112,28 +111,13 @@ public class ItemInterface {
 		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		PlayerInventory inv = player.getInventory();
 		int current = price;
 		int count = 0;
-		outer: for (ItemStack i : inv.getContents()) {
-			if (i != null && i.getTypeId() == currencyID) {
-				int amount = i.getAmount();
-				int toChange = 0;
-				current -= amount;
-				if (current < 0) {
-					// we've gone over what we need to take.
-					// take away the negative to get the positive value
-					// (remainder).
-					toChange -= current;
-				}
-				// air blocks are null
-				if (toChange == 0)
-					i = null;
-				else {
-					i.setAmount(toChange);
-					break outer;
-				}
-				inv.setItem(count, i);
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i != null) {
+				decreaseItemStack(player, currencyID, current, count);
+				if (current <= 0)
+					break;
 			}
 			count += 1;
 		}
@@ -145,31 +129,46 @@ public class ItemInterface {
 	 * 
 	 * @param player
 	 * @param payment
+	 * @param slot
 	 * @return
 	 */
-	public static int pay(Player player, Payment payment) {
-		PlayerInventory inv = player.getInventory();
+	public static int pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
 		int current = payment.getPrice();
 		int count = 0;
-		outer: for (ItemStack i : inv.getContents()) {
-			if (i != null && i.getTypeId() == currencyID) {
-				int amount = i.getAmount();
-				int toChange = 0;
-				current -= amount;
-				if (current < 0) {
-					toChange -= current;
-				}
-				if (toChange == 0)
-					i = null;
-				else {
-					i.setAmount(toChange);
-					break outer;
-				}
-				inv.setItem(count, i);
+		if (slot != -1) {
+			decreaseItemStack(player, currencyID, current, slot);
+		}
+		if (current <= 0)
+			return payment.getPrice();
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i != null) {
+				decreaseItemStack(player, currencyID, current, count);
+				if (current <= 0)
+					break;
 			}
 			count += 1;
 		}
 		return payment.getPrice();
+	}
+
+	public static int decreaseItemStack(Player player, int currencyID,
+			int current, int slot) {
+		ItemStack i = player.getInventory().getItem(slot);
+		if (i.getTypeId() == currencyID) {
+			int amount = i.getAmount();
+			int toChange = 0;
+			current -= amount;
+			if (current < 0) {
+				toChange -= current;
+			}
+			if (toChange == 0)
+				i = null;
+			else {
+				i.setAmount(toChange);
+			}
+			player.getInventory().setItem(slot, i);
+		}
+		return current;
 	}
 }

@@ -61,10 +61,10 @@ public class TogglerExecutor implements CommandExecutor {
 				if (BasicExecutor.hasPermission("citizens.trader.create",
 						sender)) {
 					if (!TraderPropertyPool.isTrader(npc.getUID())) {
-						buyState(player, npc.getTraderNPC(),
+						buyState(player, npc.getTrader(),
 								Operation.TRADER_NPC_CREATE);
 					} else {
-						toggleState(player, npc.getTraderNPC());
+						toggleState(player, npc.getTrader());
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -76,10 +76,10 @@ public class TogglerExecutor implements CommandExecutor {
 				if (BasicExecutor.hasPermission("citizens.healer.create",
 						sender)) {
 					if (!HealerPropertyPool.isHealer(npc.getUID())) {
-						buyState(player, npc.getHealerNPC(),
+						buyState(player, npc.getHealer(),
 								Operation.HEALER_NPC_CREATE);
 					} else {
-						toggleState(player, npc.getHealerNPC());
+						toggleState(player, npc.getHealer());
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -159,17 +159,17 @@ public class TogglerExecutor implements CommandExecutor {
 	private void toggleAll(HumanNPC npc, Player player, boolean on) {
 		if (on) {
 			if (!npc.isTrader()) {
-				toggleState(player, npc.getTraderNPC());
+				toggleState(player, npc.getTrader());
 			}
 			if (!npc.isHealer()) {
-				toggleState(player, npc.getHealerNPC());
+				toggleState(player, npc.getHealer());
 			}
 		} else {
 			if (npc.isTrader()) {
-				toggleState(player, npc.getTraderNPC());
+				toggleState(player, npc.getTrader());
 			}
 			if (npc.isHealer()) {
-				toggleState(player, npc.getHealerNPC());
+				toggleState(player, npc.getHealer());
 			}
 		}
 	}

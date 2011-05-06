@@ -51,11 +51,11 @@ public class HumanNPC extends NPC {
 		return this.mcEntity;
 	}
 
-	public TraderNPC getTraderNPC() {
+	public TraderNPC getTrader() {
 		return this.traderNPC;
 	}
 
-	public HealerNPC getHealerNPC() {
+	public HealerNPC getHealer() {
 		return this.healerNPC;
 	}
 

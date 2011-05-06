@@ -36,7 +36,7 @@ public class TraderInterface {
 	 * @param player
 	 */
 	public static void handleRightClick(HumanNPC npc, Player player) {
-		if (npc.getTraderNPC().isFree()) {
+		if (npc.getTrader().isFree()) {
 			if (!BasicExecutor.hasPermission("citizens.trader.stock", player)) {
 				return;
 			}
@@ -47,7 +47,7 @@ public class TraderInterface {
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);
 				task.addID(id);
-				npc.getTraderNPC().setFree(false);
+				npc.getTrader().setFree(false);
 			} else {
 				TraderTask task = new TraderTask(npc, player, Citizens.plugin,
 						Mode.STOCK);
@@ -55,7 +55,7 @@ public class TraderInterface {
 						.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 				tasks.add(id);
 				task.addID(id);
-				npc.getTraderNPC().setFree(false);
+				npc.getTrader().setFree(false);
 			}
 			showInventory(npc, player);
 		} else

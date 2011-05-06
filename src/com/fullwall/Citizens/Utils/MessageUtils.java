@@ -153,4 +153,10 @@ public class MessageUtils {
 						MessageUtils.getPriceMessage(s.getPrice(), colour),
 						colour);
 	}
+
+	public static String getStackToString(ItemStack stack, ChatColor colour) {
+		return StringUtils.yellowify(stack.getAmount() + " "
+				+ stack.getType().name(), ChatColor.RED)
+				+ "(s)";
+	}
 }

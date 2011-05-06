@@ -1,8 +1,10 @@
 package com.fullwall.Citizens.Traders;
 
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Utils.StringUtils;
 
 public class Stockable {
 	private ItemStack stocking;
@@ -57,5 +59,11 @@ public class Stockable {
 
 	public Check createCheck() {
 		return new Check(getStockingId(), isSelling());
+	}
+
+	public String getString(ChatColor colour) {
+		return StringUtils.yellowify(getStocking().getAmount() + " "
+				+ getStocking().getType().name(), colour)
+				+ "(s)";
 	}
 }

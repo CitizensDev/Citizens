@@ -165,7 +165,7 @@ public class TraderPropertyPool {
 			saveTrader(npc.getUID(), npc.isTrader());
 		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
 		PropertyPool.saveBalance(npc.getUID(), npc.getBalance());
-		saveUnlimited(npc.getUID(), npc.getTraderNPC().isUnlimited());
+		saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
 	}
 
 	public static void removeFromFiles(int UID) {
