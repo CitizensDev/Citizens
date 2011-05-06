@@ -51,8 +51,8 @@ public class HelpUtils {
 					"remove and despawn NPC(s)");
 			formatCommand(sender, "npc", "item [itemID|item-name]",
 					"set the item that an NPC holds");
-			formatCommand(sender, "npc", "[armor-type] [itemID|item-name]",
-					"set the item slot of an NPC");
+			formatCommand(sender, "npc", "[slot] [itemID|name]",
+					"set the armor slot of an NPC");
 			formatCommand(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:

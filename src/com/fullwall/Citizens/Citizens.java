@@ -82,6 +82,7 @@ public class Citizens extends JavaPlugin {
 		BasicExecutor executor = new BasicExecutor(this);
 		this.getCommand("npc").setExecutor(executor);
 		this.getCommand("citizens").setExecutor(executor);
+		this.getCommand("basic").setExecutor(executor);
 
 		TraderExecutor traderExecutor = new TraderExecutor(this);
 		this.getCommand("trader").setExecutor(traderExecutor);

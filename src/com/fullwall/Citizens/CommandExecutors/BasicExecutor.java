@@ -406,10 +406,10 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 3 && args[0].equals("basic")
-				&& args[1].equals("help")) {
+		} else if (command.getName().equals("basic") && args.length == 2
+				&& args[0].equals("help")) {
 			if (hasPermission("citizens.basic.help", sender)) {
-				int page = Integer.parseInt(args[2]);
+				int page = Integer.parseInt(args[1]);
 				HelpUtils.sendBasicHelpPage(sender, page);
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
