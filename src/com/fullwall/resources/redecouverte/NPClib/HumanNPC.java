@@ -13,7 +13,7 @@ import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.Traders.TraderNPC;
 
 public class HumanNPC extends NPC {
-
+	
 	private CraftNPC mcEntity;
 	private double fallingSpeed = 0.0;
 	private double GravityPerSecond = 9.81;
@@ -32,7 +32,7 @@ public class HumanNPC extends NPC {
 	private boolean isHealer = false;
 
 	private TraderNPC traderNPC = new TraderNPC(this);
-	private HealerNPC healerNPC = new HealerNPC(this);
+	private HealerNPC healerNPC;
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -56,6 +56,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public HealerNPC getHealer() {
+		healerNPC = new HealerNPC(this);
 		return this.healerNPC;
 	}
 

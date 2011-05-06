@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
@@ -162,5 +163,10 @@ public class EntityListen extends EntityListener {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onExplosionPrime(ExplosionPrimeEvent event) {
+
 	}
 }

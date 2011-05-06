@@ -17,7 +17,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
 	private Citizens plugin;
 
 	public HealerExecutor(Citizens plugin) {
@@ -107,6 +106,7 @@ public class HealerExecutor implements CommandExecutor {
 			if (paid > 0) {
 				if (level < 10) {
 					HealerPropertyPool.saveLevel(npc.getUID(), level + 1);
+					plugin.scheduleHealTask();
 					player.sendMessage(getLevelUpPaidMessage(
 							Operation.HEALER_LEVEL_UP, npc, paid, level + 1));
 				} else {
