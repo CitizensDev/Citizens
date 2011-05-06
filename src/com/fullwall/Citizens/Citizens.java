@@ -2,7 +2,6 @@ package com.fullwall.Citizens;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import me.taylorkelly.help.Help;
@@ -21,7 +20,6 @@ import com.fullwall.Citizens.CommandExecutors.HealerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
-import com.fullwall.Citizens.Healers.HealerTask;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
@@ -31,7 +29,6 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
  * Citizens for Bukkit
@@ -52,6 +49,7 @@ public class Citizens extends JavaPlugin {
 	public static int maxNPCsPerPlayer = 10;
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
+	public static int healerHealthRegenerationIncrement = 12000;
 
 	public static double npcRange = 5;
 
@@ -242,6 +240,9 @@ public class Citizens extends JavaPlugin {
 			PropertyPool.settings.setInt("healer-give-health-item", 35);
 		if (!PropertyPool.settings.keyExists("healer-take-health-item"))
 			PropertyPool.settings.setInt("healer-take-health-item", 276);
+		if (!PropertyPool.settings.keyExists("healer-health-regen-increment"))
+			PropertyPool.settings
+					.setInt("healer-health-regen-increment", 12000);
 		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
 			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
 		if (!PropertyPool.settings.keyExists("default-enable-following"))
@@ -272,6 +273,9 @@ public class Citizens extends JavaPlugin {
 		if (PropertyPool.settings.keyExists("healer-take-health-item"))
 			healerTakeHealthItem = PropertyPool.settings
 					.getInt("healer-take-health-item");
+		if (PropertyPool.settings.keyExists("healer-health-regen-increment"))
+			healerHealthRegenerationIncrement = PropertyPool.settings
+					.getInt("healer-health-regen-increment");
 		if (PropertyPool.settings.keyExists("tick-delay"))
 			tickDelay = PropertyPool.settings.getInt("tick-delay");
 		if (PropertyPool.settings.keyExists("save-tick-delay"))
@@ -416,53 +420,5 @@ public class Citizens extends JavaPlugin {
 	 */
 	public static String getVersion() {
 		return version;
-	}
-
-	/**
-	 * Schedule a timer to regenerate a healer's health based on their level
-	 */
-	public void scheduleHealTask() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
-				.entrySet()) {
-			HumanNPC npc = entry.getValue();
-			int level = HealerPropertyPool.getLevel(npc.getUID());
-			int delay = 0;
-			switch (level) {
-			case 1:
-				delay = 120000;
-				break;
-			case 2:
-				delay = 108000;
-				break;
-			case 3:
-				delay = 96000;
-				break;
-			case 4:
-				delay = 84000;
-				break;
-			case 5:
-				delay = 72000;
-				break;
-			case 6:
-				delay = 60000;
-				break;
-			case 7:
-				delay = 48000;
-				break;
-			case 8:
-				delay = 36000;
-				break;
-			case 9:
-				delay = 24000;
-				break;
-			case 10:
-				delay = 12000;
-				break;
-			default:
-				System.out.println("Not a valid level.");
-			}
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new HealerTask(), delay, delay);
-		}
 	}
 }
