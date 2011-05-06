@@ -22,7 +22,7 @@ public class HelpUtils {
 		sender.sendMessage(ChatColor.YELLOW
 				+ "=================================");
 		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
-		formatCommand(sender, "trader", "help [page]", "trader NPC help pages");
+		formatCommand(sender, "trader", "help", "trader NPC help page");
 		formatCommand(sender, "healer", "help", "healer NPC help page");
 		formatCommand(sender, "npc", "create [name]", "create a basic NPC");
 		formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
@@ -32,7 +32,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the basic npc type.
+	 * Sends the help pages for the basic npc type.
 	 * 
 	 * @param sender
 	 * @param page
@@ -80,23 +80,18 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the trader npc type.
+	 * Sends the help page for the trader npc type
 	 * 
 	 * @param sender
-	 * @param page
 	 */
-	public static void sendTraderHelpPage(CommandSender sender, int page) {
-		switch (page) {
-		case 1:
-			header(sender, "Trader", page, 2);
-			break;
-		case 2:
-			header(sender, "Trader", page, 2);
-			break;
-		default:
-			maxPagesMessage(sender, page, 2);
-			break;
-		}
+	public static void sendTraderHelpPage(CommandSender sender) {
+			header(sender, "Trader", 1, 2);
+			formatCommand(sender, "trader", "list [buy|sell] (page)", "list a trader's buy/sell list");
+			formatCommand(sender, "trader", "[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]", "start an NPC stocking an item");
+			formatCommand(sender, "trader", "[buy|sell] remove [itemID]", "stop the item from being stocked");
+			formatCommand(sender, "trader", "balance [give|take]", "set a trader's balance if using iConomy");
+			formatCommand(sender, "trader", "unlimited [true|false]", "set whether a trader has unlimited stock");
+			footer(sender);
 	}
 
 	/**
@@ -112,6 +107,7 @@ public class HelpUtils {
 				"view the health and level of a healer");
 		formatCommand(sender, "healer", "level-up",
 				"move a healer one level up");
+		footer(sender);
 	}
 
 	/**

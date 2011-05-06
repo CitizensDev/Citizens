@@ -100,10 +100,9 @@ public class TraderExecutor implements CommandExecutor {
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
-			} else if (args.length == 2 && args[0].equals("help")) {
+			} else if (args.length == 1 && args[0].equals("help")) {
 				if (BasicExecutor.hasPermission("citizens.trader.help", sender)) {
-					int page = Integer.parseInt(args[1]);
-					HelpUtils.sendTraderHelpPage(sender, page);
+					HelpUtils.sendTraderHelpPage(sender);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				}

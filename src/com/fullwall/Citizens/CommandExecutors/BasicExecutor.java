@@ -406,13 +406,20 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (command.getName().equals("basic") && args.length == 2
-				&& args[0].equals("help")) {
-			if (hasPermission("citizens.basic.help", sender)) {
-				int page = Integer.parseInt(args[1]);
-				HelpUtils.sendBasicHelpPage(sender, page);
-			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+		} else if (command.getName().equals("basic")) {
+			if (args.length == 2 && args[0].equals("help")) {
+				if (hasPermission("citizens.basic.help", sender)) {
+					int page = Integer.parseInt(args[1]);
+					HelpUtils.sendBasicHelpPage(sender, page);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+			} else if (args.length == 1 && args[0].equals("help")) {
+				if (hasPermission("citizens.basic.help", sender)) {
+					HelpUtils.sendBasicHelpPage(sender, 1);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 			}
 			return true;
 
@@ -779,41 +786,6 @@ public class BasicExecutor implements CommandExecutor {
 			p.sendMessage(ChatColor.GREEN + "The NPC: "
 					+ StringUtils.yellowify(npc.getStrippedName())
 					+ " will stop looking at players.");
-	}
-
-	/**
-	 * Sends the help page for the trader npc type.
-	 * 
-	 * @param sender
-	 * @param page
-	 */
-	private void sendTraderHelpPage(CommandSender sender, int page) {
-		switch (page) {
-		case 1:
-			sender.sendMessage(ChatColor.GOLD + "Citizens "
-					+ Citizens.getVersion() + " Trader Help");
-			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§8/§ctrader §blist [buy/sell] (page) §e- §alists the selected trader's buy/selling list (paged).");
-			sender.sendMessage("§8/§ctrader §b[buy/sell] [itemID(:amount:data)] [itemID(:amount:data)]§e- §astarts an npc stocking a given item. Put no : in the second argument for iConomy.");
-			sender.sendMessage("§8/§ctrader §b[buy/sell] [remove] [item ID] §e- §astops the given item ID from being stocked.");
-			sender.sendMessage("§fUse the command /citizens [basic|trader] help [page] for more info.");
-			break;
-		case 2:
-			sender.sendMessage(ChatColor.GOLD + "Citizens "
-					+ Citizens.getVersion() + " Trader Help");
-			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage("§8/§ctrader §bbalance [give/take] [amount] §e- §aif using iConomy, controls a trader's money.");
-			sender.sendMessage("§8/§ctrader §bunlimited [true/false] §e- §asets whether a trader has unlimited stock.");
-			sender.sendMessage("§b-------------------------------");
-			sender.sendMessage(ChatColor.GRAY
-					+ "Plugin made by fullwall, NeonMaster, TheMPC, and aPunch");
-			break;
-		default:
-			sender.sendMessage(ChatColor.GRAY
-					+ "The total number of pages is 2, page: " + page
-					+ " is not available.");
-			break;
-		}
 	}
 
 	/**
