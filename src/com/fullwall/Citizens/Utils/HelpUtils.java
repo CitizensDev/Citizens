@@ -112,8 +112,8 @@ public class HelpUtils {
 		formatCommand(sender, "healer", "help", "view this menu");
 		formatCommand(sender, "healer", "status",
 				"view the health and level of a healer");
-		formatCommand(sender, "healer", "level-up",
-				"move a healer one level up");
+		formatCommand(sender, "healer", "level-up (levels)",
+				"level-up a healer");
 		footer(sender);
 	}
 

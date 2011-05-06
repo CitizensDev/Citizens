@@ -136,6 +136,23 @@ public class EconomyHandler {
 	}
 
 	/**
+	 * Pays using an operation.
+	 * 
+	 * @param op
+	 * @param player
+	 * @return
+	 */
+	public static int pay(Operation op, Player player, int multiple) {
+		if (useEconomy) {
+			if (useIconomy())
+				return IconomyInterface.pay(player, op, multiple);
+			else
+				return ItemInterface.pay(player, op, multiple);
+		} else
+			return 0;
+	}
+
+	/**
 	 * Pays using a payment (uses the npc's iConomy balance).
 	 * 
 	 * @param payment

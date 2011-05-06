@@ -57,14 +57,38 @@ public class HealerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+
 			} else if (args.length == 1 && args[0].equals("level-up")) {
 				if (BasicExecutor
 						.hasPermission("citizens.healer.level", sender)) {
-					levelUp(player, npc);
+					levelUp(player, npc, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+
+			} else if (args.length == 2 && args[0].equals("level-up")) {
+				if (BasicExecutor
+						.hasPermission("citizens.healer.level", sender)) {
+					try {
+						int levels = Integer.parseInt(args[1]);
+						int x = HealerPropertyPool.getLevel(npc.getUID())
+								+ levels;
+						if (x < 10) {
+							levelUp(player, npc, levels);
+						} else {
+							sender.sendMessage(ChatColor.RED
+									+ "You cannot exceed Level 10.");
+						}
+					} catch (NumberFormatException e) {
+						sender.sendMessage(ChatColor.RED
+								+ "That's not a number.");
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+
 			} else if (args.length == 1 && args[0].equals("help")) {
 				if (BasicExecutor.hasPermission("citizens.healer.help", sender)) {
 					HelpUtils.sendHealerHelp(sender);
@@ -99,16 +123,17 @@ public class HealerExecutor implements CommandExecutor {
 		displayHealerLevel(player, npc);
 	}
 
-	private void levelUp(Player player, HumanNPC npc) {
+	private void levelUp(Player player, HumanNPC npc, int multiple) {
 		if (EconomyHandler.useEconomy()) {
 			int level = HealerPropertyPool.getLevel(npc.getUID());
-			int paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player);
+			int paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player,
+					multiple);
 			if (paid > 0) {
 				if (level < 10) {
-					HealerPropertyPool.saveLevel(npc.getUID(), level + 1);
+					HealerPropertyPool.saveLevel(npc.getUID(), level + multiple);
 					plugin.scheduleHealTask();
 					player.sendMessage(getLevelUpPaidMessage(
-							Operation.HEALER_LEVEL_UP, npc, paid, level + 1));
+							Operation.HEALER_LEVEL_UP, npc, paid, level + multiple, multiple));
 				} else {
 					player.sendMessage(StringUtils.yellowify(npc
 							.getStrippedName())
@@ -122,7 +147,7 @@ public class HealerExecutor implements CommandExecutor {
 	}
 
 	private String getLevelUpPaidMessage(Operation op, HumanNPC npc, int paid,
-			int level) {
+			int level, int multiple) {
 		String message = ChatColor.GREEN
 				+ "You have leveled up the healer "
 				+ StringUtils.yellowify(npc.getStrippedName())
@@ -130,7 +155,7 @@ public class HealerExecutor implements CommandExecutor {
 				+ StringUtils.yellowify("Level " + level)
 				+ " for "
 				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
-						+ paid, ChatColor.GREEN)
+						+ paid * multiple, ChatColor.GREEN)
 						+ ".");
 		return message;
 	}

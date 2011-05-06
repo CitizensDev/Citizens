@@ -121,6 +121,22 @@ public class IconomyInterface {
 	}
 
 	/**
+	 * Pays for an operation using the player's money, with the ability to
+	 * multiply
+	 * 
+	 * @param player
+	 * @param op
+	 * @param multiple
+	 * @return
+	 */
+	public static int pay(Player player, Operation op, int multiple) {
+		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		iConomy.getAccount(player.getName()).getHoldings()
+				.subtract(price * multiple);
+		return price;
+	}
+
+	/**
 	 * Pays for a payment using the npc's money.
 	 * 
 	 * @param npc

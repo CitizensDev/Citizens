@@ -125,6 +125,33 @@ public class ItemInterface {
 	}
 
 	/**
+	 * Pays from the player's inventory using an operation, with the ability to
+	 * multiply
+	 * 
+	 * @param player
+	 * @param op
+	 * @param multiple
+	 * @return
+	 */
+	public static int pay(Player player, Operation op, int multiple) {
+		int price = PropertyPool.getPrice(Operation.getString(op, addendum))
+				* multiple;
+		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
+				currencyAddendum));
+		int current = price;
+		int count = 0;
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i != null) {
+				current = decreaseItemStack(player, currencyID, current, count);
+				if (current <= 0)
+					break;
+			}
+			count += 1;
+		}
+		return price;
+	}
+
+	/**
 	 * Pays for a payment from the player's inventory.
 	 * 
 	 * @param player
