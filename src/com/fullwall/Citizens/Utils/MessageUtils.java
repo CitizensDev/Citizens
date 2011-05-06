@@ -140,20 +140,13 @@ public class MessageUtils {
 
 	public static String getReverseStockableMessage(Stockable stockable,
 			ChatColor colour) {
-		if (!stockable.isiConomy())
-			return StringUtils.yellowify(
-					MessageUtils.getPriceMessage(stockable.getPrice(), colour),
-					colour)
-					+ " for "
-					+ StringUtils.yellowify(stockable.getStocking().getAmount()
-							+ " " + stockable.getStocking().getType().name(),
-							colour) + "(s)";
-		else
-			return StringUtils.yellowify(stockable.getStocking().getAmount()
-					+ " " + stockable.getStocking().getType().name(), colour)
-					+ "(s) for "
-					+ StringUtils.yellowify(MessageUtils.getPriceMessage(
-							stockable.getPrice(), colour), colour);
+		return StringUtils.yellowify(
+				MessageUtils.getPriceMessage(stockable.getPrice(), colour),
+				colour)
+				+ " for "
+				+ StringUtils.yellowify(stockable.getStocking().getAmount()
+						+ " " + stockable.getStocking().getType().name(),
+						colour) + "(s)";
 	}
 
 	/**

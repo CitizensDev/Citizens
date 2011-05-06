@@ -26,8 +26,8 @@ public class TraderTask implements Runnable {
 	private HumanNPC npc;
 	private CraftPlayer player;
 	private int taskID;
-	private int previousNPCClickedSlot = 0;
-	private int previousPlayerClickedSlot = 0;
+	private int previousNPCClickedSlot = -1;
+	private int previousPlayerClickedSlot = -1;
 	private Citizens plugin;
 	private PlayerInventory previousNPCInv;
 	private PlayerInventory previousPlayerInv;
