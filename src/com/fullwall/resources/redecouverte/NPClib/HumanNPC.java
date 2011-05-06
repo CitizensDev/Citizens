@@ -32,7 +32,7 @@ public class HumanNPC extends NPC {
 	private boolean isHealer = false;
 
 	private TraderNPC traderNPC = new TraderNPC(this);
-	private HealerNPC healerNPC;
+	private HealerNPC healerNPC = new HealerNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -56,7 +56,6 @@ public class HumanNPC extends NPC {
 	}
 
 	public HealerNPC getHealer() {
-		healerNPC = new HealerNPC(this);
 		return this.healerNPC;
 	}
 
