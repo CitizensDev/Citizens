@@ -102,7 +102,7 @@ public class TraderExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 1 && args[0].equals("help")) {
 				if (BasicExecutor.hasPermission("citizens.trader.help", sender)) {
-					HelpUtils.sendTraderHelpPage(sender);
+					HelpUtils.sendTraderHelp(sender);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				}

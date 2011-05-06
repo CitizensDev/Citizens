@@ -7,12 +7,12 @@ commands:
         description: Performs various NPC-related commands.
         usage: |
                     The command was not recognised. Did you type in it in correctly?
-                    See /citizens help for a list of commands.
-     basic:
+                    See /citizens help for a list of commands.   
+    basic:
         description: Basic NPC help menu.
         usage: |
-                        The command was not recognised. Did you type it in correctly?
-                        See /citizens help for a list of commands.              
+                    The command was not recognised. Did you type in it in correctly?
+                    See /citizens help for a list of commands.           
     trader:
         description: Performs various Trader NPC-related commands.
         usage: |

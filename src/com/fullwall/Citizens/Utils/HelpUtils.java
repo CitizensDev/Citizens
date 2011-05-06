@@ -17,6 +17,7 @@ public class HelpUtils {
 				+ StringUtils.yellowify("==========[ ") + "Citizens Help"
 				+ StringUtils.yellowify(" ]=========="));
 		sender.sendMessage(ChatColor.GREEN + "  []"
+				+ StringUtils.yellowify(" - required") + "  ()"
 				+ StringUtils.yellowify(" - optional"));
 		sender.sendMessage(ChatColor.YELLOW
 				+ "=================================");
@@ -55,12 +56,6 @@ public class HelpUtils {
 			formatCommand(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
-			header(sender, "Basic", 2, 4);
-			break;
-		case 3:
-			header(sender, "Basic", 3, 4);
-			break;
-		case 4:
 			header(sender, "Basic", 2, 2);
 			formatCommand(sender, "npc", "tp",
 					"teleport to the location of an NPC");
@@ -73,9 +68,9 @@ public class HelpUtils {
 			formatCommand(sender, "npc", "setowner [name]",
 					"set the owner of an NPC");
 			formatCommand(sender, "npc", "talkwhenclose [true|false]",
-					"make an NPC talk to players when close");
+					"make an NPC talk to players");
 			formatCommand(sender, "npc", "lookwhenclose [true|false]",
-					"make an NPC look at players when close");
+					"make an NPC look at players");
 			footer(sender);
 			break;
 		default:
@@ -90,8 +85,8 @@ public class HelpUtils {
 	 * @param sender
 	 * @param page
 	 */
-	public static void sendTraderHelpPage(CommandSender sender) {
-		header(sender, "Trader", 1, 2);
+	public static void sendTraderHelp(CommandSender sender) {
+		header(sender, "Trader", 1, 1);
 		formatCommand(sender, "trader", "list [buy|sell] (page)",
 				"list a trader's buy/sell list");
 		formatCommand(sender, "trader",

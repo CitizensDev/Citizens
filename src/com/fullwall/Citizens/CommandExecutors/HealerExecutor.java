@@ -72,6 +72,7 @@ public class HealerExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				returnval = true;
 			}
 			HealerPropertyPool.saveState(npc);
 		}
