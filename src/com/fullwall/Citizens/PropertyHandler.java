@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,16 +54,32 @@ public final class PropertyHandler {
 			createFile(file);
 			save();
 		}
+		if (fileName.contains("Citizens.settings")) {
+			loadDefaults(Defaults.defaultSettings);
+		} else if (fileName.contains("Citizens.economy")) {
+			loadDefaults(Defaults.defaultEconomySettings);
+		}
 	}
 
 	private void createFile(File file) {
 		try {
-			log.info(this.fileName + " not found! Creating empty file at "
-					+ file.getPath() + ".");
+			log.info(fileName + " not found! Creating empty file at "
+					+ fileName + ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
 			log.log(Level.SEVERE, "Unable to create " + file.getPath(), ex);
+		}
+	}
+
+	private void loadDefaults(HashMap<String, String> nodes) {
+		for (Entry<String, String> entry : nodes.entrySet()) {
+			if (!keyExists(entry.getValue())) {
+				Citizens.log.info("Missing setting " + entry.getKey() + " in "
+						+ this.fileName + "! Writing value as "
+						+ entry.getValue() + ".");
+				setString(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 
