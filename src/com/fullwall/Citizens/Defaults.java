@@ -24,7 +24,7 @@ public class Defaults {
 		nodes.put("healer-take-health-item", "276");
 		nodes.put("healer-give-health-item", "35");
 		nodes.put("healer-health-regen-increment", "12000");
-		nodes.put("hwizard-interact-item", "288");
+		nodes.put("wizard-interact-item", "288");
 		nodes.put("wizard-max-locations", "10");
 		nodes.put(
 				"default-text",
