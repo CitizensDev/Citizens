@@ -65,6 +65,7 @@ public class WizardNPC implements Toggleable {
 		if(locations.split(":")[0].isEmpty()){
 			nrOfLocations = 0;
 		}
+		WizardPropertyPool.saveLocations(npc.getUID(), locations);
 	}
 	
 	public void setLocations(String locationsinc) {
@@ -73,6 +74,7 @@ public class WizardNPC implements Toggleable {
 		if(locations.split(":")[0].isEmpty()){
 			nrOfLocations = 0;
 		}
+		WizardPropertyPool.saveLocations(npc.getUID(), locations);
 	}
 
 	public void nextLocation() {

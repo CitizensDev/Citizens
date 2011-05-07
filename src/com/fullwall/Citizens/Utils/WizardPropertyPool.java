@@ -39,11 +39,11 @@ public class WizardPropertyPool {
 	}
 
 	public static void saveLocations(int UID, String locationString) {
-		locations.setString(UID, locationString);
+		locations.setString(UID, locationString.replace(")(", "):("));
 	}
 
 	public static String getLocations(int UID) {
-		return locations.getString(UID);
+		return locations.getString(UID).replace(")(", "):(");
 	}
 
 	public static boolean getWizardState(int UID) {
