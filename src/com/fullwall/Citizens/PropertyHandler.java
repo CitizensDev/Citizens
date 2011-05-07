@@ -74,7 +74,7 @@ public final class PropertyHandler {
 
 	private void loadDefaults(HashMap<String, String> nodes) {
 		for (Entry<String, String> entry : nodes.entrySet()) {
-			if (!keyExists(entry.getValue())) {
+			if (!keyExists(entry.getKey())) {
 				Citizens.log.info("Missing setting " + entry.getKey() + " in "
 						+ this.fileName + "! Writing value as "
 						+ entry.getValue() + ".");

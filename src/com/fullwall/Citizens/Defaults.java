@@ -23,6 +23,7 @@ public class Defaults {
 		nodes.put("max-NPCs-per-player", "true");
 		nodes.put("healer-take-health-item", "276");
 		nodes.put("healer-give-health-item", "35");
+		nodes.put("healer-health-regen-increment", "12000");
 		nodes.put(
 				"default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");

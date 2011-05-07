@@ -241,21 +241,6 @@ public class Citizens extends JavaPlugin {
 		plugin = this;
 
 		EconomyHandler.setUpVariables();
-		if (!PropertyPool.settings.keyExists("max-NPCs-per-player"))
-			PropertyPool.settings.setInt("max-NPCs-per-player", 10);
-		if (!PropertyPool.settings.keyExists("healer-give-health-item"))
-			PropertyPool.settings.setInt("healer-give-health-item", 35);
-		if (!PropertyPool.settings.keyExists("healer-take-health-item"))
-			PropertyPool.settings.setInt("healer-take-health-item", 276);
-		if (!PropertyPool.settings.keyExists("healer-health-regen-increment"))
-			PropertyPool.settings
-					.setInt("healer-health-regen-increment", 12000);
-		if (!PropertyPool.settings.keyExists("slashes-to-spaces"))
-			PropertyPool.settings.setBoolean("slashes-to-spaces", true);
-		if (!PropertyPool.settings.keyExists("default-enable-following"))
-			PropertyPool.settings.setBoolean("default-enable-following", true);
-		if (!PropertyPool.settings.keyExists("default-talk-when-close"))
-			PropertyPool.settings.setBoolean("default-talk-when-close", false);
 		if (!PropertyPool.settings.keyExists("enable-following"))
 			PropertyPool.settings.removeKey("enable-following");
 		if (!PropertyPool.settings.keyExists("talk-when-close"))
