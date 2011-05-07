@@ -49,4 +49,10 @@ public class WizardPropertyPool {
 	public static boolean getWizardState(int UID) {
 		return wizards.getBoolean(UID);
 	}
+
+	public static void copyProperties(int UID, int nextUID) {
+		if(wizards.keyExists(UID)) wizards.setString(nextUID, wizards.getString(UID));
+		if(locations.keyExists(UID)) locations.setString(nextUID, locations.getString(UID));
+		saveAll();
+	}
 }

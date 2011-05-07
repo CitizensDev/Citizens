@@ -15,10 +15,13 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
+import com.fullwall.Citizens.Utils.TraderPropertyPool;
+import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicExecutor implements CommandExecutor {
@@ -714,7 +717,25 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param p
 	 */
 	private void copyNPC(int UID, String name, Player p) {
-		ArrayList<String> texts = PropertyPool.getText(UID);
+		int newUID = plugin.handler
+			.spawnNPC(name, p.getLocation(), p.getName());
+		
+		
+		PropertyPool.copyProperties(UID, newUID);
+		WizardPropertyPool.copyProperties(UID, newUID);
+		HealerPropertyPool.copyProperties(UID, newUID);
+		TraderPropertyPool.copyProperties(UID, newUID);
+		NPCManager.getNPC(newUID).moveTo(p.getLocation());
+		PropertyPool.saveLocation(name, p.getLocation(), newUID);
+		PropertyPool.saveAll();
+		
+		HumanNPC newNPC = NPCManager.getNPC(newUID);
+		NPCManager.removeNPCForRespawn(newUID);
+		
+		plugin.handler.spawnExistingNPC(name, newUID, newNPC.getOwner());
+		
+		
+		/*ArrayList<String> texts = PropertyPool.getText(UID);
 		String colour = PropertyPool.getColour(UID);
 		String owner = PropertyPool.getOwner(UID);
 		ArrayList<Integer> items = PropertyPool.getItems(UID);
@@ -733,7 +754,7 @@ public class BasicExecutor implements CommandExecutor {
 
 		String newName = newNPC.getName();
 		NPCManager.removeNPCForRespawn(newUID);
-		plugin.handler.spawnExistingNPC(newName, newUID, newNPC.getOwner());
+		plugin.handler.spawnExistingNPC(newName, newUID, newNPC.getOwner());*/
 	}
 
 	/**

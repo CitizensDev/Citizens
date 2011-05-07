@@ -99,6 +99,10 @@ public class HumanNPC extends NPC {
 	public void moveTo(double x, double y, double z, float yaw, float pitch) {
 		this.mcEntity.setPositionRotation(x, y, z, yaw, pitch);
 	}
+	
+	public void moveTo(Location loc) {
+		this.mcEntity.setPositionRotation(loc.getX(),loc.getY(),loc.getZ(),loc.getYaw(),loc.getPitch());
+	}
 
 	// For NPC movement
 	public void moveNPC(double x, double y, double z) {

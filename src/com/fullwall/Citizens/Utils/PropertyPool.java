@@ -298,4 +298,17 @@ public class PropertyPool {
 		saveTalkWhenClose(UID, npcdata.isTalkClose());
 		setOwner(UID, npcdata.getOwner());
 	}
+
+	public static void copyProperties(int UID, int nextUID) {
+		if(texts.keyExists(UID)) texts.setString(nextUID, texts.getString(UID));
+		if(locations.keyExists(UID)) locations.setString(nextUID, locations.getString(UID));
+		if(colours.keyExists(UID)) colours.setString(nextUID, colours.getString(UID));
+		if(owners.keyExists(UID)) owners.setString(nextUID, owners.getString(UID));
+		if(items.keyExists(UID)) items.setString(nextUID, items.getString(UID));
+		if(talkwhenclose.keyExists(UID)) talkwhenclose.setString(nextUID, talkwhenclose.getString(UID));
+		if(lookat.keyExists(UID)) lookat.setString(nextUID, lookat.getString(UID));
+		if(counts.keyExists(UID)) counts.setString(nextUID, counts.getString(UID));
+		if(balances.keyExists(UID)) balances.setString(nextUID, balances.getString(UID));
+		saveAll();
+	}
 }

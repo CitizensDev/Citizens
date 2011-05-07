@@ -177,4 +177,12 @@ public class TraderPropertyPool {
 		inventories.removeKey(UID);
 		unlimiteds.removeKey(UID);
 	}
+
+	public static void copyProperties(int UID, int nextUID) {
+		if(traders.keyExists(UID)) traders.setString(nextUID, traders.getString(UID));
+		if(inventories.keyExists(UID)) inventories.setString(nextUID, inventories.getString(UID));
+		if(stocking.keyExists(UID)) stocking.setString(nextUID, stocking.getString(UID));
+		if(unlimiteds.keyExists(UID)) unlimiteds.setString(nextUID, unlimiteds.getString(UID));
+		saveAll();
+	}
 }
