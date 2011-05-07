@@ -48,7 +48,7 @@ public class WizardExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a wizard yet.");
 			return true;
 		} else {
-			if (args.length == 1 && args[0].equals("status")) {
+			if (args.length == 1000 && args[0].equals("status")) {
 				if (BasicExecutor.hasPermission("citizens.wizard.status",
 						sender)) {
 					this.displayStatus(player, npc);
@@ -81,7 +81,22 @@ public class WizardExecutor implements CommandExecutor {
 					if(npc.getWizard().getNrOfLocations() < Citizens.wizardMaxLocations){
 						this.addLocation(player, npc, args[1]);
 					}else{
-						sender.sendMessage(ChatColor.RED + "This wizard already knows " + Citizens.wizardMaxLocations + " locations");
+						sender.sendMessage(ChatColor.RED + "Wizard " + StringUtils.yellowify(
+								npc.getStrippedName()) + " already knows " + 
+								Citizens.wizardMaxLocations + " locations");
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+			}
+			else if (args.length == 2 && args[0].equals("removelocation")) {
+				if (BasicExecutor.hasPermission("citizens.wizard.removelocation", sender)) {
+					if(Integer.parseInt(args[1]) <= npc.getWizard().getNrOfLocations()){
+						this.removeLocation(player, npc, Integer.parseInt(args[1]));
+					}else{
+						sender.sendMessage(ChatColor.RED + "Wizard " + StringUtils.yellowify(
+								npc.getStrippedName()) + "doesnt have that location.");
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -93,8 +108,29 @@ public class WizardExecutor implements CommandExecutor {
 		return returnval;
 	}
 	
+	private void removeLocation(Player player, HumanNPC npc, int parseInt) {
+		String locations[] = npc.getWizard().getLocations().split(":");
+		String newLoc = "";
+		String removedName = "";
+		for(int i = 0; i < locations.length; i++){
+			if(i+1 != parseInt){
+				newLoc = newLoc + locations[i];
+			}
+			else{
+				removedName = locations[i].split(",")[0].replace("(", "");
+			}
+		}
+		npc.getWizard().nextLocation();
+		npc.getWizard().setLocations(newLoc);
+		player.sendMessage(ChatColor.GREEN + "Wizard " + StringUtils.yellowify(
+				npc.getStrippedName()) + " had amnesia and forgot about " + 
+				StringUtils.yellowify(removedName));
+	}
+
 	private void addLocation(Player player, HumanNPC npc, String locName) {
-		player.sendMessage(ChatColor.GREEN + "Added current location to " + StringUtils.yellowify(npc.getStrippedName()) + ChatColor.GREEN + " as " + StringUtils.yellowify(locName));
+		player.sendMessage(ChatColor.GREEN + "Added current location to " + 
+				StringUtils.yellowify(npc.getStrippedName()) + ChatColor.GREEN + 
+				" as " + StringUtils.yellowify(locName));
 		npc.getWizard().addLocation(player.getLocation(),locName);
 	}
 
@@ -114,8 +150,13 @@ public class WizardExecutor implements CommandExecutor {
 		displayWizardLocations(player, npc);
 	}
 
-	@SuppressWarnings("unused")
+
 	private void displayWizardLocations(Player player, HumanNPC npc) {
-		String locations = npc.getWizard().getLocations();
+		String locations[] = npc.getWizard().getLocations().split(":");
+		for(int i = 0; i < locations.length; i++){
+			player.sendMessage(ChatColor.YELLOW + "" + (i + 1) + 
+					ChatColor.GREEN + ": " + locations[i].split(
+							",")[0].replace("(", ""));
+		}
 	}
 }

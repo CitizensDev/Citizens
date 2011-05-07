@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -11,11 +12,11 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
-import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
@@ -121,14 +122,18 @@ public class EntityListen extends EntityListener {
 					Entity entity = e.getDamager();
 					if (entity instanceof Player) {
 						Player player = (Player) entity;
-						if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
-							if(!npc.isWizard()){
-								return;
+						if(BasicExecutor.hasPermission("citizens.wizard.changeteleport", (CommandSender)player)){
+							if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
+								if(!npc.isWizard()){
+									return;
+								}
+								if(npc.getWizard().getNrOfLocations() > 0){
+									npc.getWizard().nextLocation();
+									player.sendMessage(ChatColor.GREEN + "Location set to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
+								}
 							}
-							if(npc.getWizard().getNrOfLocations() > 0){
-								npc.getWizard().nextLocation();
-								player.sendMessage(ChatColor.GREEN + "Location set to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
-							}
+						}else{
+							player.sendMessage(MessageUtils.noPermissionsMessage);
 						}
 					}
 				}
@@ -162,11 +167,15 @@ public class EntityListen extends EntityListener {
 					found = true;
 				}
 				if(npc.isWizard()){
-					if(p.getItemInHand().getTypeId() == Citizens.wizardInteractItem){
-						if(npc.getWizard().getNrOfLocations() > 0){
-							this.buyTeleport(p, npc.getWizard(), Operation.WIZARD_TELEPORT);
-							found = true;
+					if(BasicExecutor.hasPermission("citizens.wizard.useteleport", (CommandSender)p)){
+						if(p.getItemInHand().getTypeId() == Citizens.wizardInteractItem){
+							if(npc.getWizard().getNrOfLocations() > 0){
+								this.buyTeleport(p, npc.getWizard(), Operation.WIZARD_TELEPORT);
+								found = true;
+							}
 						}
+					}else{
+						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
 				if (found && !plugin.canSelectAny())

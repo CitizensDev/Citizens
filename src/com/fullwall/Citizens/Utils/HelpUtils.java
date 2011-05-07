@@ -129,12 +129,14 @@ public class HelpUtils {
 	public static void sendWizardHelp(CommandSender sender) {
 		header(sender, "Wizard", 1, 1);
 		formatCommand(sender, "wizard", "help", "view this menu");
-		formatCommand(sender, "wizard", "status",
-				"view the status of the wizard");
+		//formatCommand(sender, "wizard", "status",
+		//		"view the status of the wizard");
 		formatCommand(sender, "wizard", "locations",
 				"view the locations of a wizard");
-		formatCommand(sender, "wizard", "addlocation",
-				"add your current location to the wizard");
+		formatCommand(sender, "wizard", "addlocation [name]",
+				"add your location to the wizard");
+		formatCommand(sender, "wizard", "removelocation [id]",
+				"remove the location");
 		footer(sender);
 	}
 
