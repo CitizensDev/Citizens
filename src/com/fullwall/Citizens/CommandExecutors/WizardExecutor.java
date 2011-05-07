@@ -48,17 +48,7 @@ public class WizardExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a wizard yet.");
 			return true;
 		} else {
-			if (args.length == 1000 && args[0].equals("status")) {
-				if (BasicExecutor.hasPermission("citizens.wizard.status",
-						sender)) {
-					this.displayStatus(player, npc);
-				} else {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			}  
-			
-			else if (args.length == 1 && args[0].equals("help")) {
+			if (args.length == 1 && args[0].equals("help")) {
 				if (BasicExecutor.hasPermission("citizens.wizard.help", sender)) {
 					HelpUtils.sendWizardHelp(sender);
 				} else {
@@ -117,6 +107,13 @@ public class WizardExecutor implements CommandExecutor {
 		return returnval;
 	}
 	
+	/**
+	 * Removes a teleport location from the wizard.
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param parseInt
+	 */
 	private void removeLocation(Player player, HumanNPC npc, int parseInt) {
 		String locations[] = npc.getWizard().getLocations().split(":");
 		String newLoc = "";
@@ -136,6 +133,13 @@ public class WizardExecutor implements CommandExecutor {
 				StringUtils.yellowify(removedName));
 	}
 
+	/**
+	 * Adds a teleport location to the wizard.
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param locName
+	 */
 	private void addLocation(Player player, HumanNPC npc, String locName) {
 		player.sendMessage(ChatColor.GREEN + "Added current location to " + 
 				StringUtils.yellowify(npc.getStrippedName()) + ChatColor.GREEN + 
@@ -143,14 +147,12 @@ public class WizardExecutor implements CommandExecutor {
 		npc.getWizard().addLocation(player.getLocation(),locName);
 	}
 
-	private void displayStatus(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN
-				+ "========== "
-				+ StringUtils.yellowify(npc.getStrippedName()
-						+ "'s Wizard Status") + " ==========");
-		
-	}
-
+	/**
+	 * Function for displaying the list of locations that the wizard has.
+	 * 
+	 * @param player
+	 * @param npc
+	 */
 	private void dislayLocations(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ "========== "
@@ -159,7 +161,12 @@ public class WizardExecutor implements CommandExecutor {
 		displayWizardLocations(player, npc);
 	}
 
-
+	/**
+	 * Followup function for displaying the list of locations that the wizard has.
+	 * 
+	 * @param player
+	 * @param npc
+	 */
 	private void displayWizardLocations(Player player, HumanNPC npc) {
 		String locations[] = npc.getWizard().getLocations().split(":");
 		for(int i = 0; i < locations.length; i++){

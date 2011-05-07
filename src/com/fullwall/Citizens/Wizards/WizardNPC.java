@@ -17,6 +17,10 @@ public class WizardNPC implements Toggleable {
 	private int nrOfLocations = 0;
 	private Location currentLoc;
 	
+	/**
+	 * NPC Wizard Subclass
+	 * @param npc
+	 */
 	public WizardNPC(HumanNPC npc){
 		this.npc = npc;
 	}
@@ -42,6 +46,10 @@ public class WizardNPC implements Toggleable {
 		return "wizard";
 	}
 	
+	/**
+	 * Returns the main location string.
+	 * @return
+	 */
 	public String getLocations() {
 		return locations;
 	}
@@ -56,7 +64,12 @@ public class WizardNPC implements Toggleable {
 		WizardPropertyPool.saveWizard(npc.getUID(), true);
 	}
 
-
+	/**
+	 * Addds a location to the main location sting.
+	 * 
+	 * @param location
+	 * @param locName
+	 */
 	public void addLocation(Location location, String locName) {
 		String addedLoc = "";
 		addedLoc = "(" + locName + "," + location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch() + "):";
@@ -68,6 +81,10 @@ public class WizardNPC implements Toggleable {
 		WizardPropertyPool.saveLocations(npc.getUID(), locations);
 	}
 	
+	/**
+	 * Sets all the locations of the wizard (one big combined string)
+	 * @param locationsinc
+	 */
 	public void setLocations(String locationsinc) {
 		locations = locationsinc;
 		nrOfLocations = locations.split(":").length;
@@ -77,15 +94,28 @@ public class WizardNPC implements Toggleable {
 		WizardPropertyPool.saveLocations(npc.getUID(), locations);
 	}
 
+	/**
+	 * Sets the next location in the list as active.
+	 */
 	public void nextLocation() {
 		currentLocation++;
 		if(currentLocation >= nrOfLocations) currentLocation = 0;
 	}
 	
+	/**
+	 * Returns the total amount of locations bound to the wizard.
+	 * 
+	 * @return
+	 */
 	public int getNrOfLocations(){
 		return nrOfLocations;
 	}
 
+	/**
+	 * Return the current active teleport location for the wizard.
+	 * 
+	 * @return
+	 */
 	public Location getCurrentLocation() {
 		String locs[]= locations.split(":")[currentLocation].split(",");
 		this.currentLoc = new Location(Bukkit.getServer().getWorld(locs[1]),
@@ -96,6 +126,11 @@ public class WizardNPC implements Toggleable {
 		return this.currentLoc;
 	}
 	
+	/**
+	 * Return the current active teleport location name for the wizard.
+	 * 
+	 * @return
+	 */
 	public String getCurrentLocationName() {
 		String locs[]= locations.split(":")[currentLocation].split(",");
 		return locs[0].replace("(", "");

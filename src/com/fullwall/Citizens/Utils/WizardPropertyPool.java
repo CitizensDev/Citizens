@@ -50,6 +50,12 @@ public class WizardPropertyPool {
 		return wizards.getBoolean(UID);
 	}
 
+	/**
+	 * Copies all data from one ID to another.
+	 * 
+	 * @param UID
+	 * @param nextUID
+	 */
 	public static void copyProperties(int UID, int nextUID) {
 		if(wizards.keyExists(UID)) wizards.setString(nextUID, wizards.getString(UID));
 		if(locations.keyExists(UID)) locations.setString(nextUID, locations.getString(UID));

@@ -178,6 +178,12 @@ public class TraderPropertyPool {
 		unlimiteds.removeKey(UID);
 	}
 
+	/**
+	 * Copies all data from one ID to another.
+	 * 
+	 * @param UID
+	 * @param nextUID
+	 */
 	public static void copyProperties(int UID, int nextUID) {
 		if(traders.keyExists(UID)) traders.setString(nextUID, traders.getString(UID));
 		if(inventories.keyExists(UID)) inventories.setString(nextUID, inventories.getString(UID));
