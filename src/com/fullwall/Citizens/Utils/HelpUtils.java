@@ -133,9 +133,9 @@ public class HelpUtils {
 		//		"view the status of the wizard");
 		formatCommand(sender, "wizard", "locations",
 				"view the locations of a wizard");
-		formatCommand(sender, "wizard", "addlocation [name]",
+		formatCommand(sender, "wizard", "addloc [name]",
 				"add your location to the wizard");
-		formatCommand(sender, "wizard", "removelocation [id]",
+		formatCommand(sender, "wizard", "removeloc [id]",
 				"remove the location");
 		footer(sender);
 	}

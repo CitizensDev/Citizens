@@ -76,8 +76,8 @@ public class WizardExecutor implements CommandExecutor {
 				returnval = true;
 			}
 			
-			else if (args.length == 2 && args[0].equals("addlocation")) {
-				if (BasicExecutor.hasPermission("citizens.wizard.addlocation", sender)) {
+			else if (args.length == 2 && (args[0].equals("addloc") || args[0].equals("addlocation"))) {
+				if (BasicExecutor.hasPermission("citizens.wizard.addloc", sender)) {
 					if(npc.getWizard().getNrOfLocations() < Citizens.wizardMaxLocations){
 						this.addLocation(player, npc, args[1]);
 					}else{
@@ -90,13 +90,22 @@ public class WizardExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			else if (args.length == 2 && args[0].equals("removelocation")) {
-				if (BasicExecutor.hasPermission("citizens.wizard.removelocation", sender)) {
-					if(Integer.parseInt(args[1]) <= npc.getWizard().getNrOfLocations()){
-						this.removeLocation(player, npc, Integer.parseInt(args[1]));
-					}else{
-						sender.sendMessage(ChatColor.RED + "Wizard " + StringUtils.yellowify(
-								npc.getStrippedName()) + "doesnt have that location.");
+			else if (args.length == 2 && (args[0].equals("removeloc") || args[0].equals("removelocation"))) {
+				if (BasicExecutor.hasPermission("citizens.wizard.removeloc", sender)) {
+					int type = -1;
+					try{
+						Integer.parseInt(args[1]);
+					}
+					catch(Exception e){
+						sender.sendMessage(ChatColor.RED + "ID must be a number, see /wizard locations");
+					}
+					if(type != -1){
+						if(type <= npc.getWizard().getNrOfLocations()){
+							this.removeLocation(player, npc, Integer.parseInt(args[1]));
+						}else{
+							sender.sendMessage(ChatColor.RED + "Wizard " + StringUtils.yellowify(
+									npc.getStrippedName()) + "doesnt have that location.");
+						}
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
