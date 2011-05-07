@@ -417,7 +417,6 @@ public class Citizens extends JavaPlugin {
 	 */
 	private int getHealthRegenRate() {
 		if (!NPCManager.getNPCList().isEmpty()) {
-			log.info("true");
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
 					.entrySet()) {
 				int level = HealerPropertyPool.getLevel(entry.getValue()
@@ -426,10 +425,9 @@ public class Citizens extends JavaPlugin {
 				return delay;
 			}
 		} else {
-			log.info("false");
+			log.info("[Citizens] Report to aPunch.");
 		}
-		// debug
-		log.info("a");
-		return 90;
+		log.info("[Citizens] Report to aPunch, now!");
+		return 12000;
 	}
 }
