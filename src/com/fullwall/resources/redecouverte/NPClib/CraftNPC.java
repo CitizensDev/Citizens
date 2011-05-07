@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet18ArmAnimation;
+import net.minecraft.server.Packet19EntityAction;
 import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 import org.bukkit.craftbukkit.CraftServer;
@@ -47,6 +48,18 @@ public class CraftNPC extends EntityPlayer {
 
 	public void actHurt() {
 		this.netServerHandler.sendPacket(new Packet18ArmAnimation(this, 2));
+	}
+
+	public void crouch() {
+		Packet19EntityAction packet = new Packet19EntityAction();
+		packet.animation = 1;
+		this.netServerHandler.sendPacket(packet);
+	}
+
+	public void uncrouch() {
+		Packet19EntityAction packet = new Packet19EntityAction();
+		packet.animation = 2;
+		this.netServerHandler.sendPacket(packet);
 	}
 
 	@Override

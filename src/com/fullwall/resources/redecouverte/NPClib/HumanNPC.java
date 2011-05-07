@@ -2,6 +2,8 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
+import net.minecraft.server.Packet7UseEntity;
+
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -188,9 +190,13 @@ public class HumanNPC extends NPC {
 			 * f.setAccessible(true); EntityLiving lEntity = (EntityLiving)
 			 * f.get(ent); this.mcEntity.h(lEntity); Probably have to find the
 			 * minecraft code that simply attacks an entity (so as to include
-			 * item damage bonuses)
+			 * item damage bonuses) ent.damage(1);
 			 */
-			ent.damage(1);
+			// I think this is right (may need testing).
+			Packet7UseEntity packet = new Packet7UseEntity();
+			packet.k = true;
+			packet.target = ent.getEntityId();
+			this.mcEntity.netServerHandler.sendPacket(packet);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -202,6 +208,14 @@ public class HumanNPC extends NPC {
 
 	public void actHurt() {
 		this.mcEntity.actHurt();
+	}
+
+	public void crouch() {
+		this.mcEntity.crouch();
+	}
+
+	public void uncrouch() {
+		this.mcEntity.uncrouch();
 	}
 
 	public String getOwner() {
