@@ -175,12 +175,18 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isHealer()) {
 				toggleState(player, npc.getHealer());
 			}
+			if (!npc.isWizard()) {
+				toggleState(player, npc.getWizard());
+			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
 			}
 			if (npc.isHealer()) {
 				toggleState(player, npc.getHealer());
+			}
+			if (npc.isWizard()) {
+				toggleState(player, npc.getWizard());
 			}
 		}
 	}

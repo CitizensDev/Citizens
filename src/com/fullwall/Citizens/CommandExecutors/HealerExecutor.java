@@ -75,7 +75,7 @@ public class HealerExecutor implements CommandExecutor {
 						int levels = Integer.parseInt(args[1]);
 						int x = HealerPropertyPool.getLevel(npc.getUID())
 								+ levels;
-						if (x < 10) {
+						if (x <= 10) {
 							levelUp(player, npc, levels);
 						} else {
 							sender.sendMessage(ChatColor.RED
