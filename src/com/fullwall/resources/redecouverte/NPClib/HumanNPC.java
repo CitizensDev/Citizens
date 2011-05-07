@@ -3,7 +3,6 @@ package com.fullwall.resources.redecouverte.NPClib;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -13,7 +12,7 @@ import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.Traders.TraderNPC;
 
 public class HumanNPC extends NPC {
-	
+
 	private CraftNPC mcEntity;
 	private double fallingSpeed = 0.0;
 	private double GravityPerSecond = 9.81;
@@ -43,8 +42,8 @@ public class HumanNPC extends NPC {
 		this.mcEntity = entity;
 	}
 
-	public HumanEntity getPlayer() {
-		return (HumanEntity) this.mcEntity.getBukkitEntity();
+	public Player getPlayer() {
+		return (Player) this.mcEntity.getBukkitEntity();
 	}
 
 	public CraftNPC getMinecraftEntity() {

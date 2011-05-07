@@ -79,11 +79,11 @@ public class NPCManager {
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
 		PropertyPool.saveState(UID, npc.getNPCData());
-
 		registerUID(UID, name);
 		list.put(UID, npc);
 		TraderPropertyPool.saveState(npc);
 		HealerPropertyPool.saveState(npc);
+		npc.getPlayer().setSleepingIgnored(true);
 	}
 
 	/**
