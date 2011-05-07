@@ -57,14 +57,6 @@ public class NPCNetHandler extends NetServerHandler {
 	}
 
 	@Override
-	public void a(Packet18ArmAnimation packet18armanimation) {
-	}
-
-	@Override
-	public void a(Packet19EntityAction packet19entityaction) {
-	}
-
-	@Override
 	public void a(Packet255KickDisconnect packet255kickdisconnect) {
 	}
 
