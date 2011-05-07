@@ -17,6 +17,8 @@ import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
+import com.fullwall.Citizens.Utils.WizardPropertyPool;
+import com.fullwall.Citizens.Wizards.WizardNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCList;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
@@ -75,6 +77,9 @@ public class NPCManager {
 		if (HealerPropertyPool.isHealer(UID)) {
 			loadHealer(npc, npc.getHealer(), UID);
 		}
+		if (WizardPropertyPool.isWizard(UID)) {
+			loadWizard(npc, npc.getWizard(), UID);
+		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
 				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
@@ -83,6 +88,7 @@ public class NPCManager {
 		list.put(UID, npc);
 		TraderPropertyPool.saveState(npc);
 		HealerPropertyPool.saveState(npc);
+		WizardPropertyPool.saveState(npc);
 		npc.getPlayer().setSleepingIgnored(true);
 	}
 
@@ -144,6 +150,19 @@ public class NPCManager {
 		npc.setHealer(HealerPropertyPool.getHealerState(UID));
 		healer.setStrength(HealerPropertyPool.getStrength(UID));
 		HealerPropertyPool.saveState(npc);
+	}
+
+	/**
+	 * Loads wizard data for an npc.
+	 * 
+	 * @param npc
+	 * @param healer
+	 * @param UID
+	 */
+	public void loadWizard(HumanNPC npc, WizardNPC wizard, int UID) {
+		npc.setWizard(WizardPropertyPool.getWizardState(UID));
+		wizard.setLocations(WizardPropertyPool.getLocations(UID));
+		WizardPropertyPool.saveState(npc);
 	}
 
 	/**

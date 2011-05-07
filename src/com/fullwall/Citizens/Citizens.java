@@ -20,6 +20,7 @@ import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
 import com.fullwall.Citizens.CommandExecutors.HealerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TraderExecutor;
+import com.fullwall.Citizens.CommandExecutors.WizardExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Healers.HealerTask;
 import com.fullwall.Citizens.Listeners.CustomListen;
@@ -31,6 +32,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
+import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -52,6 +54,8 @@ public class Citizens extends JavaPlugin {
 	public static int maxNPCsPerPlayer = 10;
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
+	public static int wizardMaxLocations = 10;
+	public static int wizardInteractItem = 288;
 	public static int healerHealthRegenIncrement = 12000;
 
 	public static double npcRange = 5;
@@ -93,6 +97,9 @@ public class Citizens extends JavaPlugin {
 
 		HealerExecutor healerExecutor = new HealerExecutor(this);
 		this.getCommand("healer").setExecutor(healerExecutor);
+
+		WizardExecutor wizardExecutor = new WizardExecutor(this);
+		this.getCommand("wizard").setExecutor(wizardExecutor);
 
 		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
 		this.getCommand("toggle").setExecutor(togglerExecutor);
@@ -159,6 +166,7 @@ public class Citizens extends JavaPlugin {
 		PropertyPool.saveAll();
 		TraderPropertyPool.saveAll();
 		HealerPropertyPool.saveAll();
+		WizardPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
 	}
@@ -268,6 +276,10 @@ public class Citizens extends JavaPlugin {
 			tickDelay = PropertyPool.settings.getInt("tick-delay");
 		if (PropertyPool.settings.keyExists("save-tick-delay"))
 			saveDelay = PropertyPool.settings.getInt("save-tick-delay");
+		if (PropertyPool.settings.keyExists("wizard-max-locations"))
+			wizardMaxLocations = PropertyPool.settings.getInt("wizard-max-locations");
+		if (PropertyPool.settings.keyExists("wizard-interact-item"))
+			wizardInteractItem = PropertyPool.settings.getInt("wizard-interact-item");
 	}
 
 	private void setupNPCs() {

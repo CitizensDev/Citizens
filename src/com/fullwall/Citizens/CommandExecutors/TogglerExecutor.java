@@ -15,6 +15,7 @@ import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
+import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TogglerExecutor implements CommandExecutor {
@@ -89,7 +90,17 @@ public class TogglerExecutor implements CommandExecutor {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 				returnval = true;
 			} else if (args[0].equals("wizard")) {
-				sender.sendMessage("WIZARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+				if (BasicExecutor.hasPermission("citizens.wizard.create",
+						sender)) {
+					if (!WizardPropertyPool.isWizard(npc.getUID())) {
+						buyState(player, npc.getWizard(),
+								Operation.WIZARD_NPC_CREATE);
+					} else {
+						toggleState(player, npc.getWizard());
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			} else if (args.length == 2 && args[0].equals("all")) {
 				if (args[1].equals("on"))

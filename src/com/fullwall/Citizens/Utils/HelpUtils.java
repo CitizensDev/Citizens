@@ -24,6 +24,7 @@ public class HelpUtils {
 		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
 		formatCommand(sender, "trader", "help [page]", "trader NPC help page");
 		formatCommand(sender, "healer", "help", "healer NPC help page");
+		formatCommand(sender, "wizard", "help", "wizard NPC help page");
 		formatCommand(sender, "npc", "create [name]", "create a basic NPC");
 		formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
 		formatCommand(sender, "toggle", "[all] [on/off]",
@@ -116,6 +117,24 @@ public class HelpUtils {
 				"view the health and level of a healer");
 		formatCommand(sender, "healer", "level-up (levels)",
 				"level-up a healer");
+		footer(sender);
+	}
+
+	/**
+	 * Sends the help page for the wizard npc type.
+	 * 
+	 * @param sender
+	 * @param page
+	 */
+	public static void sendWizardHelp(CommandSender sender) {
+		header(sender, "Wizard", 1, 1);
+		formatCommand(sender, "wizard", "help", "view this menu");
+		formatCommand(sender, "wizard", "status",
+				"view the status of the wizard");
+		formatCommand(sender, "wizard", "locations",
+				"view the locations of a wizard");
+		formatCommand(sender, "wizard", "addlocation",
+				"add your current location to the wizard");
 		footer(sender);
 	}
 

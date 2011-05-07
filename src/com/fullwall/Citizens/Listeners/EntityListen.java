@@ -110,6 +110,19 @@ public class EntityListen extends EntityListener {
 										.getStrippedName())
 										+ " is fully healed.");
 							}
+						} 
+					}
+				}
+				if(npc.isWizard()){
+					Entity entity = e.getDamager();
+					if (entity instanceof Player) {
+						Player player = (Player) entity;
+						if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
+							if(!npc.isWizard()){
+								return;
+							}
+							npc.getWizard().nextLocation();
+							player.sendMessage(ChatColor.GREEN + "Location set to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
 						}
 					}
 				}
@@ -141,6 +154,13 @@ public class EntityListen extends EntityListener {
 				if (npc.isTrader()) {
 					TraderInterface.handleRightClick(npc, p);
 					found = true;
+				}
+				if(npc.isWizard()){
+					if(p.getItemInHand().getTypeId() == Citizens.wizardInteractItem){
+						p.teleport(npc.getWizard().getCurrentLocation());
+						p.sendMessage(ChatColor.GREEN + "You got teleported to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
+						found = true;
+					}
 				}
 				if (found && !plugin.canSelectAny())
 					return;

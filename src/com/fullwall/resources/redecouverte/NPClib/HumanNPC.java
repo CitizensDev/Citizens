@@ -10,6 +10,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.fullwall.Citizens.Healers.HealerNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.Traders.TraderNPC;
+import com.fullwall.Citizens.Wizards.WizardNPC;
 
 public class HumanNPC extends NPC {
 
@@ -29,9 +30,11 @@ public class HumanNPC extends NPC {
 	private boolean hasTarget = false;
 	private boolean isTrader = false;
 	private boolean isHealer = false;
+	private boolean isWizard = false;
 
 	private TraderNPC traderNPC = new TraderNPC(this);
 	private HealerNPC healerNPC = new HealerNPC(this);
+	private WizardNPC wizardNPC = new WizardNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -58,6 +61,10 @@ public class HumanNPC extends NPC {
 		return this.healerNPC;
 	}
 
+	public WizardNPC getWizard() {
+		return this.wizardNPC;
+	}
+
 	protected CraftNPC getMCEntity() {
 		return this.mcEntity;
 	}
@@ -76,6 +83,14 @@ public class HumanNPC extends NPC {
 
 	public boolean isHealer() {
 		return this.isHealer;
+	}
+
+	public void setWizard(boolean enable) {
+		this.isWizard = enable;
+	}
+
+	public boolean isWizard() {
+		return this.isWizard;
 	}
 
 	// For Teleportation
