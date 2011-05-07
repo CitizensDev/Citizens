@@ -14,7 +14,7 @@ public class WizardNPC implements Toggleable {
 	private HumanNPC npc;
 	private String locations = "";
 	private int currentLocation = 0;
-	private int nrOfLocations = 1;
+	private int nrOfLocations = 0;
 	private Location currentLoc;
 	
 	public WizardNPC(HumanNPC npc){
@@ -62,11 +62,17 @@ public class WizardNPC implements Toggleable {
 		addedLoc = "(" + locName + "," + location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch() + "):";
 		locations = locations + addedLoc;
 		nrOfLocations = locations.split(":").length;
+		if(locations.split(":")[0].isEmpty()){
+			nrOfLocations = 0;
+		}
 	}
 	
 	public void setLocations(String locationsinc) {
 		locations = locationsinc;
 		nrOfLocations = locations.split(":").length;
+		if(locations.split(":")[0].isEmpty()){
+			nrOfLocations = 0;
+		}
 	}
 
 	public void nextLocation() {

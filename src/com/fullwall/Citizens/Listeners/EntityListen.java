@@ -11,13 +11,17 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
+import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
+import com.fullwall.Citizens.Wizards.WizardNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
@@ -121,8 +125,10 @@ public class EntityListen extends EntityListener {
 							if(!npc.isWizard()){
 								return;
 							}
-							npc.getWizard().nextLocation();
-							player.sendMessage(ChatColor.GREEN + "Location set to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
+							if(npc.getWizard().getNrOfLocations() > 0){
+								npc.getWizard().nextLocation();
+								player.sendMessage(ChatColor.GREEN + "Location set to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
+							}
 						}
 					}
 				}
@@ -157,9 +163,10 @@ public class EntityListen extends EntityListener {
 				}
 				if(npc.isWizard()){
 					if(p.getItemInHand().getTypeId() == Citizens.wizardInteractItem){
-						p.teleport(npc.getWizard().getCurrentLocation());
-						p.sendMessage(ChatColor.GREEN + "You got teleported to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
-						found = true;
+						if(npc.getWizard().getNrOfLocations() > 0){
+							this.buyTeleport(p, npc.getWizard(), Operation.WIZARD_TELEPORT);
+							found = true;
+						}
 					}
 				}
 				if (found && !plugin.canSelectAny())
@@ -181,6 +188,27 @@ public class EntityListen extends EntityListener {
 					}
 				}
 			}
+		}
+	}
+	
+	private void buyTeleport(Player player, WizardNPC wizard, Operation op) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+			if (EconomyHandler.useEconomy()) {
+				int paid = EconomyHandler.pay(op, player);
+				if (paid > 0)
+					player.sendMessage(ChatColor.GREEN + "Paid " + EconomyHandler.getPaymentType(op, ""+paid, ChatColor.GREEN) + " for a teleport to " + StringUtils.yellowify(wizard.getCurrentLocationName()));
+				player.teleport(wizard.getCurrentLocation());
+				
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			return;
+		}else{
+			player.teleport(wizard.getCurrentLocation());
+			player.sendMessage(ChatColor.GREEN + "You got teleported to " + StringUtils.yellowify(wizard.getCurrentLocationName()));
 		}
 	}
 }

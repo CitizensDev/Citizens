@@ -1,8 +1,9 @@
-#If set to false, all NPCs will be free of charge
-use-economy=false
+#If set to false, all NPCs will be free of charge and economy handling
+#will not be used.
+use-economy=true
 
 #If set to true, Nijikokun's iConomy plugin will be used for economy handling.
-use-iconomy=false
+use-iconomy=true
 
 #Settings are in groups of two: one for item prices, one for iConomy prices.
 #The iConomy prices have "-iconomy" on the end, and items have "-item".
@@ -12,6 +13,26 @@ use-iconomy=false
 
 #iConomy prices check the user's balance for the amount, the item prices #check if the #player has enough of the specified item using item-currency-id in their inventory.
 
-basic-npc-create-item-currency-id=1
-basic-npc-create-item=100
-basic-npc-create-iconomy=100
+basic-npc-create-item-currency-id=37
+basic-npc-create-item=10
+basic-npc-create-iconomy=200
+
+trader-npc-create-item-currency-id=37
+trader-npc-create-item=20
+trader-npc-create-iconomy=250
+
+healer-npc-create-item-currency-id=1
+healer-npc-create-item=100
+healer-npc-create-iconomy=100
+
+healer-level-up-item-currency-id=1
+healer-level-up-item=100
+healer-level-up-iconomy=100
+
+wizard-npc-create-item-currency-id=37
+wizard-npc-create-item=20
+wizard-npc-create-iconomy=250
+
+wizard-teleport-item-currency-id=4
+wizard-teleport-item=10
+wizard-teleport-iconomy=25
