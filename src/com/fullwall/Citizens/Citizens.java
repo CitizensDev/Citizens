@@ -52,7 +52,7 @@ public class Citizens extends JavaPlugin {
 	public static int maxNPCsPerPlayer = 10;
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
-	public static int healerHealthRegenerationIncrement = 12000;
+	public static int healerHealthRegenIncrement = 12000;
 
 	public static double npcRange = 5;
 
@@ -262,7 +262,7 @@ public class Citizens extends JavaPlugin {
 			healerTakeHealthItem = PropertyPool.settings
 					.getInt("healer-take-health-item");
 		if (PropertyPool.settings.keyExists("healer-health-regen-increment"))
-			healerHealthRegenerationIncrement = PropertyPool.settings
+			healerHealthRegenIncrement = PropertyPool.settings
 					.getInt("healer-health-regen-increment");
 		if (PropertyPool.settings.keyExists("tick-delay"))
 			tickDelay = PropertyPool.settings.getInt("tick-delay");
@@ -416,18 +416,20 @@ public class Citizens extends JavaPlugin {
 	 * Schedule a timer to regenerate a healer's health based on their level
 	 */
 	private int getHealthRegenRate() {
+		int delay = 0;
 		if (!NPCManager.getNPCList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
 					.entrySet()) {
 				int level = HealerPropertyPool.getLevel(entry.getValue()
 						.getUID());
-				int delay = healerHealthRegenerationIncrement * (11 - level);
+				delay = healerHealthRegenIncrement * (11 - level);
 				return delay;
 			}
 		} else {
 			log.info("[Citizens] Report to aPunch.");
+			return delay;
 		}
 		log.info("[Citizens] Report to aPunch, now!");
-		return 12000;
+		return delay;
 	}
 }
