@@ -2,6 +2,7 @@ package com.fullwall.Citizens;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import me.taylorkelly.help.Help;
@@ -20,6 +21,7 @@ import com.fullwall.Citizens.CommandExecutors.HealerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
 import com.fullwall.Citizens.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Healers.HealerTask;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
@@ -29,6 +31,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
  * Citizens for Bukkit
@@ -143,6 +146,10 @@ public class Citizens extends JavaPlugin {
 						log.info("[Citizens]: Saved.");
 					}
 				}, saveDelay, saveDelay);
+
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
+		log.info("DELAY:" + getHealthRegenRate());
 
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "] (" + codename + ") loaded");
@@ -420,5 +427,26 @@ public class Citizens extends JavaPlugin {
 	 */
 	public static String getVersion() {
 		return version;
+	}
+
+	/**
+	 * Schedule a timer to regenerate a healer's health based on their level
+	 */
+	private int getHealthRegenRate() {
+		if (!NPCManager.getNPCList().isEmpty()) {
+			log.info("true");
+			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
+					.entrySet()) {
+				HumanNPC npc = entry.getValue();
+				int level = HealerPropertyPool.getLevel(npc.getUID());
+				int delay = healerHealthRegenerationIncrement * (11 - level);
+				return delay;
+			}
+		} else {
+			log.info("false");
+		}
+		// debug
+		log.info("a");
+		return 90;
 	}
 }

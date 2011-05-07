@@ -254,7 +254,7 @@ public class NPCManager {
 		String playerName = NPCManager.getNPC(UID).getOwner();
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
-		PropertyPool.removeFromFiles(actualName, playerName,UID);
+		PropertyPool.removeFromFiles(actualName, playerName, UID);
 		TraderPropertyPool.removeFromFiles(UID);
 		QuesterPropertyPool.removeFromFiles(UID);
 		HealerPropertyPool.removeFromFiles(UID);

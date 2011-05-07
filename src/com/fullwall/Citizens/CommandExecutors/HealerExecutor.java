@@ -1,7 +1,5 @@
 package com.fullwall.Citizens.CommandExecutors;
 
-import java.util.Map.Entry;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +9,6 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
-import com.fullwall.Citizens.Healers.HealerTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.HelpUtils;
@@ -20,6 +17,7 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerExecutor implements CommandExecutor {
+	@SuppressWarnings("unused")
 	private Citizens plugin;
 
 	public HealerExecutor(Citizens plugin) {
@@ -134,7 +132,6 @@ public class HealerExecutor implements CommandExecutor {
 			if (paid > 0) {
 				if (level < 10) {
 					HealerPropertyPool.saveLevel(npc.getUID(), level + multiple);
-					scheduleHealTask();
 					player.sendMessage(getLevelUpPaidMessage(
 							Operation.HEALER_LEVEL_UP, npc, paid, level + multiple, multiple));
 				} else {
@@ -161,53 +158,5 @@ public class HealerExecutor implements CommandExecutor {
 						+ paid * multiple, ChatColor.GREEN)
 						+ ".");
 		return message;
-	}
-	
-	/**
-	 * Schedule a timer to regenerate a healer's health based on their level
-	 */
-	public void scheduleHealTask() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
-				.entrySet()) {
-			HumanNPC npc = entry.getValue();
-			int level = HealerPropertyPool.getLevel(npc.getUID());
-			int delay = 0;
-			switch (level) {
-			case 1:
-				delay = Citizens.healerHealthRegenerationIncrement * 10;
-				break;
-			case 2:
-				delay = Citizens.healerHealthRegenerationIncrement * 9;
-				break;
-			case 3:
-				delay = Citizens.healerHealthRegenerationIncrement * 8;
-				break;
-			case 4:
-				delay = Citizens.healerHealthRegenerationIncrement * 7;
-				break;
-			case 5:
-				delay = Citizens.healerHealthRegenerationIncrement * 6;
-				break;
-			case 6:
-				delay = Citizens.healerHealthRegenerationIncrement * 5;
-				break;
-			case 7:
-				delay = Citizens.healerHealthRegenerationIncrement * 4;
-				break;
-			case 8:
-				delay = Citizens.healerHealthRegenerationIncrement * 3;
-				break;
-			case 9:
-				delay = Citizens.healerHealthRegenerationIncrement * 2;
-				break;
-			case 10:
-				delay = Citizens.healerHealthRegenerationIncrement;
-				break;
-			default:
-				System.out.println("Not a valid level.");
-			}
-			plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin,
-					new HealerTask(), delay, delay);
-		}
 	}
 }
