@@ -12,7 +12,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
  */
 public class WizardNPC implements Toggleable {
 	private HumanNPC npc;
-	private String locations;
+	private String locations = "";
 	private int currentLocation = 0;
 	private int nrOfLocations = 1;
 	private Location currentLoc;
