@@ -11,7 +11,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 /**
  * Quest type involving killing monsters
  */
-public class MonsterCombatQuest implements Quest {
+public class MonsterCombatQuest {
 	private HumanNPC questGiver;
 	private Player killer;
 	private CreatureType monster;
@@ -60,40 +60,5 @@ public class MonsterCombatQuest implements Quest {
 	 */
 	public void setWeapon(ItemStack weapon) {
 		killer.setItemInHand(weapon);
-	}
-
-	/**
-	 * Interface methods
-	 */
-	@Override
-	public HumanNPC getQuestGiver() {
-		return questGiver;
-	}
-
-	@Override
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
-	}
-
-	@Override
-	public Player getPlayer() {
-		return killer;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.MONSTER_COMBAT;
-	}
-
-	@Override
-	public String getProgress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

@@ -10,7 +10,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 /**
  * Quest type involving the delivery of an item to an NPC
  */
-public class DeliveryQuest implements Quest {
+public class DeliveryQuest {
 	private HumanNPC questGiver;
 	private HumanNPC deliverToNPC;
 	private ItemStack itemToDeliver;
@@ -54,41 +54,5 @@ public class DeliveryQuest implements Quest {
 	 */
 	public void setDeliverToNPC(HumanNPC deliverToNPC) {
 		this.deliverToNPC = deliverToNPC;
-	}
-
-	/**
-	 * Interface methods
-	 */
-	@Override
-	public Player getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.DELIVERY;
-	}
-
-	@Override
-	public String getProgress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public HumanNPC getQuestGiver() {
-		return questGiver;
-	}
-
-	@Override
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
 	}
 }

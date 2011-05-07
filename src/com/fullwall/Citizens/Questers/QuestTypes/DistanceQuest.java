@@ -9,7 +9,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 /**
  * Quest type involving traveling a certain distance
  */
-public class DistanceQuest implements Quest {
+public class DistanceQuest {
 	private HumanNPC questGiver;
 	private int startLocation;
 	private int endLocation;
@@ -56,41 +56,5 @@ public class DistanceQuest implements Quest {
 	 */
 	public void setDistanceTraveled(int distanceTraveled) {
 		this.distanceTraveled = distanceTraveled;
-	}
-
-	/**
-	 * Interface methods
-	 */
-	@Override
-	public HumanNPC getQuestGiver() {
-		return questGiver;
-	}
-
-	@Override
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
-	}
-
-	@Override
-	public Player getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.DISTANCE;
-	}
-
-	@Override
-	public String getProgress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

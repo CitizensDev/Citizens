@@ -74,9 +74,12 @@ public class HealerPropertyPool {
 	 * @param nextUID
 	 */
 	public static void copyProperties(int UID, int nextUID) {
-		if(healers.keyExists(UID))healers.setString(nextUID, healers.getString(UID));
-		if(strength.keyExists(UID))strength.setString(nextUID, strength.getString(UID));
-		if(levels.keyExists(UID))levels.setString(nextUID, levels.getString(UID));
+		if (healers.keyExists(UID))
+			healers.setString(nextUID, healers.getString(UID));
+		if (strength.keyExists(UID))
+			strength.setString(nextUID, strength.getString(UID));
+		if (levels.keyExists(UID))
+			levels.setString(nextUID, levels.getString(UID));
 		saveAll();
 	}
 }

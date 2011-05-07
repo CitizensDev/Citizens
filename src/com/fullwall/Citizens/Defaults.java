@@ -48,13 +48,15 @@ public class Defaults {
 		nodes.put("healer-level-up-item-currency-id", "37");
 		nodes.put("healer-level-up-item", "20");
 		nodes.put("healer-level-up-iconomy", "100");
-		
 		nodes.put("wizard-npc-create-item-currency-id", "37");
 		nodes.put("wizard-npc-create-item", "20");
 		nodes.put("wizard-npc-create-iconomy", "250");
 		nodes.put("wizard-teleport-item-currency-id", "4");
 		nodes.put("wizard-teleport-item", "10");
 		nodes.put("wizard-teleport-iconomy", "25");
+		nodes.put("quester-npc-create-item-currency-id", "37");
+		nodes.put("quester-npc-create-item", "20");
+		nodes.put("quester-npc-create-iconomy", "100");
 		return nodes;
 	}
 }

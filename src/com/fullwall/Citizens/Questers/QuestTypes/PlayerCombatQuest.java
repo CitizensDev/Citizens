@@ -10,7 +10,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 /**
  * Quest type involving killing players
  */
-public class PlayerCombatQuest implements Quest {
+public class PlayerCombatQuest {
 	private HumanNPC questGiver;
 	private Player killer;
 	private Player victim;
@@ -50,40 +50,5 @@ public class PlayerCombatQuest implements Quest {
 	 */
 	public Player getVictim() {
 		return victim;
-	}
-
-	/**
-	 * Interface methods
-	 */
-	@Override
-	public Player getPlayer() {
-		return killer;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.PLAYER_COMBAT;
-	}
-
-	@Override
-	public String getProgress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public HumanNPC getQuestGiver() {
-		return questGiver;
-	}
-
-	@Override
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
 	}
 }

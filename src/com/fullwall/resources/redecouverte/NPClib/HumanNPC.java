@@ -11,6 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Healers.HealerNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
+import com.fullwall.Citizens.Questers.QuesterNPC;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Wizards.WizardNPC;
 
@@ -33,10 +34,12 @@ public class HumanNPC extends NPC {
 	private boolean isTrader = false;
 	private boolean isHealer = false;
 	private boolean isWizard = false;
+	private boolean isQuester = false;
 
 	private TraderNPC traderNPC = new TraderNPC(this);
 	private HealerNPC healerNPC = new HealerNPC(this);
 	private WizardNPC wizardNPC = new WizardNPC(this);
+	private QuesterNPC questerNPC = new QuesterNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -65,6 +68,10 @@ public class HumanNPC extends NPC {
 
 	public WizardNPC getWizard() {
 		return this.wizardNPC;
+	}
+	
+	public QuesterNPC getQuester() {
+		return this.questerNPC;
 	}
 
 	protected CraftNPC getMCEntity() {
@@ -95,13 +102,22 @@ public class HumanNPC extends NPC {
 		return this.isWizard;
 	}
 
+	public void setQuester(boolean value) {
+		this.isQuester = value;
+	}
+
+	public boolean isQuester() {
+		return this.isQuester;
+	}
+
 	// For Teleportation
 	public void moveTo(double x, double y, double z, float yaw, float pitch) {
 		this.mcEntity.setPositionRotation(x, y, z, yaw, pitch);
 	}
-	
+
 	public void moveTo(Location loc) {
-		this.mcEntity.setPositionRotation(loc.getX(),loc.getY(),loc.getZ(),loc.getYaw(),loc.getPitch());
+		this.mcEntity.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
+				loc.getYaw(), loc.getPitch());
 	}
 
 	// For NPC movement

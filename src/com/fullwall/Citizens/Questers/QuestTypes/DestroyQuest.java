@@ -11,7 +11,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 /**
  * Quest type involving the destruction of blocks
  */
-public class DestroyQuest implements Quest {
+public class DestroyQuest {
 	private HumanNPC questGiver;
 	private Block blockTypeToDestroy;
 	private Block[] blocksDestroyed;
@@ -67,41 +67,5 @@ public class DestroyQuest implements Quest {
 	 */
 	public void setTool(ItemStack tool) {
 		this.tool = tool;
-	}
-
-	/**
-	 * Interface methods
-	 */
-	@Override
-	public HumanNPC getQuestGiver() {
-		return questGiver;
-	}
-
-	@Override
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
-	}
-
-	@Override
-	public Player getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.DESTROY;
-	}
-
-	@Override
-	public String getProgress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

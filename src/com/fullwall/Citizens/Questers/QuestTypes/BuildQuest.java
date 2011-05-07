@@ -10,7 +10,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 /**
  * Quest type involving the placement of blocks
  */
-public class BuildQuest implements Quest {
+public class BuildQuest {
 	private HumanNPC questGiver;
 	private Block blockTypeToPlace;
 	private Block[] blocksPlaced;
@@ -44,41 +44,5 @@ public class BuildQuest implements Quest {
 	 */
 	public void setBlockToPlace(Block blockTypeToPlace) {
 		this.blockTypeToPlace = blockTypeToPlace;
-	}
-
-	/**
-	 * Interface methods
-	 */
-	@Override
-	public HumanNPC getQuestGiver() {
-		return questGiver;
-	}
-
-	@Override
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
-	}
-
-	@Override
-	public Player getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.BUILD;
-	}
-
-	@Override
-	public String getProgress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
