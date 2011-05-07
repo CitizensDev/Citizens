@@ -177,8 +177,7 @@ public class TraderTask implements Runnable {
 		ItemStack selling = stockable.getStocking();
 		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
 		if (mode != Mode.INFINITE) {
-			unsold = npc.getInventory().addItem(
-					stockable.getPrice().getItemStack());
+			unsold = npc.getInventory().addItem(stockable.getStocking());
 		}
 		if (unsold.size() >= 1) {
 			restorePreviousState();
@@ -189,7 +188,8 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		if (!stockable.isiConomy()) {
-			unsold = player.getInventory().addItem(stockable.getStocking());
+			unsold = player.getInventory().addItem(
+					stockable.getPrice().getItemStack());
 			if (unsold.size() >= 1) {
 				restorePreviousState();
 				player.sendMessage(ChatColor.RED
@@ -199,9 +199,9 @@ public class TraderTask implements Runnable {
 			}
 		}
 		if (mode != Mode.INFINITE)
-			EconomyHandler.pay(new Payment(stockable.getStocking(), false),
-					npc, -1);
-		EconomyHandler.pay(new Payment(stockable.getPrice()), player, slot);
+			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, -1);
+		EconomyHandler.pay(new Payment(stockable.getStocking(), false), player,
+				slot);
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 	}
 

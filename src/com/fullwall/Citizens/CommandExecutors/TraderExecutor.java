@@ -58,7 +58,18 @@ public class TraderExecutor implements CommandExecutor {
 		if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
 			if (BasicExecutor.hasPermission("citizens.trader.stock", sender)) {
-				displayList(player, npc, args, args[1].contains("s"));
+				if (!EconomyHandler.useIconomy())
+					player.sendMessage(ChatColor.GRAY
+							+ "This server is not using iConomy.");
+				else
+					displayList(player, npc, args, args[1].contains("s"));
+			} else
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+			returnval = true;
+		} else if (args.length == 1 && args[0].contains("money")) {
+			if (BasicExecutor
+					.hasPermission("citizens.trader.viewmoney", sender)) {
+				displayMoney(player, npc);
 			} else
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			returnval = true;
@@ -74,7 +85,7 @@ public class TraderExecutor implements CommandExecutor {
 					try {
 						if (!EconomyHandler.useIconomy())
 							player.sendMessage(ChatColor.GRAY
-									+ "This server is not using an economy plugin.");
+									+ "This server is not using iConomy.");
 						else
 							changeBalance(player, npc, args);
 					} catch (NumberFormatException e) {
@@ -89,7 +100,7 @@ public class TraderExecutor implements CommandExecutor {
 				if (BasicExecutor
 						.hasPermission("citizens.trader.stock", sender)) {
 					changeTraderStock(player, npc, args[1], args[2],
-							args[0].contains("sell"));
+							args[0].contains("buy"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
@@ -111,6 +122,13 @@ public class TraderExecutor implements CommandExecutor {
 			TraderPropertyPool.saveState(npc);
 		}
 		return returnval;
+	}
+
+	private void displayMoney(Player player, HumanNPC npc) {
+		player.sendMessage(StringUtils.yellowify(npc.getName())
+				+ " has "
+				+ StringUtils.yellowify(IconomyInterface.getCurrency(npc
+						.getBalance())) + ".");
 	}
 
 	/**
@@ -210,7 +228,7 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 			String keyword = "buying";
-			if (selling)
+			if (!selling)
 				keyword = "selling";
 			if (npc.getTrader().getStockable(mat.getId(), selling) == null) {
 				player.sendMessage(ChatColor.RED + "The NPC is not currently "
@@ -266,9 +284,12 @@ public class TraderExecutor implements CommandExecutor {
 		itemPrice.setiConomy(cost == null);
 		Stockable s = new Stockable(stack, itemPrice, false);
 		String keyword = "buying";
+		if (!selling) {
+			keyword = "selling";
+		}
 		if (selling) {
 			s.setSelling(true);
-			keyword = "selling";
+
 		}
 		if (npc.getTrader().isStocked(s)) {
 			player.sendMessage(ChatColor.RED + "Already " + keyword

@@ -98,6 +98,8 @@ public class HelpUtils {
 				"set a trader's balance if using iConomy");
 		formatCommand(sender, "trader", "unlimited [true|false]",
 				"set whether a trader has unlimited stock");
+		formatCommand(sender, "trader", "money",
+				"checks how much money a trader has");
 		footer(sender);
 	}
 

@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -199,7 +200,19 @@ public class BasicNPCHandler extends NPCManager {
 					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
 			return;
 		}
-		p.getInventory().remove(mat);
+		if (npc.isTrader()) {
+			p.sendMessage(ChatColor.GRAY
+					+ "That NPC is a trader. Please put the item manually in the first slot of the trader's inventory instead.");
+			return;
+		}
+		int slot = p.getInventory().first(mat);
+		ItemStack item = p.getInventory().getItem(slot);
+		int amount = item.getAmount() - 1;
+		if (amount == 0)
+			item = null;
+		else
+			item.setAmount(amount);
+		p.getInventory().setItem(slot, item);
 		ArrayList<Integer> items = PropertyPool.getItems(npc.getUID());
 		int olditem = items.get(0);
 		items.set(0, mat.getId());
