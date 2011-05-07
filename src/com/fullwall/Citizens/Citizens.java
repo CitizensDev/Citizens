@@ -147,10 +147,6 @@ public class Citizens extends JavaPlugin {
 					}
 				}, saveDelay, saveDelay);
 
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
-		log.info("DELAY:" + getHealthRegenRate());
-
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "] (" + codename + ") loaded");
 	}
@@ -324,6 +320,8 @@ public class Citizens extends JavaPlugin {
 		}
 		log.info("[" + this.getDescription().getName() + "]: Loaded "
 				+ NPCManager.GlobalUIDs.size() + " NPCs.");
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
 	}
 
 	/**
@@ -422,8 +420,8 @@ public class Citizens extends JavaPlugin {
 			log.info("true");
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
 					.entrySet()) {
-				HumanNPC npc = entry.getValue();
-				int level = HealerPropertyPool.getLevel(npc.getUID());
+				int level = HealerPropertyPool.getLevel(entry.getValue()
+						.getUID());
 				int delay = healerHealthRegenerationIncrement * (11 - level);
 				return delay;
 			}

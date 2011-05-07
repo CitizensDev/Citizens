@@ -40,6 +40,12 @@ public class Defaults {
 		nodes.put("trader-npc-create-item-currency-id", "37");
 		nodes.put("trader-npc-create-item", "20");
 		nodes.put("trader-npc-create-iconomy", "250");
+		nodes.put("healer-npc-create-item-currency-id", "37");
+		nodes.put("healer-npc-create-item", "20");
+		nodes.put("healer-npc-create-iconomy", "100");
+		nodes.put("healer-level-up-item-currency-id", "37");
+		nodes.put("healer-level-up-item", "20");
+		nodes.put("healer-level-up-iconomy", "100");
 		return nodes;
 	}
 }
