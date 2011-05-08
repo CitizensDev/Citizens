@@ -190,6 +190,9 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isWizard()) {
 				toggleState(player, npc.getWizard());
 			}
+			if (!npc.isQuester()) {
+				toggleState(player, npc.getQuester());
+			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
@@ -199,6 +202,9 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isWizard()) {
 				toggleState(player, npc.getWizard());
+			}
+			if (npc.isQuester()) {
+				toggleState(player, npc.getQuester());
 			}
 		}
 	}

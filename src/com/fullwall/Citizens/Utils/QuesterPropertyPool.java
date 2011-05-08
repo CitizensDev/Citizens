@@ -13,7 +13,7 @@ public class QuesterPropertyPool {
 
 	public static void saveState(HumanNPC npc) {
 		if (isQuester(npc.getUID())) {
-			saveQuester(npc.getUID(), npc.isHealer());
+			saveQuester(npc.getUID(), npc.isQuester());
 		}
 	}
 

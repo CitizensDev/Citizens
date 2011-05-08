@@ -8,7 +8,7 @@ public class QuesterNPC implements Toggleable {
 	private HumanNPC npc;
 
 	/**
-	 * NPC Wizard Subclass
+	 * NPC Quester object
 	 * 
 	 * @param npc
 	 */

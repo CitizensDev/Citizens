@@ -47,7 +47,7 @@ public class QuesterExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
 			return true;
 		} else {
-			if (args.length == 1 && args[0].equals("reward")) {
+			if (args.length == 2 && args[0].equals("reward")) {
 				if (BasicExecutor.hasPermission("citizens.quester.reward",
 						sender)) {
 					Quest quest = new Quest(player, npc, QuestType.BUILD, false);
@@ -56,7 +56,6 @@ public class QuesterExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-
 			}
 		}
 		return returnval;

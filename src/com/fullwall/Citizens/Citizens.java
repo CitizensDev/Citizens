@@ -155,6 +155,7 @@ public class Citizens extends JavaPlugin {
 						PropertyPool.saveAll();
 						TraderPropertyPool.saveAll();
 						HealerPropertyPool.saveAll();
+						WizardPropertyPool.saveAll();
 						QuesterPropertyPool.saveAll();
 						log.info("[Citizens]: Saved.");
 					}
@@ -447,10 +448,8 @@ public class Citizens extends JavaPlugin {
 				return delay;
 			}
 		} else {
-			log.info("[Citizens] Report to aPunch.");
-			return delay;
+			return 12000;
 		}
-		log.info("[Citizens] Report to aPunch, now!");
 		return delay;
 	}
 }

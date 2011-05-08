@@ -102,8 +102,8 @@ public class HumanNPC extends NPC {
 		return this.isWizard;
 	}
 
-	public void setQuester(boolean value) {
-		this.isQuester = value;
+	public void setQuester(boolean enable) {
+		this.isQuester = enable;
 	}
 
 	public boolean isQuester() {
