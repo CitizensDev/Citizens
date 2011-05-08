@@ -21,7 +21,6 @@ public class Quest {
 	 * @param questGiver
 	 * @param type
 	 * @param isComplete
-	 * @param itemRewardID
 	 */
 	public Quest(Player player, HumanNPC questGiver, QuestType type,
 			boolean isComplete) {

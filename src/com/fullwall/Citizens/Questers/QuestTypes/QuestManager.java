@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Questers.QuestTypes;
 
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+
 public class QuestManager {
 
 	public enum QuestType {
@@ -44,6 +46,17 @@ public class QuestManager {
 		 * 
 		 * @see com.fullwall.Citizens.Questers.QuestTypes.BuildQuest
 		 */
-		BUILD
+		BUILD;
+		
+		/**
+		 * Changes a quest type enum to a string value
+		 * 
+		 * @param op
+		 * @param addendum
+		 * @return
+		 */
+		public static String getString(Operation op) {
+			return op.toString().toLowerCase().replace("_", "-");
+		}
 	}
 }
