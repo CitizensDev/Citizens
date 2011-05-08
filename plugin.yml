@@ -28,11 +28,6 @@ commands:
         usage: |
                         The command was not recognised. Did you type it in correctly?
                         See /citizens help for a list of commands.
-    quester:
-        description: Performs various Quester NPC-related commands.
-        usage: |
-                        The command was not recognised. Did you type it in correctly?
-                        See /citizens help for a list of commands.
     toggle:
         description: Toggles between various NPC states.
         usage: |
@@ -42,4 +37,3 @@ commands:
         description: Performs Citizens-related commands.
         usage: |
                     You typed the command incorrectly. It should be /<command> help.
-

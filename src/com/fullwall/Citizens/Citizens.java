@@ -103,8 +103,8 @@ public class Citizens extends JavaPlugin {
 		WizardExecutor wizardExecutor = new WizardExecutor(this);
 		this.getCommand("wizard").setExecutor(wizardExecutor);
 
-		QuesterExecutor questerExecutor = new QuesterExecutor(this);
-		this.getCommand("quester").setExecutor(questerExecutor);
+		//QuesterExecutor questerExecutor = new QuesterExecutor(this);
+		//this.getCommand("quester").setExecutor(questerExecutor);
 
 		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
 		this.getCommand("toggle").setExecutor(togglerExecutor);

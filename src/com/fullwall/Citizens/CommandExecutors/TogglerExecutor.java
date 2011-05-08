@@ -72,7 +72,7 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equals("quester")) {
+			} else if (args[0].equals("CHANGE-BACK-TO-QUESTER-LATER")) {
 				if (BasicExecutor.hasPermission("citizens.quester.create",
 						sender)) {
 					if (!QuesterPropertyPool.isQuester(npc.getUID())) {
@@ -190,9 +190,6 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isWizard()) {
 				toggleState(player, npc.getWizard());
 			}
-			if (!npc.isQuester()) {
-				toggleState(player, npc.getQuester());
-			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
@@ -202,9 +199,6 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isWizard()) {
 				toggleState(player, npc.getWizard());
-			}
-			if (npc.isQuester()) {
-				toggleState(player, npc.getQuester());
 			}
 		}
 	}
