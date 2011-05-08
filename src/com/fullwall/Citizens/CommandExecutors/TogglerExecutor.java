@@ -72,7 +72,7 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equals("CHANGE-BACK-TO-QUESTER-LATER")) {
+			} else if (args[0].equals("quester")) {
 				if (BasicExecutor.hasPermission("citizens.quester.create",
 						sender)) {
 					if (!QuesterPropertyPool.isQuester(npc.getUID())) {
@@ -174,7 +174,7 @@ public class TogglerExecutor implements CommandExecutor {
 	}
 
 	/**
-	 * Turns the selected NPC into all types of NPCs
+	 * Toggles all types of NPCs
 	 * 
 	 * @param npc
 	 * @param player

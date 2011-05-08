@@ -58,6 +58,9 @@ public class Citizens extends JavaPlugin {
 	public static int healerTakeHealthItem = 276;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
+	public static int questerInteractItem = 339;
+	public static int questAcceptItem = 341;
+	public static int questDenyItem = 338;
 	public static int healerHealthRegenIncrement = 12000;
 
 	public static double npcRange = 5;
@@ -103,8 +106,8 @@ public class Citizens extends JavaPlugin {
 		WizardExecutor wizardExecutor = new WizardExecutor(this);
 		this.getCommand("wizard").setExecutor(wizardExecutor);
 
-		//QuesterExecutor questerExecutor = new QuesterExecutor(this);
-		//this.getCommand("quester").setExecutor(questerExecutor);
+		QuesterExecutor questerExecutor = new QuesterExecutor(this);
+		this.getCommand("quester").setExecutor(questerExecutor);
 
 		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
 		this.getCommand("toggle").setExecutor(togglerExecutor);
@@ -290,6 +293,10 @@ public class Citizens extends JavaPlugin {
 		if (PropertyPool.settings.keyExists("wizard-interact-item"))
 			wizardInteractItem = PropertyPool.settings
 					.getInt("wizard-interact-item");
+		if (PropertyPool.settings.keyExists("quester-interact-item")) {
+			questerInteractItem = PropertyPool.settings
+					.getInt("quester-interact-item");
+		}
 	}
 
 	private void setupNPCs() {

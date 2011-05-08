@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Questers.Quest;
+import com.fullwall.Citizens.Questers.QuestFile;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -47,16 +48,7 @@ public class QuesterExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
 			return true;
 		} else {
-			if (args.length == 2 && args[0].equals("reward")) {
-				if (BasicExecutor.hasPermission("citizens.quester.reward",
-						sender)) {
-					Quest quest = new Quest(player, npc, QuestType.BUILD, false);
-					quest.giveiConomyReward(player, 10);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			}
+			
 		}
 		return returnval;
 	}

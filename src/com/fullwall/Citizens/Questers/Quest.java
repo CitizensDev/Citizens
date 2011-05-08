@@ -1,5 +1,10 @@
 package com.fullwall.Citizens.Questers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,10 +17,15 @@ public class Quest {
 	private Player player;
 	private String progress;
 	private QuestType type;
+	private boolean isActive = false;
 	private boolean isComplete;
 
+	public Map<Quest, Boolean> queuedQuests = new HashMap<Quest, Boolean>();
+	public Map<Quest, Boolean> activeQuests = new HashMap<Quest, Boolean>();
+	private List<String> accepted = new ArrayList<String>();
+
 	/**
-	 * Contstructs Quest object
+	 * Constructs Quest object
 	 * 
 	 * @param player
 	 * @param questGiver
@@ -80,6 +90,14 @@ public class Quest {
 		return progress;
 	}
 
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	/**
 	 * 
 	 * @return true if a quest is complete
@@ -117,5 +135,56 @@ public class Quest {
 	public void giveiConomyReward(Player player, int amount) {
 		iConomy.getAccount(player.getName()).getHoldings().add(amount);
 		player.sendMessage("You have been rewarded" + amount + ".");
+	}
+
+	/**
+	 * Add a quest to a queue
+	 */
+	public void addToQueue() {
+		queuedQuests.put(this, true);
+	}
+	
+	/**
+	 * Accept a quest
+	 * 
+	 * @param player
+	 */
+	public void accept(Player player) {
+		accepted.add(player.getName());
+		queuedQuests.remove(this);
+		player.sendMessage("You have accepted the quest!");
+	}
+	
+	/**
+	 * Deny a quest
+	 * 
+	 * @param player
+	 */
+	public void deny(Player player) {
+		queuedQuests.remove(this);
+		player.sendMessage("You have denied the quest!");
+	}
+
+	/**
+	 * Start a quest
+	 * 
+	 * @param player
+	 */
+	public void start(Player player) {
+		this.isActive = true;
+		if (queuedQuests.containsKey(this)) {
+			queuedQuests.remove(this);
+			activeQuests.put(this, true);
+			accept(player);
+			player.sendMessage("A quest has begun!");
+		}
+	}
+
+	/**
+	 * Stop a quest
+	 */
+	public void stop() {
+		this.isActive = false;
+		activeQuests.put(this, false);
 	}
 }

@@ -1,7 +1,5 @@
 package com.fullwall.Citizens.Questers.QuestTypes;
 
-import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
-
 public class QuestManager {
 
 	public enum QuestType {
@@ -55,8 +53,8 @@ public class QuestManager {
 		 * @param addendum
 		 * @return
 		 */
-		public static String getString(Operation op) {
-			return op.toString().toLowerCase().replace("_", "-");
+		public static String getString(QuestType type) {
+			return type.toString().toLowerCase().replace("_", "-");
 		}
 	}
 }
