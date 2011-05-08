@@ -90,10 +90,10 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.RED
 				+ "You need "
-				+ StringUtils.yellowify(EconomyHandler.getPaymentType(
-						Operation.BASIC_NPC_CREATE, EconomyHandler
-								.getRemainder(Operation.BASIC_NPC_CREATE,
-										player), ChatColor.RED), ChatColor.RED)
+				+ StringUtils.yellowify(
+						EconomyHandler.getPaymentType(op,
+								EconomyHandler.getRemainder(op, player),
+								ChatColor.RED), ChatColor.RED)
 				+ " more to do that.";
 		return message;
 	}
@@ -108,8 +108,8 @@ public class MessageUtils {
 	 * @param useType
 	 * @return
 	 */
-	public static String getPaidMessage(Operation op, double paid, String npcName,
-			String type, boolean useType) {
+	public static String getPaidMessage(Operation op, double paid,
+			String npcName, String type, boolean useType) {
 		String message = "";
 		message = ChatColor.GREEN
 				+ "Paid "
