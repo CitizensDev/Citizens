@@ -20,8 +20,6 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Questers.Quest;
-import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -205,21 +203,7 @@ public class EntityListen extends EntityListener {
 				if (npc.isQuester()) {
 					if (p.getItemInHand().getTypeId() == Citizens.questerInteractItem) {
 						p.sendMessage("You selected a quester.");
-						Quest quest = new Quest(p, npc, QuestType.DESTROY,
-								false);
-						if (!quest.isActive()) {
-							System.out.println("Quest isn't active.");
-							quest.addToQueue();
-							if (p.getItemInHand().getTypeId() == Citizens.questAcceptItem) {
-								quest.start(p);
-							} else if (p.getItemInHand().getTypeId() == Citizens.questDenyItem) {
-								quest.deny(p);
-							} else {
-								System.out.println("Not a valid item.");
-							}
-						} else {
-							System.out.println("Quest is active.");
-						}
+
 					}
 				}
 				if (found && !plugin.canSelectAny())

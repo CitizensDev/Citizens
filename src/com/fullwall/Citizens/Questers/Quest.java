@@ -8,16 +8,21 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.iConomy;
 
 public class Quest {
 	private String questName;
-	private HumanNPC questGiver;
+	private HumanNPC startNPC;
 	private Player player;
 	private String progress;
-	private QuestType type;
+	private String type;
+	private int iConomyReward;
+	private int itemRewardID;
+	private int itemRewardAmount;
+	private String prereq;
+	private String desc;
+	private String completionText;
 	private boolean isActive = false;
 	private boolean isComplete;
 
@@ -29,22 +34,26 @@ public class Quest {
 	 * Constructs Quest object
 	 * 
 	 * @param player
-	 * @param questGiver
+	 * @param startNPC
 	 * @param type
 	 * @param isComplete
 	 */
-	public Quest(Player player, HumanNPC questGiver, QuestType type,
+	public Quest(Player player, HumanNPC startNPC, String type,
+			int iConomyReward, int itemRewardID, int itemRewardAmount,
+			String desc, String prereq, String completionText,
 			boolean isComplete) {
 		this.player = player;
-		this.questGiver = questGiver;
+		this.startNPC = startNPC;
 		this.type = type;
+		this.iConomyReward = iConomyReward;
+		this.itemRewardID = itemRewardID;
+		this.itemRewardAmount = itemRewardAmount;
+		this.prereq = prereq;
+		this.desc = desc;
+		this.completionText = completionText;
 		this.isComplete = isComplete;
 	}
-	
-	public Quest(String questName) {
-		this.questName = questName;
-	}
-	
+
 	/**
 	 * 
 	 * @return the name of the quest
@@ -57,17 +66,17 @@ public class Quest {
 	 * 
 	 * @return the NPC who gives out a quest
 	 */
-	public HumanNPC getQuestGiver() {
-		return questGiver;
+	public HumanNPC getStartNPC() {
+		return startNPC;
 	}
 
 	/**
 	 * 
-	 * @param questGiver
+	 * @param startNPC
 	 *            the NPC who gives out a quest
 	 */
-	public void setQuestGiver(HumanNPC questGiver) {
-		this.questGiver = questGiver;
+	public void setStartNPC(HumanNPC startNPC) {
+		this.startNPC = startNPC;
 	}
 
 	/**
@@ -82,7 +91,7 @@ public class Quest {
 	 * 
 	 * @return the type of quest it is
 	 */
-	public QuestType getType() {
+	public String getType() {
 		return type;
 	}
 
@@ -91,22 +100,142 @@ public class Quest {
 	 * 
 	 * @param type
 	 */
-	public void setType(QuestType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
 	/**
+	 * Get the reward if using iConomy
 	 * 
-	 * @return the progress of an active quest
+	 * @return
 	 */
-	public String getProgress(Quest quest) {
+	public int getiConomyReward() {
+		return iConomyReward;
+	}
+
+	/**
+	 * Set the reward if using iConomy
+	 * 
+	 * @param iConomyReward
+	 */
+	public void setiConomyReward(int iConomyReward) {
+		this.iConomyReward = iConomyReward;
+	}
+
+	/**
+	 * Get the item reward ID
+	 * 
+	 * @return
+	 */
+	public int getItemRewardID() {
+		return itemRewardID;
+	}
+
+	/**
+	 * Set the item reward ID
+	 * 
+	 * @param itemRewardID
+	 */
+	public void setItemRewardID(int itemRewardID) {
+		this.itemRewardID = itemRewardID;
+	}
+
+	/**
+	 * Get the amount of an item to give for a reward
+	 * 
+	 * @return
+	 */
+	public int getItemRewardAmount() {
+		return itemRewardAmount;
+	}
+
+	/**
+	 * Set the amount of an item to give for a reward
+	 * 
+	 * @param itemRewardAmount
+	 */
+	public void setItemRewardAmount(int itemRewardAmount) {
+		this.itemRewardAmount = itemRewardAmount;
+	}
+
+	/**
+	 * Get a prerequisite quest that a player must complete before moving on to
+	 * this quest
+	 * 
+	 * @return
+	 */
+	public String getPrerequisite() {
+		return prereq;
+	}
+
+	/**
+	 * Set the prerequisite quest that a player must complete before moving on
+	 * to this quest
+	 * 
+	 * @param prereq
+	 */
+	public void setPrerequisite(String prereq) {
+		this.prereq = prereq;
+	}
+
+	/**
+	 * 
+	 * @return the progress of a quest
+	 */
+	public String getProgress() {
 		return progress;
 	}
 
+	/**
+	 * Get the description of a quest
+	 * 
+	 * @return
+	 */
+	public String getDescription() {
+		return desc;
+	}
+
+	/**
+	 * Set the description of a quest
+	 * 
+	 * @param desc
+	 */
+	public void setDescription(String desc) {
+		this.desc = desc;
+	}
+
+	/**
+	 * Get the text that is outputted when a quest is complete
+	 * 
+	 * @return
+	 */
+	public String getCompletionText() {
+		return completionText;
+	}
+
+	/**
+	 * Set the text that is outputted at the end of a quest
+	 * 
+	 * @param completionText
+	 */
+	public void setCompletionText(String completionText) {
+		this.completionText = completionText;
+	}
+
+	/**
+	 * Gets if the quest is active
+	 * 
+	 * @return
+	 */
 	public boolean isActive() {
 		return isActive;
 	}
 
+	/**
+	 * Set the quest's state as active/unactive
+	 * 
+	 * @param isActive
+	 */
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
@@ -134,9 +263,11 @@ public class Quest {
 	 * @param player
 	 * @param amount
 	 */
-	public void giveItemReward(Player player, int itemID, int amount) {
-		player.getInventory().addItem(new ItemStack(itemID, amount));
-		player.sendMessage("You have been rewarded" + amount + itemID + ".");
+	public void giveItemReward(Player player) {
+		player.getInventory().addItem(
+				new ItemStack(getItemRewardID(), getItemRewardAmount()));
+		player.sendMessage("You have been rewarded" + getItemRewardAmount()
+				+ " " + getItemRewardID() + ".");
 	}
 
 	/**
@@ -145,9 +276,10 @@ public class Quest {
 	 * @param player
 	 * @param amount
 	 */
-	public void giveiConomyReward(Player player, int amount) {
-		iConomy.getAccount(player.getName()).getHoldings().add(amount);
-		player.sendMessage("You have been rewarded" + amount + ".");
+	public void giveiConomyReward(Player player) {
+		iConomy.getAccount(player.getName()).getHoldings()
+				.add(getiConomyReward());
+		player.sendMessage("You have been rewarded" + getiConomyReward() + ".");
 	}
 
 	/**
