@@ -221,8 +221,8 @@ public class PropertyPool {
 		return returnResult;
 	}
 
-	public static int getPrice(String operation) {
-		return economy.getInt(operation);
+	public static double getPrice(String operation) {
+		return economy.getDouble(operation);
 	}
 
 	public static int getCurrencyID(String string) {
@@ -230,12 +230,12 @@ public class PropertyPool {
 		return ID == -1 ? 1 : ID;
 	}
 
-	public static void saveBalance(int UID, int balance) {
-		balances.setInt(UID, balance);
+	public static void saveBalance(int UID, double balance) {
+		balances.setDouble(UID, balance);
 	}
 
-	public static int getBalance(int UID) {
-		return balances.getInt(UID);
+	public static double getBalance(int UID) {
+		return balances.getDouble(UID);
 	}
 
 	public static boolean checkEconomyEnabled() {
@@ -306,15 +306,24 @@ public class PropertyPool {
 	 * @param nextUID
 	 */
 	public static void copyProperties(int UID, int nextUID) {
-		if(texts.keyExists(UID)) texts.setString(nextUID, texts.getString(UID));
-		if(locations.keyExists(UID)) locations.setString(nextUID, locations.getString(UID));
-		if(colours.keyExists(UID)) colours.setString(nextUID, colours.getString(UID));
-		if(owners.keyExists(UID)) owners.setString(nextUID, owners.getString(UID));
-		if(items.keyExists(UID)) items.setString(nextUID, items.getString(UID));
-		if(talkwhenclose.keyExists(UID)) talkwhenclose.setString(nextUID, talkwhenclose.getString(UID));
-		if(lookat.keyExists(UID)) lookat.setString(nextUID, lookat.getString(UID));
-		if(counts.keyExists(UID)) counts.setString(nextUID, counts.getString(UID));
-		if(balances.keyExists(UID)) balances.setString(nextUID, balances.getString(UID));
+		if (texts.keyExists(UID))
+			texts.setString(nextUID, texts.getString(UID));
+		if (locations.keyExists(UID))
+			locations.setString(nextUID, locations.getString(UID));
+		if (colours.keyExists(UID))
+			colours.setString(nextUID, colours.getString(UID));
+		if (owners.keyExists(UID))
+			owners.setString(nextUID, owners.getString(UID));
+		if (items.keyExists(UID))
+			items.setString(nextUID, items.getString(UID));
+		if (talkwhenclose.keyExists(UID))
+			talkwhenclose.setString(nextUID, talkwhenclose.getString(UID));
+		if (lookat.keyExists(UID))
+			lookat.setString(nextUID, lookat.getString(UID));
+		if (counts.keyExists(UID))
+			counts.setString(nextUID, counts.getString(UID));
+		if (balances.keyExists(UID))
+			balances.setString(nextUID, balances.getString(UID));
 		saveAll();
 	}
 }

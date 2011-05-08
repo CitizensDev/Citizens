@@ -108,7 +108,7 @@ public class MessageUtils {
 	 * @param useType
 	 * @return
 	 */
-	public static String getPaidMessage(Operation op, int paid, String npcName,
+	public static String getPaidMessage(Operation op, double paid, String npcName,
 			String type, boolean useType) {
 		String message = "";
 		message = ChatColor.GREEN

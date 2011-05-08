@@ -68,7 +68,7 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static String getRemainder(Operation op, Player player) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		Account acc = iConomy.getAccount(player.getName());
 		return "" + (price - acc.getHoldings().balance());
 	}
@@ -81,7 +81,7 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static boolean hasEnough(Player player, Operation op) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		return playerHasEnough(player.getName(), price);
 	}
 
@@ -114,8 +114,8 @@ public class IconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static int pay(Player player, Operation op) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+	public static double pay(Player player, Operation op) {
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		iConomy.getAccount(player.getName()).getHoldings().subtract(price);
 		return price;
 	}
@@ -129,8 +129,8 @@ public class IconomyInterface {
 	 * @param multiple
 	 * @return
 	 */
-	public static int pay(Player player, Operation op, int multiple) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+	public static double pay(Player player, Operation op, int multiple) {
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		iConomy.getAccount(player.getName()).getHoldings()
 				.subtract(price * multiple);
 		return price;
@@ -143,7 +143,7 @@ public class IconomyInterface {
 	 * @param payment
 	 * @return
 	 */
-	public static int pay(HumanNPC npc, Payment payment) {
+	public static double pay(HumanNPC npc, Payment payment) {
 		npc.setBalance(npc.getBalance() - payment.getPrice());
 		return payment.getPrice();
 	}
@@ -155,7 +155,7 @@ public class IconomyInterface {
 	 * @param payment
 	 * @return
 	 */
-	public static int pay(Player player, Payment payment) {
+	public static double pay(Player player, Payment payment) {
 		iConomy.getAccount(player.getName()).getHoldings()
 				.subtract(payment.getPrice());
 		return payment.getPrice();

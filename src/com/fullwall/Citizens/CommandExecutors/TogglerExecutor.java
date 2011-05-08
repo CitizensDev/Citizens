@@ -157,7 +157,7 @@ public class TogglerExecutor implements CommandExecutor {
 	private void buyState(Player player, Toggleable toggleable, Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
-				int paid = EconomyHandler.pay(op, player);
+				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0)
 					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
 							toggleable.getName(), toggleable.getType(), true));

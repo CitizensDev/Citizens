@@ -15,7 +15,7 @@ public class NPCData {
 	private boolean lookClose;
 	private boolean talkClose;
 	private String owner;
-	private int balance;
+	private double balance;
 
 	/**
 	 * Acts as a container for various npc data.
@@ -32,7 +32,7 @@ public class NPCData {
 	 */
 	public NPCData(String name, int UID, Location loc, String colour,
 			ArrayList<Integer> items, ArrayList<String> texts,
-			boolean lookClose, boolean talkClose, String owner, int balance) {
+			boolean lookClose, boolean talkClose, String owner, double balance) {
 		this.setName(name);
 		this.setUID(UID);
 		this.setLocation(loc);
@@ -45,7 +45,7 @@ public class NPCData {
 		this.setBalance(balance);
 	}
 
-	private void setBalance(int balance) {
+	private void setBalance(double balance) {
 		this.balance = balance;
 	}
 
@@ -121,7 +121,7 @@ public class NPCData {
 		return owner;
 	}
 
-	public int getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 }

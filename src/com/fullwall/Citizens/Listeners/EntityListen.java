@@ -115,24 +115,30 @@ public class EntityListen extends EntityListener {
 										.getStrippedName())
 										+ " is fully healed.");
 							}
-						} 
+						}
 					}
 				}
-				if(npc.isWizard()){
+				if (npc.isWizard()) {
 					Entity entity = e.getDamager();
 					if (entity instanceof Player) {
 						Player player = (Player) entity;
-						if(BasicExecutor.hasPermission("citizens.wizard.changeteleport", (CommandSender)player)){
+						if (BasicExecutor.hasPermission(
+								"citizens.wizard.changeteleport",
+								(CommandSender) player)) {
 							if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
-								if(!npc.isWizard()){
+								if (!npc.isWizard()) {
 									return;
 								}
-								if(npc.getWizard().getNrOfLocations() > 0){
+								if (npc.getWizard().getNrOfLocations() > 0) {
 									npc.getWizard().nextLocation();
-									player.sendMessage(ChatColor.GREEN + "Location set to " + StringUtils.yellowify(npc.getWizard().getCurrentLocationName()));
+									player.sendMessage(ChatColor.GREEN
+											+ "Location set to "
+											+ StringUtils.yellowify(npc
+													.getWizard()
+													.getCurrentLocationName()));
 								}
 							}
-						}else{
+						} else {
 							player.sendMessage(MessageUtils.noPermissionsMessage);
 						}
 					}
@@ -166,15 +172,17 @@ public class EntityListen extends EntityListener {
 					TraderInterface.handleRightClick(npc, p);
 					found = true;
 				}
-				if(npc.isWizard()){
-					if(BasicExecutor.hasPermission("citizens.wizard.useteleport", (CommandSender)p)){
-						if(p.getItemInHand().getTypeId() == Citizens.wizardInteractItem){
-							if(npc.getWizard().getNrOfLocations() > 0){
-								this.buyTeleport(p, npc.getWizard(), Operation.WIZARD_TELEPORT);
+				if (npc.isWizard()) {
+					if (BasicExecutor.hasPermission(
+							"citizens.wizard.useteleport", (CommandSender) p)) {
+						if (p.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
+							if (npc.getWizard().getNrOfLocations() > 0) {
+								this.buyTeleport(p, npc.getWizard(),
+										Operation.WIZARD_TELEPORT);
 								found = true;
 							}
 						}
-					}else{
+					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
@@ -199,15 +207,21 @@ public class EntityListen extends EntityListener {
 			}
 		}
 	}
-	
+
 	private void buyTeleport(Player player, WizardNPC wizard, Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
-				int paid = EconomyHandler.pay(op, player);
+				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0)
-					player.sendMessage(ChatColor.GREEN + "Paid " + EconomyHandler.getPaymentType(op, ""+paid, ChatColor.GREEN) + " for a teleport to " + StringUtils.yellowify(wizard.getCurrentLocationName()));
+					player.sendMessage(ChatColor.GREEN
+							+ "Paid "
+							+ EconomyHandler.getPaymentType(op, "" + paid,
+									ChatColor.GREEN)
+							+ " for a teleport to "
+							+ StringUtils.yellowify(wizard
+									.getCurrentLocationName()));
 				player.teleport(wizard.getCurrentLocation());
-				
+
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "Your server has not turned economy on for Citizens.");
@@ -215,9 +229,10 @@ public class EntityListen extends EntityListener {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 			return;
-		}else{
+		} else {
 			player.teleport(wizard.getCurrentLocation());
-			player.sendMessage(ChatColor.GREEN + "You got teleported to " + StringUtils.yellowify(wizard.getCurrentLocationName()));
+			player.sendMessage(ChatColor.GREEN + "You got teleported to "
+					+ StringUtils.yellowify(wizard.getCurrentLocationName()));
 		}
 	}
 }

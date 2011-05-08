@@ -23,7 +23,7 @@ public class HumanNPC extends NPC {
 	private double movementSpeed = 0.2;
 	private double privateSpace = 1.5;
 
-	private int balance;
+	private double balance;
 
 	private double targetX = 0.0;
 	@SuppressWarnings("unused")
@@ -69,7 +69,7 @@ public class HumanNPC extends NPC {
 	public WizardNPC getWizard() {
 		return this.wizardNPC;
 	}
-	
+
 	public QuesterNPC getQuester() {
 		return this.questerNPC;
 	}
@@ -258,11 +258,11 @@ public class HumanNPC extends NPC {
 		return getPlayer().getInventory();
 	}
 
-	public int getBalance() {
+	public double getBalance() {
 		return this.balance;
 	}
 
-	public void setBalance(int balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 }

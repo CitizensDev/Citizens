@@ -20,7 +20,7 @@ public class Defaults {
 		nodes.put("npc-colour", "§f");
 		nodes.put("chat-format", "[%name%]: ");
 		nodes.put("slashes-to-spaces", "true");
-		nodes.put("max-NPCs-per-player", "true");
+		nodes.put("max-NPCs-per-player", "10");
 		nodes.put("healer-take-health-item", "276");
 		nodes.put("healer-give-health-item", "35");
 		nodes.put("healer-health-regen-increment", "12000");

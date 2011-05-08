@@ -520,7 +520,7 @@ public class BasicExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.GREEN + "The NPC "
 					+ StringUtils.yellowify(args[1]) + " was born!");
 			if (EconomyHandler.useEconomy()) {
-				int paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE,
+				double paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE,
 						player);
 				if (paid > 0)
 					player.sendMessage(MessageUtils.getPaidMessage(
@@ -717,9 +717,8 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void copyNPC(int UID, String name, Player p) {
 		int newUID = plugin.handler
-			.spawnNPC(name, p.getLocation(), p.getName());
-		
-		
+				.spawnNPC(name, p.getLocation(), p.getName());
+
 		PropertyPool.copyProperties(UID, newUID);
 		WizardPropertyPool.copyProperties(UID, newUID);
 		HealerPropertyPool.copyProperties(UID, newUID);
@@ -727,33 +726,33 @@ public class BasicExecutor implements CommandExecutor {
 		NPCManager.getNPC(newUID).moveTo(p.getLocation());
 		PropertyPool.saveLocation(name, p.getLocation(), newUID);
 		PropertyPool.saveAll();
-		
+
 		HumanNPC newNPC = NPCManager.getNPC(newUID);
 		NPCManager.removeNPCForRespawn(newUID);
-		
+
 		plugin.handler.spawnExistingNPC(name, newUID, newNPC.getOwner());
-		
-		
-		/*ArrayList<String> texts = PropertyPool.getText(UID);
-		String colour = PropertyPool.getColour(UID);
-		String owner = PropertyPool.getOwner(UID);
-		ArrayList<Integer> items = PropertyPool.getItems(UID);
-		boolean lookatplayers = PropertyPool.getLookWhenClose(UID);
-		boolean talkwhenclose = PropertyPool.getTalkWhenClose(UID);
-		int newUID = plugin.handler
-				.spawnNPC(name, p.getLocation(), p.getName());
 
-		HumanNPC newNPC = NPCManager.getNPC(newUID);
-		newNPC.setNPCData(new NPCData(newNPC.getName(), newNPC.getUID(), newNPC
-				.getLocation(), colour, items, texts, lookatplayers,
-				talkwhenclose, owner, newNPC.getBalance()));
-		PropertyPool.saveState(newUID, newNPC.getNPCData());
-
-		// NPCDataManager.addItems(newNPC, items);
-
-		String newName = newNPC.getName();
-		NPCManager.removeNPCForRespawn(newUID);
-		plugin.handler.spawnExistingNPC(newName, newUID, newNPC.getOwner());*/
+		/*
+		 * ArrayList<String> texts = PropertyPool.getText(UID); String colour =
+		 * PropertyPool.getColour(UID); String owner =
+		 * PropertyPool.getOwner(UID); ArrayList<Integer> items =
+		 * PropertyPool.getItems(UID); boolean lookatplayers =
+		 * PropertyPool.getLookWhenClose(UID); boolean talkwhenclose =
+		 * PropertyPool.getTalkWhenClose(UID); int newUID = plugin.handler
+		 * .spawnNPC(name, p.getLocation(), p.getName());
+		 * 
+		 * HumanNPC newNPC = NPCManager.getNPC(newUID); newNPC.setNPCData(new
+		 * NPCData(newNPC.getName(), newNPC.getUID(), newNPC .getLocation(),
+		 * colour, items, texts, lookatplayers, talkwhenclose, owner,
+		 * newNPC.getBalance())); PropertyPool.saveState(newUID,
+		 * newNPC.getNPCData());
+		 * 
+		 * // NPCDataManager.addItems(newNPC, items);
+		 * 
+		 * String newName = newNPC.getName();
+		 * NPCManager.removeNPCForRespawn(newUID);
+		 * plugin.handler.spawnExistingNPC(newName, newUID, newNPC.getOwner());
+		 */
 	}
 
 	/**

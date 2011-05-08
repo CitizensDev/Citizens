@@ -152,7 +152,7 @@ public class EconomyHandler {
 	 * @param player
 	 * @return
 	 */
-	public static int pay(Operation op, Player player) {
+	public static double pay(Operation op, Player player) {
 		if (useEconomy) {
 			if (useIconomy())
 				return IconomyInterface.pay(player, op);
@@ -169,7 +169,7 @@ public class EconomyHandler {
 	 * @param player
 	 * @return
 	 */
-	public static int pay(Operation op, Player player, int multiple) {
+	public static double pay(Operation op, Player player, int multiple) {
 		if (useEconomy) {
 			if (useIconomy())
 				return IconomyInterface.pay(player, op, multiple);
@@ -186,7 +186,7 @@ public class EconomyHandler {
 	 * @param npc
 	 * @return
 	 */
-	public static int pay(Payment payment, HumanNPC npc, int slot) {
+	public static double pay(Payment payment, HumanNPC npc, int slot) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.pay(npc, payment);
@@ -204,7 +204,7 @@ public class EconomyHandler {
 	 * @param player
 	 * @return
 	 */
-	public static int pay(Payment payment, Player player, int slot) {
+	public static double pay(Payment payment, Player player, int slot) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.pay(player, payment);

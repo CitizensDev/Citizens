@@ -127,13 +127,15 @@ public class HealerExecutor implements CommandExecutor {
 	private void levelUp(Player player, HumanNPC npc, int multiple) {
 		if (EconomyHandler.useEconomy()) {
 			int level = HealerPropertyPool.getLevel(npc.getUID());
-			int paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player,
+			double paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player,
 					multiple);
 			if (paid > 0) {
 				if (level < 10) {
-					HealerPropertyPool.saveLevel(npc.getUID(), level + multiple);
+					HealerPropertyPool
+							.saveLevel(npc.getUID(), level + multiple);
 					player.sendMessage(getLevelUpPaidMessage(
-							Operation.HEALER_LEVEL_UP, npc, paid, level + multiple, multiple));
+							Operation.HEALER_LEVEL_UP, npc, paid, level
+									+ multiple, multiple));
 				} else {
 					player.sendMessage(StringUtils.yellowify(npc
 							.getStrippedName())
@@ -146,7 +148,8 @@ public class HealerExecutor implements CommandExecutor {
 		}
 	}
 
-	private String getLevelUpPaidMessage(Operation op, HumanNPC npc, int paid,
+	private String getLevelUpPaidMessage(Operation op, HumanNPC npc,
+			double paid,
 			int level, int multiple) {
 		String message = ChatColor.GREEN
 				+ "You have leveled up the healer "

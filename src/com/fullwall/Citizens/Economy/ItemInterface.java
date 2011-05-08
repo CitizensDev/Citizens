@@ -21,7 +21,7 @@ public class ItemInterface {
 	 */
 	public static boolean hasEnough(Player player, Operation op) {
 		// Get the price/currency from the enum name.
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
 		// The current count.
@@ -64,7 +64,7 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getCurrency(Operation op, ChatColor colour) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int ID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
 		return Material.getMaterial(ID) != null ? price + " "
@@ -88,10 +88,10 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getRemainder(Operation op, Player player) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		int current = price;
+		double current = price;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
 				current -= i.getAmount();
@@ -107,11 +107,11 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static int pay(Player player, Operation op) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum));
+	public static double pay(Player player, Operation op) {
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
 		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		int current = price;
+		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
@@ -133,12 +133,12 @@ public class ItemInterface {
 	 * @param multiple
 	 * @return
 	 */
-	public static int pay(Player player, Operation op, int multiple) {
-		int price = PropertyPool.getPrice(Operation.getString(op, addendum))
+	public static double pay(Player player, Operation op, int multiple) {
+		double price = PropertyPool.getPrice(Operation.getString(op, addendum))
 				* multiple;
 		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		int current = price;
+		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
@@ -159,9 +159,9 @@ public class ItemInterface {
 	 * @param slot
 	 * @return
 	 */
-	public static int pay(Player player, Payment payment, int slot) {
+	public static double pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
-		int current = payment.getPrice();
+		double current = payment.getPrice();
 		int count = 0;
 		if (slot != -1) {
 			current = decreaseItemStack(player, currencyID, current, slot);
@@ -179,8 +179,8 @@ public class ItemInterface {
 		return payment.getPrice();
 	}
 
-	public static int decreaseItemStack(Player player, int currencyID,
-			int current, int slot) {
+	public static double decreaseItemStack(Player player, int currencyID,
+			double current, int slot) {
 		ItemStack i = player.getInventory().getItem(slot);
 		if (i.getTypeId() == currencyID) {
 			int amount = i.getAmount();

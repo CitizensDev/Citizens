@@ -1,13 +1,12 @@
 package com.fullwall.Citizens.Economy;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Traders.ItemPrice;
 
 public class Payment {
 
-	private int price;
+	private double price;
 	private ItemStack item;
 	private boolean iConomy;
 
@@ -19,7 +18,7 @@ public class Payment {
 	 * @param item
 	 * @param iConomy
 	 */
-	public Payment(int price, ItemStack item, boolean iConomy) {
+	public Payment(double price, ItemStack item, boolean iConomy) {
 		this.setPrice(price);
 		this.setItem(item);
 		this.setiConomy(iConomy);
@@ -33,7 +32,7 @@ public class Payment {
 	 * @param item
 	 * @param iConomy
 	 */
-	public Payment(int price, boolean iConomy) {
+	public Payment(double price, boolean iConomy) {
 		this.setPrice(price);
 		this.setItem(null);
 		this.setiConomy(iConomy);
@@ -41,8 +40,7 @@ public class Payment {
 
 	public Payment(ItemPrice price2) {
 		this.setPrice(price2.getPrice());
-		ItemStack stack = new ItemStack(price2.getItemID(), price2.getPrice());
-		stack.setData(new MaterialData(price2.getData()));
+		ItemStack stack = price2.getItemStack();
 		this.setItem(stack);
 		this.setiConomy(price2.isiConomy());
 	}
@@ -69,11 +67,11 @@ public class Payment {
 		this.item = item;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 }

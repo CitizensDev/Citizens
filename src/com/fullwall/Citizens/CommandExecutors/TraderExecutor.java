@@ -266,11 +266,6 @@ public class TraderExecutor implements CommandExecutor {
 						+ "If you meant to use an item as currency, "
 						+ "please format it in this format: item ID:amount(:data).");
 				return;
-			} else if (split[0].contains(".")) {
-				player.sendMessage(ChatColor.GRAY
-						+ "Citizens does not currently support iConomy secondary currency. "
-						+ "We will be working on it for a future update.");
-				return;
 			}
 		}
 		int data = Citizens.MAGIC_DATA_VALUE;
@@ -280,7 +275,7 @@ public class TraderExecutor implements CommandExecutor {
 		if (cost != null)
 			itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(), data);
 		else
-			itemPrice = new ItemPrice(Integer.parseInt(split[0]));
+			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
 		itemPrice.setiConomy(cost == null);
 		Stockable s = new Stockable(stack, itemPrice, false);
 		String keyword = "buying";
@@ -342,7 +337,7 @@ public class TraderExecutor implements CommandExecutor {
 	 */
 	private void changeBalance(Player player, HumanNPC npc, String[] args)
 			throws NumberFormatException {
-		int amount = Integer.valueOf(args[2]);
+		double amount = Double.valueOf(args[2]);
 		if (args[1].equals("give")) {
 			if (EconomyHandler.canBuy(new Payment(amount, true), player)) {
 				EconomyHandler.pay(new Payment(-amount, true), npc, -1);
@@ -355,7 +350,7 @@ public class TraderExecutor implements CommandExecutor {
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
 						+ StringUtils.yellowify(
-								IconomyInterface.getBalance(player.getName()),
+								IconomyInterface.getCurrency(player.getName()),
 								ChatColor.GREEN) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED

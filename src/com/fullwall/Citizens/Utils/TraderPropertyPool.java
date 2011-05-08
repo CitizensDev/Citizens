@@ -142,7 +142,7 @@ public class TraderPropertyPool {
 				case 1:
 					String[] parts = main.split("/");
 					if (parts.length == 2) {
-						price = new ItemPrice(Integer.parseInt(parts[0]));
+						price = new ItemPrice(Double.parseDouble(parts[0]));
 						price.setiConomy(Boolean.parseBoolean(parts[1]));
 					} else {
 						price = new ItemPrice(Integer.parseInt(parts[0]),
@@ -185,10 +185,14 @@ public class TraderPropertyPool {
 	 * @param nextUID
 	 */
 	public static void copyProperties(int UID, int nextUID) {
-		if(traders.keyExists(UID)) traders.setString(nextUID, traders.getString(UID));
-		if(inventories.keyExists(UID)) inventories.setString(nextUID, inventories.getString(UID));
-		if(stocking.keyExists(UID)) stocking.setString(nextUID, stocking.getString(UID));
-		if(unlimiteds.keyExists(UID)) unlimiteds.setString(nextUID, unlimiteds.getString(UID));
+		if (traders.keyExists(UID))
+			traders.setString(nextUID, traders.getString(UID));
+		if (inventories.keyExists(UID))
+			inventories.setString(nextUID, inventories.getString(UID));
+		if (stocking.keyExists(UID))
+			stocking.setString(nextUID, stocking.getString(UID));
+		if (unlimiteds.keyExists(UID))
+			unlimiteds.setString(nextUID, unlimiteds.getString(UID));
 		saveAll();
 	}
 }
