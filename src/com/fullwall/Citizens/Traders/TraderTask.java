@@ -230,31 +230,33 @@ public class TraderTask implements Runnable {
 		if (buying) {
 			if (!EconomyHandler.canBuy(new Payment(stockable.getStocking(),
 					false), npc)) {
-				sendNoMoneyMessage(stocking, keyword);
+				sendNoMoneyMessage(stocking, keyword, "The NPC doesn't");
 				return true;
 			}
 			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()),
 					player)) {
-				sendNoMoneyMessage(stocking, keyword);
+				sendNoMoneyMessage(stocking, keyword, "You don't");
 				return true;
 			}
 		} else {
 			if (!EconomyHandler.canBuy(new Payment(stockable.getStocking(),
 					false), player)) {
-				sendNoMoneyMessage(stocking, keyword);
+				sendNoMoneyMessage(stocking, keyword, "The NPC doesn't");
 				return true;
 			}
 			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
-				sendNoMoneyMessage(stocking, keyword);
+				sendNoMoneyMessage(stocking, keyword, "You don't");
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void sendNoMoneyMessage(ItemStack stocking, String keyword) {
+	private void sendNoMoneyMessage(ItemStack stocking, String keyword,
+			String start) {
 		player.sendMessage(ChatColor.RED
-				+ "Not enough money available to "
+				+ start
+				+ " have enough money available to "
 				+ keyword
 				+ " "
 				+ StringUtils.yellowify(stocking.getAmount() + " "

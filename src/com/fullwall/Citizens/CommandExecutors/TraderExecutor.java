@@ -82,16 +82,11 @@ public class TraderExecutor implements CommandExecutor {
 			if (args.length == 3 && args[0].equals("balance")) {
 				if (BasicExecutor.hasPermission("citizens.trader.balance",
 						sender)) {
-					try {
-						if (!EconomyHandler.useIconomy())
-							player.sendMessage(ChatColor.GRAY
-									+ "This server is not using iConomy.");
-						else
-							changeBalance(player, npc, args);
-					} catch (NumberFormatException e) {
-						player.sendMessage(ChatColor.RED
-								+ "Invalid balance change amount entered.");
-					}
+					if (!EconomyHandler.useIconomy())
+						player.sendMessage(ChatColor.GRAY
+								+ "This server is not using iConomy.");
+					else
+						changeBalance(player, npc, args);
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
@@ -337,54 +332,60 @@ public class TraderExecutor implements CommandExecutor {
 	 */
 	private void changeBalance(Player player, HumanNPC npc, String[] args)
 			throws NumberFormatException {
-		double amount = Double.valueOf(args[2]);
-		if (args[1].equals("give")) {
-			if (EconomyHandler.canBuy(new Payment(amount, true), player)) {
-				EconomyHandler.pay(new Payment(-amount, true), npc, -1);
-				EconomyHandler.pay(new Payment(amount, true), player, -1);
-				player.sendMessage(ChatColor.GREEN
-						+ "Gave "
-						+ StringUtils.yellowify(IconomyInterface
-								.getCurrency(amount))
-						+ " to "
-						+ StringUtils.yellowify(npc.getStrippedName())
-						+ ". Your balance is now "
-						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(player.getName()),
-								ChatColor.GREEN) + ".");
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "You don't have enough money for that! Need "
-						+ " "
-						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(amount
-										- IconomyInterface.getBalance(player
-												.getName())), ChatColor.RED)
-						+ " more.");
-			}
-		} else if (args[1].equals("take")) {
-			if (EconomyHandler.canBuy(new Payment(amount, true), npc)) {
-				EconomyHandler.pay(new Payment(amount, true), npc, -1);
-				EconomyHandler.pay(new Payment(-amount, true), player, -1);
-				player.sendMessage(ChatColor.GREEN
-						+ "Took "
-						+ StringUtils.yellowify(IconomyInterface
-								.getCurrency(amount))
-						+ " from "
-						+ StringUtils.yellowify(npc.getStrippedName())
-						+ ". Your balance is now "
-						+ StringUtils.yellowify(IconomyInterface
-								.getBalance(player.getName())) + ".");
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "The NPC doesn't have enough money for that! It needs "
-						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(amount
-										- npc.getBalance()), ChatColor.RED)
-						+ " more in its balance.");
-			}
-		} else
-			player.sendMessage(ChatColor.RED + "Invalid argument type "
-					+ StringUtils.yellowify(args[1], ChatColor.RED) + ".");
+		try {
+			double amount = Double.parseDouble(args[2]);
+			if (args[1].equals("give")) {
+				if (EconomyHandler.canBuy(new Payment(amount, true), player)) {
+					EconomyHandler.pay(new Payment(-amount, true), npc, -1);
+					EconomyHandler.pay(new Payment(amount, true), player, -1);
+					player.sendMessage(ChatColor.GREEN
+							+ "Gave "
+							+ StringUtils.yellowify(IconomyInterface
+									.getCurrency(amount))
+							+ " to "
+							+ StringUtils.yellowify(npc.getStrippedName())
+							+ ". Your balance is now "
+							+ StringUtils.yellowify(IconomyInterface
+									.getCurrency(player.getName()),
+									ChatColor.GREEN) + ".");
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "You don't have enough money for that! Need "
+							+ " "
+							+ StringUtils.yellowify(IconomyInterface
+									.getCurrency(amount
+											- IconomyInterface
+													.getBalance(player
+															.getName())),
+									ChatColor.RED) + " more.");
+				}
+			} else if (args[1].equals("take")) {
+				if (EconomyHandler.canBuy(new Payment(amount, true), npc)) {
+					EconomyHandler.pay(new Payment(amount, true), npc, -1);
+					EconomyHandler.pay(new Payment(-amount, true), player, -1);
+					player.sendMessage(ChatColor.GREEN
+							+ "Took "
+							+ StringUtils.yellowify(IconomyInterface
+									.getCurrency(amount))
+							+ " from "
+							+ StringUtils.yellowify(npc.getStrippedName())
+							+ ". Your balance is now "
+							+ StringUtils.yellowify(IconomyInterface
+									.getBalance(player.getName())) + ".");
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "The NPC doesn't have enough money for that! It needs "
+							+ StringUtils.yellowify(
+									IconomyInterface.getCurrency(amount
+											- npc.getBalance()), ChatColor.RED)
+							+ " more in its balance.");
+				}
+			} else
+				player.sendMessage(ChatColor.RED + "Invalid argument type "
+						+ StringUtils.yellowify(args[1], ChatColor.RED) + ".");
+		} catch (NumberFormatException e) {
+			player.sendMessage(ChatColor.RED
+					+ "Invalid balance change amount entered.");
+		}
 	}
 }
