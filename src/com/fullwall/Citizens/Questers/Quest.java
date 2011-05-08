@@ -13,7 +13,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.iConomy;
 
 public class Quest {
-	private QuestFile questFile;
 	private String questName;
 	private HumanNPC questGiver;
 	private Player player;
@@ -35,20 +34,15 @@ public class Quest {
 	 * @param isComplete
 	 */
 	public Quest(Player player, HumanNPC questGiver, QuestType type,
-			QuestFile questFile, boolean isComplete) {
+			boolean isComplete) {
 		this.player = player;
 		this.questGiver = questGiver;
 		this.type = type;
-		this.questFile = questFile;
 		this.isComplete = isComplete;
 	}
-
-	/**
-	 * 
-	 * @return quest file object
-	 */
-	public QuestFile getQuestFile() {
-		return questFile;
+	
+	public Quest(String questName) {
+		this.questName = questName;
 	}
 	
 	/**

@@ -72,7 +72,7 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equals("quester")) {
+			} else if (args[0].equals("CHANGE-BACK-TO-QUESTER-LATER")) {
 				if (BasicExecutor.hasPermission("citizens.quester.create",
 						sender)) {
 					if (!QuesterPropertyPool.isQuester(npc.getUID())) {

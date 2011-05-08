@@ -8,7 +8,7 @@ public class CommandHandler {
 	private HealerExecutor healer;
 	private TraderExecutor trader;
 	private WizardExecutor wizard;
-	private QuesterExecutor quester;
+	//private QuesterExecutor quester;
 	private TogglerExecutor toggle;
 
 	public CommandHandler(Citizens instance) {
@@ -25,7 +25,7 @@ public class CommandHandler {
 		healer = new HealerExecutor(plugin);
 		trader = new TraderExecutor(plugin);
 		wizard = new WizardExecutor(plugin);
-		quester = new QuesterExecutor(plugin);
+		//quester = new QuesterExecutor(plugin);
 		toggle = new TogglerExecutor(plugin);
 		plugin.getCommand("npc").setExecutor(basic);
 		plugin.getCommand("citizens").setExecutor(basic);
@@ -33,7 +33,7 @@ public class CommandHandler {
 		plugin.getCommand("healer").setExecutor(healer);
 		plugin.getCommand("trader").setExecutor(trader);
 		plugin.getCommand("wizard").setExecutor(wizard);
-		plugin.getCommand("quester").setExecutor(quester);
+		//plugin.getCommand("quester").setExecutor(quester);
 		plugin.getCommand("toggle").setExecutor(toggle);
 	}
 }

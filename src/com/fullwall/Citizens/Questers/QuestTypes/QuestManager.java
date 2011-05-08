@@ -50,7 +50,6 @@ public class QuestManager {
 		 * Changes a quest type enum to a string value
 		 * 
 		 * @param op
-		 * @param addendum
 		 * @return
 		 */
 		public static String getString(QuestType type) {
