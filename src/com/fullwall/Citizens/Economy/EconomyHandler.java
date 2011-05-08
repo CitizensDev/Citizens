@@ -13,7 +13,34 @@ public class EconomyHandler {
 
 	// Parsed and used as settings for Citizens.economy.
 	public enum Operation {
-		BASIC_NPC_CREATE, TRADER_NPC_CREATE, HEALER_NPC_CREATE, HEALER_LEVEL_UP, WIZARD_NPC_CREATE, WIZARD_TELEPORT, QUESTER_NPC_CREATE;
+		/**
+		 * Create a basic NPC
+		 */
+		BASIC_NPC_CREATE,
+		/**
+		 * Create a trader NPC
+		 */
+		TRADER_NPC_CREATE,
+		/**
+		 * Create a healer NPC
+		 */
+		HEALER_NPC_CREATE,
+		/**
+		 * Level-up a healer NPC
+		 */
+		HEALER_LEVEL_UP,
+		/**
+		 * Create a wizard NPC
+		 */
+		WIZARD_NPC_CREATE,
+		/**
+		 * Teleport between wizard NPCs
+		 */
+		WIZARD_TELEPORT,
+		/**
+		 * Create a quester NPC
+		 */
+		QUESTER_NPC_CREATE;
 
 		/**
 		 * Changes an operation enum to a string value for use in settings
