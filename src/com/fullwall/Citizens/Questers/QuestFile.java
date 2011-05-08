@@ -35,6 +35,10 @@ public class QuestFile {
 		}
 	}
 	
+	public PropertyHandler getQuestFile() {
+		return questFile;
+	}
+	
 	public String getQuestName() {
 		return questName;
 	}

@@ -13,6 +13,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.iConomy;
 
 public class Quest {
+	private QuestFile questFile;
+	private String questName;
 	private HumanNPC questGiver;
 	private Player player;
 	private String progress;
@@ -20,8 +22,8 @@ public class Quest {
 	private boolean isActive = false;
 	private boolean isComplete;
 
-	public Map<Quest, Boolean> queuedQuests = new HashMap<Quest, Boolean>();
-	public Map<Quest, Boolean> activeQuests = new HashMap<Quest, Boolean>();
+	public Map<String, Boolean> queuedQuests = new HashMap<String, Boolean>();
+	public Map<String, Boolean> activeQuests = new HashMap<String, Boolean>();
 	private List<String> accepted = new ArrayList<String>();
 
 	/**
@@ -33,11 +35,28 @@ public class Quest {
 	 * @param isComplete
 	 */
 	public Quest(Player player, HumanNPC questGiver, QuestType type,
-			boolean isComplete) {
+			QuestFile questFile, boolean isComplete) {
 		this.player = player;
 		this.questGiver = questGiver;
 		this.type = type;
+		this.questFile = questFile;
 		this.isComplete = isComplete;
+	}
+
+	/**
+	 * 
+	 * @return quest file object
+	 */
+	public QuestFile getQuestFile() {
+		return questFile;
+	}
+	
+	/**
+	 * 
+	 * @return the name of the quest
+	 */
+	public String getName() {
+		return questName;
 	}
 
 	/**
@@ -141,9 +160,9 @@ public class Quest {
 	 * Add a quest to a queue
 	 */
 	public void addToQueue() {
-		queuedQuests.put(this, true);
+		queuedQuests.put(this.getName(), true);
 	}
-	
+
 	/**
 	 * Accept a quest
 	 * 
@@ -151,17 +170,17 @@ public class Quest {
 	 */
 	public void accept(Player player) {
 		accepted.add(player.getName());
-		queuedQuests.remove(this);
+		queuedQuests.remove(this.getName());
 		player.sendMessage("You have accepted the quest!");
 	}
-	
+
 	/**
 	 * Deny a quest
 	 * 
 	 * @param player
 	 */
 	public void deny(Player player) {
-		queuedQuests.remove(this);
+		queuedQuests.remove(this.getName());
 		player.sendMessage("You have denied the quest!");
 	}
 
@@ -171,20 +190,27 @@ public class Quest {
 	 * @param player
 	 */
 	public void start(Player player) {
-		this.isActive = true;
-		if (queuedQuests.containsKey(this)) {
-			queuedQuests.remove(this);
-			activeQuests.put(this, true);
-			accept(player);
-			player.sendMessage("A quest has begun!");
+		if (!isActive()) {
+			setActive(true);
+			if (queuedQuests.containsKey(this.getName())) {
+				queuedQuests.remove(this.getName());
+				activeQuests.put(this.getName(), true);
+				accept(player);
+				player.sendMessage("A quest has begun!");
+			}
 		}
 	}
 
 	/**
 	 * Stop a quest
+	 * 
+	 * @param player
 	 */
-	public void stop() {
-		this.isActive = false;
-		activeQuests.put(this, false);
+	public void stop(Player player) {
+		if (isActive()) {
+			setActive(false);
+			activeQuests.put(this.getName(), false);
+			player.sendMessage("The quest has ended.");
+		}
 	}
 }

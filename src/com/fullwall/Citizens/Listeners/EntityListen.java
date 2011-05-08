@@ -5,21 +5,23 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
-import com.fullwall.Citizens.CommandExecutors.QuesterExecutor;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Questers.Quest;
+import com.fullwall.Citizens.Questers.QuestFile;
 import com.fullwall.Citizens.Questers.QuestTypes.QuestManager.QuestType;
 import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
@@ -37,9 +39,19 @@ import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTarget
  */
 public class EntityListen extends EntityListener {
 	private final Citizens plugin;
+	private PluginManager pm;
 
 	public EntityListen(final Citizens plugin) {
 		this.plugin = plugin;
+	}
+	
+	/**
+	 * Register entity events
+	 */
+	public void registerEvents() {
+		pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this, Event.Priority.Normal, plugin);
+		pm.registerEvent(Event.Type.ENTITY_TARGET, this, Event.Priority.Normal, plugin);
 	}
 
 	@Override
@@ -193,12 +205,16 @@ public class EntityListen extends EntityListener {
 					if (p.getItemInHand().getTypeId() == Citizens.questerInteractItem) {
 						p.sendMessage("You selected a quester.");
 						Quest quest = new Quest(p, npc, QuestType.DESTROY,
-								false);
+								new QuestFile("name", npc), false);
 						if (!quest.isActive()) {
 							System.out.println("Quest isn't active.");
 							quest.addToQueue();
-							if(p.getItemInHand().getTypeId() == Citizens.questAcceptItem) {
+							if (p.getItemInHand().getTypeId() == Citizens.questAcceptItem) {
 								quest.start(p);
+							} else if (p.getItemInHand().getTypeId() == Citizens.questDenyItem) {
+								quest.deny(p);
+							} else {
+								System.out.println("Not a valid item.");
 							}
 						} else {
 							System.out.println("Quest is active.");

@@ -27,6 +27,8 @@ public class Defaults {
 		nodes.put("wizard-interact-item", "288");
 		nodes.put("wizard-max-locations", "10");
 		nodes.put("quester-interact-item", "339");
+		nodes.put("quest-accept-item", "341");
+		nodes.put("quest-deny-item", "338");
 		nodes.put(
 				"default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");

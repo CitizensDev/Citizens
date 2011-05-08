@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Healers.HealerNPC;
+import com.fullwall.Citizens.Questers.QuesterNPC;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
@@ -79,6 +80,9 @@ public class NPCManager {
 		}
 		if (WizardPropertyPool.isWizard(UID)) {
 			loadWizard(npc, npc.getWizard(), UID);
+		}
+		if (QuesterPropertyPool.isQuester(UID)) {
+			loadQuester(npc, npc.getQuester(), UID);
 		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
@@ -150,6 +154,18 @@ public class NPCManager {
 		npc.setHealer(HealerPropertyPool.getHealerState(UID));
 		healer.setStrength(HealerPropertyPool.getStrength(UID));
 		HealerPropertyPool.saveState(npc);
+	}
+
+	/**
+	 * Loads quester data for an npc.
+	 * 
+	 * @param npc
+	 * @param quester
+	 * @param UID
+	 */
+	public void loadQuester(HumanNPC npc, QuesterNPC quester, int UID) {
+		npc.setQuester(QuesterPropertyPool.getQuesterState(UID));
+		QuesterPropertyPool.saveState(npc);
 	}
 
 	/**

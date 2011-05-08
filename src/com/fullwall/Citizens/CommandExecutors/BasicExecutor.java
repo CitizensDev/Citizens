@@ -511,12 +511,13 @@ public class BasicExecutor implements CommandExecutor {
 		if (PropertyPool.getNPCAmountPerPlayer(player.getName()) < PropertyPool
 				.getMaxNPCsPerPlayer()
 				|| PropertyPool.settings.getInt("max-NPCs-per-player") == 0) {
-			int UID = plugin.handler.spawnNPC(args[1], player.getLocation(),
-					player.getName());
+			int UID = plugin.basicNPCHandler.spawnNPC(args[1],
+					player.getLocation(), player.getName());
 			PropertyPool.saveNPCAmountPerPlayer(player.getName(),
 					PropertyPool.getNPCAmountPerPlayer(player.getName()) + 1);
-			plugin.handler.setNPCText(UID, texts);
-			plugin.handler.setOwner(NPCManager.getNPC(UID), player.getName());
+			plugin.basicNPCHandler.setNPCText(UID, texts);
+			plugin.basicNPCHandler.setOwner(NPCManager.getNPC(UID),
+					player.getName());
 			player.sendMessage(ChatColor.GREEN + "The NPC "
 					+ StringUtils.yellowify(args[1]) + " was born!");
 			if (EconomyHandler.useEconomy()) {
@@ -551,7 +552,7 @@ public class BasicExecutor implements CommandExecutor {
 		if (loc != null) {
 			PropertyPool.saveLocation(name, loc, npc.getUID());
 		}
-		plugin.handler.moveNPC(npc, ((Player) sender).getLocation());
+		plugin.basicNPCHandler.moveNPC(npc, ((Player) sender).getLocation());
 		sender.sendMessage(StringUtils.yellowify(name)
 				+ " is enroute to your location!");
 	}
@@ -565,12 +566,12 @@ public class BasicExecutor implements CommandExecutor {
 	private void removeNPC(String[] args, CommandSender sender, HumanNPC npc) {
 		Player p = (Player) sender;
 		if (args.length == 2 && args[1].equals("all")) {
-			plugin.handler.removeAllNPCs();
+			plugin.basicNPCHandler.removeAllNPCs();
 			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			PropertyPool.locations.setInt("currentID", 0);
 			PropertyPool.locations.removeKey("list");
 		} else {
-			plugin.handler.removeNPC(npc.getUID());
+			plugin.basicNPCHandler.removeNPC(npc.getUID());
 			sender.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 		}
 		NPCManager.NPCSelected.remove(p.getName());
@@ -588,7 +589,7 @@ public class BasicExecutor implements CommandExecutor {
 					+ "NPCs can't have names longer than 16 characters.");
 			return;
 		}
-		plugin.handler.setName(npc.getUID(), name, npc.getOwner());
+		plugin.basicNPCHandler.setName(npc.getUID(), name, npc.getOwner());
 		sender.sendMessage(ChatColor.GREEN
 				+ StringUtils.yellowify(npc.getName()) + "'s name was set to "
 				+ StringUtils.yellowify(name) + ".");
@@ -607,7 +608,8 @@ public class BasicExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "Use an & to specify " + args[0]
 					+ ".");
 		} else {
-			plugin.handler.setColour(npc.getUID(), args[1], npc.getOwner());
+			plugin.basicNPCHandler.setColour(npc.getUID(), args[1],
+					npc.getOwner());
 		}
 	}
 
@@ -632,7 +634,7 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		ArrayList<String> texts = new ArrayList<String>();
 		texts.add(text);
-		plugin.handler.setNPCText(npc.getUID(), texts);
+		plugin.basicNPCHandler.setNPCText(npc.getUID(), texts);
 		sender.sendMessage(ChatColor.GREEN
 				+ StringUtils.yellowify(npc.getName()) + "'s text was set to "
 				+ StringUtils.yellowify(text) + ".");
@@ -658,7 +660,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			i += 1;
 		}
-		plugin.handler.addNPCText(npc.getUID(), text);
+		plugin.basicNPCHandler.addNPCText(npc.getUID(), text);
 		sender.sendMessage(StringUtils.yellowify(text) + " was added to "
 				+ StringUtils.yellowify(npc.getStrippedName() + "'s")
 				+ " text.");
@@ -680,7 +682,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 */
 	private void resetText(String[] args, CommandSender sender, HumanNPC npc) {
-		plugin.handler.resetText(npc.getUID());
+		plugin.basicNPCHandler.resetText(npc.getUID());
 		sender.sendMessage(StringUtils.yellowify(npc.getStrippedName() + "'s")
 				+ " text was reset!");
 	}
@@ -693,7 +695,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 */
 	private void setItemInHand(String name, CommandSender sender, HumanNPC npc) {
-		plugin.handler.setItemInHand((Player) sender, npc, name);
+		plugin.basicNPCHandler.setItemInHand((Player) sender, npc, name);
 	}
 
 	/**
@@ -704,7 +706,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 */
 	private void setArmor(String[] args, CommandSender sender, HumanNPC npc) {
-		plugin.handler.setItemInSlot(args, (Player) sender, npc);
+		plugin.basicNPCHandler.setItemInSlot(args, (Player) sender, npc);
 	}
 
 	// Ugh, ugly. Maybe we should palm the PropertyPool functions off to
@@ -716,8 +718,8 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param p
 	 */
 	private void copyNPC(int UID, String name, Player p) {
-		int newUID = plugin.handler
-				.spawnNPC(name, p.getLocation(), p.getName());
+		int newUID = plugin.basicNPCHandler.spawnNPC(name, p.getLocation(),
+				p.getName());
 
 		PropertyPool.copyProperties(UID, newUID);
 		WizardPropertyPool.copyProperties(UID, newUID);
@@ -730,7 +732,8 @@ public class BasicExecutor implements CommandExecutor {
 		HumanNPC newNPC = NPCManager.getNPC(newUID);
 		NPCManager.removeNPCForRespawn(newUID);
 
-		plugin.handler.spawnExistingNPC(name, newUID, newNPC.getOwner());
+		plugin.basicNPCHandler
+				.spawnExistingNPC(name, newUID, newNPC.getOwner());
 
 		/*
 		 * ArrayList<String> texts = PropertyPool.getText(UID); String colour =

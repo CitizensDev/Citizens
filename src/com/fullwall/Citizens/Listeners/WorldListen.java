@@ -3,9 +3,11 @@ package com.fullwall.Citizens.Listeners;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldListener;
+import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -13,12 +15,23 @@ import com.fullwall.Citizens.Utils.NPCLocation;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WorldListen extends WorldListener {
-
 	private Citizens plugin;
 	private ConcurrentHashMap<NPCLocation, String> toRespawn = new ConcurrentHashMap<NPCLocation, String>();
+	private PluginManager pm;
 
 	public WorldListen(Citizens plugin) {
 		this.plugin = plugin;
+	}
+
+	/**
+	 * Register world events
+	 */
+	public void registerEvents() {
+		pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Event.Type.CHUNK_UNLOAD, this, Event.Priority.Normal,
+				plugin);
+		pm.registerEvent(Event.Type.CHUNK_LOAD, this, Event.Priority.Normal,
+				plugin);
 	}
 
 	@Override
@@ -32,7 +45,7 @@ public class WorldListen extends WorldListener {
 				NPCLocation loc = new NPCLocation(plugin, npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, i.getValue());
-				plugin.handler.despawnNPC(i.getKey());
+				plugin.basicNPCHandler.despawnNPC(i.getKey());
 			}
 		}
 	}
@@ -45,8 +58,8 @@ public class WorldListen extends WorldListener {
 			if (e.getChunk().getWorld()
 					.getChunkAt(tempLoc.getX(), tempLoc.getZ())
 					.equals(e.getChunk())) {
-				plugin.handler.spawnExistingNPC(i.getValue(), tempLoc.getUID(),
-						tempLoc.getOwner());
+				plugin.basicNPCHandler.spawnExistingNPC(i.getValue(),
+						tempLoc.getUID(), tempLoc.getOwner());
 				toRespawn.remove(tempLoc);
 			}
 		}

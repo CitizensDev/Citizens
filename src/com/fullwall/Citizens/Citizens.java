@@ -8,20 +8,13 @@ import java.util.logging.Logger;
 import me.taylorkelly.help.Help;
 
 import org.bukkit.Location;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.iConomy.iConomy;
 
-import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
-import com.fullwall.Citizens.CommandExecutors.HealerExecutor;
-import com.fullwall.Citizens.CommandExecutors.QuesterExecutor;
-import com.fullwall.Citizens.CommandExecutors.TogglerExecutor;
-import com.fullwall.Citizens.CommandExecutors.TraderExecutor;
-import com.fullwall.Citizens.CommandExecutors.WizardExecutor;
+import com.fullwall.Citizens.CommandExecutors.CommandHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Healers.HealerTask;
 import com.fullwall.Citizens.Listeners.CustomListen;
@@ -43,11 +36,11 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
  * @author fullwall
  */
 public class Citizens extends JavaPlugin {
-	public final EntityListen l = new EntityListen(this);
-	public final CustomListen cl = new CustomListen(this);
-	public final WorldListen wl = new WorldListen(this);
-	public final PluginListen pl = new PluginListen(this);
-	public final BasicNPCHandler handler = new BasicNPCHandler(this);
+	private final EntityListen entityListener = new EntityListen(this);
+	private final CustomListen customListener = new CustomListen(this);
+	private final WorldListen worldListener = new WorldListen(this);
+	private final PluginListen serverListener = new PluginListen(this);
+	public final BasicNPCHandler basicNPCHandler = new BasicNPCHandler(this);
 
 	public static Citizens plugin;
 
@@ -92,39 +85,15 @@ public class Citizens extends JavaPlugin {
 		file.delete();
 		file = new File("plugins/Citizens/Traders/Citizens.sellables");
 		file.delete();
-		BasicExecutor executor = new BasicExecutor(this);
-		this.getCommand("npc").setExecutor(executor);
-		this.getCommand("citizens").setExecutor(executor);
-		this.getCommand("basic").setExecutor(executor);
-
-		TraderExecutor traderExecutor = new TraderExecutor(this);
-		this.getCommand("trader").setExecutor(traderExecutor);
-
-		HealerExecutor healerExecutor = new HealerExecutor(this);
-		this.getCommand("healer").setExecutor(healerExecutor);
-
-		WizardExecutor wizardExecutor = new WizardExecutor(this);
-		this.getCommand("wizard").setExecutor(wizardExecutor);
-
-		QuesterExecutor questerExecutor = new QuesterExecutor(this);
-		this.getCommand("quester").setExecutor(questerExecutor);
-
-		TogglerExecutor togglerExecutor = new TogglerExecutor(this);
-		this.getCommand("toggle").setExecutor(togglerExecutor);
+		// Register our commands.
+		CommandHandler commandHandler = new CommandHandler(this);
+		commandHandler.registerCommands();
 
 		// Register our events.
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, l, Event.Priority.Normal,
-				this);
-		pm.registerEvent(Event.Type.ENTITY_TARGET, l, Event.Priority.Normal,
-				this);
-		pm.registerEvent(Event.Type.CUSTOM_EVENT, cl, Event.Priority.Normal,
-				this);
-		pm.registerEvent(Event.Type.CHUNK_LOAD, wl, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.CHUNK_UNLOAD, wl, Event.Priority.Normal,
-				this);
-		getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE,
-				pl, Event.Priority.Monitor, this);
+		entityListener.registerEvents();
+		customListener.registerEvents();
+		worldListener.registerEvents();
+		serverListener.registerEvents();
 
 		PluginDescriptionFile pdfFile = this.getDescription();
 		version = pdfFile.getVersion();
@@ -171,7 +140,7 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
-		handler.despawnAllNPCs();
+		basicNPCHandler.despawnAllNPCs();
 		// Save the local copy of our files to disk.
 		PropertyPool.saveAll();
 		TraderPropertyPool.saveAll();
@@ -293,10 +262,13 @@ public class Citizens extends JavaPlugin {
 		if (PropertyPool.settings.keyExists("wizard-interact-item"))
 			wizardInteractItem = PropertyPool.settings
 					.getInt("wizard-interact-item");
-		if (PropertyPool.settings.keyExists("quester-interact-item")) {
+		if (PropertyPool.settings.keyExists("quester-interact-item"))
 			questerInteractItem = PropertyPool.settings
 					.getInt("quester-interact-item");
-		}
+		if (PropertyPool.settings.keyExists("quest-accept-item"))
+			questAcceptItem = PropertyPool.settings.getInt("quest-accept-item");
+		if (PropertyPool.settings.keyExists("quest-deny-item"))
+			questDenyItem = PropertyPool.settings.getInt("quest-deny-item");
 	}
 
 	private void setupNPCs() {
@@ -334,13 +306,13 @@ public class Citizens extends JavaPlugin {
 				Location loc = PropertyPool.getLocationFromID(Integer
 						.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					handler.spawnExistingNPC(name.split("_", 2)[1], Integer
+					basicNPCHandler.spawnExistingNPC(name.split("_", 2)[1], Integer
 							.valueOf(name.split("_")[0]), PropertyPool
 							.getOwner(Integer.valueOf(name.split("_")[0])));
 					ArrayList<String> text = PropertyPool.getText(Integer
 							.valueOf(name.split("_")[0]));
 					if (text != null)
-						handler.setNPCText(Integer.valueOf(name.split("_")[0]),
+						basicNPCHandler.setNPCText(Integer.valueOf(name.split("_")[0]),
 								text);
 				} else {
 					PropertyPool.deleteNameFromList(name);
@@ -443,6 +415,8 @@ public class Citizens extends JavaPlugin {
 
 	/**
 	 * Schedule a timer to regenerate a healer's health based on their level
+	 * 
+	 * @return
 	 */
 	private int getHealthRegenRate() {
 		int delay = 0;
