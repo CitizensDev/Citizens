@@ -5,6 +5,8 @@ import org.bukkit.command.CommandSender;
 
 /**
  * Help pages for Citizens
+ * 
+ * @author aPunch
  */
 public class HelpUtils {
 	/**
@@ -19,8 +21,6 @@ public class HelpUtils {
 		sender.sendMessage(ChatColor.GREEN + "  []"
 				+ StringUtils.yellowify(" - required") + "  ()"
 				+ StringUtils.yellowify(" - optional"));
-		sender.sendMessage(ChatColor.YELLOW
-				+ "=================================");
 		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
 		formatCommand(sender, "trader", "help [page]", "trader NPC help page");
 		formatCommand(sender, "healer", "help", "healer NPC help page");
@@ -112,7 +112,6 @@ public class HelpUtils {
 	 */
 	public static void sendHealerHelp(CommandSender sender) {
 		header(sender, "Healer", 1, 1);
-		formatCommand(sender, "healer", "help", "view this menu");
 		formatCommand(sender, "healer", "status",
 				"view the health and level of a healer");
 		formatCommand(sender, "healer", "level-up (levels)",
@@ -128,7 +127,6 @@ public class HelpUtils {
 	 */
 	public static void sendWizardHelp(CommandSender sender) {
 		header(sender, "Wizard", 1, 1);
-		formatCommand(sender, "wizard", "help", "view this menu");
 		formatCommand(sender, "wizard", "locations",
 				"view the locations of a wizard");
 		formatCommand(sender, "wizard", "addloc [name]",
