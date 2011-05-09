@@ -1,4 +1,4 @@
-package com.fullwall.Citizens.Questers.QuestTypes;
+package com.fullwall.Citizens.Questers;
 
 public class QuestManager {
 
