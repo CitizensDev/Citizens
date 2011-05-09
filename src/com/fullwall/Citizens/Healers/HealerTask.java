@@ -11,18 +11,16 @@ public class HealerTask implements Runnable {
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
 				.entrySet()) {
-			HumanNPC npc = entry.getValue();
-			regenerateHealth(npc, HealerPropertyPool.getLevel(npc.getUID()));
+			regenerateHealth(entry.getValue());
 		}
 	}
 
 	/**
-	 * Regenerate a healer's health based on what level they are
+	 * Regenerate a healer's health
 	 * 
 	 * @param npc
-	 * @param level
 	 */
-	private void regenerateHealth(HumanNPC npc, int level) {
+	private void regenerateHealth(HumanNPC npc) {
 		if (npc.isHealer()) {
 			int UID = npc.getUID();
 			if (HealerPropertyPool.getStrength(UID) < HealerPropertyPool
