@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Toggleable;
@@ -60,8 +61,7 @@ public class TogglerExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args[0].equals("trader")) {
-				if (BasicExecutor.hasPermission("citizens.trader.create",
-						sender)) {
+				if (Permission.hasPermission("citizens.trader.create", sender)) {
 					if (!TraderPropertyPool.isTrader(npc.getUID())) {
 						buyState(player, npc.getTrader(),
 								Operation.TRADER_NPC_CREATE);
@@ -73,8 +73,7 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equals("CHANGE-BACK-TO-QUESTER-LATER")) {
-				if (BasicExecutor.hasPermission("citizens.quester.create",
-						sender)) {
+				if (Permission.hasPermission("citizens.quester.create", sender)) {
 					if (!QuesterPropertyPool.isQuester(npc.getUID())) {
 						buyState(player, npc.getQuester(),
 								Operation.QUESTER_NPC_CREATE);
@@ -86,8 +85,7 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equals("healer")) {
-				if (BasicExecutor.hasPermission("citizens.healer.create",
-						sender)) {
+				if (Permission.hasPermission("citizens.healer.create", sender)) {
 					if (!HealerPropertyPool.isHealer(npc.getUID())) {
 						buyState(player, npc.getHealer(),
 								Operation.HEALER_NPC_CREATE);
@@ -102,8 +100,7 @@ public class TogglerExecutor implements CommandExecutor {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 				returnval = true;
 			} else if (args[0].equals("wizard")) {
-				if (BasicExecutor.hasPermission("citizens.wizard.create",
-						sender)) {
+				if (Permission.hasPermission("citizens.wizard.create", sender)) {
 					if (!WizardPropertyPool.isWizard(npc.getUID())) {
 						buyState(player, npc.getWizard(),
 								Operation.WIZARD_NPC_CREATE);

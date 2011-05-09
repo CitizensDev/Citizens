@@ -4,6 +4,7 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -49,6 +50,18 @@ public class Permission {
 			return permission(player, string);
 		}
 		return player.isOp();
+	}
+
+	/**
+	 * Checks for permission given a permission string.
+	 * 
+	 * @param permission
+	 * @param sender
+	 * @return
+	 */
+	public static boolean hasPermission(String permission, CommandSender sender) {
+		return (!(sender instanceof Player) || generic((Player) sender,
+				permission));
 	}
 
 }

@@ -6,23 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Questers.QuestPropertyPool;
+import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
-import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class QuesterExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
-	private Citizens plugin;
-
-	public QuesterExecutor(Citizens plugin) {
-		this.plugin = plugin;
-	}
+public class BlacksmithExecutor implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
@@ -34,10 +25,10 @@ public class QuesterExecutor implements CommandExecutor {
 		Player player = (Player) sender;
 		HumanNPC npc = null;
 		boolean returnval = false;
-		if (NPCManager.validateSelected((Player) sender))
+		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
-		else {
+		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
@@ -46,39 +37,29 @@ public class QuesterExecutor implements CommandExecutor {
 			sender.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		}
-		if (!npc.isQuester()) {
-			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
+		if (!npc.isBlacksmith()) {
+			sender.sendMessage(ChatColor.RED
+					+ "Your NPC isn't a blacksmith yet.");
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equals("help")) {
-				if (Permission
-						.hasPermission("citizens.quester.help", sender)) {
-					HelpUtils.sendQuesterHelp(sender);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2 && args[0].equals("createquest")) {
-				if (Permission.hasPermission("citizens.quester.createquest",
+				if (Permission.hasPermission("citizens.blacksmith.create",
 						sender)) {
-					QuestPropertyPool.createQuestFile(args[1]);
-					sender.sendMessage(ChatColor.GREEN
-							+ StringUtils
-									.yellowify("You created a quest file called ")
-							+ args[1] + ".quests");
+					HelpUtils.sendBlacksmithHelp(player);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 1 && args[0].equals("settings")) {
-				if (Permission.hasPermission(
-						"citizens.quester.viewsettings", sender)) {
-					// view the current settings for a quest
+			} else if (args.length == 2 && args[0].equals("repairarmor")) {
+				if (Permission.hasPermission("citizens.blacksmith.repair",
+						sender)) {
+					// repair armor slot here
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				returnval = true;
 			}
-			QuesterPropertyPool.saveState(npc);
+			BlacksmithPropertyPool.saveState(npc);
 		}
 		return returnval;
 	}

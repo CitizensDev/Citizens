@@ -11,9 +11,11 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Healers.HealerNPC;
 import com.fullwall.Citizens.Questers.QuesterNPC;
 import com.fullwall.Citizens.Traders.TraderNPC;
+import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.QuesterPropertyPool;
@@ -83,6 +85,9 @@ public class NPCManager {
 		}
 		if (QuesterPropertyPool.isQuester(UID)) {
 			loadQuester(npc, npc.getQuester(), UID);
+		}
+		if (BlacksmithPropertyPool.isBlacksmith(UID)) {
+			loadBlacksmith(npc, npc.getBlacksmith(), UID);
 		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), Citizens.defaultFollowingEnabled,
@@ -172,13 +177,25 @@ public class NPCManager {
 	 * Loads wizard data for an npc.
 	 * 
 	 * @param npc
-	 * @param healer
+	 * @param wizard
 	 * @param UID
 	 */
 	public void loadWizard(HumanNPC npc, WizardNPC wizard, int UID) {
 		npc.setWizard(WizardPropertyPool.getWizardState(UID));
 		wizard.setLocations(WizardPropertyPool.getLocations(UID));
 		WizardPropertyPool.saveState(npc);
+	}
+
+	/**
+	 * Loads blacksmith data for an npc.
+	 * 
+	 * @param npc
+	 * @param blacksmith
+	 * @param UID
+	 */
+	public void loadBlacksmith(HumanNPC npc, BlacksmithNPC blacksmith, int UID) {
+		npc.setBlacksmith(BlacksmithPropertyPool.getBlacksmithState(UID));
+		BlacksmithPropertyPool.saveState(npc);
 	}
 
 	/**

@@ -84,7 +84,6 @@ public class HelpUtils {
 	 * Sends the help page for the trader npc type.
 	 * 
 	 * @param sender
-	 * @param page
 	 */
 	public static void sendTraderHelp(CommandSender sender) {
 		header(sender, "Trader", 1, 1);
@@ -108,7 +107,6 @@ public class HelpUtils {
 	 * Sends the help page for the healer npc type.
 	 * 
 	 * @param sender
-	 * @param page
 	 */
 	public static void sendHealerHelp(CommandSender sender) {
 		header(sender, "Healer", 1, 1);
@@ -123,7 +121,6 @@ public class HelpUtils {
 	 * Sends the help page for the wizard npc type.
 	 * 
 	 * @param sender
-	 * @param page
 	 */
 	public static void sendWizardHelp(CommandSender sender) {
 		header(sender, "Wizard", 1, 1);
@@ -132,6 +129,26 @@ public class HelpUtils {
 		formatCommand(sender, "wizard", "addloc [name]",
 				"add your location to the wizard");
 		formatCommand(sender, "wizard", "removeloc [id]", "remove the location");
+		footer(sender);
+	}
+	
+	/**
+	 * Sends the help page for the quester npc type.
+	 * 
+	 * @param sender
+	 */
+	public static void sendQuesterHelp(CommandSender sender) {
+		header(sender, "Quester", 1, 1);
+		footer(sender);
+	}
+	
+	/**
+	 * Sends the help page for the blacksmith npc type.
+	 * 
+	 * @param sender
+	 */
+	public static void sendBlacksmithHelp(CommandSender sender) {
+		header(sender, "Blacksmith", 1, 1);
 		footer(sender);
 	}
 

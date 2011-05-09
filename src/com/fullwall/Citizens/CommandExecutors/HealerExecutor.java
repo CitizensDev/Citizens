@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -51,7 +52,7 @@ public class HealerExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equals("status")) {
-				if (BasicExecutor.hasPermission("citizens.healer.status",
+				if (Permission.hasPermission("citizens.healer.status",
 						sender)) {
 					displayStatus(player, npc);
 				} else {
@@ -60,7 +61,7 @@ public class HealerExecutor implements CommandExecutor {
 				returnval = true;
 
 			} else if (args.length == 1 && args[0].equals("level-up")) {
-				if (BasicExecutor
+				if (Permission
 						.hasPermission("citizens.healer.level", sender)) {
 					levelUp(player, npc, 1);
 				} else {
@@ -69,7 +70,7 @@ public class HealerExecutor implements CommandExecutor {
 				returnval = true;
 
 			} else if (args.length == 2 && args[0].equals("level-up")) {
-				if (BasicExecutor
+				if (Permission
 						.hasPermission("citizens.healer.level", sender)) {
 					try {
 						int levels = Integer.parseInt(args[1]);
@@ -91,7 +92,7 @@ public class HealerExecutor implements CommandExecutor {
 				returnval = true;
 
 			} else if (args.length == 1 && args[0].equals("help")) {
-				if (BasicExecutor.hasPermission("citizens.healer.help", sender)) {
+				if (Permission.hasPermission("citizens.healer.help", sender)) {
 					HelpUtils.sendHealerHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

@@ -40,7 +40,15 @@ public class EconomyHandler {
 		/**
 		 * Create a quester NPC
 		 */
-		QUESTER_NPC_CREATE;
+		QUESTER_NPC_CREATE,
+		/**
+		 * Create a blacksmith NPC
+		 */
+		BLACKSMITH_NPC_CREATE,
+		/**
+		 * Repair tools using a blacksmith NPC
+		 */
+		BLACKSMITH_TOOL_REPAIR;
 
 		/**
 		 * Changes an operation enum to a string value for use in settings

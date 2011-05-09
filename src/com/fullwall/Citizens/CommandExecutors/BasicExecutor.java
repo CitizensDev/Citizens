@@ -46,7 +46,7 @@ public class BasicExecutor implements CommandExecutor {
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
 
 		if (args.length >= 2 && args[0].equals("create")) {
-			if (hasPermission("citizens.basic.create", sender)) {
+			if (Permission.hasPermission("citizens.basic.create", sender)) {
 				if (!EconomyHandler.useEconomy()
 						|| EconomyHandler.canBuy(Operation.BASIC_NPC_CREATE,
 								player)) {
@@ -61,7 +61,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && (args[0].equals("move"))) {
-			if (hasPermission("citizens.general.move", sender)) {
+			if (Permission.hasPermission("citizens.general.move", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.move")) {
@@ -79,7 +79,8 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if ((args.length == 1 || args.length == 2)
 				&& args[0].equals("remove")) {
-			if (hasPermission("citizens.general.remove.singular", sender)) {
+			if (Permission.hasPermission("citizens.general.remove.singular",
+					sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.remove.singular")) {
@@ -90,7 +91,8 @@ public class BasicExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
-			} else if (hasPermission("citizens.general.remove.all", sender)) {
+			} else if (Permission.hasPermission("citizens.general.remove.all",
+					sender)) {
 				if (args.length == 2 && args[1].equals("all")) {
 					removeNPC(args, sender, npc);
 				} else {
@@ -102,7 +104,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("name")) {
-			if (hasPermission("citizens.general.setname", sender)) {
+			if (Permission.hasPermission("citizens.general.setname", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setname")) {
@@ -121,8 +123,9 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (args.length == 2
 				&& (args[0].equals("colour") || args[0].equals("color"))) {
-			if (hasPermission("citizens.general.colour", sender)
-					|| hasPermission("citizens.general.color", sender)) {
+			if (Permission.hasPermission("citizens.general.colour", sender)
+					|| Permission.hasPermission("citizens.general.color",
+							sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.colour")
@@ -141,7 +144,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length >= 2 && args[0].equals("add")) {
-			if (hasPermission("citizens.basic.settext", sender)) {
+			if (Permission.hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.basic.settext")) {
@@ -158,7 +161,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length >= 2 && args[0].equals("set")) {
-			if (hasPermission("citizens.basic.settext", sender)) {
+			if (Permission.hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.basic.settext")) {
@@ -175,7 +178,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && args[0].equals("reset")) {
-			if (hasPermission("citizens.basic.settext", sender)) {
+			if (Permission.hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.basic.settext")) {
@@ -192,7 +195,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("item")) {
-			if (hasPermission("citizens.general.setitem", sender)) {
+			if (Permission.hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setitem")) {
@@ -211,7 +214,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 2
 				&& (args[0].equals("torso") || args[0].equals("legs")
 						|| args[0].equals("helmet") || args[0].equals("boots"))) {
-			if (hasPermission("citizens.general.setitem", sender)) {
+			if (Permission.hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setitem")) {
@@ -228,7 +231,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length >= 1 && args[0].equals("tp")) {
-			if (hasPermission("citizens.general.tp", sender)) {
+			if (Permission.hasPermission("citizens.general.tp", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.tp")) {
@@ -250,7 +253,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && args[0].equals("copy")) {
-			if (hasPermission("citizens.general.copy", sender)) {
+			if (Permission.hasPermission("citizens.general.copy", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.copy")) {
@@ -266,7 +269,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 		} else if (args.length == 1 && args[0].equals("id")) {
-			if (hasPermission("citizens.general.getid", sender)) {
+			if (Permission.hasPermission("citizens.general.getid", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.getid")) {
@@ -286,7 +289,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("select")) {
-			if (hasPermission("citizens.general.select", sender)) {
+			if (Permission.hasPermission("citizens.general.select", sender)) {
 				// BUILD CHECK
 				if (!Character.isDigit(args[1].charAt(0))) {
 					player.sendMessage(ChatColor.RED
@@ -312,7 +315,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && args[0].equals("owner")) {
-			if (hasPermission("citizens.general.getowner", sender)) {
+			if (Permission.hasPermission("citizens.general.getowner", sender)) {
 				if (npc != null) {
 					player.sendMessage(ChatColor.GREEN
 							+ "The owner of this NPC is "
@@ -327,7 +330,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("setowner")) {
-			if (hasPermission("citizens.general.setowner", sender)) {
+			if (Permission.hasPermission("citizens.general.setowner", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setowner")) {
@@ -343,7 +346,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 		} else if (args.length == 2 && args[0].equals("addowner")) {
-			if (hasPermission("citizens.general.addowner", sender)) {
+			if (Permission.hasPermission("citizens.general.addowner", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.addowner")) {
@@ -366,7 +369,8 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("talkwhenclose")) {
-			if (hasPermission("citizens.general.talkwhenclose", sender)) {
+			if (Permission.hasPermission("citizens.general.talkwhenclose",
+					sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.talkwhenclose")) {
@@ -383,7 +387,8 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equals("lookatplayers")) {
-			if (hasPermission("citizens.general.lookatplayers", sender)) {
+			if (Permission.hasPermission("citizens.general.lookatplayers",
+					sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.lookatplayers")) {
@@ -401,7 +406,7 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if ((command.getName().equals("citizens") || command.getName()
 				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
-			if (hasPermission("citizens.help", sender)) {
+			if (Permission.hasPermission("citizens.help", sender)) {
 				HelpUtils.sendHelp(sender);
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -409,7 +414,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 		} else if (command.getName().equals("basic")) {
 			if (args.length == 2 && args[0].equals("help")) {
-				if (hasPermission("citizens.basic.help", sender)) {
+				if (Permission.hasPermission("citizens.basic.help", sender)) {
 					int page = Integer.parseInt(args[1]);
 					HelpUtils.sendBasicHelpPage(sender, page);
 				} else {
@@ -417,7 +422,7 @@ public class BasicExecutor implements CommandExecutor {
 				}
 				return true;
 			} else if (args.length == 1 && args[0].equals("help")) {
-				if (hasPermission("citizens.basic.help", sender)) {
+				if (Permission.hasPermission("citizens.basic.help", sender)) {
 					HelpUtils.sendBasicHelpPage(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -816,17 +821,5 @@ public class BasicExecutor implements CommandExecutor {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Checks for permission given a permission string.
-	 * 
-	 * @param permission
-	 * @param sender
-	 * @return
-	 */
-	public static boolean hasPermission(String permission, CommandSender sender) {
-		return (!(sender instanceof Player) || Permission.generic(
-				(Player) sender, permission));
 	}
 }

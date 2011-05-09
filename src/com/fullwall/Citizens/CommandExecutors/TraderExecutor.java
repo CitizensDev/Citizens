@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
@@ -57,7 +58,7 @@ public class TraderExecutor implements CommandExecutor {
 		}
 		if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
-			if (BasicExecutor.hasPermission("citizens.trader.stock", sender)) {
+			if (Permission.hasPermission("citizens.trader.stock", sender)) {
 				if (!EconomyHandler.useIconomy())
 					player.sendMessage(ChatColor.GRAY
 							+ "This server is not using iConomy.");
@@ -67,8 +68,7 @@ public class TraderExecutor implements CommandExecutor {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			returnval = true;
 		} else if (args.length == 1 && args[0].contains("money")) {
-			if (BasicExecutor
-					.hasPermission("citizens.trader.viewmoney", sender)) {
+			if (Permission.hasPermission("citizens.trader.viewmoney", sender)) {
 				displayMoney(player, npc);
 			} else
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -80,8 +80,7 @@ public class TraderExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 3 && args[0].equals("balance")) {
-				if (BasicExecutor.hasPermission("citizens.trader.balance",
-						sender)) {
+				if (Permission.hasPermission("citizens.trader.balance", sender)) {
 					if (!EconomyHandler.useIconomy())
 						player.sendMessage(ChatColor.GRAY
 								+ "This server is not using iConomy.");
@@ -92,22 +91,21 @@ public class TraderExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 3
 					&& (args[0].contains("buy") || args[0].contains("sell"))) {
-				if (BasicExecutor
-						.hasPermission("citizens.trader.stock", sender)) {
+				if (Permission.hasPermission("citizens.trader.stock", sender)) {
 					changeTraderStock(player, npc, args[1], args[2],
 							args[0].contains("buy"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
 			} else if (args.length == 2 && (args[0].contains("unl"))) {
-				if (BasicExecutor.hasPermission(
-						"citizens.admin.unlimitedtrader", sender)) {
+				if (Permission.hasPermission("citizens.admin.unlimitedtrader",
+						sender)) {
 					changeUnlimited(npc, sender, args[1]);
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
 			} else if (args.length == 1 && args[0].equals("help")) {
-				if (BasicExecutor.hasPermission("citizens.trader.help", sender)) {
+				if (Permission.hasPermission("citizens.trader.help", sender)) {
 					HelpUtils.sendTraderHelp(sender);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);

@@ -18,7 +18,8 @@ public class WizardNPC implements Toggleable {
 	private Location currentLoc;
 	
 	/**
-	 * NPC Wizard Subclass
+	 * NPC Wizard object
+	 * 
 	 * @param npc
 	 */
 	public WizardNPC(HumanNPC npc){
