@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -60,100 +61,97 @@ public class EntityListen extends EntityListener {
 			HumanNPC npc = NPCManager.getNPC(e.getEntity());
 			if (e.getEntity() instanceof Player && npc != null) {
 				e.setCancelled(true);
-				if (e.getDamager() instanceof Player && npc.isHealer()) {
-					Entity entity = e.getDamager();
-					if (entity instanceof Player) {
-						Player player = (Player) entity;
-						int playerHealth = player.getHealth();
-						int healerHealth = HealerPropertyPool.getStrength(npc
-								.getUID());
-						if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
-							if (playerHealth <= 19) {
-								if (healerHealth >= 1) {
-									player.setHealth(playerHealth + 1);
-									HealerPropertyPool.saveStrength(
-											npc.getUID(), healerHealth - 1);
-									player.sendMessage(ChatColor.GREEN
-											+ "You drained health from the healer "
-											+ StringUtils.yellowify(npc
-													.getStrippedName()) + ".");
-								} else {
-									player.sendMessage(StringUtils
-											.yellowify(npc.getStrippedName())
-											+ " does not have enough health remaining for you to take.");
-								}
-							} else {
-								player.sendMessage(ChatColor.GREEN
-										+ "You are fully healed.");
-							}
-						} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
-							if (playerHealth >= 1) {
-								if (healerHealth < HealerPropertyPool
-										.getMaxStrength(npc.getUID())) {
-									player.setHealth(playerHealth - 1);
-									HealerPropertyPool.saveStrength(
-											npc.getUID(), healerHealth + 1);
-									player.sendMessage(ChatColor.GREEN
-											+ "You donated some health to the healer "
-											+ StringUtils.yellowify(npc
-													.getStrippedName()) + ".");
-								} else {
-									player.sendMessage(StringUtils
-											.yellowify(npc.getStrippedName())
-											+ " is fully healed.");
-								}
-							} else {
-								player.sendMessage(ChatColor.GREEN
-										+ "You do not have enough health remaining to heal "
-										+ StringUtils.yellowify(npc
-												.getStrippedName()));
-							}
-						} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
-							if (healerHealth != HealerPropertyPool
-									.getMaxStrength(npc.getUID())) {
+			}
+			if (e.getDamager() instanceof Player && npc.isHealer()) {
+				Entity entity = e.getDamager();
+				if (entity instanceof Player) {
+					Player player = (Player) entity;
+					int playerHealth = player.getHealth();
+					int healerHealth = HealerPropertyPool.getStrength(npc
+							.getUID());
+					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
+						if (playerHealth <= 19) {
+							if (healerHealth >= 1) {
+								player.setHealth(playerHealth + 1);
 								HealerPropertyPool.saveStrength(npc.getUID(),
-										HealerPropertyPool.getMaxStrength(npc
-												.getUID()));
+										healerHealth - 1);
 								player.sendMessage(ChatColor.GREEN
-										+ "You restored all of "
+										+ "You drained health from the healer "
 										+ StringUtils.yellowify(npc
-												.getStrippedName())
-										+ "'s health.");
-								int x = player.getItemInHand().getAmount();
-								ItemStack diamondBlock = new ItemStack(
-										Material.DIAMOND_BLOCK, x - 1);
-								player.setItemInHand(diamondBlock);
+												.getStrippedName()) + ".");
+							} else {
+								player.sendMessage(StringUtils.yellowify(npc
+										.getStrippedName())
+										+ " does not have enough health remaining for you to take.");
+							}
+						} else {
+							player.sendMessage(ChatColor.GREEN
+									+ "You are fully healed.");
+						}
+					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
+						if (playerHealth >= 1) {
+							if (healerHealth < HealerPropertyPool
+									.getMaxStrength(npc.getUID())) {
+								player.setHealth(playerHealth - 1);
+								HealerPropertyPool.saveStrength(npc.getUID(),
+										healerHealth + 1);
+								player.sendMessage(ChatColor.GREEN
+										+ "You donated some health to the healer "
+										+ StringUtils.yellowify(npc
+												.getStrippedName()) + ".");
 							} else {
 								player.sendMessage(StringUtils.yellowify(npc
 										.getStrippedName())
 										+ " is fully healed.");
 							}
+						} else {
+							player.sendMessage(ChatColor.GREEN
+									+ "You do not have enough health remaining to heal "
+									+ StringUtils.yellowify(npc
+											.getStrippedName()));
+						}
+					} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
+						if (healerHealth != HealerPropertyPool
+								.getMaxStrength(npc.getUID())) {
+							HealerPropertyPool.saveStrength(npc.getUID(),
+									HealerPropertyPool.getMaxStrength(npc
+											.getUID()));
+							player.sendMessage(ChatColor.GREEN
+									+ "You restored all of "
+									+ StringUtils.yellowify(npc
+											.getStrippedName()) + "'s health.");
+							int x = player.getItemInHand().getAmount();
+							ItemStack diamondBlock = new ItemStack(
+									Material.DIAMOND_BLOCK, x - 1);
+							player.setItemInHand(diamondBlock);
+						} else {
+							player.sendMessage(StringUtils.yellowify(npc
+									.getStrippedName()) + " is fully healed.");
 						}
 					}
 				}
-				if (npc.isWizard()) {
-					Entity entity = e.getDamager();
-					if (entity instanceof Player) {
-						Player player = (Player) entity;
-						if (BasicExecutor.hasPermission(
-								"citizens.wizard.changeteleport",
-								(CommandSender) player)) {
-							if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
-								if (!npc.isWizard()) {
-									return;
-								}
-								if (npc.getWizard().getNrOfLocations() > 0) {
-									npc.getWizard().nextLocation();
-									player.sendMessage(ChatColor.GREEN
-											+ "Location set to "
-											+ StringUtils.yellowify(npc
-													.getWizard()
-													.getCurrentLocationName()));
-								}
+			}
+			if (e.getDamager() instanceof Player && npc.isWizard()) {
+				Entity entity = e.getDamager();
+				if (entity instanceof Player) {
+					Player player = (Player) entity;
+					if (BasicExecutor.hasPermission(
+							"citizens.wizard.changeteleport",
+							(CommandSender) player)) {
+						if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
+							if (!npc.isWizard()) {
+								return;
 							}
-						} else {
-							player.sendMessage(MessageUtils.noPermissionsMessage);
+							if (npc.getWizard().getNrOfLocations() > 0) {
+								npc.getWizard().nextLocation();
+								player.sendMessage(ChatColor.GREEN
+										+ "Location set to "
+										+ StringUtils.yellowify(npc.getWizard()
+												.getCurrentLocationName()));
+							}
 						}
+					} else {
+						player.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
 			}
@@ -166,7 +164,11 @@ public class EntityListen extends EntityListener {
 			return;
 		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 		HumanNPC npc = NPCManager.getNPC(e.getEntity());
-
+		if (NPCManager.getNPC(e.getTarget()) != null) {
+			if (e.getEntity() instanceof Monster
+					&& !(e.getEntity() instanceof Player))
+				e.setCancelled(true);
+		}
 		if (npc != null && event.getTarget() instanceof Player) {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
@@ -213,11 +215,11 @@ public class EntityListen extends EntityListener {
 						.getTypeId()) == true) {
 					if (!NPCManager.validateSelected(p, npc.getUID())) {
 						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-						p.sendMessage(ChatColor.GREEN + "You selected NPC ["
+						p.sendMessage(ChatColor.GREEN + "You selected NPC "
 								+ StringUtils.yellowify(npc.getStrippedName())
-								+ "], ID ["
+								+ ", ID "
 								+ StringUtils.yellowify("" + npc.getUID())
-								+ "]");
+								+ ".");
 					} else if (!found && plugin.canSelectAny()) {
 						p.sendMessage(ChatColor.GREEN
 								+ "That NPC is already selected!");
