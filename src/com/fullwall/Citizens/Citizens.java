@@ -128,7 +128,7 @@ public class Citizens extends JavaPlugin {
 						TraderPropertyPool.saveAll();
 						HealerPropertyPool.saveAll();
 						WizardPropertyPool.saveAll();
-						QuesterPropertyPool.saveAll();
+						// QuesterPropertyPool.saveAll();
 						log.info("[Citizens]: Saved.");
 					}
 				}, saveDelay, saveDelay);
@@ -146,7 +146,7 @@ public class Citizens extends JavaPlugin {
 		TraderPropertyPool.saveAll();
 		HealerPropertyPool.saveAll();
 		WizardPropertyPool.saveAll();
-		QuesterPropertyPool.saveAll();
+		// QuesterPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
 	}
@@ -262,13 +262,15 @@ public class Citizens extends JavaPlugin {
 		if (PropertyPool.settings.keyExists("wizard-interact-item"))
 			wizardInteractItem = PropertyPool.settings
 					.getInt("wizard-interact-item");
-		if (PropertyPool.settings.keyExists("quester-interact-item"))
-			questerInteractItem = PropertyPool.settings
-					.getInt("quester-interact-item");
-		if (PropertyPool.settings.keyExists("quest-accept-item"))
-			questAcceptItem = PropertyPool.settings.getInt("quest-accept-item");
-		if (PropertyPool.settings.keyExists("quest-deny-item"))
-			questDenyItem = PropertyPool.settings.getInt("quest-deny-item");
+		/*
+		 * if (PropertyPool.settings.keyExists("quester-interact-item"))
+		 * questerInteractItem = PropertyPool.settings
+		 * .getInt("quester-interact-item"); if
+		 * (PropertyPool.settings.keyExists("quest-accept-item"))
+		 * questAcceptItem = PropertyPool.settings.getInt("quest-accept-item");
+		 * if (PropertyPool.settings.keyExists("quest-deny-item")) questDenyItem
+		 * = PropertyPool.settings.getInt("quest-deny-item");
+		 */
 	}
 
 	private void setupNPCs() {
@@ -306,14 +308,15 @@ public class Citizens extends JavaPlugin {
 				Location loc = PropertyPool.getLocationFromID(Integer
 						.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					basicNPCHandler.spawnExistingNPC(name.split("_", 2)[1], Integer
-							.valueOf(name.split("_")[0]), PropertyPool
-							.getOwner(Integer.valueOf(name.split("_")[0])));
+					basicNPCHandler.spawnExistingNPC(name.split("_", 2)[1],
+							Integer.valueOf(name.split("_")[0]),
+							PropertyPool.getOwner(Integer.valueOf(name
+									.split("_")[0])));
 					ArrayList<String> text = PropertyPool.getText(Integer
 							.valueOf(name.split("_")[0]));
 					if (text != null)
-						basicNPCHandler.setNPCText(Integer.valueOf(name.split("_")[0]),
-								text);
+						basicNPCHandler.setNPCText(
+								Integer.valueOf(name.split("_")[0]), text);
 				} else {
 					PropertyPool.deleteNameFromList(name);
 				}
