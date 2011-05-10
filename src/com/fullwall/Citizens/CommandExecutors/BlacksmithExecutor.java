@@ -10,6 +10,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HelpUtils;
@@ -92,66 +94,71 @@ public class BlacksmithExecutor implements CommandExecutor {
 	private void repairArmor(Player player, HumanNPC npc, String armor) {
 		PlayerInventory inv = player.getInventory();
 		if (armor.equals("helmet") || armor.equals("cap")) {
-			ItemStack helmet = inv.getHelmet();
-			if (helmet.getDurability() > 0) {
-				helmet.setDurability((short) 0);
-				repairMessage(player, npc, armor, false);
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "Your helmet is already fully repaired.");
-			}
+			buyArmorRepair(player, npc, inv.getHelmet(), armor, false);
 		} else if (armor.equals("chestplate") || armor.equals("torso")
 				|| armor.equals("tunic")) {
-			ItemStack chestplate = inv.getChestplate();
-			if (chestplate.getDurability() > 0) {
-				chestplate.setDurability((short) 0);
-				repairMessage(player, npc, armor, false);
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "Your chestplate is already fully repaired.");
-			}
+			buyArmorRepair(player, npc, inv.getChestplate(), armor, false);
 		} else if (armor.equals("leggings") || armor.equals("pants")) {
-			ItemStack leggings = inv.getLeggings();
-			if (leggings.getDurability() > 0) {
-				leggings.setDurability((short) 0);
-				repairMessage(player, npc, armor, true);
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "Your leggings are already fully repaired.");
-			}
+			buyArmorRepair(player, npc, inv.getLeggings(), armor, true);
 		} else if (armor.equals("boots") || armor.equals("shoes")) {
-			ItemStack boots = inv.getBoots();
-			if (boots.getDurability() > 0) {
-				boots.setDurability((short) 0);
-				repairMessage(player, npc, armor, true);
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "Your boots are already fully repaired.");
-			}
+			buyArmorRepair(player, npc, inv.getBoots(), armor, true);
 		} else {
 			player.sendMessage(ChatColor.RED + "Invalid armor type.");
 		}
 	}
 
 	/**
-	 * Message to be sent to a player when their armor is repaired
+	 * Buy an armor repair
 	 * 
 	 * @param player
 	 * @param npc
 	 * @param armor
+	 * @param armorName
 	 * @param plural
 	 */
-	private void repairMessage(Player player, HumanNPC npc, String armor,
-			boolean plural) {
+	private void buyArmorRepair(Player player, HumanNPC npc, ItemStack armor,
+			String armorName, boolean plural) {
 		String msg = "";
-		msg = ChatColor.GREEN + ("Your ") + StringUtils.yellowify(armor + " ");
-		if (plural) {
-			msg += "have been repaired by ";
-		} else {
-			msg += "has been repaired by ";
+		if (!EconomyHandler.useEconomy()
+				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMOR_REPAIR,
+						player)) {
+			if (EconomyHandler.useEconomy()) {
+				double paid = EconomyHandler.pay(
+						Operation.BLACKSMITH_ARMOR_REPAIR, player);
+				if (paid > 0) {
+					if (armor.getDurability() > 0) {
+						armor.setDurability((short) 0);
+						msg = ChatColor.GREEN + ("Your ")
+								+ StringUtils.yellowify(armorName);
+						if (plural) {
+							msg += " have been repaired by ";
+						} else {
+							msg += " has been repaired by ";
+						}
+						msg += StringUtils.yellowify(npc.getStrippedName())
+								+ " for "
+								+ StringUtils
+										.yellowify(EconomyHandler
+												.getPaymentType(
+														Operation.BLACKSMITH_ARMOR_REPAIR,
+														"" + paid,
+														ChatColor.YELLOW))
+								+ ".";
+						player.sendMessage(msg);
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "Your armor is already fully repaired.");
+					}
+				}
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(
+					Operation.BLACKSMITH_ARMOR_REPAIR, player));
+			return;
 		}
-		msg += StringUtils.yellowify(npc.getStrippedName()) + ".";
-		player.sendMessage(msg);
 	}
 
 	/**

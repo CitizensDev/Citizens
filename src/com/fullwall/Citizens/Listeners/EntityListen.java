@@ -211,12 +211,8 @@ public class EntityListen extends EntityListener {
 				if (npc.isBlacksmith()) {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
-						String item = getToolType(p.getItemInHand());
-						if (item.equals("cheap")) {
-							buyRepair(p, npc,
-									Operation.BLACKSMITH_TOOL_REPAIR);
-							found = true;
-						}
+						buyToolRepair(p, npc, Operation.BLACKSMITH_TOOL_REPAIR);
+						found = true;
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -257,8 +253,9 @@ public class EntityListen extends EntityListener {
 				if (paid > 0)
 					player.sendMessage(ChatColor.GREEN
 							+ "Paid "
-							+ EconomyHandler.getPaymentType(op, "" + paid,
-									ChatColor.YELLOW)
+							+ StringUtils.yellowify(EconomyHandler
+									.getPaymentType(op, "" + paid,
+											ChatColor.YELLOW))
 							+ " for a teleport to "
 							+ StringUtils.yellowify(wizard
 									.getCurrentLocationName()) + ".");
@@ -274,7 +271,8 @@ public class EntityListen extends EntityListener {
 		} else {
 			player.teleport(wizard.getCurrentLocation());
 			player.sendMessage(ChatColor.GREEN + "You got teleported to "
-					+ StringUtils.yellowify(wizard.getCurrentLocationName()) + ".");
+					+ StringUtils.yellowify(wizard.getCurrentLocationName())
+					+ ".");
 		}
 	}
 
@@ -285,21 +283,25 @@ public class EntityListen extends EntityListener {
 	 * @param npc
 	 * @param op
 	 */
-	private void buyRepair(Player player, HumanNPC npc, Operation op) {
+	private void buyToolRepair(Player player, HumanNPC npc, Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0) {
-					if (player.getItemInHand().getDurability() > 0) {
-						player.getItemInHand().setDurability((short) 0);
-						player.sendMessage(StringUtils.yellowify(npc
-								.getStrippedName())
-								+ " repaired your tool for "
-								+ EconomyHandler.getPaymentType(op, "" + paid,
-										ChatColor.YELLOW) + ".");
-					} else {
-						player.sendMessage(ChatColor.RED
-								+ "Your tool is already fully repaired.");
+					ItemStack item = player.getItemInHand();
+					if (validateToolToRepair(item)) {
+						if (item.getDurability() > 0) {
+							item.setDurability((short) 0);
+							player.sendMessage(StringUtils.yellowify(npc
+									.getStrippedName())
+									+ " repaired your tool for "
+									+ StringUtils.yellowify(EconomyHandler
+											.getPaymentType(op, "" + paid,
+													ChatColor.YELLOW)) + ".");
+						} else {
+							player.sendMessage(ChatColor.RED
+									+ "Your tool is already fully repaired.");
+						}
 					}
 				}
 			} else {
@@ -312,70 +314,18 @@ public class EntityListen extends EntityListener {
 		}
 	}
 
-	/**
-	 * Get a string of a tool type
-	 * 
-	 * @param item
-	 * @return
-	 */
-	private String getToolType(ItemStack item) {
-		String type = "";
-		switch (item.getTypeId()) {
-		case 256:
-			type = "exp";
-		case 257:
-			type = "exp";
-		case 258:
-			type = "exp";
-		case 259:
-			type = "cheap";
-		case 267:
-			type = "exp";
-		case 268:
-			type = "cheap";
-		case 269:
-			type = "cheap";
-		case 270:
-			type = "cheap";
-		case 271:
-			type = "cheap";
-		case 272:
-			type = "cheap";
-		case 273:
-			type = "cheap";
-		case 274:
-			type = "cheap";
-		case 275:
-			type = "cheap";
-		case 276:
-			type = "exp";
-		case 277:
-			type = "exp";
-		case 278:
-			type = "exp";
-		case 279:
-			type = "exp";
-		case 283:
-			type = "cheap";
-		case 284:
-			type = "cheap";
-		case 285:
-			type = "cheap";
-		case 286:
-			type = "cheap";
-		case 290:
-			type = "cheap";
-		case 291:
-			type = "cheap";
-		case 292:
-			type = "exp";
-		case 293:
-			type = "exp";
-		case 294:
-			type = "cheap";
-		case 346:
-			type = "cheap";
+	private boolean validateToolToRepair(ItemStack item) {
+		int id = item.getTypeId();
+		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
+				|| id == 268 || id == 269 || id == 270 || id == 271
+				|| id == 272 || id == 273 || id == 274 || id == 275
+				|| id == 276 || id == 277 || id == 278 || id == 279
+				|| id == 283 || id == 284 || id == 285 || id == 286
+				|| id == 290 || id == 291 || id == 292 || id == 293
+				|| id == 294 || id == 346) {
+			return true;
+		} else {
+			return false;
 		}
-		return type;
 	}
 }

@@ -48,7 +48,11 @@ public class EconomyHandler {
 		/**
 		 * Repair tools using a blacksmith NPC
 		 */
-		BLACKSMITH_TOOL_REPAIR;
+		BLACKSMITH_TOOL_REPAIR,
+		/**
+		 * Repair armor using a blacksmith NPC
+		 */
+		BLACKSMITH_ARMOR_REPAIR;
 
 		/**
 		 * Changes an operation enum to a string value for use in settings

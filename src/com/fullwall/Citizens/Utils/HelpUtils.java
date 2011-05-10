@@ -22,8 +22,9 @@ public class HelpUtils {
 				+ StringUtils.yellowify(" - required") + "  ()"
 				+ StringUtils.yellowify(" - optional"));
 		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
-		formatCommand(sender, "trader", "help [page]", "trader NPC help page");
+		formatCommand(sender, "blacksmith", "help", "blacksmith NPC help page");
 		formatCommand(sender, "healer", "help", "healer NPC help page");
+		formatCommand(sender, "trader", "help [page]", "trader NPC help page");
 		formatCommand(sender, "wizard", "help", "wizard NPC help page");
 		formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
 		formatCommand(sender, "toggle", "[all] [on/off]",
