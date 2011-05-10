@@ -5,15 +5,15 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithPropertyPool {
 	public static final PropertyHandler blacksmiths = new PropertyHandler(
-	"plugins/Citizens/Blacksmiths/Citizens.blacksmiths");
-	
+			"plugins/Citizens/Blacksmiths/Citizens.blacksmiths");
+
 	public static void saveAll() {
 		blacksmiths.save();
 	}
 
 	public static void saveState(HumanNPC npc) {
 		if (isBlacksmith(npc.getUID())) {
-			saveBlacksmith(npc.getUID(), npc.isHealer());
+			saveBlacksmith(npc.getUID(), npc.isBlacksmith());
 		}
 	}
 
@@ -28,7 +28,7 @@ public class BlacksmithPropertyPool {
 	public static boolean isBlacksmith(int UID) {
 		return blacksmiths.keyExists(UID);
 	}
-	
+
 	public static boolean getBlacksmithState(int UID) {
 		return blacksmiths.getBoolean(UID);
 	}

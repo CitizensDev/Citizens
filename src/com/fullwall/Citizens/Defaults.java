@@ -57,9 +57,9 @@ public class Defaults {
 		nodes.put("wizard-teleport-item-currency-id", "4");
 		nodes.put("wizard-teleport-item", "10");
 		nodes.put("wizard-teleport-iconomy", "25");
-		nodes.put("quester-npc-create-item-currency-id", "37");
-		nodes.put("quester-npc-create-item", "20");
-		nodes.put("quester-npc-create-iconomy", "100");
+		nodes.put("blacksmith-tool-repair-item-currency-id", "266");
+		nodes.put("blacksmith-tool-repair-item", "5");
+		nodes.put("blacksmith-tool-repair-iconomy", "50");
 		return nodes;
 	}
 }

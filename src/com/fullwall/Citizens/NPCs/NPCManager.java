@@ -13,12 +13,10 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Healers.HealerNPC;
-import com.fullwall.Citizens.Questers.QuesterNPC;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.Citizens.Wizards.WizardNPC;
@@ -83,9 +81,6 @@ public class NPCManager {
 		if (WizardPropertyPool.isWizard(UID)) {
 			loadWizard(npc, npc.getWizard(), UID);
 		}
-		if (QuesterPropertyPool.isQuester(UID)) {
-			loadQuester(npc, npc.getQuester(), UID);
-		}
 		if (BlacksmithPropertyPool.isBlacksmith(UID)) {
 			loadBlacksmith(npc, npc.getBlacksmith(), UID);
 		}
@@ -98,6 +93,7 @@ public class NPCManager {
 		TraderPropertyPool.saveState(npc);
 		HealerPropertyPool.saveState(npc);
 		WizardPropertyPool.saveState(npc);
+		BlacksmithPropertyPool.saveState(npc);
 		npc.getPlayer().setSleepingIgnored(true);
 	}
 
@@ -159,18 +155,6 @@ public class NPCManager {
 		npc.setHealer(HealerPropertyPool.getHealerState(UID));
 		healer.setStrength(HealerPropertyPool.getStrength(UID));
 		HealerPropertyPool.saveState(npc);
-	}
-
-	/**
-	 * Loads quester data for an npc.
-	 * 
-	 * @param npc
-	 * @param quester
-	 * @param UID
-	 */
-	public void loadQuester(HumanNPC npc, QuesterNPC quester, int UID) {
-		npc.setQuester(QuesterPropertyPool.getQuesterState(UID));
-		QuesterPropertyPool.saveState(npc);
 	}
 
 	/**
@@ -308,7 +292,6 @@ public class NPCManager {
 		list.remove(UID);
 		PropertyPool.removeFromFiles(actualName, playerName, UID);
 		TraderPropertyPool.removeFromFiles(UID);
-		QuesterPropertyPool.removeFromFiles(UID);
 		HealerPropertyPool.removeFromFiles(UID);
 	}
 

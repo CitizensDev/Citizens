@@ -23,6 +23,7 @@ import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
@@ -127,7 +128,7 @@ public class Citizens extends JavaPlugin {
 						TraderPropertyPool.saveAll();
 						HealerPropertyPool.saveAll();
 						WizardPropertyPool.saveAll();
-						// QuesterPropertyPool.saveAll();
+						BlacksmithPropertyPool.saveAll();
 						log.info("[Citizens]: Saved.");
 					}
 				}, saveDelay, saveDelay);
@@ -145,7 +146,7 @@ public class Citizens extends JavaPlugin {
 		TraderPropertyPool.saveAll();
 		HealerPropertyPool.saveAll();
 		WizardPropertyPool.saveAll();
-		// QuesterPropertyPool.saveAll();
+		BlacksmithPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
 	}
@@ -261,15 +262,6 @@ public class Citizens extends JavaPlugin {
 		if (PropertyPool.settings.keyExists("wizard-interact-item"))
 			wizardInteractItem = PropertyPool.settings
 					.getInt("wizard-interact-item");
-		/*
-		 * if (PropertyPool.settings.keyExists("quester-interact-item"))
-		 * questerInteractItem = PropertyPool.settings
-		 * .getInt("quester-interact-item"); if
-		 * (PropertyPool.settings.keyExists("quest-accept-item"))
-		 * questAcceptItem = PropertyPool.settings.getInt("quest-accept-item");
-		 * if (PropertyPool.settings.keyExists("quest-deny-item")) questDenyItem
-		 * = PropertyPool.settings.getInt("quest-deny-item");
-		 */
 	}
 
 	private void setupNPCs() {

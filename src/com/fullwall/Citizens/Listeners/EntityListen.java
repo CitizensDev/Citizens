@@ -66,68 +66,75 @@ public class EntityListen extends EntityListener {
 				Entity entity = e.getDamager();
 				if (entity instanceof Player) {
 					Player player = (Player) entity;
-					int playerHealth = player.getHealth();
-					int healerHealth = HealerPropertyPool.getStrength(npc
-							.getUID());
-					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
-						if (playerHealth <= 19) {
-							if (healerHealth >= 1) {
-								player.setHealth(playerHealth + 1);
-								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth - 1);
-								player.sendMessage(ChatColor.GREEN
-										+ "You drained health from the healer "
-										+ StringUtils.yellowify(npc
-												.getStrippedName()) + ".");
+					if (Permission.hasPermission("citizens.healer.interact",
+							(CommandSender) player)) {
+						int playerHealth = player.getHealth();
+						int healerHealth = HealerPropertyPool.getStrength(npc
+								.getUID());
+						if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
+							if (playerHealth <= 19) {
+								if (healerHealth >= 1) {
+									player.setHealth(playerHealth + 1);
+									HealerPropertyPool.saveStrength(
+											npc.getUID(), healerHealth - 1);
+									player.sendMessage(ChatColor.GREEN
+											+ "You drained health from the healer "
+											+ StringUtils.yellowify(npc
+													.getStrippedName()) + ".");
+								} else {
+									player.sendMessage(StringUtils
+											.yellowify(npc.getStrippedName())
+											+ " does not have enough health remaining for you to take.");
+								}
 							} else {
-								player.sendMessage(StringUtils.yellowify(npc
-										.getStrippedName())
-										+ " does not have enough health remaining for you to take.");
-							}
-						} else {
-							player.sendMessage(ChatColor.GREEN
-									+ "You are fully healed.");
-						}
-					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
-						if (playerHealth >= 1) {
-							if (healerHealth < HealerPropertyPool
-									.getMaxStrength(npc.getUID())) {
-								player.setHealth(playerHealth - 1);
-								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth + 1);
 								player.sendMessage(ChatColor.GREEN
-										+ "You donated some health to the healer "
+										+ "You are fully healed.");
+							}
+						} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
+							if (playerHealth >= 1) {
+								if (healerHealth < HealerPropertyPool
+										.getMaxStrength(npc.getUID())) {
+									player.setHealth(playerHealth - 1);
+									HealerPropertyPool.saveStrength(
+											npc.getUID(), healerHealth + 1);
+									player.sendMessage(ChatColor.GREEN
+											+ "You donated some health to the healer "
+											+ StringUtils.yellowify(npc
+													.getStrippedName()) + ".");
+								} else {
+									player.sendMessage(StringUtils
+											.yellowify(npc.getStrippedName())
+											+ " is fully healed.");
+								}
+							} else {
+								player.sendMessage(ChatColor.GREEN
+										+ "You do not have enough health remaining to heal "
 										+ StringUtils.yellowify(npc
-												.getStrippedName()) + ".");
+												.getStrippedName()));
+							}
+						} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
+							if (healerHealth != HealerPropertyPool
+									.getMaxStrength(npc.getUID())) {
+								HealerPropertyPool.saveStrength(npc.getUID(),
+										HealerPropertyPool.getMaxStrength(npc
+												.getUID()));
+								player.sendMessage(ChatColor.GREEN
+										+ "You restored all of "
+										+ StringUtils.yellowify(npc
+												.getStrippedName())
+										+ "'s health.");
+								int x = player.getItemInHand().getAmount();
+								ItemStack diamondBlock = new ItemStack(
+										Material.DIAMOND_BLOCK, x - 1);
+								player.setItemInHand(diamondBlock);
 							} else {
 								player.sendMessage(StringUtils.yellowify(npc
 										.getStrippedName())
 										+ " is fully healed.");
 							}
-						} else {
-							player.sendMessage(ChatColor.GREEN
-									+ "You do not have enough health remaining to heal "
-									+ StringUtils.yellowify(npc
-											.getStrippedName()));
 						}
-					} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
-						if (healerHealth != HealerPropertyPool
-								.getMaxStrength(npc.getUID())) {
-							HealerPropertyPool.saveStrength(npc.getUID(),
-									HealerPropertyPool.getMaxStrength(npc
-											.getUID()));
-							player.sendMessage(ChatColor.GREEN
-									+ "You restored all of "
-									+ StringUtils.yellowify(npc
-											.getStrippedName()) + "'s health.");
-							int x = player.getItemInHand().getAmount();
-							ItemStack diamondBlock = new ItemStack(
-									Material.DIAMOND_BLOCK, x - 1);
-							player.setItemInHand(diamondBlock);
-						} else {
-							player.sendMessage(StringUtils.yellowify(npc
-									.getStrippedName()) + " is fully healed.");
-						}
+					} else {
+						player.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
 			}
@@ -188,8 +195,8 @@ public class EntityListen extends EntityListener {
 					found = true;
 				}
 				if (npc.isWizard()) {
-					if (Permission.hasPermission(
-							"citizens.wizard.useteleport", (CommandSender) p)) {
+					if (Permission.hasPermission("citizens.wizard.useteleport",
+							(CommandSender) p)) {
 						if (p.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
 							if (npc.getWizard().getNrOfLocations() > 0) {
 								this.buyTeleport(p, npc.getWizard(),
@@ -201,10 +208,17 @@ public class EntityListen extends EntityListener {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
-				if (npc.isQuester()) {
-					if (p.getItemInHand().getTypeId() == Citizens.questerInteractItem) {
-						p.sendMessage("You selected a quester.");
-
+				if (npc.isBlacksmith()) {
+					if (Permission.hasPermission("citizens.blacksmith.repair",
+							(CommandSender) p)) {
+						String item = getToolType(p.getItemInHand());
+						if (item.equals("cheap")) {
+							buyRepair(p, npc,
+									Operation.BLACKSMITH_TOOL_REPAIR);
+							found = true;
+						}
+					} else {
+						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
 				if (found && !plugin.canSelectAny())
@@ -229,6 +243,13 @@ public class EntityListen extends EntityListener {
 		}
 	}
 
+	/**
+	 * Purchase a teleport
+	 * 
+	 * @param player
+	 * @param wizard
+	 * @param op
+	 */
 	private void buyTeleport(Player player, WizardNPC wizard, Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
@@ -237,10 +258,10 @@ public class EntityListen extends EntityListener {
 					player.sendMessage(ChatColor.GREEN
 							+ "Paid "
 							+ EconomyHandler.getPaymentType(op, "" + paid,
-									ChatColor.GREEN)
+									ChatColor.YELLOW)
 							+ " for a teleport to "
 							+ StringUtils.yellowify(wizard
-									.getCurrentLocationName()));
+									.getCurrentLocationName()) + ".");
 				player.teleport(wizard.getCurrentLocation());
 
 			} else {
@@ -253,7 +274,108 @@ public class EntityListen extends EntityListener {
 		} else {
 			player.teleport(wizard.getCurrentLocation());
 			player.sendMessage(ChatColor.GREEN + "You got teleported to "
-					+ StringUtils.yellowify(wizard.getCurrentLocationName()));
+					+ StringUtils.yellowify(wizard.getCurrentLocationName()) + ".");
 		}
+	}
+
+	/**
+	 * Purchase a tool repair
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param op
+	 */
+	private void buyRepair(Player player, HumanNPC npc, Operation op) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+			if (EconomyHandler.useEconomy()) {
+				double paid = EconomyHandler.pay(op, player);
+				if (paid > 0) {
+					if (player.getItemInHand().getDurability() > 0) {
+						player.getItemInHand().setDurability((short) 0);
+						player.sendMessage(StringUtils.yellowify(npc
+								.getStrippedName())
+								+ " repaired your tool for "
+								+ EconomyHandler.getPaymentType(op, "" + paid,
+										ChatColor.YELLOW) + ".");
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "Your tool is already fully repaired.");
+					}
+				}
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			return;
+		}
+	}
+
+	/**
+	 * Get a string of a tool type
+	 * 
+	 * @param item
+	 * @return
+	 */
+	private String getToolType(ItemStack item) {
+		String type = "";
+		switch (item.getTypeId()) {
+		case 256:
+			type = "exp";
+		case 257:
+			type = "exp";
+		case 258:
+			type = "exp";
+		case 259:
+			type = "cheap";
+		case 267:
+			type = "exp";
+		case 268:
+			type = "cheap";
+		case 269:
+			type = "cheap";
+		case 270:
+			type = "cheap";
+		case 271:
+			type = "cheap";
+		case 272:
+			type = "cheap";
+		case 273:
+			type = "cheap";
+		case 274:
+			type = "cheap";
+		case 275:
+			type = "cheap";
+		case 276:
+			type = "exp";
+		case 277:
+			type = "exp";
+		case 278:
+			type = "exp";
+		case 279:
+			type = "exp";
+		case 283:
+			type = "cheap";
+		case 284:
+			type = "cheap";
+		case 285:
+			type = "cheap";
+		case 286:
+			type = "cheap";
+		case 290:
+			type = "cheap";
+		case 291:
+			type = "cheap";
+		case 292:
+			type = "exp";
+		case 293:
+			type = "exp";
+		case 294:
+			type = "cheap";
+		case 346:
+			type = "cheap";
+		}
+		return type;
 	}
 }
