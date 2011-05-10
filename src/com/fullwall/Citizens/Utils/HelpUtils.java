@@ -131,7 +131,7 @@ public class HelpUtils {
 		formatCommand(sender, "wizard", "removeloc [id]", "remove the location");
 		footer(sender);
 	}
-	
+
 	/**
 	 * Sends the help page for the quester npc type.
 	 * 
@@ -141,7 +141,7 @@ public class HelpUtils {
 		header(sender, "Quester", 1, 1);
 		footer(sender);
 	}
-	
+
 	/**
 	 * Sends the help page for the blacksmith npc type.
 	 * 
@@ -149,6 +149,8 @@ public class HelpUtils {
 	 */
 	public static void sendBlacksmithHelp(CommandSender sender) {
 		header(sender, "Blacksmith", 1, 1);
+		formatCommand(sender, "blacksmith", "repairarmor [type]",
+				"repair your armor");
 		footer(sender);
 	}
 

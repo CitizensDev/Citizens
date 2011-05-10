@@ -12,6 +12,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.QuesterPropertyPool;
@@ -111,6 +112,19 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+			} else if (args[0].equals("blacksmith")) {
+				if (Permission.hasPermission("citizens.blacksmith.create",
+						sender)) {
+					if (!BlacksmithPropertyPool.isBlacksmith(npc.getUID())) {
+						buyState(player, npc.getBlacksmith(),
+								Operation.BLACKSMITH_NPC_CREATE);
+					} else {
+						toggleState(player, npc.getBlacksmith());
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
 			} else if (args.length == 2 && args[0].equals("all")) {
 				if (args[1].equals("on"))
 					toggleAll(npc, player, true);
@@ -175,6 +189,7 @@ public class TogglerExecutor implements CommandExecutor {
 	 * 
 	 * @param npc
 	 * @param player
+	 * @param on
 	 */
 	private void toggleAll(HumanNPC npc, Player player, boolean on) {
 		if (on) {
@@ -187,6 +202,9 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isWizard()) {
 				toggleState(player, npc.getWizard());
 			}
+			if (!npc.isBlacksmith()) {
+				toggleState(player, npc.getBlacksmith());
+			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
@@ -196,6 +214,9 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isWizard()) {
 				toggleState(player, npc.getWizard());
+			}
+			if (npc.isBlacksmith()) {
+				toggleState(player, npc.getBlacksmith());
 			}
 		}
 	}
