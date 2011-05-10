@@ -404,6 +404,23 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
+		} else if (args.length == 2 && args[0].equals("list")) {
+			if (Permission.hasPermission("citizens.general.list", sender)) {
+				if (npc != null) {
+					if (NPCManager.validateOwnership(player, npc.getUID(),
+							"citizens.general.list")) {
+						// list stuff goes here
+					} else {
+						sender.sendMessage(MessageUtils.notOwnerMessage);
+					}
+				} else {
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				}
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+
 		} else if ((command.getName().equals("citizens") || command.getName()
 				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
 			if (Permission.hasPermission("citizens.help", sender)) {

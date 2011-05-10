@@ -25,7 +25,6 @@ public class HelpUtils {
 		formatCommand(sender, "trader", "help [page]", "trader NPC help page");
 		formatCommand(sender, "healer", "help", "healer NPC help page");
 		formatCommand(sender, "wizard", "help", "wizard NPC help page");
-		formatCommand(sender, "npc", "create [name]", "create a basic NPC");
 		formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
 		formatCommand(sender, "toggle", "[all] [on/off]",
 				"toggle all types for an NPC");
@@ -99,7 +98,7 @@ public class HelpUtils {
 		formatCommand(sender, "trader", "unlimited [true|false]",
 				"set whether a trader has unlimited stock");
 		formatCommand(sender, "trader", "money",
-				"checks how much money a trader has");
+				"check how much money a trader has");
 		footer(sender);
 	}
 
@@ -151,6 +150,8 @@ public class HelpUtils {
 		header(sender, "Blacksmith", 1, 1);
 		formatCommand(sender, "blacksmith", "repairarmor [type]",
 				"repair your armor");
+		formatCommand(sender, "blacksmith", "list",
+				"list the available armor names");
 		footer(sender);
 	}
 

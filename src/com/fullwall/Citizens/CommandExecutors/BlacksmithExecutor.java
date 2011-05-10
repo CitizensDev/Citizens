@@ -68,6 +68,14 @@ public class BlacksmithExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+			} else if (args.length == 1 && args[0].equals("list")) {
+				if (Permission.hasPermission("citizens.blacksmith.repair",
+						sender)) {
+					listValidArmorNames(player);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
 			}
 			BlacksmithPropertyPool.saveState(npc);
 		}
@@ -144,5 +152,23 @@ public class BlacksmithExecutor implements CommandExecutor {
 		}
 		msg += StringUtils.yellowify(npc.getStrippedName()) + ".";
 		player.sendMessage(msg);
+	}
+
+	/**
+	 * Lists the available armor names to use with the repair armor command
+	 * 
+	 * @param player
+	 */
+	private void listValidArmorNames(Player player) {
+		player.sendMessage(ChatColor.RED + "=====[ " + ChatColor.WHITE
+				+ "Valid Armor Names" + ChatColor.RED + " ]=====");
+		player.sendMessage(ChatColor.RED + "Helmet: " + ChatColor.WHITE
+				+ "helmet, cap");
+		player.sendMessage(ChatColor.RED + "Chestplate: " + ChatColor.WHITE
+				+ "chestplate, torso, tunic");
+		player.sendMessage(ChatColor.RED + "Leggings: " + ChatColor.WHITE
+				+ "leggings, pants");
+		player.sendMessage(ChatColor.RED + "Boots: " + ChatColor.WHITE
+				+ "boots, shoes");
 	}
 }
