@@ -7,7 +7,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -37,7 +37,7 @@ public class TraderInterface {
 	 */
 	public static void handleRightClick(HumanNPC npc, Player player) {
 		if (npc.getTrader().isFree()) {
-			if (!BasicExecutor.hasPermission("citizens.trader.stock", player)) {
+			if (!Permission.hasPermission("citizens.trader.stock", player)) {
 				return;
 			}
 			Mode mode = Mode.NORMAL;

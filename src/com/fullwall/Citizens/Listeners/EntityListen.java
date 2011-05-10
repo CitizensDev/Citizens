@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.CommandExecutors.BasicExecutor;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
@@ -135,7 +135,7 @@ public class EntityListen extends EntityListener {
 				Entity entity = e.getDamager();
 				if (entity instanceof Player) {
 					Player player = (Player) entity;
-					if (BasicExecutor.hasPermission(
+					if (Permission.hasPermission(
 							"citizens.wizard.changeteleport",
 							(CommandSender) player)) {
 						if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
@@ -188,7 +188,7 @@ public class EntityListen extends EntityListener {
 					found = true;
 				}
 				if (npc.isWizard()) {
-					if (BasicExecutor.hasPermission(
+					if (Permission.hasPermission(
 							"citizens.wizard.useteleport", (CommandSender) p)) {
 						if (p.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
 							if (npc.getWizard().getNrOfLocations() > 0) {
