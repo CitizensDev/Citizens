@@ -39,9 +39,9 @@ public class Payment {
 	}
 
 	public Payment(ItemPrice price2) {
-		this.setPrice(price2.getPrice());
-		ItemStack stack = price2.getItemStack();
-		this.setItem(stack);
+		this.setPrice(price2.isiConomy() ? price2.getPrice() : price2
+				.getAmount());
+		this.setItem(price2.getItemStack());
 		this.setiConomy(price2.isiConomy());
 	}
 

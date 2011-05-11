@@ -384,11 +384,8 @@ public class NPCManager {
 		if (Permission.generic(p,
 				permission.replace("citizens.", "citizens.admin.")))
 			return true;
-		String[] npcOwners = PropertyPool.getOwner(UID).split(",");
-		for (int i = 0; i < npcOwners.length; i++) {
-			if (npcOwners[i].equals(p.getName()))
-				return true;
-		}
+		if (validateOwnership(p, UID))
+			return true;
 		return false;
 	}
 

@@ -134,7 +134,7 @@ public class TraderExecutor implements CommandExecutor {
 	 */
 	private void displayList(Player player, HumanNPC npc, String[] args,
 			boolean selling) {
-		ArrayList<Stockable> stock = npc.getTrader().getStockables(selling);
+		ArrayList<Stockable> stock = npc.getTrader().getStockables(!selling);
 		int page = 0;
 		int startPoint = 0;
 		int numPages = stock.size() / 4;

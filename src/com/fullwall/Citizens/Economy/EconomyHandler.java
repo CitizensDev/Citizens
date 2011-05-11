@@ -203,8 +203,7 @@ public class EconomyHandler {
 			if (payment.isiConomy() && useIconomy())
 				return IconomyInterface.pay(npc, payment);
 			else
-				return ItemInterface.pay((Player) npc.getPlayer(), payment,
-						slot);
+				return ItemInterface.pay(npc.getPlayer(), payment, slot);
 		} else
 			return 0;
 	}
