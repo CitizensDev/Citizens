@@ -67,81 +67,75 @@ public class EntityListen extends EntityListener {
 				Entity entity = e.getDamager();
 				if (entity instanceof Player) {
 					Player player = (Player) entity;
-					if (Permission.hasPermission("citizens.healer.interact",
-							(CommandSender) player)) {
-						int playerHealth = player.getHealth();
-						int healerHealth = HealerPropertyPool.getStrength(npc
-								.getUID());
-						if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
-							if (playerHealth <= 19) {
-								if (healerHealth >= 1) {
-									player.setHealth(playerHealth + 1);
-									HealerPropertyPool.saveStrength(
-											npc.getUID(), healerHealth - 1);
-									player.sendMessage(ChatColor.GREEN
-											+ "You drained health from the healer "
-											+ StringUtils.yellowify(npc
-													.getStrippedName()) + ".");
-								} else {
-									player.sendMessage(StringUtils
-											.yellowify(npc.getStrippedName())
-											+ " does not have enough health remaining for you to take.");
-								}
-							} else {
-								player.sendMessage(ChatColor.GREEN
-										+ "You are fully healed.");
-							}
-						} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
-							if (playerHealth >= 1) {
-								if (healerHealth < HealerPropertyPool
-										.getMaxStrength(npc.getUID())) {
-									player.setHealth(playerHealth - 1);
-									HealerPropertyPool.saveStrength(
-											npc.getUID(), healerHealth + 1);
-									player.sendMessage(ChatColor.GREEN
-											+ "You donated some health to the healer "
-											+ StringUtils.yellowify(npc
-													.getStrippedName()) + ".");
-								} else {
-									player.sendMessage(StringUtils
-											.yellowify(npc.getStrippedName())
-											+ " is fully healed.");
-								}
-							} else {
-								player.sendMessage(ChatColor.GREEN
-										+ "You do not have enough health remaining to heal "
-										+ StringUtils.yellowify(npc
-												.getStrippedName()));
-							}
-						} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
-							if (healerHealth != HealerPropertyPool
-									.getMaxStrength(npc.getUID())) {
+					int playerHealth = player.getHealth();
+					int healerHealth = HealerPropertyPool.getStrength(npc
+							.getUID());
+					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
+						if (playerHealth <= 19) {
+							if (healerHealth >= 1) {
+								player.setHealth(playerHealth + 1);
 								HealerPropertyPool.saveStrength(npc.getUID(),
-										HealerPropertyPool.getMaxStrength(npc
-												.getUID()));
+										healerHealth - 1);
 								player.sendMessage(ChatColor.GREEN
-										+ "You restored all of "
+										+ "You drained health from the healer "
 										+ StringUtils.yellowify(npc
-												.getStrippedName())
-										+ "'s health with a magical block of diamond.");
-								int amountInHand = player.getItemInHand()
-										.getAmount();
-								if (amountInHand == 1) {
-									ItemStack emptyStack = null;
-									player.setItemInHand(emptyStack);
-								} else {
-									player.setItemInHand(new ItemStack(
-											Material.DIAMOND_BLOCK,
-											amountInHand - 1));
-								}
+												.getStrippedName()) + ".");
+							} else {
+								player.sendMessage(StringUtils.yellowify(npc
+										.getStrippedName())
+										+ " does not have enough health remaining for you to take.");
+							}
+						} else {
+							player.sendMessage(ChatColor.GREEN
+									+ "You are fully healed.");
+						}
+					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
+						if (playerHealth >= 1) {
+							if (healerHealth < HealerPropertyPool
+									.getMaxStrength(npc.getUID())) {
+								player.setHealth(playerHealth - 1);
+								HealerPropertyPool.saveStrength(npc.getUID(),
+										healerHealth + 1);
+								player.sendMessage(ChatColor.GREEN
+										+ "You donated some health to the healer "
+										+ StringUtils.yellowify(npc
+												.getStrippedName()) + ".");
 							} else {
 								player.sendMessage(StringUtils.yellowify(npc
 										.getStrippedName())
 										+ " is fully healed.");
 							}
+						} else {
+							player.sendMessage(ChatColor.GREEN
+									+ "You do not have enough health remaining to heal "
+									+ StringUtils.yellowify(npc
+											.getStrippedName()));
 						}
-					} else {
-						player.sendMessage(MessageUtils.noPermissionsMessage);
+					} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
+						if (healerHealth != HealerPropertyPool
+								.getMaxStrength(npc.getUID())) {
+							HealerPropertyPool.saveStrength(npc.getUID(),
+									HealerPropertyPool.getMaxStrength(npc
+											.getUID()));
+							player.sendMessage(ChatColor.GREEN
+									+ "You restored all of "
+									+ StringUtils.yellowify(npc
+											.getStrippedName())
+									+ "'s health with a magical block of diamond.");
+							int amountInHand = player.getItemInHand()
+									.getAmount();
+							if (amountInHand == 1) {
+								ItemStack emptyStack = null;
+								player.setItemInHand(emptyStack);
+							} else {
+								player.setItemInHand(new ItemStack(
+										Material.DIAMOND_BLOCK,
+										amountInHand - 1));
+							}
+						} else {
+							player.sendMessage(StringUtils.yellowify(npc
+									.getStrippedName()) + " is fully healed.");
+						}
 					}
 				}
 			}
@@ -228,7 +222,7 @@ public class EntityListen extends EntityListener {
 				if (npc.isBlacksmith()) {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
-						buyToolRepair(p, npc, Operation.BLACKSMITH_TOOL_REPAIR);
+						buyToolRepair(p, npc);
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -281,25 +275,30 @@ public class EntityListen extends EntityListener {
 	 * @param npc
 	 * @param op
 	 */
-	private void buyToolRepair(Player player, HumanNPC npc, Operation op) {
-		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+	private void buyToolRepair(Player player, HumanNPC npc) {
+		if (!EconomyHandler.useEconomy()
+				|| EconomyHandler.canBuy(Operation.BLACKSMITH_TOOL_REPAIR,
+						player)) {
 			if (EconomyHandler.useEconomy()) {
-				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0) {
-					ItemStack item = player.getItemInHand();
-					if (validateToolToRepair(item)) {
-						if (item.getDurability() > 0) {
+				ItemStack item = player.getItemInHand();
+				if (validateToolToRepair(item)) {
+					if (item.getDurability() > 0) {
+						double paid = EconomyHandler.pay(
+								Operation.BLACKSMITH_TOOL_REPAIR, player);
+						if (paid > 0) {
 							item.setDurability((short) 0);
 							player.sendMessage(StringUtils.yellowify(npc
 									.getStrippedName())
 									+ " repaired your tool for "
 									+ StringUtils.yellowify(EconomyHandler
-											.getPaymentType(op, "" + paid,
-													ChatColor.YELLOW)) + ".");
-						} else {
-							player.sendMessage(ChatColor.RED
-									+ "Your tool is already fully repaired.");
+											.getPaymentType(
+													Operation.BLACKSMITH_TOOL_REPAIR,
+													"" + paid, ChatColor.YELLOW))
+									+ ".");
 						}
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "Your tool is already fully repaired.");
 					}
 				}
 			} else {
@@ -307,11 +306,18 @@ public class EntityListen extends EntityListener {
 						+ "Your server has not turned economy on for Citizens.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			player.sendMessage(MessageUtils.getNoMoneyMessage(
+					Operation.BLACKSMITH_TOOL_REPAIR, player));
 			return;
 		}
 	}
 
+	/**
+	 * Validate that a tool has a durability and can be repaired
+	 * 
+	 * @param item
+	 * @return
+	 */
 	private boolean validateToolToRepair(ItemStack item) {
 		int id = item.getTypeId();
 		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
