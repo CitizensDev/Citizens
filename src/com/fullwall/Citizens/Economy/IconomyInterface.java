@@ -40,6 +40,10 @@ public class IconomyInterface {
 			return -1;
 	}
 
+	public static String getFormattedBalance(String name) {
+		return getCurrency(getBalance(name));
+	}
+
 	/**
 	 * Gets the iConomy currency.
 	 * 
