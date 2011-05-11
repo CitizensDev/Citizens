@@ -123,11 +123,17 @@ public class EntityListen extends EntityListener {
 										+ "You restored all of "
 										+ StringUtils.yellowify(npc
 												.getStrippedName())
-										+ "'s health.");
-								int x = player.getItemInHand().getAmount();
-								ItemStack diamondBlock = new ItemStack(
-										Material.DIAMOND_BLOCK, x - 1);
-								player.setItemInHand(diamondBlock);
+										+ "'s health with a magical block of diamond.");
+								int amountInHand = player.getItemInHand()
+										.getAmount();
+								if (amountInHand == 1) {
+									ItemStack emptyStack = null;
+									player.setItemInHand(emptyStack);
+								} else {
+									player.setItemInHand(new ItemStack(
+											Material.DIAMOND_BLOCK,
+											amountInHand - 1));
+								}
 							} else {
 								player.sendMessage(StringUtils.yellowify(npc
 										.getStrippedName())

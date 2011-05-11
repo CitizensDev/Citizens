@@ -49,6 +49,7 @@ public class WizardNPC implements Toggleable {
 	
 	/**
 	 * Returns the main location string.
+	 * 
 	 * @return
 	 */
 	public String getLocations() {
@@ -84,6 +85,7 @@ public class WizardNPC implements Toggleable {
 	
 	/**
 	 * Sets all the locations of the wizard (one big combined string)
+	 * 
 	 * @param locationsinc
 	 */
 	public void setLocations(String locationsinc) {
