@@ -15,6 +15,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.IconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.Traders.TraderInterface.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -126,12 +127,12 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		previousNPCClickedSlot = slot;
-		if (checkMiscellaneous(npcInv, stockable, slot, "buy", true))
+		previousPlayerClickedSlot = -1;
+		if (checkMiscellaneous(npcInv, stockable, true))
 			return;
 		ItemStack buying = stockable.getStocking();
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
-
 		if (unbought.size() >= 1) {
 			restorePreviousState();
 			player.sendMessage(ChatColor.RED
@@ -150,10 +151,9 @@ public class TraderTask implements Runnable {
 						+ stockable.getString(ChatColor.RED) + ".");
 				return;
 			}
-		}// Buying 6 stones -> player receives 6
-			// Price is 2 stones -> player pays 2
-			// Npc must pay 6
-			// Npc receives 2.
+		} else {
+			npc.setBalance(npc.getBalance() + stockable.getPrice().getPrice());
+		}
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player, -1);
 		if (mode != Mode.INFINITE)
 			EconomyHandler.pay(new Payment(buying, false), npc, slot);
@@ -172,7 +172,8 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		previousPlayerClickedSlot = slot;
-		if (checkMiscellaneous(playerInv, stockable, slot, "sell", false))
+		previousNPCClickedSlot = -1;
+		if (checkMiscellaneous(playerInv, stockable, false))
 			return;
 		ItemStack selling = stockable.getStocking();
 		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
@@ -197,6 +198,9 @@ public class TraderTask implements Runnable {
 						+ stockable.getString(ChatColor.RED) + ".");
 				return;
 			}
+		} else {
+			IconomyInterface.add(player.getName(), stockable.getPrice()
+					.getPrice());
 		}
 		if (mode != Mode.INFINITE)
 			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, -1);
@@ -211,41 +215,25 @@ public class TraderTask implements Runnable {
 	}
 
 	private boolean checkMiscellaneous(PlayerInventory inv,
-			Stockable stockable, int slot, String keyword, boolean buying) {
+			Stockable stockable, boolean buying) {
 		ItemStack stocking = stockable.getStocking();
 		if (buying) {
-			if (inv.getItem(slot).getAmount() - stocking.getAmount() <= 0) {
-				sendNeedMoreMessage(stocking);
-				return true;
-			}
-		} else {
-			if (stockable.isiConomy()) {
-				if (inv.getItem(slot).getAmount()
-						- stockable.getPrice().getPrice() <= 0) {
-					sendNeedMoreMessage(stockable.getPrice().getItemStack());
-					return true;
-				}
-			}
-		}
-		if (buying) {
-			if (!EconomyHandler.canBuy(new Payment(stockable.getStocking(),
-					false), npc)) {
-				sendNoMoneyMessage(stocking, keyword, "The NPC doesn't");
+			if (!EconomyHandler.canBuy(new Payment(stocking, false), npc)) {
+				sendNoMoneyMessage(stocking, "sell", "The trader doesn't");
 				return true;
 			}
 			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()),
 					player)) {
-				sendNoMoneyMessage(stocking, keyword, "You don't");
+				sendNoMoneyMessage(stocking, "buy", "You don't");
 				return true;
 			}
 		} else {
-			if (!EconomyHandler.canBuy(new Payment(stockable.getStocking(),
-					false), player)) {
-				sendNoMoneyMessage(stocking, keyword, "The NPC doesn't");
+			if (!EconomyHandler.canBuy(new Payment(stocking, false), player)) {
+				sendNoMoneyMessage(stocking, "sell", "You don't");
 				return true;
 			}
 			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
-				sendNoMoneyMessage(stocking, keyword, "You don't");
+				sendNoMoneyMessage(stocking, "buy", "The trader doesn't");
 				return true;
 			}
 		}
@@ -274,14 +262,6 @@ public class TraderTask implements Runnable {
 					+ keyword
 					+ MessageUtils.getStockableMessage(stockable,
 							ChatColor.AQUA) + ".");
-	}
-
-	private void sendNeedMoreMessage(ItemStack stocking) {
-		player.sendMessage(ChatColor.RED
-				+ "Need at least "
-				+ StringUtils.yellowify(stocking.getAmount() + " "
-						+ stocking.getType().name(), ChatColor.RED)
-				+ "(s) on the clicked stack.");
 	}
 
 	private Stockable getStockable(ItemStack i, String keyword, boolean selling) {

@@ -120,7 +120,7 @@ public class TraderExecutor implements CommandExecutor {
 	private void displayMoney(Player player, HumanNPC npc) {
 		player.sendMessage(StringUtils.yellowify(npc.getName())
 				+ " has "
-				+ StringUtils.yellowify(IconomyInterface.getCurrency(npc
+				+ StringUtils.yellowify(IconomyInterface.format(npc
 						.getBalance())) + ".");
 	}
 
@@ -146,7 +146,7 @@ public class TraderExecutor implements CommandExecutor {
 		else
 			keyword = "Buying";
 		if (stock.size() == 0) {
-			player.sendMessage(ChatColor.GRAY + "This NPC isn't "
+			player.sendMessage(ChatColor.GRAY + "This trader isn't "
 					+ keyword.toLowerCase() + " any items.");
 			return;
 		}
@@ -161,7 +161,8 @@ public class TraderExecutor implements CommandExecutor {
 					+ " pages.");
 			return;
 		}
-		player.sendMessage(ChatColor.GOLD + "NPC " + keyword + " List (Page "
+		player.sendMessage(ChatColor.GOLD + "Trader " + keyword
+				+ " List (Page "
 				+ StringUtils.yellowify((page == 0 ? 1 : page), ChatColor.GOLD)
 				+ " of " + StringUtils.yellowify(numPages, ChatColor.GOLD)
 				+ ")");
@@ -169,9 +170,18 @@ public class TraderExecutor implements CommandExecutor {
 		for (int i = startPoint; i != startPoint + 3; ++i) {
 			if ((stock.size() - 1) >= i) {
 				Stockable s = stock.get(i);
-				player.sendMessage(ChatColor.GREEN + keyword + " "
-						+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
-						+ ".");
+				if (selling)
+					player.sendMessage(ChatColor.GREEN
+							+ keyword
+							+ " "
+							+ MessageUtils.getReverseStockableMessage(s,
+									ChatColor.GREEN) + ".");
+				else
+					player.sendMessage(ChatColor.GREEN
+							+ keyword
+							+ " "
+							+ MessageUtils.getStockableMessage(s,
+									ChatColor.GREEN) + ".");
 			} else {
 				player.sendMessage(ChatColor.AQUA
 						+ "-------------------------------");
@@ -224,14 +234,15 @@ public class TraderExecutor implements CommandExecutor {
 			if (!selling)
 				keyword = "selling";
 			if (npc.getTrader().getStockable(mat.getId(), selling) == null) {
-				player.sendMessage(ChatColor.RED + "The NPC is not currently "
-						+ keyword + " that item.");
+				player.sendMessage(ChatColor.RED
+						+ "The trader is not currently " + keyword
+						+ " that item.");
 				return;
 			} else {
 				npc.getTrader().removeStockable(mat.getId(), selling);
 				player.sendMessage(ChatColor.GREEN + "Removed "
 						+ StringUtils.yellowify(mat.name())
-						+ " from the NPC's " + keyword + " list.");
+						+ " from the trader's " + keyword + " list.");
 			}
 			return;
 		}
@@ -261,15 +272,18 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 		}
+		boolean iConomy = false;
+		if (cost == null)
+			iConomy = true;
 		int data = Citizens.MAGIC_DATA_VALUE;
-		if (cost != null && cost.getData() != null)
+		if (!iConomy && cost.getData() != null)
 			data = cost.getData().getData();
 		ItemPrice itemPrice;
-		if (cost != null)
+		if (!iConomy)
 			itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(), data);
 		else
 			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
-		itemPrice.setiConomy(cost == null);
+		itemPrice.setiConomy(iConomy);
 		Stockable s = new Stockable(stack, itemPrice, true);
 		String keyword = "buying";
 		if (!selling) {
@@ -283,8 +297,9 @@ public class TraderExecutor implements CommandExecutor {
 			return;
 		}
 		npc.getTrader().addStockable(s);
-		player.sendMessage(ChatColor.GREEN + "The NPC is now " + keyword + " "
-				+ MessageUtils.getStockableMessage(s, ChatColor.GREEN) + ".");
+		player.sendMessage(ChatColor.GREEN + "The trader is now " + keyword
+				+ " " + MessageUtils.getStockableMessage(s, ChatColor.GREEN)
+				+ ".");
 	}
 
 	/**
@@ -323,7 +338,6 @@ public class TraderExecutor implements CommandExecutor {
 	 * @param player
 	 * @param npc
 	 * @param args
-	 * @throws NumberFormatException
 	 */
 	private void changeBalance(Player player, HumanNPC npc, String[] args) {
 		double amount;
@@ -340,8 +354,7 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
-						+ StringUtils.yellowify(IconomyInterface
-								.getCurrency(amount))
+						+ StringUtils.yellowify(IconomyInterface.format(amount))
 						+ " to "
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
@@ -353,7 +366,7 @@ public class TraderExecutor implements CommandExecutor {
 						+ "You don't have enough money for that! Need "
 						+ " "
 						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(amount
+								IconomyInterface.format(amount
 										- IconomyInterface.getBalance(player
 												.getName())), ChatColor.RED)
 						+ " more.");
@@ -364,8 +377,7 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(-amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
-						+ StringUtils.yellowify(IconomyInterface
-								.getCurrency(amount))
+						+ StringUtils.yellowify(IconomyInterface.format(amount))
 						+ " from "
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
@@ -373,9 +385,9 @@ public class TraderExecutor implements CommandExecutor {
 								.getFormattedBalance(player.getName())) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
-						+ "The NPC doesn't have enough money for that! It needs "
+						+ "The trader doesn't have enough money for that! It needs "
 						+ StringUtils.yellowify(
-								IconomyInterface.getCurrency(amount
+								IconomyInterface.format(amount
 										- npc.getBalance()), ChatColor.RED)
 						+ " more in its balance.");
 			}

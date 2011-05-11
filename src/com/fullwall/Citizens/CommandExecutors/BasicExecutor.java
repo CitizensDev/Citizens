@@ -551,9 +551,9 @@ public class BasicExecutor implements CommandExecutor {
 							false));
 			}
 			NPCManager.NPCSelected.put(player.getName(), UID);
-			player.sendMessage(ChatColor.GREEN + "You selected NPC ["
-					+ StringUtils.yellowify(args[1]) + "], ID ["
-					+ StringUtils.yellowify(UID) + "]");
+			player.sendMessage(ChatColor.GREEN + "You selected NPC "
+					+ StringUtils.yellowify(args[1]) + ", ID "
+					+ StringUtils.yellowify(UID) + ".");
 		} else {
 			player.sendMessage(ChatColor.GREEN
 					+ "You have reached the NPC-creation limit of "

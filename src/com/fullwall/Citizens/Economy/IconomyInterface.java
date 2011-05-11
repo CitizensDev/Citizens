@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Economy;
 
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -41,7 +42,7 @@ public class IconomyInterface {
 	}
 
 	public static String getFormattedBalance(String name) {
-		return getCurrency(getBalance(name));
+		return format(getBalance(name));
 	}
 
 	/**
@@ -50,8 +51,8 @@ public class IconomyInterface {
 	 * @param amount
 	 * @return
 	 */
-	public static String getCurrency(String amount) {
-		return iConomy.format(Double.parseDouble(amount));
+	public static String format(String amount) {
+		return format(Double.parseDouble(amount));
 	}
 
 	/**
@@ -60,7 +61,8 @@ public class IconomyInterface {
 	 * @param price
 	 * @return
 	 */
-	public static String getCurrency(double price) {
+	public static String format(double price) {
+		Citizens.log.info("A");
 		return iConomy.format(price);
 	}
 
@@ -108,7 +110,7 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static boolean hasEnough(Payment payment, HumanNPC npc) {
-		return npc.getBalance() > payment.getPrice();
+		return npc.getBalance() >= payment.getPrice();
 	}
 
 	/**
@@ -120,7 +122,7 @@ public class IconomyInterface {
 	 */
 	public static double pay(Player player, Operation op) {
 		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		iConomy.getAccount(player.getName()).getHoldings().subtract(price);
+		subtract(player.getName(), price);
 		return price;
 	}
 
@@ -135,8 +137,7 @@ public class IconomyInterface {
 	 */
 	public static double pay(Player player, Operation op, int multiple) {
 		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		iConomy.getAccount(player.getName()).getHoldings()
-				.subtract(price * multiple);
+		subtract(player.getName(), price * multiple);
 		return price;
 	}
 
@@ -160,8 +161,15 @@ public class IconomyInterface {
 	 * @return
 	 */
 	public static double pay(Player player, Payment payment) {
-		iConomy.getAccount(player.getName()).getHoldings()
-				.subtract(payment.getPrice());
+		subtract(player.getName(), payment.getPrice());
 		return payment.getPrice();
+	}
+
+	public static void add(String name, double price) {
+		iConomy.getAccount(name).getHoldings().add(price);
+	}
+
+	public static void subtract(String name, double price) {
+		iConomy.getAccount(name).getHoldings().subtract(price);
 	}
 }

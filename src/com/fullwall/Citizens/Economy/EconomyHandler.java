@@ -237,7 +237,7 @@ public class EconomyHandler {
 			ChatColor colour) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.getCurrency(amount);
+				return IconomyInterface.format(amount);
 			else
 				return ItemInterface.getCurrency(op, colour);
 		} else
@@ -269,10 +269,11 @@ public class EconomyHandler {
 	 */
 	public static String getCurrency(Payment payment, ChatColor colour) {
 		if (useEconomy) {
-			if (payment.isiConomy() && useIconomy())
-				return IconomyInterface.getCurrency(payment.getPrice());
-			else
+			if (payment.isiConomy() && useIconomy()) {
+				return IconomyInterface.format(payment.getPrice());
+			} else {
 				return ItemInterface.getCurrency(payment, colour);
+			}
 		} else
 			return "0";
 	}

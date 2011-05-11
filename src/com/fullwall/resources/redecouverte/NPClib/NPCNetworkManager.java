@@ -22,6 +22,7 @@ public class NPCNetworkManager extends NetworkManager {
 
 	@Override
 	public void a(NetHandler nethandler) {
+		super.a(nethandler);
 	}
 
 	@Override

@@ -94,6 +94,8 @@ public class TraderPropertyPool {
 	}
 
 	public static String addToStockableString(int UID, String s, Stockable st) {
+		if (s.contains(st.toString() + ";"))
+			return "";
 		return s += st.toString() + ";";
 	}
 
@@ -112,10 +114,11 @@ public class TraderPropertyPool {
 	public static void saveStockables(int UID,
 			ConcurrentHashMap<Check, Stockable> stockables) {
 		String string = "";
+		setStockables(UID, string);
 		for (Entry<Check, Stockable> entry : stockables.entrySet()) {
 			string += addToStockableString(UID, string, entry.getValue());
-			setStockables(UID, string);
 		}
+		setStockables(UID, string);
 	}
 
 	public static ConcurrentHashMap<Check, Stockable> getStockables(int UID) {

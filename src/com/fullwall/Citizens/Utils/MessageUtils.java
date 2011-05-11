@@ -132,17 +132,15 @@ public class MessageUtils {
 	public static String getPriceMessage(ItemPrice price, ChatColor colour) {
 		String message = "";
 		message += colour
-				+ StringUtils.yellowify(EconomyHandler.getCurrency(new Payment(
-						price.getPrice(), new ItemStack(price.getItemID(), 1),
-						price.isiConomy()), colour), colour);
+				+ StringUtils.yellowify(
+						EconomyHandler.getCurrency(new Payment(price), colour),
+						colour);
 		return message;
 	}
 
 	public static String getReverseStockableMessage(Stockable stockable,
 			ChatColor colour) {
-		return StringUtils.yellowify(
-				MessageUtils.getPriceMessage(stockable.getPrice(), colour),
-				colour)
+		return MessageUtils.getPriceMessage(stockable.getPrice(), colour)
 				+ " for "
 				+ StringUtils.yellowify(stockable.getStocking().getAmount()
 						+ " " + stockable.getStocking().getType().name(),
@@ -160,14 +158,12 @@ public class MessageUtils {
 		return StringUtils.yellowify(s.getStocking().getAmount() + " "
 				+ s.getStocking().getType().name(), colour)
 				+ "(s) for "
-				+ StringUtils.yellowify(
-						MessageUtils.getPriceMessage(s.getPrice(), colour),
-						colour);
+				+ MessageUtils.getPriceMessage(s.getPrice(), colour);
 	}
 
 	public static String getStackToString(ItemStack stack, ChatColor colour) {
 		return StringUtils.yellowify(stack.getAmount() + " "
-				+ stack.getType().name(), ChatColor.RED)
+				+ stack.getType().name(), colour)
 				+ "(s)";
 	}
 }

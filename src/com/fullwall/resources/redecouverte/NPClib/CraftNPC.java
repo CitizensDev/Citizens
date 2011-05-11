@@ -36,6 +36,7 @@ public class CraftNPC extends EntityPlayer {
 					}
 				});
 		this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
+		// netMgr.a(this.netServerHandler);
 
 		this.lastTargetId = -1;
 		this.lastBounceId = -1;

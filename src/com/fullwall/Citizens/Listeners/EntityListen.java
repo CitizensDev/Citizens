@@ -62,7 +62,8 @@ public class EntityListen extends EntityListener {
 			if (e.getEntity() instanceof Player && npc != null) {
 				e.setCancelled(true);
 			}
-			if (e.getDamager() instanceof Player && npc.isHealer()) {
+			if (npc != null && e.getDamager() instanceof Player
+					&& npc.isHealer()) {
 				Entity entity = e.getDamager();
 				if (entity instanceof Player) {
 					Player player = (Player) entity;
@@ -138,7 +139,8 @@ public class EntityListen extends EntityListener {
 					}
 				}
 			}
-			if (e.getDamager() instanceof Player && npc.isWizard()) {
+			if (npc != null && e.getDamager() instanceof Player
+					&& npc.isWizard()) {
 				Entity entity = e.getDamager();
 				if (entity instanceof Player) {
 					Player player = (Player) entity;
@@ -180,19 +182,29 @@ public class EntityListen extends EntityListener {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
-				boolean found = false;
-				// Dispatch text event.
+				if (plugin.validateTool("select-item", p.getItemInHand()
+						.getTypeId()) == true) {
+					if (!NPCManager.validateSelected(p, npc.getUID())) {
+						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
+						p.sendMessage(ChatColor.GREEN + "You selected NPC "
+								+ StringUtils.yellowify(npc.getStrippedName())
+								+ ", ID "
+								+ StringUtils.yellowify("" + npc.getUID())
+								+ ".");
+						return;
+					}
+				} // Dispatch text event.
+					// If we're using a selection tool, select the NPC as well.
+					// Check if we haven't already selected the NPC too.
 				if (plugin.validateTool("items", p.getItemInHand().getTypeId()) == true) {
 					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
 							npc.getName(), MessageUtils.getText(npc,
 									(Player) e.getTarget(), plugin), npc,
 							Reason.RIGHT_CLICK, (Player) e.getTarget());
 					plugin.getServer().getPluginManager().callEvent(ev);
-					found = true;
 				}
 				if (npc.isTrader()) {
 					TraderInterface.handleRightClick(npc, p);
-					found = true;
 				}
 				if (npc.isWizard()) {
 					if (Permission.hasPermission("citizens.wizard.useteleport",
@@ -201,7 +213,6 @@ public class EntityListen extends EntityListener {
 							if (npc.getWizard().getNrOfLocations() > 0) {
 								this.buyTeleport(p, npc.getWizard(),
 										Operation.WIZARD_TELEPORT);
-								found = true;
 							}
 						}
 					} else {
@@ -212,27 +223,8 @@ public class EntityListen extends EntityListener {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
 						buyToolRepair(p, npc, Operation.BLACKSMITH_TOOL_REPAIR);
-						found = true;
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
-					}
-				}
-				if (found && !plugin.canSelectAny())
-					return;
-				// If we're using a selection tool, select the NPC as well.
-				// Check if we haven't already selected the NPC too.
-				if (plugin.validateTool("select-item", p.getItemInHand()
-						.getTypeId()) == true) {
-					if (!NPCManager.validateSelected(p, npc.getUID())) {
-						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
-						p.sendMessage(ChatColor.GREEN + "You selected NPC "
-								+ StringUtils.yellowify(npc.getStrippedName())
-								+ ", ID "
-								+ StringUtils.yellowify("" + npc.getUID())
-								+ ".");
-					} else if (!found && plugin.canSelectAny()) {
-						p.sendMessage(ChatColor.GREEN
-								+ "That NPC is already selected!");
 					}
 				}
 			}
