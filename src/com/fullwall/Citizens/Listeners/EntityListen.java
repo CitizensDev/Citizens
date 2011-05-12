@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -317,8 +316,8 @@ public class EntityListen extends EntityListener {
 	 * @param item
 	 * @return
 	 */
-	private boolean validateToolToRepair(ItemStack item) {
-		int id = item.getTypeId();
+	private boolean validateToolToRepair(ItemStack tool) {
+		int id = tool.getTypeId();
 		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
 				|| id == 268 || id == 269 || id == 270 || id == 271
 				|| id == 272 || id == 273 || id == 274 || id == 275

@@ -149,7 +149,7 @@ public class HelpUtils {
 	 */
 	public static void sendBlacksmithHelp(CommandSender sender) {
 		header(sender, "Blacksmith", 1, 1);
-		formatCommand(sender, "blacksmith", "repairarmor [type]",
+		formatCommand(sender, "blacksmith", "repair [type]",
 				"repair your armor");
 		formatCommand(sender, "blacksmith", "list",
 				"list the available armor names");

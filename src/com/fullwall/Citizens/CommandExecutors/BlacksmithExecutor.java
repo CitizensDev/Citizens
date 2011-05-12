@@ -62,7 +62,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 2 && args[0].equals("repairarmor")) {
+			} else if (args.length == 2 && args[0].equals("repair")) {
 				if (Permission.hasPermission("citizens.blacksmith.repair",
 						sender)) {
 					repairArmor(player, npc, args[1]);
@@ -123,32 +123,37 @@ public class BlacksmithExecutor implements CommandExecutor {
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMOR_REPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				double paid = EconomyHandler.pay(
-						Operation.BLACKSMITH_ARMOR_REPAIR, player);
-				if (paid > 0) {
+				if (validateArmorToRepair(armor)) {
 					if (armor.getDurability() > 0) {
-						armor.setDurability((short) 0);
-						msg = ChatColor.GREEN + ("Your ")
-								+ StringUtils.yellowify(armorName);
-						if (plural) {
-							msg += " have been repaired by ";
-						} else {
-							msg += " has been repaired by ";
+						double paid = EconomyHandler.pay(
+								Operation.BLACKSMITH_ARMOR_REPAIR, player);
+						if (paid > 0) {
+							armor.setDurability((short) 0);
+							msg = ChatColor.GREEN + ("Your ")
+									+ StringUtils.yellowify(armorName);
+							if (plural) {
+								msg += " have been repaired by ";
+							} else {
+								msg += " has been repaired by ";
+							}
+							msg += StringUtils.yellowify(npc.getStrippedName())
+									+ " for "
+									+ StringUtils
+											.yellowify(EconomyHandler
+													.getPaymentType(
+															Operation.BLACKSMITH_ARMOR_REPAIR,
+															"" + paid,
+															ChatColor.YELLOW))
+									+ ".";
+							player.sendMessage(msg);
 						}
-						msg += StringUtils.yellowify(npc.getStrippedName())
-								+ " for "
-								+ StringUtils
-										.yellowify(EconomyHandler
-												.getPaymentType(
-														Operation.BLACKSMITH_ARMOR_REPAIR,
-														"" + paid,
-														ChatColor.YELLOW))
-								+ ".";
-						player.sendMessage(msg);
 					} else {
 						player.sendMessage(ChatColor.RED
 								+ "Your armor is already fully repaired.");
 					}
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "You are not wearing that type of armor.");
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
@@ -177,5 +182,20 @@ public class BlacksmithExecutor implements CommandExecutor {
 				+ "leggings, pants");
 		player.sendMessage(ChatColor.RED + "Boots: " + ChatColor.WHITE
 				+ "boots, shoes");
+	}
+
+	/**
+	 * Validate that the item to repair is armor
+	 * 
+	 * @param armor
+	 * @return
+	 */
+	private boolean validateArmorToRepair(ItemStack armor) {
+		int id = armor.getTypeId();
+		if (id >= 298 && id <= 317) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
