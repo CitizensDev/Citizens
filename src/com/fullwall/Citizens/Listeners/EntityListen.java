@@ -295,7 +295,7 @@ public class EntityListen extends EntityListener {
 						}
 					} else {
 						player.sendMessage(ChatColor.RED
-								+ "Your tool is already fully repaired.");
+								+ "Your item is already fully repaired.");
 					}
 				}
 			} else {
