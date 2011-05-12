@@ -93,13 +93,13 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equals("wizard")) {
 				if (Permission.hasPermission("citizens.wizard.create", sender)) {
-					sender.sendMessage("Wizards are still a little buggy, so are disabled for now.");
-					/*
-					 * if ( ! WizardPropertyPool . isWizard ( npc . getUID ( ) )
-					 * ) { buyState ( player , npc . getWizard ( ) , Operation .
-					 * WIZARD_NPC_CREATE ) ; } else { toggleState ( player , npc
-					 * . getWizard ( ) ) ; }
-					 */
+					//sender.sendMessage("Wizards are still a little buggy, so are disabled for now.");
+					if (!WizardPropertyPool.isWizard(npc.getUID())) { 
+						buyState(player, npc.getWizard(), Operation.WIZARD_NPC_CREATE); 
+					}else{
+						toggleState(player, npc.getWizard()); 
+					}
+					 
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}

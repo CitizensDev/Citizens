@@ -87,15 +87,16 @@ public class WizardExecutor implements CommandExecutor {
 						sender)) {
 					int type = -1;
 					try {
-						Integer.parseInt(args[1]);
+						type = Integer.parseInt(args[1]);
 					} catch (Exception e) {
 						sender.sendMessage(ChatColor.RED
 								+ "ID must be a number, see /wizard locations");
+						type = -1;
 					}
 					if (type != -1) {
 						if (type <= npc.getWizard().getNrOfLocations()) {
 							this.removeLocation(player, npc,
-									Integer.parseInt(args[1]));
+									type);
 						} else {
 							sender.sendMessage(ChatColor.RED
 									+ "Wizard "
