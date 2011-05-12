@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -56,10 +57,12 @@ public final class PropertyHandler {
 		}
 		if (fileName.contains("Citizens.settings")) {
 			loadRenames(Defaults.settingsRenames);
-			loadDefaults(Defaults.defaultSettings);
+			loadDefaults(Defaults.settingsDefaults);
+			loadDeletes(Defaults.settingsDeletes);
 		} else if (fileName.contains("Citizens.economy")) {
 			loadRenames(Defaults.economyRenames);
-			loadDefaults(Defaults.defaultEconomySettings);
+			loadDefaults(Defaults.economyDefaults);
+			loadDeletes(Defaults.economyDeletes);
 		}
 	}
 
@@ -81,6 +84,15 @@ public final class PropertyHandler {
 						+ this.fileName + "! Writing value as "
 						+ entry.getValue() + ".");
 				setString(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	private void loadDeletes(ArrayList<String> nodes) {
+		for (String entry : nodes) {
+			if (keyExists(entry)) {
+				Citizens.log.info("Deleting unused setting " + entry + ".");
+				removeKey(entry);
 			}
 		}
 	}

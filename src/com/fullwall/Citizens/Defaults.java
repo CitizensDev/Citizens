@@ -1,12 +1,15 @@
 package com.fullwall.Citizens;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Defaults {
-	public static HashMap<String, String> defaultSettings = writeDefaultSettings();
-	public static HashMap<String, String> defaultEconomySettings = writeEconomySettings();
+	public static HashMap<String, String> settingsDefaults = writeDefaultSettings();
+	public static HashMap<String, String> economyDefaults = writeEconomySettings();
 	public static HashMap<String, String> settingsRenames = writeSettingsRenames();
 	public static HashMap<String, String> economyRenames = writeEconomyRenames();
+	public static ArrayList<String> settingsDeletes = writeSettingsDeletes();
+	public static ArrayList<String> economyDeletes = writeEconomyDeletes();
 
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
@@ -34,21 +37,10 @@ public class Defaults {
 		return nodes;
 	}
 
-	private static HashMap<String, String> writeSettingsRenames() {
-		HashMap<String, String> nodes = new HashMap<String, String>();
-		return nodes;
-	}
-
-	private static HashMap<String, String> writeEconomyRenames() {
-		HashMap<String, String> nodes = new HashMap<String, String>();
-		nodes.put("-iconomy", "-econplugin");
-		return nodes;
-	}
-
 	private static HashMap<String, String> writeEconomySettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		nodes.put("use-economy", "true");
-		nodes.put("use-iconomy", "false");
+		nodes.put("use-econplugin", "false");
 		nodes.put("basic-npc-create-item-currency-id", "37");
 		nodes.put("basic-npc-create-item", "10");
 		nodes.put("basic-npc-create-econplugin", "100");
@@ -76,6 +68,27 @@ public class Defaults {
 		nodes.put("blacksmith-armor-repair-item-currency-id", "266");
 		nodes.put("blacksmith-armor-repair-item", "5");
 		nodes.put("blacksmith-armor-repair-econplugin", "50");
+		return nodes;
+	}
+
+	private static HashMap<String, String> writeSettingsRenames() {
+		HashMap<String, String> nodes = new HashMap<String, String>();
+		return nodes;
+	}
+
+	private static HashMap<String, String> writeEconomyRenames() {
+		HashMap<String, String> nodes = new HashMap<String, String>();
+		nodes.put("-iconomy", "-econplugin");
+		return nodes;
+	}
+
+	private static ArrayList<String> writeSettingsDeletes() {
+		ArrayList<String> nodes = new ArrayList<String>();
+		return nodes;
+	}
+
+	private static ArrayList<String> writeEconomyDeletes() {
+		ArrayList<String> nodes = new ArrayList<String>();
 		return nodes;
 	}
 }
