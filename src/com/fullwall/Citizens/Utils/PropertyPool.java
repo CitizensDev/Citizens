@@ -243,7 +243,7 @@ public class PropertyPool {
 	}
 
 	public static boolean checkServerEconomyEnabled() {
-		return economy.getBoolean("use-iconomy");
+		return economy.getBoolean("use-econplugin");
 	}
 
 	public static void changeName(int UID, String changeFrom, String changeTo) {

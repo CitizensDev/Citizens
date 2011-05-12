@@ -1,6 +1,5 @@
 package com.fullwall.Citizens;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -81,10 +80,6 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
-		File file = new File("plugins/Citizens/Traders/Citizens.buyables");
-		file.delete();
-		file = new File("plugins/Citizens/Traders/Citizens.sellables");
-		file.delete();
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();
