@@ -10,7 +10,7 @@ import com.nijikokun.register.payment.Method.MethodAccount;
 
 public class ServerEconomyInterface {
 
-	public static String addendum = "-serverconomy";
+	public static String addendum = "-econplugin";
 
 	/**
 	 * Uses the iConomy methods to check whether a player has enough in their

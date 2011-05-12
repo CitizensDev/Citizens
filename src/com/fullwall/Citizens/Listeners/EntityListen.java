@@ -23,6 +23,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Wizards.WizardNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -219,7 +220,7 @@ public class EntityListen extends EntityListener {
 				if (npc.isBlacksmith()) {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
-						buyToolRepair(p, npc);
+						buyToolRepair(p, npc, p.getItemInHand());
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -272,19 +273,18 @@ public class EntityListen extends EntityListener {
 	 * @param npc
 	 * @param op
 	 */
-	private void buyToolRepair(Player player, HumanNPC npc) {
+	private void buyToolRepair(Player player, HumanNPC npc, ItemStack tool) {
 		if (!EconomyHandler.useEconomy()
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_TOOL_REPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				ItemStack item = player.getItemInHand();
-				if (validateToolToRepair(item)) {
-					if (item.getDurability() > 0) {
+				if (validateToolToRepair(tool)) {
+					if (tool.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
 								Operation.BLACKSMITH_TOOL_REPAIR, player);
 						if (paid > 0) {
-							item.setDurability((short) 0);
-							player.setItemInHand(item);
+							tool.setDurability((short) 0);
+							// player.setItemInHand(tool);
 							player.sendMessage(StringUtils.yellowify(npc
 									.getStrippedName())
 									+ " repaired your tool for "
@@ -293,11 +293,15 @@ public class EntityListen extends EntityListener {
 													Operation.BLACKSMITH_TOOL_REPAIR,
 													"" + paid, ChatColor.YELLOW))
 									+ ".");
+						} else {
+							System.out.println("notenough$$");
 						}
 					} else {
 						player.sendMessage(ChatColor.RED
 								+ "Your tool is already fully repaired.");
 					}
+				} else {
+					System.out.println("debug");
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
