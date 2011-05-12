@@ -28,8 +28,7 @@ public class Methods {
 			} else if (name.equalsIgnoreCase("boseconomy")) {
 				Method = new MethodBOSEconomy((BOSEconomy) method);
 			} else if (name.equalsIgnoreCase("essentials")) {
-				if (!((Essentials) method).isIConomyFallbackEnabled())
-					Method = new MethodEEco((Essentials) method);
+				Method = new MethodEEco((Essentials) method);
 			}
 		}
 		if (!hasMethod()) {
@@ -46,8 +45,7 @@ public class Methods {
 				Method = new MethodBOSEconomy((BOSEconomy) method);
 			} else if (loader.getPlugin("Essentials") != null) {
 				method = loader.getPlugin("Essentials");
-				if (!((Essentials) method).isIConomyFallbackEnabled())
-					Method = new MethodEEco((Essentials) method);
+				Method = new MethodEEco((Essentials) method);
 			}
 		}
 		return hasMethod();
