@@ -287,6 +287,7 @@ public class EntityListen extends EntityListener {
 								Operation.BLACKSMITH_TOOL_REPAIR, player);
 						if (paid > 0) {
 							item.setDurability((short) 0);
+							player.setItemInHand(item);
 							player.sendMessage(StringUtils.yellowify(npc
 									.getStrippedName())
 									+ " repaired your tool for "
