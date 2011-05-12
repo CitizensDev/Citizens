@@ -50,18 +50,18 @@ default-text=Hello.;How are you today?;Having a nice day?;Good weather today.;St
 #Sir/Mike -> Sir Mike
 slashes-to-spaces=true
 
-#Specify the ID of the item that a player must use to give health to a healer NPC
+#Specify the ID of the item that a player must use to give health to a healer NPC.
 healer-give-health-item=35
 
-#Specify the ID of an item that a player must use to take health from a healer NPC
+#Specify the ID of an item that a player must use to take health from a healer NPC.
 healer-take-health-item=276
 
-#Specifies the multiple of the health regeneration rate for healers NPCs
+#Specifies the multiple of the health regeneration rate for healers NPCs.
 #Example: A Level 1 Healer has to wait 12000 * 10 ticks, while a Level 10 healer has to wait 12000 * 1 ticks
 healer-health-regen-increment=12000
 
-#Specify the ID of the item that a player must use to interact with a wizard NPC
+#Specify the ID of the item that a player must use to interact with a wizard NPC.
 wizard-interact-item=288
 
-#Specify the maximum amount of locations a wizard NPC can have at one time
+#Specify the maximum amount of locations a wizard NPC can have at one time.
 wizard-max-locations=10

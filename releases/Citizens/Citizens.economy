@@ -2,50 +2,55 @@
 #will not be used.
 use-economy=true
 
-#If set to true, Nijikokun's iConomy plugin will be used for economy handling.
-use-iconomy=true
+#If set to true, an economy plugin (Essentials Eco, BOSEcon, iConomy) will be used for economy handling.
+use-econplugin=true
 
 #Settings are in groups of two: one for item prices, one for iConomy prices.
-#The iConomy prices have "-iconomy" on the end, and items have "-item".
+#The economy plugin prices have "-econplugin" on the end, and items have "-item".
 
 #The item-currency-id property states what type of item id should be used if not
-#using iConomy. 
+#using an economy plugin.
 
-#iConomy prices check the user's balance for the amount, the item prices #check if the #player has enough of the specified item using item-currency-id in their inventory.
+#Economy plugin prices check the user's balance for the amount, the item prices
+#check if the player has enough of the specified item using item-currency-id in their #inventory.
 
 #Basic NPC operations
 basic-npc-create-item-currency-id=37
 basic-npc-create-item=10
-basic-npc-create-iconomy=200
+basic-npc-create-econplugin=200
 
 #Blacksmith NPC Operations
 blacksmith-npc-create-item-currency-id=37
 blacksmith-npc-create-item=20
-blacksmith-npc-create-iconomy=100
+blacksmith-npc-create-econplugin=100
+
 blacksmith-armor-repair-item-currency-id=266
 blacksmith-armor-repair-item=5
-blacksmith-armor-repair-iconomy=50
+blacksmith-armor-repair-econplugin=50
+
 blacksmith-tool-repair-item-currency-id=266
 blacksmith-tool-repair-item=5
-blacksmith-tool-repair-iconomy=50
+blacksmith-tool-repair-econplugin=50
 
 #Trader NPC operations
 trader-npc-create-item-currency-id=37
 trader-npc-create-item=20
-trader-npc-create-iconomy=250
+trader-npc-create-econplugin=250
 
 #Healer NPC operations
 healer-npc-create-item-currency-id=1
 healer-npc-create-item=100
-healer-npc-create-iconomy=100
+healer-npc-create-econplugin=100
+
 healer-level-up-item-currency-id=1
 healer-level-up-item=100
-healer-level-up-iconomy=100
+healer-level-up-econplugin=100
 
 #Wizard NPC operations
 wizard-npc-create-item-currency-id=37
 wizard-npc-create-item=20
 wizard-npc-create-iconomy=250
+
 wizard-teleport-item-currency-id=4
 wizard-teleport-item=10
-wizard-teleport-iconomy=25
+wizard-teleport-econplugin=25
