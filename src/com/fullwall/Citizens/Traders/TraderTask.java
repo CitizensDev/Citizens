@@ -62,6 +62,7 @@ public class TraderTask implements Runnable {
 		sendJoinMessage();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		if (stop)
@@ -166,6 +167,8 @@ public class TraderTask implements Runnable {
 		} else {
 			npc.setBalance(npc.getBalance() + stockable.getPrice().getPrice());
 		}
+		npc.getPlayer().updateInventory();
+		player.updateInventory();
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 	}
 
@@ -215,6 +218,8 @@ public class TraderTask implements Runnable {
 			ServerEconomyInterface.add(player.getName(), stockable.getPrice()
 					.getPrice());
 		}
+		npc.getPlayer().updateInventory();
+		player.updateInventory();
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 	}
 
