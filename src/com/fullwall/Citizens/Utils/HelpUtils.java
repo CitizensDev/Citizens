@@ -62,7 +62,7 @@ public class HelpUtils {
 					"teleport to the location of an NPC");
 			formatCommand(sender, "npc", "copy",
 					"make a clone of an NPC at your location");
-			formatCommand(sender, "npc", "getid", "get the ID of an NPC");
+			formatCommand(sender, "npc", "id", "get the ID of an NPC");
 			formatCommand(sender, "npc", "select [ID]",
 					"select an NPC with the given ID");
 			formatCommand(sender, "npc", "getowner", "get the owner of an NPC");

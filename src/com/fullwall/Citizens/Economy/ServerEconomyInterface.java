@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.register.payment.Method.MethodAccount;
@@ -134,8 +135,13 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static double pay(Player player, Operation op, int multiple) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		subtract(player.getName(), price * multiple);
+		double price = 0;
+		if (hasEnough(player, op)) {
+			price = PropertyPool.getPrice(Operation.getString(op, addendum));
+			subtract(player.getName(), price * multiple);
+		} else {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+		}
 		return price;
 	}
 
