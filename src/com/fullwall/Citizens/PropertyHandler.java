@@ -63,6 +63,8 @@ public final class PropertyHandler {
 			loadRenames(Defaults.economyRenames);
 			loadDefaults(Defaults.economyDefaults);
 			loadDeletes(Defaults.economyDeletes);
+		} else if (fileName.contains("Citizens.itemlookups")) {
+			loadLookups(Defaults.lookupsDefaults);
 		}
 	}
 
@@ -83,6 +85,19 @@ public final class PropertyHandler {
 				Citizens.log.info("Missing setting " + entry.getKey() + " in "
 						+ this.fileName + "! Writing value as "
 						+ entry.getValue() + ".");
+				setString(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	private void loadLookups(HashMap<String, String> nodes) {
+		boolean told = false;
+		for (Entry<String, String> entry : nodes.entrySet()) {
+			if (!keyExists(entry.getKey())) {
+				if (!told)
+					Citizens.log
+							.info("Missing entry in Citizens.itemlookups - restoring settings");
+				told = true;
 				setString(entry.getKey(), entry.getValue());
 			}
 		}

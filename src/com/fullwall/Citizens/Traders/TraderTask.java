@@ -74,13 +74,17 @@ public class TraderTask implements Runnable {
 		if (mode == Mode.STOCK)
 			return;
 		// If the player cursor is empty (no itemstack in it).
-		if (player.getHandle().inventory.j() == null)
-			return;
+
 		stop = true;
 		int count = 0;
 
 		boolean found = false;
 		for (ItemStack i : npc.getInventory().getContents()) {
+			if (!previousTraderInv.getItem(count).equals(i)
+					&& player.getHandle().inventory.j() == null) {
+				restorePreviousState();
+				break;
+			}
 			if (!previousTraderInv.getItem(count).equals(i)
 					&& previousTraderInv.getItem(count).getTypeId() == eplayer.inventory
 							.j().id) {
@@ -94,6 +98,11 @@ public class TraderTask implements Runnable {
 		count = 0;
 		if (!found) {
 			for (ItemStack i : player.getInventory().getContents()) {
+				if (!previousPlayerInv.getItem(count).equals(i)
+						&& player.getHandle().inventory.j() == null) {
+					restorePreviousState();
+					break;
+				}
 				if (!previousPlayerInv.getItem(count).equals(i)
 						&& previousPlayerInv.getItem(count).getTypeId() == eplayer.inventory
 								.j().id) {

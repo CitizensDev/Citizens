@@ -129,7 +129,7 @@ public class Citizens extends JavaPlugin {
 				}, saveDelay, saveDelay);
 
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "] (" + codename + ") loaded");
+				+ pdfFile.getVersion() + "a] (" + codename + ") loaded");
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class Citizens extends JavaPlugin {
 		WizardPropertyPool.saveAll();
 		BlacksmithPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "i] (" + codename + ") disabled");
+				+ pdfFile.getVersion() + "a] (" + codename + ") disabled");
 	}
 
 	/**
