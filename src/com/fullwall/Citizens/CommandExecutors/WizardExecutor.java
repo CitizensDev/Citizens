@@ -68,9 +68,7 @@ public class WizardExecutor implements CommandExecutor {
 				returnval = true;
 			}
 
-			else if (args.length == 2
-					&& (args[0].equals("addloc") || args[0]
-							.equals("addlocation"))) {
+			else if (args.length == 2 && args[0].contains("addloc")) {
 				if (Permission.hasPermission("citizens.wizard.addloc", sender)) {
 					if (npc.getWizard().getNrOfLocations() < Citizens.wizardMaxLocations) {
 						this.addLocation(player, npc, args[1]);
@@ -84,9 +82,7 @@ public class WizardExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 2
-					&& (args[0].equals("removeloc") || args[0]
-							.equals("removelocation"))) {
+			} else if (args.length == 2 && args[0].contains("removeloc")) {
 				if (Permission.hasPermission("citizens.wizard.removeloc",
 						sender)) {
 					int type = -1;

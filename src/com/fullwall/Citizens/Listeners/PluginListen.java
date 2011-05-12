@@ -1,44 +1,57 @@
 package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 
-import com.iConomy.iConomy;
+import com.nijikokun.register.payment.Methods;
 
 public class PluginListen extends ServerListener {
 	private Citizens plugin;
 	private PluginManager pm;
+	private Methods methods;
 
 	public PluginListen(Citizens plugin) {
 		this.plugin = plugin;
+		this.methods = new Methods();
 	}
-	
+
 	/**
 	 * Register server events
 	 */
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLUGIN_ENABLE, this, Event.Priority.Monitor, plugin);
+		pm.registerEvent(Event.Type.PLUGIN_ENABLE, this,
+				Event.Priority.Monitor, plugin);
 	}
 
 	@Override
 	public void onPluginEnable(PluginEnableEvent event) {
-		if (Citizens.economy == null) {
-			Plugin iConomy = (plugin).getServer().getPluginManager()
-					.getPlugin("iConomy");
-
-			if (iConomy != null) {
-				if (iConomy.isEnabled()) {
-					Citizens.economy = ((iConomy) iConomy);
-					EconomyHandler.setiConomyEnable(true);
-				}
+		if (!this.methods.hasMethod()) {
+			if (this.methods.setMethod(event.getPlugin())) {
+				Citizens.setMethod(this.methods.getMethod());
+				EconomyHandler.setServerEconomyEnabled(true);
+				System.out.println("[Citizens] Payment method found ("
+						+ methods.getMethod().getName() + " version: "
+						+ methods.getMethod().getVersion() + ")");
 			}
+		}
+	}
+
+	@Override
+	public void onPluginDisable(PluginDisableEvent event) {
+		if (this.methods != null && this.methods.hasMethod()) {
+			Boolean check = this.methods.checkDisabled(event.getPlugin());
+			if (check) {
+				Citizens.log
+						.info("[Citizens] Payment method disabled. No longer accepting payments.");
+			}
+			EconomyHandler.setServerEconomyEnabled(false);
 		}
 	}
 }

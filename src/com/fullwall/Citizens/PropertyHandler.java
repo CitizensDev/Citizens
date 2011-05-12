@@ -55,8 +55,10 @@ public final class PropertyHandler {
 			save();
 		}
 		if (fileName.contains("Citizens.settings")) {
+			loadRenames(Defaults.settingsRenames);
 			loadDefaults(Defaults.defaultSettings);
 		} else if (fileName.contains("Citizens.economy")) {
+			loadRenames(Defaults.economyRenames);
 			loadDefaults(Defaults.defaultEconomySettings);
 		}
 	}
@@ -80,6 +82,25 @@ public final class PropertyHandler {
 						+ entry.getValue() + ".");
 				setString(entry.getKey(), entry.getValue());
 			}
+		}
+	}
+
+	private void loadRenames(HashMap<String, String> nodes) {
+		try {
+			for (Entry<String, String> entry : returnMap().entrySet()) {
+				for (Entry<String, String> secondEntry : nodes.entrySet()) {
+					if (entry.getKey().contains(secondEntry.getKey())) {
+						String key = entry.getKey().replace(
+								secondEntry.getKey(), secondEntry.getValue());
+						String value = entry.getValue();
+						Citizens.log.info("Renaming setting " + entry.getKey()
+								+ " to " + key + ".");
+						removeKey(entry.getKey());
+						setString(key, value);
+					}
+				}
+			}
+		} catch (Exception e) {
 		}
 	}
 

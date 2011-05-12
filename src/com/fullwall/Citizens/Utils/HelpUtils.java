@@ -70,7 +70,7 @@ public class HelpUtils {
 					"set the owner of an NPC");
 			formatCommand(sender, "npc", "talkwhenclose [true|false]",
 					"make an NPC talk to players");
-			formatCommand(sender, "npc", "lookwhenclose [true|false]",
+			formatCommand(sender, "npc", "lookatplayers [true|false]",
 					"make an NPC look at players");
 			footer(sender);
 			break;

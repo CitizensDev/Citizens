@@ -14,7 +14,7 @@ import org.bukkit.material.MaterialData;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
-import com.fullwall.Citizens.Economy.IconomyInterface;
+import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.ItemPrice;
@@ -120,7 +120,7 @@ public class TraderExecutor implements CommandExecutor {
 	private void displayMoney(Player player, HumanNPC npc) {
 		player.sendMessage(StringUtils.yellowify(npc.getName())
 				+ " has "
-				+ StringUtils.yellowify(IconomyInterface.format(npc
+				+ StringUtils.yellowify(ServerEconomyInterface.format(npc
 						.getBalance())) + ".");
 	}
 
@@ -354,11 +354,11 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
-						+ StringUtils.yellowify(IconomyInterface.format(amount))
+						+ StringUtils.yellowify(ServerEconomyInterface.format(amount))
 						+ " to "
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
-						+ StringUtils.yellowify(IconomyInterface
+						+ StringUtils.yellowify(ServerEconomyInterface
 								.getFormattedBalance(player.getName()),
 								ChatColor.GREEN) + ".");
 			} else {
@@ -366,8 +366,8 @@ public class TraderExecutor implements CommandExecutor {
 						+ "You don't have enough money for that! Need "
 						+ " "
 						+ StringUtils.yellowify(
-								IconomyInterface.format(amount
-										- IconomyInterface.getBalance(player
+								ServerEconomyInterface.format(amount
+										- ServerEconomyInterface.getBalance(player
 												.getName())), ChatColor.RED)
 						+ " more.");
 			}
@@ -377,17 +377,17 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(-amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
-						+ StringUtils.yellowify(IconomyInterface.format(amount))
+						+ StringUtils.yellowify(ServerEconomyInterface.format(amount))
 						+ " from "
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
-						+ StringUtils.yellowify(IconomyInterface
+						+ StringUtils.yellowify(ServerEconomyInterface
 								.getFormattedBalance(player.getName())) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "The trader doesn't have enough money for that! It needs "
 						+ StringUtils.yellowify(
-								IconomyInterface.format(amount
+								ServerEconomyInterface.format(amount
 										- npc.getBalance()), ChatColor.RED)
 						+ " more in its balance.");
 			}

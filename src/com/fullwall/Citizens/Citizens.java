@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.iConomy.iConomy;
+import com.nijikokun.register.payment.Method;
 
 import com.fullwall.Citizens.CommandExecutors.CommandHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler;
@@ -67,7 +67,7 @@ public class Citizens extends JavaPlugin {
 	public static boolean defaultTalkWhenClose = false;
 	public static boolean useNPCColours = true;
 
-	public static iConomy economy = null;
+	public static Method economy;
 
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static String separatorChar = "/";
@@ -389,9 +389,9 @@ public class Citizens extends JavaPlugin {
 	 *            plugin
 	 * @return
 	 */
-	public static boolean setiConomy(iConomy plugin) {
+	public static boolean setMethod(Method method) {
 		if (economy == null) {
-			economy = plugin;
+			economy = method;
 		} else {
 			return false;
 		}

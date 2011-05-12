@@ -242,7 +242,7 @@ public class PropertyPool {
 		return economy.getBoolean("use-economy");
 	}
 
-	public static boolean checkiConomyEnabled() {
+	public static boolean checkServerEconomyEnabled() {
 		return economy.getBoolean("use-iconomy");
 	}
 

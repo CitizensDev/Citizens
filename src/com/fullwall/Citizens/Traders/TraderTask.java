@@ -15,7 +15,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
-import com.fullwall.Citizens.Economy.IconomyInterface;
+import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.Traders.TraderInterface.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -203,7 +203,7 @@ public class TraderTask implements Runnable {
 				return;
 			}
 		} else {
-			IconomyInterface.add(player.getName(), stockable.getPrice()
+			ServerEconomyInterface.add(player.getName(), stockable.getPrice()
 					.getPrice());
 		}
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");

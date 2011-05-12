@@ -8,8 +8,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class EconomyHandler {
 	private static boolean useEconomy = true;
-	private static boolean iConomyEnabled = false;
-	private static boolean useiConomy = false;
+	private static boolean serverEconomyEnabled = false;
+	private static boolean useServerEconomy = false;
 
 	// Parsed and used as settings for Citizens.economy.
 	public enum Operation {
@@ -68,20 +68,20 @@ public class EconomyHandler {
 	}
 
 	/**
-	 * Used for iConomy support.
+	 * Used for economy plugin support.
 	 * 
 	 * @param value
 	 */
-	public static void setiConomyEnable(boolean value) {
-		iConomyEnabled = value;
+	public static void setServerEconomyEnabled(boolean value) {
+		serverEconomyEnabled = value;
 	}
 
 	/**
-	 * Checks if i/economy is being used.
+	 * Checks if types of economy are being used.
 	 */
 	public static void setUpVariables() {
 		useEconomy = PropertyPool.checkEconomyEnabled();
-		useiConomy = PropertyPool.checkiConomyEnabled();
+		useServerEconomy = PropertyPool.checkServerEconomyEnabled();
 	}
 
 	/**
@@ -94,14 +94,14 @@ public class EconomyHandler {
 	}
 
 	/**
-	 * A helper method that checks a few variables for whether iConomy should be
-	 * enabled. (is using iConomy enabled? is economy enabled? is iConomy
-	 * loaded?)
+	 * A helper method that checks a few variables for whether economy plugins
+	 * should be enabled. (is using economy plugins enabled? is economy enabled?
+	 * is an economy plugin loaded?)
 	 * 
 	 * @return
 	 */
 	public static boolean useIconomy() {
-		return (useiConomy && useEconomy && iConomyEnabled);
+		return (useServerEconomy && useEconomy && serverEconomyEnabled);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class EconomyHandler {
 	public static boolean canBuy(Operation op, Player player) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.hasEnough(player, op);
+				return ServerEconomyInterface.hasEnough(player, op);
 			else
 				return ItemInterface.hasEnough(player, op);
 		} else
@@ -131,7 +131,7 @@ public class EconomyHandler {
 	public static boolean canBuy(Payment payment, Player player) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
-				return IconomyInterface.hasEnough(payment, player);
+				return ServerEconomyInterface.hasEnough(payment, player);
 			else
 				return ItemInterface.hasEnough(payment, player);
 		} else
@@ -149,7 +149,7 @@ public class EconomyHandler {
 	public static boolean canBuy(Payment payment, HumanNPC npc) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
-				return IconomyInterface.hasEnough(payment, npc);
+				return ServerEconomyInterface.hasEnough(payment, npc);
 			else
 				return ItemInterface.hasEnough(payment,
 						(Player) npc.getPlayer());
@@ -167,7 +167,7 @@ public class EconomyHandler {
 	public static double pay(Operation op, Player player) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.pay(player, op);
+				return ServerEconomyInterface.pay(player, op);
 			else
 				return ItemInterface.pay(player, op);
 		} else
@@ -184,7 +184,7 @@ public class EconomyHandler {
 	public static double pay(Operation op, Player player, int multiple) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.pay(player, op, multiple);
+				return ServerEconomyInterface.pay(player, op, multiple);
 			else
 				return ItemInterface.pay(player, op, multiple);
 		} else
@@ -201,7 +201,7 @@ public class EconomyHandler {
 	public static double pay(Payment payment, HumanNPC npc, int slot) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
-				return IconomyInterface.pay(npc, payment);
+				return ServerEconomyInterface.pay(npc, payment);
 			else
 				return ItemInterface.pay(npc.getPlayer(), payment, slot);
 		} else
@@ -218,7 +218,7 @@ public class EconomyHandler {
 	public static double pay(Payment payment, Player player, int slot) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy())
-				return IconomyInterface.pay(player, payment);
+				return ServerEconomyInterface.pay(player, payment);
 			else
 				return ItemInterface.pay(player, payment, slot);
 		} else
@@ -236,7 +236,7 @@ public class EconomyHandler {
 			ChatColor colour) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.format(amount);
+				return ServerEconomyInterface.format(amount);
 			else
 				return ItemInterface.getCurrency(op, colour);
 		} else
@@ -253,7 +253,7 @@ public class EconomyHandler {
 	public static String getRemainder(Operation op, Player player) {
 		if (useEconomy) {
 			if (useIconomy())
-				return IconomyInterface.getRemainder(op, player);
+				return ServerEconomyInterface.getRemainder(op, player);
 			else
 				return ItemInterface.getRemainder(op, player);
 		} else
@@ -269,7 +269,7 @@ public class EconomyHandler {
 	public static String getCurrency(Payment payment, ChatColor colour) {
 		if (useEconomy) {
 			if (payment.isiConomy() && useIconomy()) {
-				return IconomyInterface.format(payment.getPrice());
+				return ServerEconomyInterface.format(payment.getPrice());
 			} else {
 				return ItemInterface.getCurrency(payment, colour);
 			}
