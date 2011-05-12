@@ -23,7 +23,6 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.TraderInterface;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Wizards.WizardNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -220,7 +219,7 @@ public class EntityListen extends EntityListener {
 				if (npc.isBlacksmith()) {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
-						buyToolRepair(p, npc, p.getItemInHand());
+						buyItemRepair(p, npc, p.getItemInHand());
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -267,41 +266,37 @@ public class EntityListen extends EntityListener {
 	}
 
 	/**
-	 * Purchase a tool repair
+	 * Purchase a item repair
 	 * 
 	 * @param player
 	 * @param npc
 	 * @param op
 	 */
-	private void buyToolRepair(Player player, HumanNPC npc, ItemStack tool) {
+	private void buyItemRepair(Player player, HumanNPC npc, ItemStack item) {
 		if (!EconomyHandler.useEconomy()
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_TOOL_REPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				if (validateToolToRepair(tool)) {
-					if (tool.getDurability() > 0) {
+				if (validateItemToRepair(item)) {
+					if (item.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
 								Operation.BLACKSMITH_TOOL_REPAIR, player);
 						if (paid > 0) {
-							tool.setDurability((short) 0);
-							// player.setItemInHand(tool);
+							item.setDurability((short) 0);
+							player.setItemInHand(item);
 							player.sendMessage(StringUtils.yellowify(npc
 									.getStrippedName())
-									+ " repaired your tool for "
+									+ " repaired your item for "
 									+ StringUtils.yellowify(EconomyHandler
 											.getPaymentType(
 													Operation.BLACKSMITH_TOOL_REPAIR,
 													"" + paid, ChatColor.YELLOW))
 									+ ".");
-						} else {
-							System.out.println("notenough$$");
 						}
 					} else {
 						player.sendMessage(ChatColor.RED
 								+ "Your tool is already fully repaired.");
 					}
-				} else {
-					System.out.println("debug");
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
@@ -315,20 +310,20 @@ public class EntityListen extends EntityListener {
 	}
 
 	/**
-	 * Validate that a tool has a durability and can be repaired
+	 * Validate that an item has a durability and can be repaired
 	 * 
 	 * @param item
 	 * @return
 	 */
-	private boolean validateToolToRepair(ItemStack tool) {
-		int id = tool.getTypeId();
+	private boolean validateItemToRepair(ItemStack item) {
+		int id = item.getTypeId();
 		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
 				|| id == 268 || id == 269 || id == 270 || id == 271
 				|| id == 272 || id == 273 || id == 274 || id == 275
 				|| id == 276 || id == 277 || id == 278 || id == 279
 				|| id == 283 || id == 284 || id == 285 || id == 286
 				|| id == 290 || id == 291 || id == 292 || id == 293
-				|| id == 294 || id == 346) {
+				|| id == 294 || id == 346 || (id >= 298 && id <= 317)) {
 			return true;
 		} else {
 			return false;
