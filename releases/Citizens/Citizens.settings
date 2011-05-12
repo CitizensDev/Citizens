@@ -1,14 +1,67 @@
-#Minecraft Properties File
-#Sun Mar 27 17:13:45 CEST 2011
-default-text=Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me\!;I'm bored.;
-npc-colour=\u00A7f
-chat-format=[%name%]\: 
-default-talk-when-close=false
-select-item=280,
-use-npc-colours=true
+#Citizens Settings flatfile.
+#Authors: fullwall, TheMPC, NeonMaster, aPunch
+
+#Specifies how long to wait before checking if NPCs have to look at a player.
+#Higher values = less server load, but longer delay between looking (jerky).
 tick-delay=1
-items=340,
+
+#Specifies how long to wait before files are saved to disc.
+save-tick-delay=72000
+
+#Specifies how many blocks away a player can be before an NPC starts to look at them.
 look-range=4
-default-enable-following=true
-slashes-to-spaces=true
+
+#Specify whether to use the items list or not (used when right clicking NPCs).
 item-list-on=true
+
+#Specify item IDs (0 is for empty hands) used when right clicking NPCs. 
+#Separated by commas, leave one trailing.
+items=340,
+
+#Specify item IDs (0 is for empty hands) used when selecting an NPC (with right click).
+select-item=*
+
+#If true, new NPCs look at you when you get closer by default.
+default-enable-following=true
+
+#If set to true, new NPCs will be set to talk when close by default.
+default-talk-when-close=false
+
+#Specify the maximum amount of NPCs a player can have at one time
+#Set to 0 for no limit
+max-NPCs-per-player=10
+
+#If set to true, the NPC will use its name colour in chat.
+#If false, the NPC's name colour in chat will be the colour specified in npc-colour.
+use-npc-colours=true
+
+#If use-npc-colours is false, NPC names in chat will be the colour specified here.
+#Default is white, go to http://wiki.hey0.net/index.php?title=Colors for the others.
+npc-colour=§f
+
+#Use this setting to alter the way the NPC is displayed in chat.%name% will be replaced by #the NPC's name. The message will be displayed immediately after the set format, so you #may want to leave a trailing space. Supports colours with &code.
+chat-format=[%name%]: 
+
+#If an NPC's text is not set, the text displayed will be chosen at random from here.
+#Lines are separated by ';'
+default-text=Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me\!;I'm bored.;
+
+#If set to true, slashes in NPC names will be converted to spaces.
+#Sir/Mike -> Sir Mike
+slashes-to-spaces=true
+
+#Specify the ID of the item that a player must use to give health to a healer NPC
+healer-give-health-item=35
+
+#Specify the ID of an item that a player must use to take health from a healer NPC
+healer-take-health-item=276
+
+#Specifies the multiple of the health regeneration rate for healers NPCs
+#Example: A Level 1 Healer has to wait 12000 * 10 ticks, while a Level 10 healer has to wait 12000 * 1 ticks
+healer-health-regen-increment=12000
+
+#Specify the ID of the item that a player must use to interact with a wizard NPC
+wizard-interact-item=288
+
+#Specify the maximum amount of locations a wizard NPC can have at one time
+wizard-max-locations=10
