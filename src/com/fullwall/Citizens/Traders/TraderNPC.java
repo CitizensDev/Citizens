@@ -36,17 +36,15 @@ public class TraderNPC implements Toggleable {
 		this.stocking = stocking;
 	}
 
-	public void addStockable(Stockable stocking) {
-		this.getStocking().put(
-				new Check(stocking.getStockingId(), stocking.isSelling()),
-				stocking);
+	public void addStockable(Stockable s) {
+		stocking.put(new Check(s.getStockingId(), s.isSelling()), s);
 		TraderPropertyPool.saveStockables(npc.getUID(), getStocking());
 	}
 
 	public Stockable getStockable(int itemID, boolean selling) {
 		if (checkStockingIntegrity()) {
-			if (getStocking().get(new Check(itemID, selling)) != null)
-				return getStocking().get(new Check(itemID, selling));
+			if (stocking.get(new Check(itemID, selling)) != null)
+				return stocking.get(new Check(itemID, selling));
 		}
 		return null;
 	}
@@ -74,10 +72,10 @@ public class TraderNPC implements Toggleable {
 	public void removeStockable(int ID, boolean selling) {
 		Stockable s = null;
 		if (checkStockingIntegrity()) {
-			if (getStocking().get(new Check(ID, selling)) != null) {
+			if (stocking.get(new Check(ID, selling)) != null) {
 				s = getStocking().get(new Check(ID, selling));
 				TraderPropertyPool.removeStockable(npc.getUID(), s);
-				this.getStocking().remove(new Check(ID, selling));
+				stocking.remove(new Check(ID, selling));
 			}
 		}
 
@@ -85,8 +83,8 @@ public class TraderNPC implements Toggleable {
 
 	public boolean isStocked(int itemID, MaterialData data, boolean selling) {
 		if (checkStockingIntegrity()) {
-			if (getStocking().get(new Check(itemID, selling)) != null) {
-				if (checkData(getStocking().get(new Check(itemID, selling))
+			if (stocking.get(new Check(itemID, selling)) != null) {
+				if (checkData(stocking.get(new Check(itemID, selling))
 						.getStocking().getData(), data)) {
 					return true;
 				}
@@ -113,7 +111,7 @@ public class TraderNPC implements Toggleable {
 	}
 
 	public boolean checkStockingIntegrity() {
-		if (this.getStocking() == null || this.getStocking().isEmpty())
+		if (this.stocking == null || this.stocking.isEmpty())
 			return false;
 		return true;
 	}

@@ -62,7 +62,6 @@ public class TraderTask implements Runnable {
 		sendJoinMessage();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		if (stop)
@@ -125,6 +124,7 @@ public class TraderTask implements Runnable {
 		stop = false;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void handleTraderItemClicked(int slot, PlayerInventory npcInv) {
 		npcInv.setItem(slot, previousTraderInv.getItem(slot));
 		ItemStack i = npcInv.getItem(slot);
@@ -172,6 +172,7 @@ public class TraderTask implements Runnable {
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
 	}
 
+	@SuppressWarnings("deprecation")
 	private void handlePlayerItemClicked(int slot, PlayerInventory playerInv) {
 		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = playerInv.getItem(slot);

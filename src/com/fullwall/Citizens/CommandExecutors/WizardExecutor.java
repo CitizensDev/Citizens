@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
@@ -70,13 +71,13 @@ public class WizardExecutor implements CommandExecutor {
 
 			else if (args.length == 2 && args[0].contains("addloc")) {
 				if (Permission.hasPermission("citizens.wizard.addloc", sender)) {
-					if (npc.getWizard().getNrOfLocations() < Citizens.wizardMaxLocations) {
+					if (npc.getWizard().getNrOfLocations() < Constants.wizardMaxLocations) {
 						this.addLocation(player, npc, args[1]);
 					} else {
 						sender.sendMessage(ChatColor.RED + "Wizard "
 								+ StringUtils.yellowify(npc.getStrippedName())
 								+ " already knows "
-								+ Citizens.wizardMaxLocations + " locations");
+								+ Constants.wizardMaxLocations + " locations");
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

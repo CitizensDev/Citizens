@@ -43,29 +43,6 @@ public class Citizens extends JavaPlugin {
 
 	public static Citizens plugin;
 
-	public static int tickDelay = 1;
-	public static int saveDelay = 72000;
-	public static int maxNPCsPerPlayer = 10;
-	public static int healerGiveHealthItem = 35;
-	public static int healerTakeHealthItem = 276;
-	public static int wizardMaxLocations = 10;
-	public static int wizardInteractItem = 288;
-	public static int questerInteractItem = 339;
-	public static int questAcceptItem = 341;
-	public static int questDenyItem = 338;
-	public static int healerHealthRegenIncrement = 12000;
-
-	public static double npcRange = 5;
-
-	public static String chatFormat = "[%name%]: ";
-	public static String convertToSpaceChar = "/";
-	public static String NPCColour = "§f";
-
-	public static boolean convertSlashes = false;
-	public static boolean defaultFollowingEnabled = true;
-	public static boolean defaultTalkWhenClose = false;
-	public static boolean useNPCColours = true;
-
 	public static Method economy;
 
 	public static Logger log = Logger.getLogger("Minecraft");
@@ -73,7 +50,7 @@ public class Citizens extends JavaPlugin {
 
 	public static final int MAGIC_DATA_VALUE = -1;
 	private static final String codename = "Helpers";
-	public static String version = "";
+	public static String version = "1.0.8";
 
 	@Override
 	public void onLoad() {
@@ -113,21 +90,23 @@ public class Citizens extends JavaPlugin {
 		setupHelp();
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(this, npcRange), tickDelay, tickDelay);
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new Runnable() {
-					@Override
-					public void run() {
-						log.info("[Citizens]: Saving npc files to disk...");
-						PropertyPool.saveAll();
-						TraderPropertyPool.saveAll();
-						HealerPropertyPool.saveAll();
-						WizardPropertyPool.saveAll();
-						BlacksmithPropertyPool.saveAll();
-						log.info("[Citizens]: Saved.");
-					}
-				}, saveDelay, saveDelay);
-
+				new TickTask(this, Constants.npcRange), Constants.tickDelay,
+				Constants.tickDelay);
+		if (Constants.useSaveTask) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new Runnable() {
+						@Override
+						public void run() {
+							log.info("[Citizens]: Saving npc files to disk...");
+							PropertyPool.saveAll();
+							TraderPropertyPool.saveAll();
+							HealerPropertyPool.saveAll();
+							WizardPropertyPool.saveAll();
+							BlacksmithPropertyPool.saveAll();
+							log.info("[Citizens]: Saved.");
+						}
+					}, Constants.saveDelay, Constants.saveDelay);
+		}
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "c] (" + codename + ") loaded");
 	}
@@ -220,43 +199,39 @@ public class Citizens extends JavaPlugin {
 		plugin = this;
 
 		EconomyHandler.setUpVariables();
-		if (!PropertyPool.settings.keyExists("enable-following"))
-			PropertyPool.settings.removeKey("enable-following");
-		if (!PropertyPool.settings.keyExists("talk-when-close"))
-			PropertyPool.settings.removeKey("talk-when-close");
 
-		convertSlashes = PropertyPool.settings.getBoolean("slashes-to-spaces");
-		defaultFollowingEnabled = PropertyPool.settings
+		// Boolean defaults
+		Constants.convertSlashes = PropertyPool.settings
+				.getBoolean("slashes-to-spaces");
+		Constants.defaultFollowingEnabled = PropertyPool.settings
 				.getBoolean("default-enable-following");
-		defaultTalkWhenClose = PropertyPool.settings
+		Constants.defaultTalkWhenClose = PropertyPool.settings
 				.getBoolean("default-talk-when-close");
-		useNPCColours = PropertyPool.settings.getBoolean("use-npc-colours");
-		chatFormat = PropertyPool.settings.getString("chat-format");
-		NPCColour = PropertyPool.settings.getString("npc-colour");
-		if (PropertyPool.settings.keyExists("look-range"))
-			npcRange = PropertyPool.settings.getDouble("look-range");
-		if (PropertyPool.settings.keyExists("max-npcs-per-player"))
-			maxNPCsPerPlayer = PropertyPool.settings
-					.getInt("max-npcs-per-player");
-		if (PropertyPool.settings.keyExists("healer-give-health-item"))
-			healerGiveHealthItem = PropertyPool.settings
-					.getInt("healer-give-health-item");
-		if (PropertyPool.settings.keyExists("healer-take-health-item"))
-			healerTakeHealthItem = PropertyPool.settings
-					.getInt("healer-take-health-item");
-		if (PropertyPool.settings.keyExists("healer-health-regen-increment"))
-			healerHealthRegenIncrement = PropertyPool.settings
-					.getInt("healer-health-regen-increment");
-		if (PropertyPool.settings.keyExists("tick-delay"))
-			tickDelay = PropertyPool.settings.getInt("tick-delay");
-		if (PropertyPool.settings.keyExists("save-tick-delay"))
-			saveDelay = PropertyPool.settings.getInt("save-tick-delay");
-		if (PropertyPool.settings.keyExists("wizard-max-locations"))
-			wizardMaxLocations = PropertyPool.settings
-					.getInt("wizard-max-locations");
-		if (PropertyPool.settings.keyExists("wizard-interact-item"))
-			wizardInteractItem = PropertyPool.settings
-					.getInt("wizard-interact-item");
+		Constants.useNPCColours = PropertyPool.settings
+				.getBoolean("use-npc-colours");
+
+		// String defaults
+		Constants.chatFormat = PropertyPool.settings.getString("chat-format");
+		Constants.NPCColour = PropertyPool.settings.getString("npc-colour");
+
+		// Double defaults
+		Constants.npcRange = PropertyPool.settings.getDouble("look-range");
+
+		// Int defaults
+		Constants.maxNPCsPerPlayer = PropertyPool.settings
+				.getInt("max-npcs-per-player");
+		Constants.healerGiveHealthItem = PropertyPool.settings
+				.getInt("healer-give-health-item");
+		Constants.healerTakeHealthItem = PropertyPool.settings
+				.getInt("healer-take-health-item");
+		Constants.healerHealthRegenIncrement = PropertyPool.settings
+				.getInt("healer-health-regen-increment");
+		Constants.tickDelay = PropertyPool.settings.getInt("tick-delay");
+		Constants.saveDelay = PropertyPool.settings.getInt("save-tick-delay");
+		Constants.wizardMaxLocations = PropertyPool.settings
+				.getInt("wizard-max-locations");
+		Constants.wizardInteractItem = PropertyPool.settings
+				.getInt("wizard-interact-item");
 	}
 
 	private void setupNPCs() {
@@ -414,7 +389,7 @@ public class Citizens extends JavaPlugin {
 					.entrySet()) {
 				int level = HealerPropertyPool.getLevel(entry.getValue()
 						.getUID());
-				delay = healerHealthRegenIncrement * (11 - level);
+				delay = Constants.healerHealthRegenIncrement * (11 - level);
 				return delay;
 			}
 		} else {

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Economy.Payment;
@@ -65,13 +66,13 @@ public class MessageUtils {
 		if (text.isEmpty())
 			text = PropertyPool.getDefaultText();
 		if (!text.isEmpty()) {
-			if (Citizens.useNPCColours) {
-				text = Citizens.chatFormat.replace("&", "§").replace("%name%",
+			if (Constants.useNPCColours) {
+				text = Constants.chatFormat.replace("&", "§").replace("%name%",
 						npc.getStrippedName())
 						+ text;
 			} else
-				text = Citizens.chatFormat.replace("%name%",
-						Citizens.NPCColour + name + ChatColor.WHITE).replace(
+				text = Constants.chatFormat.replace("%name%",
+						Constants.NPCColour + name + ChatColor.WHITE).replace(
 						"&", "§")
 						+ text;
 			return text;

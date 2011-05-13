@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Healers.HealerNPC;
@@ -56,8 +57,8 @@ public class NPCManager {
 		String npcName = name;
 		if (!colour.isEmpty() && !colour.equals("§f"))
 			npcName = colour + name;
-		if (Citizens.convertSlashes == true) {
-			String[] brokenName = npcName.split(Citizens.convertToSpaceChar);
+		if (Constants.convertSlashes == true) {
+			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0)
 					npcName = brokenName[i];
@@ -85,8 +86,8 @@ public class NPCManager {
 			loadBlacksmith(npc, npc.getBlacksmith(), UID);
 		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
-				.get(UID), Citizens.defaultFollowingEnabled,
-				Citizens.defaultTalkWhenClose, owner, npc.getBalance()));
+				.get(UID), Constants.defaultFollowingEnabled,
+				Constants.defaultTalkWhenClose, owner, npc.getBalance()));
 		PropertyPool.saveState(UID, npc.getNPCData());
 		registerUID(UID, name);
 		list.put(UID, npc);
@@ -108,8 +109,8 @@ public class NPCManager {
 	public int registerNPC(String name, Location loc, String owner) {
 		int UID = PropertyPool.getNewNpcID();
 		PropertyPool.saveLocation(name, loc, UID);
-		PropertyPool.setLookWhenClose(UID, Citizens.defaultFollowingEnabled);
-		PropertyPool.setTalkWhenClose(UID, Citizens.defaultTalkWhenClose);
+		PropertyPool.setLookWhenClose(UID, Constants.defaultFollowingEnabled);
+		PropertyPool.setTalkWhenClose(UID, Constants.defaultTalkWhenClose);
 		registerNPC(name, UID, owner);
 		return UID;
 	}

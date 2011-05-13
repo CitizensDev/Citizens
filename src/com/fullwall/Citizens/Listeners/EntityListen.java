@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -69,7 +70,7 @@ public class EntityListen extends EntityListener {
 					int playerHealth = player.getHealth();
 					int healerHealth = HealerPropertyPool.getStrength(npc
 							.getUID());
-					if (player.getItemInHand().getTypeId() == Citizens.healerTakeHealthItem) {
+					if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
 						if (playerHealth <= 19) {
 							if (healerHealth >= 1) {
 								player.setHealth(playerHealth + 1);
@@ -88,7 +89,7 @@ public class EntityListen extends EntityListener {
 							player.sendMessage(ChatColor.GREEN
 									+ "You are fully healed.");
 						}
-					} else if (player.getItemInHand().getTypeId() == Citizens.healerGiveHealthItem) {
+					} else if (player.getItemInHand().getTypeId() == Constants.healerGiveHealthItem) {
 						if (playerHealth >= 1) {
 							if (healerHealth < HealerPropertyPool
 									.getMaxStrength(npc.getUID())) {
@@ -146,7 +147,7 @@ public class EntityListen extends EntityListener {
 					if (Permission.hasPermission(
 							"citizens.wizard.changeteleport",
 							(CommandSender) player)) {
-						if (player.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
+						if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
 							if (!npc.isWizard()) {
 								return;
 							}
@@ -206,7 +207,7 @@ public class EntityListen extends EntityListener {
 				if (npc.isWizard()) {
 					if (Permission.hasPermission("citizens.wizard.useteleport",
 							(CommandSender) p)) {
-						if (p.getItemInHand().getTypeId() == Citizens.wizardInteractItem) {
+						if (p.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
 							if (npc.getWizard().getNrOfLocations() > 0) {
 								this.buyTeleport(p, npc.getWizard(),
 										Operation.WIZARD_TELEPORT);

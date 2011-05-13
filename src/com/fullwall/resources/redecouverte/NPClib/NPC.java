@@ -2,7 +2,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import org.bukkit.ChatColor;
 
-import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 
 public class NPC {
 
@@ -19,14 +19,14 @@ public class NPC {
 	}
 
 	public String getName() {
-		if (Citizens.convertSlashes == true) {
+		if (Constants.convertSlashes == true) {
 			String returnName = "";
 			String[] brokenName = this.name.split(" ");
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0)
 					returnName = brokenName[i];
 				else
-					returnName += Citizens.convertToSpaceChar + brokenName[i];
+					returnName += Constants.convertToSpaceChar + brokenName[i];
 			}
 			return ChatColor.stripColor(returnName);
 		}

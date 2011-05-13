@@ -35,6 +35,7 @@ commands:
                         See /citizens help for a list of commands.
     toggle:
         description: Toggles between various NPC states.
+        aliases: [t, tog, togg]
         usage: |
                         The command was not recognised. The correct syntax is
                         /<command> [type]

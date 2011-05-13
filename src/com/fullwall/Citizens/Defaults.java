@@ -15,7 +15,9 @@ public class Defaults {
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		nodes.put("tick-delay", "1");
+		nodes.put("use-save-task", "true");
 		nodes.put("save-tick-delay", "72000");
+		nodes.put("save-often", "true");
 		nodes.put("look-range", "4");
 		nodes.put("item-list-on", "true");
 		nodes.put("items", "340,");

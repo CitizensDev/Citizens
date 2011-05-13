@@ -171,7 +171,8 @@ public final class PropertyHandler {
 
 	public void removeKey(String key) {
 		this.properties.remove(key);
-		save();
+		if (Constants.saveOften)
+			save();
 	}
 
 	public void removeKey(int key) {
@@ -202,7 +203,7 @@ public final class PropertyHandler {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
 		}
-		setString(key, value);
+		// setString(key, value);
 		return value;
 	}
 
@@ -212,7 +213,8 @@ public final class PropertyHandler {
 
 	public void setString(String key, String value) {
 		this.properties.setProperty(key, value);
-		save();
+		if (Constants.saveOften)
+			save();
 	}
 
 	public void setString(int key, String value) {
@@ -235,7 +237,7 @@ public final class PropertyHandler {
 		if (this.properties.containsKey(key)) {
 			return Integer.parseInt(this.properties.getProperty(key));
 		}
-		setInt(key, value);
+		// setInt(key, value);
 		return value;
 	}
 
@@ -245,7 +247,8 @@ public final class PropertyHandler {
 
 	public void setInt(String key, int value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		save();
+		if (Constants.saveOften)
+			save();
 	}
 
 	public void setInt(int key, int value) {
@@ -269,7 +272,7 @@ public final class PropertyHandler {
 			return Double.parseDouble(this.properties.getProperty(key));
 		}
 
-		setDouble(key, value);
+		// setDouble(key, value);
 		return value;
 	}
 
@@ -279,7 +282,8 @@ public final class PropertyHandler {
 
 	public void setDouble(String key, double value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		save();
+		if (Constants.saveOften)
+			save();
 	}
 
 	public void setDouble(int key, double value) {
@@ -303,7 +307,7 @@ public final class PropertyHandler {
 			return Long.parseLong(this.properties.getProperty(key));
 		}
 
-		setLong(key, value);
+		// setLong(key, value);
 		return value;
 	}
 
@@ -313,7 +317,8 @@ public final class PropertyHandler {
 
 	public void setLong(String key, long value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		save();
+		if (Constants.saveOften)
+			save();
 	}
 
 	public void setLong(int key, long value) {
@@ -337,7 +342,7 @@ public final class PropertyHandler {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
 		}
 
-		setBoolean(key, value);
+		// setBoolean(key, value);
 		return value;
 	}
 
@@ -347,7 +352,8 @@ public final class PropertyHandler {
 
 	public void setBoolean(String key, boolean value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		save();
+		if (Constants.saveOften)
+			save();
 	}
 
 	public void setBoolean(int key, boolean value) {

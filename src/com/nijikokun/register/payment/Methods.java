@@ -18,6 +18,7 @@ public class Methods {
 		if (method.isEnabled()) {
 			PluginDescriptionFile info = method.getDescription();
 			String name = info.getName();
+
 			if (name.equalsIgnoreCase("iconomy")) {
 				if (method.getClass().getName().equals("com.iConomy.iConomy"))
 					Method = new MethodiCo5((iConomy) method);
@@ -31,6 +32,7 @@ public class Methods {
 				Method = new MethodEEco((Essentials) method);
 			}
 		}
+
 		if (!hasMethod()) {
 			if (loader.getPlugin("iConomy") != null) {
 				method = loader.getPlugin("iConomy");
@@ -48,12 +50,14 @@ public class Methods {
 				Method = new MethodEEco((Essentials) method);
 			}
 		}
+
 		return hasMethod();
 	}
 
 	public boolean checkDisabled(Plugin method) {
 		PluginDescriptionFile info = method.getDescription();
 		String name = info.getName();
+
 		if (name.equalsIgnoreCase("iconomy")) {
 			if (method.getClass().getName().equals("com.iConomy.iConomy"))
 				Method = null;
@@ -65,6 +69,7 @@ public class Methods {
 		} else if (name.equalsIgnoreCase("essentials")) {
 			Method = null;
 		}
+
 		return (Method == null);
 	}
 
