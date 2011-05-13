@@ -143,7 +143,7 @@ public class Citizens extends JavaPlugin {
 		WizardPropertyPool.saveAll();
 		BlacksmithPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "a] (" + codename + ") disabled");
+				+ pdfFile.getVersion() + "c] (" + codename + ") disabled");
 	}
 
 	/**
