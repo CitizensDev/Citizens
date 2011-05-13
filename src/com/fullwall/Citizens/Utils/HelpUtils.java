@@ -65,7 +65,7 @@ public class HelpUtils {
 			formatCommand(sender, "npc", "id", "get the ID of an NPC");
 			formatCommand(sender, "npc", "select [ID]",
 					"select an NPC with the given ID");
-			formatCommand(sender, "npc", "getowner", "get the owner of an NPC");
+			formatCommand(sender, "npc", "owner", "get the owner of an NPC");
 			formatCommand(sender, "npc", "setowner [name]",
 					"set the owner of an NPC");
 			formatCommand(sender, "npc", "talkwhenclose [true|false]",
