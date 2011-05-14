@@ -45,7 +45,7 @@ public class BasicExecutor implements CommandExecutor {
 			npc = NPCManager
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
 
-		if (args.length >= 2 && args[0].equals("create")) {
+		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
 			if (Permission.hasPermission("citizens.basic.create", sender)) {
 				if (!EconomyHandler.useEconomy()
 						|| EconomyHandler.canBuy(Operation.BASIC_NPC_CREATE,
@@ -60,7 +60,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && (args[0].equals("move"))) {
+		} else if (args.length == 1 && (args[0].equalsIgnoreCase("move"))) {
 			if (Permission.hasPermission("citizens.general.move", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -78,7 +78,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if ((args.length == 1 || args.length == 2)
-				&& args[0].equals("remove")) {
+				&& args[0].equalsIgnoreCase("remove")) {
 			if (Permission.hasPermission("citizens.general.remove.singular",
 					sender)) {
 				if (npc != null) {
@@ -93,7 +93,7 @@ public class BasicExecutor implements CommandExecutor {
 				}
 			} else if (Permission.hasPermission("citizens.general.remove.all",
 					sender)) {
-				if (args.length == 2 && args[1].equals("all")) {
+				if (args.length == 2 && args[1].equalsIgnoreCase("all")) {
 					removeNPC(args, sender, npc);
 				} else {
 					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
@@ -103,7 +103,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("name")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("name")) {
 			if (Permission.hasPermission("citizens.general.setname", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -122,7 +122,8 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2
-				&& (args[0].equals("colour") || args[0].equals("color"))) {
+				&& (args[0].equalsIgnoreCase("colour") || args[0]
+						.equalsIgnoreCase("color"))) {
 			if (Permission.hasPermission("citizens.general.colour", sender)
 					|| Permission.hasPermission("citizens.general.color",
 							sender)) {
@@ -143,7 +144,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length >= 2 && args[0].equals("add")) {
+		} else if (args.length >= 2 && args[0].equalsIgnoreCase("add")) {
 			if (Permission.hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -160,7 +161,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length >= 2 && args[0].equals("set")) {
+		} else if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {
 			if (Permission.hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -177,7 +178,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && args[0].equals("reset")) {
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("reset")) {
 			if (Permission.hasPermission("citizens.basic.settext", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -194,7 +195,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("item")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("item")) {
 			if (Permission.hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -212,8 +213,10 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2
-				&& (args[0].equals("torso") || args[0].equals("legs")
-						|| args[0].equals("helmet") || args[0].equals("boots"))) {
+				&& (args[0].equalsIgnoreCase("torso")
+						|| args[0].equalsIgnoreCase("legs")
+						|| args[0].equalsIgnoreCase("helmet") || args[0]
+						.equalsIgnoreCase("boots"))) {
 			if (Permission.hasPermission("citizens.general.setitem", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -230,7 +233,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length >= 1 && args[0].equals("tp")) {
+		} else if (args.length >= 1 && args[0].equalsIgnoreCase("tp")) {
 			if (Permission.hasPermission("citizens.general.tp", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -252,7 +255,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && args[0].equals("copy")) {
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("copy")) {
 			if (Permission.hasPermission("citizens.general.copy", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -268,7 +271,7 @@ public class BasicExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-		} else if (args.length == 1 && args[0].equals("id")) {
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("id")) {
 			if (Permission.hasPermission("citizens.general.getid", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -288,7 +291,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("select")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("select")) {
 			if (Permission.hasPermission("citizens.general.select", sender)) {
 				// BUILD CHECK
 				if (!Character.isDigit(args[1].charAt(0))) {
@@ -314,7 +317,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && args[0].equals("owner")) {
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("owner")) {
 			if (Permission.hasPermission("citizens.general.getowner", sender)) {
 				if (npc != null) {
 					player.sendMessage(ChatColor.GREEN
@@ -329,7 +332,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("setowner")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("setowner")) {
 			if (Permission.hasPermission("citizens.general.setowner", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -345,7 +348,7 @@ public class BasicExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-		} else if (args.length == 2 && args[0].equals("addowner")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("addowner")) {
 			if (Permission.hasPermission("citizens.general.addowner", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -368,7 +371,8 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("talkwhenclose")) {
+		} else if (args.length == 2
+				&& args[0].equalsIgnoreCase("talkwhenclose")) {
 			if (Permission.hasPermission("citizens.general.talkwhenclose",
 					sender)) {
 				if (npc != null) {
@@ -386,7 +390,8 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("lookatplayers")) {
+		} else if (args.length == 2
+				&& args[0].equalsIgnoreCase("lookatplayers")) {
 			if (Permission.hasPermission("citizens.general.lookatplayers",
 					sender)) {
 				if (npc != null) {
@@ -404,7 +409,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equals("list")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.hasPermission("citizens.general.list", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
@@ -421,15 +426,17 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if ((command.getName().equals("citizens") || command.getName()
-				.equals("npc")) && args.length == 1 && (args[0].equals("help"))) {
+		} else if ((command.getName().equalsIgnoreCase("citizens") || command
+				.getName().equalsIgnoreCase("npc"))
+				&& args.length == 1
+				&& (args[0].equalsIgnoreCase("help"))) {
 			if (Permission.hasPermission("citizens.help", sender)) {
 				HelpUtils.sendHelp(sender);
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
-		} else if (command.getName().equals("basic")) {
+		} else if (command.getName().equalsIgnoreCase("basic")) {
 			if (args.length == 2 && args[0].equals("help")) {
 				if (Permission.hasPermission("citizens.basic.help", sender)) {
 					int page = Integer.parseInt(args[1]);
@@ -438,7 +445,7 @@ public class BasicExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
-			} else if (args.length == 1 && args[0].equals("help")) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.hasPermission("citizens.basic.help", sender)) {
 					HelpUtils.sendBasicHelpPage(sender, 1);
 				} else {
@@ -447,55 +454,58 @@ public class BasicExecutor implements CommandExecutor {
 				return true;
 			}
 		} else {
-			if (args.length >= 2 && args[0].equals("move"))
+			if (args.length >= 2 && args[0].equalsIgnoreCase("move"))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc move");
-			else if (args.length >= 3 && args[0].equals("remove"))
+			else if (args.length >= 3 && args[0].equalsIgnoreCase("remove"))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc remove OR /npc remove all");
-			else if (args.length >= 3 && args[0].equals("name"))
+			else if (args.length >= 3 && args[0].equalsIgnoreCase("name"))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc name [name]");
 			else if (args.length >= 3
-					&& (args[0].equals("colour") || args[0].equals("color")))
+					&& (args[0].equalsIgnoreCase("colour") || args[0]
+							.equalsIgnoreCase("color")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc color [color]");
-			else if (args.length >= 2 && (args[0].equals("reset")))
+			else if (args.length >= 2 && (args[0].equalsIgnoreCase("reset")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc reset");
-			else if (args.length >= 3 && (args[0].equals("item")))
+			else if (args.length >= 3 && (args[0].equalsIgnoreCase("item")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc item [id|item name]");
 			else if (args.length >= 3
-					&& (args[0].equals("torso") || args[0].equals("legs")
-							|| args[0].equals("helmet") || args[0]
-							.equals("boots")))
+					&& (args[0].equalsIgnoreCase("torso")
+							|| args[0].equalsIgnoreCase("legs")
+							|| args[0].equalsIgnoreCase("helmet") || args[0]
+							.equalsIgnoreCase("boots")))
 				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc "
 						+ args[0] + " [id|item name]");
-			else if (args.length >= 2 && args[0].equals("tp"))
+			else if (args.length >= 2 && args[0].equalsIgnoreCase("tp"))
 				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc tp");
-			else if (args.length >= 2 && (args[0].equals("copy")))
+			else if (args.length >= 2 && (args[0].equalsIgnoreCase("copy")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc copy");
-			else if (args.length >= 2 && (args[0].equals("getid")))
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc getid");
-			else if (args.length >= 3 && (args[0].equals("select")))
+			else if (args.length >= 2 && (args[0].equalsIgnoreCase("id")))
+				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc id");
+			else if (args.length >= 3 && (args[0].equalsIgnoreCase("select")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc select [id]");
-			else if (args.length >= 2 && (args[0].equals("getowner")))
+			else if (args.length >= 2 && (args[0].equalsIgnoreCase("owner")))
 				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc getowner");
-			else if (args.length >= 3 && (args[0].equals("setowner")))
+						+ "Incorrect Syntax: /npc owner");
+			else if (args.length >= 3 && (args[0].equalsIgnoreCase("setowner")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc setowner [player name]");
-			else if (args.length >= 3 && (args[0].equals("addowner")))
+			else if (args.length >= 3 && (args[0].equalsIgnoreCase("addowner")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc addowner [player name]");
-			else if (args.length >= 3 && (args[0].equals("talkwhenclose")))
+			else if (args.length >= 3
+					&& (args[0].equalsIgnoreCase("talkwhenclose")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc talkwhenclose [true|false]");
-			else if (args.length >= 3 && (args[0].equals("lookatplayers")))
+			else if (args.length >= 3
+					&& (args[0].equalsIgnoreCase("lookatplayers")))
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc lookatplayers [true|false]");
 			else

@@ -54,7 +54,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 					+ "Your NPC isn't a blacksmith yet.");
 			return true;
 		} else {
-			if (args.length == 1 && args[0].equals("help")) {
+			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.hasPermission("citizens.blacksmith.create",
 						sender)) {
 					HelpUtils.sendBlacksmithHelp(player);
@@ -62,7 +62,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 2 && args[0].equals("repair")) {
+			} else if (args.length == 2 && args[0].contains("repair")) {
 				if (Permission.hasPermission("citizens.blacksmith.repair",
 						sender)) {
 					repairArmor(player, npc, args[1]);

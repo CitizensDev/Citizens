@@ -51,27 +51,24 @@ public class HealerExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a healer yet.");
 			return true;
 		} else {
-			if (args.length == 1 && args[0].equals("status")) {
-				if (Permission.hasPermission("citizens.healer.status",
-						sender)) {
+			if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
+				if (Permission.hasPermission("citizens.healer.status", sender)) {
 					displayStatus(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 
-			} else if (args.length == 1 && args[0].equals("level-up")) {
-				if (Permission
-						.hasPermission("citizens.healer.level", sender)) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("level-up")) {
+				if (Permission.hasPermission("citizens.healer.level", sender)) {
 					levelUp(player, npc, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 
-			} else if (args.length == 2 && args[0].equals("level-up")) {
-				if (Permission
-						.hasPermission("citizens.healer.level", sender)) {
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("level-up")) {
+				if (Permission.hasPermission("citizens.healer.level", sender)) {
 					try {
 						int levels = Integer.parseInt(args[1]);
 						int x = HealerPropertyPool.getLevel(npc.getUID())
@@ -91,7 +88,7 @@ public class HealerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 
-			} else if (args.length == 1 && args[0].equals("help")) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.hasPermission("citizens.healer.help", sender)) {
 					HelpUtils.sendHealerHelp(sender);
 				} else {
@@ -150,8 +147,7 @@ public class HealerExecutor implements CommandExecutor {
 	}
 
 	private String getLevelUpPaidMessage(Operation op, HumanNPC npc,
-			double paid,
-			int level, int multiple) {
+			double paid, int level, int multiple) {
 		String message = ChatColor.GREEN
 				+ "You have leveled up the healer "
 				+ StringUtils.yellowify(npc.getStrippedName())

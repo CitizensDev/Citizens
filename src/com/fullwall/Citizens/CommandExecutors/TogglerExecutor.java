@@ -60,7 +60,7 @@ public class TogglerExecutor implements CommandExecutor {
 					+ "You didn't specify an NPC type to toggle.");
 			return true;
 		} else {
-			if (args[0].equals("trader")) {
+			if (args[0].equalsIgnoreCase("trader")) {
 				if (Permission.hasPermission("citizens.trader.create", sender)) {
 					if (!TraderPropertyPool.isTrader(npc.getUID())) {
 						buyState(player, npc.getTrader(),
@@ -72,11 +72,11 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equals("quester")) {
+			} else if (args[0].equalsIgnoreCase("quester")) {
 				player.sendMessage("Questers are not ready yet. SO STOP ASKING! "
 						+ ChatColor.RED + "<3 The Citizens Team");
 				returnval = true;
-			} else if (args[0].equals("healer")) {
+			} else if (args[0].equalsIgnoreCase("healer")) {
 				if (Permission.hasPermission("citizens.healer.create", sender)) {
 					if (!HealerPropertyPool.isHealer(npc.getUID())) {
 						buyState(player, npc.getHealer(),
@@ -88,23 +88,24 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equals("guard")) {
+			} else if (args[0].equalsIgnoreCase("guard")) {
 				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
 				returnval = true;
-			} else if (args[0].equals("wizard")) {
+			} else if (args[0].equalsIgnoreCase("wizard")) {
 				if (Permission.hasPermission("citizens.wizard.create", sender)) {
-					//sender.sendMessage("Wizards are still a little buggy, so are disabled for now.");
-					if (!WizardPropertyPool.isWizard(npc.getUID())) { 
-						buyState(player, npc.getWizard(), Operation.WIZARD_NPC_CREATE); 
-					}else{
-						toggleState(player, npc.getWizard()); 
+					// sender.sendMessage("Wizards are still a little buggy, so are disabled for now.");
+					if (!WizardPropertyPool.isWizard(npc.getUID())) {
+						buyState(player, npc.getWizard(),
+								Operation.WIZARD_NPC_CREATE);
+					} else {
+						toggleState(player, npc.getWizard());
 					}
-					 
+
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equals("blacksmith")) {
+			} else if (args[0].equalsIgnoreCase("blacksmith")) {
 				if (Permission.hasPermission("citizens.blacksmith.create",
 						sender)) {
 					if (!BlacksmithPropertyPool.isBlacksmith(npc.getUID())) {

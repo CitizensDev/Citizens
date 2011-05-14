@@ -50,7 +50,7 @@ public class WizardExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a wizard yet.");
 			return true;
 		} else {
-			if (args.length == 1 && args[0].equals("help")) {
+			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.hasPermission("citizens.wizard.help", sender)) {
 					HelpUtils.sendWizardHelp(sender);
 				} else {
@@ -59,7 +59,7 @@ public class WizardExecutor implements CommandExecutor {
 				returnval = true;
 			}
 
-			else if (args.length == 1 && args[0].equals("locations")) {
+			else if (args.length == 1 && args[0].equalsIgnoreCase("locations")) {
 				if (Permission.hasPermission("citizens.wizard.locations",
 						sender)) {
 					this.dislayLocations(player, npc);

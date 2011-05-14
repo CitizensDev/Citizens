@@ -79,7 +79,7 @@ public class TraderExecutor implements CommandExecutor {
 				player.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		} else {
-			if (args.length == 3 && args[0].equals("balance")) {
+			if (args.length == 3 && args[0].equalsIgnoreCase("balance")) {
 				if (Permission.hasPermission("citizens.trader.balance", sender)) {
 					if (!EconomyHandler.useIconomy())
 						player.sendMessage(ChatColor.GRAY
@@ -104,7 +104,7 @@ public class TraderExecutor implements CommandExecutor {
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
-			} else if (args.length == 1 && args[0].equals("help")) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.hasPermission("citizens.trader.help", sender)) {
 					HelpUtils.sendTraderHelp(sender);
 				} else {
@@ -354,7 +354,8 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
-						+ StringUtils.yellowify(ServerEconomyInterface.format(amount))
+						+ StringUtils.yellowify(ServerEconomyInterface
+								.format(amount))
 						+ " to "
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
@@ -367,9 +368,9 @@ public class TraderExecutor implements CommandExecutor {
 						+ " "
 						+ StringUtils.yellowify(
 								ServerEconomyInterface.format(amount
-										- ServerEconomyInterface.getBalance(player
-												.getName())), ChatColor.RED)
-						+ " more.");
+										- ServerEconomyInterface
+												.getBalance(player.getName())),
+								ChatColor.RED) + " more.");
 			}
 		} else if (args[1].contains("t")) {
 			if (EconomyHandler.canBuy(new Payment(amount, true), npc)) {
@@ -377,7 +378,8 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(-amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
-						+ StringUtils.yellowify(ServerEconomyInterface.format(amount))
+						+ StringUtils.yellowify(ServerEconomyInterface
+								.format(amount))
 						+ " from "
 						+ StringUtils.yellowify(npc.getStrippedName())
 						+ ". Your balance is now "
