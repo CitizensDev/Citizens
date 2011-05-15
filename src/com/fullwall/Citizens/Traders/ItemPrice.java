@@ -83,8 +83,12 @@ public class ItemPrice {
 
 	public ItemStack getItemStack() {
 		ItemStack item = new ItemStack(itemID, amount);
-		item.setData(new MaterialData(data));
+		item.setData(new MaterialData(itemID, (byte) data));
 		return item;
+	}
+
+	public MaterialData getMaterialData() {
+		return new MaterialData(itemID, (byte) data);
 	}
 
 	public void setAmount(int amount) {

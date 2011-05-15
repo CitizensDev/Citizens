@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
+import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Traders.Check;
 import com.fullwall.Citizens.Traders.ItemPrice;
@@ -93,10 +94,10 @@ public class TraderPropertyPool {
 		return unlimiteds.getBoolean(UID);
 	}
 
-	public static String addToStockableString(int UID, String s, Stockable st) {
+	public static String addToStockableString(String s, Stockable st) {
 		if (s.contains(st.toString() + ";"))
 			return "";
-		return s += st.toString() + ";";
+		return st.toString() + ";";
 	}
 
 	public static void setStockables(int UID, String set) {
@@ -115,9 +116,12 @@ public class TraderPropertyPool {
 			ConcurrentHashMap<Check, Stockable> stockables) {
 		String string = "";
 		setStockables(UID, string);
-		for (Entry<Check, Stockable> entry : stockables.entrySet()) {
-			string += addToStockableString(UID, string, entry.getValue());
+		int count = 0;
+		for (Stockable entry : stockables.values()) {
+			string += addToStockableString(string, entry);
+			count += 1;
 		}
+		Citizens.log.info("" + count);
 		setStockables(UID, string);
 	}
 

@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TickTask implements Runnable {
@@ -33,21 +32,20 @@ public class TickTask implements Runnable {
 			{
 				HumanNPC npc = entry.getValue();
 				npc.updateMovement();
-				int UID = npc.getUID();
 				int entityID = entry.getKey();
 
 				for (Player p : plugin.getServer().getOnlinePlayers()) {
 					String name = p.getName();
-					if (PropertyPool.getLookWhenClose(UID)
-							|| PropertyPool.getTalkWhenClose(UID)) {
+					if (npc.getNPCData().isLookClose()
+							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
 						if (checkLocation(npc.getLocation(), p.getLocation())) {
 							// If auto-rotate is true, rotate
-							if (PropertyPool.getLookWhenClose(UID)) {
+							if (npc.getNPCData().isLookClose()) {
 								NPCManager.rotateNPCToPlayer(npc, p);
 							}
 							// If auto-talk is true
-							if (PropertyPool.getTalkWhenClose(UID)
+							if (npc.getNPCData().isTalkClose()
 									// If we haven't already spoken to the
 									// player.
 									&& (hasSaidText.get(entityID) == null || (hasSaidText
@@ -68,7 +66,7 @@ public class TickTask implements Runnable {
 					} // We're out of range, so if player has been talked
 						// to,
 						// reset its talked-to state.
-					else if (PropertyPool.getTalkWhenClose(UID)
+					else if (npc.getNPCData().isTalkClose()
 							&& hasSaidText.get(entityID) != null
 							&& hasSaidText.get(entityID).get(name) != null
 							&& hasSaidText.get(entityID).get(name) == true) {

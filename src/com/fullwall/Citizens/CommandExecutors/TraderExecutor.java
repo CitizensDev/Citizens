@@ -263,21 +263,20 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 		}
-		if (cost == null) {
-			if (!EconomyHandler.useIconomy()) {
-				player.sendMessage(ChatColor.GRAY
-						+ "This server is not using iConomy, so the price cannot be an iConomy value. "
-						+ "If you meant to use an item as currency, "
-						+ "please format it in this format: item ID:amount(:data).");
-				return;
-			}
+		if (cost == null && !EconomyHandler.useIconomy()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "This server is not using iConomy, so the price cannot be an iConomy value. "
+					+ "If you meant to use an item as currency, "
+					+ "please format it in this format: item ID:amount(:data).");
+			return;
 		}
 		boolean iConomy = false;
+		int data = -1;
 		if (cost == null)
 			iConomy = true;
-		int data = Citizens.MAGIC_DATA_VALUE;
-		if (!iConomy && cost.getData() != null)
+		else if (cost.getData() != null) {
 			data = cost.getData().getData();
+		}
 		ItemPrice itemPrice;
 		if (!iConomy)
 			itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(), data);
@@ -311,18 +310,18 @@ public class TraderExecutor implements CommandExecutor {
 	private ItemStack createItemStack(String[] split) {
 		try {
 			int amount = 1;
-			int data = 0;
+			byte data = Citizens.MAGIC_DATA_VALUE;
 			Material mat = StringUtils.parseMaterial(split[0]);
 			if (mat == null) {
 				return null;
 			}
-			if (split.length > 1)
+			if (split.length >= 2)
 				amount = Integer.parseInt(split[1]);
-			if (split.length > 2)
-				data = Integer.parseInt(split[2]);
+			if (split.length >= 3)
+				data = Byte.parseByte(split[2]);
 			ItemStack stack = new ItemStack(mat, amount);
-			if (data > 0) {
-				MaterialData mdata = new MaterialData(data);
+			if (data != 0) {
+				MaterialData mdata = new MaterialData(mat, data);
 				stack.setData(mdata);
 			}
 			return stack;

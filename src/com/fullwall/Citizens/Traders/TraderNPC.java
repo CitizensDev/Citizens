@@ -38,7 +38,7 @@ public class TraderNPC implements Toggleable {
 
 	public void addStockable(Stockable s) {
 		stocking.put(new Check(s.getStockingId(), s.isSelling()), s);
-		TraderPropertyPool.saveStockables(npc.getUID(), getStocking());
+		TraderPropertyPool.saveStockables(npc.getUID(), stocking);
 	}
 
 	public Stockable getStockable(int itemID, boolean selling) {
@@ -94,7 +94,7 @@ public class TraderNPC implements Toggleable {
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.getStocking().getData(),
+		return isStocked(s.getStockingId(), s.getPrice().getMaterialData(),
 				s.isSelling());
 	}
 
@@ -105,6 +105,7 @@ public class TraderNPC implements Toggleable {
 			data = first.getData();
 		if (second != null)
 			data2 = second.getData();
+		Citizens.log.info("" + data + " " + data2);
 		if (data == data2 || data == Citizens.MAGIC_DATA_VALUE)
 			return true;
 		return false;
