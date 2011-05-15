@@ -169,13 +169,13 @@ public class EntityListen extends EntityListener {
 
 	@Override
 	public void onEntityTarget(EntityTargetEvent event) {
+		if (NPCManager.getNPC(event.getTarget()) != null) {
+			event.setCancelled(true);
+		}
 		if (!(event instanceof NPCEntityTargetEvent))
 			return;
 		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 		HumanNPC npc = NPCManager.getNPC(e.getEntity());
-		if (NPCManager.getNPC(e.getTarget()) != null) {
-			e.setCancelled(true);
-		}
 		if (npc != null && event.getTarget() instanceof Player) {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {

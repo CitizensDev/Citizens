@@ -5,15 +5,10 @@ import com.earth2me.essentials.api.Economy;
 import com.earth2me.essentials.api.NoLoanPermittedException;
 import com.earth2me.essentials.api.UserDoesNotExistException;
 import com.nijikokun.register.payment.Method;
-import com.nijikokun.register.payment.MethodFactory;
 import org.bukkit.plugin.Plugin;
 
 public class EE17 implements Method {
 	private Essentials Essentials;
-
-	static {
-		MethodFactory.addMethod("Essentials", new EE17());
-	}
 
 	public Essentials getPlugin() {
 		return this.Essentials;

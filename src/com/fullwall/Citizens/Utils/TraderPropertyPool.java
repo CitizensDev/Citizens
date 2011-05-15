@@ -1,7 +1,6 @@
 package com.fullwall.Citizens.Utils;
 
 import java.util.ArrayList;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.server.InventoryPlayer;

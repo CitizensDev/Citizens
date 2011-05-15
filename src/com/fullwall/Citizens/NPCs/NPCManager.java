@@ -86,8 +86,8 @@ public class NPCManager {
 			loadBlacksmith(npc, npc.getBlacksmith(), UID);
 		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
-				.get(UID), Constants.defaultFollowingEnabled,
-				Constants.defaultTalkWhenClose, owner, npc.getBalance()));
+				.get(UID), PropertyPool.getLookWhenClose(UID), PropertyPool
+				.getTalkWhenClose(UID), owner, npc.getBalance()));
 		PropertyPool.saveState(UID, npc.getNPCData());
 		registerUID(UID, name);
 		list.put(UID, npc);
@@ -294,6 +294,8 @@ public class NPCManager {
 		PropertyPool.removeFromFiles(actualName, playerName, UID);
 		TraderPropertyPool.removeFromFiles(UID);
 		HealerPropertyPool.removeFromFiles(UID);
+		BlacksmithPropertyPool.removeFromFiles(UID);
+		WizardPropertyPool.removeFromFiles(UID);
 	}
 
 	/**

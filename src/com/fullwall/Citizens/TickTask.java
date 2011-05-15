@@ -33,9 +33,14 @@ public class TickTask implements Runnable {
 				HumanNPC npc = entry.getValue();
 				npc.updateMovement();
 				int entityID = entry.getKey();
-
+				// Moves the NPC towards the player
+				// (WALKING&Jumping)
+				// entry.getValue().setTarget(p);
 				for (Player p : plugin.getServer().getOnlinePlayers()) {
-					String name = p.getName();
+					String name = p.getName();// Moves the NPC towards the
+												// player
+					// (WALKING&Jumping)
+					// entry.getValue().setTarget(p);
 					if (npc.getNPCData().isLookClose()
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
@@ -59,18 +64,15 @@ public class TickTask implements Runnable {
 								players.put(name, true);
 								hasSaidText.put(entityID, players);
 							}
-							// Moves the NPC towards the player
-							// (WALKING&Jumping)
-							// entry.getValue().setTarget(p);
+						}// We're out of range, so if player has been talked
+							// to,
+							// reset its talked-to state.
+						else if (npc.getNPCData().isTalkClose()
+								&& hasSaidText.get(entityID) != null
+								&& hasSaidText.get(entityID).get(name) != null
+								&& hasSaidText.get(entityID).get(name) == true) {
+							hasSaidText.get(entityID).put(name, false);
 						}
-					} // We're out of range, so if player has been talked
-						// to,
-						// reset its talked-to state.
-					else if (npc.getNPCData().isTalkClose()
-							&& hasSaidText.get(entityID) != null
-							&& hasSaidText.get(entityID).get(name) != null
-							&& hasSaidText.get(entityID).get(name) == true) {
-						hasSaidText.get(entityID).put(name, false);
 					}
 				}
 			}

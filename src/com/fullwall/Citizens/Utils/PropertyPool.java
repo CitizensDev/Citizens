@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -169,7 +170,7 @@ public class PropertyPool {
 	}
 
 	public static boolean getLookWhenClose(int UID) {
-		return lookat.getBoolean(UID);
+		return lookat.getBoolean(UID, Constants.defaultFollowingEnabled);
 	}
 
 	public static void setLookWhenClose(int UID, boolean look) {
@@ -181,7 +182,7 @@ public class PropertyPool {
 	}
 
 	public static boolean getTalkWhenClose(int UID) {
-		return talkwhenclose.getBoolean(UID);
+		return talkwhenclose.getBoolean(UID, Constants.defaultTalkWhenClose);
 	}
 
 	public static void setTalkWhenClose(int UID, boolean talk) {

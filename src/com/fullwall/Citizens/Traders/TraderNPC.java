@@ -85,7 +85,7 @@ public class TraderNPC implements Toggleable {
 		if (checkStockingIntegrity()) {
 			if (stocking.get(new Check(itemID, selling)) != null) {
 				if (checkData(stocking.get(new Check(itemID, selling))
-						.getStocking().getData(), data)) {
+						.getPrice().getMaterialData(), data)) {
 					return true;
 				}
 			}
@@ -94,7 +94,7 @@ public class TraderNPC implements Toggleable {
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.getPrice().getMaterialData(),
+		return isStocked(s.getStockingId(), s.getStocking().getData(),
 				s.isSelling());
 	}
 

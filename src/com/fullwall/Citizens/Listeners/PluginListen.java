@@ -28,6 +28,8 @@ public class PluginListen extends ServerListener {
 		pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, this,
 				Event.Priority.Monitor, plugin);
+		pm.registerEvent(Event.Type.PLUGIN_DISABLE, this,
+				Event.Priority.Monitor, plugin);
 	}
 
 	@Override
@@ -36,7 +38,7 @@ public class PluginListen extends ServerListener {
 			if (this.methods.setMethod(event.getPlugin())) {
 				Citizens.setMethod(this.methods.getMethod());
 				EconomyHandler.setServerEconomyEnabled(true);
-				System.out.println("[Citizens] Payment method found ("
+				System.out.println("[Citizens]: Payment method found ("
 						+ methods.getMethod().getName() + " version: "
 						+ methods.getMethod().getVersion() + ")");
 			}
@@ -48,8 +50,7 @@ public class PluginListen extends ServerListener {
 		if (this.methods != null && this.methods.hasMethod()) {
 			Boolean check = this.methods.checkDisabled(event.getPlugin());
 			if (check) {
-				Citizens.log
-						.info("[Citizens] Payment method disabled. No longer accepting payments.");
+				Citizens.log.info("[Citizens]: Payment method disabled.");
 			}
 			EconomyHandler.setServerEconomyEnabled(false);
 		}

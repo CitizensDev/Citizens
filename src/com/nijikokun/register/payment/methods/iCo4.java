@@ -3,15 +3,10 @@ package com.nijikokun.register.payment.methods;
 import com.nijiko.coelho.iConomy.iConomy;
 import com.nijiko.coelho.iConomy.system.Account;
 import com.nijikokun.register.payment.Method;
-import com.nijikokun.register.payment.MethodFactory;
 import org.bukkit.plugin.Plugin;
 
 public class iCo4 implements Method {
 	private iConomy iConomy;
-
-	static {
-		MethodFactory.addMethod("iConomy", new iCo4());
-	}
 
 	public iConomy getPlugin() {
 		return this.iConomy;

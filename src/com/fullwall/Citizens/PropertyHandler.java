@@ -203,7 +203,7 @@ public final class PropertyHandler {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
 		}
-		// setString(key, value);
+		setString(key, value);
 		return value;
 	}
 
@@ -237,7 +237,7 @@ public final class PropertyHandler {
 		if (this.properties.containsKey(key)) {
 			return Integer.parseInt(this.properties.getProperty(key));
 		}
-		// setInt(key, value);
+		setInt(key, value);
 		return value;
 	}
 
@@ -272,7 +272,7 @@ public final class PropertyHandler {
 			return Double.parseDouble(this.properties.getProperty(key));
 		}
 
-		// setDouble(key, value);
+		setDouble(key, value);
 		return value;
 	}
 
@@ -307,7 +307,7 @@ public final class PropertyHandler {
 			return Long.parseLong(this.properties.getProperty(key));
 		}
 
-		// setLong(key, value);
+		setLong(key, value);
 		return value;
 	}
 
@@ -342,7 +342,7 @@ public final class PropertyHandler {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
 		}
 
-		// setBoolean(key, value);
+		setBoolean(key, value);
 		return value;
 	}
 

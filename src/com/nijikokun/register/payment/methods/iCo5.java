@@ -6,15 +6,10 @@ import com.iConomy.system.BankAccount;
 import com.iConomy.system.Holdings;
 import com.iConomy.util.Constants;
 import com.nijikokun.register.payment.Method;
-import com.nijikokun.register.payment.MethodFactory;
 import org.bukkit.plugin.Plugin;
 
 public class iCo5 implements Method {
 	private iConomy iConomy;
-
-	static {
-		MethodFactory.addMethod("iConomy", new iCo5());
-	}
 
 	public iConomy getPlugin() {
 		return this.iConomy;

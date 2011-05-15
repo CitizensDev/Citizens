@@ -6,26 +6,21 @@ import org.bukkit.entity.Entity;
 @SuppressWarnings("serial")
 public class NPCList extends HashMap<Integer, HumanNPC> {
 
-    public boolean containsBukkitEntity(Entity entity)
-    {
-        for(HumanNPC bnpc : this.values())
-        {
-            if(bnpc.getPlayer().getEntityId() == entity.getEntityId())
-                return true;
-        }
+	public boolean containsBukkitEntity(Entity entity) {
+		for (HumanNPC bnpc : this.values()) {
+			if (bnpc.getPlayer().getEntityId() == entity.getEntityId())
+				return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public HumanNPC getBasicHumanNpc(Entity entity)
-    {
-        for(HumanNPC bnpc : this.values())
-        {
-            if(bnpc.getPlayer().getEntityId() == entity.getEntityId())
-                return bnpc;
-        }
-
-        return null;
-    }
+	public HumanNPC getBasicHumanNpc(Entity entity) {
+		for (HumanNPC bnpc : this.values()) {
+			if (bnpc.getPlayer().getEntityId() == entity.getEntityId())
+				return bnpc;
+		}
+		return null;
+	}
 
 }

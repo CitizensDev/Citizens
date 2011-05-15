@@ -12,6 +12,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijikokun.register.payment.Method;
+import com.nijikokun.register.payment.MethodFactory;
+import com.nijikokun.register.payment.methods.BOSE;
+import com.nijikokun.register.payment.methods.EE17;
+import com.nijikokun.register.payment.methods.iCo4;
+import com.nijikokun.register.payment.methods.iCo5;
 
 import com.fullwall.Citizens.CommandExecutors.CommandHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler;
@@ -57,6 +62,12 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
+		// Register payment methods.
+		MethodFactory.addMethod("BOSEconomy", new BOSE());
+		MethodFactory.addMethod("Essentials", new EE17());
+		MethodFactory.addMethod("iConomy", new iCo4());
+		MethodFactory.addMethod("iConomy", new iCo5());
+
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();
@@ -108,7 +119,7 @@ public class Citizens extends JavaPlugin {
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "c] (" + codename + ") loaded");
+				+ pdfFile.getVersion() + "d] (" + codename + ") loaded");
 	}
 
 	@Override
@@ -122,7 +133,7 @@ public class Citizens extends JavaPlugin {
 		WizardPropertyPool.saveAll();
 		BlacksmithPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "c] (" + codename + ") disabled");
+				+ pdfFile.getVersion() + "d] (" + codename + ") disabled");
 	}
 
 	/**

@@ -1,17 +1,11 @@
 package com.nijikokun.register.payment.methods;
 
 import com.nijikokun.register.payment.Method;
-import com.nijikokun.register.payment.MethodFactory;
 import cosine.boseconomy.BOSEconomy;
 import org.bukkit.plugin.Plugin;
 
 public class BOSE implements Method {
 	private BOSEconomy BOSEconomy;
-
-	static {
-		MethodFactory.addMethod("BOSEconomy", new BOSE());
-
-	}
 
 	public BOSEconomy getPlugin() {
 		return this.BOSEconomy;
@@ -87,6 +81,7 @@ public class BOSE implements Method {
 
 		public boolean add(double amount) {
 			int IntAmount = (int) Math.ceil(amount);
+			int balance = (int) this.balance();
 			return this.BOSEconomy.addPlayerMoney(this.name, IntAmount, false);
 		}
 

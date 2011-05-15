@@ -803,13 +803,12 @@ public class BasicExecutor implements CommandExecutor {
 		if (bool.equals("true"))
 			talk = true;
 		PropertyPool.setTalkWhenClose(npc.getUID(), talk);
+		npc.getNPCData().setTalkClose(talk);
 		if (talk)
-			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(npc.getStrippedName())
+			p.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " will now talk to nearby players.");
 		else if (!talk)
-			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(npc.getStrippedName())
+			p.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " will stop talking to nearby players.");
 	}
 
@@ -825,13 +824,12 @@ public class BasicExecutor implements CommandExecutor {
 		if (bool.equals("true"))
 			look = true;
 		PropertyPool.setLookWhenClose(npc.getUID(), look);
+		npc.getNPCData().setLookClose(look);
 		if (look)
-			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(npc.getStrippedName())
+			p.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " will now look at players.");
 		else if (!look)
-			p.sendMessage(ChatColor.GREEN + "The NPC: "
-					+ StringUtils.yellowify(npc.getStrippedName())
+			p.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " will stop looking at players.");
 	}
 
