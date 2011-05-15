@@ -229,4 +229,9 @@ public class TraderProperties extends Saveable {
 	public PropertyType type() {
 		return PropertyType.TRADER;
 	}
+
+	@Override
+	public void loadState(HumanNPC npc) {
+		// TODO Auto-generated method stub
+	}
 }

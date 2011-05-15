@@ -56,29 +56,26 @@ public class Methods {
 	}
 
 	public boolean setMethod(Plugin method) {
+		if (hasMethod())
+			return true;
+
 		PluginManager manager = method.getServer().getPluginManager();
 
-		if (method != null && method.isEnabled()) {
+		for (String name : this.getDependencies()) {
+			if (hasMethod())
+				break;
+
+			method = manager.getPlugin(name);
+			if (method == null)
+				continue;
+			if (!method.isEnabled())
+				manager.enablePlugin(method);
+			if (!method.isEnabled())
+				continue;
+
 			Method plugin = this.createMethod(method);
 			if (plugin != null)
 				Method = plugin;
-		} else {
-			for (String name : this.getDependencies()) {
-				if (hasMethod())
-					break;
-
-				method = manager.getPlugin(name);
-				if (method == null)
-					continue;
-				if (!method.isEnabled())
-					manager.enablePlugin(method);
-				if (!method.isEnabled())
-					continue;
-
-				Method plugin = this.createMethod(method);
-				if (plugin != null)
-					Method = plugin;
-			}
 		}
 
 		return hasMethod();
