@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.CommandExecutors;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -78,6 +80,16 @@ public class BlacksmithExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("uses")) {
+				if (Permission
+						.hasPermission("citizens.blacksmith.uses", sender)) {
+					showUsesRemaining(player, npc.getBlacksmith(),
+							Material.getMaterial(player.getItemInHand()
+									.getTypeId()));
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
 			}
 			BlacksmithPropertyPool.saveState(npc);
 		}
@@ -123,7 +135,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMOR_REPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				if (validateArmorToRepair(armor)) {
+				if (npc.getBlacksmith().validateArmorToRepair(armor)) {
 					if (armor.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
 								Operation.BLACKSMITH_ARMOR_REPAIR, player);
@@ -184,18 +196,20 @@ public class BlacksmithExecutor implements CommandExecutor {
 				+ "boots, shoes");
 	}
 
-	/**
-	 * Validate that the item to repair is armor
-	 * 
-	 * @param armor
-	 * @return
-	 */
-	private boolean validateArmorToRepair(ItemStack armor) {
-		int id = armor.getTypeId();
-		if (id >= 298 && id <= 317) {
-			return true;
+	private void showUsesRemaining(Player player, BlacksmithNPC blacksmith,
+			Material material) {
+		ItemStack item = player.getItemInHand();
+		String itemName = item.getType().name().toLowerCase().replace("_", " ");
+		if (blacksmith.validateItemToRepair(item)) {
+			player.sendMessage(ChatColor.GREEN
+					+ "Your "
+					+ StringUtils.yellowify(itemName)
+					+ " has "
+					+ StringUtils.yellowify(material.getMaxDurability()
+							- item.getDurability()) + " uses remaining.");
 		} else {
-			return false;
+			player.sendMessage(ChatColor.RED + itemName
+					+ " does not have a durability.");
 		}
 	}
 }

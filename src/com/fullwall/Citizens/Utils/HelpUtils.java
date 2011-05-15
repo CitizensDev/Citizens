@@ -153,6 +153,8 @@ public class HelpUtils {
 				"repair your armor");
 		formatCommand(sender, "blacksmith", "list",
 				"list the available armor names");
+		formatCommand(sender, "blacksmith", "uses",
+				"show how many uses your item has left");
 		footer(sender);
 	}
 

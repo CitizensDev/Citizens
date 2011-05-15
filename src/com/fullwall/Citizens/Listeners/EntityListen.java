@@ -278,7 +278,7 @@ public class EntityListen extends EntityListener {
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_TOOL_REPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				if (validateItemToRepair(item)) {
+				if (npc.getBlacksmith().validateItemToRepair(item)) {
 					if (item.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
 								Operation.BLACKSMITH_TOOL_REPAIR, player);
@@ -307,27 +307,6 @@ public class EntityListen extends EntityListener {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
 					Operation.BLACKSMITH_TOOL_REPAIR, player));
 			return;
-		}
-	}
-
-	/**
-	 * Validate that an item has a durability and can be repaired
-	 * 
-	 * @param item
-	 * @return
-	 */
-	private boolean validateItemToRepair(ItemStack item) {
-		int id = item.getTypeId();
-		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
-				|| id == 268 || id == 269 || id == 270 || id == 271
-				|| id == 272 || id == 273 || id == 274 || id == 275
-				|| id == 276 || id == 277 || id == 278 || id == 279
-				|| id == 283 || id == 284 || id == 285 || id == 286
-				|| id == 290 || id == 291 || id == 292 || id == 293
-				|| id == 294 || id == 346 || (id >= 298 && id <= 317)) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 }

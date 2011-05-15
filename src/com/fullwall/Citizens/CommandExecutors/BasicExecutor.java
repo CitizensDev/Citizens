@@ -272,7 +272,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("id")) {
-			if (Permission.hasPermission("citizens.general.getid", sender)) {
+			if (Permission.hasPermission("citizens.general.id", sender)) {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.getid")) {
@@ -318,7 +318,7 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("owner")) {
-			if (Permission.hasPermission("citizens.general.getowner", sender)) {
+			if (Permission.hasPermission("citizens.general.owner", sender)) {
 				if (npc != null) {
 					player.sendMessage(ChatColor.GREEN
 							+ "The owner of this NPC is "
@@ -511,6 +511,7 @@ public class BasicExecutor implements CommandExecutor {
 			else
 				return false;
 		}
+		PropertyPool.saveState(npc.getUID(), npc.getNPCData());
 		return false;
 	}
 
