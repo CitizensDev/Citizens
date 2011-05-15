@@ -11,6 +11,8 @@ public abstract class Saveable {
 
 	public abstract void saveState(HumanNPC npc);
 
+	public abstract void loadState(HumanNPC npc);
+
 	public abstract void removeFromFiles(HumanNPC npc);
 
 	public abstract void set(HumanNPC npc);

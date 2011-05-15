@@ -138,10 +138,10 @@ public class TraderPropertyPool {
 				switch (i) {
 				case 0:
 					String[] split = main.split("/");
-					MaterialData data = new MaterialData(
-							Integer.parseInt(split[2]));
 					stack = new ItemStack(Integer.parseInt(split[0]),
 							Integer.parseInt(split[1]));
+					MaterialData data = new MaterialData(stack.getType(),
+							Byte.parseByte(split[2]));
 					if (data != null)
 						stack.setData(data);
 					break;
