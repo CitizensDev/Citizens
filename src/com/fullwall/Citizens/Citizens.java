@@ -54,12 +54,13 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
+		// Register files.
+		PropertyManager.registerProperties();
+		
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();
 
-		// Register files.
-		PropertyManager.registerProperties();
 
 		// Register our events.
 		entityListener.registerEvents();

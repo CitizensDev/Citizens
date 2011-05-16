@@ -23,18 +23,15 @@ public class PropertyManager {
 	}
 
 	public static void registerProperties() {
-		properties.put("basic", new BasicProperties());
+		BasicProperties basic = new BasicProperties();
+		properties.put("basic", basic);
 		properties.put("blacksmith", new BlacksmithProperties());
 		properties.put("healer", new HealerProperties());
 		properties.put("quester", new QuesterProperties());
 		properties.put("trader", new TraderProperties());
 		properties.put("wizard", new WizardProperties());
 
-		setBasicProperties();
-	}
-
-	private static void setBasicProperties() {
-		basicProperties = (BasicProperties) properties.get("basic");
+		basicProperties = basic;
 	}
 
 	public static BasicProperties getBasicProperties() {
