@@ -15,7 +15,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
 	public static HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
-	private static BasicProperties basicProperties;
+	private static BasicProperties basicProperties = new BasicProperties();
 
 	public enum PropertyType {
 		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH;
