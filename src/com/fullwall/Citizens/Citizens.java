@@ -1,6 +1,8 @@
 package com.fullwall.Citizens;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -56,11 +58,10 @@ public class Citizens extends JavaPlugin {
 	public void onEnable() {
 		// Register files.
 		PropertyManager.registerProperties();
-		
+
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();
-
 
 		// Register our events.
 		entityListener.registerEvents();
@@ -301,20 +302,24 @@ public class Citizens extends JavaPlugin {
 	 *            , type
 	 * @return Whether the ID is used for a tool.
 	 */
-	public boolean validateTool(String key, int type) {
+	public boolean validateTool(String key, int type, boolean sneaking) {
 		if (UtilityProperties.settings.getBoolean("item-list-on")) {
 			String[] items = UtilityProperties.settings.getString(key).split(
 					",");
-			ArrayList<String> item = new ArrayList<String>();
-			for (String s : items) {
-				item.add(s);
+			List<String> item = Arrays.asList(items);
+			if (item.contains("*"))
+				return true;
+			boolean isShift = false;
+			for (String s : item) {
+				isShift = false;
+				if (s.contains("SHIFT-")) {
+					s = s.replace("SHIFT-", "");
+					isShift = true;
+				}
+				if (s.contains("" + type) && isShift == sneaking)
+					return true;
 			}
-			if (item.contains("" + type) || item.contains("*"))
-				return true;
-			else if (type == 0 && item.contains("0"))
-				return true;
-			else
-				return false;
+			return false;
 		} else
 			return true;
 	}

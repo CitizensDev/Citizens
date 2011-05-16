@@ -174,7 +174,7 @@ public class EntityListen extends EntityListener {
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
 				if (plugin.validateTool("select-item", p.getItemInHand()
-						.getTypeId()) == true) {
+						.getTypeId(), p.isSneaking()) == true) {
 					if (!NPCManager.validateSelected(p, npc.getUID())) {
 						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
 						p.sendMessage(ChatColor.GREEN + "You selected NPC "
@@ -187,7 +187,8 @@ public class EntityListen extends EntityListener {
 				} // Dispatch text event.
 					// If we're using a selection tool, select the NPC as well.
 					// Check if we haven't already selected the NPC too.
-				if (plugin.validateTool("items", p.getItemInHand().getTypeId()) == true) {
+				if (plugin.validateTool("items", p.getItemInHand().getTypeId(),
+						p.isSneaking()) == true) {
 					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
 							npc.getName(), MessageUtils.getText(npc,
 									(Player) e.getTarget(), plugin), npc,

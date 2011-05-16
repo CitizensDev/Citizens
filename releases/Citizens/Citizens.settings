@@ -25,6 +25,8 @@ item-list-on=true
 
 #Specify item IDs (0 is for empty hands) used when right clicking NPCs. 
 #Separated by commas, leave one trailing.
+#Use SHIFT- at the start of an ID to mean that the player must be sneaking to use that
+#as the item ID. EG. SHIFT-340 means right click with a book while sneaking.
 items=340,
 
 #Specify item IDs (0 is for empty hands) used when selecting an NPC (with right click).
