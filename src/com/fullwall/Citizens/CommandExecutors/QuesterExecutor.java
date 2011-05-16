@@ -10,6 +10,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Questers.Quest;
+import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -49,10 +50,34 @@ public class QuesterExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
 			return true;
 		} else {
-			if (args.length == 2 && args[0].equalsIgnoreCase("createquest")) {
+			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
+				if (Permission.hasPermission("citizens.quester.help", sender)) {
+					HelpUtils.sendQuesterHelp(sender);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+			} else if (args.length == 2
+					&& args[0].equalsIgnoreCase("createquest")) {
 				if (Permission.hasPermission("citizens.quester.managequests",
 						sender)) {
 					createQuest(player, npc, args[1]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("type")) {
+				if (Permission.hasPermission("citizens.quester.managequests",
+						sender)) {
+					changeQuestType(player, args[1]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+			} else if (args.length >= 2 && args[0].equalsIgnoreCase("desc")) {
+				if (Permission.hasPermission("citizens.quester.managequests",
+						sender)) {
+					// TODO set the quest description
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -68,6 +93,11 @@ public class QuesterExecutor implements CommandExecutor {
 		quest.createFile();
 		player.sendMessage(ChatColor.GREEN
 				+ "You created a new quest file called "
-				+ StringUtils.yellowify(name + ".quest"));
+				+ StringUtils.yellowify(name + ".quest")
+				+ ". You can modify the file in-game and/or edit it manually.");
+	}
+
+	private void changeQuestType(Player player, String type) {
+		// TODO do stuff
 	}
 }

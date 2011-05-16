@@ -22,7 +22,8 @@ public class QuestFile {
 	}
 
 	public String getName() {
-		return questData.getString("name");
+		this.name = questData.getString("name");
+		return name;
 	}
 
 	public void saveName(String name) {
@@ -31,7 +32,8 @@ public class QuestFile {
 	}
 
 	public String getStartNPC() {
-		return questData.getString("start-NPC");
+		this.startNPC = questData.getString("start-NPC");
+		return startNPC;
 	}
 
 	public void saveStartNPC(String startNPC) {
@@ -40,7 +42,8 @@ public class QuestFile {
 	}
 
 	public String getReward() {
-		return questData.getString("reward");
+		this.reward = questData.getString("reward");
+		return reward;
 	}
 
 	public void saveReward(String reward) {
@@ -49,7 +52,8 @@ public class QuestFile {
 	}
 
 	public String getType() {
-		return questData.getString("type");
+		this.type = questData.getString("type");
+		return type;
 	}
 
 	public void saveType(String type) {
@@ -58,7 +62,8 @@ public class QuestFile {
 	}
 
 	public String getQuestPrerequisite() {
-		return questData.getString("quest-prerequisite");
+		this.questPrerequisite = questData.getString("quest-prerequisite");
+		return questPrerequisite;
 	}
 
 	public void saveQuestPrerequisite(String questPrerequisite) {
@@ -67,7 +72,8 @@ public class QuestFile {
 	}
 
 	public String getRankPrerequisite() {
-		return questData.getString("rank-prerequisite");
+		this.rankPrerequisite = questData.getString("rank-prerequisite");
+		return rankPrerequisite;
 	}
 
 	public void saveRankPrerequisite(String rankPrerequisite) {
@@ -76,7 +82,8 @@ public class QuestFile {
 	}
 
 	public String getDescription() {
-		return questData.getString("description");
+		this.description = questData.getString("description");
+		return description;
 	}
 
 	public void saveDescription(String description) {
@@ -85,7 +92,8 @@ public class QuestFile {
 	}
 
 	public String getCompletionText() {
-		return questData.getString("completion-text");
+		this.completionText = questData.getString("completion-text");
+		return completionText;
 	}
 
 	public void saveCompletionText(String completionText) {
