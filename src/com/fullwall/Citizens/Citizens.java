@@ -110,7 +110,10 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
+		PropertyManager.saveAllNPCs();
+
 		basicNPCHandler.despawnAllNPCs();
+
 		// Save the local copy of our files to disk.
 		PropertyManager.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["

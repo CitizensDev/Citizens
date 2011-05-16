@@ -5,10 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class ItemInterface {
 	public static String addendum = "-item";

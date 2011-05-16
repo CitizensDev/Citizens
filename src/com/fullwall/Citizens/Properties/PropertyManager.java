@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.BasicProperties;
 import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
 import com.fullwall.Citizens.Properties.Properties.HealerProperties;
@@ -83,6 +84,12 @@ public class PropertyManager {
 	public static void copy(int UID, int newUID) {
 		for (Saveable saveable : properties.values()) {
 			saveable.copy(UID, newUID);
+		}
+	}
+
+	public static void saveAllNPCs() {
+		for (HumanNPC npc : NPCManager.getNPCList().values()) {
+			save(npc);
 		}
 	}
 }

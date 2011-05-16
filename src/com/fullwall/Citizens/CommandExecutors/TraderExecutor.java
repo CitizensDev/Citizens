@@ -271,7 +271,7 @@ public class TraderExecutor implements CommandExecutor {
 			return;
 		}
 		boolean iConomy = false;
-		int data = -1;
+		int data = Citizens.MAGIC_DATA_VALUE;
 		if (cost == null)
 			iConomy = true;
 		else if (cost.getData() != null) {
