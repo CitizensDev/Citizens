@@ -15,16 +15,10 @@ public class QuestFile {
 	private String completionText;
 
 	public QuestFile(Quest quest) {
-		questData = new PropertyHandler("plugins/Citizens/Questers/"
+		questData = new PropertyHandler("plugins/Citizens/Questers/Quests/"
 				+ quest.getName() + ".quest");
-		this.name = quest.getName();
-		this.startNPC = quest.getStartNPC();
-		this.type = quest.getType();
-		this.reward = quest.getReward();
-		this.questPrerequisite = quest.getQuestPrerequisite();
-		this.rankPrerequisite = quest.getRankPrerequisite();
-		this.description = quest.getDescription();
-		this.completionText = quest.getCompletionText();
+		saveName(quest.getName());
+		saveStartNPC(quest.getStartNPC());
 	}
 
 	public String getName() {
@@ -52,6 +46,15 @@ public class QuestFile {
 	public void saveReward(String reward) {
 		this.reward = reward;
 		questData.setString("reward", reward);
+	}
+
+	public String getType() {
+		return questData.getString("type");
+	}
+
+	public void saveType(String type) {
+		this.type = type;
+		questData.setString("type", type);
 	}
 
 	public String getQuestPrerequisite() {

@@ -15,6 +15,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.Citizens.Utils.WizardPropertyPool;
@@ -73,8 +74,16 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("quester")) {
-				player.sendMessage("Questers are not ready yet. SO STOP ASKING! "
-						+ ChatColor.RED + "<3 The Citizens Team");
+				if (Permission.hasPermission("citizens.quester.create", sender)) {
+					if (!QuesterPropertyPool.isQuester(npc.getUID())) {
+						buyState(player, npc.getQuester(),
+								Operation.QUESTER_NPC_CREATE);
+					} else {
+						toggleState(player, npc.getQuester());
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("healer")) {
 				if (Permission.hasPermission("citizens.healer.create", sender)) {

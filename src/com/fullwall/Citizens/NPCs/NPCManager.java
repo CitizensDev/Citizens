@@ -14,10 +14,12 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Healers.HealerNPC;
+import com.fullwall.Citizens.Questers.QuesterNPC;
 import com.fullwall.Citizens.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.Citizens.Wizards.WizardNPC;
@@ -85,6 +87,9 @@ public class NPCManager {
 		if (BlacksmithPropertyPool.isBlacksmith(UID)) {
 			loadBlacksmith(npc, npc.getBlacksmith(), UID);
 		}
+		if(QuesterPropertyPool.isQuester(UID)) {
+			loadQuester(npc, npc.getQuester(), UID);
+		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), PropertyPool.getLookWhenClose(UID), PropertyPool
 				.getTalkWhenClose(UID), owner, npc.getBalance()));
@@ -95,6 +100,7 @@ public class NPCManager {
 		HealerPropertyPool.saveState(npc);
 		WizardPropertyPool.saveState(npc);
 		BlacksmithPropertyPool.saveState(npc);
+		QuesterPropertyPool.saveState(npc);
 		npc.getPlayer().setSleepingIgnored(true);
 	}
 
@@ -152,7 +158,7 @@ public class NPCManager {
 	 * @param healer
 	 * @param UID
 	 */
-	public void loadHealer(HumanNPC npc, HealerNPC healer, int UID) {
+	private void loadHealer(HumanNPC npc, HealerNPC healer, int UID) {
 		npc.setHealer(HealerPropertyPool.getHealerState(UID));
 		healer.setStrength(HealerPropertyPool.getStrength(UID));
 		HealerPropertyPool.saveState(npc);
@@ -165,7 +171,7 @@ public class NPCManager {
 	 * @param wizard
 	 * @param UID
 	 */
-	public void loadWizard(HumanNPC npc, WizardNPC wizard, int UID) {
+	private void loadWizard(HumanNPC npc, WizardNPC wizard, int UID) {
 		npc.setWizard(WizardPropertyPool.getWizardState(UID));
 		wizard.setLocations(WizardPropertyPool.getLocations(UID));
 		WizardPropertyPool.saveState(npc);
@@ -178,9 +184,21 @@ public class NPCManager {
 	 * @param blacksmith
 	 * @param UID
 	 */
-	public void loadBlacksmith(HumanNPC npc, BlacksmithNPC blacksmith, int UID) {
+	private void loadBlacksmith(HumanNPC npc, BlacksmithNPC blacksmith, int UID) {
 		npc.setBlacksmith(BlacksmithPropertyPool.getBlacksmithState(UID));
 		BlacksmithPropertyPool.saveState(npc);
+	}
+
+	/**
+	 * Loads quester data for an npc.
+	 * 
+	 * @param npc
+	 * @param quester
+	 * @param UID
+	 */
+	private void loadQuester(HumanNPC npc, QuesterNPC quester, int UID) {
+		npc.setQuester(QuesterPropertyPool.getQuesterState(UID));
+		QuesterPropertyPool.saveState(npc);
 	}
 
 	/**

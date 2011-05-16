@@ -9,7 +9,7 @@ public class CommandHandler {
 	private TraderExecutor trader;
 	private WizardExecutor wizard;
 	private BlacksmithExecutor blacksmith;
-	// private QuesterExecutor quester;
+	private QuesterExecutor quester;
 	private TogglerExecutor toggle;
 
 	public CommandHandler(Citizens plugin) {
@@ -27,6 +27,7 @@ public class CommandHandler {
 		trader = new TraderExecutor(plugin);
 		wizard = new WizardExecutor(plugin);
 		blacksmith = new BlacksmithExecutor(plugin);
+		quester = new QuesterExecutor(plugin);
 		toggle = new TogglerExecutor(plugin);
 		plugin.getCommand("npc").setExecutor(basic);
 		plugin.getCommand("citizens").setExecutor(basic);
@@ -35,6 +36,7 @@ public class CommandHandler {
 		plugin.getCommand("trader").setExecutor(trader);
 		plugin.getCommand("wizard").setExecutor(wizard);
 		plugin.getCommand("blacksmith").setExecutor(blacksmith);
+		plugin.getCommand("quester").setExecutor(quester);
 		plugin.getCommand("toggle").setExecutor(toggle);
 	}
 }

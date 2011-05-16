@@ -10,18 +10,15 @@ public class Quest {
 	private String description;
 	private String completionText;
 	private boolean isCurrentQuest;
-
-	public Quest(String name, String startNPC, String type, String reward,
-			String questPrerequisite, String rankPrerequisite,
-			String description, String completionText) {
+	private QuestFile questFile;
+	
+	public Quest(String name, String startNPC) {
 		this.name = name;
 		this.startNPC = startNPC;
-		this.type = type;
-		this.reward = reward;
-		this.questPrerequisite = questPrerequisite;
-		this.rankPrerequisite = rankPrerequisite;
-		this.description = description;
-		this.completionText = completionText;
+	}
+	
+	public void createFile() {
+		questFile = new QuestFile(this);
 	}
 
 	public String getName() {
@@ -94,5 +91,13 @@ public class Quest {
 
 	public void setCurrentQuest(boolean state) {
 		this.isCurrentQuest = state;
+	}
+
+	public void setQuestFile(QuestFile questFile) {
+		this.questFile = questFile;
+	}
+
+	public QuestFile getQuestFile() {
+		return questFile;
 	}
 }

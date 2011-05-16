@@ -25,6 +25,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
 import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -103,6 +104,7 @@ public class Citizens extends JavaPlugin {
 							HealerPropertyPool.saveAll();
 							WizardPropertyPool.saveAll();
 							BlacksmithPropertyPool.saveAll();
+							QuesterPropertyPool.saveAll();
 							log.info("[Citizens]: Saved.");
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
@@ -121,6 +123,7 @@ public class Citizens extends JavaPlugin {
 		HealerPropertyPool.saveAll();
 		WizardPropertyPool.saveAll();
 		BlacksmithPropertyPool.saveAll();
+		QuesterPropertyPool.saveAll();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") disabled");
 	}
