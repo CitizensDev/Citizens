@@ -11,7 +11,7 @@ import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.HealerPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -71,8 +71,7 @@ public class HealerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.healer.level", sender)) {
 					try {
 						int levels = Integer.parseInt(args[1]);
-						int x = HealerPropertyPool.getLevel(npc.getUID())
-								+ levels;
+						int x = npc.getHealer().getLevel() + levels;
 						if (x <= 10) {
 							levelUp(player, npc, levels);
 						} else {
@@ -96,21 +95,20 @@ public class HealerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			HealerPropertyPool.saveState(npc);
+			PropertyManager.get("healer").saveState(npc);
 		}
 		return returnval;
 	}
 
 	private void displayHealerStrength(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
-				+ HealerPropertyPool.getStrength(npc.getUID()) + ChatColor.RED
-				+ "/" + HealerPropertyPool.getMaxStrength(npc.getUID()));
+				+ npc.getHealer().getStrength() + ChatColor.RED + "/"
+				+ npc.getHealer().getMaxStrength());
 	}
 
 	private void displayHealerLevel(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW + "Level: " + ChatColor.GREEN
-				+ HealerPropertyPool.getLevel(npc.getUID()) + ChatColor.RED
-				+ "/10");
+				+ npc.getHealer().getLevel() + ChatColor.RED + "/10");
 	}
 
 	private void displayStatus(Player player, HumanNPC npc) {
@@ -124,13 +122,12 @@ public class HealerExecutor implements CommandExecutor {
 
 	private void levelUp(Player player, HumanNPC npc, int multiple) {
 		if (EconomyHandler.useEconomy()) {
-			int level = HealerPropertyPool.getLevel(npc.getUID());
+			int level = npc.getHealer().getLevel();
 			double paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player,
 					multiple);
 			if (paid > 0) {
 				if (level < 10) {
-					HealerPropertyPool
-							.saveLevel(npc.getUID(), level + multiple);
+					npc.getHealer().setLevel(level + multiple);
 					player.sendMessage(getLevelUpPaidMessage(
 							Operation.HEALER_LEVEL_UP, npc, paid, level
 									+ multiple, multiple));

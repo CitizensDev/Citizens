@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+
 public class StringUtils {
 
 	public static String getColourFromString(String s) {
@@ -33,8 +35,8 @@ public class StringUtils {
 	public static Material parseMaterial(String material) {
 		Material mat = Material.matchMaterial(material);
 		if (mat == null) {
-			if (!PropertyPool.itemlookups.getString(material).isEmpty()) {
-				mat = parseMaterial(PropertyPool.itemlookups
+			if (!UtilityProperties.itemlookups.getString(material).isEmpty()) {
+				mat = parseMaterial(UtilityProperties.itemlookups
 						.getString(material));
 			} else if (isNumber(material)) {
 				mat = Material.getMaterial(Integer.parseInt(material));

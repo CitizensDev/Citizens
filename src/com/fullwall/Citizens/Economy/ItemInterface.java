@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
-import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class ItemInterface {
@@ -23,9 +23,10 @@ public class ItemInterface {
 	 */
 	public static boolean hasEnough(Player player, Operation op) {
 		// Get the price/currency from the enum name.
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
+		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+				op, currencyAddendum));
 		// The current count.
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
@@ -66,8 +67,9 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getCurrency(Operation op, ChatColor colour) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		int ID = PropertyPool.getCurrencyID(Operation.getString(op,
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
+		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
 		return Material.getMaterial(ID) != null ? price + " "
 				+ Material.getMaterial(ID).name() + colour + "(s)" : "";
@@ -90,9 +92,10 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getRemainder(Operation op, Player player) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
+		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+				op, currencyAddendum));
 		double current = price;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
@@ -110,9 +113,10 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static double pay(Player player, Operation op) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
-		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
+		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+				op, currencyAddendum));
 		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
@@ -137,10 +141,10 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static double pay(Player player, Operation op, int multiple) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum))
-				* multiple;
-		int currencyID = PropertyPool.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum)) * multiple;
+		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+				op, currencyAddendum));
 		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {

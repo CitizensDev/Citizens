@@ -27,12 +27,14 @@ public class TickTask implements Runnable {
 
 	@Override
 	public void run() {
+		HumanNPC npc;
+		int entityID;
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
 				.entrySet()) {
 			{
-				HumanNPC npc = entry.getValue();
+				npc = entry.getValue();
 				npc.updateMovement();
-				int entityID = entry.getKey();
+				entityID = entry.getKey();
 				// Moves the NPC towards the player
 				// (WALKING&Jumping)
 				// entry.getValue().setTarget(p);

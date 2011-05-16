@@ -12,6 +12,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -64,7 +65,7 @@ public class MessageUtils {
 			text = array.get(plugin.basicNPCHandler.ran.nextInt(array.size()));
 		}
 		if (text.isEmpty())
-			text = PropertyPool.getDefaultText();
+			text = UtilityProperties.getDefaultText();
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
 				text = Constants.chatFormat.replace("&", "§").replace("%name%",

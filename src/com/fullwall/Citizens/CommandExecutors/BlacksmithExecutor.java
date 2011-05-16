@@ -15,7 +15,7 @@ import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -91,7 +91,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			BlacksmithPropertyPool.saveState(npc);
+			PropertyManager.get("blacksmith").saveState(npc);
 		}
 		return returnval;
 	}

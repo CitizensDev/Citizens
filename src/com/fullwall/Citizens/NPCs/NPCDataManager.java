@@ -3,7 +3,6 @@ package com.fullwall.Citizens.NPCs;
 import java.util.ArrayList;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Utils.PropertyPool;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -54,10 +53,7 @@ public class NPCDataManager extends NPCManager {
 				npc.getInventory().setItem(0, new ItemStack(matHand, 1));
 			else
 				npc.getInventory().setItem(0, null);
-
-			PropertyPool.items.setString(npc.getUID(), "" + items.get(0) + ","
-					+ items.get(1) + "," + items.get(2) + "," + items.get(3)
-					+ "," + items.get(4) + ",");
+			npc.getNPCData().setItems(items);
 		}
 	}
 }

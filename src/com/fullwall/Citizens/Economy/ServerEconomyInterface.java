@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.register.payment.Method.MethodAccount;
 
@@ -73,7 +73,8 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static String getRemainder(Operation op, Player player) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
 		MethodAccount acc = Citizens.economy.getAccount(player.getName());
 		return "" + (price - acc.balance());
 	}
@@ -86,7 +87,8 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static boolean hasEnough(Player player, Operation op) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
 		return playerHasEnough(player.getName(), price);
 	}
 
@@ -120,7 +122,8 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static double pay(Player player, Operation op) {
-		double price = PropertyPool.getPrice(Operation.getString(op, addendum));
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
 		subtract(player.getName(), price);
 		return price;
 	}
@@ -137,7 +140,8 @@ public class ServerEconomyInterface {
 	public static double pay(Player player, Operation op, int multiple) {
 		double price = 0;
 		if (hasEnough(player, op)) {
-			price = PropertyPool.getPrice(Operation.getString(op, addendum));
+			price = UtilityProperties.getPrice(Operation
+					.getString(op, addendum));
 			subtract(player.getName(), price * multiple);
 		} else {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));

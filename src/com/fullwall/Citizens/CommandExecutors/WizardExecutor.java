@@ -10,10 +10,10 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
-import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WizardExecutor implements CommandExecutor {
@@ -96,8 +96,7 @@ public class WizardExecutor implements CommandExecutor {
 					}
 					if (type != -1) {
 						if (type <= npc.getWizard().getNrOfLocations()) {
-							this.removeLocation(player, npc,
-									type);
+							this.removeLocation(player, npc, type);
 						} else {
 							sender.sendMessage(ChatColor.RED
 									+ "Wizard "
@@ -111,7 +110,7 @@ public class WizardExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			WizardPropertyPool.saveState(npc);
+			PropertyManager.get("wizard").saveState(npc);
 		}
 		return returnval;
 	}

@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.Questers;
 
 import com.fullwall.Citizens.Interfaces.Toggleable;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuesterNPC implements Toggleable {
@@ -33,11 +33,11 @@ public class QuesterNPC implements Toggleable {
 
 	@Override
 	public void saveState() {
-		QuesterPropertyPool.saveState(npc);
+		PropertyManager.get(getType()).saveState(npc);
 	}
 
 	@Override
 	public void registerState() {
-		QuesterPropertyPool.saveQuester(npc.getUID(), true);
+		PropertyManager.get(getType()).register(npc);
 	}
 }

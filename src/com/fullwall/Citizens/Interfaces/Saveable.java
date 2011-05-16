@@ -15,9 +15,11 @@ public abstract class Saveable {
 
 	public abstract void removeFromFiles(HumanNPC npc);
 
-	public abstract void set(HumanNPC npc);
+	public abstract void register(HumanNPC npc);
 
-	public abstract void set(HumanNPC npc, boolean value);
+	public abstract void setEnabled(HumanNPC npc, boolean value);
+
+	public abstract boolean getEnabled(HumanNPC npc);
 
 	public PropertyHandler getFile(String name) {
 		return PropertyManager.getHandler(this.getClass(), name, this);

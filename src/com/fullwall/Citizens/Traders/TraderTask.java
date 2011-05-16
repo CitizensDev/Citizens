@@ -20,7 +20,6 @@ import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.Traders.TraderInterface.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderTask implements Runnable {
@@ -296,7 +295,6 @@ public class TraderTask implements Runnable {
 		stop = true;
 		this.npc.getTrader().setFree(true);
 		sendLeaveMessage();
-		TraderPropertyPool.saveState(npc);
 		int index = TraderInterface.tasks.indexOf(taskID);
 		if (index != -1)
 			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));

@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Questers.Quest;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -83,7 +83,7 @@ public class QuesterExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			QuesterPropertyPool.saveState(npc);
+			PropertyManager.get("quester").saveState(npc);
 		}
 		return returnval;
 	}

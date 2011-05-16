@@ -12,17 +12,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
-import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
-import com.fullwall.Citizens.Healers.HealerNPC;
-import com.fullwall.Citizens.Questers.QuesterNPC;
-import com.fullwall.Citizens.Traders.TraderNPC;
-import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
-import com.fullwall.Citizens.Utils.HealerPropertyPool;
-import com.fullwall.Citizens.Utils.PropertyPool;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
-import com.fullwall.Citizens.Utils.WizardPropertyPool;
-import com.fullwall.Citizens.Wizards.WizardNPC;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCList;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
@@ -51,10 +41,11 @@ public class NPCManager {
 	 * @param owner
 	 */
 	public void registerNPC(String name, int UID, String owner) {
-		Location loc = PropertyPool.getLocationFromID(UID);
+		Location loc = PropertyManager.getBasicProperties().getLocationFromID(
+				UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
-		String colour = PropertyPool.getColour(UID);// StringUtils.getColourFromString(name);
+		String colour = PropertyManager.getBasicProperties().getColour(UID);// StringUtils.getColourFromString(name);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
 		if (!colour.isEmpty() && !colour.equals("§f"))
@@ -72,35 +63,20 @@ public class NPCManager {
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
-		ArrayList<Integer> items = PropertyPool.getItems(UID);
+		ArrayList<Integer> items = PropertyManager.getBasicProperties()
+				.getItems(UID);
 
-		loadBasic(npc, UID, items);
-		if (TraderPropertyPool.isTrader(UID)) {
-			loadTrader(npc, npc.getTrader(), UID);
-		}
-		if (HealerPropertyPool.isHealer(UID)) {
-			loadHealer(npc, npc.getHealer(), UID);
-		}
-		if (WizardPropertyPool.isWizard(UID)) {
-			loadWizard(npc, npc.getWizard(), UID);
-		}
-		if (BlacksmithPropertyPool.isBlacksmith(UID)) {
-			loadBlacksmith(npc, npc.getBlacksmith(), UID);
-		}
-		if(QuesterPropertyPool.isQuester(UID)) {
-			loadQuester(npc, npc.getQuester(), UID);
-		}
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
-				.get(UID), PropertyPool.getLookWhenClose(UID), PropertyPool
+				.get(UID), PropertyManager.getBasicProperties()
+				.getLookWhenClose(UID), PropertyManager.getBasicProperties()
 				.getTalkWhenClose(UID), owner, npc.getBalance()));
-		PropertyPool.saveState(UID, npc.getNPCData());
+		PropertyManager.load(npc);
+
 		registerUID(UID, name);
 		list.put(UID, npc);
-		TraderPropertyPool.saveState(npc);
-		HealerPropertyPool.saveState(npc);
-		WizardPropertyPool.saveState(npc);
-		BlacksmithPropertyPool.saveState(npc);
-		QuesterPropertyPool.saveState(npc);
+
+		PropertyManager.save(npc);
+
 		npc.getPlayer().setSleepingIgnored(true);
 	}
 
@@ -113,92 +89,14 @@ public class NPCManager {
 	 * @return
 	 */
 	public int registerNPC(String name, Location loc, String owner) {
-		int UID = PropertyPool.getNewNpcID();
-		PropertyPool.saveLocation(name, loc, UID);
-		PropertyPool.setLookWhenClose(UID, Constants.defaultFollowingEnabled);
-		PropertyPool.setTalkWhenClose(UID, Constants.defaultTalkWhenClose);
+		int UID = PropertyManager.getBasicProperties().getNewNpcID();
+		PropertyManager.getBasicProperties().saveLocation(name, loc, UID);
+		PropertyManager.getBasicProperties().setLookWhenClose(UID,
+				Constants.defaultFollowingEnabled);
+		PropertyManager.getBasicProperties().setTalkWhenClose(UID,
+				Constants.defaultTalkWhenClose);
 		registerNPC(name, UID, owner);
 		return UID;
-	}
-
-	/**
-	 * Loads trader data for an npc.
-	 * 
-	 * @param npc
-	 * @param trader
-	 * @param UID
-	 */
-	private void loadTrader(HumanNPC npc, TraderNPC trader, int UID) {
-		npc.setTrader(TraderPropertyPool.getTraderState(UID));
-		npc.getInventory().setContents(
-				TraderPropertyPool.getInventory(UID).getContents());
-		npc.setBalance(PropertyPool.getBalance(UID));
-		trader.setUnlimited(TraderPropertyPool.getUnlimited(UID));
-		trader.setStocking(TraderPropertyPool.getStockables(UID));
-		TraderPropertyPool.saveState(npc);
-	}
-
-	/**
-	 * Loads basic data for an npc.
-	 * 
-	 * @param npc
-	 * @param UID
-	 * @param items
-	 */
-	private void loadBasic(HumanNPC npc, int UID, ArrayList<Integer> items) {
-		NPCDataManager.addItems(npc, items);
-		PropertyPool.getSetText(UID);
-		npc.setBalance(PropertyPool.getBalance(UID));
-	}
-
-	/**
-	 * Loads healer data for an npc.
-	 * 
-	 * @param npc
-	 * @param healer
-	 * @param UID
-	 */
-	private void loadHealer(HumanNPC npc, HealerNPC healer, int UID) {
-		npc.setHealer(HealerPropertyPool.getHealerState(UID));
-		healer.setStrength(HealerPropertyPool.getStrength(UID));
-		HealerPropertyPool.saveState(npc);
-	}
-
-	/**
-	 * Loads wizard data for an npc.
-	 * 
-	 * @param npc
-	 * @param wizard
-	 * @param UID
-	 */
-	private void loadWizard(HumanNPC npc, WizardNPC wizard, int UID) {
-		npc.setWizard(WizardPropertyPool.getWizardState(UID));
-		wizard.setLocations(WizardPropertyPool.getLocations(UID));
-		WizardPropertyPool.saveState(npc);
-	}
-
-	/**
-	 * Loads blacksmith data for an npc.
-	 * 
-	 * @param npc
-	 * @param blacksmith
-	 * @param UID
-	 */
-	private void loadBlacksmith(HumanNPC npc, BlacksmithNPC blacksmith, int UID) {
-		npc.setBlacksmith(BlacksmithPropertyPool.getBlacksmithState(UID));
-		BlacksmithPropertyPool.saveState(npc);
-	}
-
-	/**
-	 * Loads quester data for an npc.
-	 * 
-	 * @param npc
-	 * @param quester
-	 * @param UID
-	 */
-	private void loadQuester(HumanNPC npc, QuesterNPC quester, int UID) {
-		npc.setQuester(QuesterPropertyPool.getQuesterState(UID));
-		QuesterPropertyPool.saveState(npc);
 	}
 
 	/**
@@ -209,7 +107,7 @@ public class NPCManager {
 	 */
 	public static void setBasicNPCText(int UID, ArrayList<String> text) {
 		BasicNPCTexts.put(UID, text);
-		PropertyPool.saveText(UID, text);
+		getNPC(UID).getNPCData().setTexts(text);
 	}
 
 	/**
@@ -258,10 +156,7 @@ public class NPCManager {
 	 * @param loc
 	 */
 	public void moveNPC(HumanNPC npc, Location loc) {
-		String location = loc.getWorld().getName() + "," + loc.getX() + ","
-				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
-				+ loc.getPitch();
-		PropertyPool.locations.setString(npc.getUID(), location);
+		npc.getNPCData().setLocation(loc);
 		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
 	}
 
@@ -305,15 +200,9 @@ public class NPCManager {
 	 */
 	public void removeNPC(int UID) {
 		GlobalUIDs.remove(UID);
-		String actualName = NPCManager.getNPC(UID).getName();
-		String playerName = NPCManager.getNPC(UID).getOwner();
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
-		PropertyPool.removeFromFiles(actualName, playerName, UID);
-		TraderPropertyPool.removeFromFiles(UID);
-		HealerPropertyPool.removeFromFiles(UID);
-		BlacksmithPropertyPool.removeFromFiles(UID);
-		WizardPropertyPool.removeFromFiles(UID);
+		PropertyManager.remove(getNPC(UID));
 	}
 
 	/**
@@ -418,7 +307,8 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateOwnership(Player p, int UID) {
-		String[] npcOwners = PropertyPool.getOwner(UID).split(",");
+		String[] npcOwners = PropertyManager.getBasicProperties().getOwner(UID)
+				.split(",");
 		for (int i = 0; i < npcOwners.length; i++) {
 			if (npcOwners[i].equals(p.getName()))
 				return true;

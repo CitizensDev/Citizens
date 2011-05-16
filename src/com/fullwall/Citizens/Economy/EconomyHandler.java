@@ -3,7 +3,7 @@ package com.fullwall.Citizens.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class EconomyHandler {
@@ -80,8 +80,8 @@ public class EconomyHandler {
 	 * Checks if types of economy are being used.
 	 */
 	public static void setUpVariables() {
-		useEconomy = PropertyPool.checkEconomyEnabled();
-		useServerEconomy = PropertyPool.checkServerEconomyEnabled();
+		useEconomy = UtilityProperties.checkEconomyEnabled();
+		useServerEconomy = UtilityProperties.checkServerEconomyEnabled();
 	}
 
 	/**

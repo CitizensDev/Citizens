@@ -12,13 +12,9 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
-import com.fullwall.Citizens.Utils.HealerPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
 import com.fullwall.Citizens.Utils.StringUtils;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
-import com.fullwall.Citizens.Utils.WizardPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TogglerExecutor implements CommandExecutor {
@@ -63,7 +59,7 @@ public class TogglerExecutor implements CommandExecutor {
 		} else {
 			if (args[0].equalsIgnoreCase("trader")) {
 				if (Permission.hasPermission("citizens.trader.create", sender)) {
-					if (!TraderPropertyPool.isTrader(npc.getUID())) {
+					if (!PropertyManager.get("trader").exists(npc)) {
 						buyState(player, npc.getTrader(),
 								Operation.TRADER_NPC_CREATE);
 					} else {
@@ -75,7 +71,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("quester")) {
 				if (Permission.hasPermission("citizens.quester.create", sender)) {
-					if (!QuesterPropertyPool.isQuester(npc.getUID())) {
+					if (!PropertyManager.get("quester").exists(npc)) {
 						buyState(player, npc.getQuester(),
 								Operation.QUESTER_NPC_CREATE);
 					} else {
@@ -87,7 +83,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("healer")) {
 				if (Permission.hasPermission("citizens.healer.create", sender)) {
-					if (!HealerPropertyPool.isHealer(npc.getUID())) {
+					if (!PropertyManager.get("healer").exists(npc)) {
 						buyState(player, npc.getHealer(),
 								Operation.HEALER_NPC_CREATE);
 					} else {
@@ -103,7 +99,7 @@ public class TogglerExecutor implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("wizard")) {
 				if (Permission.hasPermission("citizens.wizard.create", sender)) {
 					// sender.sendMessage("Wizards are still a little buggy, so are disabled for now.");
-					if (!WizardPropertyPool.isWizard(npc.getUID())) {
+					if (!PropertyManager.get("wizard").exists(npc)) {
 						buyState(player, npc.getWizard(),
 								Operation.WIZARD_NPC_CREATE);
 					} else {
@@ -117,7 +113,7 @@ public class TogglerExecutor implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("blacksmith")) {
 				if (Permission.hasPermission("citizens.blacksmith.create",
 						sender)) {
-					if (!BlacksmithPropertyPool.isBlacksmith(npc.getUID())) {
+					if (!PropertyManager.get("blacksmith").exists(npc)) {
 						buyState(player, npc.getBlacksmith(),
 								Operation.BLACKSMITH_NPC_CREATE);
 					} else {

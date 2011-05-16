@@ -17,12 +17,12 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderExecutor implements CommandExecutor {
@@ -112,7 +112,7 @@ public class TraderExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			TraderPropertyPool.saveState(npc);
+			PropertyManager.get("trader").saveState(npc);
 		}
 		return returnval;
 	}

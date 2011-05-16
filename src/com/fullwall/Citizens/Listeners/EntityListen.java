@@ -22,7 +22,6 @@ import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Traders.TraderInterface;
-import com.fullwall.Citizens.Utils.HealerPropertyPool;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.Citizens.Wizards.WizardNPC;
@@ -68,14 +67,12 @@ public class EntityListen extends EntityListener {
 				if (entity instanceof Player) {
 					Player player = (Player) entity;
 					int playerHealth = player.getHealth();
-					int healerHealth = HealerPropertyPool.getStrength(npc
-							.getUID());
+					int healerHealth = npc.getHealer().getStrength();
 					if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
 						if (playerHealth <= 19) {
 							if (healerHealth >= 1) {
 								player.setHealth(playerHealth + 1);
-								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth - 1);
+								npc.getHealer().setStrength(healerHealth - 1);
 								player.sendMessage(ChatColor.GREEN
 										+ "You drained health from the healer "
 										+ StringUtils.yellowify(npc
@@ -91,11 +88,9 @@ public class EntityListen extends EntityListener {
 						}
 					} else if (player.getItemInHand().getTypeId() == Constants.healerGiveHealthItem) {
 						if (playerHealth >= 1) {
-							if (healerHealth < HealerPropertyPool
-									.getMaxStrength(npc.getUID())) {
+							if (healerHealth < npc.getHealer().getMaxStrength()) {
 								player.setHealth(playerHealth - 1);
-								HealerPropertyPool.saveStrength(npc.getUID(),
-										healerHealth + 1);
+								npc.getHealer().setStrength(healerHealth + 1);
 								player.sendMessage(ChatColor.GREEN
 										+ "You donated some health to the healer "
 										+ StringUtils.yellowify(npc
@@ -112,11 +107,9 @@ public class EntityListen extends EntityListener {
 											.getStrippedName()));
 						}
 					} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
-						if (healerHealth != HealerPropertyPool
-								.getMaxStrength(npc.getUID())) {
-							HealerPropertyPool.saveStrength(npc.getUID(),
-									HealerPropertyPool.getMaxStrength(npc
-											.getUID()));
+						if (healerHealth != npc.getHealer().getMaxStrength()) {
+							npc.getHealer().setStrength(
+									npc.getHealer().getMaxStrength());
 							player.sendMessage(ChatColor.GREEN
 									+ "You restored all of "
 									+ StringUtils.yellowify(npc

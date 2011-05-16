@@ -3,7 +3,7 @@ package com.fullwall.Citizens.Blacksmiths;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Interfaces.Toggleable;
-import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithNPC implements Toggleable {
@@ -40,14 +40,14 @@ public class BlacksmithNPC implements Toggleable {
 
 	@Override
 	public void saveState() {
-		BlacksmithPropertyPool.saveState(npc);
+		PropertyManager.get("blacksmith").saveState(npc);
 	}
 
 	@Override
 	public void registerState() {
-		BlacksmithPropertyPool.saveBlacksmith(npc.getUID(), true);
+		PropertyManager.get("blacksmith").register(npc);
 	}
-	
+
 	/**
 	 * Validate that an item has a durability and can be repaired
 	 * 
@@ -68,7 +68,7 @@ public class BlacksmithNPC implements Toggleable {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Validate that the item to repair is armor
 	 * 

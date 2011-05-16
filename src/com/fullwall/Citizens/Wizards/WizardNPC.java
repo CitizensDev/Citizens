@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import com.fullwall.Citizens.Interfaces.Toggleable;
-import com.fullwall.Citizens.Utils.WizardPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -57,12 +57,12 @@ public class WizardNPC implements Toggleable {
 
 	@Override
 	public void saveState() {
-		WizardPropertyPool.saveState(npc);
+		PropertyManager.get(getType()).saveState(npc);
 	}
 
 	@Override
 	public void registerState() {
-		WizardPropertyPool.saveWizard(npc.getUID(), true);
+		PropertyManager.get(getType()).register(npc);
 	}
 
 	/**
@@ -82,7 +82,6 @@ public class WizardNPC implements Toggleable {
 		if (locations.split(":")[0].isEmpty()) {
 			nrOfLocations = 0;
 		}
-		WizardPropertyPool.saveLocations(npc.getUID(), locations);
 	}
 
 	/**
@@ -96,7 +95,6 @@ public class WizardNPC implements Toggleable {
 		if (locations.split(":")[0].isEmpty()) {
 			nrOfLocations = 0;
 		}
-		WizardPropertyPool.saveLocations(npc.getUID(), locations);
 	}
 
 	/**

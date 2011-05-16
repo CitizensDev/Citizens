@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.Healers;
 
 import com.fullwall.Citizens.Interfaces.Toggleable;
-import com.fullwall.Citizens.Utils.HealerPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -9,7 +9,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
  */
 public class HealerNPC implements Toggleable {
 	private HumanNPC npc;
-	private int strength;
+	private int strength = 10;
+	private int level = 1;
 
 	public HealerNPC(HumanNPC npc) {
 		this.npc = npc;
@@ -35,10 +36,6 @@ public class HealerNPC implements Toggleable {
 	@Override
 	public void toggle() {
 		npc.setHealer(!npc.isHealer());
-		if (npc.isHealer()) {
-			HealerPropertyPool.saveLevel(npc.getUID(), 1);
-			HealerPropertyPool.saveStrength(npc.getUID(), 10);
-		}
 	}
 
 	@Override
@@ -58,11 +55,23 @@ public class HealerNPC implements Toggleable {
 
 	@Override
 	public void saveState() {
-		HealerPropertyPool.saveState(npc);
+		PropertyManager.get(getType()).saveState(npc);
 	}
 
 	@Override
 	public void registerState() {
-		HealerPropertyPool.saveHealer(npc.getUID(), true);
+		PropertyManager.get(getType()).register(npc);
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public int getMaxStrength() {
+		return level * 10;
 	}
 }

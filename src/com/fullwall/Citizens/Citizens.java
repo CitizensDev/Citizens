@@ -22,12 +22,8 @@ import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.BlacksmithPropertyPool;
-import com.fullwall.Citizens.Utils.HealerPropertyPool;
-import com.fullwall.Citizens.Utils.PropertyPool;
-import com.fullwall.Citizens.Utils.QuesterPropertyPool;
-import com.fullwall.Citizens.Utils.TraderPropertyPool;
-import com.fullwall.Citizens.Utils.WizardPropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -99,12 +95,7 @@ public class Citizens extends JavaPlugin {
 						@Override
 						public void run() {
 							log.info("[Citizens]: Saving npc files to disk...");
-							PropertyPool.saveAll();
-							TraderPropertyPool.saveAll();
-							HealerPropertyPool.saveAll();
-							WizardPropertyPool.saveAll();
-							BlacksmithPropertyPool.saveAll();
-							QuesterPropertyPool.saveAll();
+							PropertyManager.saveFiles();
 							log.info("[Citizens]: Saved.");
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
@@ -118,12 +109,7 @@ public class Citizens extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		basicNPCHandler.despawnAllNPCs();
 		// Save the local copy of our files to disk.
-		PropertyPool.saveAll();
-		TraderPropertyPool.saveAll();
-		HealerPropertyPool.saveAll();
-		WizardPropertyPool.saveAll();
-		BlacksmithPropertyPool.saveAll();
-		QuesterPropertyPool.saveAll();
+		PropertyManager.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") disabled");
 	}
@@ -204,85 +190,65 @@ public class Citizens extends JavaPlugin {
 		EconomyHandler.setUpVariables();
 
 		// Boolean defaults
-		Constants.convertSlashes = PropertyPool.settings
+		Constants.convertSlashes = UtilityProperties.settings
 				.getBoolean("slashes-to-spaces");
-		Constants.defaultFollowingEnabled = PropertyPool.settings
+		Constants.defaultFollowingEnabled = UtilityProperties.settings
 				.getBoolean("default-enable-following");
-		Constants.defaultTalkWhenClose = PropertyPool.settings
+		Constants.defaultTalkWhenClose = UtilityProperties.settings
 				.getBoolean("default-talk-when-close");
-		Constants.useNPCColours = PropertyPool.settings
+		Constants.useNPCColours = UtilityProperties.settings
 				.getBoolean("use-npc-colours");
 
 		// String defaults
-		Constants.chatFormat = PropertyPool.settings.getString("chat-format");
-		Constants.NPCColour = PropertyPool.settings.getString("npc-colour");
+		Constants.chatFormat = UtilityProperties.settings
+				.getString("chat-format");
+		Constants.NPCColour = UtilityProperties.settings
+				.getString("npc-colour");
 
 		// Double defaults
-		Constants.npcRange = PropertyPool.settings.getDouble("look-range");
+		Constants.npcRange = UtilityProperties.settings.getDouble("look-range");
 
 		// Int defaults
-		Constants.maxNPCsPerPlayer = PropertyPool.settings
+		Constants.maxNPCsPerPlayer = UtilityProperties.settings
 				.getInt("max-npcs-per-player");
-		Constants.healerGiveHealthItem = PropertyPool.settings
+		Constants.healerGiveHealthItem = UtilityProperties.settings
 				.getInt("healer-give-health-item");
-		Constants.healerTakeHealthItem = PropertyPool.settings
+		Constants.healerTakeHealthItem = UtilityProperties.settings
 				.getInt("healer-take-health-item");
-		Constants.healerHealthRegenIncrement = PropertyPool.settings
+		Constants.healerHealthRegenIncrement = UtilityProperties.settings
 				.getInt("healer-health-regen-increment");
-		Constants.tickDelay = PropertyPool.settings.getInt("tick-delay");
-		Constants.saveDelay = PropertyPool.settings.getInt("save-tick-delay");
-		Constants.wizardMaxLocations = PropertyPool.settings
+		Constants.tickDelay = UtilityProperties.settings.getInt("tick-delay");
+		Constants.saveDelay = UtilityProperties.settings
+				.getInt("save-tick-delay");
+		Constants.wizardMaxLocations = UtilityProperties.settings
 				.getInt("wizard-max-locations");
-		Constants.wizardInteractItem = PropertyPool.settings
+		Constants.wizardInteractItem = UtilityProperties.settings
 				.getInt("wizard-interact-item");
 	}
 
 	private void setupNPCs() {
 		// Start reloading old NPCs from the config files.
-		String[] list = PropertyPool.locations.getString("list").split(",");
+		String[] list = PropertyManager.getBasicProperties().locations
+				.getString("list").split(",");
 		if (list.length > 0 && !list[0].isEmpty()) {
 			for (String name : list) {
-				// Conversion from old to new save format:
-				// Maybe ready to remove now? For next release anyways.
-				if (name.split("_", 2).length == 1
-						&& !name.split("_", 2)[0].isEmpty()) {
-					int UID = PropertyPool.getNewNpcID();
-					String oldName = name;
-					name = UID + "_" + name;
-					PropertyPool.locations.setString(UID,
-							PropertyPool.locations.getString(oldName));
-					PropertyPool.locations.removeKey(oldName);
-					PropertyPool.colours.setString(UID,
-							PropertyPool.colours.getString(oldName));
-					PropertyPool.colours.removeKey(oldName);
-					PropertyPool.items.setString(UID,
-							PropertyPool.items.getString(oldName));
-					PropertyPool.items.removeKey(oldName);
-					PropertyPool.texts.setString(UID,
-							PropertyPool.texts.getString(oldName));
-					PropertyPool.texts.removeKey(oldName);
-					PropertyPool.lookat.setBoolean(UID, true);
-					PropertyPool.talkwhenclose.setBoolean(UID, false);
-					PropertyPool.locations.setString(
-							"list",
-							PropertyPool.locations.getString("list").replace(
-									oldName, name));
-					list = PropertyPool.locations.getString("list").split(",");
-				}
-				Location loc = PropertyPool.getLocationFromID(Integer
-						.valueOf(name.split("_")[0]));
+				Location loc = PropertyManager.getBasicProperties()
+						.getLocationFromID(Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					basicNPCHandler.spawnExistingNPC(name.split("_", 2)[1],
+					basicNPCHandler.spawnExistingNPC(
+							name.split("_", 2)[1],
 							Integer.valueOf(name.split("_")[0]),
-							PropertyPool.getOwner(Integer.valueOf(name
-									.split("_")[0])));
-					ArrayList<String> text = PropertyPool.getText(Integer
-							.valueOf(name.split("_")[0]));
+							PropertyManager.getBasicProperties().getOwner(
+									Integer.valueOf(name.split("_")[0])));
+					ArrayList<String> text = PropertyManager
+							.getBasicProperties().getText(
+									Integer.valueOf(name.split("_")[0]));
 					if (text != null)
 						basicNPCHandler.setNPCText(
 								Integer.valueOf(name.split("_")[0]), text);
 				} else {
-					PropertyPool.deleteNameFromList(name);
+					PropertyManager.getBasicProperties().deleteNameFromList(
+							name);
 				}
 			}
 		}
@@ -299,15 +265,15 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether "*" is used.
 	 */
 	public boolean canSelectAny() {
-		String[] items = PropertyPool.settings.getString("select-item").split(
-				",");
+		String[] items = UtilityProperties.settings.getString("select-item")
+				.split(",");
 		ArrayList<String> item = new ArrayList<String>();
 		for (String s : items) {
 			item.add(s);
 		}
 		if (item.contains("*"))
 			return true;
-		items = PropertyPool.settings.getString("items").split(",");
+		items = UtilityProperties.settings.getString("items").split(",");
 		item = new ArrayList<String>();
 		for (String s : items) {
 			item.add(s);
@@ -325,8 +291,9 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether the ID is used for a tool.
 	 */
 	public boolean validateTool(String key, int type) {
-		if (PropertyPool.settings.getBoolean("item-list-on")) {
-			String[] items = PropertyPool.settings.getString(key).split(",");
+		if (UtilityProperties.settings.getBoolean("item-list-on")) {
+			String[] items = UtilityProperties.settings.getString(key).split(
+					",");
 			ArrayList<String> item = new ArrayList<String>();
 			for (String s : items) {
 				item.add(s);
@@ -390,8 +357,7 @@ public class Citizens extends JavaPlugin {
 		if (!NPCManager.getNPCList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
 					.entrySet()) {
-				int level = HealerPropertyPool.getLevel(entry.getValue()
-						.getUID());
+				int level = entry.getValue().getHealer().getLevel();
 				delay = Constants.healerHealthRegenIncrement * (11 - level);
 				return delay;
 			}

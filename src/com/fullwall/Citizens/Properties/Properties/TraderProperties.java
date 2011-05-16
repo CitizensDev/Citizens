@@ -1,7 +1,6 @@
-package com.fullwall.Citizens.Properties;
+package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.ArrayList;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.server.InventoryPlayer;
@@ -11,47 +10,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
+import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.Citizens.Traders.Check;
 import com.fullwall.Citizens.Traders.ItemPrice;
 import com.fullwall.Citizens.Traders.Stockable;
-import com.fullwall.Citizens.Utils.PropertyPool;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderProperties extends Saveable {
-	public PropertyHandler traders;
-	public PropertyHandler inventories;
-	public PropertyHandler stocking;
-	public PropertyHandler unlimiteds;
-
-	public TraderProperties() {
-		traders = new PropertyHandler(
-				"plugins/Citizens/Traders/Citizens.traders");
-		inventories = new PropertyHandler(
-				"plugins/Citizens/Traders/Citizens.inventories");
-		stocking = new PropertyHandler(
-				"plugins/Citizens/Traders/Citizens.stocking");
-		unlimiteds = new PropertyHandler(
-				"plugins/Citizens/Traders/Citizens.unlimited");
-	}
-
-	public void saveTrader(int UID, boolean state) {
-		traders.setBoolean(UID, state);
-	}
-
-	public boolean isTrader(int UID) {
-		return traders.keyExists(UID);
-	}
-
-	public boolean getTraderState(int UID) {
-		return traders.getBoolean(UID);
-	}
-
-	public void removeTrader(int UID) {
-		traders.removeKey(UID);
-	}
+	public PropertyHandler traders = new PropertyHandler(
+			"plugins/Citizens/Traders/Citizens.traders");
+	public PropertyHandler inventories = new PropertyHandler(
+			"plugins/Citizens/Traders/Citizens.inventories");
+	public PropertyHandler stocking = new PropertyHandler(
+			"plugins/Citizens/Traders/Citizens.stocking");
+	public PropertyHandler unlimiteds = new PropertyHandler(
+			"plugins/Citizens/Traders/Citizens.unlimited");
 
 	public void saveInventory(int UID, PlayerInventory inv) {
 		String save = "";
@@ -96,8 +72,10 @@ public class TraderProperties extends Saveable {
 		return unlimiteds.getBoolean(UID);
 	}
 
-	public String addToStockableString(int UID, String s, Stockable st) {
-		return s += st.toString() + ";";
+	public String addToStockableString(String s, Stockable st) {
+		if (s.contains(st.toString() + ";"))
+			return "";
+		return st.toString() + ";";
 	}
 
 	public void setStockables(int UID, String set) {
@@ -115,10 +93,14 @@ public class TraderProperties extends Saveable {
 	public void saveStockables(int UID,
 			ConcurrentHashMap<Check, Stockable> stockables) {
 		String string = "";
-		for (Entry<Check, Stockable> entry : stockables.entrySet()) {
-			string += addToStockableString(UID, string, entry.getValue());
-			setStockables(UID, string);
+		setStockables(UID, string);
+		int count = 0;
+		for (Stockable entry : stockables.values()) {
+			string += addToStockableString(string, entry);
+			count += 1;
 		}
+		Citizens.log.info("" + count);
+		setStockables(UID, string);
 	}
 
 	public ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
@@ -135,10 +117,10 @@ public class TraderProperties extends Saveable {
 				switch (i) {
 				case 0:
 					String[] split = main.split("/");
-					MaterialData data = new MaterialData(
-							Integer.parseInt(split[2]));
 					stack = new ItemStack(Integer.parseInt(split[0]),
 							Integer.parseInt(split[1]));
+					MaterialData data = new MaterialData(stack.getType(),
+							Byte.parseByte(split[2]));
 					if (data != null)
 						stack.setData(data);
 					break;
@@ -166,25 +148,6 @@ public class TraderProperties extends Saveable {
 		return stockables;
 	}
 
-	/**
-	 * Copies all data from one ID to another.
-	 * 
-	 * @param UID
-	 * @param nextUID
-	 */
-	@Override
-	public void copy(int UID, int nextUID) {
-		if (traders.keyExists(UID))
-			traders.setString(nextUID, traders.getString(UID));
-		if (inventories.keyExists(UID))
-			inventories.setString(nextUID, inventories.getString(UID));
-		if (stocking.keyExists(UID))
-			stocking.setString(nextUID, stocking.getString(UID));
-		if (unlimiteds.keyExists(UID))
-			unlimiteds.setString(nextUID, unlimiteds.getString(UID));
-		saveFiles();
-	}
-
 	@Override
 	public void saveFiles() {
 		traders.save();
@@ -195,11 +158,22 @@ public class TraderProperties extends Saveable {
 
 	@Override
 	public void saveState(HumanNPC npc) {
-		if (exists(npc))
-			set(npc, npc.isTrader());
-		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
-		PropertyPool.saveBalance(npc.getUID(), npc.getBalance());
-		saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
+		if (exists(npc)) {
+			setEnabled(npc, npc.isTrader());
+			saveInventory(npc.getUID(), npc.getPlayer().getInventory());
+			saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
+			saveStockables(npc.getUID(), npc.getTrader().getStocking());
+		}
+	}
+
+	@Override
+	public void loadState(HumanNPC npc) {
+		npc.setTrader(getEnabled(npc));
+		npc.getInventory()
+				.setContents(getInventory(npc.getUID()).getContents());
+		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
+		npc.getTrader().setStocking(getStockables(npc.getUID()));
+		saveState(npc);
 	}
 
 	@Override
@@ -211,18 +185,23 @@ public class TraderProperties extends Saveable {
 	}
 
 	@Override
-	public void set(HumanNPC npc) {
-		set(npc, true);
+	public void register(HumanNPC npc) {
+		setEnabled(npc, true);
 	}
 
 	@Override
-	public void set(HumanNPC npc, boolean value) {
-		saveTrader(npc.getUID(), value);
+	public void setEnabled(HumanNPC npc, boolean value) {
+		traders.setBoolean(npc.getUID(), value);
+	}
+
+	@Override
+	public boolean getEnabled(HumanNPC npc) {
+		return traders.getBoolean(npc.getUID());
 	}
 
 	@Override
 	public boolean exists(HumanNPC npc) {
-		return isTrader(npc.getUID());
+		return traders.keyExists(npc.getUID());
 	}
 
 	@Override
@@ -231,7 +210,14 @@ public class TraderProperties extends Saveable {
 	}
 
 	@Override
-	public void loadState(HumanNPC npc) {
-		// TODO Auto-generated method stub
+	public void copy(int UID, int nextUID) {
+		if (traders.keyExists(UID))
+			traders.setString(nextUID, traders.getString(UID));
+		if (inventories.keyExists(UID))
+			inventories.setString(nextUID, inventories.getString(UID));
+		if (stocking.keyExists(UID))
+			stocking.setString(nextUID, stocking.getString(UID));
+		if (unlimiteds.keyExists(UID))
+			unlimiteds.setString(nextUID, unlimiteds.getString(UID));
 	}
 }

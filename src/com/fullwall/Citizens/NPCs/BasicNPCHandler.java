@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -78,9 +78,11 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	public void removeNPC(int UID) {
 		super.removeNPC(UID);
-		if (PropertyPool.locations.getString("list").isEmpty()) {
-			PropertyPool.locations.removeKey("list");
-			PropertyPool.locations.setInt("currentID", 0);
+		if (PropertyManager.getBasicProperties().locations.getString("list")
+				.isEmpty()) {
+			PropertyManager.getBasicProperties().locations.removeKey("list");
+			PropertyManager.getBasicProperties().locations.setInt("currentID",
+					0);
 		}
 	}
 
@@ -100,7 +102,7 @@ public class BasicNPCHandler extends NPCManager {
 	 * @return
 	 */
 	public String getOwner(int UID) {
-		return PropertyPool.getOwner(UID);
+		return NPCManager.getNPC(UID).getOwner();
 	}
 
 	/**
@@ -110,7 +112,6 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param name
 	 */
 	public void setOwner(HumanNPC npc, String name) {
-		PropertyPool.setOwner(npc.getUID(), name);
 		npc.getNPCData().setOwner(name);
 	}
 
@@ -123,7 +124,8 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	public void setName(int UID, String changeTo, String owner) {
 		HumanNPC n = super.getNPC(UID);
-		PropertyPool.changeName(UID, n.getName(), changeTo);
+		PropertyManager.getBasicProperties().changeName(UID, n.getName(),
+				changeTo);
 		super.removeNPCForRespawn(UID);
 		super.registerNPC(changeTo, UID, owner);
 	}
@@ -138,7 +140,7 @@ public class BasicNPCHandler extends NPCManager {
 	// TODO: maybe remove this, since it changes the skin URL.
 	public void setColour(int UID, String colourChange, String owner) {
 		HumanNPC n = super.getNPC(UID);
-		PropertyPool.saveColour(UID, colourChange.replace("&", "§"));
+		n.getNPCData().setColour(colourChange.replace("&", "§"));
 		super.removeNPCForRespawn(UID);
 		super.registerNPC(n.getName(), UID, owner);
 	}
@@ -156,7 +158,7 @@ public class BasicNPCHandler extends NPCManager {
 		texts.add(text);
 		texts = StringUtils.colourise(texts);
 		super.setBasicNPCText(UID, texts);
-		PropertyPool.saveText(UID, texts);
+		super.getNPC(UID).getNPCData().setTexts(texts);
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class BasicNPCHandler extends NPCManager {
 	public void setNPCText(int UID, ArrayList<String> text) {
 		text = StringUtils.colourise(text);
 		super.setBasicNPCText(UID, text);
-		PropertyPool.saveText(UID, text);
+		super.getNPC(UID).getNPCData().setTexts(text);
 	}
 
 	/**
@@ -213,7 +215,8 @@ public class BasicNPCHandler extends NPCManager {
 		else
 			item.setAmount(amount);
 		p.getInventory().setItem(slot, item);
-		ArrayList<Integer> items = PropertyPool.getItems(npc.getUID());
+		ArrayList<Integer> items = PropertyManager.getBasicProperties()
+				.getItems(npc.getUID());
 		int olditem = items.get(0);
 		items.set(0, mat.getId());
 		NPCDataManager.addItems(npc, items);
@@ -242,7 +245,8 @@ public class BasicNPCHandler extends NPCManager {
 			return;
 		}
 		p.getInventory().remove(mat);
-		ArrayList<Integer> items = PropertyPool.getItems(npc.getUID());
+		ArrayList<Integer> items = PropertyManager.getBasicProperties()
+				.getItems(npc.getUID());
 		int oldhelmet = items.get(1);
 		if (args[0].equalsIgnoreCase("helmet")) {
 			items.set(1, mat.getId());
@@ -253,7 +257,6 @@ public class BasicNPCHandler extends NPCManager {
 		} else if (args[0].equalsIgnoreCase("boots")) {
 			items.set(4, mat.getId());
 		}
-		PropertyPool.saveItems(npc.getUID(), items);
 		NPCDataManager.addItems(npc, items);
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.

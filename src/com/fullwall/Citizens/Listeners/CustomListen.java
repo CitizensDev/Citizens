@@ -8,7 +8,7 @@ import org.bukkit.plugin.PluginManager;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.PropertyPool;
+import com.fullwall.Citizens.Properties.PropertyManager;
 
 public class CustomListen extends CustomEventListener {
 	private Citizens plugin;
@@ -17,15 +17,16 @@ public class CustomListen extends CustomEventListener {
 	public CustomListen(Citizens plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	/**
 	 * Register custom events
 	 */
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.CUSTOM_EVENT, this, Event.Priority.Normal, plugin);
+		pm.registerEvent(Event.Type.CUSTOM_EVENT, this, Event.Priority.Normal,
+				plugin);
 	}
-	
+
 	@Override
 	public void onCustomEvent(Event ev) {
 		if (!ev.getType().equals(Type.CUSTOM_EVENT)) {
@@ -35,7 +36,8 @@ public class CustomListen extends CustomEventListener {
 			CitizensBasicNPCEvent e = (CitizensBasicNPCEvent) ev;
 			if (e.isCancelled() == true)
 				return;
-			if (!PropertyPool.getLookWhenClose(e.getNPC().getUID())) {
+			if (!PropertyManager.getBasicProperties().getLookWhenClose(
+					e.getNPC().getUID())) {
 				NPCManager.rotateNPCToPlayer(e.getNPC(), e.getPlayer());
 			}
 			if (!e.getText().isEmpty())
