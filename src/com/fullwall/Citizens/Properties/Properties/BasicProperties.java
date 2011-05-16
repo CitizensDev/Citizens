@@ -153,20 +153,12 @@ public class BasicProperties extends Saveable {
 		return lookat.getBoolean(UID, Constants.defaultFollowingEnabled);
 	}
 
-	public void setLookWhenClose(int UID, boolean look) {
-		lookat.setBoolean(UID, look);
-	}
-
 	public void saveLookWhenClose(int UID, boolean value) {
 		lookat.setBoolean(UID, value);
 	}
 
 	public boolean getTalkWhenClose(int UID) {
 		return talkwhenclose.getBoolean(UID, Constants.defaultTalkWhenClose);
-	}
-
-	public void setTalkWhenClose(int UID, boolean talk) {
-		talkwhenclose.setBoolean(UID, talk);
 	}
 
 	public void saveTalkWhenClose(int UID, boolean value) {

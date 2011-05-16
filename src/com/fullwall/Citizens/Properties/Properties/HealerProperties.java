@@ -13,34 +13,23 @@ public class HealerProperties extends Saveable {
 	public PropertyHandler levels = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.levels");
 
-	public void removeHealer(int UID) {
-		healers.removeKey(UID);
-	}
-
-	public void saveStrength(int UID, int healPower) {
+	private void saveStrength(int UID, int healPower) {
 		strength.setInt(UID, healPower);
 	}
 
-	public int getStrength(int UID) {
+	private int getStrength(int UID) {
 		return strength.getInt(UID);
 	}
 
-	public void saveLevel(int UID, int level) {
+	private void saveLevel(int UID, int level) {
 		levels.setInt(UID, level);
 	}
 
-	public int getLevel(int UID) {
+	private int getLevel(int UID) {
 		return levels.getInt(UID);
 	}
 
-	public boolean getHealerState(int UID) {
-		return healers.getBoolean(UID);
-	}
-
-	public int getMaxStrength(int UID) {
-		return getLevel(UID) * 10;
-	}
-
+	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isHealer());

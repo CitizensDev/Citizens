@@ -91,9 +91,9 @@ public class NPCManager {
 	public int registerNPC(String name, Location loc, String owner) {
 		int UID = PropertyManager.getBasicProperties().getNewNpcID();
 		PropertyManager.getBasicProperties().saveLocation(name, loc, UID);
-		PropertyManager.getBasicProperties().setLookWhenClose(UID,
+		PropertyManager.getBasicProperties().saveLookWhenClose(UID,
 				Constants.defaultFollowingEnabled);
-		PropertyManager.getBasicProperties().setTalkWhenClose(UID,
+		PropertyManager.getBasicProperties().saveTalkWhenClose(UID,
 				Constants.defaultTalkWhenClose);
 		registerNPC(name, UID, owner);
 		return UID;

@@ -29,7 +29,7 @@ public class TraderProperties extends Saveable {
 	public PropertyHandler unlimiteds = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.unlimited");
 
-	public void saveInventory(int UID, PlayerInventory inv) {
+	private void saveInventory(int UID, PlayerInventory inv) {
 		String save = "";
 		for (ItemStack i : inv.getContents()) {
 			if (i == null)
@@ -42,8 +42,10 @@ public class TraderProperties extends Saveable {
 		inventories.setString(UID, save);
 	}
 
-	public PlayerInventory getInventory(int UID) {
+	private PlayerInventory getInventory(int UID) {
 		String save = inventories.getString(UID);
+		if (save.isEmpty())
+			return null;
 		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
@@ -64,25 +66,25 @@ public class TraderProperties extends Saveable {
 		return Integer.parseInt(passed);
 	}
 
-	public void saveUnlimited(int UID, boolean unlimited) {
+	private void saveUnlimited(int UID, boolean unlimited) {
 		unlimiteds.setBoolean(UID, unlimited);
 	}
 
-	public boolean getUnlimited(int UID) {
+	private boolean getUnlimited(int UID) {
 		return unlimiteds.getBoolean(UID);
 	}
 
-	public String addToStockableString(String s, Stockable st) {
+	private String addToStockableString(String s, Stockable st) {
 		if (s.contains(st.toString() + ";"))
 			return "";
 		return st.toString() + ";";
 	}
 
-	public void setStockables(int UID, String set) {
+	private void setStockables(int UID, String set) {
 		stocking.setString(UID, set);
 	}
 
-	public void removeStockable(int UID, Stockable s) {
+	private void removeStockable(int UID, Stockable s) {
 		String write = "";
 		write += s.toString() + ";";
 		String read = stocking.getString(UID);
@@ -90,7 +92,7 @@ public class TraderProperties extends Saveable {
 		stocking.setString(UID, read);
 	}
 
-	public void saveStockables(int UID,
+	private void saveStockables(int UID,
 			ConcurrentHashMap<Check, Stockable> stockables) {
 		String string = "";
 		setStockables(UID, string);
@@ -103,7 +105,7 @@ public class TraderProperties extends Saveable {
 		setStockables(UID, string);
 	}
 
-	public ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
+	private ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
 		ConcurrentHashMap<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
 		int i = 0;
 		for (String s : stocking.getString(UID).split(";")) {
@@ -160,17 +162,19 @@ public class TraderProperties extends Saveable {
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isTrader());
-			saveInventory(npc.getUID(), npc.getPlayer().getInventory());
 			saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
 			saveStockables(npc.getUID(), npc.getTrader().getStocking());
 		}
+		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
+
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setTrader(getEnabled(npc));
-		npc.getInventory()
-				.setContents(getInventory(npc.getUID()).getContents());
+		if (getInventory(npc.getUID()) != null)
+			npc.getInventory().setContents(
+					getInventory(npc.getUID()).getContents());
 		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
 		npc.getTrader().setStocking(getStockables(npc.getUID()));
 		saveState(npc);

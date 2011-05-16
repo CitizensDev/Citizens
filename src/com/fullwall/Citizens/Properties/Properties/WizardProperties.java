@@ -15,12 +15,8 @@ public class WizardProperties extends Saveable {
 		locations.setString(UID, locationString.replace(")(", "):("));
 	}
 
-	public String getLocations(int UID) {
+	private String getLocations(int UID) {
 		return locations.getString(UID).replace(")(", "):(");
-	}
-
-	public boolean getWizardState(int UID) {
-		return wizards.getBoolean(UID);
 	}
 
 	@Override
