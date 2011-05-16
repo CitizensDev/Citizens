@@ -307,12 +307,8 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateOwnership(Player p, int UID) {
-		String[] npcOwners = PropertyManager.getBasicProperties().getOwner(UID)
-				.split(",");
-		for (int i = 0; i < npcOwners.length; i++) {
-			if (npcOwners[i].equals(p.getName()))
-				return true;
-		}
+		if (getNPC(UID).getOwner().equals(p.getName()))
+			return true;
 		return false;
 	}
 }
