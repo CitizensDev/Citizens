@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
@@ -101,7 +100,6 @@ public class TraderProperties extends Saveable {
 			string += addToStockableString(string, entry);
 			count += 1;
 		}
-		Citizens.log.info("" + count);
 		setStockables(UID, string);
 	}
 

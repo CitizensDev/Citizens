@@ -170,10 +170,6 @@ public class ItemInterface {
 	public static double pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
 		double current = payment.getPrice();
-		if (player instanceof HumanNPC) {
-			Citizens.log.info("Currency: " + currencyID);
-			Citizens.log.info("Price: " + current);
-		}
 		int count = 0;
 		if (slot != -1) {
 			current = decreaseItemStack(player,
