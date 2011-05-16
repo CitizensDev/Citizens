@@ -525,8 +525,9 @@ public class BasicExecutor implements CommandExecutor {
 					PropertyManager.getBasicProperties().getNPCAmountPerPlayer(
 							player.getName()) + 1);
 			plugin.basicNPCHandler.setNPCText(UID, texts);
-			plugin.basicNPCHandler.setOwner(NPCManager.getNPC(UID),
-					player.getName());
+
+			NPCManager.getNPC(UID).getNPCData().setOwner(player.getName());
+
 			player.sendMessage(ChatColor.GREEN + "The NPC "
 					+ StringUtils.yellowify(args[1]) + " was born!");
 			if (EconomyHandler.useEconomy()) {
