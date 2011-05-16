@@ -202,6 +202,10 @@ public class Citizens extends JavaPlugin {
 				.getBoolean("default-enable-following");
 		Constants.defaultTalkWhenClose = UtilityProperties.settings
 				.getBoolean("default-talk-when-close");
+		Constants.useSaveTask = UtilityProperties.settings
+				.getBoolean("use-save-task");
+		Constants.saveOften = UtilityProperties.settings
+				.getBoolean("save-delay");
 		Constants.useNPCColours = UtilityProperties.settings
 				.getBoolean("use-npc-colours");
 

@@ -5,8 +5,17 @@
 #Higher values = less server load, but longer delay between looking (jerky).
 tick-delay=1
 
+#Specifies whether to schedule a save task that saves files every so often.
+#(set to false to reduce lag). If both this and save-often are false, note that you rely
+#on the server shutdown being successful (everything gets flushed to disk then).
+use-save-task=true
+
 #Specifies how long to wait before files are saved to disc.
 save-tick-delay=72000
+
+#Specifies whether to save after any property is changed (can reduce lag if false).
+#If false, note that you rely on saving in the save task or on server disable (no failsafe).
+save-often=true
 
 #Specifies how many blocks away a player can be before an NPC starts to look at them.
 look-range=4
