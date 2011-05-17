@@ -1,17 +1,12 @@
 package com.fullwall.Citizens.CommandExecutors;
 
-import java.util.Vector;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;

@@ -1,11 +1,14 @@
 package com.fullwall.Citizens.Questers;
 
+import java.util.HashMap;
+
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuesterNPC implements Toggleable {
 	private HumanNPC npc;
+	private HashMap<String, Quest> quests = new HashMap<String, Quest>();
 
 	public QuesterNPC(HumanNPC npc) {
 		this.npc = npc;

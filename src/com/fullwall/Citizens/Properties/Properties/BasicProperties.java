@@ -28,7 +28,6 @@ public class BasicProperties extends Saveable {
 			"plugins/Citizens/Basic NPCs/Citizens.lookat");
 	public final PropertyHandler owners = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.owners");
-
 	public final PropertyHandler talkwhenclose = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
 	public final PropertyHandler texts = new PropertyHandler(

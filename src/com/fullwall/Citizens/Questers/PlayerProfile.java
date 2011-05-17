@@ -1,46 +1,24 @@
 package com.fullwall.Citizens.Questers;
 
+import java.util.ArrayList;
+
 public class PlayerProfile {
-	private String playerName;
-	private int rank;
-	private int questsComplete;
+	private ArrayList<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
+	private Quest currentQuest;
 
-	/**
-	 * Player's quest profile
-	 * 
-	 * @param playerName
-	 */
-	public PlayerProfile(String playerName) {
-		this.playerName = playerName;
-		rank = 1;
-		questsComplete = 0;
+	public void setCompletedQuests(ArrayList<CompletedQuest> completedQuests) {
+		this.completedQuests = completedQuests;
 	}
 
-	public String getName() {
-		return playerName;
+	public ArrayList<CompletedQuest> getCompletedQuests() {
+		return completedQuests;
 	}
 
-	public int getRank() {
-		return rank;
+	public void setCurrentQuest(Quest currentQuest) {
+		this.currentQuest = currentQuest;
 	}
 
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
-	public void upOneRank() {
-		rank++;
-	}
-
-	public int getQuestsComplete() {
-		return questsComplete;
-	}
-
-	public void setQuestsComplete(int questsComplete) {
-		this.questsComplete = questsComplete;
-	}
-
-	public void upOneQuestComplete() {
-		questsComplete++;
+	public Quest getCurrentQuest() {
+		return currentQuest;
 	}
 }

@@ -5,9 +5,6 @@ import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -41,19 +38,18 @@ public class TickTask implements Runnable {
 				// (WALKING&Jumping)
 				// entry.getValue().setTarget(p);
 				for (Player p : plugin.getServer().getOnlinePlayers()) {
-					String name = p.getName();// Moves the NPC towards the
-												// player
+					String name = p.getName();
+					// Moves the NPC towards the player
 					// (WALKING&Jumping)
 					// entry.getValue().setTarget(p);
 					if (npc.getNPCData().isLookClose()
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
-						if (checkLocation(npc.getLocation(), p.getLocation(), range)) {
-							// If auto-rotate is true, rotate
+						if (checkLocation(npc.getLocation(), p.getLocation(),
+								range)) {
 							if (npc.getNPCData().isLookClose()) {
 								NPCManager.rotateNPCToPlayer(npc, p);
 							}
-							// If auto-talk is true
 							if (npc.getNPCData().isTalkClose()
 									// If we haven't already spoken to the
 									// player.
@@ -61,7 +57,6 @@ public class TickTask implements Runnable {
 											.get(entityID).get(name) == null || hasSaidText
 											.get(entityID).get(name) == false))) {
 								MessageUtils.sendText(npc, p, plugin);
-								// Add the players to the sent text list.
 								HashMap<String, Boolean> players = new HashMap<String, Boolean>();
 								if (hasSaidText.get(entityID) != null)
 									players = hasSaidText.get(entityID);
@@ -72,9 +67,7 @@ public class TickTask implements Runnable {
 								removeRandomItem(p);
 							}
 						}
-							// We're out of range, so if player has been talked
-							// to,
-							// reset its talked-to state.
+						// We're out of range -> reset talked-to state.
 						else if (npc.getNPCData().isTalkClose()
 								&& hasSaidText.get(entityID) != null
 								&& hasSaidText.get(entityID).get(name) != null
@@ -88,7 +81,8 @@ public class TickTask implements Runnable {
 	}
 
 	// Checks whether two locations are within a certain distance of each other.
-	private boolean checkLocation(Location loc, Location playerLocation, double range) {
+	private boolean checkLocation(Location loc, Location playerLocation,
+			double range) {
 		double pX = playerLocation.getX();
 		double pY = playerLocation.getY();
 		double pZ = playerLocation.getZ();
@@ -104,7 +98,7 @@ public class TickTask implements Runnable {
 			return false;
 		}
 	}
-	
+
 	private void removeRandomItem(Player p) {
 		// TODO stuff
 	}
