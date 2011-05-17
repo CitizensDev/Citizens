@@ -316,7 +316,7 @@ public class Citizens extends JavaPlugin {
 					s = s.replace("SHIFT-", "");
 					isShift = true;
 				}
-				if (s.contains("" + type) && isShift == sneaking)
+				if (Integer.parseInt(s) == type && isShift == sneaking)
 					return true;
 			}
 			return false;
