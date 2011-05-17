@@ -47,8 +47,7 @@ public class PropertyManager {
 
 	public static void save(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			if (saveable.exists(npc))
-				saveable.saveState(npc);
+			saveable.saveState(npc);
 		}
 	}
 
