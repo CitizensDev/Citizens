@@ -1,10 +1,13 @@
 package com.fullwall.Citizens;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -80,7 +83,14 @@ public class TickTask implements Runnable {
 		}
 	}
 
-	// Checks whether two locations are within a certain distance of each other.
+	/**
+	 * Checks whether two locations are within a certain distance of each other.
+	 * 
+	 * @param loc
+	 * @param playerLocation
+	 * @param range
+	 * @return
+	 */
 	private boolean checkLocation(Location loc, Location playerLocation,
 			double range) {
 		double pX = playerLocation.getX();
@@ -99,7 +109,31 @@ public class TickTask implements Runnable {
 		}
 	}
 
-	private void removeRandomItem(Player p) {
-		// TODO stuff
+	/**
+	 * Removes a random item from a player's inventory
+	 * 
+	 * @param player
+	 */
+	private void removeRandomItem(Player player) {
+		Random random = new Random();
+		int randomSlot = random
+				.nextInt(player.getInventory().getContents().length);
+		ItemStack item;
+		int count = 0;
+		int limit = player.getInventory().getSize();
+		while (true) {
+			item = player.getInventory().getItem(randomSlot);
+			if (item == null) {
+				if (count >= limit) {
+					// output text?
+					// player.sendMessage("Bandit failed to grab anything!");
+					break;
+				}
+				count += 1;
+			} else {
+				player.getInventory().remove(item);
+				break;
+			}
+		}
 	}
 }

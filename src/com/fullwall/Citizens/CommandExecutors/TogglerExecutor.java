@@ -123,6 +123,18 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
+			} else if (args[0].equalsIgnoreCase("bandit")) {
+				if (Permission.hasPermission("citizens.bandit.create", sender)) {
+					if (!PropertyManager.get("bandit").exists(npc)) {
+						buyState(player, npc.getBandit(),
+								Operation.BANDIT_NPC_CREATE);
+					} else {
+						toggleState(player, npc.getBandit());
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
 			} else if (args.length == 2 && args[0].equals("all")) {
 				if (args[1].equals("on"))
 					toggleAll(npc, player, true);
