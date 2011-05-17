@@ -27,6 +27,10 @@ public class PlayerProfile {
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
+	
+	public void upOneRank() {
+		rank++;
+	}
 
 	public int getQuestsComplete() {
 		return questsComplete;

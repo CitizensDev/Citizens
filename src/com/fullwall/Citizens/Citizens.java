@@ -6,17 +6,13 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import me.taylorkelly.help.Help;
-
 import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijikokun.register.payment.Method;
 
 import com.fullwall.Citizens.CommandExecutors.CommandHandler;
-import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Healers.HealerTask;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
@@ -73,7 +69,7 @@ public class Citizens extends JavaPlugin {
 		version = pdfFile.getVersion();
 
 		Permission.initialize(getServer());
-		setupVariables();
+		Constants.setupVariables();
 
 		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
 		// loaded. This means that multiworld will now work without hacky
@@ -88,8 +84,6 @@ public class Citizens extends JavaPlugin {
 			log.info("[Citizens]: Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
 			setupNPCs();
 		}
-		// Compatibility with Help plugin.
-		setupHelp();
 
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(this, Constants.npcRange), Constants.tickDelay,
@@ -120,122 +114,6 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") disabled");
-	}
-
-	/**
-	 * Provides a help menu for use with tkelly's help plugin.
-	 */
-	private void setupHelp() {
-		Plugin test = getServer().getPluginManager().getPlugin("Help");
-		if (test != null) {
-			Help helpPlugin = ((Help) test);
-			// create,set,add,name,remove,reset,colour,item,helmet|torso|legs|boots
-			helpPlugin.registerCommand("npc create [name] (text)",
-					"Creates an NPC.", this, "citizens.basic.create");
-			helpPlugin.registerCommand("npc set [name] [text]",
-					"Sets an NPC's text.", this, "citizens.basic.settext");
-			helpPlugin.registerCommand("npc add [name] [text]",
-					"Adds to an NPC's text.", this, "citizens.basic.settext");
-			helpPlugin.registerCommand("npc name [name] [newname]",
-					"Sets an NPC's name.", this, "citizens.general.create");
-			helpPlugin.registerCommand("npc remove [name]",
-					"Removes an NPC and deletes its data.", this,
-					"citizens.general.remove.singular");
-			helpPlugin.registerCommand("npc remove all", "Removes all NPCs.",
-					this, "citizens.general.remove.all");
-			helpPlugin.registerCommand("npc reset [name]",
-					"Clears the messages of an NPC.", this,
-					"citizens.basic.settext");
-			helpPlugin.registerCommand("npc colo(u)r [name] [&(code)]",
-					"Sets an NPC's name colour", this,
-					"citizens.general.color", "citizens.general.colour");
-			helpPlugin.registerCommand("npc item [name] [itemID|name]",
-					"Sets an NPC's held item.", this,
-					"citizens.general.setitem");
-			helpPlugin.registerCommand(
-					"npc helmet|torso|legs|boots [name] [itemID|name]",
-					"Sets an NPC's armor item.", this,
-					"citizens.general.setitem");
-			helpPlugin.registerCommand("npc move [name]",
-					"Moves an NPC to your location.", this,
-					"citizens.general.move");
-			helpPlugin.registerCommand("npc tp [name]",
-					"Teleports you to the location of an NPC.", this,
-					"citizens.general.move");
-			helpPlugin.registerCommand("npc copy", "Copies the selected NPC.",
-					this, "citizens.general.copy");
-			helpPlugin.registerCommand("npc getid",
-					"Gets the ID of the selected NPC.", this,
-					"citizens.general.getid");
-			helpPlugin.registerCommand("npc select [id]",
-					"Selects the NPC with the given id.", this,
-					"citizens.general.select");
-			helpPlugin.registerCommand("npc getowner",
-					"Gets the owner of the selected NPC.", this,
-					"citizens.general.getowner");
-			helpPlugin.registerCommand("npc setowner [name]",
-					"Sets the owner of the selected NPC.", this,
-					"citizens.general.setowner");
-			helpPlugin.registerCommand("npc addowner [name]",
-					"Adds an owner to the selected NPC.", this,
-					"citizens.general.addowner");
-			helpPlugin.registerCommand("npc talkwhenclose [true|false]",
-					"Enable or disable if a NPC talks when aproached.", this,
-					"citizens.general.talkwhenclose");
-			helpPlugin.registerCommand("npc lookatplayers [true|false]",
-					"Enable or disable if a NPC looks at near players.", this,
-					"citizens.general.lookatplayers");
-		}
-	}
-
-	/**
-	 * Sets up miscellaneous variables, mostly reading from property files.
-	 */
-	private void setupVariables() {
-		// Used for static access to this object.
-		plugin = this;
-
-		EconomyHandler.setUpVariables();
-
-		// Boolean defaults
-		Constants.convertSlashes = UtilityProperties.settings
-				.getBoolean("slashes-to-spaces");
-		Constants.defaultFollowingEnabled = UtilityProperties.settings
-				.getBoolean("default-enable-following");
-		Constants.defaultTalkWhenClose = UtilityProperties.settings
-				.getBoolean("default-talk-when-close");
-		Constants.useSaveTask = UtilityProperties.settings
-				.getBoolean("use-save-task");
-		Constants.saveOften = UtilityProperties.settings
-				.getBoolean("save-delay");
-		Constants.useNPCColours = UtilityProperties.settings
-				.getBoolean("use-npc-colours");
-
-		// String defaults
-		Constants.chatFormat = UtilityProperties.settings
-				.getString("chat-format");
-		Constants.NPCColour = UtilityProperties.settings
-				.getString("npc-colour");
-
-		// Double defaults
-		Constants.npcRange = UtilityProperties.settings.getDouble("look-range");
-
-		// Int defaults
-		Constants.maxNPCsPerPlayer = UtilityProperties.settings
-				.getInt("max-npcs-per-player");
-		Constants.healerGiveHealthItem = UtilityProperties.settings
-				.getInt("healer-give-health-item");
-		Constants.healerTakeHealthItem = UtilityProperties.settings
-				.getInt("healer-take-health-item");
-		Constants.healerHealthRegenIncrement = UtilityProperties.settings
-				.getInt("healer-health-regen-increment");
-		Constants.tickDelay = UtilityProperties.settings.getInt("tick-delay");
-		Constants.saveDelay = UtilityProperties.settings
-				.getInt("save-tick-delay");
-		Constants.wizardMaxLocations = UtilityProperties.settings
-				.getInt("wizard-max-locations");
-		Constants.wizardInteractItem = UtilityProperties.settings
-				.getInt("wizard-interact-item");
 	}
 
 	private void setupNPCs() {
