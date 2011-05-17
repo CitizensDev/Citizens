@@ -5,11 +5,11 @@ import java.util.Random;
 import com.fullwall.Citizens.PropertyHandler;
 
 public class UtilityProperties {
-	public static PropertyHandler economy = new PropertyHandler(
+	public static final PropertyHandler economy = new PropertyHandler(
 			"plugins/Citizens/Citizens.economy");
-	public static PropertyHandler itemlookups = new PropertyHandler(
+	public static final PropertyHandler itemlookups = new PropertyHandler(
 			"plugins/Citizens/Citizens.itemlookup");
-	public static PropertyHandler settings = new PropertyHandler(
+	public static final PropertyHandler settings = new PropertyHandler(
 			"plugins/Citizens/Citizens.settings");
 
 	public static int getMaxNPCsPerPlayer() {

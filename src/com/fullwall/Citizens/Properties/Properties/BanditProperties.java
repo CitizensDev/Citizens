@@ -5,31 +5,31 @@ import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class QuesterProperties extends Saveable {
-	private final PropertyHandler questers = new PropertyHandler(
-			"plugins/Citizens/Questers/Citizens.questers");
+public class BanditProperties extends Saveable {
+	private final PropertyHandler bandits = new PropertyHandler(
+			"plugins/Citizens/Bandits/Citizens.bandits");
 
 	@Override
 	public void saveFiles() {
-		questers.save();
+		bandits.save();
 	}
 
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isQuester());
+			setEnabled(npc, npc.isBandit());
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setQuester(getEnabled(npc));
+		npc.setBandit(getEnabled(npc));
 		saveState(npc);
 	}
 
 	@Override
 	public void removeFromFiles(HumanNPC npc) {
-		questers.removeKey(npc.getUID());
+		bandits.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -39,28 +39,28 @@ public class QuesterProperties extends Saveable {
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		questers.setBoolean(npc.getUID(), value);
+		bandits.setBoolean(npc.getUID(), value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return questers.getBoolean(npc.getUID());
+		return bandits.getBoolean(npc.getUID());
 	}
 
 	@Override
 	public boolean exists(HumanNPC npc) {
-		return questers.keyExists(npc.getUID());
+		return bandits.keyExists(npc.getUID());
 	}
 
 	@Override
 	public PropertyType type() {
-		return PropertyType.QUESTER;
+		return PropertyType.BANDIT;
 	}
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (questers.keyExists(UID)) {
-			questers.setString(nextUID, questers.getString(UID));
+		if (bandits.keyExists(UID)) {
+			bandits.setString(nextUID, bandits.getString(UID));
 		}
 	}
 }

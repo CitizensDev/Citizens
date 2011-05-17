@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.fullwall.Citizens.Bandits.BanditNPC;
 import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.Healers.HealerNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
@@ -37,12 +38,14 @@ public class HumanNPC extends NPC {
 	private boolean isWizard = false;
 	private boolean isBlacksmith = false;
 	private boolean isQuester = false;
+	private boolean isBandit = false;
 
 	private TraderNPC traderNPC = new TraderNPC(this);
 	private HealerNPC healerNPC = new HealerNPC(this);
 	private WizardNPC wizardNPC = new WizardNPC(this);
 	private BlacksmithNPC blacksmithNPC = new BlacksmithNPC(this);
 	private QuesterNPC questerNPC = new QuesterNPC(this);
+	private BanditNPC banditNPC = new BanditNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -79,6 +82,10 @@ public class HumanNPC extends NPC {
 
 	public QuesterNPC getQuester() {
 		return this.questerNPC;
+	}
+
+	public BanditNPC getBandit() {
+		return this.banditNPC;
 	}
 
 	protected CraftNPC getMCEntity() {
@@ -123,6 +130,14 @@ public class HumanNPC extends NPC {
 
 	public boolean isQuester() {
 		return this.isQuester;
+	}
+
+	public void setBandit(boolean enable) {
+		this.isBandit = enable;
+	}
+
+	public boolean isBandit() {
+		return this.isBandit;
 	}
 
 	// For Teleportation

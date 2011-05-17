@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.Properties.BanditProperties;
 import com.fullwall.Citizens.Properties.Properties.BasicProperties;
 import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
 import com.fullwall.Citizens.Properties.Properties.HealerProperties;
@@ -19,7 +20,7 @@ public class PropertyManager {
 	private static BasicProperties basicProperties;
 
 	public enum PropertyType {
-		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH;
+		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, BANDIT;
 	}
 
 	public static void registerProperties() {
@@ -30,7 +31,7 @@ public class PropertyManager {
 		properties.put("quester", new QuesterProperties());
 		properties.put("trader", new TraderProperties());
 		properties.put("wizard", new WizardProperties());
-
+		properties.put("bandit", new BanditProperties());
 		basicProperties = basic;
 	}
 

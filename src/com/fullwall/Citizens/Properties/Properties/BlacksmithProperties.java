@@ -6,7 +6,7 @@ import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithProperties extends Saveable {
-	public PropertyHandler blacksmiths = new PropertyHandler(
+	private final PropertyHandler blacksmiths = new PropertyHandler(
 			"plugins/Citizens/Blacksmiths/Citizens.blacksmiths");
 
 	@Override
@@ -59,7 +59,8 @@ public class BlacksmithProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (blacksmiths.keyExists(UID))
+		if (blacksmiths.keyExists(UID)) {
 			blacksmiths.setString(nextUID, blacksmiths.getString(UID));
+		}
 	}
 }

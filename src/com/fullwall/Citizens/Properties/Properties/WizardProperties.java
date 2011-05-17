@@ -6,9 +6,9 @@ import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WizardProperties extends Saveable {
-	private PropertyHandler wizards = new PropertyHandler(
+	private final PropertyHandler wizards = new PropertyHandler(
 			"plugins/Citizens/Wizards/Citizens.wizards");
-	private PropertyHandler locations = new PropertyHandler(
+	private final PropertyHandler locations = new PropertyHandler(
 			"plugins/Citizens/Wizards/Citizens.locations");
 
 	private void saveLocations(int UID, String locationString) {

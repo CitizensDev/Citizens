@@ -19,13 +19,13 @@ import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderProperties extends Saveable {
-	public PropertyHandler traders = new PropertyHandler(
+	private final PropertyHandler traders = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.traders");
-	public PropertyHandler inventories = new PropertyHandler(
+	private final PropertyHandler inventories = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.inventories");
-	public PropertyHandler stocking = new PropertyHandler(
+	private final PropertyHandler stocking = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.stocking");
-	public PropertyHandler unlimiteds = new PropertyHandler(
+	private final PropertyHandler unlimiteds = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.unlimited");
 
 	private void saveInventory(int UID, PlayerInventory inv) {

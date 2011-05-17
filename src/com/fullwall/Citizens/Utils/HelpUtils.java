@@ -159,6 +159,16 @@ public class HelpUtils {
 	}
 
 	/**
+	 * Sends the help page for the bandit npc type.
+	 * 
+	 * @param sender
+	 */
+	public static void sendBanditHelp(CommandSender sender) {
+		header(sender, "Bandit", 1, 1);
+		footer(sender);
+	}
+
+	/**
 	 * Prints the header for the Citizens help menus
 	 * 
 	 * @param sender

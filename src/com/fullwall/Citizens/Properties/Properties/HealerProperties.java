@@ -6,11 +6,11 @@ import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerProperties extends Saveable {
-	public PropertyHandler healers = new PropertyHandler(
+	private final PropertyHandler healers = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.healers");
-	public PropertyHandler strength = new PropertyHandler(
+	private final PropertyHandler strength = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.strength");
-	public PropertyHandler levels = new PropertyHandler(
+	private final PropertyHandler levels = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.levels");
 
 	private void saveStrength(int UID, int healPower) {

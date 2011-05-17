@@ -10,6 +10,7 @@ public class CommandHandler {
 	private WizardExecutor wizard;
 	private BlacksmithExecutor blacksmith;
 	private QuesterExecutor quester;
+	private BanditExecutor bandit;
 	private TogglerExecutor toggle;
 
 	public CommandHandler(Citizens plugin) {
@@ -28,6 +29,7 @@ public class CommandHandler {
 		wizard = new WizardExecutor(plugin);
 		blacksmith = new BlacksmithExecutor(plugin);
 		quester = new QuesterExecutor(plugin);
+		bandit = new BanditExecutor(plugin);
 		toggle = new TogglerExecutor(plugin);
 		plugin.getCommand("npc").setExecutor(basic);
 		plugin.getCommand("citizens").setExecutor(basic);
@@ -37,6 +39,7 @@ public class CommandHandler {
 		plugin.getCommand("wizard").setExecutor(wizard);
 		plugin.getCommand("blacksmith").setExecutor(blacksmith);
 		plugin.getCommand("quester").setExecutor(quester);
+		plugin.getCommand("bandit").setExecutor(bandit);
 		plugin.getCommand("toggle").setExecutor(toggle);
 	}
 }

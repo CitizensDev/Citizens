@@ -18,24 +18,24 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicProperties extends Saveable {
 	public static Logger log = Logger.getLogger("Minecraft");
-	public PropertyHandler colours = new PropertyHandler(
+	public final PropertyHandler colours = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.colours");
-	public PropertyHandler items = new PropertyHandler(
+	public final PropertyHandler items = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.items");
-	public PropertyHandler locations = new PropertyHandler(
+	public final PropertyHandler locations = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.locations");
-	public PropertyHandler lookat = new PropertyHandler(
+	public final PropertyHandler lookat = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.lookat");
-	public PropertyHandler owners = new PropertyHandler(
+	public final PropertyHandler owners = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.owners");
 
-	public PropertyHandler talkwhenclose = new PropertyHandler(
+	public final PropertyHandler talkwhenclose = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.talkWhenClose");
-	public PropertyHandler texts = new PropertyHandler(
+	public final PropertyHandler texts = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.texts");
-	public PropertyHandler counts = new PropertyHandler(
+	public final PropertyHandler counts = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.counts");
-	public PropertyHandler balances = new PropertyHandler(
+	public final PropertyHandler balances = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.balances");
 
 	public int getNPCAmountPerPlayer(String name) {
