@@ -8,4 +8,6 @@ public interface Quest extends CompletedQuest {
 	public boolean isCompleted();
 
 	public void updateProgress();
+
+	public PlayerProfile getPlayerProfile();
 }
