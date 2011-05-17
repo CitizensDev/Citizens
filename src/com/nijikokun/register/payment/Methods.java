@@ -60,22 +60,23 @@ public class Methods {
 			return true;
 
 		PluginManager manager = method.getServer().getPluginManager();
+		Plugin plugin = null;
 
 		for (String name : this.getDependencies()) {
 			if (hasMethod())
 				break;
-
-			method = manager.getPlugin(name);
-			if (method == null)
+			if (method.getDescription().getName().equals(name))
+				plugin = method;
+			else
+				plugin = manager.getPlugin(name);
+			if (plugin == null)
 				continue;
-			if (!method.isEnabled())
-				manager.enablePlugin(method);
-			if (!method.isEnabled())
+			if (!plugin.isEnabled())
 				continue;
 
-			Method plugin = this.createMethod(method);
-			if (plugin != null)
-				Method = plugin;
+			Method current = this.createMethod(plugin);
+			if (current != null)
+				this.Method = current;
 		}
 
 		return hasMethod();
