@@ -65,14 +65,4 @@ public class BanditExecutor implements CommandExecutor {
 		}
 		return returnval;
 	}
-
-	public boolean isWithinStealZone(HumanNPC npc) {
-		Player[] onlinePlayers = plugin.getServer().getOnlinePlayers();
-		for (Player p : onlinePlayers) {
-			double x = npc.getX() + Constants.banditStealRadius;
-			double y = npc.getY() + Constants.banditStealRadius;
-			double z = npc.getZ() + Constants.banditStealRadius;
-			Entity entity = (Player) p;
-		}
-	}
 }
