@@ -56,7 +56,14 @@ public class TraderExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a trader yet.");
 			return true;
 		}
-		if (args.length >= 2 && args[0].contains("list")
+		if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
+			if (Permission.hasPermission("citizens.trader.help", sender)) {
+				HelpUtils.sendTraderHelp(sender);
+			} else {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
 			if (Permission.hasPermission("citizens.trader.stock", sender)) {
 				if (!EconomyHandler.useIconomy())
@@ -103,13 +110,6 @@ public class TraderExecutor implements CommandExecutor {
 					changeUnlimited(npc, sender, args[1]);
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
-				returnval = true;
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.trader.help", sender)) {
-					HelpUtils.sendTraderHelp(sender);
-				} else {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-				}
 				returnval = true;
 			}
 			PropertyManager.get("trader").saveState(npc);

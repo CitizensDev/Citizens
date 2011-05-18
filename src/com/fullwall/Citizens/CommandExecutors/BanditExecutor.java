@@ -54,7 +54,7 @@ public class BanditExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-				returnval = true;
+				return true;
 			}
 			PropertyManager.get("bandit").saveState(npc);
 		}

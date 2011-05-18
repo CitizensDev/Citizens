@@ -39,9 +39,10 @@ public class BasicExecutor implements CommandExecutor {
 		Player player = (Player) sender;
 		HumanNPC npc = null;
 		// Get the selected NPC, if any (required for most commands)
-		if (NPCManager.validateSelected(player))
+		if (NPCManager.validateSelected(player)) {
 			npc = NPCManager
 					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+		}
 
 		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
 			if (Permission.hasPermission("citizens.basic.create", sender)) {

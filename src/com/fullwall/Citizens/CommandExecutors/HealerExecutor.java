@@ -51,7 +51,14 @@ public class HealerExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a healer yet.");
 			return true;
 		} else {
-			if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
+			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
+				if (Permission.hasPermission("citizens.healer.help", sender)) {
+					HelpUtils.sendHealerHelp(sender);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				return true;
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
 				if (Permission.hasPermission("citizens.healer.status", sender)) {
 					displayStatus(player, npc);
 				} else {
@@ -87,13 +94,6 @@ public class HealerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.healer.help", sender)) {
-					HelpUtils.sendHealerHelp(sender);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
 			}
 			PropertyManager.get("healer").saveState(npc);
 		}
