@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Traders;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class TraderInterface {
 				mode = Mode.INFINITE;
 			}
 			TraderTask task = new TraderTask(npc, player, Citizens.plugin, mode);
-			int id = Citizens.plugin.getServer().getScheduler()
+			int id = Bukkit.getServer().getScheduler()
 					.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 			tasks.add(id);
 			task.addID(id);

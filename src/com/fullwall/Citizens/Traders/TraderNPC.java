@@ -77,11 +77,10 @@ public class TraderNPC implements Toggleable {
 
 	}
 
-	public boolean isStocked(int itemID, MaterialData data, boolean selling) {
+	public boolean isStocked(int itemID, boolean selling) {
 		if (checkStockingIntegrity()) {
 			if (stocking.get(new Check(itemID, selling)) != null) {
-				if (checkData(stocking.get(new Check(itemID, selling))
-						.getPrice().getMaterialData(), data)) {
+				if (checkData(stocking.get(new Check(itemID, selling)))) {
 					return true;
 				}
 			}
@@ -90,11 +89,12 @@ public class TraderNPC implements Toggleable {
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.getStocking().getData(),
-				s.isSelling());
+		return isStocked(s.getStockingId(), s.isSelling());
 	}
 
-	private boolean checkData(MaterialData first, MaterialData second) {
+	private boolean checkData(Stockable stockable) {
+		MaterialData first = stockable.getStocking().getData();
+		MaterialData second = stockable.getPrice().getMaterialData();
 		int data = 0;
 		int data2 = 0;
 		if (first != null)

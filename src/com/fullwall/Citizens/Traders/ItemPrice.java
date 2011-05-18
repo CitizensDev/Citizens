@@ -8,9 +8,7 @@ import com.fullwall.Citizens.Citizens;
 public class ItemPrice {
 	private boolean iConomy = false;
 	private double price = 0;
-	private int itemID = 1;
-	private int data;
-	private int amount = 1;
+	private ItemStack item;
 
 	/**
 	 * Represents a price, which can be iConomy or an item. This constructs an
@@ -31,10 +29,8 @@ public class ItemPrice {
 	 * @param itemID
 	 * @param data
 	 */
-	public ItemPrice(int amount, int itemID, int data) {
-		this.setData(data);
-		this.setAmount(amount);
-		this.setItemID(itemID);
+	public ItemPrice(ItemStack item) {
+		this.item = item;
 		this.setiConomy(false);
 	}
 
@@ -46,14 +42,6 @@ public class ItemPrice {
 		this.price = price;
 	}
 
-	public int getItemID() {
-		return this.itemID;
-	}
-
-	public void setItemID(int itemID) {
-		this.itemID = itemID;
-	}
-
 	public void setiConomy(boolean iConomy) {
 		this.iConomy = iConomy;
 	}
@@ -62,12 +50,8 @@ public class ItemPrice {
 		return iConomy;
 	}
 
-	public void setData(int data) {
-		this.data = data;
-	}
-
 	public int getData() {
-		return data;
+		return item.getData() == null ? 0 : item.getData().getData();
 	}
 
 	public String toString() {
@@ -75,27 +59,17 @@ public class ItemPrice {
 		if (iConomy)
 			ret += "" + price + Citizens.separatorChar + iConomy;
 		else
-			ret += "" + amount + Citizens.separatorChar + itemID
-					+ Citizens.separatorChar + data + Citizens.separatorChar
-					+ iConomy + Citizens.separatorChar;
+			ret += "" + item.getAmount() + Citizens.separatorChar
+					+ item.getTypeId() + Citizens.separatorChar + getData()
+					+ Citizens.separatorChar + iConomy + Citizens.separatorChar;
 		return ret;
 	}
 
 	public ItemStack getItemStack() {
-		ItemStack item = new ItemStack(itemID, amount);
-		item.setData(new MaterialData(itemID, (byte) data));
 		return item;
 	}
 
 	public MaterialData getMaterialData() {
-		return new MaterialData(itemID, (byte) data);
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public int getAmount() {
-		return amount;
+		return item.getData();
 	}
 }

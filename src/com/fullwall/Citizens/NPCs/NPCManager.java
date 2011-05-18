@@ -199,10 +199,10 @@ public class NPCManager {
 	 * @param UID
 	 */
 	public void removeNPC(int UID) {
+		PropertyManager.remove(getNPC(UID));
 		GlobalUIDs.remove(UID);
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
-		PropertyManager.remove(getNPC(UID));
 	}
 
 	/**

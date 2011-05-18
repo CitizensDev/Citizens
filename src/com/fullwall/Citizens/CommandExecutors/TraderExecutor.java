@@ -271,15 +271,11 @@ public class TraderExecutor implements CommandExecutor {
 			return;
 		}
 		boolean iConomy = false;
-		int data = Citizens.MAGIC_DATA_VALUE;
 		if (cost == null)
 			iConomy = true;
-		else if (cost.getData() != null) {
-			data = cost.getData().getData();
-		}
 		ItemPrice itemPrice;
 		if (!iConomy)
-			itemPrice = new ItemPrice(cost.getAmount(), cost.getTypeId(), data);
+			itemPrice = new ItemPrice(cost);
 		else
 			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
 		itemPrice.setiConomy(iConomy);
@@ -321,8 +317,7 @@ public class TraderExecutor implements CommandExecutor {
 				data = Byte.parseByte(split[2]);
 			ItemStack stack = new ItemStack(mat, amount);
 			if (data != 0) {
-				MaterialData mdata = new MaterialData(mat, data);
-				stack.setData(mdata);
+				stack.setData(new MaterialData(mat, data));
 			}
 			return stack;
 		} catch (NumberFormatException ex) {

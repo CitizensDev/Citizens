@@ -71,6 +71,8 @@ public class Citizens extends JavaPlugin {
 		Permission.initialize(getServer());
 		Constants.setupVariables();
 
+		plugin = this;
+
 		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
 		// loaded. This means that multiworld will now work without hacky
 		// workarounds.

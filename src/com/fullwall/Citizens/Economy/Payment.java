@@ -40,7 +40,7 @@ public class Payment {
 
 	public Payment(ItemPrice price2) {
 		this.setPrice(price2.isiConomy() ? price2.getPrice() : price2
-				.getAmount());
+				.getItemStack().getAmount());
 		this.setItem(price2.getItemStack());
 		this.setiConomy(price2.isiConomy());
 	}

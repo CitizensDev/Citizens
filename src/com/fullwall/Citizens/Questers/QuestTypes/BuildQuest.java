@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Questers.QuestTypes;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import com.fullwall.Citizens.Questers.PlayerProfile;
 import com.fullwall.Citizens.Questers.Quest;
@@ -40,7 +41,7 @@ public class BuildQuest implements Quest {
 	}
 
 	@Override
-	public void updateProgress() {
+	public void updateProgress(Event event) {
 		// TODO Auto-generated method stub
 
 	}

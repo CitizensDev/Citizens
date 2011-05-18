@@ -83,11 +83,11 @@ public class TraderProperties extends Saveable {
 		stocking.setString(UID, set);
 	}
 
+	@SuppressWarnings("unused")
 	private void removeStockable(int UID, Stockable s) {
 		String write = "";
 		write += s.toString() + ";";
-		String read = stocking.getString(UID);
-		read.replace(write, "");
+		String read = stocking.getString(UID).replace(write, "");
 		stocking.setString(UID, read);
 	}
 
@@ -130,9 +130,10 @@ public class TraderProperties extends Saveable {
 						price = new ItemPrice(Double.parseDouble(parts[0]));
 						price.setiConomy(Boolean.parseBoolean(parts[1]));
 					} else {
-						price = new ItemPrice(Integer.parseInt(parts[0]),
+						price = new ItemPrice(createItemStack(
+								Integer.parseInt(parts[0]),
 								Integer.parseInt(parts[1]),
-								Integer.parseInt(parts[2]));
+								Integer.parseInt(parts[2])));
 						price.setiConomy(Boolean.parseBoolean(parts[3]));
 					}
 					break;
@@ -146,6 +147,12 @@ public class TraderProperties extends Saveable {
 			stockables.put(stock.createCheck(), stock);
 		}
 		return stockables;
+	}
+
+	private ItemStack createItemStack(int amount, int itemID, int data) {
+		ItemStack item = new ItemStack(itemID, amount);
+		item.setData(new MaterialData(itemID, (byte) data));
+		return item;
 	}
 
 	@Override
