@@ -200,7 +200,8 @@ public class BlacksmithExecutor implements CommandExecutor {
 			Material material) {
 		ItemStack item = player.getItemInHand();
 		String itemName = item.getType().name().toLowerCase().replace("_", " ");
-		if (blacksmith.validateItemToRepair(item)) {
+		if (blacksmith.validateToolToRepair(item)
+				|| blacksmith.validateArmorToRepair(item)) {
 			player.sendMessage(ChatColor.GREEN
 					+ "Your "
 					+ StringUtils.yellowify(itemName)

@@ -1,6 +1,8 @@
 package com.fullwall.Citizens.Economy;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -179,5 +181,25 @@ public class ServerEconomyInterface {
 
 	public static void subtract(String name, double price) {
 		Citizens.economy.getAccount(name).subtract(price);
+	}
+
+	/**
+	 * Get the price it costs for a blacksmith operation
+	 * 
+	 * @param player
+	 * @param item
+	 * @param op
+	 * @return
+	 */
+	public static double payBlacksmithPrice(Player player, ItemStack item,
+			Operation op) {
+		short maxDurability = Material.getMaterial(item.getTypeId())
+				.getMaxDurability();
+		double percentage = ((double) maxDurability - item.getDurability())
+				/ (double) maxDurability;
+		double price = (1.0 - percentage)
+				* UtilityProperties.getPrice(Operation.getString(op, addendum));
+		subtract(player.getName(), price);
+		return price;
 	}
 }

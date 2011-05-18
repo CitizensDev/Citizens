@@ -54,7 +54,7 @@ public class BlacksmithNPC implements Toggleable {
 	 * @param item
 	 * @return
 	 */
-	public boolean validateItemToRepair(ItemStack item) {
+	public boolean validateToolToRepair(ItemStack item) {
 		int id = item.getTypeId();
 		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
 				|| id == 268 || id == 269 || id == 270 || id == 271
@@ -62,7 +62,7 @@ public class BlacksmithNPC implements Toggleable {
 				|| id == 276 || id == 277 || id == 278 || id == 279
 				|| id == 283 || id == 284 || id == 285 || id == 286
 				|| id == 290 || id == 291 || id == 292 || id == 293
-				|| id == 294 || id == 346 || (id >= 298 && id <= 317)) {
+				|| id == 294 || id == 346) {
 			return true;
 		} else {
 			return false;
@@ -82,5 +82,21 @@ public class BlacksmithNPC implements Toggleable {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Get type of tool
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public String getToolType(ItemStack item) {
+		String type = "";
+		if (validateToolToRepair(item)) {
+			type = "tool";
+		} else if (validateArmorToRepair(item)) {
+			type = "armor";
+		}
+		return type;
 	}
 }

@@ -206,4 +206,39 @@ public class ItemInterface {
 		}
 		return current;
 	}
+	
+	/**
+	 * Get the price it costs for a blacksmith operation
+	 * 
+	 * @param player
+	 * @param item
+	 * @param op
+	 * @return
+	 */
+	public static double payBlacksmithPrice(Player player, ItemStack item,
+			Operation op) {
+		short maxDurability = Material.getMaterial(item.getTypeId())
+				.getMaxDurability();
+		double percentage = ((double) maxDurability - item.getDurability())
+				/ (double) maxDurability;
+		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+				op, currencyAddendum));
+		double price = Math
+				.floor((1.0 - percentage)
+						* UtilityProperties.getPrice(Operation.getString(op,
+								addendum)));
+		double current = price;
+		int count = 0;
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i != null) {
+				current = decreaseItemStack(player, i, currencyID, current,
+						count);
+				System.out.println("current:" + current);
+				if (current <= 0)
+					break;
+			}
+			count += 1;
+		}
+		return price;
+	}
 }

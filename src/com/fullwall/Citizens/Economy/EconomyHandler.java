@@ -230,6 +230,28 @@ public class EconomyHandler {
 	}
 
 	/**
+	 * Pay a price for a blacksmith operation
+	 * 
+	 * @param op
+	 * @param player
+	 * @param multiple
+	 * @return
+	 */
+	public static double payBlacksmithPrice(Operation op, Player player) {
+		if (useEconomy) {
+			if (useIconomy()) {
+				return ServerEconomyInterface.payBlacksmithPrice(player,
+						player.getItemInHand(), op);
+			} else {
+				return ItemInterface.payBlacksmithPrice(player,
+						player.getItemInHand(), op);
+			}
+		} else {
+			return 0;
+		}
+	}
+
+	/**
 	 * Gets what item ID or iConomy currency is being used for an operation.
 	 * 
 	 * @param op

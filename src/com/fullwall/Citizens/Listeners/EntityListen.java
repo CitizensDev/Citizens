@@ -214,7 +214,16 @@ public class EntityListen extends EntityListener {
 				if (npc.isBlacksmith()) {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
-						buyItemRepair(p, npc, p.getItemInHand());
+						ItemStack item = p.getItemInHand();
+						if (npc.getBlacksmith().getToolType(item)
+								.equals("tool")) {
+							buyItemRepair(p, npc, item,
+									Operation.BLACKSMITH_TOOL_REPAIR);
+						} else if (npc.getBlacksmith().getToolType(item)
+								.equals("armor")) {
+							buyItemRepair(p, npc, item,
+									Operation.BLACKSMITH_ARMOR_REPAIR);
+						}
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -267,39 +276,32 @@ public class EntityListen extends EntityListener {
 	 * @param npc
 	 * @param op
 	 */
-	private void buyItemRepair(Player player, HumanNPC npc, ItemStack item) {
-		if (!EconomyHandler.useEconomy()
-				|| EconomyHandler.canBuy(Operation.BLACKSMITH_TOOL_REPAIR,
-						player)) {
+	private void buyItemRepair(Player player, HumanNPC npc, ItemStack item,
+			Operation op) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
-				if (npc.getBlacksmith().validateItemToRepair(item)) {
-					if (item.getDurability() > 0) {
-						double paid = EconomyHandler.pay(
-								Operation.BLACKSMITH_TOOL_REPAIR, player);
-						if (paid > 0) {
-							item.setDurability((short) 0);
-							player.setItemInHand(item);
-							player.sendMessage(StringUtils.yellowify(npc
-									.getStrippedName())
-									+ " repaired your item for "
-									+ StringUtils.yellowify(EconomyHandler
-											.getPaymentType(
-													Operation.BLACKSMITH_TOOL_REPAIR,
-													"" + paid, ChatColor.YELLOW))
-									+ ".");
-						}
-					} else {
-						player.sendMessage(ChatColor.RED
-								+ "Your item is already fully repaired.");
+				if (item.getDurability() > 0) {
+					double paid = EconomyHandler.payBlacksmithPrice(op, player);
+					if (paid > 0) {
+						item.setDurability((short) 0);
+						player.setItemInHand(item);
+						player.sendMessage(StringUtils.yellowify(npc
+								.getStrippedName())
+								+ " repaired your item for "
+								+ StringUtils.yellowify(EconomyHandler
+										.getPaymentType(op, "" + paid,
+												ChatColor.YELLOW)) + ".");
 					}
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "Your item is already fully repaired.");
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "Your server has not turned economy on for Citizens.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(
-					Operation.BLACKSMITH_TOOL_REPAIR, player));
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 			return;
 		}
 	}
