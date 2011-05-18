@@ -48,19 +48,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 			return true;
 		}
 		if (!NPCManager.validateOwnership(player, npc.getUID())) {
-			if (args.length == 1 && args[0].equals("uses")) {
-				if (Permission
-						.hasPermission("citizens.blacksmith.uses", sender)) {
-					showUsesRemaining(player, npc.getBlacksmith(),
-							Material.getMaterial(player.getItemInHand()
-									.getTypeId()));
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else {
-				sender.sendMessage(MessageUtils.notOwnerMessage);
-			}
+			sender.sendMessage(MessageUtils.notOwnerMessage);
 			return true;
 		}
 		if (!npc.isBlacksmith()) {
@@ -88,6 +76,16 @@ public class BlacksmithExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.blacksmith.repair",
 						sender)) {
 					listValidArmorNames(player);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+			} else if (args.length == 1 && args[0].equals("uses")) {
+				if (Permission
+						.hasPermission("citizens.blacksmith.uses", sender)) {
+					showUsesRemaining(player, npc.getBlacksmith(),
+							Material.getMaterial(player.getItemInHand()
+									.getTypeId()));
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
