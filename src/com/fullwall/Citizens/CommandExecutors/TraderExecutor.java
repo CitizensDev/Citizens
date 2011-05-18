@@ -137,22 +137,22 @@ public class TraderExecutor implements CommandExecutor {
 		ArrayList<Stockable> stock = npc.getTrader().getStockables(!selling);
 		int page = 0;
 		int startPoint = 0;
-		int numPages = stock.size() / 4;
+		int numPages = stock.size() / 6;
 		if (numPages == 0)
 			numPages = 1;
 		String keyword = "";
 		if (selling)
-			keyword = "Selling";
+			keyword = "Selling ";
 		else
-			keyword = "Buying";
+			keyword = "Buying ";
 		if (stock.size() == 0) {
 			player.sendMessage(ChatColor.GRAY + "This trader isn't "
-					+ keyword.toLowerCase() + " any items.");
+					+ keyword.toLowerCase() + "any items.");
 			return;
 		}
-		if (stock.size() > 4 && args.length == 3) {
+		if (stock.size() > 6 && args.length == 3) {
 			page = Integer.parseInt(args[2]);
-			startPoint = (4 * page) - 1;
+			startPoint = (6 * page) - 1;
 		}
 		if (startPoint > stock.size() - 1) {
 			player.sendMessage(ChatColor.RED
@@ -161,25 +161,22 @@ public class TraderExecutor implements CommandExecutor {
 					+ " pages.");
 			return;
 		}
-		player.sendMessage(ChatColor.GOLD + "Trader " + keyword
-				+ " List (Page "
+		player.sendMessage(ChatColor.GOLD + "Trader " + keyword + "List (Page "
 				+ StringUtils.yellowify((page == 0 ? 1 : page), ChatColor.GOLD)
 				+ " of " + StringUtils.yellowify(numPages, ChatColor.GOLD)
 				+ ")");
 		player.sendMessage(ChatColor.AQUA + "-------------------------------");
-		for (int i = startPoint; i != startPoint + 3; ++i) {
+		for (int i = startPoint; i < startPoint + 6; ++i) {
 			if ((stock.size() - 1) >= i) {
 				Stockable s = stock.get(i);
 				if (selling)
 					player.sendMessage(ChatColor.GREEN
 							+ keyword
-							+ " "
 							+ MessageUtils.getReverseStockableMessage(s,
 									ChatColor.GREEN) + ".");
 				else
 					player.sendMessage(ChatColor.GREEN
 							+ keyword
-							+ " "
 							+ MessageUtils.getStockableMessage(s,
 									ChatColor.GREEN) + ".");
 			} else {
