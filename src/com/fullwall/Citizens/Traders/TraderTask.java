@@ -66,7 +66,8 @@ public class TraderTask implements Runnable {
 		if (stop)
 			return;
 		if (npc == null || player == null
-				|| eplayer.activeContainer == eplayer.defaultContainer) {
+				|| eplayer.activeContainer == eplayer.defaultContainer
+				|| !player.isOnline()) {
 			kill();
 			return;
 		}
