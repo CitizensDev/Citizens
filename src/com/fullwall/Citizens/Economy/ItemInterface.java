@@ -223,9 +223,8 @@ public class ItemInterface {
 				/ (double) maxDurability;
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
-		double price = Math
-				.floor((1.0 - percentage)
-						* UtilityProperties.getPrice(Operation.getString(op,
+		int price = ((int)(1.0 - percentage))
+						* ((int)UtilityProperties.getPrice(Operation.getString(op,
 								addendum)));
 		double current = price;
 		int count = 0;
