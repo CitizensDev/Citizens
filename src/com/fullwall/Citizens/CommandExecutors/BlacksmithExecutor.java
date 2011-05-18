@@ -155,7 +155,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 													.getPaymentType(
 															Operation.BLACKSMITH_ARMOR_REPAIR,
 															"" + paid,
-															ChatColor.YELLOW))
+															ChatColor.YELLOW, 1))
 									+ ".";
 							player.sendMessage(msg);
 						}

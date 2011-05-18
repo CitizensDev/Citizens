@@ -70,6 +70,10 @@ public class ItemPrice {
 	}
 
 	public MaterialData getMaterialData() {
-		return item.getData();
+		if (item == null) {
+			return item.getData();
+		} else {
+			return null;
+		}
 	}
 }

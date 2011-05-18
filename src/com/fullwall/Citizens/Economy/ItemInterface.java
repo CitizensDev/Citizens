@@ -11,6 +11,7 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 public class ItemInterface {
 	public static String addendum = "-item";
 	public static String currencyAddendum = "-item-currency-id";
+	private static double price;
 
 	/**
 	 * Checks the inventory of a player for having enough for an operation.
@@ -64,9 +65,10 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static String getCurrency(Operation op, ChatColor colour) {
+	public static String getCurrency(Operation op, ChatColor colour,
+			int multiple) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
+				addendum)) * multiple;
 		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
 		return Material.getMaterial(ID) != null ? price + " "
@@ -206,9 +208,9 @@ public class ItemInterface {
 		}
 		return current;
 	}
-	
+
 	/**
-	 * Get the price it costs for a blacksmith operation
+	 * Pays for a blacksmith operation
 	 * 
 	 * @param player
 	 * @param item
@@ -217,27 +219,51 @@ public class ItemInterface {
 	 */
 	public static double payBlacksmithPrice(Player player, ItemStack item,
 			Operation op) {
-		short maxDurability = Material.getMaterial(item.getTypeId())
-				.getMaxDurability();
-		double percentage = ((double) maxDurability - item.getDurability())
-				/ (double) maxDurability;
+		/*
+		 * short maxDurability = Material.getMaterial(item.getTypeId())
+		 * .getMaxDurability(); double percentage = ((double) maxDurability -
+		 * item.getDurability()) / (double) maxDurability;
+		 */
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
-		int price = ((int)(1.0 - percentage))
-						* ((int)UtilityProperties.getPrice(Operation.getString(op,
-								addendum)));
-		double current = price;
+		/*
+		 * price = (1.0 - percentage)
+		 * UtilityProperties.getPrice(Operation.getString(op, addendum)); if
+		 * (price < 1.0) { price += 1; } price = (int) price;
+		 */
+		double current = getBlacksmithPrice(player, item, op);
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
 				current = decreaseItemStack(player, i, currencyID, current,
 						count);
-				System.out.println("current:" + current);
 				if (current <= 0)
 					break;
 			}
 			count += 1;
 		}
 		return price;
+	}
+
+	/**
+	 * Get the price for repairing an item
+	 * 
+	 * @param player
+	 * @param item
+	 * @param op
+	 * @return
+	 */
+	public static int getBlacksmithPrice(Player player, ItemStack item,
+			Operation op) {
+		short maxDurability = Material.getMaterial(item.getTypeId())
+				.getMaxDurability();
+		double percentage = ((double) maxDurability - item.getDurability())
+				/ (double) maxDurability;
+		price = (1.0 - percentage)
+				* UtilityProperties.getPrice(Operation.getString(op, addendum));
+		if (price < 1.0) {
+			price += 1;
+		}
+		return (int) price;
 	}
 }

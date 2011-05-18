@@ -92,11 +92,9 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.RED
 				+ "You need "
-				+ StringUtils.yellowify(
-						EconomyHandler.getPaymentType(op,
-								EconomyHandler.getRemainder(op, player),
-								ChatColor.RED), ChatColor.RED)
-				+ " more to do that.";
+				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op,
+						EconomyHandler.getRemainder(op, player), ChatColor.RED,
+						1), ChatColor.RED) + " more to do that.";
 		return message;
 	}
 
@@ -116,7 +114,7 @@ public class MessageUtils {
 		message = ChatColor.GREEN
 				+ "Paid "
 				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
-						+ paid, ChatColor.GREEN)) + " for ";
+						+ paid, ChatColor.GREEN, 1)) + " for ";
 		if (useType)
 			message += StringUtils.yellowify(npcName) + " to become a "
 					+ StringUtils.yellowify(type) + ".";

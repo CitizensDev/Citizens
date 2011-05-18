@@ -175,16 +175,28 @@ public class ServerEconomyInterface {
 		return payment.getPrice();
 	}
 
+	/**
+	 * Add money to a player's account
+	 * 
+	 * @param name
+	 * @param price
+	 */
 	public static void add(String name, double price) {
 		Citizens.economy.getAccount(name).add(price);
 	}
 
+	/**
+	 * Subtract money from a player's account
+	 * 
+	 * @param name
+	 * @param price
+	 */
 	public static void subtract(String name, double price) {
 		Citizens.economy.getAccount(name).subtract(price);
 	}
 
 	/**
-	 * Get the price it costs for a blacksmith operation
+	 * Pays for a blacksmith operation
 	 * 
 	 * @param player
 	 * @param item

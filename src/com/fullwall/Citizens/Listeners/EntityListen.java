@@ -18,6 +18,7 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Economy.ItemInterface;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -214,14 +215,13 @@ public class EntityListen extends EntityListener {
 				if (npc.isBlacksmith()) {
 					if (Permission.hasPermission("citizens.blacksmith.repair",
 							(CommandSender) p)) {
-						ItemStack item = p.getItemInHand();
-						if (npc.getBlacksmith().getToolType(item)
+						if (npc.getBlacksmith().getToolType(p.getItemInHand())
 								.equals("tool")) {
-							buyItemRepair(p, npc, item,
+							buyItemRepair(p, npc, p.getItemInHand(),
 									Operation.BLACKSMITH_TOOL_REPAIR);
-						} else if (npc.getBlacksmith().getToolType(item)
-								.equals("armor")) {
-							buyItemRepair(p, npc, item,
+						} else if (npc.getBlacksmith()
+								.getToolType(p.getItemInHand()).equals("armor")) {
+							buyItemRepair(p, npc, p.getItemInHand(),
 									Operation.BLACKSMITH_ARMOR_REPAIR);
 						}
 					} else {
@@ -248,7 +248,7 @@ public class EntityListen extends EntityListener {
 							+ "Paid "
 							+ StringUtils.yellowify(EconomyHandler
 									.getPaymentType(op, "" + paid,
-											ChatColor.YELLOW))
+											ChatColor.YELLOW, 1))
 							+ " for a teleport to "
 							+ StringUtils.yellowify(wizard
 									.getCurrentLocationName()) + ".");
@@ -284,13 +284,16 @@ public class EntityListen extends EntityListener {
 					double paid = EconomyHandler.payBlacksmithPrice(op, player);
 					if (paid > 0) {
 						item.setDurability((short) 0);
-						player.setItemInHand(item);
+						// player.setItemInHand(item);
 						player.sendMessage(StringUtils.yellowify(npc
 								.getStrippedName())
-								+ " repaired your item for "
+								+ " has repaired your item for "
 								+ StringUtils.yellowify(EconomyHandler
 										.getPaymentType(op, "" + paid,
-												ChatColor.YELLOW)) + ".");
+												ChatColor.YELLOW, ItemInterface
+														.getBlacksmithPrice(
+																player, item,
+																op))));
 					}
 				} else {
 					player.sendMessage(ChatColor.RED

@@ -243,8 +243,7 @@ public class EconomyHandler {
 				return ServerEconomyInterface.payBlacksmithPrice(player,
 						player.getItemInHand(), op);
 			} else {
-				return ItemInterface.payBlacksmithPrice(player,
-						player.getItemInHand(), op);
+				return ItemInterface.payBlacksmithPrice(player, player.getItemInHand(), op);
 			}
 		} else {
 			return 0;
@@ -259,12 +258,12 @@ public class EconomyHandler {
 	 * @return
 	 */
 	public static String getPaymentType(Operation op, String amount,
-			ChatColor colour) {
+			ChatColor colour, int multiple) {
 		if (useEconomy) {
 			if (useIconomy())
 				return ServerEconomyInterface.format(amount);
 			else
-				return ItemInterface.getCurrency(op, colour);
+				return ItemInterface.getCurrency(op, colour, multiple);
 		} else
 			return "None";
 	}
