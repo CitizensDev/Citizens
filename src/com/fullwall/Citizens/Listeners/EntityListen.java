@@ -284,14 +284,22 @@ public class EntityListen extends EntityListener {
 					double paid = EconomyHandler.payBlacksmithPrice(op, player);
 					if (paid > 0) {
 						item.setDurability((short) 0);
-						// player.setItemInHand(item);
-						player.sendMessage(StringUtils.yellowify(npc
+						player.setItemInHand(item);
+						String msg = StringUtils.yellowify(npc
 								.getStrippedName())
-								+ " has repaired your item for "
-								+ StringUtils.yellowify(ItemInterface
-										.getBlacksmithPrice(player, item, op)
-										+ " " + ItemInterface.getCurrencyName(op))
-								+ ".");
+								+ " has repaired your item for ";
+						if (EconomyHandler.useIconomy()) {
+							msg += StringUtils.yellowify(EconomyHandler
+									.getPaymentType(op, "" + paid,
+											ChatColor.YELLOW));
+						} else {
+							msg += StringUtils.yellowify(ItemInterface
+									.getBlacksmithPrice(player, item, op)
+									+ " "
+									+ ItemInterface.getCurrencyName(op));
+						}
+						msg += ChatColor.GREEN + ".";
+						player.sendMessage(msg);
 					}
 				} else {
 					player.sendMessage(ChatColor.RED
