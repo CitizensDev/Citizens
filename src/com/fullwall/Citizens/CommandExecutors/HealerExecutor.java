@@ -152,7 +152,7 @@ public class HealerExecutor implements CommandExecutor {
 				+ StringUtils.yellowify("Level " + level)
 				+ " for "
 				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
-						+ paid * multiple, ChatColor.GREEN, 1)
+						+ paid * multiple, ChatColor.GREEN)
 						+ ".");
 		return message;
 	}

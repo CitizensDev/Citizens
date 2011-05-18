@@ -65,14 +65,25 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static String getCurrency(Operation op, ChatColor colour,
-			int multiple) {
+	public static String getCurrency(Operation op, ChatColor colour) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum)) * multiple;
+				addendum));
 		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
 		return Material.getMaterial(ID) != null ? price + " "
 				+ Material.getMaterial(ID).name() + colour + "(s)" : "";
+	}
+
+	/**
+	 * Get the name of an item currency by its item ID
+	 * 
+	 * @param op
+	 * @return
+	 */
+	public static String getCurrencyName(Operation op) {
+		int id = UtilityProperties.getCurrencyID(Operation.getString(op,
+				currencyAddendum));
+		return Material.getMaterial(id).name();
 	}
 
 	public static String getCurrency(Payment payment, ChatColor colour) {
@@ -219,18 +230,8 @@ public class ItemInterface {
 	 */
 	public static double payBlacksmithPrice(Player player, ItemStack item,
 			Operation op) {
-		/*
-		 * short maxDurability = Material.getMaterial(item.getTypeId())
-		 * .getMaxDurability(); double percentage = ((double) maxDurability -
-		 * item.getDurability()) / (double) maxDurability;
-		 */
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
-		/*
-		 * price = (1.0 - percentage)
-		 * UtilityProperties.getPrice(Operation.getString(op, addendum)); if
-		 * (price < 1.0) { price += 1; } price = (int) price;
-		 */
 		double current = getBlacksmithPrice(player, item, op);
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {

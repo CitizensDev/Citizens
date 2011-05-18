@@ -248,7 +248,7 @@ public class EntityListen extends EntityListener {
 							+ "Paid "
 							+ StringUtils.yellowify(EconomyHandler
 									.getPaymentType(op, "" + paid,
-											ChatColor.YELLOW, 1))
+											ChatColor.YELLOW))
 							+ " for a teleport to "
 							+ StringUtils.yellowify(wizard
 									.getCurrentLocationName()) + ".");
@@ -288,12 +288,10 @@ public class EntityListen extends EntityListener {
 						player.sendMessage(StringUtils.yellowify(npc
 								.getStrippedName())
 								+ " has repaired your item for "
-								+ StringUtils.yellowify(EconomyHandler
-										.getPaymentType(op, "" + paid,
-												ChatColor.YELLOW, ItemInterface
-														.getBlacksmithPrice(
-																player, item,
-																op))));
+								+ StringUtils.yellowify(ItemInterface
+										.getBlacksmithPrice(player, item, op)
+										+ " " + ItemInterface.getCurrencyName(op))
+								+ ".");
 					}
 				} else {
 					player.sendMessage(ChatColor.RED
