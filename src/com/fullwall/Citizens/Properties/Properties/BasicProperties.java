@@ -232,7 +232,7 @@ public class BasicProperties extends Saveable {
 		int UID = npc.getUID();
 		NPCData npcdata = npc.getNPCData();
 
-		saveBalance(UID, npcdata.getBalance());
+		saveBalance(UID, npc.getBalance());
 		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
 		saveColour(UID, npcdata.getColour());
 		saveItems(UID, npcdata.getItems());

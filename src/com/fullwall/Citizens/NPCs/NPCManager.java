@@ -69,7 +69,7 @@ public class NPCManager {
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
 				.get(UID), PropertyManager.getBasicProperties()
 				.getLookWhenClose(UID), PropertyManager.getBasicProperties()
-				.getTalkWhenClose(UID), owner, npc.getBalance()));
+				.getTalkWhenClose(UID), owner));
 		PropertyManager.load(npc);
 
 		registerUID(UID, name);
