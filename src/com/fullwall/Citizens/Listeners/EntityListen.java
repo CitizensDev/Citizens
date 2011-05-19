@@ -163,7 +163,7 @@ public class EntityListen extends EntityListener {
 
 	@Override
 	public void onEntityTarget(EntityTargetEvent event) {
-		if (NPCManager.getNPC(event.getTarget()) != null) {
+		if (NPCManager.isNPC(event.getTarget())) {
 			event.setCancelled(true);
 		}
 		if (!(event instanceof NPCEntityTargetEvent))
@@ -185,9 +185,8 @@ public class EntityListen extends EntityListener {
 								+ ".");
 						return;
 					}
-				} // Dispatch text event.
-					// If we're using a selection tool, select the NPC as well.
-					// Check if we haven't already selected the NPC too.
+				}
+				// Dispatch text event / select NPC.
 				if (plugin.validateTool("items", p.getItemInHand().getTypeId(),
 						p.isSneaking()) == true) {
 					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(

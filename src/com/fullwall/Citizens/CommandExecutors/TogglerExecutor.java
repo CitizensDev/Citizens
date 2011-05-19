@@ -214,6 +214,9 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isBlacksmith()) {
 				toggleState(player, npc.getBlacksmith());
 			}
+			if (!npc.isBandit()) {
+				toggleState(player, npc.getBandit());
+			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
@@ -226,6 +229,9 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isBlacksmith()) {
 				toggleState(player, npc.getBlacksmith());
+			}
+			if (npc.isBandit()) {
+				toggleState(player, npc.getBandit());
 			}
 		}
 	}

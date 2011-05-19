@@ -24,7 +24,6 @@ public class QuesterProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setQuester(getEnabled(npc));
-		saveState(npc);
 	}
 
 	@Override

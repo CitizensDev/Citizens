@@ -182,7 +182,6 @@ public class TraderProperties extends Saveable {
 					getInventory(npc.getUID()).getContents());
 		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
 		npc.getTrader().setStocking(getStockables(npc.getUID()));
-		saveState(npc);
 	}
 
 	@Override

@@ -24,7 +24,6 @@ public class BanditProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setBandit(getEnabled(npc));
-		saveState(npc);
 	}
 
 	@Override

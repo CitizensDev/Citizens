@@ -26,12 +26,12 @@ public class PropertyManager {
 	public static void registerProperties() {
 		BasicProperties basic = new BasicProperties();
 		properties.put("basic", basic);
+		properties.put("bandit", new BanditProperties());
 		properties.put("blacksmith", new BlacksmithProperties());
 		properties.put("healer", new HealerProperties());
 		properties.put("quester", new QuesterProperties());
 		properties.put("trader", new TraderProperties());
 		properties.put("wizard", new WizardProperties());
-		properties.put("bandit", new BanditProperties());
 		basicProperties = basic;
 	}
 
