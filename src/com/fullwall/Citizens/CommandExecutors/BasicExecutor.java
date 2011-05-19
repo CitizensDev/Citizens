@@ -412,7 +412,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 		} else if (command.getName().equalsIgnoreCase("basic")) {
-			if (args.length == 2 && args[0].equals("help")) {
+			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.hasPermission("citizens.basic.help", sender)) {
 					int page = Integer.parseInt(args[1]);
 					HelpUtils.sendBasicHelpPage(sender, page);
@@ -575,7 +575,7 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void removeNPC(String[] args, CommandSender sender, HumanNPC npc) {
 		Player p = (Player) sender;
-		if (args.length == 2 && args[1].equals("all")) {
+		if (args.length == 2 && args[1].equalsIgnoreCase("all")) {
 			plugin.basicNPCHandler.removeAllNPCs();
 			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			PropertyManager.getBasicProperties().locations.setInt("currentID",

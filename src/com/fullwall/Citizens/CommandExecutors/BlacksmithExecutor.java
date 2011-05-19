@@ -72,7 +72,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 1 && args[0].equals("list")) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
 				if (Permission.hasPermission("citizens.blacksmith.repair",
 						sender)) {
 					listValidArmorNames(player);
@@ -80,7 +80,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 1 && args[0].equals("uses")) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("uses")) {
 				if (Permission
 						.hasPermission("citizens.blacksmith.uses", sender)) {
 					showUsesRemaining(player, npc.getBlacksmith(),
@@ -105,14 +105,17 @@ public class BlacksmithExecutor implements CommandExecutor {
 	 */
 	private void repairArmor(Player player, HumanNPC npc, String armor) {
 		PlayerInventory inv = player.getInventory();
-		if (armor.equals("helmet") || armor.equals("cap")) {
+		if (armor.equalsIgnoreCase("helmet") || armor.equalsIgnoreCase("cap")) {
 			buyArmorRepair(player, npc, inv.getHelmet(), armor, false);
-		} else if (armor.equals("chestplate") || armor.equals("torso")
-				|| armor.equals("tunic")) {
+		} else if (armor.equalsIgnoreCase("chestplate")
+				|| armor.equalsIgnoreCase("torso")
+				|| armor.equalsIgnoreCase("tunic")) {
 			buyArmorRepair(player, npc, inv.getChestplate(), armor, false);
-		} else if (armor.equals("leggings") || armor.equals("pants")) {
+		} else if (armor.equalsIgnoreCase("leggings")
+				|| armor.equalsIgnoreCase("pants")) {
 			buyArmorRepair(player, npc, inv.getLeggings(), armor, true);
-		} else if (armor.equals("boots") || armor.equals("shoes")) {
+		} else if (armor.equalsIgnoreCase("boots")
+				|| armor.equalsIgnoreCase("shoes")) {
 			buyArmorRepair(player, npc, inv.getBoots(), armor, true);
 		} else {
 			player.sendMessage(ChatColor.RED + "Invalid armor type.");

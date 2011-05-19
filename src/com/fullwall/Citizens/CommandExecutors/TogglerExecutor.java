@@ -134,11 +134,12 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args.length == 2 && args[0].equals("all")) {
-				if (args[1].equals("on"))
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("all")) {
+				if (args[1].equals("on")) {
 					toggleAll(npc, player, true);
-				else if (args[1].equals("off"))
+				} else if (args[1].equalsIgnoreCase("off")) {
 					toggleAll(npc, player, false);
+				}
 				returnval = true;
 			} else {
 				player.sendMessage(ChatColor.RED

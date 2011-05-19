@@ -196,11 +196,13 @@ public class TraderExecutor implements CommandExecutor {
 	 */
 	private void changeUnlimited(HumanNPC npc, CommandSender sender,
 			String unlimited) {
-		if (unlimited.equals("true") || unlimited.equals("on")) {
+		if (unlimited.equalsIgnoreCase("true")
+				|| unlimited.equalsIgnoreCase("on")) {
 			npc.getTrader().setUnlimited(true);
 			sender.sendMessage(ChatColor.GREEN
 					+ "The trader will now have unlimited stock!");
-		} else if (unlimited.equals("false") || unlimited.equals("off")) {
+		} else if (unlimited.equalsIgnoreCase("false")
+				|| unlimited.equalsIgnoreCase("off")) {
 			npc.getTrader().setUnlimited(false);
 			sender.sendMessage(ChatColor.GREEN
 					+ "The trader has stopped having unlimited stock.");
