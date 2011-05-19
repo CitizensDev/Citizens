@@ -201,6 +201,7 @@ public class ItemInterface {
 		return payment.getPrice();
 	}
 
+	@SuppressWarnings("deprecation")
 	public static double decreaseItemStack(Player player, ItemStack i,
 			int currencyID, double current, int slot) {
 		if (i.getTypeId() == currencyID) {
@@ -216,6 +217,7 @@ public class ItemInterface {
 				i.setAmount(toChange);
 			}
 			player.getInventory().setItem(slot, i);
+			player.updateInventory();
 		}
 		return current;
 	}
