@@ -50,6 +50,7 @@ public class HealerProperties extends Saveable {
 		npc.setHealer(getEnabled(npc));
 		npc.getHealer().setStrength(getStrength(npc.getUID()));
 		npc.getHealer().setLevel(getLevel(npc.getUID()));
+		saveState(npc);
 	}
 
 	@Override

@@ -24,6 +24,7 @@ public class BlacksmithProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setBlacksmith(getEnabled(npc));
+		saveState(npc);
 	}
 
 	@Override

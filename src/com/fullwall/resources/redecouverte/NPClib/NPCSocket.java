@@ -18,5 +18,4 @@ public class NPCSocket extends Socket {
 	public OutputStream getOutputStream() {
 		return new ByteArrayOutputStream();
 	}
-
 }

@@ -37,6 +37,7 @@ public class WizardProperties extends Saveable {
 	public void loadState(HumanNPC npc) {
 		npc.setWizard(getEnabled(npc));
 		npc.getWizard().setLocations(getLocations(npc.getUID()));
+		saveState(npc);
 	}
 
 	@Override

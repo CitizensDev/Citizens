@@ -245,6 +245,7 @@ public class BasicProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setBalance(getBalance(npc.getUID()));
+		saveState(npc);
 	}
 
 	@Override

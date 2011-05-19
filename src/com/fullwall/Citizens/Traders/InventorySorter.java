@@ -132,5 +132,4 @@ public class InventorySorter {
 			recQuickSort(list, pivotLocation + 1, last);
 		}
 	}
-
 }
