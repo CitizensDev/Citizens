@@ -313,9 +313,7 @@ public class TraderExecutor implements CommandExecutor {
 			if (split.length >= 3)
 				data = Byte.parseByte(split[2]);
 			ItemStack stack = new ItemStack(mat, amount);
-			if (data != 0) {
-				stack.setData(new MaterialData(mat, data));
-			}
+			stack.setData(new MaterialData(mat, data));
 			return stack;
 		} catch (NumberFormatException ex) {
 			return null;
