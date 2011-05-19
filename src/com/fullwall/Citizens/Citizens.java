@@ -12,12 +12,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijikokun.register.payment.Method;
 
-import com.fullwall.Citizens.CommandExecutors.CommandHandler;
-import com.fullwall.Citizens.Healers.HealerTask;
+import com.fullwall.Citizens.Commands.CommandHandler;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
+import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;

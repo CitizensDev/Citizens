@@ -63,5 +63,4 @@ public class Permission {
 		return (!(sender instanceof Player) || generic((Player) sender,
 				permission));
 	}
-
 }

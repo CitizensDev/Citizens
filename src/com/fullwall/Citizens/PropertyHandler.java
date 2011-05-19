@@ -39,7 +39,6 @@ import java.util.logging.Logger;
  * @author Nijiko
  */
 public final class PropertyHandler {
-
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private Properties properties;
 	private String fileName;

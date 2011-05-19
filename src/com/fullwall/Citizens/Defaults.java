@@ -86,6 +86,9 @@ public class Defaults {
 		nodes.put("musicblock", "25");
 		nodes.put("nblock", "25");
 		nodes.put("mblock", "25");
+		nodes.put("web", "30");
+		nodes.put("spiderweb", "30");
+		nodes.put("cobweb", "30");
 		nodes.put("whitecloth", "35");
 		nodes.put("cloth", "35");
 		nodes.put("whitewool", "35");

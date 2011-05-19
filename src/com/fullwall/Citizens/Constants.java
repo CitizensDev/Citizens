@@ -4,7 +4,6 @@ import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
-
 	public static int tickDelay = 1;
 	public static int saveDelay = 72000;
 	public static int maxNPCsPerPlayer = 10;

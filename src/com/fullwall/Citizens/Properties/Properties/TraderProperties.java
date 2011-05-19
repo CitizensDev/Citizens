@@ -12,10 +12,10 @@ import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.NPCTypes.Traders.Check;
+import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
+import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
-import com.fullwall.Citizens.Traders.Check;
-import com.fullwall.Citizens.Traders.ItemPrice;
-import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderProperties extends Saveable {

@@ -11,10 +11,10 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Economy.Payment;
+import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
+import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
-import com.fullwall.Citizens.Traders.ItemPrice;
-import com.fullwall.Citizens.Traders.Stockable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {

@@ -9,13 +9,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.fullwall.Citizens.Bandits.BanditNPC;
-import com.fullwall.Citizens.Blacksmiths.BlacksmithNPC;
-import com.fullwall.Citizens.Healers.HealerNPC;
+import com.fullwall.Citizens.NPCTypes.Bandits.BanditNPC;
+import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
+import com.fullwall.Citizens.NPCTypes.Healers.HealerNPC;
+import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
+import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
-import com.fullwall.Citizens.Questers.QuesterNPC;
-import com.fullwall.Citizens.Traders.TraderNPC;
-import com.fullwall.Citizens.Wizards.WizardNPC;
 
 public class HumanNPC extends NPC {
 

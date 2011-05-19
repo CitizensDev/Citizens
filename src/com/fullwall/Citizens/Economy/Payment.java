@@ -2,7 +2,7 @@ package com.fullwall.Citizens.Economy;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Traders.ItemPrice;
+import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 
 public class Payment {
 
