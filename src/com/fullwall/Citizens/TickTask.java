@@ -116,23 +116,25 @@ public class TickTask implements Runnable {
 	 */
 	private void removeRandomItem(Player player) {
 		Random random = new Random();
-		int randomSlot, count = 0, limit = player.getInventory().getSize();
-		ItemStack item;
+		int randomSlot;
+		int count = 0;
+		int limit = player.getInventory().getSize();
+		ItemStack item = null;
 		while (true) {
-			// NOTE: If you change the definition of limit, please note that
-			// this is meant to choose from the max size of the inventory.
+			// NOTE: If you change the definition of limit, please
+			// note that this is meant to choose from the max size of the
+			// inventory.
 			randomSlot = random.nextInt(limit);
 			item = player.getInventory().getItem(randomSlot);
 			if (item != null) {
-				item.setAmount(item.getAmount() - 1);
-				if (item.getAmount() == 0)
-					item = null;
-				player.getInventory().setItem(randomSlot, item);
+				// item.setAmount(item.getAmount() - 1);
+				// if (item.getAmount() == 0)
+				// item = null;
+				// player.getInventory().setItem(randomSlot, item);
+				player.getInventory().removeItem(item);
 				break;
 			} else {
 				if (count >= limit) {
-					// output text?
-					// player.sendMessage("Bandit failed to grab anything!");
 					break;
 				}
 				count += 1;

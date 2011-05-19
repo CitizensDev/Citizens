@@ -7,6 +7,11 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class BanditNPC implements Toggleable {
 	private HumanNPC npc;
 
+	/**
+	 * Bandit NPC object
+	 * 
+	 * @param npc
+	 */
 	public BanditNPC(HumanNPC npc) {
 		this.npc = npc;
 	}
