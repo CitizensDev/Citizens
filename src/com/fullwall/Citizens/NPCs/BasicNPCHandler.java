@@ -114,6 +114,8 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	public void setName(int UID, String changeTo, String owner) {
 		HumanNPC n = super.getNPC(UID);
+		if (changeTo.length() > 16)
+			changeTo = changeTo.substring(0, 16);
 		PropertyManager.getBasicProperties().changeName(UID, n.getName(),
 				changeTo);
 		super.removeNPCForRespawn(UID);
