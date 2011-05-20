@@ -283,7 +283,7 @@ public class TraderTask implements Runnable {
 	}
 
 	private Stockable getStockable(ItemStack i, String keyword, boolean selling) {
-		if (!(npc.getTrader().isStocked(i.getTypeId(), selling))) {
+		if (!(npc.getTrader().isStocked(i.getTypeId(), selling, i.getData()))) {
 			player.sendMessage(StringUtils.yellowify(i.getType().name(),
 					ChatColor.RED) + " isn't being " + keyword + " here.");
 			return null;

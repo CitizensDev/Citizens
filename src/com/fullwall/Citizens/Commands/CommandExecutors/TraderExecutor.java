@@ -303,7 +303,7 @@ public class TraderExecutor implements CommandExecutor {
 	private ItemStack createItemStack(String[] split) {
 		try {
 			int amount = 1;
-			byte data = Citizens.MAGIC_DATA_VALUE;
+			byte data = 0;
 			Material mat = StringUtils.parseMaterial(split[0]);
 			if (mat == null) {
 				return null;
@@ -314,6 +314,7 @@ public class TraderExecutor implements CommandExecutor {
 				data = Byte.parseByte(split[2]);
 			ItemStack stack = new ItemStack(mat, amount);
 			stack.setData(new MaterialData(mat, data));
+			Citizens.log.info("Data: " + stack.getData());
 			return stack;
 		} catch (NumberFormatException ex) {
 			return null;

@@ -32,6 +32,7 @@ public class ItemPrice {
 	public ItemPrice(ItemStack item) {
 		this.item = item;
 		this.setiConomy(false);
+		Citizens.log.info("Item Price: " + item.getData());
 	}
 
 	public double getPrice() {

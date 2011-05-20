@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.material.MaterialData;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -77,10 +76,10 @@ public class TraderNPC implements Toggleable {
 
 	}
 
-	public boolean isStocked(int itemID, boolean selling) {
+	public boolean isStocked(int itemID, boolean selling, MaterialData data) {
 		if (checkStockingIntegrity()) {
 			if (stocking.get(new Check(itemID, selling)) != null) {
-				if (checkData(stocking.get(new Check(itemID, selling)))) {
+				if (checkData(stocking.get(new Check(itemID, selling)), data)) {
 					return true;
 				}
 			}
@@ -89,19 +88,19 @@ public class TraderNPC implements Toggleable {
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.isSelling());
+		return isStocked(s.getStockingId(), s.isSelling(), s.getStocking()
+				.getData());
 	}
 
-	private boolean checkData(Stockable stockable) {
+	private boolean checkData(Stockable stockable, MaterialData second) {
 		MaterialData first = stockable.getStocking().getData();
-		MaterialData second = stockable.getPrice().getMaterialData();
 		int data = 0;
 		int data2 = 0;
 		if (first != null)
 			data = first.getData();
 		if (second != null)
 			data2 = second.getData();
-		if (data == data2 || data == Citizens.MAGIC_DATA_VALUE)
+		if (data == data2)
 			return true;
 		return false;
 	}
