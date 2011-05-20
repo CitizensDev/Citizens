@@ -1,11 +1,14 @@
 package com.fullwall.Citizens.NPCTypes.Questers.QuestTypes;
 
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import com.fullwall.Citizens.NPCTypes.Questers.PlayerProfile;
 import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
+import com.fullwall.Citizens.NPCTypes.Questers.Reward;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class DeliveryQuest implements Quest {
@@ -62,6 +65,18 @@ public class DeliveryQuest implements Quest {
 	public PlayerProfile getPlayerProfile() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Reward> getRewards() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addReward(Reward reward) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
