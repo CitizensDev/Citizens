@@ -20,6 +20,7 @@ public class TickTask implements Runnable {
 	// Key: UID Value: a hash map of player names: whether text has been said to
 	// them or not.
 	private HashMap<Integer, HashMap<String, Boolean>> hasSaidText = new HashMap<Integer, HashMap<String, Boolean>>();
+	private HashMap<String, HashMap<Integer, Boolean>> hasTakenItem = new HashMap<String, HashMap<Integer, Boolean>>();
 
 	public TickTask(Citizens plugin, double range) {
 		this.plugin = plugin;
@@ -61,16 +62,22 @@ public class TickTask implements Runnable {
 											.get(entityID).get(name) == false))) {
 								MessageUtils.sendText(npc, p, plugin);
 								HashMap<String, Boolean> players = new HashMap<String, Boolean>();
-								if (hasSaidText.get(entityID) != null)
+								if (hasSaidText.get(entityID) != null) {
 									players = hasSaidText.get(entityID);
+								}
 								players.put(name, true);
 								hasSaidText.put(entityID, players);
 							}
-							if (npc.isBandit()) {
-								if (!NPCManager.validateOwnership(p,
-										npc.getUID())) {
-									removeRandomItem(p);
+							if (hasTakenItem.get(name) == null
+									|| hasTakenItem.get(name).get(npc.getUID()) == null
+									|| hasTakenItem.get(name).get(npc.getUID()) == false) {
+								removeRandomItem(p, npc);
+								HashMap<Integer, Boolean> npcs = new HashMap<Integer, Boolean>();
+								if (hasTakenItem.get(name) != null) {
+									npcs = hasTakenItem.get(name);
 								}
+								npcs.put(npc.getUID(), true);
+								hasTakenItem.put(name, npcs);
 							}
 						}
 						// We're out of range -> reset talked-to state.
@@ -79,6 +86,14 @@ public class TickTask implements Runnable {
 								&& hasSaidText.get(entityID).get(name) != null
 								&& hasSaidText.get(entityID).get(name) == true) {
 							hasSaidText.get(entityID).put(name, false);
+						}
+						// Player is not within range of bandit, reset
+						// taken-item state
+						else if (npc.isBandit()
+								&& hasTakenItem.get(name) != null
+								&& hasTakenItem.get(name).get(npc.getUID()) != null
+								&& hasTakenItem.get(name).get(npc.getUID()) == true) {
+							hasTakenItem.get(name).put(npc.getUID(), false);
 						}
 					}
 				}
@@ -117,23 +132,28 @@ public class TickTask implements Runnable {
 	 * 
 	 * @param player
 	 */
-	private void removeRandomItem(Player player) {
+	private void removeRandomItem(Player player, HumanNPC npc) {
 		Random random = new Random();
 		int randomSlot;
 		int count = 0;
-		int limit = player.getInventory().getSize();
 		ItemStack item = null;
-		while (true) {
-			randomSlot = random.nextInt(limit);
-			item = player.getInventory().getItem(randomSlot);
-			if (item != null) {
-				player.getInventory().removeItem(item);
-				break;
-			} else {
-				if (count >= limit) {
-					break;
+		if (npc.isBandit()) {
+			if (!NPCManager.validateOwnership(player, npc.getUID())) {
+				int limit = player.getInventory().getSize();
+				while (true) {
+					randomSlot = random.nextInt(limit);
+					item = player.getInventory().getItem(randomSlot);
+					if (item != null) {
+						player.getInventory().removeItem(item);
+						player.sendMessage("Item taken.");
+						break;
+					} else {
+						if (count >= limit) {
+							break;
+						}
+						count += 1;
+					}
 				}
-				count += 1;
 			}
 		}
 	}
