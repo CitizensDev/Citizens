@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -145,7 +146,9 @@ public class TickTask implements Runnable {
 					item = player.getInventory().getItem(randomSlot);
 					if (item != null) {
 						player.getInventory().removeItem(item);
-						player.sendMessage("Item taken.");
+						player.sendMessage(ChatColor.RED
+								+ npc.getStrippedName()
+								+ " has stolen from your inventory!");
 						break;
 					} else {
 						if (count >= limit) {
