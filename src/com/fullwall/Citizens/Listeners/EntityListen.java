@@ -60,10 +60,10 @@ public class EntityListen extends EntityListener {
 				e.setCancelled(true);
 			}
 			if (npc != null && e.getDamager() instanceof Player) {
-				if (npc.isHealer()) {
-					Entity entity = e.getDamager();
-					if (entity instanceof Player) {
-						Player player = (Player) entity;
+				Entity entity = e.getDamager();
+				if (entity instanceof Player) {
+					Player player = (Player) entity;
+					if (npc.isHealer()) {
 						int playerHealth = player.getHealth();
 						int healerHealth = npc.getHealer().getStrength();
 						if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
@@ -134,10 +134,7 @@ public class EntityListen extends EntityListener {
 							}
 						}
 					}
-				} else if (npc.isWizard()) {
-					Entity entity = e.getDamager();
-					if (entity instanceof Player) {
-						Player player = (Player) entity;
+					if (npc.isWizard()) {
 						if (Permission.hasPermission(
 								"citizens.wizard.changeteleport",
 								(CommandSender) player)) {
@@ -168,8 +165,9 @@ public class EntityListen extends EntityListener {
 		if (NPCManager.isNPC(event.getTarget())) {
 			event.setCancelled(true);
 		}
-		if (!(event instanceof NPCEntityTargetEvent))
+		if (!(event instanceof NPCEntityTargetEvent)) {
 			return;
+		}
 		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 		HumanNPC npc = NPCManager.getNPC(e.getEntity());
 		if (npc != null && event.getTarget() instanceof Player) {
