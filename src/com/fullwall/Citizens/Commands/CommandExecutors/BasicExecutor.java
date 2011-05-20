@@ -515,9 +515,11 @@ public class BasicExecutor implements CommandExecutor {
 					+ "NPC name length is too long. The limit is 16 characters.");
 			return;
 		}
-		if (PropertyManager.getBasicProperties().getNPCAmountPerPlayer(
-				player.getName()) < UtilityProperties.getMaxNPCsPerPlayer()
-				|| UtilityProperties.settings.getInt("max-NPCs-per-player") == 0) {
+		if ((PropertyManager.getBasicProperties().getNPCAmountPerPlayer(
+				player.getName()) < UtilityProperties.getMaxNPCsPerPlayer())
+				|| (UtilityProperties.settings.getInt("max-NPCs-per-player") == 0)
+				|| (Permission.hasPermission("citizens.general.nolimit",
+						(CommandSender) player))) {
 			int UID = NPCManager.register(args[1], player.getLocation(),
 					player.getName());
 			PropertyManager.getBasicProperties().saveNPCAmountPerPlayer(
