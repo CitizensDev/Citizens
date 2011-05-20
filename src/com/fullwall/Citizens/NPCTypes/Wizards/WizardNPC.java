@@ -1,10 +1,16 @@
 package com.fullwall.Citizens.NPCTypes.Wizards;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -137,5 +143,42 @@ public class WizardNPC implements Toggleable {
 	public String getCurrentLocationName() {
 		String locs[] = locations.split(":")[currentLocation].split(",");
 		return locs[0].replace("(", "");
+	}
+
+	/**
+	 * Purchase a teleport
+	 * 
+	 * @param player
+	 * @param wizard
+	 * @param op
+	 */
+	public void buyTeleport(Player player, WizardNPC wizard, Operation op) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+			if (EconomyHandler.useEconomy()) {
+				double paid = EconomyHandler.pay(op, player);
+				if (paid > 0)
+					player.sendMessage(ChatColor.GREEN
+							+ "Paid "
+							+ StringUtils.yellowify(EconomyHandler
+									.getPaymentType(op, "" + paid,
+											ChatColor.YELLOW))
+							+ " for a teleport to "
+							+ StringUtils.yellowify(wizard
+									.getCurrentLocationName()) + ".");
+				player.teleport(wizard.getCurrentLocation());
+
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			return;
+		} else {
+			player.teleport(wizard.getCurrentLocation());
+			player.sendMessage(ChatColor.GREEN + "You got teleported to "
+					+ StringUtils.yellowify(wizard.getCurrentLocationName())
+					+ ".");
+		}
 	}
 }

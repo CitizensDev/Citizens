@@ -1,9 +1,16 @@
 package com.fullwall.Citizens.NPCTypes.Blacksmiths;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.ItemInterface;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithNPC implements Toggleable {
@@ -98,5 +105,51 @@ public class BlacksmithNPC implements Toggleable {
 			type = "armor";
 		}
 		return type;
+	}
+
+	/**
+	 * Purchase a item repair
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param op
+	 */
+	public void buyItemRepair(Player player, HumanNPC npc, ItemStack item,
+			Operation op) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+			if (EconomyHandler.useEconomy()) {
+				if (item.getDurability() > 0) {
+					double paid = EconomyHandler.payBlacksmithPrice(op, player);
+					if (paid > 0) {
+						item.setDurability((short) 0);
+						player.setItemInHand(item);
+						String msg = StringUtils.yellowify(npc
+								.getStrippedName())
+								+ " has repaired your item for ";
+						if (EconomyHandler.useIconomy()) {
+							msg += StringUtils.yellowify(EconomyHandler
+									.getPaymentType(op, "" + paid,
+											ChatColor.YELLOW));
+						} else {
+							msg += StringUtils.yellowify(ItemInterface
+									.getBlacksmithPrice(player, item, op)
+									+ " "
+									+ ItemInterface.getCurrencyName(op));
+						}
+						msg += ChatColor.GREEN + ".";
+						player.sendMessage(msg);
+					}
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "Your item is already fully repaired.");
+				}
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "Your server has not turned economy on for Citizens.");
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			return;
+		}
 	}
 }

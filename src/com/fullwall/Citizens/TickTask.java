@@ -67,7 +67,10 @@ public class TickTask implements Runnable {
 								hasSaidText.put(entityID, players);
 							}
 							if (npc.isBandit()) {
-								removeRandomItem(p);
+								if (!NPCManager.validateOwnership(p,
+										npc.getUID())) {
+									removeRandomItem(p);
+								}
 							}
 						}
 						// We're out of range -> reset talked-to state.
