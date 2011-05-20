@@ -125,7 +125,7 @@ public class Citizens extends JavaPlugin {
 		if (list.length > 0 && !list[0].isEmpty()) {
 			for (String name : list) {
 				Location loc = PropertyManager.getBasicProperties()
-						.getLocationFromID(Integer.valueOf(name.split("_")[0]));
+						.getLocation(Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
 					basicNPCHandler.spawnExistingNPC(
 							name.split("_", 2)[1],

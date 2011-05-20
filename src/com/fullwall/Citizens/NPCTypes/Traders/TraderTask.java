@@ -133,7 +133,7 @@ public class TraderTask implements Runnable {
 			return;
 		if (previousTraderClickedSlot != slot) {
 			previousTraderClickedSlot = slot;
-			sendStockableMessage("Buying ", stockable);
+			sendStockableMessage(stockable);
 			return;
 		}
 		previousTraderClickedSlot = slot;
@@ -181,7 +181,7 @@ public class TraderTask implements Runnable {
 			return;
 		if (previousPlayerClickedSlot != slot) {
 			previousPlayerClickedSlot = slot;
-			sendStockableMessage("Selling ", stockable);
+			sendStockableMessage(stockable);
 			return;
 		}
 		previousPlayerClickedSlot = slot;
@@ -234,29 +234,35 @@ public class TraderTask implements Runnable {
 		ItemStack stocking = stockable.getStocking();
 		if (buying) {
 			if (!EconomyHandler.canBuy(new Payment(stocking, false), npc)) {
-				sendNoMoneyMessage(stocking, "sell", "The trader doesn't");
+				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
 			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()),
 					player)) {
-				sendNoMoneyMessage(stocking, "buy", "You don't");
+				sendNoMoneyMessage(stocking, false);
 				return true;
 			}
 		} else {
 			if (!EconomyHandler.canBuy(new Payment(stocking, false), player)) {
-				sendNoMoneyMessage(stocking, "sell", "You don't");
+				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
 			if (!EconomyHandler.canBuy(new Payment(stockable.getPrice()), npc)) {
-				sendNoMoneyMessage(stocking, "buy", "The trader doesn't");
+				sendNoMoneyMessage(stocking, false);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void sendNoMoneyMessage(ItemStack stocking, String keyword,
-			String start) {
+	private void sendNoMoneyMessage(ItemStack stocking, boolean selling) {
+		String start = "The trader doesn't";
+		String keyword = "buy";
+		if (selling) {
+			start = "You don't";
+			keyword = "buy";
+		}
+
 		player.sendMessage(ChatColor.RED
 				+ start
 				+ " have enough money available to "
@@ -266,17 +272,14 @@ public class TraderTask implements Runnable {
 						+ stocking.getType().name(), ChatColor.RED) + "(s).");
 	}
 
-	private void sendStockableMessage(String keyword, Stockable stockable) {
+	private void sendStockableMessage(Stockable stockable) {
+		String keyword = "Buying ";
 		if (stockable.isSelling())
-			player.sendMessage(ChatColor.AQUA
-					+ keyword
-					+ MessageUtils.getReverseStockableMessage(stockable,
-							ChatColor.AQUA) + ".");
-		else
-			player.sendMessage(ChatColor.AQUA
-					+ keyword
-					+ MessageUtils.getStockableMessage(stockable,
-							ChatColor.AQUA) + ".");
+			keyword = "Selling ";
+		player.sendMessage(ChatColor.AQUA
+				+ keyword
+				+ MessageUtils.getStockableMessage(stockable,
+						stockable.isSelling(), ChatColor.AQUA) + ".");
 	}
 
 	private Stockable getStockable(ItemStack i, String keyword, boolean selling) {

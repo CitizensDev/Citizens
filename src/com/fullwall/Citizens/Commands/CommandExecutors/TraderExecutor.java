@@ -169,16 +169,10 @@ public class TraderExecutor implements CommandExecutor {
 		for (int i = startPoint; i < startPoint + 6; ++i) {
 			if ((stock.size() - 1) >= i) {
 				Stockable s = stock.get(i);
-				if (selling)
-					player.sendMessage(ChatColor.GREEN
-							+ keyword
-							+ MessageUtils.getReverseStockableMessage(s,
-									ChatColor.GREEN) + ".");
-				else
-					player.sendMessage(ChatColor.GREEN
-							+ keyword
-							+ MessageUtils.getStockableMessage(s,
-									ChatColor.GREEN) + ".");
+				player.sendMessage(ChatColor.GREEN
+						+ keyword
+						+ MessageUtils.getStockableMessage(s, selling,
+								ChatColor.GREEN) + ".");
 			} else {
 				player.sendMessage(ChatColor.AQUA
 						+ "-------------------------------");
@@ -285,14 +279,18 @@ public class TraderExecutor implements CommandExecutor {
 			s.setSelling(false);
 		}
 		if (npc.getTrader().isStocked(s)) {
-			player.sendMessage(ChatColor.RED + "Already " + keyword
+			player.sendMessage(ChatColor.RED
+					+ "Already "
+					+ keyword
 					+ " that at "
-					+ MessageUtils.getStockableMessage(s, ChatColor.RED) + ".");
+					+ MessageUtils.getStockableMessage(s, selling,
+							ChatColor.RED) + ".");
 			return;
 		}
 		npc.getTrader().addStockable(s);
 		player.sendMessage(ChatColor.GREEN + "The trader is now " + keyword
-				+ " " + MessageUtils.getStockableMessage(s, ChatColor.GREEN)
+				+ " "
+				+ MessageUtils.getStockableMessage(s, selling, ChatColor.GREEN)
 				+ ".");
 	}
 

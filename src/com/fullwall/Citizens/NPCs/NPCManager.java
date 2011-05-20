@@ -41,7 +41,7 @@ public class NPCManager {
 	 * @param owner
 	 */
 	public void registerNPC(String name, int UID, String owner) {
-		Location loc = PropertyManager.getBasicProperties().getLocationFromID(
+		Location loc = PropertyManager.getBasicProperties().getLocation(
 				UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 

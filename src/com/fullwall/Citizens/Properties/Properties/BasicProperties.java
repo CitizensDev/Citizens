@@ -60,7 +60,7 @@ public class BasicProperties extends Saveable {
 		}
 	}
 
-	public Location getLocationFromID(int UID) {
+	public Location getLocation(int UID) {
 		String[] values = locations.getString(UID).split(",");
 		if (values.length != 6) {
 			log.info("getLocationFromName didn't have 6 values in values variable! Length: "
@@ -245,6 +245,17 @@ public class BasicProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setBalance(getBalance(npc.getUID()));
+
+		int UID = npc.getUID();
+		NPCData npcdata = npc.getNPCData();
+
+		npcdata.setLocation(getLocation(UID));
+		npcdata.setColour(getColour(UID));
+		npcdata.setItems(getItems(UID));
+		npcdata.setTexts(getText(UID));
+		npcdata.setLookClose(getLookWhenClose(UID));
+		npcdata.setTalkClose(getTalkWhenClose(UID));
+		npcdata.setOwner(getOwner(UID));
 		saveState(npc);
 	}
 

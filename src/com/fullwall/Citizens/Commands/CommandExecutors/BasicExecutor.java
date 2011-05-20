@@ -238,7 +238,7 @@ public class BasicExecutor implements CommandExecutor {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.tp")) {
 						player.teleport((PropertyManager.getBasicProperties()
-								.getLocationFromID(npc.getUID())));
+								.getLocation(npc.getUID())));
 						sender.sendMessage(ChatColor.GREEN
 								+ "Teleported you to the NPC named "
 								+ StringUtils.yellowify(npc.getStrippedName())
@@ -559,7 +559,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 */
 	private void moveNPC(CommandSender sender, String name, HumanNPC npc) {
-		Location loc = PropertyManager.getBasicProperties().getLocationFromID(
+		Location loc = PropertyManager.getBasicProperties().getLocation(
 				npc.getUID());
 		npc.getNPCData().setLocation(loc);
 		plugin.basicNPCHandler.moveNPC(npc, ((Player) sender).getLocation());
