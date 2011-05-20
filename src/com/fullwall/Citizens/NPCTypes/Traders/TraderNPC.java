@@ -39,12 +39,25 @@ public class TraderNPC implements Toggleable {
 		stocking.put(new Check(s.getStockingId(), s.isSelling()), s);
 	}
 
-	public Stockable getStockable(int itemID, boolean selling) {
+	public Stockable fetchStockable(int itemID, boolean selling) {
+		return stocking.get(new Check(itemID, selling));
+	}
+
+	public Stockable getStockable(int itemID, boolean selling, MaterialData data) {
 		if (checkStockingIntegrity()) {
-			if (stocking.get(new Check(itemID, selling)) != null)
-				return stocking.get(new Check(itemID, selling));
+			if (fetchStockable(itemID, selling) != null) {
+				Stockable stockable = fetchStockable(itemID, selling);
+				if (checkData(stockable, data)) {
+					return stockable;
+				}
+			}
 		}
 		return null;
+	}
+
+	public Stockable getStockable(Stockable s) {
+		return getStockable(s.getStocking().getTypeId(), s.isSelling(), s
+				.getStocking().getData());
 	}
 
 	public ArrayList<Stockable> getStockables(int itemID, boolean selling) {
@@ -67,10 +80,12 @@ public class TraderNPC implements Toggleable {
 		return stockables;
 	}
 
-	public void removeStockable(int ID, boolean selling) {
+	public void removeStockable(int ID, boolean selling, MaterialData data) {
 		if (checkStockingIntegrity()) {
-			if (stocking.get(new Check(ID, selling)) != null) {
-				stocking.remove(new Check(ID, selling));
+			if (fetchStockable(ID, selling) != null) {
+				if (checkData(fetchStockable(ID, selling), data)) {
+					stocking.remove(new Check(ID, selling));
+				}
 			}
 		}
 
@@ -78,8 +93,8 @@ public class TraderNPC implements Toggleable {
 
 	public boolean isStocked(int itemID, boolean selling, MaterialData data) {
 		if (checkStockingIntegrity()) {
-			if (stocking.get(new Check(itemID, selling)) != null) {
-				if (checkData(stocking.get(new Check(itemID, selling)), data)) {
+			if (fetchStockable(itemID, selling) != null) {
+				if (checkData(fetchStockable(itemID, selling), data)) {
 					return true;
 				}
 			}

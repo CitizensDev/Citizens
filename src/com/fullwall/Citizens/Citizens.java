@@ -96,7 +96,7 @@ public class Citizens extends JavaPlugin {
 						@Override
 						public void run() {
 							log.info("[Citizens]: Saving npc files to disk...");
-							PropertyManager.saveFiles();
+							PropertyManager.stateSave();
 							log.info("[Citizens]: Saved.");
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
@@ -108,12 +108,11 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
-		PropertyManager.saveAllNPCs();
+		PropertyManager.stateSave();
 
 		basicNPCHandler.despawnAllNPCs();
 
 		// Save the local copy of our files to disk.
-		PropertyManager.saveFiles();
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") disabled");
 	}

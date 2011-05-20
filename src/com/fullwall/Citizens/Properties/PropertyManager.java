@@ -89,4 +89,9 @@ public class PropertyManager {
 			save(npc);
 		}
 	}
+
+	public static void stateSave() {
+		saveAllNPCs();
+		saveFiles();
+	}
 }

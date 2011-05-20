@@ -288,7 +288,8 @@ public class TraderTask implements Runnable {
 					ChatColor.RED) + " isn't being " + keyword + " here.");
 			return null;
 		}
-		return npc.getTrader().getStockable(i.getTypeId(), selling);
+		return npc.getTrader()
+				.getStockable(i.getTypeId(), selling, i.getData());
 	}
 
 	public void addID(int ID) {

@@ -216,25 +216,28 @@ public class TraderExecutor implements CommandExecutor {
 	 */
 	private void changeTraderStock(Player player, HumanNPC npc, String item,
 			String price, boolean selling) {
+		selling = !selling;
 		if (item.contains("rem")) {
-			Material mat = StringUtils.parseMaterial(price);
-			if (mat == null) {
+			ItemStack stack = createItemStack(price.split(":"));
+			if (stack == null) {
 				player.sendMessage(ChatColor.RED
 						+ "Invalid item ID or name specified.");
 				return;
 			}
 			String keyword = "buying";
-			if (!selling)
+			if (selling)
 				keyword = "selling";
-			if (npc.getTrader().getStockable(mat.getId(), selling) == null) {
+			if (npc.getTrader().getStockable(stack.getTypeId(), selling,
+					stack.getData()) == null) {
 				player.sendMessage(ChatColor.RED
 						+ "The trader is not currently " + keyword
 						+ " that item.");
 				return;
 			} else {
-				npc.getTrader().removeStockable(mat.getId(), selling);
+				npc.getTrader().removeStockable(stack.getTypeId(), selling,
+						stack.getData());
 				player.sendMessage(ChatColor.GREEN + "Removed "
-						+ StringUtils.yellowify(mat.name())
+						+ StringUtils.yellowify(stack.getType().name())
 						+ " from the trader's " + keyword + " list.");
 			}
 			return;
@@ -274,7 +277,7 @@ public class TraderExecutor implements CommandExecutor {
 		itemPrice.setiConomy(iConomy);
 		Stockable s = new Stockable(stack, itemPrice, true);
 		String keyword = "buying";
-		if (!selling) {
+		if (selling) {
 			keyword = "selling";
 			s.setSelling(false);
 		}
@@ -283,8 +286,8 @@ public class TraderExecutor implements CommandExecutor {
 					+ "Already "
 					+ keyword
 					+ " that at "
-					+ MessageUtils.getStockableMessage(s, selling,
-							ChatColor.RED) + ".");
+					+ MessageUtils.getStockableMessage(npc.getTrader()
+							.getStockable(s), selling, ChatColor.RED) + ".");
 			return;
 		}
 		npc.getTrader().addStockable(s);
