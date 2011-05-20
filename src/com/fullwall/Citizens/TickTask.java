@@ -33,7 +33,7 @@ public class TickTask implements Runnable {
 	public void run() {
 		HumanNPC npc;
 		int entityID;
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 				.entrySet()) {
 			{
 				npc = entry.getValue();
@@ -53,7 +53,7 @@ public class TickTask implements Runnable {
 						if (checkLocation(npc.getLocation(), p.getLocation(),
 								range)) {
 							if (npc.getNPCData().isLookClose()) {
-								NPCManager.rotateNPCToPlayer(npc, p);
+								NPCManager.rotateToPlayer(npc, p);
 							}
 							if (npc.getNPCData().isTalkClose()
 									// If we haven't already spoken to the

@@ -51,7 +51,7 @@ public class BlacksmithNPC implements Toggleable {
 	}
 
 	@Override
-	public void registerState() {
+	public void register() {
 		PropertyManager.get("blacksmith").register(npc);
 	}
 
@@ -61,7 +61,7 @@ public class BlacksmithNPC implements Toggleable {
 	 * @param item
 	 * @return
 	 */
-	public boolean validateToolToRepair(ItemStack item) {
+	public boolean validateTool(ItemStack item) {
 		int id = item.getTypeId();
 		if (id == 256 || id == 257 || id == 258 || id == 259 || id == 267
 				|| id == 268 || id == 269 || id == 270 || id == 271
@@ -82,7 +82,7 @@ public class BlacksmithNPC implements Toggleable {
 	 * @param armor
 	 * @return
 	 */
-	public boolean validateArmorToRepair(ItemStack armor) {
+	public boolean validateArmor(ItemStack armor) {
 		int id = armor.getTypeId();
 		if (id >= 298 && id <= 317) {
 			return true;
@@ -99,9 +99,9 @@ public class BlacksmithNPC implements Toggleable {
 	 */
 	public String getToolType(ItemStack item) {
 		String type = "";
-		if (validateToolToRepair(item)) {
+		if (validateTool(item)) {
 			type = "tool";
-		} else if (validateArmorToRepair(item)) {
+		} else if (validateArmor(item)) {
 			type = "armor";
 		}
 		return type;
@@ -119,7 +119,7 @@ public class BlacksmithNPC implements Toggleable {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				if (item.getDurability() > 0) {
-					double paid = EconomyHandler.payBlacksmithPrice(op, player);
+					double paid = EconomyHandler.payBlacksmith(op, player);
 					if (paid > 0) {
 						item.setDurability((short) 0);
 						player.setItemInHand(item);

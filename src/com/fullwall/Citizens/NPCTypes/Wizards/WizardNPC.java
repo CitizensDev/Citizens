@@ -20,7 +20,7 @@ public class WizardNPC implements Toggleable {
 	private HumanNPC npc;
 	private String locations = "";
 	private int currentLocation = 0;
-	private int nrOfLocations = 0;
+	private int numberOfLocations = 0;
 	private Location currentLoc;
 
 	/**
@@ -52,22 +52,13 @@ public class WizardNPC implements Toggleable {
 		return "wizard";
 	}
 
-	/**
-	 * Returns the main location string.
-	 * 
-	 * @return
-	 */
-	public String getLocations() {
-		return locations;
-	}
-
 	@Override
 	public void saveState() {
 		PropertyManager.get(getType()).saveState(npc);
 	}
 
 	@Override
-	public void registerState() {
+	public void register() {
 		PropertyManager.get(getType()).register(npc);
 	}
 
@@ -84,10 +75,19 @@ public class WizardNPC implements Toggleable {
 				+ location.getZ() + "," + location.getYaw() + ","
 				+ location.getPitch() + "):";
 		locations = locations + addedLoc;
-		nrOfLocations = locations.split(":").length;
+		numberOfLocations = locations.split(":").length;
 		if (locations.split(":")[0].isEmpty()) {
-			nrOfLocations = 0;
+			numberOfLocations = 0;
 		}
+	}
+
+	/**
+	 * Returns the main location string.
+	 * 
+	 * @return
+	 */
+	public String getLocations() {
+		return locations;
 	}
 
 	/**
@@ -97,18 +97,18 @@ public class WizardNPC implements Toggleable {
 	 */
 	public void setLocations(String locationsinc) {
 		locations = locationsinc;
-		nrOfLocations = locations.split(":").length;
+		numberOfLocations = locations.split(":").length;
 		if (locations.split(":")[0].isEmpty()) {
-			nrOfLocations = 0;
+			numberOfLocations = 0;
 		}
 	}
 
 	/**
 	 * Sets the next location in the list as active.
 	 */
-	public void nextLocation() {
+	public void cycleLocation() {
 		currentLocation++;
-		if (currentLocation >= nrOfLocations)
+		if (currentLocation >= numberOfLocations)
 			currentLocation = 0;
 	}
 
@@ -117,8 +117,8 @@ public class WizardNPC implements Toggleable {
 	 * 
 	 * @return
 	 */
-	public int getNrOfLocations() {
-		return nrOfLocations;
+	public int getNumberOfLocations() {
+		return numberOfLocations;
 	}
 
 	/**

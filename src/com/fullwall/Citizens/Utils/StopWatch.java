@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Utils;
 
+import com.fullwall.Citizens.Citizens;
+
 /*
  Copyright (c) 2005, Corey Goldberg
 
@@ -25,6 +27,37 @@ public class StopWatch {
 		this.running = false;
 	}
 
+	public void print() {
+		Citizens.log.info("Start time: " + convertHours(startTime)
+				+ "h. Elapsed: " + toMilliseconds(getElapsedTime())
+				+ "ms. Stopped: " + convertHours(stopTime) + "h.");
+	}
+
+	public void printElapsed() {
+		Citizens.log.info("Elapsed: " + toMilliseconds(getElapsedTime())
+				+ "ms.");
+	}
+
+	public long toMilliseconds(long nanoseconds) {
+		return nanoseconds / 1000000;
+	}
+
+	public long toSeconds(long nanoseconds) {
+		return nanoseconds / 1000000000;
+	}
+
+	public long toMinutes(long seconds) {
+		return seconds / 60;
+	}
+
+	public long toHours(long minutes) {
+		return minutes / 60;
+	}
+
+	public long convertHours(long nanoseconds) {
+		return toHours(toMinutes(toSeconds(nanoseconds)));
+	}
+
 	// elapsed time in nanoseconds
 	public long getElapsedTime() {
 		long elapsed;
@@ -32,17 +65,6 @@ public class StopWatch {
 			elapsed = (System.nanoTime() - startTime);
 		} else {
 			elapsed = (stopTime - startTime);
-		}
-		return elapsed;
-	}
-
-	// elapsed time in seconds
-	public long getElapsedTimeSecs() {
-		long elapsed;
-		if (running) {
-			elapsed = ((System.nanoTime() - startTime) / 10000);
-		} else {
-			elapsed = ((stopTime - startTime) / 100000);
 		}
 		return elapsed;
 	}

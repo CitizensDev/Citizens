@@ -1,10 +1,8 @@
 package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayList;
-import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,88 +19,21 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	/**
-	 * Spawns a new npc at a location.
-	 * 
-	 * @param name
-	 * @param loc
-	 * @param owner
-	 * @return
-	 */
-	public int spawnNPC(String name, Location loc, String owner) {
-		return super.registerNPC(name, loc, owner);
-	}
-
-	/**
-	 * Respawns an existing npc.
-	 * 
-	 * @param name
-	 * @param UID
-	 * @param owner
-	 */
-	public void spawnExistingNPC(String name, int UID, String owner) {
-		super.registerNPC(name, UID, owner);
-	}
-
-	/**
-	 * Moves an npc to a given location.
-	 * 
-	 * @param npc
-	 * @param loc
-	 */
-	public void moveNPC(HumanNPC npc, Location loc) {
-		super.moveNPC(npc, loc);
-	}
-
-	/**
-	 * Despawns an npc.
-	 * 
-	 * @param UID
-	 */
-	public void despawnNPC(int UID) {
-		super.despawnNPC(UID);
-	}
-
-	/**
 	 * Despawns all npcs.
 	 */
-	public void despawnAllNPCs() {
-		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
-			super.despawnNPC(i.getKey());
-		}
-	}
-
-	/**
-	 * Removes an npc.
-	 * 
-	 * @param UID
-	 */
-	public void removeNPC(int UID) {
-		super.removeNPC(UID);
-		if (PropertyManager.getBasicProperties().locations.getString("list")
-				.isEmpty()) {
-			PropertyManager.getBasicProperties().locations.removeKey("list");
-			PropertyManager.getBasicProperties().locations.setInt("currentID",
-					0);
+	public void despawnAll() {
+		for (Integer i : GlobalUIDs.keySet()) {
+			super.despawn(i);
 		}
 	}
 
 	/**
 	 * Removes all npcs.
 	 */
-	public void removeAllNPCs() {
-		for (Entry<Integer, String> i : GlobalUIDs.entrySet()) {
-			super.removeNPC(i.getKey());
+	public void removeAll() {
+		for (Integer i : GlobalUIDs.keySet()) {
+			super.remove(i);
 		}
-	}
-
-	/**
-	 * Gets an npc's owner.
-	 * 
-	 * @param UID
-	 * @return
-	 */
-	public String getOwner(int UID) {
-		return NPCManager.getNPC(UID).getOwner();
 	}
 
 	/**
@@ -113,13 +44,11 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param owner
 	 */
 	public void setName(int UID, String changeTo, String owner) {
-		HumanNPC n = super.getNPC(UID);
-		if (changeTo.length() > 16)
-			changeTo = changeTo.substring(0, 16);
+		HumanNPC n = super.get(UID);
 		PropertyManager.getBasicProperties().changeName(UID, n.getName(),
 				changeTo);
-		super.removeNPCForRespawn(UID);
-		super.registerNPC(changeTo, UID, owner);
+		super.removeForRespawn(UID);
+		super.register(changeTo, UID, owner);
 	}
 
 	/**
@@ -131,10 +60,10 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	// TODO: maybe remove this, since it changes the skin URL.
 	public void setColour(int UID, String colourChange, String owner) {
-		HumanNPC n = super.getNPC(UID);
+		HumanNPC n = super.get(UID);
 		n.getNPCData().setColour(colourChange.replace("&", "§"));
-		super.removeNPCForRespawn(UID);
-		super.registerNPC(n.getName(), UID, owner);
+		super.removeForRespawn(UID);
+		super.register(n.getName(), UID, owner);
 	}
 
 	/**
@@ -143,26 +72,14 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param UID
 	 * @param text
 	 */
-	public void addNPCText(int UID, String text) {
-		ArrayList<String> texts = super.getBasicNPCText(UID);
+	public void addText(int UID, String text) {
+		ArrayList<String> texts = super.getText(UID);
 		if (texts == null)
 			texts = new ArrayList<String>();
 		texts.add(text);
 		texts = StringUtils.colourise(texts);
-		super.setBasicNPCText(UID, texts);
-		super.getNPC(UID).getNPCData().setTexts(texts);
-	}
-
-	/**
-	 * Resets an npc's text to the given text.
-	 * 
-	 * @param UID
-	 * @param text
-	 */
-	public void setNPCText(int UID, ArrayList<String> text) {
-		text = StringUtils.colourise(text);
-		super.setBasicNPCText(UID, text);
-		super.getNPC(UID).getNPCData().setTexts(text);
+		super.setText(UID, texts);
+		super.get(UID).getNPCData().setTexts(texts);
 	}
 
 	/**
@@ -172,7 +89,7 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	public void resetText(int UID) {
 		ArrayList<String> a = new ArrayList<String>();
-		super.setBasicNPCText(UID, a);
+		super.setText(UID, a);
 	}
 
 	/**
@@ -213,8 +130,8 @@ public class BasicNPCHandler extends NPCManager {
 		items.set(0, mat.getId());
 		NPCDataManager.addItems(npc, items);
 		if ((olditem != 0 && items.get(0) == 0)) {
-			super.removeNPCForRespawn(npc.getUID());
-			super.registerNPC(npc.getName(), npc.getUID(), npc.getOwner());
+			super.removeForRespawn(npc.getUID());
+			super.register(npc.getName(), npc.getUID(), npc.getOwner());
 		}
 	}
 
@@ -252,8 +169,8 @@ public class BasicNPCHandler extends NPCManager {
 		NPCDataManager.addItems(npc, items);
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.
-			super.removeNPCForRespawn(npc.getUID());
-			super.registerNPC(npc.getName(), npc.getUID(), npc.getOwner());
+			super.removeForRespawn(npc.getUID());
+			super.register(npc.getName(), npc.getUID(), npc.getOwner());
 		}
 	}
 }

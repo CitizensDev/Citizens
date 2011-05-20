@@ -237,13 +237,13 @@ public class EconomyHandler {
 	 * @param multiple
 	 * @return
 	 */
-	public static double payBlacksmithPrice(Operation op, Player player) {
+	public static double payBlacksmith(Operation op, Player player) {
 		if (useEconomy) {
 			if (useIconomy()) {
 				return ServerEconomyInterface.payBlacksmithPrice(player,
 						player.getItemInHand(), op);
 			} else {
-				return ItemInterface.payBlacksmithPrice(player,
+				return ItemInterface.payBlacksmith(player,
 						player.getItemInHand(), op);
 			}
 		} else {

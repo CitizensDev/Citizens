@@ -37,7 +37,7 @@ public class HealerExecutor implements CommandExecutor {
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager
-					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+					.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -100,13 +100,13 @@ public class HealerExecutor implements CommandExecutor {
 		return returnval;
 	}
 
-	private void displayHealerStrength(Player player, HumanNPC npc) {
+	private void displayStrength(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
 				+ npc.getHealer().getStrength() + ChatColor.RED + "/"
 				+ npc.getHealer().getMaxStrength());
 	}
 
-	private void displayHealerLevel(Player player, HumanNPC npc) {
+	private void displayLevel(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW + "Level: " + ChatColor.GREEN
 				+ npc.getHealer().getLevel() + ChatColor.RED + "/10");
 	}
@@ -116,8 +116,8 @@ public class HealerExecutor implements CommandExecutor {
 				+ "========== "
 				+ StringUtils.yellowify(npc.getStrippedName()
 						+ "'s Healer Status") + " ==========");
-		displayHealerStrength(player, npc);
-		displayHealerLevel(player, npc);
+		displayStrength(player, npc);
+		displayLevel(player, npc);
 	}
 
 	private void levelUp(Player player, HumanNPC npc, int multiple) {

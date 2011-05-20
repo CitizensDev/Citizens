@@ -44,7 +44,7 @@ public class QuesterNPC implements Toggleable {
 	}
 
 	@Override
-	public void registerState() {
+	public void register() {
 		PropertyManager.get(getType()).register(npc);
 	}
 }

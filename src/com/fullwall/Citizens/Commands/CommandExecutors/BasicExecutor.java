@@ -40,8 +40,7 @@ public class BasicExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		// Get the selected NPC, if any (required for most commands)
 		if (NPCManager.validateSelected(player)) {
-			npc = NPCManager
-					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
 		}
 
 		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
@@ -49,7 +48,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (!EconomyHandler.useEconomy()
 						|| EconomyHandler.canBuy(Operation.BASIC_NPC_CREATE,
 								player)) {
-					createNPC(args, player);
+					create(args, player);
 				} else if (EconomyHandler.useEconomy()) {
 					sender.sendMessage(MessageUtils.getNoMoneyMessage(
 							Operation.BASIC_NPC_CREATE, player));
@@ -64,7 +63,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.move")) {
-						moveNPC(sender, npc.getName(), npc);
+						move(sender, npc.getName(), npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -83,7 +82,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.remove.singular")) {
-						removeNPC(args, sender, npc);
+						remove(args, sender, npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -93,7 +92,7 @@ public class BasicExecutor implements CommandExecutor {
 			} else if (Permission.hasPermission("citizens.general.remove.all",
 					sender)) {
 				if (args.length == 2 && args[1].equalsIgnoreCase("all")) {
-					removeNPC(args, sender, npc);
+					remove(args, sender, npc);
 				} else {
 					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
@@ -259,7 +258,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.copy")) {
-						copyNPC(npc.getUID(), npc.getName(), player);
+						copy(npc.getUID(), npc.getName(), player);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -298,7 +297,7 @@ public class BasicExecutor implements CommandExecutor {
 							+ "The ID must be a number.");
 					return true;
 				}
-				npc = NPCManager.getNPC(Integer.valueOf(args[1]));
+				npc = NPCManager.get(Integer.valueOf(args[1]));
 				if (npc == null) {
 					sender.sendMessage(ChatColor.RED + "No NPC with the ID "
 							+ args[1] + ".");
@@ -497,7 +496,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param args
 	 * @param player
 	 */
-	private void createNPC(String[] args, Player player) {
+	private void create(String[] args, Player player) {
 		String text = "";
 		ArrayList<String> texts = new ArrayList<String>();
 		if (args.length >= 3) {
@@ -519,15 +518,15 @@ public class BasicExecutor implements CommandExecutor {
 		if (PropertyManager.getBasicProperties().getNPCAmountPerPlayer(
 				player.getName()) < UtilityProperties.getMaxNPCsPerPlayer()
 				|| UtilityProperties.settings.getInt("max-NPCs-per-player") == 0) {
-			int UID = plugin.basicNPCHandler.spawnNPC(args[1],
-					player.getLocation(), player.getName());
+			int UID = NPCManager.register(args[1], player.getLocation(),
+					player.getName());
 			PropertyManager.getBasicProperties().saveNPCAmountPerPlayer(
 					player.getName(),
 					PropertyManager.getBasicProperties().getNPCAmountPerPlayer(
 							player.getName()) + 1);
-			plugin.basicNPCHandler.setNPCText(UID, texts);
+			NPCManager.setText(UID, texts);
 
-			NPCManager.getNPC(UID).getNPCData().setOwner(player.getName());
+			NPCManager.get(UID).getNPCData().setOwner(player.getName());
 
 			player.sendMessage(ChatColor.GREEN + "The NPC "
 					+ StringUtils.yellowify(args[1]) + " was born!");
@@ -558,13 +557,31 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param name
 	 * @param npc
 	 */
-	private void moveNPC(CommandSender sender, String name, HumanNPC npc) {
+	private void move(CommandSender sender, String name, HumanNPC npc) {
 		Location loc = PropertyManager.getBasicProperties().getLocation(
 				npc.getUID());
 		npc.getNPCData().setLocation(loc);
-		plugin.basicNPCHandler.moveNPC(npc, ((Player) sender).getLocation());
+		plugin.basicNPCHandler.move(npc, ((Player) sender).getLocation());
 		sender.sendMessage(StringUtils.yellowify(name)
 				+ " is enroute to your location!");
+	}
+
+	/**
+	 * Copies an npc's data and position to another npc.
+	 * 
+	 * @param npc
+	 * @param p
+	 */
+	private void copy(int UID, String name, Player p) {
+		int newUID = NPCManager.register(name, p.getLocation(), p.getName());
+		HumanNPC newNPC = NPCManager.get(newUID);
+		newNPC.moveTo(p.getLocation());
+
+		newNPC.getNPCData().setLocation(p.getLocation());
+		PropertyManager.copy(UID, newUID);
+		NPCManager.removeForRespawn(newUID);
+
+		NPCManager.register(name, newUID, newNPC.getOwner());
 	}
 
 	/**
@@ -573,16 +590,16 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param args
 	 * @param sender
 	 */
-	private void removeNPC(String[] args, CommandSender sender, HumanNPC npc) {
+	private void remove(String[] args, CommandSender sender, HumanNPC npc) {
 		Player p = (Player) sender;
 		if (args.length == 2 && args[1].equalsIgnoreCase("all")) {
-			plugin.basicNPCHandler.removeAllNPCs();
+			plugin.basicNPCHandler.removeAll();
 			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			PropertyManager.getBasicProperties().locations.setInt("currentID",
 					0);
 			PropertyManager.getBasicProperties().locations.removeKey("list");
 		} else {
-			plugin.basicNPCHandler.removeNPC(npc.getUID());
+			plugin.basicNPCHandler.remove(npc.getUID());
 			sender.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 		}
 		NPCManager.NPCSelected.remove(p.getName());
@@ -645,7 +662,7 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		ArrayList<String> texts = new ArrayList<String>();
 		texts.add(text);
-		plugin.basicNPCHandler.setNPCText(npc.getUID(), texts);
+		NPCManager.setText(npc.getUID(), texts);
 		sender.sendMessage(ChatColor.GREEN
 				+ StringUtils.yellowify(npc.getName()) + "'s text was set to "
 				+ StringUtils.yellowify(text) + ".");
@@ -671,7 +688,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			i += 1;
 		}
-		plugin.basicNPCHandler.addNPCText(npc.getUID(), text);
+		plugin.basicNPCHandler.addText(npc.getUID(), text);
 		sender.sendMessage(StringUtils.yellowify(text) + " was added to "
 				+ StringUtils.yellowify(npc.getStrippedName() + "'s")
 				+ " text.");
@@ -717,28 +734,6 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void setArmor(String[] args, CommandSender sender, HumanNPC npc) {
 		plugin.basicNPCHandler.setItemInSlot(args, (Player) sender, npc);
-	}
-
-	// Ugh, ugly. Maybe we should palm the PropertyPool functions off to
-	// somewhere else.
-	/**
-	 * Copies an npc's data and position to another npc.
-	 * 
-	 * @param npc
-	 * @param p
-	 */
-	private void copyNPC(int UID, String name, Player p) {
-		int newUID = plugin.basicNPCHandler.spawnNPC(name, p.getLocation(),
-				p.getName());
-		HumanNPC newNPC = NPCManager.getNPC(newUID);
-		newNPC.moveTo(p.getLocation());
-
-		newNPC.getNPCData().setLocation(p.getLocation());
-		PropertyManager.copy(UID, newUID);
-		NPCManager.removeNPCForRespawn(newUID);
-
-		plugin.basicNPCHandler
-				.spawnExistingNPC(name, newUID, newNPC.getOwner());
 	}
 
 	/**

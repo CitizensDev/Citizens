@@ -85,7 +85,7 @@ public class PropertyManager {
 	}
 
 	public static void saveAllNPCs() {
-		for (HumanNPC npc : NPCManager.getNPCList().values()) {
+		for (HumanNPC npc : NPCManager.getList().values()) {
 			save(npc);
 		}
 	}

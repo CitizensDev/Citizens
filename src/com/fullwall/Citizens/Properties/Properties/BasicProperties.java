@@ -53,9 +53,9 @@ public class BasicProperties extends Saveable {
 			return null;
 		} else {
 			Location loc = new Location(Bukkit.getServer().getWorld(values[0]),
-					NPCManager.getNPC(UID).getX(), NPCManager.getNPC(UID)
-							.getY(), NPCManager.getNPC(UID).getZ(),
-					Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+					NPCManager.get(UID).getX(), NPCManager.get(UID).getY(),
+					NPCManager.get(UID).getZ(), Float.parseFloat(values[4]),
+					Float.parseFloat(values[5]));
 			return loc;
 		}
 	}
@@ -134,7 +134,7 @@ public class BasicProperties extends Saveable {
 			for (String string : current.split(";")) {
 				text.add(string);
 			}
-			NPCManager.setBasicNPCText(UID, text);
+			NPCManager.setText(UID, text);
 		}
 	}
 
@@ -276,6 +276,10 @@ public class BasicProperties extends Saveable {
 		if (counts.keyExists(npc.getOwner()))
 			counts.setInt(npc.getOwner(), counts.getInt(npc.getOwner()) - 1);
 		balances.removeKey(npc.getUID());
+		if (locations.getString("list").isEmpty()) {
+			locations.removeKey("list");
+			locations.setInt("currentID", 0);
+		}
 	}
 
 	@Override

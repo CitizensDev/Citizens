@@ -9,7 +9,7 @@ public class HealerTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 				.entrySet()) {
 			regenerateHealth(entry.getValue());
 		}

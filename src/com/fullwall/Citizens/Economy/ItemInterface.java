@@ -228,7 +228,7 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmithPrice(Player player, ItemStack item,
+	public static double payBlacksmith(Player player, ItemStack item,
 			Operation op) {
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));

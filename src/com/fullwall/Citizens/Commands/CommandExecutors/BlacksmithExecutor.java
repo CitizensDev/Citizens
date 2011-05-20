@@ -41,7 +41,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager
-					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+					.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -138,7 +138,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMOR_REPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				if (npc.getBlacksmith().validateArmorToRepair(armor)) {
+				if (npc.getBlacksmith().validateArmor(armor)) {
 					if (armor.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
 								Operation.BLACKSMITH_ARMOR_REPAIR, player);
@@ -203,8 +203,8 @@ public class BlacksmithExecutor implements CommandExecutor {
 			Material material) {
 		ItemStack item = player.getItemInHand();
 		String itemName = item.getType().name().toLowerCase().replace("_", " ");
-		if (blacksmith.validateToolToRepair(item)
-				|| blacksmith.validateArmorToRepair(item)) {
+		if (blacksmith.validateTool(item)
+				|| blacksmith.validateArmor(item)) {
 			player.sendMessage(ChatColor.GREEN
 					+ "Your "
 					+ StringUtils.yellowify(itemName)

@@ -8,10 +8,11 @@ import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Interfaces.Listener;
 
 import com.nijikokun.register.payment.Methods;
 
-public class PluginListen extends ServerListener {
+public class PluginListen extends ServerListener implements Listener {
 	private Citizens plugin;
 	private PluginManager pm;
 	private Methods methods;

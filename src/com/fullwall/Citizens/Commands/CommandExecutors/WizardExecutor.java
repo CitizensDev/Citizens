@@ -36,7 +36,7 @@ public class WizardExecutor implements CommandExecutor {
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager
-					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+					.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -61,14 +61,14 @@ public class WizardExecutor implements CommandExecutor {
 					&& args[0].equalsIgnoreCase("locations")) {
 				if (Permission.hasPermission("citizens.wizard.locations",
 						sender)) {
-					this.dislayLocations(player, npc);
+					this.displayLocations(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 2 && args[0].contains("addloc")) {
 				if (Permission.hasPermission("citizens.wizard.addloc", sender)) {
-					if (npc.getWizard().getNrOfLocations() < Constants.wizardMaxLocations) {
+					if (npc.getWizard().getNumberOfLocations() < Constants.wizardMaxLocations) {
 						this.addLocation(player, npc, args[1]);
 					} else {
 						sender.sendMessage(ChatColor.RED + "Wizard "
@@ -92,7 +92,7 @@ public class WizardExecutor implements CommandExecutor {
 						type = -1;
 					}
 					if (type != -1) {
-						if (type <= npc.getWizard().getNrOfLocations()) {
+						if (type <= npc.getWizard().getNumberOfLocations()) {
 							this.removeLocation(player, npc, type);
 						} else {
 							sender.sendMessage(ChatColor.RED
@@ -113,6 +113,20 @@ public class WizardExecutor implements CommandExecutor {
 	}
 
 	/**
+	 * Adds a teleport location to the wizard.
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param locName
+	 */
+	private void addLocation(Player player, HumanNPC npc, String locName) {
+		player.sendMessage(ChatColor.GREEN + "Added current location to "
+				+ StringUtils.yellowify(npc.getStrippedName())
+				+ ChatColor.GREEN + " as " + StringUtils.yellowify(locName));
+		npc.getWizard().addLocation(player.getLocation(), locName);
+	}
+
+	/**
 	 * Removes a teleport location from the wizard.
 	 * 
 	 * @param player
@@ -130,40 +144,12 @@ public class WizardExecutor implements CommandExecutor {
 				removedName = locations[i].split(",")[0].replace("(", "");
 			}
 		}
-		npc.getWizard().nextLocation();
+		npc.getWizard().cycleLocation();
 		npc.getWizard().setLocations(newLoc);
 		player.sendMessage(ChatColor.GREEN + "Wizard "
 				+ StringUtils.yellowify(npc.getStrippedName())
 				+ " had amnesia and forgot about "
 				+ StringUtils.yellowify(removedName));
-	}
-
-	/**
-	 * Adds a teleport location to the wizard.
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param locName
-	 */
-	private void addLocation(Player player, HumanNPC npc, String locName) {
-		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.yellowify(npc.getStrippedName())
-				+ ChatColor.GREEN + " as " + StringUtils.yellowify(locName));
-		npc.getWizard().addLocation(player.getLocation(), locName);
-	}
-
-	/**
-	 * Function for displaying the list of locations that the wizard has.
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	private void dislayLocations(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN
-				+ "========== "
-				+ StringUtils.yellowify(npc.getStrippedName()
-						+ "'s Wizard Locations") + " ==========");
-		displayWizardLocations(player, npc);
 	}
 
 	/**
@@ -173,12 +159,26 @@ public class WizardExecutor implements CommandExecutor {
 	 * @param player
 	 * @param npc
 	 */
-	private void displayWizardLocations(Player player, HumanNPC npc) {
+	private void listLocations(Player player, HumanNPC npc) {
 		String locations[] = npc.getWizard().getLocations().split(":");
 		for (int i = 0; i < locations.length; i++) {
 			player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
 					+ ChatColor.GREEN + ": "
 					+ locations[i].split(",")[0].replace("(", ""));
 		}
+	}
+
+	/**
+	 * Function for displaying the list of locations that the wizard has.
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void displayLocations(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.GREEN
+				+ "========== "
+				+ StringUtils.yellowify(npc.getStrippedName()
+						+ "'s Wizard Locations") + " ==========");
+		listLocations(player, npc);
 	}
 }

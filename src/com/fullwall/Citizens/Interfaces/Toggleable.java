@@ -11,5 +11,5 @@ public interface Toggleable {
 
 	public void saveState();
 
-	public void registerState();
+	public void register();
 }

@@ -46,7 +46,7 @@ public class TraderExecutor implements CommandExecutor {
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager
-					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+					.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -218,7 +218,7 @@ public class TraderExecutor implements CommandExecutor {
 			String price, boolean selling) {
 		selling = !selling;
 		if (item.contains("rem")) {
-			ItemStack stack = createItemStack(price.split(":"));
+			ItemStack stack = parseItemStack(price.split(":"));
 			if (stack == null) {
 				player.sendMessage(ChatColor.RED
 						+ "Invalid item ID or name specified.");
@@ -243,7 +243,7 @@ public class TraderExecutor implements CommandExecutor {
 			return;
 		}
 		String[] split = item.split(":");
-		ItemStack stack = createItemStack(split);
+		ItemStack stack = parseItemStack(split);
 		if (stack == null) {
 			player.sendMessage(ChatColor.RED
 					+ "Invalid item ID or name specified.");
@@ -252,7 +252,7 @@ public class TraderExecutor implements CommandExecutor {
 		split = price.split(":");
 		ItemStack cost = null;
 		if (split.length != 1) {
-			cost = createItemStack(split);
+			cost = parseItemStack(split);
 			if (cost == null) {
 				player.sendMessage(ChatColor.RED
 						+ "Invalid item ID or name specified.");
@@ -303,7 +303,7 @@ public class TraderExecutor implements CommandExecutor {
 	 * @param split
 	 * @return
 	 */
-	private ItemStack createItemStack(String[] split) {
+	private ItemStack parseItemStack(String[] split) {
 		try {
 			int amount = 1;
 			byte data = 0;
@@ -311,13 +311,16 @@ public class TraderExecutor implements CommandExecutor {
 			if (mat == null) {
 				return null;
 			}
-			if (split.length >= 2)
-				amount = Integer.parseInt(split[1]);
-			if (split.length >= 3)
+			switch (split.length) {
+			case 3:
 				data = Byte.parseByte(split[2]);
+			case 2:
+				amount = Integer.parseInt(split[1]);
+			default:
+				break;
+			}
 			ItemStack stack = new ItemStack(mat, amount);
 			stack.setData(new MaterialData(mat, data));
-			Citizens.log.info("Data: " + stack.getData());
 			return stack;
 		} catch (NumberFormatException ex) {
 			return null;

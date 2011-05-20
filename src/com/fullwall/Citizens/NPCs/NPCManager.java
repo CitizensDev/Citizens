@@ -13,6 +13,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCList;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
@@ -40,9 +41,8 @@ public class NPCManager {
 	 * @param UID
 	 * @param owner
 	 */
-	public void registerNPC(String name, int UID, String owner) {
-		Location loc = PropertyManager.getBasicProperties().getLocation(
-				UID);
+	public static void register(String name, int UID, String owner) {
+		Location loc = PropertyManager.getBasicProperties().getLocation(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
 		String colour = PropertyManager.getBasicProperties().getColour(UID);// StringUtils.getColourFromString(name);
@@ -88,14 +88,14 @@ public class NPCManager {
 	 * @param owner
 	 * @return
 	 */
-	public int registerNPC(String name, Location loc, String owner) {
+	public static int register(String name, Location loc, String owner) {
 		int UID = PropertyManager.getBasicProperties().getNewNpcID();
 		PropertyManager.getBasicProperties().saveLocation(name, loc, UID);
 		PropertyManager.getBasicProperties().saveLookWhenClose(UID,
 				Constants.defaultFollowingEnabled);
 		PropertyManager.getBasicProperties().saveTalkWhenClose(UID,
 				Constants.defaultTalkWhenClose);
-		registerNPC(name, UID, owner);
+		register(name, UID, owner);
 		return UID;
 	}
 
@@ -105,9 +105,10 @@ public class NPCManager {
 	 * @param UID
 	 * @param text
 	 */
-	public static void setBasicNPCText(int UID, ArrayList<String> text) {
+	public static void setText(int UID, ArrayList<String> text) {
+		text = StringUtils.colourise(text);
 		BasicNPCTexts.put(UID, text);
-		getNPC(UID).getNPCData().setTexts(text);
+		get(UID).getNPCData().setTexts(text);
 	}
 
 	/**
@@ -116,7 +117,7 @@ public class NPCManager {
 	 * @param UID
 	 * @return
 	 */
-	public static ArrayList<String> getBasicNPCText(int UID) {
+	public static ArrayList<String> getText(int UID) {
 		return BasicNPCTexts.get(UID);
 	}
 
@@ -126,7 +127,7 @@ public class NPCManager {
 	 * @param UID
 	 * @return
 	 */
-	public static HumanNPC getNPC(int UID) {
+	public static HumanNPC get(int UID) {
 		return list.get(UID);
 	}
 
@@ -136,7 +137,7 @@ public class NPCManager {
 	 * @param entity
 	 * @return
 	 */
-	public static HumanNPC getNPC(Entity entity) {
+	public static HumanNPC get(Entity entity) {
 		return list.getBasicHumanNpc(entity);
 	}
 
@@ -145,7 +146,7 @@ public class NPCManager {
 	 * 
 	 * @return
 	 */
-	public static NPCList getNPCList() {
+	public static NPCList getList() {
 		return list;
 	}
 
@@ -155,7 +156,7 @@ public class NPCManager {
 	 * @param npc
 	 * @param loc
 	 */
-	public void moveNPC(HumanNPC npc, Location loc) {
+	public void move(HumanNPC npc, Location loc) {
 		npc.getNPCData().setLocation(loc);
 		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
 	}
@@ -166,7 +167,7 @@ public class NPCManager {
 	 * @param npc
 	 * @param player
 	 */
-	public static void rotateNPCToPlayer(HumanNPC npc, Player player) {
+	public static void rotateToPlayer(HumanNPC npc, Player player) {
 		Location loc = npc.getLocation();
 		double xDiff = player.getLocation().getX() - loc.getX();
 		double yDiff = player.getLocation().getY() - loc.getY();
@@ -187,7 +188,7 @@ public class NPCManager {
 	 * 
 	 * @param UID
 	 */
-	public void despawnNPC(int UID) {
+	public void despawn(int UID) {
 		GlobalUIDs.remove(UID);
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
@@ -198,8 +199,8 @@ public class NPCManager {
 	 * 
 	 * @param UID
 	 */
-	public void removeNPC(int UID) {
-		PropertyManager.remove(getNPC(UID));
+	public void remove(int UID) {
+		PropertyManager.remove(get(UID));
 		GlobalUIDs.remove(UID);
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 		list.remove(UID);
@@ -210,7 +211,7 @@ public class NPCManager {
 	 * 
 	 * @param UID
 	 */
-	public static void removeNPCForRespawn(int UID) {
+	public static void removeForRespawn(int UID) {
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 	}
 
@@ -219,7 +220,7 @@ public class NPCManager {
 	 * 
 	 * @return
 	 */
-	public ConcurrentHashMap<Integer, String> getBasicUIDs() {
+	public ConcurrentHashMap<Integer, String> getUIDs() {
 		return GlobalUIDs;
 	}
 
@@ -229,7 +230,7 @@ public class NPCManager {
 	 * @param UID
 	 * @param name
 	 */
-	private void registerUID(int UID, String name) {
+	private static void registerUID(int UID, String name) {
 		GlobalUIDs.put(UID, name);
 	}
 
@@ -307,7 +308,7 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateOwnership(Player p, int UID) {
-		if (getNPC(UID).getOwner().equals(p.getName()))
+		if (get(UID).getOwner().equals(p.getName()))
 			return true;
 		return false;
 	}

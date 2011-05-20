@@ -110,7 +110,7 @@ public class Citizens extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		PropertyManager.stateSave();
 
-		basicNPCHandler.despawnAllNPCs();
+		basicNPCHandler.despawnAll();
 
 		// Save the local copy of our files to disk.
 		log.info("[" + pdfFile.getName() + "]: version ["
@@ -126,7 +126,7 @@ public class Citizens extends JavaPlugin {
 				Location loc = PropertyManager.getBasicProperties()
 						.getLocation(Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
-					basicNPCHandler.spawnExistingNPC(
+					NPCManager.register(
 							name.split("_", 2)[1],
 							Integer.valueOf(name.split("_")[0]),
 							PropertyManager.getBasicProperties().getOwner(
@@ -135,8 +135,8 @@ public class Citizens extends JavaPlugin {
 							.getBasicProperties().getText(
 									Integer.valueOf(name.split("_")[0]));
 					if (text != null)
-						basicNPCHandler.setNPCText(
-								Integer.valueOf(name.split("_")[0]), text);
+						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
+								text);
 				} else {
 					PropertyManager.getBasicProperties().deleteNameFromList(
 							name);
@@ -249,8 +249,8 @@ public class Citizens extends JavaPlugin {
 	 */
 	private int getHealthRegenRate() {
 		int delay = 0;
-		if (!NPCManager.getNPCList().isEmpty()) {
-			for (Entry<Integer, HumanNPC> entry : NPCManager.getNPCList()
+		if (!NPCManager.getList().isEmpty()) {
+			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 					.entrySet()) {
 				int level = entry.getValue().getHealer().getLevel();
 				delay = Constants.healerHealthRegenIncrement * (11 - level);

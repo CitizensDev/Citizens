@@ -9,7 +9,7 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class StringUtils {
 
-	public static String getColourFromString(String s) {
+	public static String parseColour(String s) {
 		if (s.startsWith("&")) {
 			String colour = "";
 			colour = s.replace("&", "§").substring(0, 1);
@@ -51,7 +51,7 @@ public class StringUtils {
 		try {
 			Integer.parseInt(material);
 			return true;
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
 			return false;
 		}
 	}

@@ -42,7 +42,7 @@ public class TogglerExecutor implements CommandExecutor {
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender))
 			npc = NPCManager
-					.getNPC(NPCManager.NPCSelected.get(player.getName()));
+					.get(NPCManager.NPCSelected.get(player.getName()));
 		else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -182,7 +182,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (paid > 0)
 					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
 							toggleable.getName(), toggleable.getType(), true));
-				toggleable.registerState();
+				toggleable.register();
 				toggleState(player, toggleable);
 			} else {
 				player.sendMessage(ChatColor.GRAY

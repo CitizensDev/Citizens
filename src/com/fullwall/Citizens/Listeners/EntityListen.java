@@ -19,6 +19,7 @@ import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
+import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderInterface;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -32,7 +33,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTarget
  * 
  * @author fullwall
  */
-public class EntityListen extends EntityListener {
+public class EntityListen extends EntityListener implements Listener {
 	private final Citizens plugin;
 	private PluginManager pm;
 
@@ -55,7 +56,7 @@ public class EntityListen extends EntityListener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
-			HumanNPC npc = NPCManager.getNPC(e.getEntity());
+			HumanNPC npc = NPCManager.get(e.getEntity());
 			if (e.getEntity() instanceof Player && npc != null) {
 				e.setCancelled(true);
 			}
@@ -67,8 +68,8 @@ public class EntityListen extends EntityListener {
 						int playerHealth = player.getHealth();
 						int healerHealth = npc.getHealer().getStrength();
 						if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
-							if (playerHealth <= 19) {
-								if (healerHealth >= 1) {
+							if (playerHealth < 20) {
+								if (healerHealth > 0) {
 									player.setHealth(playerHealth + 1);
 									npc.getHealer().setStrength(
 											healerHealth - 1);
@@ -139,11 +140,8 @@ public class EntityListen extends EntityListener {
 								"citizens.wizard.changeteleport",
 								(CommandSender) player)) {
 							if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-								if (!npc.isWizard()) {
-									return;
-								}
-								if (npc.getWizard().getNrOfLocations() > 0) {
-									npc.getWizard().nextLocation();
+								if (npc.getWizard().getNumberOfLocations() > 0) {
+									npc.getWizard().cycleLocation();
 									player.sendMessage(ChatColor.GREEN
 											+ "Location set to "
 											+ StringUtils.yellowify(npc
@@ -169,7 +167,7 @@ public class EntityListen extends EntityListener {
 			return;
 		}
 		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
-		HumanNPC npc = NPCManager.getNPC(e.getEntity());
+		HumanNPC npc = NPCManager.get(e.getEntity());
 		if (npc != null && event.getTarget() instanceof Player) {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
@@ -202,7 +200,7 @@ public class EntityListen extends EntityListener {
 					if (Permission.hasPermission("citizens.wizard.useteleport",
 							(CommandSender) p)) {
 						if (p.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-							if (npc.getWizard().getNrOfLocations() > 0) {
+							if (npc.getWizard().getNumberOfLocations() > 0) {
 								npc.getWizard().buyTeleport(p, npc.getWizard(),
 										Operation.WIZARD_TELEPORT);
 							}

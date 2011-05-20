@@ -59,7 +59,7 @@ public class MessageUtils {
 	public static String getText(HumanNPC npc, Player player, Citizens plugin) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
 		int UID = npc.getUID();
-		ArrayList<String> array = NPCManager.getBasicNPCText(UID);
+		ArrayList<String> array = NPCManager.getText(UID);
 		String text = "";
 		if (array != null && array.size() > 0) {
 			text = array.get(plugin.basicNPCHandler.ran.nextInt(array.size()));
@@ -140,7 +140,7 @@ public class MessageUtils {
 		return message;
 	}
 
-	private static String getReverseStockableMessage(Stockable stockable,
+	private static String reverseStockableMessage(Stockable stockable,
 			ChatColor colour) {
 		return MessageUtils.getPriceMessage(stockable.getPrice(), colour)
 				+ " for "
@@ -164,10 +164,10 @@ public class MessageUtils {
 					+ "(s) for "
 					+ MessageUtils.getPriceMessage(s.getPrice(), colour);
 		else
-			return getReverseStockableMessage(s, colour);
+			return reverseStockableMessage(s, colour);
 	}
 
-	public static String getStackToString(ItemStack stack, ChatColor colour) {
+	public static String getStackString(ItemStack stack, ChatColor colour) {
 		return StringUtils.yellowify(stack.getAmount() + " "
 				+ stack.getType().name(), colour)
 				+ "(s)";
