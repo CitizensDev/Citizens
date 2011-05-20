@@ -24,9 +24,7 @@ public class WorldListen extends WorldListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	/**
-	 * Register world events
-	 */
+	@Override
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.CHUNK_UNLOAD, this, Event.Priority.Normal,

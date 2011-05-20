@@ -1,10 +1,14 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.NPCTypes.Questers.QuestManager;
 
 public class BlockListen extends BlockListener implements Listener {
 	private Citizens plugin;
@@ -17,5 +21,23 @@ public class BlockListen extends BlockListener implements Listener {
 	@Override
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Event.Type.BLOCK_BREAK, this, Event.Priority.Normal,
+				plugin);
+		pm.registerEvent(Event.Type.BLOCK_PLACE, this, Event.Priority.Normal,
+				plugin);
+	}
+
+	@Override
+	public void onBlockBreak(BlockBreakEvent event) {
+		if (QuestManager.hasQuest(event.getPlayer())) {
+			QuestManager.incrementQuest(event.getPlayer(), event);
+		}
+	}
+
+	@Override
+	public void onBlockPlace(BlockPlaceEvent event) {
+		if (QuestManager.hasQuest(event.getPlayer())) {
+			QuestManager.incrementQuest(event.getPlayer(), event);
+		}
 	}
 }

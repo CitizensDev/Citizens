@@ -19,9 +19,7 @@ public class CustomListen extends CustomEventListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	/**
-	 * Register custom events
-	 */
+	@Override
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, this, Event.Priority.Normal,

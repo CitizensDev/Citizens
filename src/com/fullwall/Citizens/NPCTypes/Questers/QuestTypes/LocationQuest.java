@@ -19,12 +19,6 @@ public class LocationQuest extends Quest {
 	}
 
 	@Override
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void updateProgress(Event event) {
 		super.updateProgress(event);
 	}

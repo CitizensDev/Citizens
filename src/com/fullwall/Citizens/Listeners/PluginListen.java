@@ -22,9 +22,7 @@ public class PluginListen extends ServerListener implements Listener {
 		this.methods = new Methods();
 	}
 
-	/**
-	 * Register server events
-	 */
+	@Override
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, this,

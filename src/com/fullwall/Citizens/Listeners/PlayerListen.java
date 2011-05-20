@@ -26,7 +26,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		if (QuestManager.hasQuest(event.getPlayer()))
+		if (QuestManager.hasQuest(event.getPlayer())) {
 			QuestManager.incrementQuest(event.getPlayer(), event);
+		}
 	}
 }

@@ -30,15 +30,15 @@ public class CollectQuest extends Quest {
 	}
 
 	@Override
-	public void updateProgress(Event ev) {
-		if (ev instanceof PlayerPickupItemEvent) {
-			PlayerPickupItemEvent event = (PlayerPickupItemEvent) ev;
-			if (event.getItem().getItemStack().getType() == collect) {
-				collected += event.getItem().getItemStack().getAmount();
+	public void updateProgress(Event event) {
+		if (event instanceof PlayerPickupItemEvent) {
+			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
+			if (ev.getItem().getItemStack().getType() == collect) {
+				collected += ev.getItem().getItemStack().getAmount();
 			}
 			if (collected >= amount) {
 				completed = true;
-				super.updateProgress(event);
+				super.updateProgress(ev);
 			}
 		}
 	}

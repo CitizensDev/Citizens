@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
@@ -41,14 +42,14 @@ public class EntityListen extends EntityListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	/**
-	 * Register entity events
-	 */
+	@Override
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this, Event.Priority.Normal,
 				plugin);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this, Event.Priority.Normal,
+				plugin);
+		pm.registerEvent(Event.Type.ENTITY_DEATH, this, Event.Priority.Normal,
 				plugin);
 	}
 
@@ -229,5 +230,9 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onEntityDeath(EntityDeathEvent event) {
 	}
 }

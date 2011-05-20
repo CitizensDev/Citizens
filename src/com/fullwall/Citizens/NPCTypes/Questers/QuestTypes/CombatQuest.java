@@ -2,15 +2,20 @@ package com.fullwall.Citizens.NPCTypes.Questers.QuestTypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class CombatQuest extends Quest {
-	public CombatQuest(HumanNPC quester, Player player) {
+
+	private int kills = 0;
+	private int amount;
+
+	public CombatQuest(HumanNPC quester, Player player, int amount) {
 		super(quester, player);
-		// TODO Auto-generated constructor stub
+		this.amount = amount;
 	}
 
 	@Override
@@ -20,6 +25,15 @@ public class CombatQuest extends Quest {
 
 	@Override
 	public void updateProgress(Event event) {
-		super.updateProgress(event);
+		if (event instanceof EntityDeathEvent) {
+			EntityDeathEvent ev = (EntityDeathEvent) event;
+			if (ev.getEntity() instanceof Player) {
+				kills += 1;
+			}
+			if (kills >= amount) {
+				completed = true;
+				super.updateProgress(event);
+			}
+		}
 	}
 }
