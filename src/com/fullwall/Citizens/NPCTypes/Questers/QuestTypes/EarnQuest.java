@@ -7,18 +7,23 @@ import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class DistanceQuest extends Quest {
-	public DistanceQuest(HumanNPC quester, Player player) {
+public class EarnQuest extends Quest {
+
+	private double amount;
+
+	public EarnQuest(HumanNPC quester, Player player, double amount) {
 		super(quester, player);
+		this.amount = amount;
 	}
 
 	@Override
 	public QuestType getType() {
-		return QuestType.MOVE_DISTANCE;
+		return QuestType.EARN;
 	}
 
 	@Override
-	public void updateProgress(Event event) {
-		super.updateProgress(event);
+	public void updateProgress(Event ev) {
+		super.updateProgress(ev);
 	}
+
 }

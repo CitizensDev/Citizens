@@ -1,21 +1,61 @@
 package com.fullwall.Citizens.NPCTypes.Questers;
 
-import java.util.List;
+import java.util.ArrayList;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-public interface Quest extends CompletedQuest {
-	public String getDescription();
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-	public String getCompletedText();
+public abstract class Quest implements CompletedQuest {
+	protected HumanNPC quester;
+	protected Player player;
+	protected String questName = "";
+	protected String completionText = "";
+	protected String description = "";
+	protected boolean completed = false;
+	protected ArrayList<Reward> rewards = new ArrayList<Reward>();
 
-	public boolean isCompleted();
+	public Quest(HumanNPC quester, Player player) {
+		this.quester = quester;
+		this.player = player;
+	}
 
-	public void updateProgress(Event event);
+	public HumanNPC getQuester() {
+		return quester;
+	}
 
-	public List<Reward> getRewards();
+	public Player getPlayer() {
+		return player;
+	}
 
-	public void addReward(Reward reward);
+	public String getName() {
+		return questName;
+	}
 
-	public PlayerProfile getPlayerProfile();
+	public void addReward(Reward reward) {
+		rewards.add(reward);
+	}
+
+	public void setName(String questName) {
+		this.questName = questName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getCompletedText() {
+		return completionText;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public void updateProgress(Event event) {
+		if (isCompleted())
+			player.sendMessage(getCompletedText());
+	}
+
 }

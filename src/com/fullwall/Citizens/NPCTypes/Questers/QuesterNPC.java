@@ -18,6 +18,10 @@ public class QuesterNPC implements Toggleable {
 		quests.put(quest.getName(), quest);
 	}
 
+	public Quest getQuest(String name) {
+		return quests.get(name);
+	}
+
 	@Override
 	public void toggle() {
 		npc.setQuester(!npc.isQuester());

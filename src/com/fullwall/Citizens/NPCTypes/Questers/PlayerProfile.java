@@ -2,12 +2,18 @@ package com.fullwall.Citizens.NPCTypes.Questers;
 
 import java.util.ArrayList;
 
-import org.bukkit.event.Event;
-
 public class PlayerProfile {
+	private StoredProfile profile;
 	private ArrayList<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
-	private Quest currentQuest;
-	private String name;
+	private Quest currentQuest = null;
+
+	public PlayerProfile(String name) {
+		profile = new StoredProfile(name);
+	}
+
+	public void setProfile(StoredProfile profile) {
+		this.profile = profile;
+	}
 
 	public void setCompletedQuests(ArrayList<CompletedQuest> completedQuests) {
 		this.completedQuests = completedQuests;
@@ -25,15 +31,7 @@ public class PlayerProfile {
 		return currentQuest;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void get(Event et) {
-
+	public boolean hasQuest() {
+		return currentQuest == null;
 	}
 }

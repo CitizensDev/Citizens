@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * iConomy v1.x
@@ -39,7 +38,6 @@ import java.util.logging.Logger;
  * @author Nijiko
  */
 public final class PropertyHandler {
-	private static final Logger log = Logger.getLogger("Minecraft");
 	private Properties properties;
 	private String fileName;
 
@@ -69,12 +67,15 @@ public final class PropertyHandler {
 
 	private void createFile(File file) {
 		try {
-			log.info(fileName + " not found! Creating empty file at "
-					+ fileName + ".");
+			if (!fileName.contains("profile"))
+				Citizens.log.info(fileName
+						+ " not found! Creating empty file at " + fileName
+						+ ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, "Unable to create " + file.getPath(), ex);
+			Citizens.log.log(Level.SEVERE,
+					"Unable to create " + file.getPath(), ex);
 		}
 	}
 
@@ -134,7 +135,8 @@ public final class PropertyHandler {
 		try {
 			this.properties.load(new FileInputStream(this.fileName));
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, "Unable to load " + this.fileName, ex);
+			Citizens.log.log(Level.SEVERE, "Unable to load " + this.fileName,
+					ex);
 		}
 	}
 
@@ -143,7 +145,8 @@ public final class PropertyHandler {
 			this.properties.store(new FileOutputStream(this.fileName),
 					"Minecraft Properties File");
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, "Unable to save " + this.fileName, ex);
+			Citizens.log.log(Level.SEVERE, "Unable to save " + this.fileName,
+					ex);
 		}
 	}
 
