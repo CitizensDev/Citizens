@@ -41,7 +41,9 @@ public class PropertyManager {
 
 	public static void load(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			saveable.loadState(npc);
+			if (saveable.exists(npc)) {
+				saveable.loadState(npc);
+			}
 		}
 	}
 
