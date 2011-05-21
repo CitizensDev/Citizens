@@ -99,26 +99,31 @@ public class HealerExecutor implements CommandExecutor {
 		return returnval;
 	}
 
-	private void displayStrength(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
-				+ npc.getHealer().getStrength() + ChatColor.RED + "/"
-				+ npc.getHealer().getMaxStrength());
-	}
-
-	private void displayLevel(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.YELLOW + "Level: " + ChatColor.GREEN
-				+ npc.getHealer().getLevel() + ChatColor.RED + "/10");
-	}
-
+	/**
+	 * Display a healer NPC's health and level
+	 * 
+	 * @param player
+	 * @param npc
+	 */
 	private void displayStatus(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ "========== "
 				+ StringUtils.yellowify(npc.getStrippedName()
 						+ "'s Healer Status") + " ==========");
-		displayStrength(player, npc);
-		displayLevel(player, npc);
+		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
+				+ npc.getHealer().getHealth() + ChatColor.RED + "/"
+				+ npc.getHealer().getMaxHealth());
+		player.sendMessage(ChatColor.YELLOW + "Level: " + ChatColor.GREEN
+				+ npc.getHealer().getLevel() + ChatColor.RED + "/10");
 	}
 
+	/**
+	 * Level a healer NPC up
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param multiple
+	 */
 	private void levelUp(Player player, HumanNPC npc, int multiple) {
 		if (EconomyHandler.useEconomy()) {
 			int level = npc.getHealer().getLevel();
@@ -142,6 +147,16 @@ public class HealerExecutor implements CommandExecutor {
 		}
 	}
 
+	/**
+	 * Get the paid message on leveling up on a healer NPC
+	 * 
+	 * @param op
+	 * @param npc
+	 * @param paid
+	 * @param level
+	 * @param multiple
+	 * @return
+	 */
 	private String getLevelUpPaidMessage(Operation op, HumanNPC npc,
 			double paid, int level, int multiple) {
 		String message = ChatColor.GREEN

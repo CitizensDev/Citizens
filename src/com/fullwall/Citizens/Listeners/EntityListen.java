@@ -67,13 +67,12 @@ public class EntityListen extends EntityListener implements Listener {
 					Player player = (Player) entity;
 					if (npc.isHealer()) {
 						int playerHealth = player.getHealth();
-						int healerHealth = npc.getHealer().getStrength();
+						int healerHealth = npc.getHealer().getHealth();
 						if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
 							if (playerHealth < 20) {
 								if (healerHealth > 0) {
 									player.setHealth(playerHealth + 1);
-									npc.getHealer().setStrength(
-											healerHealth - 1);
+									npc.getHealer().setHealth(healerHealth - 1);
 									player.sendMessage(ChatColor.GREEN
 											+ "You drained health from the healer "
 											+ StringUtils.yellowify(npc
@@ -90,10 +89,9 @@ public class EntityListen extends EntityListener implements Listener {
 						} else if (player.getItemInHand().getTypeId() == Constants.healerGiveHealthItem) {
 							if (playerHealth >= 1) {
 								if (healerHealth < npc.getHealer()
-										.getMaxStrength()) {
+										.getMaxHealth()) {
 									player.setHealth(playerHealth - 1);
-									npc.getHealer().setStrength(
-											healerHealth + 1);
+									npc.getHealer().setHealth(healerHealth + 1);
 									player.sendMessage(ChatColor.GREEN
 											+ "You donated some health to the healer "
 											+ StringUtils.yellowify(npc
@@ -110,10 +108,9 @@ public class EntityListen extends EntityListener implements Listener {
 												.getStrippedName()));
 							}
 						} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
-							if (healerHealth != npc.getHealer()
-									.getMaxStrength()) {
-								npc.getHealer().setStrength(
-										npc.getHealer().getMaxStrength());
+							if (healerHealth != npc.getHealer().getMaxHealth()) {
+								npc.getHealer().setHealth(
+										npc.getHealer().getMaxHealth());
 								player.sendMessage(ChatColor.GREEN
 										+ "You restored all of "
 										+ StringUtils.yellowify(npc

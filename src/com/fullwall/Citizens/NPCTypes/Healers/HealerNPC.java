@@ -9,7 +9,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
  */
 public class HealerNPC implements Toggleable {
 	private HumanNPC npc;
-	private int strength = 10;
+	private int health = 10;
 	private int level = 1;
 
 	public HealerNPC(HumanNPC npc) {
@@ -18,10 +18,10 @@ public class HealerNPC implements Toggleable {
 
 	/**
 	 * 
-	 * @return the remaining strength that a healer has
+	 * @return the remaining health that a healer has
 	 */
-	public int getStrength() {
-		return strength;
+	public int getHealth() {
+		return health;
 	}
 
 	/**
@@ -29,8 +29,8 @@ public class HealerNPC implements Toggleable {
 	 * @param strength
 	 *            the remaining strength of a healer
 	 */
-	public void setStrength(int strength) {
-		this.strength = strength;
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class HealerNPC implements Toggleable {
 		return level;
 	}
 
-	public int getMaxStrength() {
+	public int getMaxHealth() {
 		return level * 10;
 	}
 }
