@@ -2,11 +2,8 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
-import net.minecraft.server.Packet7UseEntity;
-
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -169,26 +166,6 @@ public class HumanNPC extends NPC {
 
 	private void moveNPCTowardsTarget() {
 		this.mcEntity.updateMove();
-	}
-
-	public void attackLivingEntity(LivingEntity ent) {
-		try {
-			this.mcEntity.animateArmSwing();
-			/*
-			 * Field f = CraftLivingEntity.class.getDeclaredField("entity");
-			 * f.setAccessible(true); EntityLiving lEntity = (EntityLiving)
-			 * f.get(ent); this.mcEntity.h(lEntity); Probably have to find the
-			 * minecraft code that simply attacks an entity (so as to include
-			 * item damage bonuses) ent.damage(1);
-			 */
-			// I think this is right (may need testing).
-			Packet7UseEntity packet = new Packet7UseEntity();
-			packet.k = true;
-			packet.target = ent.getEntityId();
-			this.mcEntity.netServerHandler.sendPacket(packet);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void animateArmSwing() {

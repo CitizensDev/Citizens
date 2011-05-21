@@ -12,6 +12,7 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Packet18ArmAnimation;
+import net.minecraft.server.Packet7UseEntity;
 import net.minecraft.server.PathEntity;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
@@ -24,7 +25,6 @@ public class PathNPC extends EntityPlayer {
 	private boolean targetAggro = false;
 	private boolean hasAttacked = false;
 	private boolean jumping = false;
-	private int damage = 1;
 	private int pathTicks = 0;
 	private int stationaryTicks = 0;
 	private int prevX;
@@ -172,7 +172,7 @@ public class PathNPC extends EntityPlayer {
 				&& entity.boundingBox.e > this.boundingBox.b
 				&& entity.boundingBox.b < this.boundingBox.e) {
 			this.attackTicks = 20;
-			entity.damageEntity(this, this.damage);
+			this.attackEntity(entity);
 		}
 	}
 
@@ -256,4 +256,13 @@ public class PathNPC extends EntityPlayer {
 	public boolean pathFinished() {
 		return pathEntity == null;
 	}
+
+	public void attackEntity(Entity entity) {
+		this.animateArmSwing();
+		Packet7UseEntity packet = new Packet7UseEntity();
+		packet.c = 1;
+		packet.target = entity.id;
+		this.netServerHandler.sendPacket(packet);
+	}
+
 }
