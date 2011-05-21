@@ -4,14 +4,16 @@ import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-/**
- * Healer-NPC object
- */
 public class HealerNPC implements Toggleable {
 	private HumanNPC npc;
 	private int health = 10;
 	private int level = 1;
 
+	/**
+	 * Healer NPC object
+	 * 
+	 * @param npc
+	 */
 	public HealerNPC(HumanNPC npc) {
 		this.npc = npc;
 	}
@@ -22,7 +24,6 @@ public class HealerNPC implements Toggleable {
 	 * @return
 	 */
 	public int getHealth() {
-		System.out.println("health:" + health);
 		return health;
 	}
 
@@ -43,7 +44,6 @@ public class HealerNPC implements Toggleable {
 	public int getMaxHealth() {
 		return level * 10;
 	}
-	
 
 	/**
 	 * Get the level of a healer NPC
@@ -51,7 +51,6 @@ public class HealerNPC implements Toggleable {
 	 * @return
 	 */
 	public int getLevel() {
-		System.out.println("level: " + level);
 		return level;
 	}
 

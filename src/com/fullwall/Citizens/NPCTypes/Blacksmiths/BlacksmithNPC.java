@@ -17,7 +17,7 @@ public class BlacksmithNPC implements Toggleable {
 	private HumanNPC npc;
 
 	/**
-	 * NPC Blacksmith object
+	 * Blacksmith NPC object
 	 * 
 	 * @param npc
 	 */

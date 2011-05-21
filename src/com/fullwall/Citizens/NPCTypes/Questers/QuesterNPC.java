@@ -10,6 +10,11 @@ public class QuesterNPC implements Toggleable {
 	private HumanNPC npc;
 	private HashMap<String, Quest> quests = new HashMap<String, Quest>();
 
+	/**
+	 * Quester NPC object
+	 * 
+	 * @param npc
+	 */
 	public QuesterNPC(HumanNPC npc) {
 		this.npc = npc;
 	}

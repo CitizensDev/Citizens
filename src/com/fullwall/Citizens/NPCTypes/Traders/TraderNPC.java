@@ -10,6 +10,14 @@ import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC implements Toggleable {
+
+	private HumanNPC npc;
+
+	private boolean unlimited = false;
+	private boolean free = true;
+
+	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
+
 	/**
 	 * Holds information about a trader's stocked items, balance and whether it
 	 * is free/unlimited.
@@ -19,13 +27,6 @@ public class TraderNPC implements Toggleable {
 	public TraderNPC(HumanNPC npc) {
 		this.npc = npc;
 	}
-
-	private HumanNPC npc;
-
-	private boolean unlimited = false;
-	private boolean free = true;
-
-	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
 
 	public ConcurrentHashMap<Check, Stockable> getStocking() {
 		return stocking;

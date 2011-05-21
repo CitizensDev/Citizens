@@ -13,9 +13,6 @@ import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-/**
- * Wizard-NPC object
- */
 public class WizardNPC implements Toggleable {
 	private HumanNPC npc;
 	private String locations = "";
@@ -24,7 +21,7 @@ public class WizardNPC implements Toggleable {
 	private Location currentLoc;
 
 	/**
-	 * NPC Wizard object
+	 * Wizard NPC object
 	 * 
 	 * @param npc
 	 */
