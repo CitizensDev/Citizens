@@ -146,14 +146,15 @@ public class PathNPC extends EntityPlayer {
 		return 0.5F - this.world.l(i, j, k);
 	}
 
-	private Entity findClosestPlayer() {
-		EntityHuman entityhuman = this.world.a(this, 16.0D);
+	private Entity findClosestPlayer(double range) {
+		EntityHuman entityhuman = this.world.a(this, range);
 		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
 	}
 
-	public void targetClosestPlayer() {
+	public void targetClosestPlayer(boolean aggro, double range) {
 		if (this.target == null) {
-			this.target = this.findClosestPlayer();
+			this.target = this.findClosestPlayer(range);
+			this.targetAggro = aggro;
 			if (this.target != null) {
 				this.pathEntity = this.world.findPath(this, this.target, 16.0F);
 			}
