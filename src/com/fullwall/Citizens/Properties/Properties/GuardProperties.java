@@ -1,5 +1,8 @@
 package com.fullwall.Citizens.Properties.Properties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
@@ -10,19 +13,39 @@ public class GuardProperties extends Saveable {
 			"plugins/Citizens/Guards/Citizens.guards");
 	private final PropertyHandler guardTypes = new PropertyHandler(
 			"plugins/Citizens/Guards/Citizens.guardtypes");
+	private final PropertyHandler mobBlacklist = new PropertyHandler(
+			"plugins/Citizens/Guards/Citizens.mobblacklist");
 
-	public String getGuardType(int UID) {
+	private String getGuardType(int UID) {
 		return guardTypes.getString(UID);
 	}
 
-	public void saveGuardType(int UID, String guardType) {
+	private void saveGuardType(int UID, String guardType) {
 		guardTypes.setString(UID, guardType);
+	}
+
+	private List<String> getMobBlacklist(int UID) {
+		String save = mobBlacklist.getString(UID);
+		List<String> mobs = new ArrayList<String>();
+		for (String s : save.split(",")) {
+			mobs.add(s);
+		}
+		return mobs;
+	}
+
+	private void saveMobBlacklist(int UID, List<String> mobs) {
+		String save = "";
+		for (int x = 0; x < mobs.size(); x++) {
+			save += mobs.get(x) + ",";
+		}
+		mobBlacklist.setString(UID, save);
 	}
 
 	@Override
 	public void saveFiles() {
 		guards.save();
 		guardTypes.save();
+		mobBlacklist.save();
 	}
 
 	@Override
@@ -30,6 +53,7 @@ public class GuardProperties extends Saveable {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isGuard());
 			saveGuardType(npc.getUID(), npc.getGuard().getGuardType());
+			saveMobBlacklist(npc.getUID(), npc.getGuard().getMobBlacklist());
 		}
 	}
 
@@ -37,6 +61,7 @@ public class GuardProperties extends Saveable {
 	public void loadState(HumanNPC npc) {
 		npc.setGuard(getEnabled(npc));
 		npc.getGuard().setGuardType(getGuardType(npc.getUID()));
+		npc.getGuard().setMobBlacklist(getMobBlacklist(npc.getUID()));
 		saveState(npc);
 	}
 
@@ -44,6 +69,7 @@ public class GuardProperties extends Saveable {
 	public void removeFromFiles(HumanNPC npc) {
 		guards.removeKey(npc.getUID());
 		guardTypes.removeKey(npc.getUID());
+		mobBlacklist.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -78,6 +104,9 @@ public class GuardProperties extends Saveable {
 		}
 		if (guardTypes.keyExists(UID)) {
 			guards.setString(nextUID, guards.getString(UID));
+		}
+		if (mobBlacklist.keyExists(UID)) {
+			mobBlacklist.setString(nextUID, mobBlacklist.getString(UID));
 		}
 	}
 }

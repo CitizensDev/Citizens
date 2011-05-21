@@ -1,5 +1,8 @@
 package com.fullwall.Citizens.NPCTypes.Guards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -9,6 +12,7 @@ public class GuardNPC implements Toggleable {
 	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
 	private String guardType = "";
+	private List<String> mobBlacklist = new ArrayList<String>();
 
 	/**
 	 * Guard NPC object
@@ -78,6 +82,21 @@ public class GuardNPC implements Toggleable {
 	 */
 	public void setGuardType(String guardType) {
 		this.guardType = guardType;
+	}
+
+	public List<String> getMobBlacklist() {
+		for (int x = 0; x < mobBlacklist.size(); x++) {
+			mobBlacklist.get(x).split(",");
+		}
+		return mobBlacklist;
+	}
+
+	public void addMobToBlacklist(String mob) {
+		mobBlacklist.add(mob.toLowerCase());
+	}
+
+	public void setMobBlacklist(List<String> mobBlacklist) {
+		this.mobBlacklist = mobBlacklist;
 	}
 
 	@Override

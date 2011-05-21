@@ -31,12 +31,13 @@ public class TraderProperties extends Saveable {
 	private void saveInventory(int UID, PlayerInventory inv) {
 		String save = "";
 		for (ItemStack i : inv.getContents()) {
-			if (i == null)
+			if (i == null) {
 				save += 0 + "/" + 1 + "/" + 0 + ",";
-			else
+			} else {
 				save += i.getTypeId() + "/" + i.getAmount() + "/"
 						+ ((i.getData() == null) ? 0 : i.getData().getData())
 						+ ",";
+			}
 		}
 		inventories.setString(UID, save);
 	}

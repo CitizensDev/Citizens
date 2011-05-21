@@ -3,6 +3,7 @@ package com.fullwall.Citizens.NPCTypes.Guards;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
@@ -28,31 +29,33 @@ public class GuardTask implements Runnable {
 				if (npc.getGuard().isBouncer()) {
 					for (Player player : plugin.getServer().getOnlinePlayers()) {
 						String name = player.getName();
-						if (LocationUtils.checkLocation(npc.getLocation(),
-								player.getLocation(),
-								Constants.guardProtectionRadius)) {
-							if (isBlacklisted(player)) {
-								if (hasAttemptedEntry.get(name) == null
-										|| hasAttemptedEntry.get(name).get(
-												npc.getUID()) == null
-										|| hasAttemptedEntry.get(name).get(
-												npc.getUID()) == false) {
-									blockEntry(player, npc);
-									HashMap<Integer, Boolean> npcs = new HashMap<Integer, Boolean>();
-									if (hasAttemptedEntry.get(name) != null) {
-										npcs = hasAttemptedEntry.get(name);
+						if (!NPCManager.validateOwnership(player, npc.getUID())) {
+							if (LocationUtils.checkLocation(npc.getLocation(),
+									player.getLocation(),
+									Constants.guardProtectionRadius)) {
+								if (isBlacklisted(player)) {
+									if (hasAttemptedEntry.get(name) == null
+											|| hasAttemptedEntry.get(name).get(
+													npc.getUID()) == null
+											|| hasAttemptedEntry.get(name).get(
+													npc.getUID()) == false) {
+										blockEntry(player, npc);
+										HashMap<Integer, Boolean> npcs = new HashMap<Integer, Boolean>();
+										if (hasAttemptedEntry.get(name) != null) {
+											npcs = hasAttemptedEntry.get(name);
+										}
+										npcs.put(npc.getUID(), true);
+										hasAttemptedEntry.put(name, npcs);
 									}
-									npcs.put(npc.getUID(), true);
-									hasAttemptedEntry.put(name, npcs);
 								}
+							} else if (hasAttemptedEntry.get(name) != null
+									&& hasAttemptedEntry.get(name).get(
+											npc.getUID()) != null
+									&& hasAttemptedEntry.get(name).get(
+											npc.getUID()) == true) {
+								hasAttemptedEntry.get(name).put(npc.getUID(),
+										false);
 							}
-						} else if (hasAttemptedEntry.get(name) != null
-								&& hasAttemptedEntry.get(name)
-										.get(npc.getUID()) != null
-								&& hasAttemptedEntry.get(name)
-										.get(npc.getUID()) == true) {
-							hasAttemptedEntry.get(name)
-									.put(npc.getUID(), false);
 						}
 					}
 				}
@@ -80,7 +83,7 @@ public class GuardTask implements Runnable {
 	 * @param npc
 	 */
 	private void blockEntry(Player player, HumanNPC npc) {
-		player.sendMessage(npc.getStrippedName()
+		player.sendMessage(ChatColor.RED + npc.getStrippedName()
 				+ " has blocked you from entering this zone.");
 	}
 }

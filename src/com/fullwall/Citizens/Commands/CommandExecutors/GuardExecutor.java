@@ -73,6 +73,22 @@ public class GuardExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
+			if (npc.getGuard().isBouncer()) {
+				if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bouncer.allow", sender)) {
+						addMobToBlacklist(player, npc, args[1]);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
+				}
+			} else if (npc.getGuard().isBodyguard()) {
+				// TODO bodyguard commands here
+			} else {
+				sender.sendMessage(ChatColor.RED
+						+ "That guard isn't the correct type, so you cannot perform this command.");
+			}
 			PropertyManager.save(npc);
 		}
 		return returnval;
@@ -115,6 +131,41 @@ public class GuardExecutor implements CommandExecutor {
 		} else {
 			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
 					+ " is already a bouncer.");
+		}
+	}
+
+	/**
+	 * Add a mob to the blacklist
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param mob
+	 */
+	private void addMobToBlacklist(Player player, HumanNPC npc, String mob) {
+		if (npc.getGuard().getMobBlacklist().contains(mob.toLowerCase())) {
+			player.sendMessage(ChatColor.RED
+					+ "That mob is already blacklisted.");
+		} else if (mob.equalsIgnoreCase("cow")
+				|| mob.equalsIgnoreCase("chicken")
+				|| mob.equalsIgnoreCase("pig") || mob.equalsIgnoreCase("sheep")
+				|| mob.equalsIgnoreCase("squid")
+				|| mob.equalsIgnoreCase("creeper")
+				|| mob.equalsIgnoreCase("spider")
+				|| mob.equalsIgnoreCase("zombie")
+				|| mob.equalsIgnoreCase("skeleton")
+				|| mob.equalsIgnoreCase("wolf")
+				|| mob.equalsIgnoreCase("ghast")
+				|| mob.equalsIgnoreCase("pigzombie")
+				|| mob.equalsIgnoreCase("zombiepig")
+				|| mob.equalsIgnoreCase("zombiepigman")
+				|| mob.equalsIgnoreCase("giant")) {
+			npc.getGuard().addMobToBlacklist(mob);
+			player.sendMessage(ChatColor.GREEN + "You added the mob type "
+					+ StringUtils.yellowify(mob) + " to "
+					+ StringUtils.yellowify(npc.getStrippedName() + "'s")
+					+ " blacklist.");
+		} else {
+			player.sendMessage(ChatColor.RED + "Invalid mob type.");
 		}
 	}
 }
