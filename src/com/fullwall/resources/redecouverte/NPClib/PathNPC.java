@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.Utils.LocationUtils;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
@@ -19,7 +18,6 @@ import net.minecraft.server.World;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
-	private Location targetLocation;
 	private PathEntity pathEntity;
 	private Entity target;
 
@@ -27,6 +25,11 @@ public class PathNPC extends EntityPlayer {
 	private boolean hasAttacked = false;
 	private boolean jumping = false;
 	private int damage = 1;
+	private int pathTicks = 0;
+	private int stationaryTicks = 0;
+	private int prevX;
+	private int prevY;
+	private int prevZ;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -43,10 +46,7 @@ public class PathNPC extends EntityPlayer {
 		hasAttacked = false;
 		jumping = false;
 		updateTarget();
-
-		// Recalculate path.
-		if (targetLocation != null)
-			createPathEntity(targetLocation);
+		updatePathingState();
 		if (this.pathEntity != null) {
 			Vec3D vector = getVector();
 			int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
@@ -76,27 +76,21 @@ public class PathNPC extends EntityPlayer {
 		}
 	}
 
-	private Vec3D getVector() {
-		Vec3D vec3d = pathEntity.a(this);
-		for (double d = width * 2.0F; vec3d != null
-				&& vec3d.d(locX, vec3d.b, locZ) < d * d;) {
-			// Increment path
-			pathEntity.a();
-
-			// Is finished?
-			if (pathEntity.b()) {
-				if (LocationUtils.checkLocation(npc.getPlayer().getLocation(),
-						targetLocation, 1.5)) {
-					targetLocation = null;
-					npc.getNPCData().setLocation(npc.getPlayer().getLocation());
-				}
-				vec3d = null;
-				pathEntity = null;
-			} else {
-				vec3d = pathEntity.a(this);
-			}
+	private void updatePathingState() {
+		Location loc = this.bukkitEntity.getLocation();
+		if (prevX == loc.getBlockX() && prevY == loc.getBlockY()
+				&& prevZ == loc.getBlockZ())
+			++stationaryTicks;
+		else
+			stationaryTicks = 0;
+		++pathTicks;
+		if ((Constants.maxPathingTicks != -1 && pathTicks >= Constants.maxPathingTicks)
+				|| (Constants.maxStationaryTicks != -1 && stationaryTicks >= Constants.maxStationaryTicks)) {
+			reset();
 		}
-		return vec3d;
+		prevX = loc.getBlockX();
+		prevY = loc.getBlockY();
+		prevZ = loc.getBlockZ();
 	}
 
 	private float getYawDifference(double diffZ, double diffX) {
@@ -117,8 +111,28 @@ public class PathNPC extends EntityPlayer {
 		return diffYaw;
 	}
 
+	private Vec3D getVector() {
+		Vec3D vec3d = pathEntity.a(this);
+		for (double d = width * 1.05F; vec3d != null
+				&& vec3d.d(locX, vec3d.b, locZ) < d * d;) {
+			// Increment path
+			pathEntity.a();
+			// Is finished?
+			if (pathEntity.b()) {
+				vec3d = null;
+				reset();
+			} else {
+				vec3d = pathEntity.a(this);
+			}
+		}
+		if (vec3d == null)
+			npc.getNPCData().setLocation(npc.getPlayer().getLocation());
+		return vec3d;
+	}
+
 	private void updateTarget() {
 		if (target != null) {
+			// Target died.
 			if (!this.target.P()) {
 				this.target = null;
 			} else if (targetAggro) {
@@ -148,6 +162,12 @@ public class PathNPC extends EntityPlayer {
 		}
 	}
 
+	private void reset() {
+		pathTicks = 0;
+		stationaryTicks = 0;
+		this.pathEntity = null;
+	}
+
 	private void damageEntity(Entity entity, float f) {
 		if (this.attackTicks <= 0 && f < 2.0F
 				&& entity.boundingBox.e > this.boundingBox.b
@@ -171,7 +191,8 @@ public class PathNPC extends EntityPlayer {
 			this.target = this.findClosestPlayer(range);
 			this.targetAggro = aggro;
 			if (this.target != null) {
-				this.pathEntity = this.world.findPath(this, this.target, 16.0F);
+				this.pathEntity = this.world.findPath(this, this.target,
+						Constants.pathFindingRange);
 			}
 		}
 	}
@@ -179,7 +200,8 @@ public class PathNPC extends EntityPlayer {
 	public void takeRandomPath() {
 		if (!hasAttacked && this.target != null
 				&& (this.pathEntity == null || this.random.nextInt(20) == 0)) {
-			this.pathEntity = this.world.findPath(this, this.target, 16F);
+			this.pathEntity = this.world.findPath(this, this.target,
+					Constants.pathFindingRange);
 		} else if (!hasAttacked
 				&& (this.pathEntity == null && this.random.nextInt(80) == 0 || this.random
 						.nextInt(80) == 0)) {
@@ -207,14 +229,15 @@ public class PathNPC extends EntityPlayer {
 				}
 			}
 			if (flag) {
-				this.pathEntity = this.world.a(this, i, j, k, 10.0F);
+				this.pathEntity = this.world.a(this, i, j, k,
+						Constants.pathFindingRange);
 			}
 		}
 	}
 
-	public void createPath(Location loc) {
+	public boolean createPath(Location loc) {
 		createPathEntity(loc);
-		this.targetLocation = loc;
+		return pathFinished();
 	}
 
 	public void createPathEntity(Location loc) {
@@ -222,7 +245,8 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void createPathEntity(int x, int y, int z) {
-		this.pathEntity = this.world.a(this, x, y, z, 10.0F);
+		this.pathEntity = this.world.a(this, x, y, z,
+				Constants.pathFindingRange);
 	}
 
 	public void setTarget(CraftPlayer player, boolean aggro) {

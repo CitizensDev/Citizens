@@ -9,7 +9,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
  */
 public class HealerNPC implements Toggleable {
 	private HumanNPC npc;
-	private int health = 10;
+	private int strength = 10;
 	private int level = 1;
 
 	public HealerNPC(HumanNPC npc) {
@@ -17,51 +17,20 @@ public class HealerNPC implements Toggleable {
 	}
 
 	/**
-	 * Get the health of a healer NPC
 	 * 
-	 * @return
+	 * @return the remaining strength that a healer has
 	 */
-	public int getHealth() {
-		System.out.println("health:" + health);
-		return health;
+	public int getStrength() {
+		return strength;
 	}
 
 	/**
-	 * Set the health of a healer NPC
 	 * 
-	 * @param
+	 * @param strength
+	 *            the remaining strength of a healer
 	 */
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	/**
-	 * Get the maximum health of a healer NPC
-	 * 
-	 * @return
-	 */
-	public int getMaxHealth() {
-		return level * 10;
-	}
-	
-
-	/**
-	 * Get the level of a healer NPC
-	 * 
-	 * @return
-	 */
-	public int getLevel() {
-		System.out.println("level: " + level);
-		return level;
-	}
-
-	/**
-	 * Set the level of a healer NPC
-	 * 
-	 * @param level
-	 */
-	public void setLevel(int level) {
-		this.level = level;
+	public void setStrength(int strength) {
+		this.strength = strength;
 	}
 
 	@Override
@@ -92,5 +61,17 @@ public class HealerNPC implements Toggleable {
 	@Override
 	public void register() {
 		PropertyManager.get(getType()).register(npc);
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public int getMaxStrength() {
+		return level * 10;
 	}
 }

@@ -14,12 +14,9 @@ public class LocationUtils {
 	 */
 	public static boolean checkLocation(Location loc, Location playerLocation,
 			double range) {
-		double pX = playerLocation.getX();
-		double pY = playerLocation.getY();
-		double pZ = playerLocation.getZ();
-		double lX = loc.getX();
-		double lY = loc.getY();
-		double lZ = loc.getZ();
+		double pX = playerLocation.getX(), pY = playerLocation.getY(), pZ = playerLocation
+				.getZ();
+		double lX = loc.getX(), lY = loc.getY(), lZ = loc.getZ();
 		if ((pX <= lX + range && pX >= lX - range)
 				&& (pY >= lY - range && pY <= lY + range)
 				&& (pZ >= lZ - range && pZ <= lZ + range)) {

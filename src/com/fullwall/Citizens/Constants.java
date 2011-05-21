@@ -18,8 +18,13 @@ public class Constants {
 	public static int banditStealRadius = 5;
 
 	public static double npcRange = 5;
-	public static final double JUMP_FACTOR = 0;
+	public static double maxStationaryTicks = 25;
+	public static double maxPathingTicks = -1;
+	public static final double JUMP_FACTOR = 0.1D;
 	public static final double GRAVITY = 0.02D;
+	public static final double PATH_LEEWAY = 0.5D;
+
+	public static float pathFindingRange = 16F;
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
@@ -37,38 +42,37 @@ public class Constants {
 	 */
 	public static void setupVariables() {
 		EconomyHandler.setUpVariables();
+		PropertyHandler settings = UtilityProperties.settings;
+
 		// Boolean defaults
-		convertSlashes = UtilityProperties.settings
-				.getBoolean("slashes-to-spaces");
-		defaultFollowingEnabled = UtilityProperties.settings
+		convertSlashes = settings.getBoolean("slashes-to-spaces");
+		defaultFollowingEnabled = settings
 				.getBoolean("default-enable-following");
-		defaultTalkWhenClose = UtilityProperties.settings
-				.getBoolean("default-talk-when-close");
-		useSaveTask = UtilityProperties.settings.getBoolean("use-save-task");
-		saveOften = UtilityProperties.settings.getBoolean("save-often");
-		useNPCColours = UtilityProperties.settings
-				.getBoolean("use-npc-colours");
+		defaultTalkWhenClose = settings.getBoolean("default-talk-when-close");
+		useSaveTask = settings.getBoolean("use-save-task");
+		saveOften = settings.getBoolean("save-often");
+		useNPCColours = settings.getBoolean("use-npc-colours");
+
 		// String defaults
-		chatFormat = UtilityProperties.settings.getString("chat-format");
+		chatFormat = settings.getString("chat-format");
 		NPCColour = UtilityProperties.settings.getString("npc-colour");
+
 		// Double defaults
-		npcRange = UtilityProperties.settings.getDouble("look-range");
-		// Int defaults
-		maxNPCsPerPlayer = UtilityProperties.settings
-				.getInt("max-npcs-per-player");
-		healerGiveHealthItem = UtilityProperties.settings
-				.getInt("healer-give-health-item");
-		healerTakeHealthItem = UtilityProperties.settings
-				.getInt("healer-take-health-item");
-		healerHealthRegenIncrement = UtilityProperties.settings
+		npcRange = settings.getDouble("look-range");
+		pathFindingRange = (float) settings.getDouble("pathfinding-range");
+		maxPathingTicks = settings.getDouble("max-pathing-ticks");
+		maxStationaryTicks = settings.getDouble("max-stationary-ticks");
+
+		// int defaults
+		maxNPCsPerPlayer = settings.getInt("max-npcs-per-player");
+		healerGiveHealthItem = settings.getInt("healer-give-health-item");
+		healerTakeHealthItem = settings.getInt("healer-take-health-item");
+		healerHealthRegenIncrement = settings
 				.getInt("healer-health-regen-increment");
-		tickDelay = UtilityProperties.settings.getInt("tick-delay");
-		saveDelay = UtilityProperties.settings.getInt("save-tick-delay");
-		wizardMaxLocations = UtilityProperties.settings
-				.getInt("wizard-max-locations");
-		wizardInteractItem = UtilityProperties.settings
-				.getInt("wizard-interact-item");
-		banditStealRadius = UtilityProperties.settings
-				.getInt("bandit-steal-radius");
+		tickDelay = settings.getInt("tick-delay");
+		saveDelay = settings.getInt("save-tick-delay");
+		wizardMaxLocations = settings.getInt("wizard-max-locations");
+		wizardInteractItem = settings.getInt("wizard-interact-item");
+		banditStealRadius = settings.getInt("bandit-steal-radius");
 	}
 }

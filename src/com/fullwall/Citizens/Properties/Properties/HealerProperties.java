@@ -13,11 +13,11 @@ public class HealerProperties extends Saveable {
 	private final PropertyHandler levels = new PropertyHandler(
 			"plugins/Citizens/Healers/Citizens.levels");
 
-	private void saveHealth(int UID, int health) {
-		strength.setInt(UID, health);
+	private void saveStrength(int UID, int healPower) {
+		strength.setInt(UID, healPower);
 	}
 
-	private int getHealth(int UID) {
+	private int getStrength(int UID) {
 		return strength.getInt(UID);
 	}
 
@@ -33,7 +33,7 @@ public class HealerProperties extends Saveable {
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isHealer());
-			saveHealth(npc.getUID(), npc.getHealer().getHealth());
+			saveStrength(npc.getUID(), npc.getHealer().getStrength());
 			saveLevel(npc.getUID(), npc.getHealer().getLevel());
 		}
 	}
@@ -48,7 +48,7 @@ public class HealerProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setHealer(getEnabled(npc));
-		npc.getHealer().setHealth(getHealth(npc.getUID()));
+		npc.getHealer().setStrength(getStrength(npc.getUID()));
 		npc.getHealer().setLevel(getLevel(npc.getUID()));
 		saveState(npc);
 	}

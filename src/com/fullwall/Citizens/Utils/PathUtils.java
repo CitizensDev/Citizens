@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PathUtils {
-	public static void createPath(HumanNPC npc, Location loc) {
-		npc.createPath(loc);
+	public static boolean createPath(HumanNPC npc, Location loc) {
+		return npc.createPath(loc);
 	}
 
 	public static void targetPlayer(HumanNPC npc, Player player, boolean aggro) {

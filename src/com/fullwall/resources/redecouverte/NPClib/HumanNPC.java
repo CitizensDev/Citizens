@@ -235,8 +235,8 @@ public class HumanNPC extends NPC {
 		this.balance = balance;
 	}
 
-	public void createPath(Location loc) {
-		this.mcEntity.createPath(loc);
+	public boolean createPath(Location loc) {
+		return this.mcEntity.createPath(loc);
 	}
 
 	public boolean pathFinished() {
