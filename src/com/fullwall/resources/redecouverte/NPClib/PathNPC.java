@@ -3,6 +3,9 @@ package com.fullwall.resources.redecouverte.NPClib;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
+import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.Utils.LocationUtils;
+
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
@@ -15,8 +18,11 @@ import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
 
 public class PathNPC extends EntityPlayer {
+	public HumanNPC npc;
+	private Location targetLocation;
 	private PathEntity pathEntity;
 	private Entity target;
+
 	private boolean targetAggro = false;
 	private boolean hasAttacked = false;
 	private boolean jumping = false;
@@ -38,6 +44,9 @@ public class PathNPC extends EntityPlayer {
 		jumping = false;
 		updateTarget();
 
+		// Recalculate path.
+		if (targetLocation != null)
+			createPathEntity(targetLocation);
 		if (this.pathEntity != null) {
 			Vec3D vector = getVector();
 			int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
@@ -73,8 +82,14 @@ public class PathNPC extends EntityPlayer {
 				&& vec3d.d(locX, vec3d.b, locZ) < d * d;) {
 			// Increment path
 			pathEntity.a();
+
 			// Is finished?
 			if (pathEntity.b()) {
+				if (LocationUtils.checkLocation(npc.getPlayer().getLocation(),
+						targetLocation, 1.5)) {
+					targetLocation = null;
+					npc.getNPCData().setLocation(npc.getPlayer().getLocation());
+				}
 				vec3d = null;
 				pathEntity = null;
 			} else {
@@ -129,7 +144,7 @@ public class PathNPC extends EntityPlayer {
 		if (inWater || inLava) {
 			this.motY += 0.03999999910593033D;
 		} else if (this.onGround) {
-			this.motY = 0.41999998688697815D + 0.19;
+			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
 		}
 	}
 
@@ -198,8 +213,16 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void createPath(Location loc) {
-		this.pathEntity = this.world.a(this, loc.getBlockX(), loc.getBlockY(),
-				loc.getBlockZ(), 10.0F);
+		createPathEntity(loc);
+		this.targetLocation = loc;
+	}
+
+	public void createPathEntity(Location loc) {
+		createPathEntity(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+	}
+
+	public void createPathEntity(int x, int y, int z) {
+		this.pathEntity = this.world.a(this, x, y, z, 10.0F);
 	}
 
 	public void setTarget(CraftPlayer player, boolean aggro) {

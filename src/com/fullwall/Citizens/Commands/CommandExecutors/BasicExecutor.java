@@ -63,7 +63,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.move")) {
-						move(sender, npc.getName(), npc);
+						move(player, npc.getName(), npc);
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
 					}
@@ -236,8 +236,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.tp")) {
-						player.teleport((PropertyManager.getBasicProperties()
-								.getLocation(npc.getUID())));
+						player.teleport(npc.getNPCData().getLocation());
 						sender.sendMessage(ChatColor.GREEN
 								+ "Teleported you to the NPC named "
 								+ StringUtils.yellowify(npc.getStrippedName())
@@ -559,13 +558,12 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param name
 	 * @param npc
 	 */
-	private void move(CommandSender sender, String name, HumanNPC npc) {
-		Location loc = PropertyManager.getBasicProperties().getLocation(
-				npc.getUID());
-		npc.getNPCData().setLocation(loc);
-		plugin.basicNPCHandler.move(npc, ((Player) sender).getLocation());
-		sender.sendMessage(StringUtils.yellowify(name)
+	private void move(Player player, String name, HumanNPC npc) {
+		Location loc = npc.getNPCData().getLocation();
+		player.sendMessage(StringUtils.yellowify(name)
 				+ " is enroute to your location!");
+		npc.getNPCData().setLocation(loc);
+		npc.moveTo(player.getLocation());
 	}
 
 	/**

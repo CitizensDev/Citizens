@@ -151,17 +151,6 @@ public class NPCManager {
 	}
 
 	/**
-	 * Moves an npc to a location.
-	 * 
-	 * @param npc
-	 * @param loc
-	 */
-	public void move(HumanNPC npc, Location loc) {
-		npc.getNPCData().setLocation(loc);
-		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0.0F);
-	}
-
-	/**
 	 * Rotates an npc.
 	 * 
 	 * @param npc

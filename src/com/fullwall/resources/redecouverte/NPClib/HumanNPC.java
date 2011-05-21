@@ -44,6 +44,7 @@ public class HumanNPC extends NPC {
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
 		this.mcEntity = entity;
+		this.mcEntity.npc = this;
 	}
 
 	public Player getPlayer() {

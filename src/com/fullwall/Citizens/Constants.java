@@ -18,6 +18,8 @@ public class Constants {
 	public static int banditStealRadius = 5;
 
 	public static double npcRange = 5;
+	public static final double JUMP_FACTOR = 0;
+	public static final double GRAVITY = 0.02D;
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
