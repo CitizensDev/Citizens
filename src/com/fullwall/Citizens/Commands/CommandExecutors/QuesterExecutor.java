@@ -56,7 +56,7 @@ public class QuesterExecutor implements CommandExecutor {
 				}
 				return true;
 			}
-			PropertyManager.get("quester").saveState(npc);
+			PropertyManager.save(npc);
 		}
 		return returnval;
 	}

@@ -35,8 +35,7 @@ public class WizardExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager
-					.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -107,7 +106,7 @@ public class WizardExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			PropertyManager.get("wizard").saveState(npc);
+			PropertyManager.save(npc);
 		}
 		return returnval;
 	}

@@ -112,7 +112,7 @@ public class TraderExecutor implements CommandExecutor {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
 			}
-			PropertyManager.get("trader").saveState(npc);
+			PropertyManager.save(npc);
 		}
 		return returnval;
 	}

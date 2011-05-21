@@ -94,7 +94,7 @@ public class HealerExecutor implements CommandExecutor {
 				returnval = true;
 
 			}
-			PropertyManager.get("healer").saveState(npc);
+			PropertyManager.save(npc);
 		}
 		return returnval;
 	}

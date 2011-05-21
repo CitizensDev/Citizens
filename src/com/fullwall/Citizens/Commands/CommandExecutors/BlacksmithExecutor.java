@@ -90,7 +90,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			}
-			PropertyManager.get("blacksmith").saveState(npc);
+			PropertyManager.save(npc);
 		}
 		return returnval;
 	}
