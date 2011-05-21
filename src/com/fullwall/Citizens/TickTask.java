@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -33,12 +34,13 @@ public class TickTask implements Runnable {
 	public void run() {
 		HumanNPC npc;
 		int entityID;
+		Player[] online = Bukkit.getServer().getOnlinePlayers();
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			{
 				npc = entry.getValue();
 				npc.updateMovement();
 				entityID = entry.getKey();
-				for (Player p : plugin.getServer().getOnlinePlayers()) {
+				for (Player p : online) {
 					String name = p.getName();
 					if (npc.getNPCData().isLookClose()
 							|| npc.getNPCData().isTalkClose()) {

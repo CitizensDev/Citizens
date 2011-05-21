@@ -52,6 +52,7 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
+
 		// Register files.
 		PropertyManager.registerProperties();
 
@@ -101,6 +102,7 @@ public class Citizens extends JavaPlugin {
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
+
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") loaded");
 	}
