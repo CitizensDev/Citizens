@@ -101,8 +101,8 @@ public class HealerExecutor implements CommandExecutor {
 
 	private void displayStrength(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
-				+ npc.getHealer().getStrength() + ChatColor.RED + "/"
-				+ npc.getHealer().getMaxStrength());
+				+ npc.getHealer().getHealth() + ChatColor.RED + "/"
+				+ npc.getHealer().getMaxHealth());
 	}
 
 	private void displayLevel(Player player, HumanNPC npc) {
