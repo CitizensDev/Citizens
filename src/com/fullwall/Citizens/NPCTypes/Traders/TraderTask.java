@@ -150,8 +150,7 @@ public class TraderTask implements Runnable {
 			restoreOldState();
 			player.sendMessage(ChatColor.RED
 					+ "Not enough room in your inventory to add "
-					+ MessageUtils.getStackString(buying, ChatColor.RED)
-					+ ".");
+					+ MessageUtils.getStackString(buying, ChatColor.RED) + ".");
 			return;
 		}
 		if (!stockable.isiConomy() && mode != Mode.INFINITE) {
