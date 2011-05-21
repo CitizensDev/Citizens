@@ -43,7 +43,7 @@ public class Constants {
 		defaultTalkWhenClose = UtilityProperties.settings
 				.getBoolean("default-talk-when-close");
 		useSaveTask = UtilityProperties.settings.getBoolean("use-save-task");
-		saveOften = UtilityProperties.settings.getBoolean("save-delay");
+		saveOften = UtilityProperties.settings.getBoolean("save-often");
 		useNPCColours = UtilityProperties.settings
 				.getBoolean("use-npc-colours");
 		// String defaults

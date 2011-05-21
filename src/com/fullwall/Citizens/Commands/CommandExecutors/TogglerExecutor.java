@@ -41,8 +41,7 @@ public class TogglerExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender))
-			npc = NPCManager
-					.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
 		else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -144,9 +143,10 @@ public class TogglerExecutor implements CommandExecutor {
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "Entered npc type was not recognized.");
-				return true;
+				returnval = true;
 			}
 		}
+		PropertyManager.save(npc);
 		return returnval;
 	}
 

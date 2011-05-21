@@ -40,8 +40,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager
-					.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -203,8 +202,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 			Material material) {
 		ItemStack item = player.getItemInHand();
 		String itemName = item.getType().name().toLowerCase().replace("_", " ");
-		if (blacksmith.validateTool(item)
-				|| blacksmith.validateArmor(item)) {
+		if (blacksmith.validateTool(item) || blacksmith.validateArmor(item)) {
 			player.sendMessage(ChatColor.GREEN
 					+ "Your "
 					+ StringUtils.yellowify(itemName)

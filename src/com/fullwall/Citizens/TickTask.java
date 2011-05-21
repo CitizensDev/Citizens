@@ -33,20 +33,13 @@ public class TickTask implements Runnable {
 	public void run() {
 		HumanNPC npc;
 		int entityID;
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
-				.entrySet()) {
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			{
 				npc = entry.getValue();
 				npc.updateMovement();
 				entityID = entry.getKey();
-				// Moves the NPC towards the player
-				// (WALKING&Jumping)
-				// entry.getValue().setTarget(p);
 				for (Player p : plugin.getServer().getOnlinePlayers()) {
 					String name = p.getName();
-					// Moves the NPC towards the player
-					// (WALKING&Jumping)
-					// entry.getValue().setTarget(p);
 					if (npc.getNPCData().isLookClose()
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range

@@ -33,8 +33,7 @@ public class BanditExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager
-					.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -56,7 +55,7 @@ public class BanditExecutor implements CommandExecutor {
 				}
 				return true;
 			}
-			PropertyManager.get("bandit").saveState(npc);
+			PropertyManager.save(npc);
 		}
 		return returnval;
 	}

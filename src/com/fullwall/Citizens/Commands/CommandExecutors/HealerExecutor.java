@@ -36,8 +36,7 @@ public class HealerExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager
-					.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -57,7 +56,7 @@ public class HealerExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-				return true;
+				returnval = true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
 				if (Permission.hasPermission("citizens.healer.status", sender)) {
 					displayStatus(player, npc);
