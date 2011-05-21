@@ -9,8 +9,7 @@ public class HealerTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
-				.entrySet()) {
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			regenerateHealth(entry.getValue());
 		}
 	}
@@ -22,9 +21,8 @@ public class HealerTask implements Runnable {
 	 */
 	private void regenerateHealth(HumanNPC npc) {
 		if (npc.isHealer()) {
-			if (npc.getHealer().getStrength() < npc.getHealer()
-					.getMaxStrength()) {
-				npc.getHealer().setStrength(npc.getHealer().getStrength() + 1);
+			if (npc.getHealer().getHealth() < npc.getHealer().getMaxHealth()) {
+				npc.getHealer().setHealth(npc.getHealer().getHealth() + 1);
 			}
 		}
 	}
