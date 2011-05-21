@@ -125,8 +125,6 @@ public class PathNPC extends EntityPlayer {
 				vec3d = pathEntity.a(this);
 			}
 		}
-		if (vec3d == null)
-			npc.getNPCData().setLocation(npc.getPlayer().getLocation());
 		return vec3d;
 	}
 
@@ -166,6 +164,7 @@ public class PathNPC extends EntityPlayer {
 		pathTicks = 0;
 		stationaryTicks = 0;
 		this.pathEntity = null;
+		npc.getNPCData().setLocation(npc.getPlayer().getLocation());
 	}
 
 	private void damageEntity(Entity entity, float f) {
