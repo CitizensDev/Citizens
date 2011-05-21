@@ -63,8 +63,6 @@ public class HealerProperties extends Saveable {
 	@Override
 	public void register(HumanNPC npc) {
 		setEnabled(npc, true);
-		saveHealth(npc.getUID(), npc.getHealer().getHealth());
-		saveLevel(npc.getUID(), npc.getHealer().getHealth());
 	}
 
 	@Override

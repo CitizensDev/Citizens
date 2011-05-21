@@ -17,20 +17,51 @@ public class HealerNPC implements Toggleable {
 	}
 
 	/**
+	 * Get the health of a healer NPC
 	 * 
-	 * @return the remaining health that a healer has
+	 * @return
 	 */
 	public int getHealth() {
+		System.out.println("health:" + health);
 		return health;
 	}
 
 	/**
+	 * Set the health of a healer NPC
 	 * 
-	 * @param strength
-	 *            the remaining strength of a healer
+	 * @param
 	 */
 	public void setHealth(int health) {
 		this.health = health;
+	}
+
+	/**
+	 * Get the maximum health of a healer NPC
+	 * 
+	 * @return
+	 */
+	public int getMaxHealth() {
+		return level * 10;
+	}
+	
+
+	/**
+	 * Get the level of a healer NPC
+	 * 
+	 * @return
+	 */
+	public int getLevel() {
+		System.out.println("level: " + level);
+		return level;
+	}
+
+	/**
+	 * Set the level of a healer NPC
+	 * 
+	 * @param level
+	 */
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	@Override
@@ -61,17 +92,5 @@ public class HealerNPC implements Toggleable {
 	@Override
 	public void register() {
 		PropertyManager.get(getType()).register(npc);
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public int getMaxHealth() {
-		return level * 10;
 	}
 }
