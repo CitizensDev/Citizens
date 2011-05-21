@@ -93,7 +93,16 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("guard")) {
-				sender.sendMessage("GUARDS AREN'T FINISHED YET! BE PATIENT! <3 the Citizens Team");
+				if (Permission.hasPermission("citizens.guard.create", sender)) {
+					if (!PropertyManager.get("guard").exists(npc)) {
+						buyState(player, npc.getGuard(),
+								Operation.GUARD_NPC_CREATE);
+					} else {
+						toggleState(player, npc.getGuard());
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("wizard")) {
 				if (Permission.hasPermission("citizens.wizard.create", sender)) {
@@ -218,6 +227,9 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isBandit()) {
 				toggleState(player, npc.getBandit());
 			}
+			if (!npc.isGuard()) {
+				toggleState(player, npc.getGuard());
+			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
@@ -233,6 +245,9 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isBandit()) {
 				toggleState(player, npc.getBandit());
+			}
+			if (npc.isGuard()) {
+				toggleState(player, npc.getGuard());
 			}
 		}
 	}

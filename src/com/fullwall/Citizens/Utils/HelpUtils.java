@@ -169,6 +169,18 @@ public class HelpUtils {
 	}
 
 	/**
+	 * Sends the help page for the guard npc type.
+	 * 
+	 * @param sender
+	 */
+	public static void sendGuardHelp(CommandSender sender) {
+		header(sender, "Guard", 1, 1);
+		formatCommand(sender, "guard", "[type]",
+				"toggle the type of guard that an NPC is");
+		footer(sender);
+	}
+
+	/**
 	 * Prints the header for the Citizens help menus
 	 * 
 	 * @param sender

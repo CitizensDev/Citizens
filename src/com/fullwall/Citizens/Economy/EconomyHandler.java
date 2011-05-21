@@ -56,7 +56,11 @@ public class EconomyHandler {
 		/**
 		 * Create a bandit NPC
 		 */
-		BANDIT_NPC_CREATE;
+		BANDIT_NPC_CREATE,
+		/**
+		 * Create a guard NPC
+		 */
+		GUARD_NPC_CREATE;
 
 		/**
 		 * Changes an operation enum to a string value for use in settings

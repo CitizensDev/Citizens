@@ -9,6 +9,7 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.BanditProperties;
 import com.fullwall.Citizens.Properties.Properties.BasicProperties;
 import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
+import com.fullwall.Citizens.Properties.Properties.GuardProperties;
 import com.fullwall.Citizens.Properties.Properties.HealerProperties;
 import com.fullwall.Citizens.Properties.Properties.QuesterProperties;
 import com.fullwall.Citizens.Properties.Properties.TraderProperties;
@@ -20,7 +21,7 @@ public class PropertyManager {
 	private static BasicProperties basicProperties;
 
 	public enum PropertyType {
-		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, BANDIT;
+		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, BANDIT, GUARD;
 	}
 
 	public static void registerProperties() {
@@ -28,6 +29,7 @@ public class PropertyManager {
 		properties.put("basic", basic);
 		properties.put("bandit", new BanditProperties());
 		properties.put("blacksmith", new BlacksmithProperties());
+		properties.put("guard", new GuardProperties());
 		properties.put("healer", new HealerProperties());
 		properties.put("quester", new QuesterProperties());
 		properties.put("trader", new TraderProperties());

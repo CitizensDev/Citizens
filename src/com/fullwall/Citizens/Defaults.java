@@ -559,6 +559,9 @@ public class Defaults {
 		// nodes.put("bandit-npc-create-item-currency-id", "37");
 		// nodes.put("bandit-npc-create-item", "20");
 		// nodes.put("bandit-npc-create-econplugin", "100");
+		nodes.put("guard-npc-create-item-currency-id", "37");
+		nodes.put("guard-npc-create-item", "20");
+		nodes.put("guard-npc-create-econplugin", "100");
 		return nodes;
 	}
 
