@@ -20,6 +20,7 @@ public class Constants {
 	public static double npcRange = 5;
 	public static double maxStationaryTicks = 25;
 	public static double maxPathingTicks = -1;
+	public static double guardProtectionRadius = 10;
 	public static final double JUMP_FACTOR = 0.1D;
 	public static final double GRAVITY = 0.02D;
 	public static final double PATH_LEEWAY = 0.5D;
@@ -62,6 +63,7 @@ public class Constants {
 		pathFindingRange = (float) settings.getDouble("pathfinding-range");
 		maxPathingTicks = settings.getDouble("max-pathing-ticks");
 		maxStationaryTicks = settings.getDouble("max-stationary-ticks");
+		guardProtectionRadius = settings.getDouble("guard-protection-radius");
 
 		// int defaults
 		maxNPCsPerPlayer = settings.getInt("max-npcs-per-player");
