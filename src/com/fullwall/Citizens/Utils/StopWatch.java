@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Utils;
 
+import java.lang.reflect.Method;
+
 import com.fullwall.Citizens.Citizens;
 
 /*
@@ -22,6 +24,25 @@ public class StopWatch {
 		this.running = true;
 	}
 
+	public void timeFunction(Class<?> call, String methodName, Object instance,
+			Object... args) {
+		try {
+			Method[] methods = call.getDeclaredMethods();
+			for (Method method : methods) {
+				if (method.getName().equals(methodName)) {
+					method.setAccessible(true);
+					start();
+					method.invoke(instance, args);
+					stop();
+					printElapsed(methodName);
+				}
+			}
+		} catch (Exception ex) {
+			Citizens.log.info("Error while calling method " + methodName
+					+ ". Error " + ex.getMessage() + ".");
+		}
+	}
+
 	public void stop() {
 		this.stopTime = System.nanoTime();
 		this.running = false;
@@ -34,8 +55,16 @@ public class StopWatch {
 	}
 
 	public void printElapsed() {
-		Citizens.log.info("Elapsed: " + toMilliseconds(getElapsedTime())
-				+ "ms.");
+		Citizens.log.info("Elapsed: " + getElapsedTime() + "ns / "
+				+ toMilliseconds(getElapsedTime()) + "ms ("
+				+ toSeconds(getElapsedTime()) + "s).");
+	}
+
+	public void printElapsed(String method) {
+		Citizens.log.info("Elapsed: " + getElapsedTime() + "ns / "
+				+ toMilliseconds(getElapsedTime()) + "ms ("
+				+ toSeconds(getElapsedTime()) + "s) while calling " + method
+				+ ".");
 	}
 
 	public long toMilliseconds(long nanoseconds) {

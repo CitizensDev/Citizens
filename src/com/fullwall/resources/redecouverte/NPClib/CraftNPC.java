@@ -1,6 +1,7 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
+
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
@@ -43,22 +44,6 @@ public class CraftNPC extends PathNPC {
 		this.lastTargetId = -1;
 		this.lastBounceId = -1;
 		this.lastBounceTick = 0;
-	}
-
-	public void actHurt() {
-		this.netServerHandler.sendPacket(new Packet18ArmAnimation(this, 2));
-	}
-
-	public void crouch() {
-		Packet19EntityAction packet = new Packet19EntityAction();
-		packet.animation = 1;
-		this.netServerHandler.sendPacket(packet);
-	}
-
-	public void uncrouch() {
-		Packet19EntityAction packet = new Packet19EntityAction();
-		packet.animation = 2;
-		this.netServerHandler.sendPacket(packet);
 	}
 
 	@Override
@@ -114,6 +99,22 @@ public class CraftNPC extends PathNPC {
 	public void a(EntityLiving entityliving) {
 		System.out.println(entityliving);
 		super.a(entityliving);
+	}
+
+	public void actHurt() {
+		this.netServerHandler.sendPacket(new Packet18ArmAnimation(this, 2));
+	}
+
+	public void crouch() {
+		Packet19EntityAction packet = new Packet19EntityAction();
+		packet.animation = 1;
+		this.netServerHandler.sendPacket(packet);
+	}
+
+	public void uncrouch() {
+		Packet19EntityAction packet = new Packet19EntityAction();
+		packet.animation = 2;
+		this.netServerHandler.sendPacket(packet);
 	}
 
 	public void applyGravity() {

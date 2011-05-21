@@ -637,7 +637,14 @@ public class BasicExecutor implements CommandExecutor {
 		} else {
 			plugin.basicNPCHandler.setColour(npc.getUID(), args[1],
 					npc.getOwner());
+			player.sendMessage(StringUtils.yellowify(npc.getName())
+					+ "'s name colour is now " + args[1] + "this"
+					+ ChatColor.GREEN + ".");
 		}
+	}
+
+	public @interface yellow {
+
 	}
 
 	/**
@@ -698,6 +705,7 @@ public class BasicExecutor implements CommandExecutor {
 				+ StringUtils.yellowify(npc.getStrippedName()) + " is now "
 				+ StringUtils.yellowify(name) + ".");
 		npc.getNPCData().setOwner(name);
+		npc.crouch();
 	}
 
 	/**
