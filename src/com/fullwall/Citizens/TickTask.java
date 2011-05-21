@@ -53,7 +53,7 @@ public class TickTask implements Runnable {
 						if (checkLocation(npc.getLocation(), p.getLocation(),
 								range)) {
 							if (npc.getNPCData().isLookClose()) {
-								NPCManager.rotateToPlayer(npc, p);
+								NPCManager.facePlayer(npc, p);
 							}
 							if (npc.getNPCData().isTalkClose()
 									// If we haven't already spoken to the

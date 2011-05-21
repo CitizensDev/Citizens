@@ -43,7 +43,7 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param changeTo
 	 * @param owner
 	 */
-	public void setName(int UID, String changeTo, String owner) {
+	public void rename(int UID, String changeTo, String owner) {
 		HumanNPC n = super.get(UID);
 		PropertyManager.getBasicProperties().changeName(UID, n.getName(),
 				changeTo);
@@ -77,9 +77,7 @@ public class BasicNPCHandler extends NPCManager {
 		if (texts == null)
 			texts = new ArrayList<String>();
 		texts.add(text);
-		texts = StringUtils.colourise(texts);
 		super.setText(UID, texts);
-		super.get(UID).getNPCData().setTexts(texts);
 	}
 
 	/**

@@ -167,7 +167,7 @@ public class NPCManager {
 	 * @param npc
 	 * @param player
 	 */
-	public static void rotateToPlayer(HumanNPC npc, Player player) {
+	public static void facePlayer(HumanNPC npc, Player player) {
 		Location loc = npc.getLocation();
 		double xDiff = player.getLocation().getX() - loc.getX();
 		double yDiff = player.getLocation().getY() - loc.getY();

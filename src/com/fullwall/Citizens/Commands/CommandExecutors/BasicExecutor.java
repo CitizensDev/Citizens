@@ -106,7 +106,7 @@ public class BasicExecutor implements CommandExecutor {
 				if (npc != null) {
 					if (NPCManager.validateOwnership(player, npc.getUID(),
 							"citizens.general.setname")) {
-						setName(args[1], sender, npc);
+						rename(args[1], sender, npc);
 						NPCManager.NPCSelected.remove(player.getName());
 					} else {
 						sender.sendMessage(MessageUtils.notOwnerMessage);
@@ -613,13 +613,12 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param name
 	 * @param sender
 	 */
-	private void setName(String name, CommandSender sender, HumanNPC npc) {
+	private void rename(String name, CommandSender sender, HumanNPC npc) {
 		if (name.length() > 16) {
 			sender.sendMessage(ChatColor.RED
-					+ "NPCs can't have names longer than 16 characters.");
-			return;
+					+ "Max name length is 16 - NPC name length will be truncated.");
 		}
-		plugin.basicNPCHandler.setName(npc.getUID(), name, npc.getOwner());
+		plugin.basicNPCHandler.rename(npc.getUID(), name, npc.getOwner());
 		sender.sendMessage(ChatColor.GREEN
 				+ StringUtils.yellowify(npc.getName()) + "'s name was set to "
 				+ StringUtils.yellowify(name) + ".");

@@ -37,7 +37,7 @@ public class CustomListen extends CustomEventListener implements Listener {
 				return;
 			if (!PropertyManager.getBasicProperties().getLookWhenClose(
 					e.getNPC().getUID())) {
-				NPCManager.rotateToPlayer(e.getNPC(), e.getPlayer());
+				NPCManager.facePlayer(e.getNPC(), e.getPlayer());
 			}
 			if (!e.getText().isEmpty())
 				e.getPlayer().sendMessage(e.getText());

@@ -14,7 +14,6 @@ public class LocationQuest extends Quest {
 
 	@Override
 	public QuestType getType() {
-		// TODO Auto-generated method stub
 		return QuestType.MOVE_LOCATION;
 	}
 

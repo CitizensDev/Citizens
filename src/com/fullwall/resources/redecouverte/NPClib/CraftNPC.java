@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
-import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
@@ -13,13 +12,15 @@ import net.minecraft.server.Packet18ArmAnimation;
 import net.minecraft.server.Packet19EntityAction;
 import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
+
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-public class CraftNPC extends EntityPlayer {
+public class CraftNPC extends PathNPC {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
+	private static final double GRAVITY = 0.005D;
 	private int lastTargetId;
 	private long lastBounceTick;
 	private int lastBounceId;
@@ -41,10 +42,6 @@ public class CraftNPC extends EntityPlayer {
 		this.lastTargetId = -1;
 		this.lastBounceId = -1;
 		this.lastBounceTick = 0;
-	}
-
-	public void animateArmSwing() {
-		this.netServerHandler.sendPacket(new Packet18ArmAnimation(this, 1));
 	}
 
 	public void actHurt() {
@@ -116,5 +113,10 @@ public class CraftNPC extends EntityPlayer {
 	public void a(EntityLiving entityliving) {
 		System.out.println(entityliving);
 		super.a(entityliving);
+	}
+
+	public void applyGravity() {
+		if (this.motY > 0)
+			this.motY -= GRAVITY;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.minecraft.server.Packet7UseEntity;
 
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -20,19 +21,8 @@ import com.fullwall.Citizens.NPCs.NPCData;
 public class HumanNPC extends NPC {
 
 	private CraftNPC mcEntity;
-	private double fallingSpeed = 0.0;
-	private double GravityPerSecond = 9.81;
-	private double movementSpeed = 0.2;
-	private double privateSpace = 1.5;
 
 	private double balance;
-
-	private double targetX = 0.0;
-	@SuppressWarnings("unused")
-	private double targetY = 0.0;
-	private double targetZ = 0.0;
-	private Player targetPlayer = null;
-	private boolean hasTarget = false;
 	private boolean isTrader = false;
 	private boolean isHealer = false;
 	private boolean isWizard = false;
@@ -155,51 +145,6 @@ public class HumanNPC extends NPC {
 		this.mcEntity.setPosition(x, y, z);
 	}
 
-	public void setTarget(double x, double y, double z) {
-		this.targetX = x;
-		this.targetY = y;
-		this.targetZ = z;
-		this.hasTarget = true;
-		this.targetPlayer = null;
-	}
-
-	public void setTarget(Player p) {
-		this.targetPlayer = p;
-		this.hasTarget = false;
-	}
-
-	public void moveNPCTowardsTarget() {
-		double tX = targetX;
-		double tZ = targetZ;
-		if (targetPlayer != null) {
-			tX = targetPlayer.getLocation().getX();
-			tZ = targetPlayer.getLocation().getZ();
-		}
-		double xDiff = tX - this.mcEntity.locX;
-		double zDiff = tZ - this.mcEntity.locZ;
-		double length = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
-		xDiff = (xDiff / length) * movementSpeed;
-		zDiff = (zDiff / length) * movementSpeed;
-		if (length > privateSpace) {
-			double prevX = this.mcEntity.locX;
-			double prevZ = this.mcEntity.locZ;
-			this.moveNPC(xDiff, 0, zDiff);
-			double xDiff2 = this.mcEntity.locX - prevX;
-			double zDiff2 = this.mcEntity.locZ - prevZ;
-			if (Math.abs(xDiff2 - xDiff) > 0.01
-					|| Math.abs(zDiff2 - zDiff) > 0.01) {
-				this.jumpNPC();
-			}
-		} else {
-			this.hasTarget = false;
-		}
-	}
-
-	public void removeTarget() {
-		this.hasTarget = false;
-		this.targetPlayer = null;
-	}
-
 	public double getX() {
 		return this.mcEntity.locX;
 	}
@@ -213,23 +158,16 @@ public class HumanNPC extends NPC {
 	}
 
 	public void updateMovement() {
-		if (this.hasTarget == true || this.targetPlayer != null)
-			this.moveNPCTowardsTarget();
-		// this.applyGravity();
+		this.moveNPCTowardsTarget();
+		this.applyGravity();
 	}
 
-	public void jumpNPC() {
-		if (fallingSpeed == 0.0)
-			fallingSpeed = 0.59;
+	private void applyGravity() {
+		this.mcEntity.applyGravity();
 	}
 
-	public void applyGravity() {
-		fallingSpeed -= GravityPerSecond / 100;
-		double prevY = this.mcEntity.locY;
-		this.mcEntity.f(0, fallingSpeed, 0);
-		double diff = this.mcEntity.locY - prevY;
-		if (diff - fallingSpeed > 0.01)
-			fallingSpeed = 0.0;
+	private void moveNPCTowardsTarget() {
+		this.mcEntity.updateMove();
 	}
 
 	public void attackLivingEntity(LivingEntity ent) {
@@ -294,5 +232,17 @@ public class HumanNPC extends NPC {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public void createPath(Location loc) {
+		this.mcEntity.createPath(loc);
+	}
+
+	public boolean pathFinished() {
+		return mcEntity.pathFinished();
+	}
+
+	public void targetPlayer(CraftPlayer player, boolean aggro) {
+		this.mcEntity.setTarget(player, aggro);
 	}
 }
