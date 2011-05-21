@@ -1,8 +1,8 @@
 package com.fullwall.Citizens.NPCTypes.Guards;
 
+import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
@@ -14,6 +14,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class GuardTask implements Runnable {
 	private Citizens plugin;
 	private RegionHandler region = new RegionHandler();
+	private HashMap<String, HashMap<Integer, Boolean>> hasAttemptedEntry = new HashMap<String, HashMap<Integer, Boolean>>();
 
 	public GuardTask(Citizens plugin) {
 		this.plugin = plugin;
@@ -23,13 +24,35 @@ public class GuardTask implements Runnable {
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			HumanNPC npc = entry.getValue();
-			for (Player player : plugin.getServer().getOnlinePlayers()) {
-				if (LocationUtils.checkLocation(npc.getLocation(),
-						player.getLocation(), Constants.guardProtectionRadius)) {
-					for (Entity entity : player.getNearbyEntities(npc.getX(),
-							npc.getY(), npc.getZ())) {
-						if (isBlacklisted(entity)) {
-							blockEntry(entity, npc);
+			if (npc.isGuard()) {
+				if (npc.getGuard().isBouncer()) {
+					for (Player player : plugin.getServer().getOnlinePlayers()) {
+						String name = player.getName();
+						if (LocationUtils.checkLocation(npc.getLocation(),
+								player.getLocation(),
+								Constants.guardProtectionRadius)) {
+							if (isBlacklisted(player)) {
+								if (hasAttemptedEntry.get(name) == null
+										|| hasAttemptedEntry.get(name).get(
+												npc.getUID()) == null
+										|| hasAttemptedEntry.get(name).get(
+												npc.getUID()) == false) {
+									blockEntry(player, npc);
+									HashMap<Integer, Boolean> npcs = new HashMap<Integer, Boolean>();
+									if (hasAttemptedEntry.get(name) != null) {
+										npcs = hasAttemptedEntry.get(name);
+									}
+									npcs.put(npc.getUID(), true);
+									hasAttemptedEntry.put(name, npcs);
+								}
+							}
+						} else if (hasAttemptedEntry.get(name) != null
+								&& hasAttemptedEntry.get(name)
+										.get(npc.getUID()) != null
+								&& hasAttemptedEntry.get(name)
+										.get(npc.getUID()) == true) {
+							hasAttemptedEntry.get(name)
+									.put(npc.getUID(), false);
 						}
 					}
 				}
@@ -38,29 +61,26 @@ public class GuardTask implements Runnable {
 	}
 
 	/**
-	 * Check if a player or mob is blacklisted from entry
+	 * Check if a player is blacklisted from entry
 	 * 
 	 * @param entity
 	 */
-	private boolean isBlacklisted(Entity entity) {
-		if (entity instanceof Player) {
-			Player p = (Player) entity;
-			if (!region.isAllowed(p.getName())) {
-				return true;
-			}
-		}
-		if (region.isBlacklisted(region.getMobType(entity))) {
+	private boolean isBlacklisted(Player player) {
+		if (!region.isAllowed(player.getName())) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	private void blockEntry(Entity entity, HumanNPC npc) {
-		if (entity instanceof Player) {
-			Player p = (Player) entity;
-			p.sendMessage(npc.getStrippedName()
-					+ " has blocked you from entering this zone.");
-		}
+	/**
+	 * Block a player from entering a protected zone
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void blockEntry(Player player, HumanNPC npc) {
+		player.sendMessage(npc.getStrippedName()
+				+ " has blocked you from entering this zone.");
 	}
 }

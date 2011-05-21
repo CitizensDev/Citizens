@@ -17,6 +17,7 @@ import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
+import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -91,6 +92,8 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(this, Constants.npcRange), Constants.tickDelay,
 				Constants.tickDelay);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new GuardTask(this), Constants.tickDelay, Constants.tickDelay);
 		if (Constants.useSaveTask) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
