@@ -11,6 +11,7 @@ import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
@@ -23,10 +24,41 @@ public class RegionHandler {
 	private List<String> blacklisted = new ArrayList<String>();
 	private String mobType = "";
 
+	/**
+	 * Get the players allowed to enter a zone
+	 * 
+	 * @return
+	 */
 	public List<String> getAllowed() {
 		return allowed;
 	}
 
+	/**
+	 * Add a player to the allowed list
+	 * 
+	 * @param player
+	 */
+	public void addAllowed(Player player) {
+		allowed.add(player.getName());
+	}
+
+	/**
+	 * Remove a player from the allowed list
+	 * 
+	 * @param player
+	 */
+	public void removeAllowed(Player player) {
+		if (allowed.contains(player.getName())) {
+			allowed.remove(player.getName());
+		}
+	}
+
+	/**
+	 * Get whether a player is allowed to enter a zone
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public boolean isAllowed(String name) {
 		if (allowed.contains(name)) {
 			return true;
@@ -35,10 +67,21 @@ public class RegionHandler {
 		}
 	}
 
+	/**
+	 * Get mobs blacklisted from entry
+	 * 
+	 * @return
+	 */
 	public List<String> getBlacklisted() {
 		return blacklisted;
 	}
 
+	/**
+	 * Get whether a mob is blacklisted from entry
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	public boolean isBlacklisted(String entity) {
 		if (blacklisted.contains(entity)) {
 			return true;
@@ -47,6 +90,12 @@ public class RegionHandler {
 		}
 	}
 
+	/**
+	 * Get the a string of a mob type
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	public String getMobType(Entity entity) {
 		if (entity instanceof Creeper) {
 			mobType = "creeper";
