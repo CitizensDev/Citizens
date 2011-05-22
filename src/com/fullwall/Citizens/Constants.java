@@ -29,7 +29,7 @@ public class Constants {
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
-	public static String NPCColour = "§f";
+	public static String NPCColour = "ï¿½f";
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
@@ -61,8 +61,6 @@ public class Constants {
 		// Double defaults
 		npcRange = settings.getDouble("look-range");
 		pathFindingRange = (float) settings.getDouble("pathfinding-range");
-		maxPathingTicks = settings.getInt("max-pathing-ticks");
-		maxStationaryTicks = settings.getInt("max-stationary-ticks");
 		guardProtectionRadius = settings.getDouble("guard-protection-radius");
 
 		// int defaults
@@ -76,5 +74,7 @@ public class Constants {
 		wizardMaxLocations = settings.getInt("wizard-max-locations");
 		wizardInteractItem = settings.getInt("wizard-interact-item");
 		banditStealRadius = settings.getInt("bandit-steal-radius");
+		maxPathingTicks = settings.getInt("max-pathing-ticks");
+		maxStationaryTicks = settings.getInt("max-stationary-ticks");
 	}
 }
