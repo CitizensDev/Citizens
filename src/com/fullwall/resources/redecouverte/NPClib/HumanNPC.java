@@ -227,15 +227,18 @@ public class HumanNPC extends NPC {
 		this.balance = balance;
 	}
 
-	public boolean createPath(Location loc) {
-		return this.mcEntity.createPath(loc);
+	public boolean createPath(Location loc, int pathTicks, int stationaryTicks,
+			float range) {
+		return this.mcEntity.startPath(loc, pathTicks, stationaryTicks, range);
 	}
 
 	public boolean pathFinished() {
 		return mcEntity.pathFinished();
 	}
 
-	public void targetPlayer(CraftPlayer player, boolean aggro) {
-		this.mcEntity.setTarget(player, aggro);
+	public void targetPlayer(CraftPlayer player, boolean aggro, int pathTicks,
+			int stationaryTicks, float range) {
+		this.mcEntity.setTarget(player, aggro, pathTicks, stationaryTicks,
+				range);
 	}
 }

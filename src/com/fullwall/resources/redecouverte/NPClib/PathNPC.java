@@ -27,9 +27,12 @@ public class PathNPC extends EntityPlayer {
 	private boolean jumping = false;
 	private int pathTicks = 0;
 	private int stationaryTicks = 0;
+	private int pathTickLimit;
+	private int stationaryTickLimit;
 	private int prevX;
 	private int prevY;
 	private int prevZ;
+	private float pathingRange = 16;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -84,8 +87,8 @@ public class PathNPC extends EntityPlayer {
 		else
 			stationaryTicks = 0;
 		++pathTicks;
-		if ((Constants.maxPathingTicks != -1 && pathTicks >= Constants.maxPathingTicks)
-				|| (Constants.maxStationaryTicks != -1 && stationaryTicks >= Constants.maxStationaryTicks)) {
+		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
+				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
 			reset();
 		}
 		prevX = loc.getBlockX();
@@ -165,6 +168,9 @@ public class PathNPC extends EntityPlayer {
 		stationaryTicks = 0;
 		this.pathEntity = null;
 		npc.getNPCData().setLocation(npc.getPlayer().getLocation());
+		pathTickLimit = 0;
+		stationaryTickLimit = 0;
+
 	}
 
 	private void damageEntity(Entity entity, float f) {
@@ -191,7 +197,7 @@ public class PathNPC extends EntityPlayer {
 			this.targetAggro = aggro;
 			if (this.target != null) {
 				this.pathEntity = this.world.findPath(this, this.target,
-						Constants.pathFindingRange);
+						pathingRange);
 			}
 		}
 	}
@@ -200,7 +206,7 @@ public class PathNPC extends EntityPlayer {
 		if (!hasAttacked && this.target != null
 				&& (this.pathEntity == null || this.random.nextInt(20) == 0)) {
 			this.pathEntity = this.world.findPath(this, this.target,
-					Constants.pathFindingRange);
+					pathingRange);
 		} else if (!hasAttacked
 				&& (this.pathEntity == null && this.random.nextInt(80) == 0 || this.random
 						.nextInt(80) == 0)) {
@@ -228,29 +234,39 @@ public class PathNPC extends EntityPlayer {
 				}
 			}
 			if (flag) {
-				this.pathEntity = this.world.a(this, i, j, k,
-						Constants.pathFindingRange);
+				this.pathEntity = this.world.a(this, i, j, k, pathingRange);
 			}
 		}
 	}
 
-	public boolean createPath(Location loc) {
+	public boolean startPath(Location loc, int maxTicks,
+			int maxStationaryTicks, float pathingRange) {
+		this.pathTickLimit = maxTicks;
+		this.stationaryTickLimit = maxStationaryTicks;
+		this.pathingRange = pathingRange;
+		return createPath(loc);
+	}
+
+	private boolean createPath(Location loc) {
 		createPathEntity(loc);
 		return pathFinished();
 	}
 
-	public void createPathEntity(Location loc) {
+	private void createPathEntity(Location loc) {
 		createPathEntity(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	public void createPathEntity(int x, int y, int z) {
-		this.pathEntity = this.world.a(this, x, y, z,
-				Constants.pathFindingRange);
+		this.pathEntity = this.world.a(this, x, y, z, pathingRange);
 	}
 
-	public void setTarget(CraftPlayer player, boolean aggro) {
+	public void setTarget(CraftPlayer player, boolean aggro, int maxTicks,
+			int maxStationaryTicks, float pathingRange) {
 		this.target = player.getHandle();
 		this.targetAggro = aggro;
+		this.pathTickLimit = maxTicks;
+		this.pathingRange = pathingRange;
+		this.stationaryTickLimit = maxStationaryTicks;
 	}
 
 	public boolean pathFinished() {
@@ -264,5 +280,4 @@ public class PathNPC extends EntityPlayer {
 		packet.target = entity.id;
 		this.netServerHandler.sendPacket(packet);
 	}
-
 }
