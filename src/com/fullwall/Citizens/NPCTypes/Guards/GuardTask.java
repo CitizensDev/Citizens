@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.ActionManager;
 import com.fullwall.Citizens.CachedAction;
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -31,8 +30,8 @@ public class GuardTask implements Runnable {
 						String name = player.getName();
 						if (!NPCManager.validateOwnership(player, npc.getUID())) {
 							if (LocationUtils.checkLocation(npc.getLocation(),
-									player.getLocation(),
-									Constants.guardProtectionRadius)) {
+									player.getLocation(), npc.getGuard()
+											.getProtectionRadius())) {
 								cacheActions(player, npc, npc.getUID(), name);
 							} else {
 								resetActions(npc.getUID(), name, npc);

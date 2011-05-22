@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fullwall.Citizens.Enums.GuardType;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
@@ -11,16 +12,16 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardProperties extends Saveable {
 	private final PropertyHandler guards = new PropertyHandler(
-			"plugins/Citizens/Guards/Citizens.guards");
+			"plugins/Citizens/Guards/guards.citizens");
 	private final PropertyHandler guardTypes = new PropertyHandler(
-			"plugins/Citizens/Guards/Citizens.guardtypes");
+			"plugins/Citizens/Guards/guardtypes.citizens");
 	private final PropertyHandler mobBlacklist = new PropertyHandler(
-			"plugins/Citizens/Guards/Bouncers/Citizens.mobblacklist");
+			"plugins/Citizens/Guards/Bouncers/mobblacklist.citizens");
 	private final PropertyHandler radius = new PropertyHandler(
 			"plugins/Citizens/Guards/Bouncers/radius.citizens");
 
 	private double getProtectionRadius(int UID) {
-		return radius.getDouble(UID);
+		return radius.getDouble(UID, Constants.defaultGuardProtectionRadius);
 	}
 
 	private void saveProtectionRadius(int UID, double rad) {

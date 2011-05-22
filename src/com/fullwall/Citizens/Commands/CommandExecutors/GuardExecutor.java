@@ -82,6 +82,15 @@ public class GuardExecutor implements CommandExecutor {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 					returnval = true;
+				} else if (args.length == 2
+						&& args[0].equalsIgnoreCase("radius")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bouncer.radius", sender)) {
+						setProtectionRadius(player, npc, args[1]);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
 				}
 			} else if (npc.getGuard().isBodyguard()) {
 				// TODO bodyguard commands here
@@ -166,6 +175,18 @@ public class GuardExecutor implements CommandExecutor {
 					+ " blacklist.");
 		} else {
 			player.sendMessage(ChatColor.RED + "Invalid mob type.");
+		}
+	}
+
+	private void setProtectionRadius(Player player, HumanNPC npc, String radius) {
+		try {
+			double rad = Double.parseDouble(radius);
+			npc.getGuard().setProtectionRadius(rad);
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " protection radius has been set to "
+					+ StringUtils.wrap(rad) + ".");
+		} catch (NumberFormatException ex) {
+			player.sendMessage(ChatColor.RED + "That is not a number.");
 		}
 	}
 }
