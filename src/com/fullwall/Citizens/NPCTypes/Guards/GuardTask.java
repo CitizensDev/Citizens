@@ -3,7 +3,6 @@ package com.fullwall.Citizens.NPCTypes.Guards;
 import java.util.Map.Entry;
 
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import com.fullwall.Citizens.ActionManager;
 import com.fullwall.Citizens.CachedAction;

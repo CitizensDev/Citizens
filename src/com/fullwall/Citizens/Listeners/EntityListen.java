@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +20,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.NPCTypes.Bandits.BanditInterface;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderInterface;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -30,9 +30,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
 
 /**
- * Listener
- * 
- * @author fullwall
+ * Entity Listener
  */
 public class EntityListen extends EntityListener implements Listener {
 	private final Citizens plugin;
@@ -78,8 +76,8 @@ public class EntityListen extends EntityListener implements Listener {
 											+ StringUtils.wrap(npc
 													.getStrippedName()) + ".");
 								} else {
-									player.sendMessage(StringUtils
-											.wrap(npc.getStrippedName())
+									player.sendMessage(StringUtils.wrap(npc
+											.getStrippedName())
 											+ " does not have enough health remaining for you to take.");
 								}
 							} else {
@@ -97,8 +95,8 @@ public class EntityListen extends EntityListener implements Listener {
 											+ StringUtils.wrap(npc
 													.getStrippedName()) + ".");
 								} else {
-									player.sendMessage(StringUtils
-											.wrap(npc.getStrippedName())
+									player.sendMessage(StringUtils.wrap(npc
+											.getStrippedName())
 											+ " is fully healed.");
 								}
 							} else {
@@ -142,8 +140,7 @@ public class EntityListen extends EntityListener implements Listener {
 									npc.getWizard().cycleLocation();
 									player.sendMessage(ChatColor.GREEN
 											+ "Location set to "
-											+ StringUtils.wrap(npc
-													.getWizard()
+											+ StringUtils.wrap(npc.getWizard()
 													.getCurrentLocationName()));
 								}
 							}
@@ -176,8 +173,7 @@ public class EntityListen extends EntityListener implements Listener {
 						NPCManager.selectedNPCs.put(p.getName(), npc.getUID());
 						p.sendMessage(ChatColor.GREEN + "You selected NPC "
 								+ StringUtils.wrap(npc.getStrippedName())
-								+ ", ID "
-								+ StringUtils.wrap("" + npc.getUID())
+								+ ", ID " + StringUtils.wrap("" + npc.getUID())
 								+ ".");
 						return;
 					}
@@ -225,11 +221,10 @@ public class EntityListen extends EntityListener implements Listener {
 						p.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				}
+				if (npc.isBandit()) {
+					BanditInterface.handleRightClick(npc, p);
+				}
 			}
 		}
-	}
-
-	@Override
-	public void onEntityDeath(EntityDeathEvent event) {
 	}
 }

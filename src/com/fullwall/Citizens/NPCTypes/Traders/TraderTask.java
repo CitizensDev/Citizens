@@ -300,8 +300,9 @@ public class TraderTask implements Runnable {
 		this.npc.getTrader().setFree(true);
 		sendLeaveMessage();
 		int index = TraderInterface.tasks.indexOf(taskID);
-		if (index != -1)
+		if (index != -1) {
 			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));
+		}
 		plugin.getServer().getScheduler().cancelTask(taskID);
 	}
 
@@ -314,10 +315,9 @@ public class TraderTask implements Runnable {
 					+ "-------------------------------");
 			break;
 		case STOCK:
-			player.sendMessage(ChatColor.GOLD
-					+ "Stocking of "
-					+ StringUtils.wrap(npc.getStrippedName(),
-							ChatColor.GOLD) + " started.");
+			player.sendMessage(ChatColor.GOLD + "Stocking of "
+					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GOLD)
+					+ " started.");
 			break;
 		}
 	}
@@ -330,17 +330,17 @@ public class TraderTask implements Runnable {
 					+ "-------------------------------");
 			break;
 		case STOCK:
-			player.sendMessage(ChatColor.GOLD
-					+ "Stocking of "
-					+ StringUtils.wrap(npc.getStrippedName(),
-							ChatColor.GOLD) + " finished.");
+			player.sendMessage(ChatColor.GOLD + "Stocking of "
+					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GOLD)
+					+ " finished.");
 			break;
 		}
 	}
 
 	private ItemStack cloneItemStack(ItemStack source) {
-		if (source == null) // sanity check
+		if (source == null) {// sanity check
 			return null;
+		}
 		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
 				source.getDurability(), (source.getData() != null ? source
 						.getData().getData() : null));

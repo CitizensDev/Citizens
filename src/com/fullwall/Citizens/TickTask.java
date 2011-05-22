@@ -1,12 +1,9 @@
 package com.fullwall.Citizens;
 
-import java.util.Random;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
@@ -59,7 +56,6 @@ public class TickTask implements Runnable {
 	private void resetActions(int entityID, String name, HumanNPC npc) {
 		ActionManager.resetAction(entityID, name, "saidText", npc.getNPCData()
 				.isTalkClose());
-		ActionManager.resetAction(entityID, name, "takenItem", npc.isBandit());
 	}
 
 	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
@@ -68,43 +64,6 @@ public class TickTask implements Runnable {
 			MessageUtils.sendText(npc, p, plugin);
 			cached.set("saidText");
 		}
-		if (!cached.has("takenItem") && npc.isBandit()) {
-			removeRandomItem(p, npc);
-			cached.set("takenItem");
-		}
 		ActionManager.putAction(entityID, name, cached);
-	}
-
-	/**
-	 * Clears a player's inventory
-	 * 
-	 * @param player
-	 */
-	private void removeRandomItem(Player player, HumanNPC npc) {
-		Random random = new Random();
-		int randomSlot;
-		int count = 0;
-		ItemStack item = null;
-		if (npc.isBandit()) {
-			if (!NPCManager.validateOwnership(player, npc.getUID())) {
-				int limit = player.getInventory().getSize();
-				while (true) {
-					randomSlot = random.nextInt(limit);
-					item = player.getInventory().getItem(randomSlot);
-					if (item != null) {
-						player.getInventory().removeItem(item);
-						player.sendMessage(ChatColor.RED
-								+ npc.getStrippedName()
-								+ " has stolen from your inventory!");
-						break;
-					} else {
-						if (count >= limit) {
-							break;
-						}
-						count += 1;
-					}
-				}
-			}
-		}
 	}
 }

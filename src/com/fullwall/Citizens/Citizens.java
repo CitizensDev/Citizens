@@ -17,6 +17,7 @@ import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
+import com.fullwall.Citizens.NPCTypes.Bandits.BanditTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
@@ -94,6 +95,8 @@ public class Citizens extends JavaPlugin {
 				Constants.tickDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new GuardTask(this), Constants.tickDelay, Constants.tickDelay);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new BanditTask(this), Constants.tickDelay, Constants.tickDelay);
 		if (Constants.useSaveTask) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
@@ -124,27 +127,25 @@ public class Citizens extends JavaPlugin {
 
 	private void setupNPCs() {
 		// Start reloading old NPCs from the config files.
-		String[] list = PropertyManager.getBasic().locations
-				.getString("list").split(",");
+		String[] list = PropertyManager.getBasic().locations.getString("list")
+				.split(",");
 		if (list.length > 0 && !list[0].isEmpty()) {
 			for (String name : list) {
-				Location loc = PropertyManager.getBasic()
-						.getLocation(Integer.valueOf(name.split("_")[0]));
+				Location loc = PropertyManager.getBasic().getLocation(
+						Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
 					NPCManager.register(
 							name.split("_", 2)[1],
 							Integer.valueOf(name.split("_")[0]),
 							PropertyManager.getBasic().getOwner(
 									Integer.valueOf(name.split("_")[0])));
-					ArrayList<String> text = PropertyManager
-							.getBasic().getText(
-									Integer.valueOf(name.split("_")[0]));
+					ArrayList<String> text = PropertyManager.getBasic()
+							.getText(Integer.valueOf(name.split("_")[0]));
 					if (text != null)
 						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
 								text);
 				} else {
-					PropertyManager.getBasic().deleteNameFromList(
-							name);
+					PropertyManager.getBasic().deleteNameFromList(name);
 				}
 			}
 		}

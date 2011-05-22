@@ -49,11 +49,12 @@ public class TraderProperties extends Saveable {
 		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
-			if (!split[0].equals("0"))
+			if (!split[0].equals("0")) {
 				array.add(new ItemStack(parse(split[0]), parse(split[1]),
 						(short) 0, (byte) parse(split[2])));
-			else
+			} else {
 				array.add(null);
+			}
 		}
 		PlayerInventory inv = new CraftInventoryPlayer(
 				new InventoryPlayer(null));
@@ -178,9 +179,10 @@ public class TraderProperties extends Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setTrader(getEnabled(npc));
-		if (getInventory(npc.getUID()) != null)
+		if (getInventory(npc.getUID()) != null) {
 			npc.getInventory().setContents(
 					getInventory(npc.getUID()).getContents());
+		}
 		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
 		npc.getTrader().setStocking(getStockables(npc.getUID()));
 		saveState(npc);

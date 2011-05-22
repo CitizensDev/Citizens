@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
@@ -20,18 +19,7 @@ public class TraderInterface {
 	}
 
 	/**
-	 * Uses craftbukkit methods to show a player an npc's inventory screen.
-	 * 
-	 * @param npc
-	 * @param player
-	 */
-	public static void showInventory(HumanNPC npc, Player player) {
-		((CraftPlayer) player).getHandle()
-				.a(npc.getMinecraftEntity().inventory);
-	}
-
-	/**
-	 * Handles what happens when an npc gets right clicked.
+	 * Handles what happens when a trader gets right clicked.
 	 * 
 	 * @param npc
 	 * @param player
@@ -53,9 +41,10 @@ public class TraderInterface {
 			tasks.add(id);
 			task.addID(id);
 			npc.getTrader().setFree(false);
-			showInventory(npc, player);
-		} else
+			NPCManager.showInventory(npc, player);
+		} else {
 			player.sendMessage(ChatColor.RED
 					+ "Only one person may be served at a time!");
+		}
 	}
 }
