@@ -2,8 +2,8 @@ package com.fullwall.Citizens.NPCTypes.Guards;
 
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.fullwall.Citizens.ActionManager;
 import com.fullwall.Citizens.CachedAction;
@@ -46,7 +46,7 @@ public class GuardTask implements Runnable {
 	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
 		if (!cached.has("attemptedEntry") && isBlacklisted(p)) {
-			blockEntry(p, npc);
+			attack(p, npc);
 			cached.set("attemptedEntry");
 		}
 		ActionManager.putAction(entityID, name, cached);
@@ -71,13 +71,13 @@ public class GuardTask implements Runnable {
 	}
 
 	/**
-	 * Block a player from entering a protected zone
+	 * Attack a player if they enter a bouncer's protection zone
 	 * 
 	 * @param player
 	 * @param npc
 	 */
-	private void blockEntry(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.RED + npc.getStrippedName()
-				+ " has blocked you from entering this zone.");
+	private void attack(Player player, HumanNPC npc) {
+		player.sendMessage("Guardin'!");
+		// TODO actually do something here
 	}
 }
