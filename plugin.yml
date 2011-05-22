@@ -6,47 +6,47 @@ commands:
     npc:
         description: Performs various NPC-related commands.
         usage: |
-                    The command was not recognised. Did you type in it in correctly?
+                    The command was not recognised. Was it typed in correctly?
                     See /citizens help for a list of commands.   
     basic:
         description: Basic NPC help menu.
         usage: |
-                    The command was not recognised. Did you type in it in correctly?
+                    The command was not recognised. Was it typed in correctly?
                     See /citizens help for a list of commands.
     blacksmith:
         description: Performs various Blacksmith NPC-related commands.
         usage: |
-                        The command was not recognised. Did you type it in correctly?
+                        The command was not recognised. Was it typed in correctly?
                         See /citizens help for a list of commands.           
     trader:
         description: Performs various Trader NPC-related commands.
         usage: |
-                        The command was not recognised. Did you type it in correctly?
-                        See /citizens help for a list of commands.
-    healer:
-        description: Performs various Healer NPC-related commands.
-        usage: |
-                        The command was not recognised. Did you type it in correctly?
-                        See /citizens help for a list of commands.
-    wizard:
-        description: Performs various Wizard NPC-related commands.
-        usage: |
-                        The command was not recognised. Did you type it in correctly?
-                        See /citizens help for a list of commands.
-    quester:
-        description: Performs various Quester NPC-related commands.
-        usage: |
-                        The command was not recognised. Did you type it in correctly?
-                        See /citizens help for a list of commands.
-    bandit:
-        description: Performs various Bandit NPC-related commands.
-        usage: |
-                        The command was not recognised. Did you type it in correctly?
+                        The command was not recognised. Was it typed in correctly?
                         See /citizens help for a list of commands.
     guard:
         description: Performs various Guard NPC-related commands.
         usage: |
-                        The command was not recognised. Did you type it in correctly?
+                        The command was not recognised. Was it typed in correctly?
+                        See /citizens help for a list of commands.
+    healer:
+        description: Performs various Healer NPC-related commands.
+        usage: |
+                        The command was not recognised. Was it typed in correctly?
+                        See /citizens help for a list of commands.
+    wizard:
+        description: Performs various Wizard NPC-related commands.
+        usage: |
+                        The command was not recognised. Was it typed in correctly?
+                        See /citizens help for a list of commands.
+    quester:
+        description: Performs various Quester NPC-related commands.
+        usage: |
+                        The command was not recognised. Was it typed in correctly?
+                        See /citizens help for a list of commands.
+    bandit:
+        description: Performs various Bandit NPC-related commands.
+        usage: |
+                        The command was not recognised. Was it typed in correctly?
                         See /citizens help for a list of commands.
     toggle:
         description: Toggles between various NPC states.
