@@ -637,6 +637,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else {
 			plugin.basicNPCHandler.setColour(npc.getUID(), args[1],
 					npc.getOwner());
+			npc.getNPCData().setColour(args[1].replace("&", "§"));
 			player.sendMessage(StringUtils.yellowify(npc.getName())
 					+ "'s name colour is now " + args[1] + "this"
 					+ ChatColor.GREEN + ".");

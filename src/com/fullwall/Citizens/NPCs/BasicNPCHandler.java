@@ -61,7 +61,6 @@ public class BasicNPCHandler extends NPCManager {
 	// TODO: maybe remove this, since it changes the skin URL.
 	public void setColour(int UID, String colourChange, String owner) {
 		HumanNPC n = super.get(UID);
-		n.getNPCData().setColour(colourChange.replace("&", "§"));
 		super.removeForRespawn(UID);
 		super.register(n.getName(), UID, owner);
 	}

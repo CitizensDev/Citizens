@@ -1,11 +1,12 @@
 package com.fullwall.Citizens.NPCTypes.Guards;
 
-import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.ActionManager;
+import com.fullwall.Citizens.CachedAction;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -15,7 +16,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class GuardTask implements Runnable {
 	private Citizens plugin;
 	private RegionHandler region = new RegionHandler();
-	private HashMap<String, HashMap<Integer, Boolean>> hasAttemptedEntry = new HashMap<String, HashMap<Integer, Boolean>>();
 
 	public GuardTask(Citizens plugin) {
 		this.plugin = plugin;
@@ -33,34 +33,29 @@ public class GuardTask implements Runnable {
 							if (LocationUtils.checkLocation(npc.getLocation(),
 									player.getLocation(),
 									Constants.guardProtectionRadius)) {
-								if (isBlacklisted(player)) {
-									if (hasAttemptedEntry.get(name) == null
-											|| hasAttemptedEntry.get(name).get(
-													npc.getUID()) == null
-											|| hasAttemptedEntry.get(name).get(
-													npc.getUID()) == false) {
-										blockEntry(player, npc);
-										HashMap<Integer, Boolean> npcs = new HashMap<Integer, Boolean>();
-										if (hasAttemptedEntry.get(name) != null) {
-											npcs = hasAttemptedEntry.get(name);
-										}
-										npcs.put(npc.getUID(), true);
-										hasAttemptedEntry.put(name, npcs);
-									}
-								}
-							} else if (hasAttemptedEntry.get(name) != null
-									&& hasAttemptedEntry.get(name).get(
-											npc.getUID()) != null
-									&& hasAttemptedEntry.get(name).get(
-											npc.getUID()) == true) {
-								hasAttemptedEntry.get(name).put(npc.getUID(),
-										false);
+								cacheActions(player, npc, npc.getUID(), name);
+							} else {
+								resetActions(npc.getUID(), name, npc);
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+
+	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
+		CachedAction cached = ActionManager.getAction(entityID, name);
+		if (!cached.has("attemptedEntry") && isBlacklisted(p)) {
+			blockEntry(p, npc);
+			cached.set("attemptedEntry");
+		}
+		ActionManager.putAction(entityID, name, cached);
+	}
+
+	private void resetActions(int entityID, String name, HumanNPC npc) {
+		ActionManager.resetAction(entityID, name, "attemptedEntry", npc
+				.getNPCData().isTalkClose());
 	}
 
 	/**

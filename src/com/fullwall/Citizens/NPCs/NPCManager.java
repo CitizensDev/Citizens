@@ -201,6 +201,7 @@ public class NPCManager {
 	 * @param UID
 	 */
 	public static void removeForRespawn(int UID) {
+		PropertyManager.save(list.get(UID));
 		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
 	}
 

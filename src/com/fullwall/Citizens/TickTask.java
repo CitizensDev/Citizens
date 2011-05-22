@@ -1,6 +1,5 @@
 package com.fullwall.Citizens;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
 
@@ -19,10 +18,6 @@ public class TickTask implements Runnable {
 	private Citizens plugin;
 	// How far an NPC can 'see'
 	private double range;
-	// Key: UID Value: a hash map of player names: whether text has been said to
-	// them or not.
-	private HashMap<Integer, HashMap<String, Boolean>> hasSaidText = new HashMap<Integer, HashMap<String, Boolean>>();
-	private HashMap<String, HashMap<Integer, Boolean>> hasTakenItem = new HashMap<String, HashMap<Integer, Boolean>>();
 
 	public TickTask(Citizens plugin, double range) {
 		this.plugin = plugin;
@@ -33,13 +28,13 @@ public class TickTask implements Runnable {
 	@Override
 	public void run() {
 		HumanNPC npc;
-		int entityID;
+		int UID;
 		Player[] online = Bukkit.getServer().getOnlinePlayers();
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			{
 				npc = entry.getValue();
 				npc.updateMovement();
-				entityID = entry.getKey();
+				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();
 					if (npc.getNPCData().isLookClose()
@@ -50,51 +45,34 @@ public class TickTask implements Runnable {
 							if (npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
 							}
-							if (npc.getNPCData().isTalkClose()
-									// If we haven't already spoken to the
-									// player.
-									&& (hasSaidText.get(entityID) == null || (hasSaidText
-											.get(entityID).get(name) == null || hasSaidText
-											.get(entityID).get(name) == false))) {
-								MessageUtils.sendText(npc, p, plugin);
-								HashMap<String, Boolean> players = new HashMap<String, Boolean>();
-								if (hasSaidText.get(entityID) != null) {
-									players = hasSaidText.get(entityID);
-								}
-								players.put(name, true);
-								hasSaidText.put(entityID, players);
-							}
-							if (hasTakenItem.get(name) == null
-									|| hasTakenItem.get(name).get(npc.getUID()) == null
-									|| hasTakenItem.get(name).get(npc.getUID()) == false) {
-								removeRandomItem(p, npc);
-								HashMap<Integer, Boolean> npcs = new HashMap<Integer, Boolean>();
-								if (hasTakenItem.get(name) != null) {
-									npcs = hasTakenItem.get(name);
-								}
-								npcs.put(npc.getUID(), true);
-								hasTakenItem.put(name, npcs);
-							}
+							cacheActions(p, npc, UID, name);
 						}
-						// We're out of range -> reset talked-to state.
-						else if (npc.getNPCData().isTalkClose()
-								&& hasSaidText.get(entityID) != null
-								&& hasSaidText.get(entityID).get(name) != null
-								&& hasSaidText.get(entityID).get(name) == true) {
-							hasSaidText.get(entityID).put(name, false);
-						}
-						// Player is not within range of bandit, reset
-						// taken-item state
-						else if (npc.isBandit()
-								&& hasTakenItem.get(name) != null
-								&& hasTakenItem.get(name).get(npc.getUID()) != null
-								&& hasTakenItem.get(name).get(npc.getUID()) == true) {
-							hasTakenItem.get(name).put(npc.getUID(), false);
-						}
+					} else if (ActionManager.actions.get(UID) != null
+							&& ActionManager.actions.get(UID).get(name) != null) {
+						resetActions(UID, name, npc);
 					}
 				}
 			}
 		}
+	}
+
+	private void resetActions(int entityID, String name, HumanNPC npc) {
+		ActionManager.resetAction(entityID, name, "saidText", npc.getNPCData()
+				.isTalkClose());
+		ActionManager.resetAction(entityID, name, "takenItem", npc.isBandit());
+	}
+
+	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
+		CachedAction cached = ActionManager.getAction(entityID, name);
+		if (!cached.has("saidText") && npc.getNPCData().isTalkClose()) {
+			MessageUtils.sendText(npc, p, plugin);
+			cached.set("saidText");
+		}
+		if (!cached.has("takenItem") && npc.isBandit()) {
+			removeRandomItem(p, npc);
+			cached.set("takenItem");
+		}
+		ActionManager.putAction(entityID, name, cached);
 	}
 
 	/**

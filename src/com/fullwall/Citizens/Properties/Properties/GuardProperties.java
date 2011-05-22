@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Properties.Properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fullwall.Citizens.Enums.GuardType;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
@@ -16,12 +17,12 @@ public class GuardProperties extends Saveable {
 	private final PropertyHandler mobBlacklist = new PropertyHandler(
 			"plugins/Citizens/Guards/Citizens.mobblacklist");
 
-	private String getGuardType(int UID) {
-		return guardTypes.getString(UID);
+	private GuardType getGuardType(int UID) {
+		return GuardType.parse(guardTypes.getString(UID));
 	}
 
-	private void saveGuardType(int UID, String guardType) {
-		guardTypes.setString(UID, guardType);
+	private void saveGuardType(int UID, GuardType guardType) {
+		guardTypes.setString(UID, guardType.toString().toLowerCase());
 	}
 
 	private List<String> getMobBlacklist(int UID) {
