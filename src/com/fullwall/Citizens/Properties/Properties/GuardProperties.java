@@ -15,7 +15,17 @@ public class GuardProperties extends Saveable {
 	private final PropertyHandler guardTypes = new PropertyHandler(
 			"plugins/Citizens/Guards/Citizens.guardtypes");
 	private final PropertyHandler mobBlacklist = new PropertyHandler(
-			"plugins/Citizens/Guards/Citizens.mobblacklist");
+			"plugins/Citizens/Guards/Bouncers/Citizens.mobblacklist");
+	private final PropertyHandler radius = new PropertyHandler(
+			"plugins/Citizens/Guards/Bouncers/radius.citizens");
+
+	private double getProtectionRadius(int UID) {
+		return radius.getDouble(UID);
+	}
+
+	private void saveProtectionRadius(int UID, double rad) {
+		radius.setDouble(UID, rad);
+	}
 
 	private GuardType getGuardType(int UID) {
 		return GuardType.parse(guardTypes.getString(UID));
@@ -47,6 +57,7 @@ public class GuardProperties extends Saveable {
 		guards.save();
 		guardTypes.save();
 		mobBlacklist.save();
+		radius.save();
 	}
 
 	@Override
@@ -55,6 +66,8 @@ public class GuardProperties extends Saveable {
 			setEnabled(npc, npc.isGuard());
 			saveGuardType(npc.getUID(), npc.getGuard().getGuardType());
 			saveMobBlacklist(npc.getUID(), npc.getGuard().getMobBlacklist());
+			saveProtectionRadius(npc.getUID(), npc.getGuard()
+					.getProtectionRadius());
 		}
 	}
 
@@ -63,6 +76,7 @@ public class GuardProperties extends Saveable {
 		npc.setGuard(getEnabled(npc));
 		npc.getGuard().setGuardType(getGuardType(npc.getUID()));
 		npc.getGuard().setMobBlacklist(getMobBlacklist(npc.getUID()));
+		npc.getGuard().setProtectionRadius(getProtectionRadius(npc.getUID()));
 		saveState(npc);
 	}
 
@@ -71,6 +85,7 @@ public class GuardProperties extends Saveable {
 		guards.removeKey(npc.getUID());
 		guardTypes.removeKey(npc.getUID());
 		mobBlacklist.removeKey(npc.getUID());
+		radius.save();
 	}
 
 	@Override
@@ -108,6 +123,9 @@ public class GuardProperties extends Saveable {
 		}
 		if (mobBlacklist.keyExists(UID)) {
 			mobBlacklist.setString(nextUID, mobBlacklist.getString(UID));
+		}
+		if (radius.keyExists(UID)) {
+			radius.setString(nextUID, radius.getString(UID));
 		}
 	}
 }
