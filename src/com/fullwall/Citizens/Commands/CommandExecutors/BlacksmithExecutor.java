@@ -40,7 +40,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -144,16 +144,16 @@ public class BlacksmithExecutor implements CommandExecutor {
 						if (paid > 0) {
 							armor.setDurability((short) 0);
 							msg = ChatColor.GREEN + ("Your ")
-									+ StringUtils.yellowify(armorName);
+									+ StringUtils.wrap(armorName);
 							if (plural) {
 								msg += " have been repaired by ";
 							} else {
 								msg += " has been repaired by ";
 							}
-							msg += StringUtils.yellowify(npc.getStrippedName())
+							msg += StringUtils.wrap(npc.getStrippedName())
 									+ " for "
 									+ StringUtils
-											.yellowify(EconomyHandler
+											.wrap(EconomyHandler
 													.getPaymentType(
 															Operation.BLACKSMITH_ARMOR_REPAIR,
 															"" + paid,
@@ -205,9 +205,9 @@ public class BlacksmithExecutor implements CommandExecutor {
 		if (blacksmith.validateTool(item) || blacksmith.validateArmor(item)) {
 			player.sendMessage(ChatColor.GREEN
 					+ "Your "
-					+ StringUtils.yellowify(itemName)
+					+ StringUtils.wrap(itemName)
 					+ " has "
-					+ StringUtils.yellowify(material.getMaxDurability()
+					+ StringUtils.wrap(material.getMaxDurability()
 							- item.getDurability()) + " uses remaining.");
 		} else {
 			player.sendMessage(ChatColor.RED + itemName

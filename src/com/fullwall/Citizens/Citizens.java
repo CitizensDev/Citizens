@@ -124,26 +124,26 @@ public class Citizens extends JavaPlugin {
 
 	private void setupNPCs() {
 		// Start reloading old NPCs from the config files.
-		String[] list = PropertyManager.getBasicProperties().locations
+		String[] list = PropertyManager.getBasic().locations
 				.getString("list").split(",");
 		if (list.length > 0 && !list[0].isEmpty()) {
 			for (String name : list) {
-				Location loc = PropertyManager.getBasicProperties()
+				Location loc = PropertyManager.getBasic()
 						.getLocation(Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
 					NPCManager.register(
 							name.split("_", 2)[1],
 							Integer.valueOf(name.split("_")[0]),
-							PropertyManager.getBasicProperties().getOwner(
+							PropertyManager.getBasic().getOwner(
 									Integer.valueOf(name.split("_")[0])));
 					ArrayList<String> text = PropertyManager
-							.getBasicProperties().getText(
+							.getBasic().getText(
 									Integer.valueOf(name.split("_")[0]));
 					if (text != null)
 						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
 								text);
 				} else {
-					PropertyManager.getBasicProperties().deleteNameFromList(
+					PropertyManager.getBasic().deleteNameFromList(
 							name);
 				}
 			}

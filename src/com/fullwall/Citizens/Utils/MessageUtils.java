@@ -92,7 +92,7 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.RED
 				+ "You need "
-				+ StringUtils.yellowify(
+				+ StringUtils.wrap(
 						EconomyHandler.getPaymentType(op,
 								EconomyHandler.getRemainder(op, player),
 								ChatColor.RED), ChatColor.RED)
@@ -115,13 +115,13 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.GREEN
 				+ "Paid "
-				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
+				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, ""
 						+ paid, ChatColor.GREEN)) + " for ";
 		if (useType)
-			message += StringUtils.yellowify(npcName) + " to become a "
-					+ StringUtils.yellowify(type) + ".";
+			message += StringUtils.wrap(npcName) + " to become a "
+					+ StringUtils.wrap(type) + ".";
 		else
-			message += StringUtils.yellowify(npcName) + ".";
+			message += StringUtils.wrap(npcName) + ".";
 		return message;
 	}
 
@@ -134,7 +134,7 @@ public class MessageUtils {
 	public static String getPriceMessage(ItemPrice price, ChatColor colour) {
 		String message = "";
 		message += colour
-				+ StringUtils.yellowify(
+				+ StringUtils.wrap(
 						EconomyHandler.getCurrency(new Payment(price), colour),
 						colour);
 		return message;
@@ -144,7 +144,7 @@ public class MessageUtils {
 			ChatColor colour) {
 		return MessageUtils.getPriceMessage(stockable.getPrice(), colour)
 				+ " for "
-				+ StringUtils.yellowify(stockable.getStocking().getAmount()
+				+ StringUtils.wrap(stockable.getStocking().getAmount()
 						+ " " + stockable.getStocking().getType().name(),
 						colour) + "(s)";
 	}
@@ -159,7 +159,7 @@ public class MessageUtils {
 	public static String getStockableMessage(Stockable s, boolean selling,
 			ChatColor colour) {
 		if (!selling)
-			return StringUtils.yellowify(s.getStocking().getAmount() + " "
+			return StringUtils.wrap(s.getStocking().getAmount() + " "
 					+ s.getStocking().getType().name(), colour)
 					+ "(s) for "
 					+ MessageUtils.getPriceMessage(s.getPrice(), colour);
@@ -168,7 +168,7 @@ public class MessageUtils {
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {
-		return StringUtils.yellowify(stack.getAmount() + " "
+		return StringUtils.wrap(stack.getAmount() + " "
 				+ stack.getType().name(), colour)
 				+ "(s)";
 	}

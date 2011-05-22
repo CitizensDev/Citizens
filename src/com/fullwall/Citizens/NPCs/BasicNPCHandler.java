@@ -45,8 +45,7 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	public void rename(int UID, String changeTo, String owner) {
 		HumanNPC n = super.get(UID);
-		PropertyManager.getBasicProperties().changeName(UID, n.getName(),
-				changeTo);
+		PropertyManager.getBasic().changeName(UID, n.getName(), changeTo);
 		super.removeForRespawn(UID);
 		super.register(changeTo, UID, owner);
 	}
@@ -59,7 +58,7 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param owner
 	 */
 	// TODO: maybe remove this, since it changes the skin URL.
-	public void setColour(int UID, String colourChange, String owner) {
+	public void setColour(int UID, String owner) {
 		HumanNPC n = super.get(UID);
 		super.removeForRespawn(UID);
 		super.register(n.getName(), UID, owner);
@@ -100,7 +99,7 @@ public class BasicNPCHandler extends NPCManager {
 	public void setItemInHand(Player p, HumanNPC npc, String material) {
 		Material mat = StringUtils.parseMaterial(material);
 		if (mat == null) {
-			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
+			p.sendMessage(ChatColor.RED + "Incorrect item name.");
 			return;
 		}
 		if (!p.getInventory().contains(mat)) {
@@ -114,22 +113,24 @@ public class BasicNPCHandler extends NPCManager {
 			return;
 		}
 		int slot = p.getInventory().first(mat);
-		ItemStack item = p.getInventory().getItem(slot);
-		int amount = item.getAmount() - 1;
-		if (amount == 0)
-			item = null;
-		else
-			item.setAmount(amount);
+		ItemStack item = decreaseItemStack(p.getInventory().getItem(slot));
 		p.getInventory().setItem(slot, item);
-		ArrayList<Integer> items = PropertyManager.getBasicProperties()
-				.getItems(npc.getUID());
+
+		ArrayList<Integer> items = npc.getNPCData().getItems();
+
 		int olditem = items.get(0);
 		items.set(0, mat.getId());
+
+		npc.getNPCData().setItems(items);
 		NPCDataManager.addItems(npc, items);
+
 		if ((olditem != 0 && items.get(0) == 0)) {
 			super.removeForRespawn(npc.getUID());
 			super.register(npc.getName(), npc.getUID(), npc.getOwner());
 		}
+		p.sendMessage(StringUtils.wrap(npc.getName())
+				+ "'s in-hand item was set to " + StringUtils.wrap(mat.name())
+				+ ".");
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class BasicNPCHandler extends NPCManager {
 	public void setItemInSlot(String[] args, Player p, HumanNPC npc) {
 		Material mat = StringUtils.parseMaterial(args[1]);
 		if (mat == null) {
-			p.sendMessage(ChatColor.RED + "Incorrect Item Name.");
+			p.sendMessage(ChatColor.RED + "Incorrect item name.");
 			return;
 		}
 		if (!p.getInventory().contains(mat)) {
@@ -150,24 +151,44 @@ public class BasicNPCHandler extends NPCManager {
 					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
 			return;
 		}
-		p.getInventory().remove(mat);
-		ArrayList<Integer> items = PropertyManager.getBasicProperties()
-				.getItems(npc.getUID());
+		if (mat.getId() < 298 || mat.getId() > 317) {
+			p.sendMessage(ChatColor.GRAY
+					+ "That can't be used as an armour material.");
+			return;
+		}
+		int slot = p.getInventory().first(mat);
+		ItemStack item = decreaseItemStack(p.getInventory().getItem(slot));
+		p.getInventory().setItem(slot, item);
+		ArrayList<Integer> items = npc.getNPCData().getItems();
 		int oldhelmet = items.get(1);
-		if (args[0].equalsIgnoreCase("helmet")) {
+
+		if (args[0].contains("helm")) {
 			items.set(1, mat.getId());
 		} else if (args[0].equalsIgnoreCase("torso")) {
 			items.set(2, mat.getId());
-		} else if (args[0].equalsIgnoreCase("legs")) {
+		} else if (args[0].contains("leg")) {
 			items.set(3, mat.getId());
-		} else if (args[0].equalsIgnoreCase("boots")) {
+		} else if (args[0].contains("boot")) {
 			items.set(4, mat.getId());
 		}
+		npc.getNPCData().setItems(items);
 		NPCDataManager.addItems(npc, items);
+
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.
 			super.removeForRespawn(npc.getUID());
 			super.register(npc.getName(), npc.getUID(), npc.getOwner());
 		}
+		p.sendMessage(StringUtils.wrap(npc.getName()) + "'s " + args[0]
+				+ " was set to " + StringUtils.wrap(mat.name()) + ".");
+	}
+
+	public ItemStack decreaseItemStack(ItemStack stack) {
+		int amount = stack.getAmount() - 1;
+		if (amount == 0)
+			stack = null;
+		else
+			stack.setAmount(amount);
+		return stack;
 	}
 }

@@ -53,7 +53,7 @@ public class Stockable {
 	}
 
 	public String getString(ChatColor colour) {
-		return StringUtils.yellowify(getStocking().getAmount() + " "
+		return StringUtils.wrap(getStocking().getAmount() + " "
 				+ getStocking().getType().name(), colour)
 				+ "(s)";
 	}

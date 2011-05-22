@@ -267,7 +267,7 @@ public class TraderTask implements Runnable {
 				+ " have enough money available to "
 				+ keyword
 				+ " "
-				+ StringUtils.yellowify(stocking.getAmount() + " "
+				+ StringUtils.wrap(stocking.getAmount() + " "
 						+ stocking.getType().name(), ChatColor.RED) + "(s).");
 	}
 
@@ -283,7 +283,7 @@ public class TraderTask implements Runnable {
 
 	private Stockable getStockable(ItemStack i, String keyword, boolean selling) {
 		if (!(npc.getTrader().isStocked(i.getTypeId(), selling, i.getData()))) {
-			player.sendMessage(StringUtils.yellowify(i.getType().name(),
+			player.sendMessage(StringUtils.wrap(i.getType().name(),
 					ChatColor.RED) + " isn't being " + keyword + " here.");
 			return null;
 		}
@@ -316,7 +316,7 @@ public class TraderTask implements Runnable {
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD
 					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getStrippedName(),
+					+ StringUtils.wrap(npc.getStrippedName(),
 							ChatColor.GOLD) + " started.");
 			break;
 		}
@@ -332,7 +332,7 @@ public class TraderTask implements Runnable {
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD
 					+ "Stocking of "
-					+ StringUtils.yellowify(npc.getStrippedName(),
+					+ StringUtils.wrap(npc.getStrippedName(),
 							ChatColor.GOLD) + " finished.");
 			break;
 		}

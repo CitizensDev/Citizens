@@ -16,11 +16,11 @@ public class HelpUtils {
 	 */
 	public static void sendHelp(CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN
-				+ StringUtils.yellowify("==========[ ") + "Citizens Help"
-				+ StringUtils.yellowify(" ]=========="));
+				+ StringUtils.wrap("==========[ ") + "Citizens Help"
+				+ StringUtils.wrap(" ]=========="));
 		sender.sendMessage(ChatColor.GREEN + "  []"
-				+ StringUtils.yellowify(" - required") + "  ()"
-				+ StringUtils.yellowify(" - optional"));
+				+ StringUtils.wrap(" - required") + "  ()"
+				+ StringUtils.wrap(" - optional"));
 		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
 		formatCommand(sender, "blacksmith", "help", "blacksmith NPC help page");
 		formatCommand(sender, "healer", "help", "healer NPC help page");
@@ -191,9 +191,9 @@ public class HelpUtils {
 	private static void header(CommandSender sender, String npcType, int page,
 			int maxPages) {
 		sender.sendMessage(ChatColor.GREEN
-				+ StringUtils.yellowify("==========[ ") + "Citizens " + npcType
+				+ StringUtils.wrap("==========[ ") + "Citizens " + npcType
 				+ " Help" + ChatColor.WHITE + " <" + page + "/" + maxPages
-				+ ">" + StringUtils.yellowify(" ]=========="));
+				+ ">" + StringUtils.wrap(" ]=========="));
 	}
 
 	/**
@@ -220,11 +220,11 @@ public class HelpUtils {
 			String args, String desc) {
 		String message = "";
 		if (args.isEmpty()) {
-			message = StringUtils.yellowify("/") + command
-					+ StringUtils.yellowify(" - ") + desc;
+			message = StringUtils.wrap("/") + command
+					+ StringUtils.wrap(" - ") + desc;
 		} else {
-			message = StringUtils.yellowify("/") + command + ChatColor.RED
-					+ " " + args + StringUtils.yellowify(" - ") + desc;
+			message = StringUtils.wrap("/") + command + ChatColor.RED
+					+ " " + args + StringUtils.wrap(" - ") + desc;
 		}
 		sender.sendMessage(message);
 	}

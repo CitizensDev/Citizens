@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -33,7 +32,7 @@ public class BanditExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -55,7 +54,6 @@ public class BanditExecutor implements CommandExecutor {
 				}
 				return true;
 			}
-			PropertyManager.save(npc);
 		}
 		return returnval;
 	}

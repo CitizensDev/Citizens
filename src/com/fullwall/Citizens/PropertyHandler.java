@@ -143,7 +143,7 @@ public final class PropertyHandler {
 	public void save() {
 		try {
 			this.properties.store(new FileOutputStream(this.fileName),
-					"Minecraft Properties File");
+					"Citizens File");
 		} catch (IOException ex) {
 			Citizens.log.log(Level.SEVERE, "Unable to save " + this.fileName,
 					ex);
@@ -204,8 +204,8 @@ public final class PropertyHandler {
 	public String getString(String key, String value) {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
-		}
-		setString(key, value);
+		} else
+			setString(key, value);
 		return value;
 	}
 
@@ -236,10 +236,10 @@ public final class PropertyHandler {
 	}
 
 	public int getInt(String key, int value) {
-		if (this.properties.containsKey(key)) {
+		if (this.properties.containsKey(key))
 			return Integer.parseInt(this.properties.getProperty(key));
-		}
-		setInt(key, value);
+		else
+			setInt(key, value);
 		return value;
 	}
 
@@ -272,9 +272,8 @@ public final class PropertyHandler {
 	public double getDouble(String key, double value) {
 		if (this.properties.containsKey(key)) {
 			return Double.parseDouble(this.properties.getProperty(key));
-		}
-
-		setDouble(key, value);
+		} else
+			setDouble(key, value);
 		return value;
 	}
 
@@ -307,9 +306,8 @@ public final class PropertyHandler {
 	public long getLong(String key, long value) {
 		if (this.properties.containsKey(key)) {
 			return Long.parseLong(this.properties.getProperty(key));
-		}
-
-		setLong(key, value);
+		} else
+			setLong(key, value);
 		return value;
 	}
 
@@ -342,9 +340,8 @@ public final class PropertyHandler {
 	public boolean getBoolean(String key, boolean value) {
 		if (this.properties.containsKey(key)) {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
-		}
-
-		setBoolean(key, value);
+		} else
+			setBoolean(key, value);
 		return value;
 	}
 

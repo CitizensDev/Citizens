@@ -35,7 +35,7 @@ public class WizardExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -71,7 +71,7 @@ public class WizardExecutor implements CommandExecutor {
 						this.addLocation(player, npc, args[1]);
 					} else {
 						sender.sendMessage(ChatColor.RED + "Wizard "
-								+ StringUtils.yellowify(npc.getStrippedName())
+								+ StringUtils.wrap(npc.getStrippedName())
 								+ " already knows "
 								+ Constants.wizardMaxLocations + " locations");
 					}
@@ -96,7 +96,7 @@ public class WizardExecutor implements CommandExecutor {
 						} else {
 							sender.sendMessage(ChatColor.RED
 									+ "Wizard "
-									+ StringUtils.yellowify(npc
+									+ StringUtils.wrap(npc
 											.getStrippedName())
 									+ "doesnt have that location.");
 						}
@@ -120,8 +120,8 @@ public class WizardExecutor implements CommandExecutor {
 	 */
 	private void addLocation(Player player, HumanNPC npc, String locName) {
 		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.yellowify(npc.getStrippedName())
-				+ ChatColor.GREEN + " as " + StringUtils.yellowify(locName));
+				+ StringUtils.wrap(npc.getStrippedName())
+				+ ChatColor.GREEN + " as " + StringUtils.wrap(locName));
 		npc.getWizard().addLocation(player.getLocation(), locName);
 	}
 
@@ -146,9 +146,9 @@ public class WizardExecutor implements CommandExecutor {
 		npc.getWizard().cycleLocation();
 		npc.getWizard().setLocations(newLoc);
 		player.sendMessage(ChatColor.GREEN + "Wizard "
-				+ StringUtils.yellowify(npc.getStrippedName())
+				+ StringUtils.wrap(npc.getStrippedName())
 				+ " had amnesia and forgot about "
-				+ StringUtils.yellowify(removedName));
+				+ StringUtils.wrap(removedName));
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class WizardExecutor implements CommandExecutor {
 	private void displayLocations(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ "========== "
-				+ StringUtils.yellowify(npc.getStrippedName()
+				+ StringUtils.wrap(npc.getStrippedName()
 						+ "'s Wizard Locations") + " ==========");
 		listLocations(player, npc);
 	}

@@ -35,7 +35,7 @@ public class CustomListen extends CustomEventListener implements Listener {
 			CitizensBasicNPCEvent e = (CitizensBasicNPCEvent) ev;
 			if (e.isCancelled() == true)
 				return;
-			if (!PropertyManager.getBasicProperties().getLookWhenClose(
+			if (!PropertyManager.getBasic().getLookWhenClose(
 					e.getNPC().getUID())) {
 				NPCManager.facePlayer(e.getNPC(), e.getPlayer());
 			}

@@ -36,7 +36,7 @@ public class HealerExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -113,7 +113,7 @@ public class HealerExecutor implements CommandExecutor {
 	private void displayStatus(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ "========== "
-				+ StringUtils.yellowify(npc.getStrippedName()
+				+ StringUtils.wrap(npc.getStrippedName()
 						+ "'s Healer Status") + " ==========");
 		displayStrength(player, npc);
 		displayLevel(player, npc);
@@ -131,7 +131,7 @@ public class HealerExecutor implements CommandExecutor {
 							Operation.HEALER_LEVEL_UP, npc, paid, level
 									+ multiple, multiple));
 				} else {
-					player.sendMessage(StringUtils.yellowify(npc
+					player.sendMessage(StringUtils.wrap(npc
 							.getStrippedName())
 							+ " has reached the maximum level.");
 				}
@@ -146,11 +146,11 @@ public class HealerExecutor implements CommandExecutor {
 			double paid, int level, int multiple) {
 		String message = ChatColor.GREEN
 				+ "You have leveled up the healer "
-				+ StringUtils.yellowify(npc.getStrippedName())
+				+ StringUtils.wrap(npc.getStrippedName())
 				+ " to "
-				+ StringUtils.yellowify("Level " + level)
+				+ StringUtils.wrap("Level " + level)
 				+ " for "
-				+ StringUtils.yellowify(EconomyHandler.getPaymentType(op, ""
+				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, ""
 						+ paid * multiple, ChatColor.GREEN)
 						+ ".");
 		return message;

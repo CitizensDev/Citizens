@@ -75,11 +75,11 @@ public class EntityListen extends EntityListener implements Listener {
 									npc.getHealer().setHealth(healerHealth - 1);
 									player.sendMessage(ChatColor.GREEN
 											+ "You drained health from the healer "
-											+ StringUtils.yellowify(npc
+											+ StringUtils.wrap(npc
 													.getStrippedName()) + ".");
 								} else {
 									player.sendMessage(StringUtils
-											.yellowify(npc.getStrippedName())
+											.wrap(npc.getStrippedName())
 											+ " does not have enough health remaining for you to take.");
 								}
 							} else {
@@ -94,17 +94,17 @@ public class EntityListen extends EntityListener implements Listener {
 									npc.getHealer().setHealth(healerHealth + 1);
 									player.sendMessage(ChatColor.GREEN
 											+ "You donated some health to the healer "
-											+ StringUtils.yellowify(npc
+											+ StringUtils.wrap(npc
 													.getStrippedName()) + ".");
 								} else {
 									player.sendMessage(StringUtils
-											.yellowify(npc.getStrippedName())
+											.wrap(npc.getStrippedName())
 											+ " is fully healed.");
 								}
 							} else {
 								player.sendMessage(ChatColor.GREEN
 										+ "You do not have enough health remaining to heal "
-										+ StringUtils.yellowify(npc
+										+ StringUtils.wrap(npc
 												.getStrippedName()));
 							}
 						} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
@@ -113,7 +113,7 @@ public class EntityListen extends EntityListener implements Listener {
 										npc.getHealer().getMaxHealth());
 								player.sendMessage(ChatColor.GREEN
 										+ "You restored all of "
-										+ StringUtils.yellowify(npc
+										+ StringUtils.wrap(npc
 												.getStrippedName())
 										+ "'s health with a magical block of diamond.");
 								int amountInHand = player.getItemInHand()
@@ -127,7 +127,7 @@ public class EntityListen extends EntityListener implements Listener {
 											amountInHand - 1));
 								}
 							} else {
-								player.sendMessage(StringUtils.yellowify(npc
+								player.sendMessage(StringUtils.wrap(npc
 										.getStrippedName())
 										+ " is fully healed.");
 							}
@@ -142,7 +142,7 @@ public class EntityListen extends EntityListener implements Listener {
 									npc.getWizard().cycleLocation();
 									player.sendMessage(ChatColor.GREEN
 											+ "Location set to "
-											+ StringUtils.yellowify(npc
+											+ StringUtils.wrap(npc
 													.getWizard()
 													.getCurrentLocationName()));
 								}
@@ -173,11 +173,11 @@ public class EntityListen extends EntityListener implements Listener {
 				if (plugin.validateTool("select-item", p.getItemInHand()
 						.getTypeId(), p.isSneaking()) == true) {
 					if (!NPCManager.validateSelected(p, npc.getUID())) {
-						NPCManager.NPCSelected.put(p.getName(), npc.getUID());
+						NPCManager.selectedNPCs.put(p.getName(), npc.getUID());
 						p.sendMessage(ChatColor.GREEN + "You selected NPC "
-								+ StringUtils.yellowify(npc.getStrippedName())
+								+ StringUtils.wrap(npc.getStrippedName())
 								+ ", ID "
-								+ StringUtils.yellowify("" + npc.getUID())
+								+ StringUtils.wrap("" + npc.getUID())
 								+ ".");
 						return;
 					}

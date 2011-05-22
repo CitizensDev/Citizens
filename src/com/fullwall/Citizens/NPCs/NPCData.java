@@ -9,7 +9,7 @@ public class NPCData {
 	private String name;
 	private int UID;
 	private Location location;
-	private String colour;
+	private int colour = 0xf;
 	private ArrayList<Integer> items;
 	private ArrayList<String> texts;
 	private boolean lookClose;
@@ -29,7 +29,7 @@ public class NPCData {
 	 * @param talkClose
 	 * @param owner
 	 */
-	public NPCData(String name, int UID, Location loc, String colour,
+	public NPCData(String name, int UID, Location loc, int colour,
 			ArrayList<Integer> items, ArrayList<String> texts,
 			boolean lookClose, boolean talkClose, String owner) {
 		this.setName(name);
@@ -51,8 +51,8 @@ public class NPCData {
 		return name;
 	}
 
-	public void setUID(int uID) {
-		UID = uID;
+	public void setUID(int UID) {
+		this.UID = UID;
 	}
 
 	public int getUID() {
@@ -67,11 +67,11 @@ public class NPCData {
 		return location;
 	}
 
-	public void setColour(String colour) {
-		this.colour = colour;
+	public void setColour(int code) {
+		this.colour = code;
 	}
 
-	public String getColour() {
+	public int getColour() {
 		return colour;
 	}
 

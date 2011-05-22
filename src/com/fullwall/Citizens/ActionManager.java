@@ -12,7 +12,13 @@ public class ActionManager {
 
 	public static CachedAction getAction(int entityID, String name) {
 		validateAction(entityID);
+		validateCache(entityID, name);
 		return actions.get(entityID).get(name);
+	}
+
+	private static void validateCache(int entityID, String name) {
+		if (actions.get(entityID).get(name) == null)
+			actions.get(entityID).put(name, new CachedAction());
 	}
 
 	public static void validateAction(int entityID) {

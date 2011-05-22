@@ -23,8 +23,8 @@ public class NPCManager {
 	@SuppressWarnings("unused")
 	private Citizens plugin;
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
-	public static ConcurrentHashMap<Integer, ArrayList<String>> BasicNPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
-	public static ConcurrentHashMap<String, Integer> NPCSelected = new ConcurrentHashMap<String, Integer>();
+	public static ConcurrentHashMap<Integer, ArrayList<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
+	public static ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	public Random ran = new Random(new Random(new Random(new Random(
 			System.currentTimeMillis()).nextLong()).nextLong()).nextLong());
 	private static NPCList list;
@@ -42,14 +42,14 @@ public class NPCManager {
 	 * @param owner
 	 */
 	public static void register(String name, int UID, String owner) {
-		Location loc = PropertyManager.getBasicProperties().getLocation(UID);
+		Location loc = PropertyManager.getBasic().getLocation(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
-		String colour = PropertyManager.getBasicProperties().getColour(UID);// StringUtils.getColourFromString(name);
+		int colour = PropertyManager.getBasic().getColour(UID);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
-		if (!colour.isEmpty() && !colour.equals("§f"))
-			npcName = colour + name;
+		if (colour != 0xf)
+			npcName = ChatColor.getByCode(colour) + name;
 		if (Constants.convertSlashes == true) {
 			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
@@ -63,13 +63,11 @@ public class NPCManager {
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
-		ArrayList<Integer> items = PropertyManager.getBasicProperties()
-				.getItems(UID);
+		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
-		npc.setNPCData(new NPCData(name, UID, loc, colour, items, BasicNPCTexts
-				.get(UID), PropertyManager.getBasicProperties()
-				.getLookWhenClose(UID), PropertyManager.getBasicProperties()
-				.getTalkWhenClose(UID), owner));
+		npc.setNPCData(new NPCData(name, UID, loc, colour, items, NPCTexts
+				.get(UID), PropertyManager.getBasic().getLookWhenClose(UID),
+				PropertyManager.getBasic().getTalkWhenClose(UID), owner));
 		PropertyManager.load(npc);
 
 		registerUID(UID, name);
@@ -89,11 +87,11 @@ public class NPCManager {
 	 * @return
 	 */
 	public static int register(String name, Location loc, String owner) {
-		int UID = PropertyManager.getBasicProperties().getNewNpcID();
-		PropertyManager.getBasicProperties().saveLocation(name, loc, UID);
-		PropertyManager.getBasicProperties().saveLookWhenClose(UID,
+		int UID = PropertyManager.getBasic().getNewNpcID();
+		PropertyManager.getBasic().saveLocation(name, loc, UID);
+		PropertyManager.getBasic().saveLookWhenClose(UID,
 				Constants.defaultFollowingEnabled);
-		PropertyManager.getBasicProperties().saveTalkWhenClose(UID,
+		PropertyManager.getBasic().saveTalkWhenClose(UID,
 				Constants.defaultTalkWhenClose);
 		register(name, UID, owner);
 		return UID;
@@ -107,7 +105,7 @@ public class NPCManager {
 	 */
 	public static void setText(int UID, ArrayList<String> text) {
 		text = StringUtils.colourise(text);
-		BasicNPCTexts.put(UID, text);
+		NPCTexts.put(UID, text);
 		get(UID).getNPCData().setTexts(text);
 	}
 
@@ -118,7 +116,7 @@ public class NPCManager {
 	 * @return
 	 */
 	public static ArrayList<String> getText(int UID) {
-		return BasicNPCTexts.get(UID);
+		return NPCTexts.get(UID);
 	}
 
 	/**
@@ -256,8 +254,8 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p) {
-		if (NPCSelected.get(p.getName()) != null
-				&& !NPCSelected.get(p.getName()).toString().isEmpty()) {
+		if (selectedNPCs.get(p.getName()) != null
+				&& !selectedNPCs.get(p.getName()).toString().isEmpty()) {
 			return true;
 		}
 		return false;
@@ -271,9 +269,9 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p, int UID) {
-		if (NPCSelected.get(p.getName()) != null
-				&& !NPCSelected.get(p.getName()).toString().isEmpty()) {
-			if (NPCSelected.get(p.getName()).equals(UID))
+		if (selectedNPCs.get(p.getName()) != null
+				&& !selectedNPCs.get(p.getName()).toString().isEmpty()) {
+			if (selectedNPCs.get(p.getName()).equals(UID))
 				return true;
 		}
 		return false;

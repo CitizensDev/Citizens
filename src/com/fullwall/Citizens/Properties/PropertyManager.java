@@ -37,7 +37,7 @@ public class PropertyManager {
 		basicProperties = basic;
 	}
 
-	public static BasicProperties getBasicProperties() {
+	public static BasicProperties getBasic() {
 		return basicProperties;
 	}
 

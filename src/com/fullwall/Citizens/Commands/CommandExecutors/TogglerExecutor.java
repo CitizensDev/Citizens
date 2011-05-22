@@ -41,7 +41,7 @@ public class TogglerExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender))
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -169,10 +169,10 @@ public class TogglerExecutor implements CommandExecutor {
 		toggleable.toggle();
 		toggleable.saveState();
 		if (toggleable.getToggle()) {
-			player.sendMessage(StringUtils.yellowify(toggleable.getName())
+			player.sendMessage(StringUtils.wrap(toggleable.getName())
 					+ " is now a " + toggleable.getType() + "!");
 		} else {
-			player.sendMessage(StringUtils.yellowify(toggleable.getName())
+			player.sendMessage(StringUtils.wrap(toggleable.getName())
 					+ " has stopped being a " + toggleable.getType() + ".");
 		}
 	}

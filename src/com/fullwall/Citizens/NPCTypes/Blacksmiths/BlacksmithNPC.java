@@ -123,15 +123,14 @@ public class BlacksmithNPC implements Toggleable {
 					if (paid > 0) {
 						item.setDurability((short) 0);
 						player.setItemInHand(item);
-						String msg = StringUtils.yellowify(npc
-								.getStrippedName())
+						String msg = StringUtils.wrap(npc.getStrippedName())
 								+ " has repaired your item for ";
 						if (EconomyHandler.useIconomy()) {
-							msg += StringUtils.yellowify(EconomyHandler
+							msg += StringUtils.wrap(EconomyHandler
 									.getPaymentType(op, "" + paid,
 											ChatColor.YELLOW));
 						} else {
-							msg += StringUtils.yellowify(ItemInterface
+							msg += StringUtils.wrap(ItemInterface
 									.getBlacksmithPrice(player, item, op)
 									+ " "
 									+ ItemInterface.getCurrencyName(op));

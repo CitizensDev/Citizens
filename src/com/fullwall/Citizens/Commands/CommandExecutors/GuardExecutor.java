@@ -34,7 +34,7 @@ public class GuardExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
 			sender.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -103,13 +103,13 @@ public class GuardExecutor implements CommandExecutor {
 	private void toggleBodyguard(Player player, HumanNPC npc) {
 		if (!npc.getGuard().isBodyguard()) {
 			npc.getGuard().setBodyguard(true);
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now a bodyguard.");
 			if (npc.getGuard().isBouncer()) {
 				npc.getGuard().setBouncer(false);
 			}
 		} else {
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is already a bodyguard.");
 		}
 	}
@@ -123,13 +123,13 @@ public class GuardExecutor implements CommandExecutor {
 	private void toggleBouncer(Player player, HumanNPC npc) {
 		if (!npc.getGuard().isBouncer()) {
 			npc.getGuard().setBouncer(true);
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now a bouncer.");
 			if (npc.getGuard().isBodyguard()) {
 				npc.getGuard().setBodyguard(false);
 			}
 		} else {
-			player.sendMessage(StringUtils.yellowify(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is already a bouncer.");
 		}
 	}
@@ -161,8 +161,8 @@ public class GuardExecutor implements CommandExecutor {
 				|| mob.equalsIgnoreCase("giant")) {
 			npc.getGuard().addMobToBlacklist(mob);
 			player.sendMessage(ChatColor.GREEN + "You added the mob type "
-					+ StringUtils.yellowify(mob) + " to "
-					+ StringUtils.yellowify(npc.getStrippedName() + "'s")
+					+ StringUtils.wrap(mob) + " to "
+					+ StringUtils.wrap(npc.getStrippedName() + "'s")
 					+ " blacklist.");
 		} else {
 			player.sendMessage(ChatColor.RED + "Invalid mob type.");

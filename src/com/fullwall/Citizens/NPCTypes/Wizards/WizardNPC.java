@@ -156,11 +156,11 @@ public class WizardNPC implements Toggleable {
 				if (paid > 0)
 					player.sendMessage(ChatColor.GREEN
 							+ "Paid "
-							+ StringUtils.yellowify(EconomyHandler
+							+ StringUtils.wrap(EconomyHandler
 									.getPaymentType(op, "" + paid,
 											ChatColor.YELLOW))
 							+ " for a teleport to "
-							+ StringUtils.yellowify(wizard
+							+ StringUtils.wrap(wizard
 									.getCurrentLocationName()) + ".");
 				player.teleport(wizard.getCurrentLocation());
 
@@ -174,7 +174,7 @@ public class WizardNPC implements Toggleable {
 		} else {
 			player.teleport(wizard.getCurrentLocation());
 			player.sendMessage(ChatColor.GREEN + "You got teleported to "
-					+ StringUtils.yellowify(wizard.getCurrentLocationName())
+					+ StringUtils.wrap(wizard.getCurrentLocationName())
 					+ ".");
 		}
 	}

@@ -45,7 +45,7 @@ public class TraderExecutor implements CommandExecutor {
 		HumanNPC npc = null;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.NPCSelected.get(player.getName()));
+			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ MessageUtils.mustHaveNPCSelectedMessage);
@@ -117,9 +117,9 @@ public class TraderExecutor implements CommandExecutor {
 	}
 
 	private void displayMoney(Player player, HumanNPC npc) {
-		player.sendMessage(StringUtils.yellowify(npc.getName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " has "
-				+ StringUtils.yellowify(ServerEconomyInterface.format(npc
+				+ StringUtils.wrap(ServerEconomyInterface.format(npc
 						.getBalance())) + ".");
 	}
 
@@ -156,13 +156,13 @@ public class TraderExecutor implements CommandExecutor {
 		if (startPoint > stock.size() - 1) {
 			player.sendMessage(ChatColor.RED
 					+ "Invalid page number. There are "
-					+ StringUtils.yellowify(numPages, ChatColor.RED)
+					+ StringUtils.wrap(numPages, ChatColor.RED)
 					+ " pages.");
 			return;
 		}
 		player.sendMessage(ChatColor.GOLD + "Trader " + keyword + "List (Page "
-				+ StringUtils.yellowify((page == 0 ? 1 : page), ChatColor.GOLD)
-				+ " of " + StringUtils.yellowify(numPages, ChatColor.GOLD)
+				+ StringUtils.wrap((page == 0 ? 1 : page), ChatColor.GOLD)
+				+ " of " + StringUtils.wrap(numPages, ChatColor.GOLD)
 				+ ")");
 		player.sendMessage(ChatColor.AQUA + "-------------------------------");
 		for (int i = startPoint; i < startPoint + 6; ++i) {
@@ -236,7 +236,7 @@ public class TraderExecutor implements CommandExecutor {
 				npc.getTrader().removeStockable(stack.getTypeId(), selling,
 						stack.getData());
 				player.sendMessage(ChatColor.GREEN + "Removed "
-						+ StringUtils.yellowify(stack.getType().name())
+						+ StringUtils.wrap(stack.getType().name())
 						+ " from the trader's " + keyword + " list.");
 			}
 			return;
@@ -349,19 +349,19 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Gave "
-						+ StringUtils.yellowify(ServerEconomyInterface
+						+ StringUtils.wrap(ServerEconomyInterface
 								.format(amount))
 						+ " to "
-						+ StringUtils.yellowify(npc.getStrippedName())
+						+ StringUtils.wrap(npc.getStrippedName())
 						+ ". Your balance is now "
-						+ StringUtils.yellowify(ServerEconomyInterface
+						+ StringUtils.wrap(ServerEconomyInterface
 								.getFormattedBalance(player.getName()),
 								ChatColor.GREEN) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "You don't have enough money for that! Need "
 						+ " "
-						+ StringUtils.yellowify(
+						+ StringUtils.wrap(
 								ServerEconomyInterface.format(amount
 										- ServerEconomyInterface
 												.getBalance(player.getName())),
@@ -373,24 +373,24 @@ public class TraderExecutor implements CommandExecutor {
 				EconomyHandler.pay(new Payment(-amount, true), player, -1);
 				player.sendMessage(ChatColor.GREEN
 						+ "Took "
-						+ StringUtils.yellowify(ServerEconomyInterface
+						+ StringUtils.wrap(ServerEconomyInterface
 								.format(amount))
 						+ " from "
-						+ StringUtils.yellowify(npc.getStrippedName())
+						+ StringUtils.wrap(npc.getStrippedName())
 						+ ". Your balance is now "
-						+ StringUtils.yellowify(ServerEconomyInterface
+						+ StringUtils.wrap(ServerEconomyInterface
 								.getFormattedBalance(player.getName())) + ".");
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "The trader doesn't have enough money for that! It needs "
-						+ StringUtils.yellowify(
+						+ StringUtils.wrap(
 								ServerEconomyInterface.format(amount
 										- npc.getBalance()), ChatColor.RED)
 						+ " more in its balance.");
 			}
 		} else
 			player.sendMessage(ChatColor.RED + "Invalid argument type "
-					+ StringUtils.yellowify(args[1], ChatColor.RED) + ".");
+					+ StringUtils.wrap(args[1], ChatColor.RED) + ".");
 
 	}
 }

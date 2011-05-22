@@ -6,6 +6,8 @@ public class CachedAction {
 	public HashMap<String, Boolean> actions = new HashMap<String, Boolean>();
 
 	public boolean has(String string) {
+		if (actions.get(string) == null)
+			actions.put(string, false);
 		return actions.get(string);
 	}
 

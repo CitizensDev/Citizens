@@ -62,7 +62,7 @@ public class StringUtils {
 	 * @param string
 	 * @return
 	 */
-	public static String yellowify(String string) {
+	public static String wrap(String string) {
 		return ChatColor.YELLOW + string + ChatColor.GREEN;
 	}
 
@@ -72,7 +72,7 @@ public class StringUtils {
 	 * @param string
 	 * @return
 	 */
-	public static String yellowify(double string) {
+	public static String wrap(double string) {
 		return ChatColor.YELLOW + "" + (int) string + ChatColor.GREEN;
 	}
 
@@ -83,7 +83,7 @@ public class StringUtils {
 	 * @param trailing
 	 * @return
 	 */
-	public static String yellowify(String string, ChatColor trailing) {
+	public static String wrap(String string, ChatColor trailing) {
 		return ChatColor.YELLOW + string + trailing;
 	}
 
@@ -94,7 +94,31 @@ public class StringUtils {
 	 * @param trailing
 	 * @return
 	 */
-	public static String yellowify(double string, ChatColor trailing) {
+	public static String wrap(double string, ChatColor trailing) {
 		return ChatColor.YELLOW + "" + (int) string + trailing;
+	}
+
+	/**
+	 * Makes a string yellow, with a trailing green colour. Based on '{' and '}'
+	 * in the string.
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String wrapFull(String string) {
+		return string.replace("{", "" + ChatColor.YELLOW).replace("}",
+				"" + ChatColor.GREEN);
+	}
+
+	/**
+	 * Makes a string yellow, with a specified tailing colour. Based on '{' and
+	 * '}' in the string.
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String wrapFull(String string, ChatColor colour) {
+		return string.replace("{", "" + ChatColor.YELLOW).replace("}",
+				"" + colour);
 	}
 }

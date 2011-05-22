@@ -12,6 +12,7 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCs.NPCData;
+import com.fullwall.Citizens.NPCs.NPCDataManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -107,12 +108,12 @@ public class BasicProperties extends Saveable {
 		items.setString(UID, toSave);
 	}
 
-	public String getColour(int UID) {
-		return colours.getString(UID);
+	public int getColour(int UID) {
+		return colours.getInt(UID, 0xf);
 	}
 
-	public void saveColour(int UID, String colour) {
-		colours.setString(UID, "" + colour);
+	public void saveColour(int UID, int colour) {
+		colours.setInt(UID, colour);
 	}
 
 	public ArrayList<String> getText(int UID) {
@@ -256,6 +257,8 @@ public class BasicProperties extends Saveable {
 		npcdata.setLookClose(getLookWhenClose(UID));
 		npcdata.setTalkClose(getTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
+
+		NPCDataManager.addItems(npc, npcdata.getItems());
 		saveState(npc);
 	}
 
