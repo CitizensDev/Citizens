@@ -3,6 +3,8 @@ package com.fullwall.Citizens.NPCTypes.Guards;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.entity.CreatureType;
+
 import com.fullwall.Citizens.Enums.GuardType;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
@@ -104,7 +106,16 @@ public class GuardNPC implements Toggleable {
 	 * @param mob
 	 */
 	public void addMobToBlacklist(String mob) {
-		mobBlacklist.add(mob.toLowerCase());
+		if (mob.equalsIgnoreCase("all")) {
+			for (CreatureType type : CreatureType.values()) {
+				if (!mobBlacklist.contains(type.toString().toLowerCase())) {
+					mobBlacklist.add(type.toString().toLowerCase()
+							.replace("_", " "));
+				}
+			}
+		} else {
+			mobBlacklist.add(mob.toLowerCase());
+		}
 	}
 
 	/**

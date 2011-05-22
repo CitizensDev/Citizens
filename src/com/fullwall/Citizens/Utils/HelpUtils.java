@@ -15,9 +15,8 @@ public class HelpUtils {
 	 * @param sender
 	 */
 	public static void sendHelp(CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN
-				+ StringUtils.wrap("==========[ ") + "Citizens Help"
-				+ StringUtils.wrap(" ]=========="));
+		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap("==========[ ")
+				+ "Citizens Help" + StringUtils.wrap(" ]=========="));
 		sender.sendMessage(ChatColor.GREEN + "  []"
 				+ StringUtils.wrap(" - required") + "  ()"
 				+ StringUtils.wrap(" - optional"));
@@ -177,6 +176,10 @@ public class HelpUtils {
 		header(sender, "Guard", 1, 1);
 		formatCommand(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
+		formatCommand(sender, "guard", "blacklist (mob)",
+				"tell a bouncer to prevent a mob from entering");
+		formatCommand(sender, "guard", "radius [amount]",
+				"set the radius of a bouncer's zone");
 		footer(sender);
 	}
 
@@ -190,10 +193,10 @@ public class HelpUtils {
 	 */
 	private static void header(CommandSender sender, String npcType, int page,
 			int maxPages) {
-		sender.sendMessage(ChatColor.GREEN
-				+ StringUtils.wrap("==========[ ") + "Citizens " + npcType
-				+ " Help" + ChatColor.WHITE + " <" + page + "/" + maxPages
-				+ ">" + StringUtils.wrap(" ]=========="));
+		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap("==========[ ")
+				+ "Citizens " + npcType + " Help" + ChatColor.WHITE + " <"
+				+ page + "/" + maxPages + ">"
+				+ StringUtils.wrap(" ]=========="));
 	}
 
 	/**
@@ -220,11 +223,11 @@ public class HelpUtils {
 			String args, String desc) {
 		String message = "";
 		if (args.isEmpty()) {
-			message = StringUtils.wrap("/") + command
-					+ StringUtils.wrap(" - ") + desc;
+			message = StringUtils.wrap("/") + command + StringUtils.wrap(" - ")
+					+ desc;
 		} else {
-			message = StringUtils.wrap("/") + command + ChatColor.RED
-					+ " " + args + StringUtils.wrap(" - ") + desc;
+			message = StringUtils.wrap("/") + command + ChatColor.RED + " "
+					+ args + StringUtils.wrap(" - ") + desc;
 		}
 		sender.sendMessage(message);
 	}

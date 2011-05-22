@@ -52,5 +52,4 @@ public class PathUtils {
 	public static boolean pathFinished(HumanNPC npc) {
 		return npc.pathFinished();
 	}
-
 }

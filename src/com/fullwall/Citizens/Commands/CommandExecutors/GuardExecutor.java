@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -76,8 +78,17 @@ public class GuardExecutor implements CommandExecutor {
 			if (npc.getGuard().isBouncer()) {
 				if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
 					if (Permission.hasPermission(
-							"citizens.guard.bouncer.allow", sender)) {
+							"citizens.guard.bouncer.blacklist", sender)) {
 						addMobToBlacklist(player, npc, args[1]);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
+				} else if (args.length == 1
+						&& args[0].equalsIgnoreCase("blacklist")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bouncer.blacklist", sender)) {
+						displayBlacklistedMobs(player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -173,11 +184,23 @@ public class GuardExecutor implements CommandExecutor {
 					+ StringUtils.wrap(mob) + " to "
 					+ StringUtils.wrap(npc.getStrippedName() + "'s")
 					+ " blacklist.");
+		} else if (mob.equalsIgnoreCase("all")) {
+			npc.getGuard().addMobToBlacklist(mob);
+			player.sendMessage(ChatColor.GREEN + "You added all mobs to "
+					+ StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " blacklist.");
 		} else {
 			player.sendMessage(ChatColor.RED + "Invalid mob type.");
 		}
 	}
 
+	/**
+	 * Set the radius of a bouncer's protection zone
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param radius
+	 */
 	private void setProtectionRadius(Player player, HumanNPC npc, String radius) {
 		try {
 			double rad = Double.parseDouble(radius);
@@ -187,6 +210,28 @@ public class GuardExecutor implements CommandExecutor {
 					+ StringUtils.wrap(rad) + ".");
 		} catch (NumberFormatException ex) {
 			player.sendMessage(ChatColor.RED + "That is not a number.");
+		}
+	}
+
+	/**
+	 * Display the mobs blacklisted by a bouncer
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void displayBlacklistedMobs(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.GREEN
+				+ "========== "
+				+ StringUtils.wrap(npc.getStrippedName()
+						+ "'s Blacklisted Mobs") + " ==========");
+		List<String> list = npc.getGuard().getMobBlacklist();
+		if (list.isEmpty()) {
+			player.sendMessage(ChatColor.RED + "No mobs blacklisted");
+		} else {
+			for (int x = 0; x < list.size(); x++) {
+				player.sendMessage(ChatColor.RED
+						+ list.get(x).replace("_", " "));
+			}
 		}
 	}
 }
