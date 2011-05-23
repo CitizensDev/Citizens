@@ -2,7 +2,6 @@ package com.fullwall.Citizens.Commands.CommandExecutors;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -185,8 +184,7 @@ public class GuardExecutor implements CommandExecutor {
 		if (npc.getGuard().getMobBlacklist().contains(mob.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That mob is already blacklisted.");
-		} else if (CreatureType.fromName(mob) != null
-				|| Bukkit.getServer().getPlayer(mob) != null) {
+		} else if (CreatureType.fromName(mob) != null) {
 			npc.getGuard().addMobToBlacklist(mob);
 			player.sendMessage(ChatColor.GREEN + "You added the mob type "
 					+ StringUtils.wrap(mob) + " to "

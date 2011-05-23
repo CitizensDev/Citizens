@@ -33,6 +33,8 @@ public class PathNPC extends EntityPlayer {
 	private int prevY;
 	private int prevZ;
 	private float pathingRange = 16;
+	private int attackTimes = 0;
+	private int attackTimesLimit = -1;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -152,7 +154,17 @@ public class PathNPC extends EntityPlayer {
 					this.damageEntity(this.target, distanceToEntity);
 					animateArmSwing();
 					hasAttacked = true;
+					incrementAttackTimes();
 				}
+			}
+		}
+	}
+
+	private void incrementAttackTimes() {
+		if (this.attackTimesLimit != -1) {
+			++this.attackTimes;
+			if (this.attackTimes >= this.attackTimesLimit) {
+				resetTarget();
 			}
 		}
 	}
@@ -181,17 +193,19 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void reset() {
-		pathTicks = 0;
-		stationaryTicks = 0;
+		this.pathTicks = 0;
+		this.stationaryTicks = 0;
 		this.pathEntity = null;
-		npc.getNPCData().setLocation(npc.getPlayer().getLocation());
-		pathTickLimit = 0;
-		stationaryTickLimit = 0;
+		this.npc.getNPCData().setLocation(npc.getPlayer().getLocation());
+		this.pathTickLimit = 0;
+		this.stationaryTickLimit = 0;
 	}
 
 	private void resetTarget() {
 		this.target = null;
 		this.targetAggro = false;
+		this.attackTimes = 0;
+		this.attackTimesLimit = -1;
 		reset();
 	}
 
@@ -280,6 +294,10 @@ public class PathNPC extends EntityPlayer {
 		this.pathTickLimit = maxTicks;
 		this.pathingRange = pathingRange;
 		this.stationaryTickLimit = maxStationaryTicks;
+	}
+
+	public void setAttackTimes(int times) {
+		this.attackTimesLimit = times;
 	}
 
 	public boolean pathFinished() {

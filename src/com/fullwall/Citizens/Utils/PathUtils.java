@@ -28,23 +28,21 @@ public class PathUtils {
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks, int stationaryTicks, float range) {
-		npc.targetPlayer(entity, aggro, pathTicks, stationaryTicks, range);
+		npc.target(entity, aggro, pathTicks, stationaryTicks, range);
 	}
 
-	public static void target(HumanNPC npc, LivingEntity entity,
-			boolean aggro, int pathTicks, int stationaryTicks) {
+	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
+			int pathTicks, int stationaryTicks) {
 		target(npc, entity, aggro, pathTicks, stationaryTicks,
 				Constants.pathFindingRange);
 	}
 
-	public static void target(HumanNPC npc, LivingEntity entity,
-			boolean aggro, int pathTicks) {
-		target(npc, entity, aggro, pathTicks,
-				Constants.maxStationaryTicks);
+	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
+			int pathTicks) {
+		target(npc, entity, aggro, pathTicks, Constants.maxStationaryTicks);
 	}
 
-	public static void target(HumanNPC npc, LivingEntity entity,
-			boolean aggro) {
+	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro) {
 		target(npc, entity, aggro, Constants.maxPathingTicks);
 	}
 
@@ -58,5 +56,9 @@ public class PathUtils {
 
 	public static void cancelTarget(HumanNPC npc) {
 		npc.cancelTarget();
+	}
+
+	public static void setAttackTimes(HumanNPC npc, int times) {
+		npc.setAttackTimes(times);
 	}
 }

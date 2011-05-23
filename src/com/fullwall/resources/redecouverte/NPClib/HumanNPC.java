@@ -244,9 +244,13 @@ public class HumanNPC extends NPC {
 		mcEntity.cancelTarget();
 	}
 
-	public void targetPlayer(LivingEntity entity, boolean aggro, int pathTicks,
+	public void target(LivingEntity entity, boolean aggro, int pathTicks,
 			int stationaryTicks, float range) {
 		this.mcEntity.setTarget(entity, aggro, pathTicks, stationaryTicks,
 				range);
+	}
+
+	public void setAttackTimes(int times) {
+		this.mcEntity.setAttackTimes(times);
 	}
 }
