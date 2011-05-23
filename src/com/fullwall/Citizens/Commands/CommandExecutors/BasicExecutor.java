@@ -18,7 +18,6 @@ import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.PathUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -707,7 +706,6 @@ public class BasicExecutor implements CommandExecutor {
 				+ StringUtils.wrap(npc.getStrippedName()) + " is now "
 				+ StringUtils.wrap(name) + ".");
 		npc.getNPCData().setOwner(name);
-		PathUtils.targetPlayer(npc, player, true);
 	}
 
 	/**
@@ -721,7 +719,6 @@ public class BasicExecutor implements CommandExecutor {
 		plugin.basicNPCHandler.resetText(npc.getUID());
 		sender.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
 				+ " text was reset!");
-		PathUtils.targetPlayer(npc, (Player) sender, true, -1, -1, 10);
 	}
 
 	/**
@@ -733,7 +730,6 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void setItemInHand(String name, CommandSender sender, HumanNPC npc) {
 		plugin.basicNPCHandler.setItemInHand((Player) sender, npc, name);
-		PathUtils.createPath(npc, ((Player) sender).getLocation(), -1, -1, 10);
 	}
 
 	/**

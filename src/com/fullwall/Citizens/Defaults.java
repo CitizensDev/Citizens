@@ -34,7 +34,7 @@ public class Defaults {
 		nodes.put("healer-health-regen-increment", "12000");
 		nodes.put("wizard-interact-item", "288");
 		nodes.put("wizard-max-locations", "10");
-		// nodes.put("bandit-steal-radius", "5");
+		nodes.put("bandit-steal-radius", "5");
 		nodes.put("guard-protection-radius", "10");
 		nodes.put("pathfinding-range", "16");
 		nodes.put("max-stationary-ticks", "25");
@@ -560,9 +560,9 @@ public class Defaults {
 		nodes.put("blacksmith-armor-repair-item-currency-id", "266");
 		nodes.put("blacksmith-armor-repair-item", "5");
 		nodes.put("blacksmith-armor-repair-econplugin", "50");
-		// nodes.put("bandit-npc-create-item-currency-id", "37");
-		// nodes.put("bandit-npc-create-item", "20");
-		// nodes.put("bandit-npc-create-econplugin", "100");
+		nodes.put("bandit-npc-create-item-currency-id", "37");
+		nodes.put("bandit-npc-create-item", "20");
+		nodes.put("bandit-npc-create-econplugin", "100");
 		nodes.put("guard-npc-create-item-currency-id", "37");
 		nodes.put("guard-npc-create-item", "20");
 		nodes.put("guard-npc-create-econplugin", "100");

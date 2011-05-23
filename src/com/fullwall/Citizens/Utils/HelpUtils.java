@@ -177,7 +177,9 @@ public class HelpUtils {
 		formatCommand(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
 		formatCommand(sender, "guard", "blacklist (mob)",
-				"tell a bouncer to prevent a mob from entering");
+				"add mob to a bouncer's blacklist");
+		formatCommand(sender, "guard", "whitelist (player)",
+				"add player to a bouncer's whitelist");
 		formatCommand(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		footer(sender);
