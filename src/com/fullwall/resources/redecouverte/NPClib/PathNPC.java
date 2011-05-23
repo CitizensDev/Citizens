@@ -119,7 +119,14 @@ public class PathNPC extends EntityPlayer {
 			// Increment path
 			pathEntity.a();
 			// Is finished?
-			if (pathEntity.b() && target == null) {
+			if (pathEntity.b()) {
+				if (target != null) {
+					updateTarget();
+					if (!pathEntity.b()) {
+						return pathEntity.a(this);
+					}
+				}
+
 				vec3d = null;
 				reset();
 			} else {
