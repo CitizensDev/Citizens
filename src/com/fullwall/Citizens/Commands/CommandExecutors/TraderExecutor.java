@@ -137,6 +137,8 @@ public class TraderExecutor implements CommandExecutor {
 		int page = 0;
 		int startPoint = 0;
 		int numPages = stock.size() / 6;
+		if (stock.size() % 6 > 0)
+			numPages += 1;
 		if (numPages == 0)
 			numPages = 1;
 		String keyword = "";
@@ -151,7 +153,10 @@ public class TraderExecutor implements CommandExecutor {
 		}
 		if (stock.size() > 6 && args.length == 3) {
 			page = Integer.parseInt(args[2]);
-			startPoint = (6 * page) - 1;
+			if (page == 0)
+				page = 1;
+			page -= 1;
+			startPoint = (6 * page);
 		}
 		if (startPoint > stock.size() - 1) {
 			player.sendMessage(ChatColor.RED
@@ -163,7 +168,7 @@ public class TraderExecutor implements CommandExecutor {
 				+ StringUtils.wrap((page == 0 ? 1 : page), ChatColor.GOLD)
 				+ " of " + StringUtils.wrap(numPages, ChatColor.GOLD) + ")");
 		player.sendMessage(ChatColor.AQUA + "-------------------------------");
-		for (int i = startPoint; i < startPoint + 6; ++i) {
+		for (int i = startPoint; i != startPoint + 6; ++i) {
 			if ((stock.size() - 1) >= i) {
 				Stockable s = stock.get(i);
 				player.sendMessage(ChatColor.GREEN
@@ -173,9 +178,10 @@ public class TraderExecutor implements CommandExecutor {
 			} else {
 				player.sendMessage(ChatColor.AQUA
 						+ "-------------------------------");
-				break;
+				return;
 			}
 		}
+		player.sendMessage(ChatColor.AQUA + "-------------------------------");
 	}
 
 	/**

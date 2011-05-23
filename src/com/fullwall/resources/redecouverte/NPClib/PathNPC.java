@@ -2,17 +2,17 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-
+import org.bukkit.entity.LivingEntity;
 import com.fullwall.Citizens.Constants;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
+import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Packet18ArmAnimation;
-import net.minecraft.server.Packet7UseEntity;
 import net.minecraft.server.PathEntity;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
@@ -44,8 +44,6 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void updateMove() {
-		if (this.target == null)
-			targetAggro = false;
 		hasAttacked = false;
 		jumping = false;
 		updateTarget();
@@ -116,7 +114,7 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getVector() {
 		Vec3D vec3d = pathEntity.a(this);
-		for (double d = width * 1.05F; vec3d != null
+		for (double d = width * 1.03F; vec3d != null
 				&& vec3d.d(locX, vec3d.b, locZ) < d * d;) {
 			// Increment path
 			pathEntity.a();
@@ -136,7 +134,11 @@ public class PathNPC extends EntityPlayer {
 			// Target died.
 			if (!this.target.P()) {
 				this.target = null;
-			} else if (targetAggro) {
+				targetAggro = false;
+			} else
+				this.pathEntity = this.world.findPath(this, this.target,
+						pathingRange);
+			if (target != null && targetAggro) {
 				float distanceToEntity = this.target.f(this);
 				// If we're close enough to attack...
 				if (this.e(this.target)) {
@@ -146,6 +148,15 @@ public class PathNPC extends EntityPlayer {
 					hasAttacked = true;
 				}
 			}
+		}
+	}
+
+	private void damageEntity(Entity entity, float f) {
+		if (this.attackTicks <= 0 && f < 2.0F
+				&& entity.boundingBox.e > this.boundingBox.b
+				&& entity.boundingBox.b < this.boundingBox.e) {
+			this.attackTicks = 20;
+			this.attackEntity((EntityLiving) entity);
 		}
 	}
 
@@ -171,15 +182,6 @@ public class PathNPC extends EntityPlayer {
 		pathTickLimit = 0;
 		stationaryTickLimit = 0;
 
-	}
-
-	private void damageEntity(Entity entity, float f) {
-		if (this.attackTicks <= 0 && f < 2.0F
-				&& entity.boundingBox.e > this.boundingBox.b
-				&& entity.boundingBox.b < this.boundingBox.e) {
-			this.attackTicks = 20;
-			this.attackEntity(entity);
-		}
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
@@ -273,11 +275,10 @@ public class PathNPC extends EntityPlayer {
 		return pathEntity == null;
 	}
 
-	public void attackEntity(Entity entity) {
+	public void attackEntity(EntityLiving entity) {
 		this.animateArmSwing();
-		Packet7UseEntity packet = new Packet7UseEntity();
-		packet.c = 1;
-		packet.target = entity.id;
-		this.netServerHandler.sendPacket(packet);
+		int damage = this.inventory.a(entity);
+		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
+		e.damage(damage);
 	}
 }

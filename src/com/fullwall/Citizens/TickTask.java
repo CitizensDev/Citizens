@@ -43,10 +43,9 @@ public class TickTask implements Runnable {
 								NPCManager.facePlayer(npc, p);
 							}
 							cacheActions(p, npc, UID, name);
+						} else {
+							resetActions(UID, name, npc);
 						}
-					} else if (ActionManager.actions.get(UID) != null
-							&& ActionManager.actions.get(UID).get(name) != null) {
-						resetActions(UID, name, npc);
 					}
 				}
 			}

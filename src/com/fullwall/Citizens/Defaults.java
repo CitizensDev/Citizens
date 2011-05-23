@@ -36,6 +36,9 @@ public class Defaults {
 		nodes.put("wizard-max-locations", "10");
 		// nodes.put("bandit-steal-radius", "5");
 		nodes.put("guard-protection-radius", "10");
+		nodes.put("pathfinding-range", "16");
+		nodes.put("max-stationary-ticks", "25");
+		nodes.put("max-pathing-ticks", "-1");
 		nodes.put(
 				"default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");
