@@ -2,6 +2,9 @@ package com.fullwall.Citizens.NPCTypes.Guards;
 
 import java.util.Map.Entry;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.ActionManager;
@@ -14,7 +17,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardTask implements Runnable {
 	private Citizens plugin;
-	private RegionHandler region = new RegionHandler();
 
 	public GuardTask(Citizens plugin) {
 		this.plugin = plugin;
@@ -26,15 +28,32 @@ public class GuardTask implements Runnable {
 			HumanNPC npc = entry.getValue();
 			if (npc.isGuard()) {
 				if (npc.getGuard().isBouncer()) {
-					for (Player player : plugin.getServer().getOnlinePlayers()) {
-						String name = player.getName();
-						if (!NPCManager.validateOwnership(player, npc.getUID())) {
-							if (LocationUtils.checkLocation(npc.getLocation(),
-									player.getLocation(), npc.getGuard()
+					Location loc = npc.getLocation();
+					for (Entity entity : npc.getPlayer().getNearbyEntities(
+							loc.getX(), loc.getY(), loc.getZ())) {
+						if (entity instanceof Player) {
+							for (Player player : plugin.getServer()
+									.getOnlinePlayers()) {
+								String name = player.getName();
+								if (!NPCManager.validateOwnership(player,
+										npc.getUID())) {
+									if (LocationUtils.checkLocation(npc
+											.getLocation(), player
+											.getLocation(), npc.getGuard()
 											.getProtectionRadius())) {
-								cacheActions(player, npc, npc.getUID(), name);
-							} else {
-								resetActions(npc.getUID(), name, npc);
+										cacheActions(npc, player, npc.getUID(),
+												name);
+									} else {
+										resetActions(npc.getUID(), name, npc);
+									}
+								}
+							}
+						} else {
+							if (LocationUtils.checkLocation(loc, entity
+									.getLocation(), npc.getGuard()
+									.getProtectionRadius())) {
+								cacheActions(npc, entity, npc.getUID(),
+										entity.toString());
 							}
 						}
 					}
@@ -43,10 +62,13 @@ public class GuardTask implements Runnable {
 		}
 	}
 
-	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
+	private void cacheActions(HumanNPC npc, Entity entity, int entityID,
+			String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
-		if (!cached.has("attemptedEntry") && isBlacklisted(p)) {
-			attack(p, npc);
+		if (!cached.has("attemptedEntry")) {
+			if (isBlacklisted(npc, entity) || entity instanceof Player) {
+				attack(entity, npc);
+			}
 			cached.set("attemptedEntry");
 		}
 		ActionManager.putAction(entityID, name, cached);
@@ -58,12 +80,13 @@ public class GuardTask implements Runnable {
 	}
 
 	/**
-	 * Check if a player is blacklisted from entry
+	 * Check if a mob is blacklisted from entry
 	 * 
 	 * @param entity
 	 */
-	private boolean isBlacklisted(Player player) {
-		if (!region.isAllowed(player.getName())) {
+	private boolean isBlacklisted(HumanNPC npc, Entity entity) {
+		if (npc.getGuard().getMobBlacklist()
+				.contains(entity.toString().toLowerCase())) {
 			return true;
 		} else {
 			return false;
@@ -71,13 +94,17 @@ public class GuardTask implements Runnable {
 	}
 
 	/**
-	 * Attack a player if they enter a bouncer's protection zone
+	 * Attack a player/mob if they enter a bouncer's protection zone
 	 * 
 	 * @param player
 	 * @param npc
 	 */
-	private void attack(Player player, HumanNPC npc) {
-		player.sendMessage("Guardin'!");
-		PathUtils.target(npc, player, true);
+	private void attack(Entity entity, HumanNPC npc) {
+		if (entity instanceof Player) {
+			Player player = (Player) entity;
+			PathUtils.target(npc, player, true);
+		} else {
+			PathUtils.target(npc, (LivingEntity) entity, true);
+		}
 	}
 }
