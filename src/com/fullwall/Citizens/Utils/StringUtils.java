@@ -106,8 +106,9 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String wrapFull(String string) {
-		return string.replace("{", "" + ChatColor.YELLOW).replace("}",
-				"" + ChatColor.GREEN);
+		return ChatColor.GREEN
+				+ string.replace("{", "" + ChatColor.YELLOW).replace("}",
+						"" + ChatColor.GREEN);
 	}
 
 	/**
@@ -118,7 +119,8 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String wrapFull(String string, ChatColor colour) {
-		return string.replace("{", "" + ChatColor.YELLOW).replace("}",
-				"" + colour);
+		return colour
+				+ string.replace("{", "" + ChatColor.YELLOW).replace("}",
+						"" + colour);
 	}
 }

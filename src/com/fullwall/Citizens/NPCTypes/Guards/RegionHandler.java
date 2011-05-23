@@ -19,10 +19,11 @@ import org.bukkit.entity.Squid;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+
 public class RegionHandler {
 	private List<String> allowed = new ArrayList<String>();
 	private List<String> blacklisted = new ArrayList<String>();
-	private String mobType = "";
 
 	/**
 	 * Get the players allowed to enter a zone
@@ -97,44 +98,37 @@ public class RegionHandler {
 	 * @return
 	 */
 	public String getMobType(Entity entity) {
+		String mobType = "";
 		if (entity instanceof Creeper) {
 			mobType = "creeper";
-		}
-		if (entity instanceof Zombie) {
+		} else if (entity instanceof Zombie) {
 			mobType = "zombie";
-		}
-		if (entity instanceof Skeleton) {
+		} else if (entity instanceof Skeleton) {
 			mobType = "skeleton";
-		}
-		if (entity instanceof Spider) {
+		} else if (entity instanceof Spider) {
 			mobType = "spider";
-		}
-		if (entity instanceof Ghast) {
+		} else if (entity instanceof Ghast) {
 			mobType = "ghast";
-		}
-		if (entity instanceof PigZombie) {
+		} else if (entity instanceof PigZombie) {
 			mobType = "pigzombie";
-		}
-		if (entity instanceof Giant) {
+		} else if (entity instanceof Giant) {
 			mobType = "giant";
-		}
-		if (entity instanceof Cow) {
+		} else if (entity instanceof Cow) {
 			mobType = "cow";
-		}
-		if (entity instanceof Chicken) {
+		} else if (entity instanceof Chicken) {
 			mobType = "chicken";
-		}
-		if (entity instanceof Squid) {
+		} else if (entity instanceof Squid) {
 			mobType = "squid";
-		}
-		if (entity instanceof Sheep) {
+		} else if (entity instanceof Sheep) {
 			mobType = "sheep";
-		}
-		if (entity instanceof Pig) {
+		} else if (entity instanceof Pig) {
 			mobType = "pig";
-		}
-		if (entity instanceof Wolf) {
+		} else if (entity instanceof Wolf) {
 			mobType = "wolf";
+		} else if (entity instanceof HumanNPC) {
+			mobType = ((HumanNPC) entity).getStrippedName();
+		} else if (entity instanceof Player) {
+			mobType = ((Player) entity).getName();
 		}
 		return mobType;
 	}

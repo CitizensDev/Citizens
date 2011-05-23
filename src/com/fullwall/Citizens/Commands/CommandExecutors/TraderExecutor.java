@@ -96,10 +96,10 @@ public class TraderExecutor implements CommandExecutor {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
 			} else if (args.length == 3
-					&& (args[0].contains("buy") || args[0].contains("sell"))) {
+					&& (args[0].contains("bu") || args[0].contains("sel"))) {
 				if (Permission.hasPermission("citizens.trader.stock", sender)) {
 					changeTraderStock(player, npc, args[1], args[2],
-							args[0].contains("buy"));
+							args[0].contains("bu"));
 				} else
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				returnval = true;
@@ -156,14 +156,12 @@ public class TraderExecutor implements CommandExecutor {
 		if (startPoint > stock.size() - 1) {
 			player.sendMessage(ChatColor.RED
 					+ "Invalid page number. There are "
-					+ StringUtils.wrap(numPages, ChatColor.RED)
-					+ " pages.");
+					+ StringUtils.wrap(numPages, ChatColor.RED) + " pages.");
 			return;
 		}
 		player.sendMessage(ChatColor.GOLD + "Trader " + keyword + "List (Page "
 				+ StringUtils.wrap((page == 0 ? 1 : page), ChatColor.GOLD)
-				+ " of " + StringUtils.wrap(numPages, ChatColor.GOLD)
-				+ ")");
+				+ " of " + StringUtils.wrap(numPages, ChatColor.GOLD) + ")");
 		player.sendMessage(ChatColor.AQUA + "-------------------------------");
 		for (int i = startPoint; i < startPoint + 6; ++i) {
 			if ((stock.size() - 1) >= i) {
@@ -217,6 +215,7 @@ public class TraderExecutor implements CommandExecutor {
 			String price, boolean selling) {
 		selling = !selling;
 		if (item.contains("rem")) {
+			selling = !selling;
 			ItemStack stack = parseItemStack(price.split(":"));
 			if (stack == null) {
 				player.sendMessage(ChatColor.RED

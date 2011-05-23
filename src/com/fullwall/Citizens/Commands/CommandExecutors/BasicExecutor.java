@@ -672,8 +672,8 @@ public class BasicExecutor implements CommandExecutor {
 		ArrayList<String> texts = new ArrayList<String>();
 		texts.add(text);
 		NPCManager.setText(npc.getUID(), texts);
-		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap(npc.getName())
-				+ "'s text was set to " + StringUtils.wrap(text) + ".");
+		sender.sendMessage(StringUtils.wrapFull("{" + npc.getName()
+				+ "}'s text was set to {" + text + "}."));
 
 	}
 

@@ -2,10 +2,12 @@ package com.fullwall.Citizens.Commands.CommandExecutors;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
@@ -165,20 +167,8 @@ public class GuardExecutor implements CommandExecutor {
 		if (npc.getGuard().getMobBlacklist().contains(mob.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That mob is already blacklisted.");
-		} else if (mob.equalsIgnoreCase("cow")
-				|| mob.equalsIgnoreCase("chicken")
-				|| mob.equalsIgnoreCase("pig") || mob.equalsIgnoreCase("sheep")
-				|| mob.equalsIgnoreCase("squid")
-				|| mob.equalsIgnoreCase("creeper")
-				|| mob.equalsIgnoreCase("spider")
-				|| mob.equalsIgnoreCase("zombie")
-				|| mob.equalsIgnoreCase("skeleton")
-				|| mob.equalsIgnoreCase("wolf")
-				|| mob.equalsIgnoreCase("ghast")
-				|| mob.equalsIgnoreCase("pigzombie")
-				|| mob.equalsIgnoreCase("zombiepig")
-				|| mob.equalsIgnoreCase("zombiepigman")
-				|| mob.equalsIgnoreCase("giant")) {
+		} else if (CreatureType.fromName(mob) != null
+				|| Bukkit.getServer().getPlayer(mob) != null) {
 			npc.getGuard().addMobToBlacklist(mob);
 			player.sendMessage(ChatColor.GREEN + "You added the mob type "
 					+ StringUtils.wrap(mob) + " to "
@@ -203,11 +193,10 @@ public class GuardExecutor implements CommandExecutor {
 	 */
 	private void setProtectionRadius(Player player, HumanNPC npc, String radius) {
 		try {
-			double rad = Double.parseDouble(radius);
-			npc.getGuard().setProtectionRadius(rad);
+			npc.getGuard().setProtectionRadius(Double.parseDouble(radius));
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
 					+ " protection radius has been set to "
-					+ StringUtils.wrap(rad) + ".");
+					+ StringUtils.wrap(radius) + ".");
 		} catch (NumberFormatException ex) {
 			player.sendMessage(ChatColor.RED + "That is not a number.");
 		}

@@ -24,6 +24,8 @@ public class ItemInterface {
 		// Get the price/currency from the enum name.
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
+		if (price <= 0)
+			return true;
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		// The current count.
@@ -48,6 +50,8 @@ public class ItemInterface {
 	 */
 	public static boolean hasEnough(Payment payment, Player player) {
 		int current = 0;
+		if (payment.getPrice() <= 0)
+			return true;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == payment.getItem().getTypeId()) {
 				current += i.getAmount();
@@ -126,6 +130,8 @@ public class ItemInterface {
 	public static double pay(Player player, Operation op) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
+		if (price <= 0)
+			return price;
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		double current = price;
@@ -154,6 +160,8 @@ public class ItemInterface {
 	public static double pay(Player player, Operation op, int multiple) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum)) * multiple;
+		if (price <= 0)
+			return price;
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		double current = price;
@@ -181,6 +189,8 @@ public class ItemInterface {
 	public static double pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
 		double current = payment.getPrice();
+		if (current <= 0)
+			return payment.getPrice();
 		int count = 0;
 		if (slot != -1) {
 			current = decreaseItemStack(player,
