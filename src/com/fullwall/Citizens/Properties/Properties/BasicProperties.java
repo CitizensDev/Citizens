@@ -113,18 +113,20 @@ public class BasicProperties extends Saveable {
 			return colours.getInt(UID, 0xf);
 		} catch (NumberFormatException ex) {
 			int colour = 0xf;
-			try {
-				colour = Integer.parseInt(""
-						+ colours.getString(UID).charAt(
-								colours.getString(UID).length() - 1));
-			} catch (NumberFormatException e) {
+			if (colours.keyExists(UID)) {
 				try {
-					colour = Integer.parseInt(
-							""
-									+ colours.getString(UID)
-											.charAt(colours.getString(UID)
-													.length() - 1), 16);
-				} catch (NumberFormatException exa) {
+					colour = Integer.parseInt(""
+							+ colours.getString(UID).charAt(
+									colours.getString(UID).length() - 1));
+				} catch (NumberFormatException e) {
+					try {
+						colour = Integer.parseInt(
+								""
+										+ colours.getString(UID)
+												.charAt(colours.getString(UID)
+														.length() - 1), 16);
+					} catch (NumberFormatException exa) {
+					}
 				}
 			}
 			saveColour(UID, colour);
