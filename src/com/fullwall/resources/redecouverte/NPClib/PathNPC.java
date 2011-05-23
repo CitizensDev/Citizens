@@ -119,7 +119,7 @@ public class PathNPC extends EntityPlayer {
 			// Increment path
 			pathEntity.a();
 			// Is finished?
-			if (pathEntity.b()) {
+			if (pathEntity.b() && target == null) {
 				vec3d = null;
 				reset();
 			} else {
@@ -135,6 +135,7 @@ public class PathNPC extends EntityPlayer {
 			if (!this.target.P()) {
 				this.target = null;
 				targetAggro = false;
+				reset();
 			} else
 				this.pathEntity = this.world.findPath(this, this.target,
 						pathingRange);
@@ -181,7 +182,6 @@ public class PathNPC extends EntityPlayer {
 		npc.getNPCData().setLocation(npc.getPlayer().getLocation());
 		pathTickLimit = 0;
 		stationaryTickLimit = 0;
-
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
@@ -258,7 +258,7 @@ public class PathNPC extends EntityPlayer {
 		createPathEntity(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
-	public void createPathEntity(int x, int y, int z) {
+	private void createPathEntity(int x, int y, int z) {
 		this.pathEntity = this.world.a(this, x, y, z, pathingRange);
 	}
 
@@ -275,7 +275,7 @@ public class PathNPC extends EntityPlayer {
 		return pathEntity == null;
 	}
 
-	public void attackEntity(EntityLiving entity) {
+	private void attackEntity(EntityLiving entity) {
 		this.animateArmSwing();
 		int damage = this.inventory.a(entity);
 		LivingEntity e = (LivingEntity) entity.getBukkitEntity();

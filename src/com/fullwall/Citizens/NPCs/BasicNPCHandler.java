@@ -46,6 +46,7 @@ public class BasicNPCHandler extends NPCManager {
 	public void rename(int UID, String changeTo, String owner) {
 		HumanNPC n = super.get(UID);
 		PropertyManager.getBasic().changeName(UID, n.getName(), changeTo);
+		n.getNPCData().setName(changeTo);
 		super.removeForRespawn(UID);
 		super.register(changeTo, UID, owner);
 	}
