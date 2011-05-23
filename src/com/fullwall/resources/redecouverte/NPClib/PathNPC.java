@@ -133,9 +133,7 @@ public class PathNPC extends EntityPlayer {
 		if (target != null) {
 			// Target died.
 			if (!this.target.P()) {
-				this.target = null;
-				targetAggro = false;
-				reset();
+				resetTarget();
 			} else
 				this.pathEntity = this.world.findPath(this, this.target,
 						pathingRange);
@@ -182,6 +180,12 @@ public class PathNPC extends EntityPlayer {
 		npc.getNPCData().setLocation(npc.getPlayer().getLocation());
 		pathTickLimit = 0;
 		stationaryTickLimit = 0;
+	}
+
+	private void resetTarget() {
+		this.target = null;
+		this.targetAggro = false;
+		reset();
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
@@ -280,5 +284,13 @@ public class PathNPC extends EntityPlayer {
 		int damage = this.inventory.a(entity);
 		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
 		e.damage(damage);
+	}
+
+	public void cancelPath() {
+		reset();
+	}
+
+	public void cancelTarget() {
+		resetTarget();
 	}
 }

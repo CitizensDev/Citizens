@@ -52,4 +52,12 @@ public class PathUtils {
 	public static boolean pathFinished(HumanNPC npc) {
 		return npc.pathFinished();
 	}
+
+	public static void cancelPath(HumanNPC npc) {
+		npc.cancelPath();
+	}
+
+	public static void cancelTarget(HumanNPC npc) {
+		npc.cancelTarget();
+	}
 }

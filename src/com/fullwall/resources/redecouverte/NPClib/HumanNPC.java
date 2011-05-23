@@ -236,6 +236,14 @@ public class HumanNPC extends NPC {
 		return mcEntity.pathFinished();
 	}
 
+	public void cancelPath() {
+		mcEntity.cancelPath();
+	}
+
+	public void cancelTarget() {
+		mcEntity.cancelTarget();
+	}
+
 	public void targetPlayer(CraftPlayer player, boolean aggro, int pathTicks,
 			int stationaryTicks, float range) {
 		this.mcEntity.setTarget(player, aggro, pathTicks, stationaryTicks,
