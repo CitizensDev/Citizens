@@ -205,4 +205,8 @@ public class GuardNPC implements Toggleable {
 	public void register() {
 		PropertyManager.get(getType()).register(npc);
 	}
+
+	public double getHalvedRadius() {
+		return this.radius / 2;
+	}
 }

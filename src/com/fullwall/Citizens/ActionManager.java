@@ -28,8 +28,13 @@ public class ActionManager {
 
 	public static void resetAction(int entityID, String name, String string,
 			boolean bool) {
+		if (bool)
+			resetAction(entityID, name, string);
+	}
+
+	public static void resetAction(int entityID, String name, String string) {
 		CachedAction cached = getAction(entityID, name);
-		if (cached.has(string) && bool) {
+		if (cached.has(string)) {
 			cached.reset(string);
 			putAction(entityID, name, cached);
 		}
