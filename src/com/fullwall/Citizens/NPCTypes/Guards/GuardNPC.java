@@ -16,6 +16,7 @@ public class GuardNPC implements Toggleable {
 	private boolean isBouncer = false;
 	private GuardType guardType = GuardType.NULL;
 	private List<String> mobBlacklist = new ArrayList<String>();
+	private List<String> whitelist = new ArrayList<String>();
 	private double radius = 10;
 
 	/**
@@ -125,6 +126,36 @@ public class GuardNPC implements Toggleable {
 	 */
 	public void setMobBlacklist(List<String> mobBlacklist) {
 		this.mobBlacklist = mobBlacklist;
+	}
+
+	/**
+	 * Get a list of players allowed to enter a bouncer's zone
+	 * 
+	 * @return
+	 */
+	public List<String> getWhitelist() {
+		for (int x = 0; x < whitelist.size(); x++) {
+			whitelist.get(x).split(",");
+		}
+		return whitelist;
+	}
+
+	/**
+	 * Add a player to a bouncer's whitelist
+	 * 
+	 * @param player
+	 */
+	public void addPlayerToWhitelist(String player) {
+		whitelist.add(player.toLowerCase());
+	}
+
+	/**
+	 * Set the list of allowed players in a bouncer's zone
+	 * 
+	 * @param whitelist
+	 */
+	public void setWhitelist(List<String> whitelist) {
+		this.whitelist = whitelist;
 	}
 
 	/**
