@@ -17,6 +17,8 @@ public class GuardProperties extends Saveable {
 			"plugins/Citizens/Guards/guardtypes.citizens");
 	private final PropertyHandler mobBlacklist = new PropertyHandler(
 			"plugins/Citizens/Guards/Bouncers/mobblacklist.citizens");
+	private final PropertyHandler whitelist = new PropertyHandler(
+			"plugins/Citizens/Guards/Bouncers/whitelist.citizens");
 	private final PropertyHandler radius = new PropertyHandler(
 			"plugins/Citizens/Guards/Bouncers/radius.citizens");
 
@@ -53,11 +55,29 @@ public class GuardProperties extends Saveable {
 		mobBlacklist.setString(UID, save);
 	}
 
+	private List<String> getWhitelist(int UID) {
+		String save = whitelist.getString(UID);
+		List<String> players = new ArrayList<String>();
+		for (String s : save.split(",")) {
+			players.add(s);
+		}
+		return players;
+	}
+
+	private void saveWhitelist(int UID, List<String> players) {
+		String save = "";
+		for (int x = 0; x < players.size(); x++) {
+			save += players.get(x) + ",";
+		}
+		whitelist.setString(UID, save);
+	}
+
 	@Override
 	public void saveFiles() {
 		guards.save();
 		guardTypes.save();
 		mobBlacklist.save();
+		whitelist.save();
 		radius.save();
 	}
 
@@ -67,6 +87,7 @@ public class GuardProperties extends Saveable {
 			setEnabled(npc, npc.isGuard());
 			saveGuardType(npc.getUID(), npc.getGuard().getGuardType());
 			saveMobBlacklist(npc.getUID(), npc.getGuard().getMobBlacklist());
+			saveWhitelist(npc.getUID(), npc.getGuard().getWhitelist());
 			saveProtectionRadius(npc.getUID(), npc.getGuard()
 					.getProtectionRadius());
 		}
@@ -77,6 +98,7 @@ public class GuardProperties extends Saveable {
 		npc.setGuard(getEnabled(npc));
 		npc.getGuard().setGuardType(getGuardType(npc.getUID()));
 		npc.getGuard().setMobBlacklist(getMobBlacklist(npc.getUID()));
+		npc.getGuard().setWhitelist(getWhitelist(npc.getUID()));
 		npc.getGuard().setProtectionRadius(getProtectionRadius(npc.getUID()));
 		saveState(npc);
 	}
@@ -86,7 +108,8 @@ public class GuardProperties extends Saveable {
 		guards.removeKey(npc.getUID());
 		guardTypes.removeKey(npc.getUID());
 		mobBlacklist.removeKey(npc.getUID());
-		radius.save();
+		radius.removeKey(npc.getUID());
+		whitelist.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -124,6 +147,9 @@ public class GuardProperties extends Saveable {
 		}
 		if (mobBlacklist.keyExists(UID)) {
 			mobBlacklist.setString(nextUID, mobBlacklist.getString(UID));
+		}
+		if (whitelist.keyExists(UID)) {
+			whitelist.setString(nextUID, whitelist.getString(UID));
 		}
 		if (radius.keyExists(UID)) {
 			radius.setString(nextUID, radius.getString(UID));

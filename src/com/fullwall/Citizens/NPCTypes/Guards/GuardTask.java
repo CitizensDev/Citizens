@@ -9,6 +9,7 @@ import com.fullwall.Citizens.CachedAction;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
+import com.fullwall.Citizens.Utils.PathUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardTask implements Runnable {
@@ -77,6 +78,6 @@ public class GuardTask implements Runnable {
 	 */
 	private void attack(Player player, HumanNPC npc) {
 		player.sendMessage("Guardin'!");
-		// TODO actually do something here
+		PathUtils.targetPlayer(npc, player, true);
 	}
 }
