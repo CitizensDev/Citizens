@@ -113,7 +113,8 @@ public class BasicProperties extends Saveable {
 			return colours.getInt(UID, 0xf);
 		} catch (NumberFormatException ex) {
 			int colour = 0xf;
-			if (colours.keyExists(UID)) {
+			if (
+					colours.keyExists(UID)) {
 				try {
 					colour = Integer.parseInt(""
 							+ colours.getString(UID).charAt(

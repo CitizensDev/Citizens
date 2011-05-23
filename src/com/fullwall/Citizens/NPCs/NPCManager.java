@@ -301,7 +301,7 @@ public class NPCManager {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Uses craftbukkit methods to show a player an npc's inventory screen.
 	 * 

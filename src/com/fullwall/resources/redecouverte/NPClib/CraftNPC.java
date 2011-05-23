@@ -15,9 +15,11 @@ import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.Utils.PacketUtils;
 
 public class CraftNPC extends PathNPC {
 
@@ -102,19 +104,23 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void actHurt() {
-		this.netServerHandler.sendPacket(new Packet18ArmAnimation(this, 2));
+		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
+				new Packet18ArmAnimation(this, 2),
+				(Player) this.getBukkitEntity());
 	}
 
 	public void crouch() {
 		Packet19EntityAction packet = new Packet19EntityAction();
 		packet.animation = 1;
-		this.netServerHandler.sendPacket(packet);
+		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
+				packet, (Player) this.getBukkitEntity());
 	}
 
 	public void uncrouch() {
 		Packet19EntityAction packet = new Packet19EntityAction();
 		packet.animation = 2;
-		this.netServerHandler.sendPacket(packet);
+		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
+				packet, (Player) this.getBukkitEntity());
 	}
 
 	public void applyGravity() {

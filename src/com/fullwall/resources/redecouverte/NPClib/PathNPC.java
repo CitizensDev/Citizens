@@ -3,7 +3,10 @@ package com.fullwall.resources.redecouverte.NPClib;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+
 import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.Utils.PacketUtils;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
@@ -42,7 +45,9 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void animateArmSwing() {
-		this.netServerHandler.sendPacket(new Packet18ArmAnimation(this, 1));
+		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
+				new Packet18ArmAnimation(this, 1),
+				(Player) this.getBukkitEntity());
 	}
 
 	public void updateMove() {
