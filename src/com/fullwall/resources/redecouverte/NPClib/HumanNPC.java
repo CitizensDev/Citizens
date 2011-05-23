@@ -3,7 +3,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -244,9 +244,9 @@ public class HumanNPC extends NPC {
 		mcEntity.cancelTarget();
 	}
 
-	public void targetPlayer(CraftPlayer player, boolean aggro, int pathTicks,
+	public void targetPlayer(LivingEntity entity, boolean aggro, int pathTicks,
 			int stationaryTicks, float range) {
-		this.mcEntity.setTarget(player, aggro, pathTicks, stationaryTicks,
+		this.mcEntity.setTarget(entity, aggro, pathTicks, stationaryTicks,
 				range);
 	}
 }

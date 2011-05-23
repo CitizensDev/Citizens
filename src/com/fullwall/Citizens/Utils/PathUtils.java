@@ -1,8 +1,7 @@
 package com.fullwall.Citizens.Utils;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -27,26 +26,26 @@ public class PathUtils {
 		return createPath(npc, loc, Constants.maxPathingTicks);
 	}
 
-	public static void targetPlayer(HumanNPC npc, Player player, boolean aggro,
+	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks, int stationaryTicks, float range) {
-		npc.targetPlayer((CraftPlayer) player, aggro, pathTicks,
-				stationaryTicks, range);
+		npc.targetPlayer(entity, aggro, pathTicks, stationaryTicks, range);
 	}
 
-	public static void targetPlayer(HumanNPC npc, Player player, boolean aggro,
-			int pathTicks, int stationaryTicks) {
-		targetPlayer(npc, player, aggro, pathTicks, stationaryTicks,
+	public static void target(HumanNPC npc, LivingEntity entity,
+			boolean aggro, int pathTicks, int stationaryTicks) {
+		target(npc, entity, aggro, pathTicks, stationaryTicks,
 				Constants.pathFindingRange);
 	}
 
-	public static void targetPlayer(HumanNPC npc, Player player, boolean aggro,
-			int pathTicks) {
-		targetPlayer(npc, player, aggro, pathTicks,
+	public static void target(HumanNPC npc, LivingEntity entity,
+			boolean aggro, int pathTicks) {
+		target(npc, entity, aggro, pathTicks,
 				Constants.maxStationaryTicks);
 	}
 
-	public static void targetPlayer(HumanNPC npc, Player player, boolean aggro) {
-		targetPlayer(npc, player, aggro, Constants.maxPathingTicks);
+	public static void target(HumanNPC npc, LivingEntity entity,
+			boolean aggro) {
+		target(npc, entity, aggro, Constants.maxPathingTicks);
 	}
 
 	public static boolean pathFinished(HumanNPC npc) {

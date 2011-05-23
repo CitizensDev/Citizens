@@ -1,7 +1,7 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 import com.fullwall.Citizens.Constants;
 
@@ -273,9 +273,9 @@ public class PathNPC extends EntityPlayer {
 		this.pathEntity = this.world.a(this, x, y, z, pathingRange);
 	}
 
-	public void setTarget(CraftPlayer player, boolean aggro, int maxTicks,
+	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
 			int maxStationaryTicks, float pathingRange) {
-		this.target = player.getHandle();
+		this.target = ((CraftLivingEntity) entity).getHandle();
 		this.targetAggro = aggro;
 		this.pathTickLimit = maxTicks;
 		this.pathingRange = pathingRange;

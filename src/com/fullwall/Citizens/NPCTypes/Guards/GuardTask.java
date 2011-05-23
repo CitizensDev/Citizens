@@ -78,6 +78,6 @@ public class GuardTask implements Runnable {
 	 */
 	private void attack(Player player, HumanNPC npc) {
 		player.sendMessage("Guardin'!");
-		PathUtils.targetPlayer(npc, player, true);
+		PathUtils.target(npc, player, true);
 	}
 }
