@@ -184,7 +184,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void animateArmSwing() {
-		this.mcEntity.animateArmSwing();
+		this.mcEntity.swingArm();
 	}
 
 	public void actHurt() {

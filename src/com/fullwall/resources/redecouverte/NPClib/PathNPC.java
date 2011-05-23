@@ -3,11 +3,10 @@ package com.fullwall.resources.redecouverte.NPClib;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.Utils.PacketUtils;
 
+import net.minecraft.server.DataWatcher;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
@@ -15,7 +14,6 @@ import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.Packet18ArmAnimation;
 import net.minecraft.server.PathEntity;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
@@ -24,6 +22,7 @@ public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity pathEntity;
 	private Entity target;
+	protected NPCAnimator animations = new NPCAnimator(this);
 
 	private boolean targetAggro = false;
 	private boolean hasAttacked = false;
@@ -35,19 +34,13 @@ public class PathNPC extends EntityPlayer {
 	private int prevX;
 	private int prevY;
 	private int prevZ;
-	private float pathingRange = 16;
 	private int attackTimes = 0;
 	private int attackTimesLimit = -1;
+	private float pathingRange = 16;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
-	}
-
-	public void animateArmSwing() {
-		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
-				new Packet18ArmAnimation(this, 1),
-				(Player) this.getBukkitEntity());
 	}
 
 	public void updateMove() {
@@ -82,23 +75,6 @@ public class PathNPC extends EntityPlayer {
 			super.c_();
 			this.pathEntity = null;
 		}
-	}
-
-	private void updatePathingState() {
-		Location loc = this.bukkitEntity.getLocation();
-		if (prevX == loc.getBlockX() && prevY == loc.getBlockY()
-				&& prevZ == loc.getBlockZ())
-			++stationaryTicks;
-		else
-			stationaryTicks = 0;
-		++pathTicks;
-		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
-				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
-			reset();
-		}
-		prevX = loc.getBlockX();
-		prevY = loc.getBlockY();
-		prevZ = loc.getBlockZ();
 	}
 
 	private float getYawDifference(double diffZ, double diffX) {
@@ -143,6 +119,37 @@ public class PathNPC extends EntityPlayer {
 		return vec3d;
 	}
 
+	private void move() {
+		this.a(this.av / 2, this.aw / 2);
+	}
+
+	private void jump() {
+		boolean inWater = this.Z();
+		boolean inLava = this.aa();
+		if (inWater || inLava) {
+			this.motY += 0.03999999910593033D;
+		} else if (this.onGround) {
+			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
+		}
+	}
+
+	private void updatePathingState() {
+		Location loc = this.bukkitEntity.getLocation();
+		if (prevX == loc.getBlockX() && prevY == loc.getBlockY()
+				&& prevZ == loc.getBlockZ())
+			++stationaryTicks;
+		else
+			stationaryTicks = 0;
+		++pathTicks;
+		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
+				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
+			reset();
+		}
+		prevX = loc.getBlockX();
+		prevY = loc.getBlockY();
+		prevZ = loc.getBlockZ();
+	}
+
 	private void updateTarget() {
 		if (target != null) {
 			// Target died.
@@ -157,7 +164,7 @@ public class PathNPC extends EntityPlayer {
 				if (this.e(this.target)) {
 					// Attack!
 					this.damageEntity(this.target, distanceToEntity);
-					animateArmSwing();
+					swingArm();
 					hasAttacked = true;
 					incrementAttackTimes();
 				}
@@ -171,29 +178,6 @@ public class PathNPC extends EntityPlayer {
 			if (this.attackTimes >= this.attackTimesLimit) {
 				resetTarget();
 			}
-		}
-	}
-
-	private void damageEntity(Entity entity, float f) {
-		if (this.attackTicks <= 0 && f < 2.0F
-				&& entity.boundingBox.e > this.boundingBox.b
-				&& entity.boundingBox.b < this.boundingBox.e) {
-			this.attackTicks = 20;
-			this.attackEntity((EntityLiving) entity);
-		}
-	}
-
-	private void move() {
-		this.a(this.av, this.aw);
-	}
-
-	private void jump() {
-		boolean inWater = this.Z();
-		boolean inLava = this.aa();
-		if (inWater || inLava) {
-			this.motY += 0.03999999910593033D;
-		} else if (this.onGround) {
-			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
 		}
 	}
 
@@ -214,11 +198,24 @@ public class PathNPC extends EntityPlayer {
 		reset();
 	}
 
+	public void swingArm() {
+		this.animations.swingArm();
+	}
+
+	private void damageEntity(Entity entity, float f) {
+		if (this.attackTicks <= 0 && f < 2.0F
+				&& entity.boundingBox.e > this.boundingBox.b
+				&& entity.boundingBox.b < this.boundingBox.e) {
+			this.attackTicks = 20;
+			this.attackEntity((EntityLiving) entity);
+		}
+	}
+
 	private float getBlockPathWeight(int i, int j, int k) {
 		return 0.5F - this.world.l(i, j, k);
 	}
 
-	private Entity findClosestPlayer(double range) {
+	public Entity findClosestPlayer(double range) {
 		EntityHuman entityhuman = this.world.a(this, range);
 		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
 	}
@@ -310,7 +307,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void attackEntity(EntityLiving entity) {
-		this.animateArmSwing();
+		this.swingArm();
 		int damage = this.inventory.a(entity);
 		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
 		e.damage(damage);
@@ -323,4 +320,9 @@ public class PathNPC extends EntityPlayer {
 	public void cancelTarget() {
 		resetTarget();
 	}
+
+	public void setDataWatcher(DataWatcher watcher) {
+		this.datawatcher = watcher;
+	}
+
 }

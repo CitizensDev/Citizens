@@ -2,6 +2,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
+import net.minecraft.server.DataWatcher;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
@@ -9,17 +10,13 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
-import net.minecraft.server.Packet18ArmAnimation;
-import net.minecraft.server.Packet19EntityAction;
 import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.Utils.PacketUtils;
 
 public class CraftNPC extends PathNPC {
 
@@ -104,23 +101,15 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void actHurt() {
-		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
-				new Packet18ArmAnimation(this, 2),
-				(Player) this.getBukkitEntity());
+		this.animations.actHurt();
 	}
 
 	public void crouch() {
-		Packet19EntityAction packet = new Packet19EntityAction();
-		packet.animation = 1;
-		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
-				packet, (Player) this.getBukkitEntity());
+		this.animations.crouch();
 	}
 
 	public void uncrouch() {
-		Packet19EntityAction packet = new Packet19EntityAction();
-		packet.animation = 2;
-		PacketUtils.sendPacketNearby(this.bukkitEntity.getLocation(), 64,
-				packet, (Player) this.getBukkitEntity());
+		this.animations.uncrouch();
 	}
 
 	public void applyGravity() {
