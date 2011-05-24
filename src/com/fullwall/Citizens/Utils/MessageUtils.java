@@ -115,8 +115,8 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.GREEN
 				+ "Paid "
-				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, ""
-						+ paid, ChatColor.GREEN)) + " for ";
+				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, "" + paid,
+						ChatColor.GREEN)) + " for ";
 		if (useType)
 			message += StringUtils.wrap(npcName) + " to become a "
 					+ StringUtils.wrap(type) + ".";
@@ -144,9 +144,9 @@ public class MessageUtils {
 			ChatColor colour) {
 		return MessageUtils.getPriceMessage(stockable.getPrice(), colour)
 				+ " for "
-				+ StringUtils.wrap(stockable.getStocking().getAmount()
-						+ " " + stockable.getStocking().getType().name(),
-						colour) + "(s)";
+				+ StringUtils.wrap(stockable.getStocking().getAmount() + " "
+						+ stockable.getStocking().getType().name(), colour)
+				+ "(s)";
 	}
 
 	/**
@@ -171,5 +171,9 @@ public class MessageUtils {
 		return StringUtils.wrap(stack.getAmount() + " "
 				+ stack.getType().name(), colour)
 				+ "(s)";
+	}
+
+	public static String getStackString(ItemStack item) {
+		return getStackString(item, ChatColor.YELLOW);
 	}
 }

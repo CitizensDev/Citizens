@@ -15,6 +15,8 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
+import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditTask implements Runnable {
@@ -40,8 +42,7 @@ public class BanditTask implements Runnable {
 					if (LocationUtils.checkLocation(npc.getLocation(),
 							p.getLocation(), Constants.banditStealRadius)) {
 						cacheActions(p, npc, UID, name);
-					} else if (ActionManager.actions.get(UID) != null
-							&& ActionManager.actions.get(UID).get(name) != null) {
+					} else {
 						resetActions(UID, name, npc);
 					}
 				}
@@ -82,17 +83,15 @@ public class BanditTask implements Runnable {
 					item = player.getInventory().getItem(randomSlot);
 					if (item != null) {
 						if (npc.getBandit().getStealables()
-								.contains(String.valueOf(item.getTypeId()))) {
+								.contains("" + item.getTypeId())) {
 							player.getInventory().removeItem(item);
-							PlayerInventory npcInv = npc.getPlayer()
-									.getInventory();
-							if (npcInv.getContents().length <= npcInv.getSize()) {
-								player.sendMessage(ChatColor.RED
-										+ npc.getStrippedName()
-										+ " has stolen from your inventory!");
-								npcInv.addItem(item);
-								npcInv.setContents(npcInv.getContents());
-							}
+							player.sendMessage(ChatColor.RED
+									+ npc.getStrippedName() + " has stolen "
+									+ MessageUtils.getStackString(item)
+									+ " from your inventory!");
+							// may want to check if this returns a non-empty
+							// hashmap (bandit didn't have enough room).
+							npc.getInventory().addItem(item);
 							break;
 						}
 					} else {

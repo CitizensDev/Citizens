@@ -9,7 +9,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditNPC implements Toggleable {
 	private HumanNPC npc;
-	private List<String> stealables = new ArrayList<String>();
+	private List<Integer> stealables = new ArrayList<Integer>();
 
 	/**
 	 * Bandit NPC object
@@ -25,10 +25,7 @@ public class BanditNPC implements Toggleable {
 	 * 
 	 * @return
 	 */
-	public List<String> getStealables() {
-		for (int x = 0; x < stealables.size(); x++) {
-			stealables.get(x).split(",");
-		}
+	public List<Integer> getStealables() {
 		return stealables;
 	}
 
@@ -37,7 +34,7 @@ public class BanditNPC implements Toggleable {
 	 * 
 	 * @param id
 	 */
-	public void addStealable(String id) {
+	public void addStealable(Integer id) {
 		stealables.add(id);
 	}
 
@@ -46,7 +43,7 @@ public class BanditNPC implements Toggleable {
 	 * 
 	 * @param stealables
 	 */
-	public void setStealables(List<String> stealables) {
+	public void setStealables(List<Integer> stealables) {
 		this.stealables = stealables;
 	}
 

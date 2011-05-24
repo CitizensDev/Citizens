@@ -76,7 +76,7 @@ public class BanditExecutor implements CommandExecutor {
 		try {
 			if (!npc.getBandit().getStealables().contains(id)) {
 				if (validateItem(player, id)) {
-					npc.getBandit().addStealable(id);
+					npc.getBandit().addStealable(Integer.parseInt(id));
 					player.sendMessage(ChatColor.GREEN
 							+ "You added "
 							+ StringUtils.wrap(Material.getMaterial(
@@ -101,14 +101,10 @@ public class BanditExecutor implements CommandExecutor {
 	 * @return
 	 */
 	private boolean validateItem(Player player, String passed) {
-		int id = Integer.parseInt(passed);
-		if ((id >= 1 && id <= 28) || (id == 30) || (id == 35)
-				|| (id >= 37 && id <= 95) || (id >= 256 && id <= 357)
-				|| (id >= 2256 && id <= 2257)) {
-			return true;
-		} else {
+		if (Material.getMaterial(passed) == null) {
 			player.sendMessage(ChatColor.RED + "That is not a valid item ID.");
 			return false;
 		}
+		return true;
 	}
 }

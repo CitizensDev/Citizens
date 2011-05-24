@@ -20,7 +20,7 @@ public class BanditProperties extends Saveable {
 		stealables.save();
 	}
 
-	private void saveStealables(int UID, List<String> steal) {
+	private void saveStealables(int UID, List<Integer> steal) {
 		String save = "";
 		for (int x = 0; x < steal.size(); x++) {
 			save += steal.get(x) + ",";
@@ -28,11 +28,11 @@ public class BanditProperties extends Saveable {
 		stealables.setString(UID, save);
 	}
 
-	private List<String> getStealables(int UID) {
+	private List<Integer> getStealables(int UID) {
 		String save = stealables.getString(UID);
-		List<String> items = new ArrayList<String>();
+		List<Integer> items = new ArrayList<Integer>();
 		for (String s : save.split(",")) {
-			items.add(s);
+			items.add(Integer.parseInt(s));
 		}
 		return items;
 	}
