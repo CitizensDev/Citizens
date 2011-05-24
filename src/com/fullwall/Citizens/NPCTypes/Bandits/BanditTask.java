@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.ActionManager;
 import com.fullwall.Citizens.CachedAction;
@@ -55,18 +56,20 @@ public class BanditTask implements Runnable {
 	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
 		if (!cached.has("takenItem") && npc.isBandit()) {
-			removeRandomItem(p, npc);
+			stealItem(p, npc);
 			cached.set("takenItem");
 		}
 		ActionManager.putAction(entityID, name, cached);
 	}
 
 	/**
-	 * Clears a player's inventory
+	 * Steal an item from a player's inventory and put it in a bandit's
+	 * inventory
 	 * 
 	 * @param player
+	 * @param npc
 	 */
-	private void removeRandomItem(Player player, HumanNPC npc) {
+	private void stealItem(Player player, HumanNPC npc) {
 		Random random = new Random();
 		int randomSlot;
 		int count = 0;
@@ -81,13 +84,16 @@ public class BanditTask implements Runnable {
 						if (npc.getBandit().getStealables()
 								.contains(String.valueOf(item.getTypeId()))) {
 							player.getInventory().removeItem(item);
-							player.sendMessage(ChatColor.RED
-									+ npc.getStrippedName()
-									+ " has stolen from your inventory!");
+							PlayerInventory npcInv = npc.getPlayer()
+									.getInventory();
+							if (npcInv.getContents().length <= npcInv.getSize()) {
+								player.sendMessage(ChatColor.RED
+										+ npc.getStrippedName()
+										+ " has stolen from your inventory!");
+								npcInv.addItem(item);
+								npcInv.setContents(npcInv.getContents());
+							}
 							break;
-						} else {
-							System.out.println("NOT ON TEH LIST: "
-									+ item.getTypeId());
 						}
 					} else {
 						if (count >= limit) {
