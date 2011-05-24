@@ -35,7 +35,6 @@ public class EvilNPC {
 	// remarks.
 
 	private HumanNPC npc;
-	private String name;
 	private EvilData evilData = new EvilData();
 
 	/**
@@ -44,10 +43,9 @@ public class EvilNPC {
 	 * @param npc
 	 * @param name
 	 */
-	public EvilNPC(HumanNPC npc, String name) {
+	public EvilNPC(HumanNPC npc) {
 		this.npc = npc;
-		this.name = name;
-		npc.setName(name);
+		setName(npc);
 	}
 
 	/**
@@ -56,7 +54,7 @@ public class EvilNPC {
 	 * @return
 	 */
 	public String getName() {
-		return name;
+		return npc.getStrippedName();
 	}
 
 	/**
@@ -65,7 +63,6 @@ public class EvilNPC {
 	 * @param name
 	 */
 	public void setName(HumanNPC npc) {
-		this.npc = npc;
 		evilData.chooseRandomName(npc);
 	}
 }

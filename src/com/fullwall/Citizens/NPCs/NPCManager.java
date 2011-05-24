@@ -60,7 +60,7 @@ public class NPCManager {
 					npcName += " " + brokenName[i];
 			}
 		}
-		HumanNPC npc = NPCSpawner.SpawnBasicHumanNpc(UID, npcName,
+		HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(UID, npcName,
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), 0.0F);
 
@@ -178,7 +178,7 @@ public class NPCManager {
 	 */
 	public void despawn(int UID) {
 		GlobalUIDs.remove(UID);
-		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
+		NPCSpawner.removeBasicHumanNpc(list.get(UID));
 		list.remove(UID);
 	}
 
@@ -190,7 +190,7 @@ public class NPCManager {
 	public void remove(int UID) {
 		PropertyManager.remove(get(UID));
 		GlobalUIDs.remove(UID);
-		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
+		NPCSpawner.removeBasicHumanNpc(list.get(UID));
 		list.remove(UID);
 	}
 
@@ -201,7 +201,7 @@ public class NPCManager {
 	 */
 	public static void removeForRespawn(int UID) {
 		PropertyManager.save(list.get(UID));
-		NPCSpawner.RemoveBasicHumanNpc(list.get(UID));
+		NPCSpawner.removeBasicHumanNpc(list.get(UID));
 	}
 
 	/**

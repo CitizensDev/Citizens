@@ -9,6 +9,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.NPCTypes.Bandits.BanditNPC;
 import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
+import com.fullwall.Citizens.NPCTypes.Evil.EvilNPC;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerNPC;
 import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
@@ -28,6 +29,7 @@ public class HumanNPC extends NPC {
 	private boolean isQuester = false;
 	private boolean isBandit = false;
 	private boolean isGuard = false;
+	private boolean isEvil = false;
 
 	private TraderNPC traderNPC = new TraderNPC(this);
 	private HealerNPC healerNPC = new HealerNPC(this);
@@ -36,6 +38,7 @@ public class HumanNPC extends NPC {
 	private QuesterNPC questerNPC = new QuesterNPC(this);
 	private BanditNPC banditNPC = new BanditNPC(this);
 	private GuardNPC guardNPC = new GuardNPC(this);
+	private EvilNPC evilNPC = new EvilNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -81,6 +84,10 @@ public class HumanNPC extends NPC {
 
 	public GuardNPC getGuard() {
 		return this.guardNPC;
+	}
+
+	public EvilNPC getEvil() {
+		return this.evilNPC;
 	}
 
 	protected CraftNPC getMCEntity() {
@@ -141,6 +148,14 @@ public class HumanNPC extends NPC {
 
 	public boolean isGuard() {
 		return this.isGuard;
+	}
+
+	public void setEvil(boolean enable) {
+		this.isEvil = enable;
+	}
+
+	public boolean isEvil() {
+		return this.isEvil;
 	}
 
 	// For Teleportation
