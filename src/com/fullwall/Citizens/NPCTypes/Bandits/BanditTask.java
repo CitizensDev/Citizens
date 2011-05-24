@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.ActionManager;
 import com.fullwall.Citizens.CachedAction;
@@ -83,17 +82,20 @@ public class BanditTask implements Runnable {
 					item = player.getInventory().getItem(randomSlot);
 					if (item != null) {
 						if (npc.getBandit().getStealables()
-								.contains("" + item.getTypeId())) {
+								.contains(item.getTypeId())) {
 							player.getInventory().removeItem(item);
-							player.sendMessage(ChatColor.RED
-									+ npc.getStrippedName() + " has stolen "
-									+ MessageUtils.getStackString(item)
+							player.sendMessage(StringUtils.wrap(
+									npc.getStrippedName(), ChatColor.RED)
+									+ " has stolen "
+									+ StringUtils.wrap(
+											MessageUtils.getStackString(item),
+											ChatColor.RED)
 									+ " from your inventory!");
 							// may want to check if this returns a non-empty
 							// hashmap (bandit didn't have enough room).
 							npc.getInventory().addItem(item);
-							break;
 						}
+						break;
 					} else {
 						if (count >= limit) {
 							break;

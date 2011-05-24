@@ -30,7 +30,7 @@ public class BasicProperties extends Saveable {
 	public final PropertyHandler items = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.items");
 	public final PropertyHandler inventories = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Inventories.citizens");
+			"plugins/Citizens/Basic NPCs/inventories.citizens");
 	public final PropertyHandler locations = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.locations");
 	public final PropertyHandler lookat = new PropertyHandler(

@@ -57,5 +57,4 @@ public abstract class Quest implements CompletedQuest {
 		if (isCompleted())
 			player.sendMessage(getCompletedText());
 	}
-
 }

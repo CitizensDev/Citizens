@@ -16,5 +16,4 @@ public class ItemReward implements Reward {
 	public void grant(Player player) {
 		player.getWorld().dropItemNaturally(player.getLocation(), reward);
 	}
-
 }
