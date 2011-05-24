@@ -42,7 +42,6 @@ public class BasicExecutor implements CommandExecutor {
 		if (NPCManager.validateSelected(player)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		}
-
 		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
 			if (Permission.hasPermission("citizens.basic.create", sender)) {
 				if (!EconomyHandler.useEconomy()

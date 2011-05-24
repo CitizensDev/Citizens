@@ -34,35 +34,15 @@ public class EvilNPC {
 	// text for the random rude
 	// remarks.
 
+	@SuppressWarnings("unused")
 	private HumanNPC npc;
-	private EvilData evilData = new EvilData();
 
 	/**
 	 * Evil NPC object
 	 * 
 	 * @param npc
-	 * @param name
 	 */
 	public EvilNPC(HumanNPC npc) {
 		this.npc = npc;
-		setName(npc);
-	}
-
-	/**
-	 * Get the name of an Evil NPC
-	 * 
-	 * @return
-	 */
-	public String getName() {
-		return npc.getStrippedName();
-	}
-
-	/**
-	 * Set the name of an Evil NPC
-	 * 
-	 * @param name
-	 */
-	public void setName(HumanNPC npc) {
-		evilData.chooseRandomName(npc);
 	}
 }
