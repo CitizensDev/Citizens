@@ -7,7 +7,42 @@ import org.bukkit.event.Event;
 
 public class QuestManager {
 	public enum QuestType {
-		BUILD, DELIVERY, DESTROY_BLOCK, PLAYER_COMBAT, HUNT, MOVE_DISTANCE, MOVE_LOCATION, COLLECT, EARN;
+		/**
+		 * Place blocks
+		 */
+		BUILD,
+		/**
+		 * Deliver item(s) to an NPC
+		 */
+		DELIVERY,
+		/**
+		 * Break blocks
+		 */
+		DESTROY_BLOCK,
+		/**
+		 * Kill players
+		 */
+		PLAYER_COMBAT,
+		/**
+		 * Kill mobs
+		 */
+		HUNT,
+		/**
+		 * Travel a distance
+		 */
+		MOVE_DISTANCE,
+		/**
+		 * Travel to a location
+		 */
+		MOVE_LOCATION,
+		/**
+		 * Collect item(s)/blocks(s)
+		 */
+		COLLECT,
+		/**
+		 * Earn money
+		 */
+		EARN;
 	}
 
 	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();

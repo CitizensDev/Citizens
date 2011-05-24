@@ -11,9 +11,7 @@ public class Constants {
 	public static int healerTakeHealthItem = 276;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
-	public static int questerInteractItem = 339;
-	public static int questAcceptItem = 341;
-	public static int questDenyItem = 338;
+	public static int evilNPCTameItem = 354;
 	public static int healerHealthRegenIncrement = 12000;
 	public static int banditStealRadius = 5;
 	public static int maxStationaryTicks = 25;
@@ -74,6 +72,7 @@ public class Constants {
 		saveDelay = settings.getInt("save-tick-delay");
 		wizardMaxLocations = settings.getInt("wizard-max-locations");
 		wizardInteractItem = settings.getInt("wizard-interact-item");
+		evilNPCTameItem = settings.getInt("evil-npc-tame-item");
 		banditStealRadius = settings.getInt("bandit-steal-radius");
 		maxPathingTicks = settings.getInt("max-pathing-ticks");
 		maxStationaryTicks = settings.getInt("max-stationary-ticks");

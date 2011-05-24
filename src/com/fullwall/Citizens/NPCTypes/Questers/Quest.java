@@ -21,38 +21,83 @@ public abstract class Quest implements CompletedQuest {
 		this.player = player;
 	}
 
+	/**
+	 * Get the quester assigned to a quest
+	 * 
+	 * @return
+	 */
 	public HumanNPC getQuester() {
 		return quester;
 	}
 
+	/**
+	 * Get the player doing the questing
+	 * 
+	 * @return
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Get the name of a quest
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return questName;
 	}
 
+	/**
+	 * Add a reward
+	 * 
+	 * @param reward
+	 */
 	public void addReward(Reward reward) {
 		rewards.add(reward);
 	}
 
+	/**
+	 * Set the name of a quest
+	 * 
+	 * @param questName
+	 */
 	public void setName(String questName) {
 		this.questName = questName;
 	}
 
+	/**
+	 * Get the description of a quest
+	 * 
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Get the text to be outputted on completion of a quest
+	 * 
+	 * @return
+	 */
 	public String getCompletedText() {
 		return completionText;
 	}
 
+	/**
+	 * Get whether a quest is completed
+	 * 
+	 * @return
+	 */
 	public boolean isCompleted() {
 		return completed;
 	}
 
+	/**
+	 * Update the progress of a quest
+	 * 
+	 * @param event
+	 */
 	public void updateProgress(Event event) {
 		if (isCompleted())
 			player.sendMessage(getCompletedText());

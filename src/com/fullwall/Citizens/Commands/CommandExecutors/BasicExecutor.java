@@ -38,7 +38,6 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		HumanNPC npc = null;
-		// Get the selected NPC, if any (required for most commands)
 		if (NPCManager.validateSelected(player)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		}
@@ -423,62 +422,65 @@ public class BasicExecutor implements CommandExecutor {
 				return true;
 			}
 		} else {
-			if (args.length >= 2 && args[0].equalsIgnoreCase("move"))
+			if (args.length >= 2 && args[0].equalsIgnoreCase("move")) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc move");
-			else if (args.length >= 3 && args[0].equalsIgnoreCase("remove"))
+			} else if (args.length >= 3 && args[0].equalsIgnoreCase("remove")) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc remove OR /npc remove all");
-			else if (args.length >= 3 && args[0].equalsIgnoreCase("name"))
+			} else if (args.length >= 3 && args[0].equalsIgnoreCase("name")) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc name [name]");
-			else if (args.length >= 3
+			} else if (args.length >= 3
 					&& (args[0].equalsIgnoreCase("colour") || args[0]
-							.equalsIgnoreCase("color")))
+							.equalsIgnoreCase("color"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc color [color]");
-			else if (args.length >= 2 && (args[0].equalsIgnoreCase("reset")))
+			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("reset"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc reset");
-			else if (args.length >= 3 && (args[0].equalsIgnoreCase("item")))
+			} else if (args.length >= 3 && (args[0].equalsIgnoreCase("item"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc item [id|item name]");
-			else if (args.length >= 3
+			} else if (args.length >= 3
 					&& (args[0].equalsIgnoreCase("torso")
 							|| args[0].equalsIgnoreCase("legs")
 							|| args[0].equalsIgnoreCase("helmet") || args[0]
-							.equalsIgnoreCase("boots")))
+							.equalsIgnoreCase("boots"))) {
 				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc "
 						+ args[0] + " [id|item name]");
-			else if (args.length >= 2 && args[0].equalsIgnoreCase("tp"))
+			} else if (args.length >= 2 && args[0].equalsIgnoreCase("tp")) {
 				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc tp");
-			else if (args.length >= 2 && (args[0].equalsIgnoreCase("copy")))
+			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("copy"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc copy");
-			else if (args.length >= 2 && (args[0].equalsIgnoreCase("id")))
+			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("id"))) {
 				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc id");
-			else if (args.length >= 3 && (args[0].equalsIgnoreCase("select")))
+			} else if (args.length >= 3 && (args[0].equalsIgnoreCase("select"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc select [id]");
-			else if (args.length >= 2 && (args[0].equalsIgnoreCase("owner")))
+			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("owner"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc owner");
-			else if (args.length >= 3 && (args[0].equalsIgnoreCase("setowner")))
+			} else if (args.length >= 3
+					&& (args[0].equalsIgnoreCase("setowner"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc setowner [player name]");
-			else if (args.length >= 3 && (args[0].equalsIgnoreCase("addowner")))
+			} else if (args.length >= 3
+					&& (args[0].equalsIgnoreCase("addowner"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc addowner [player name]");
-			else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("talkwhenclose")))
+			} else if (args.length >= 3
+					&& (args[0].equalsIgnoreCase("talkwhenclose"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc talkwhenclose [true|false]");
-			else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("lookatplayers")))
+			} else if (args.length >= 3
+					&& (args[0].equalsIgnoreCase("lookatplayers"))) {
 				sender.sendMessage(ChatColor.RED
 						+ "Incorrect Syntax: /npc lookatplayers [true|false]");
-			else
+			} else {
 				return false;
+			}
 		}
 		PropertyManager.get("basic").saveState(npc);
 		return false;
@@ -497,10 +499,12 @@ public class BasicExecutor implements CommandExecutor {
 		if (args.length >= 3) {
 			int i = 0;
 			for (String s : args) {
-				if (i == 2 && !s.isEmpty() && !s.equals(";"))
+				if (i == 2 && !s.isEmpty() && !s.equals(";")) {
 					text += s;
-				if (i > 2 && !s.isEmpty() && !s.equals(";"))
+				}
+				if (i > 2 && !s.isEmpty() && !s.equals(";")) {
 					text += " " + s;
+				}
 				i += 1;
 			}
 			texts.add(text);
@@ -530,10 +534,11 @@ public class BasicExecutor implements CommandExecutor {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE,
 						player);
-				if (paid > 0)
+				if (paid > 0) {
 					player.sendMessage(MessageUtils.getPaidMessage(
 							Operation.BASIC_NPC_CREATE, paid, args[1], "",
 							false));
+				}
 			}
 			NPCManager.selectedNPCs.put(player.getName(), UID);
 			player.sendMessage(ChatColor.GREEN + "You selected NPC "
@@ -661,10 +666,12 @@ public class BasicExecutor implements CommandExecutor {
 		if (args.length >= 2) {
 			int i = 0;
 			for (String s : args) {
-				if (i == 1 && !s.isEmpty() && !s.equals(";"))
+				if (i == 1 && !s.isEmpty() && !s.equals(";")) {
 					text += s;
-				if (i > 1 && !s.isEmpty() && !s.equals(";"))
+				}
+				if (i > 1 && !s.isEmpty() && !s.equals(";")) {
 					text += " " + s;
+				}
 				i += 1;
 			}
 		}
@@ -751,15 +758,17 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void changeTalkWhenClose(String bool, Player p, HumanNPC npc) {
 		boolean talk = false;
-		if (bool.equals("true"))
+		if (bool.equals("true")) {
 			talk = true;
+		}
 		npc.getNPCData().setTalkClose(talk);
-		if (talk)
+		if (talk) {
 			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will now talk to nearby players.");
-		else if (!talk)
+		} else if (!talk) {
 			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will stop talking to nearby players.");
+		}
 	}
 
 	/**
@@ -771,15 +780,17 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void changeLookWhenClose(String bool, Player p, HumanNPC npc) {
 		boolean look = false;
-		if (bool.equals("true"))
+		if (bool.equals("true")) {
 			look = true;
+		}
 		npc.getNPCData().setLookClose(look);
-		if (look)
+		if (look) {
 			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will now look at players.");
-		else if (!look)
+		} else if (!look) {
 			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will stop looking at players.");
+		}
 	}
 
 	/**

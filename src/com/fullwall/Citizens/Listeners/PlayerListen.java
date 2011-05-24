@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.plugin.PluginManager;
 
@@ -22,10 +23,19 @@ public class PlayerListen extends PlayerListener implements Listener {
 		pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
 				Event.Priority.Normal, plugin);
+		pm.registerEvent(Event.Type.PLAYER_MOVE, this, Event.Priority.Normal,
+				plugin);
 	}
 
 	@Override
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		if (QuestManager.hasQuest(event.getPlayer())) {
+			QuestManager.incrementQuest(event.getPlayer(), event);
+		}
+	}
+
+	@Override
+	public void onPlayerMove(PlayerMoveEvent event) {
 		if (QuestManager.hasQuest(event.getPlayer())) {
 			QuestManager.incrementQuest(event.getPlayer(), event);
 		}

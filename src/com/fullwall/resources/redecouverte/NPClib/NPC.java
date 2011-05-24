@@ -40,5 +40,4 @@ public class NPC {
 	public int getUID() {
 		return this.UID;
 	}
-
 }

@@ -61,7 +61,7 @@ public class TraderExecutor implements CommandExecutor {
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			}
-			return true;
+			returnval = true;
 		} else if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
 			if (Permission.hasPermission("citizens.trader.stock", sender)) {
@@ -81,34 +81,39 @@ public class TraderExecutor implements CommandExecutor {
 			returnval = true;
 		}
 		if (!NPCManager.validateOwnership(player, npc.getUID())) {
-			if (!returnval)
+			if (!returnval) {
 				player.sendMessage(MessageUtils.notOwnerMessage);
+			}
 			return true;
 		} else {
 			if (args.length == 3 && args[0].equalsIgnoreCase("balance")) {
 				if (Permission.hasPermission("citizens.trader.balance", sender)) {
-					if (!EconomyHandler.useIconomy())
+					if (!EconomyHandler.useIconomy()) {
 						player.sendMessage(ChatColor.GRAY
 								+ "This server is not using iConomy.");
-					else
+					} else {
 						changeBalance(player, npc, args);
-				} else
+					}
+				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			} else if (args.length == 3
 					&& (args[0].contains("bu") || args[0].contains("sel"))) {
 				if (Permission.hasPermission("citizens.trader.stock", sender)) {
 					changeTraderStock(player, npc, args[1], args[2],
 							args[0].contains("bu"));
-				} else
+				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			} else if (args.length == 2 && (args[0].contains("unl"))) {
 				if (Permission.hasPermission("citizens.admin.unlimitedtrader",
 						sender)) {
 					changeUnlimited(npc, sender, args[1]);
-				} else
+				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 				returnval = true;
 			}
 			PropertyManager.save(npc);
@@ -142,10 +147,11 @@ public class TraderExecutor implements CommandExecutor {
 		if (numPages == 0)
 			numPages = 1;
 		String keyword = "";
-		if (selling)
+		if (selling) {
 			keyword = "Selling ";
-		else
+		} else {
 			keyword = "Buying ";
+		}
 		if (stock.size() == 0) {
 			player.sendMessage(ChatColor.GRAY + "This trader isn't "
 					+ keyword.toLowerCase() + "any items.");
@@ -203,9 +209,10 @@ public class TraderExecutor implements CommandExecutor {
 			npc.getTrader().setUnlimited(false);
 			sender.sendMessage(ChatColor.GREEN
 					+ "The trader has stopped having unlimited stock.");
-		} else
+		} else {
 			sender.sendMessage(ChatColor.GREEN
 					+ "Incorrect unlimited type entered. Valid values are true, on, false, off.");
+		}
 	}
 
 	/**
@@ -229,8 +236,9 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 			String keyword = "buying";
-			if (selling)
+			if (selling) {
 				keyword = "selling";
+			}
 			if (npc.getTrader().getStockable(stack.getTypeId(), selling,
 					stack.getData()) == null) {
 				player.sendMessage(ChatColor.RED
@@ -271,13 +279,15 @@ public class TraderExecutor implements CommandExecutor {
 			return;
 		}
 		boolean iConomy = false;
-		if (cost == null)
+		if (cost == null) {
 			iConomy = true;
+		}
 		ItemPrice itemPrice;
-		if (!iConomy)
+		if (!iConomy) {
 			itemPrice = new ItemPrice(cost);
-		else
+		} else {
 			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
+		}
 		itemPrice.setiConomy(iConomy);
 		Stockable s = new Stockable(stack, itemPrice, true);
 		String keyword = "buying";
@@ -393,9 +403,9 @@ public class TraderExecutor implements CommandExecutor {
 										- npc.getBalance()), ChatColor.RED)
 						+ " more in its balance.");
 			}
-		} else
+		} else {
 			player.sendMessage(ChatColor.RED + "Invalid argument type "
 					+ StringUtils.wrap(args[1], ChatColor.RED) + ".");
-
+		}
 	}
 }

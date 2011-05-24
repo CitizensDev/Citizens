@@ -140,5 +140,4 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 	public enum Reason {
 		RIGHT_CLICK
 	}
-
 }

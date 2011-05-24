@@ -93,6 +93,7 @@ public class Citizens extends JavaPlugin {
 			setupNPCs();
 		}
 
+		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(this, Constants.npcRange), Constants.tickDelay,
 				Constants.tickDelay);

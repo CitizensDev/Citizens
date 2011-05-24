@@ -347,7 +347,12 @@ public class TraderTask implements Runnable {
 		return clone;
 	}
 
-	// Clones the first passed PlayerInventory object to the second one.
+	/**
+	 * Clones the first passed PlayerInventory object to the second one.
+	 * 
+	 * @param source
+	 * @param target
+	 */
 	private void clonePlayerInventory(PlayerInventory source,
 			PlayerInventory target) {
 		ItemStack[] contents = new ItemStack[source.getContents().length];

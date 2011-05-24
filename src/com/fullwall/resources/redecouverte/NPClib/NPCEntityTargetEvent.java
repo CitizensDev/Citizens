@@ -21,5 +21,4 @@ public class NPCEntityTargetEvent extends EntityTargetEvent {
 	public NpcTargetReason getNpcReason() {
 		return this.reason;
 	}
-
 }

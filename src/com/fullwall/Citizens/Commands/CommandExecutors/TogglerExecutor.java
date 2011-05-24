@@ -26,10 +26,6 @@ public class TogglerExecutor implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	// perhaps can be removed. EG: buy a feature, now the
-	// chat syntax gets unlocked, and you can do things like
-	// "Hi, I want to trade" etc. without having to toggle functionality.
-	// this is good for now I guess.
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
@@ -230,6 +226,9 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isGuard()) {
 				toggleState(player, npc.getGuard());
 			}
+			if (!npc.isQuester()) {
+				toggleState(player, npc.getQuester());
+			}
 		} else {
 			if (npc.isTrader()) {
 				toggleState(player, npc.getTrader());
@@ -248,6 +247,9 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isGuard()) {
 				toggleState(player, npc.getGuard());
+			}
+			if (npc.isQuester()) {
+				toggleState(player, npc.getQuester());
 			}
 		}
 	}

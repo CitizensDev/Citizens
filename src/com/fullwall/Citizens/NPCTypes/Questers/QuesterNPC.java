@@ -19,10 +19,21 @@ public class QuesterNPC implements Toggleable {
 		this.npc = npc;
 	}
 
+	/**
+	 * Add a quest
+	 * 
+	 * @param quest
+	 */
 	public void addQuest(Quest quest) {
 		quests.put(quest.getName(), quest);
 	}
 
+	/**
+	 * Get a quest
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public Quest getQuest(String name) {
 		return quests.get(name);
 	}
