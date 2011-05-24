@@ -358,4 +358,8 @@ public final class PropertyHandler {
 	public void setBoolean(int key, boolean value) {
 		setBoolean("" + key, value);
 	}
+
+	public void clear() {
+		this.properties.clear();
+	}
 }

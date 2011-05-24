@@ -3,10 +3,15 @@ package com.fullwall.Citizens.Properties.Properties;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import net.minecraft.server.InventoryPlayer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.PropertyHandler;
@@ -15,6 +20,7 @@ import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCDataManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicProperties extends Saveable {
@@ -23,6 +29,8 @@ public class BasicProperties extends Saveable {
 			"plugins/Citizens/Basic NPCs/Citizens.colours");
 	public final PropertyHandler items = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.items");
+	public final PropertyHandler inventories = new PropertyHandler(
+			"plugins/Citizens/Basic NPCs/Inventories.citizens");
 	public final PropertyHandler locations = new PropertyHandler(
 			"plugins/Citizens/Basic NPCs/Citizens.locations");
 	public final PropertyHandler lookat = new PropertyHandler(
@@ -87,6 +95,42 @@ public class BasicProperties extends Saveable {
 					+ "_" + name + ",");
 	}
 
+	private void saveInventory(int UID, PlayerInventory inv) {
+		String save = "";
+		for (ItemStack i : inv.getContents()) {
+			if (i == null) {
+				save += 0 + "/" + 1 + "/" + 0 + ",";
+			} else {
+				save += i.getTypeId() + "/" + i.getAmount() + "/"
+						+ ((i.getData() == null) ? 0 : i.getData().getData())
+						+ ",";
+			}
+		}
+		inventories.setString(UID, save);
+	}
+
+	private PlayerInventory getInventory(int UID) {
+		String save = inventories.getString(UID);
+		if (save.isEmpty())
+			return null;
+		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
+		for (String s : save.split(",")) {
+			String[] split = s.split("/");
+			if (!split[0].equals("0")) {
+				array.add(new ItemStack(StringUtils.parse(split[0]),
+						StringUtils.parse(split[1]), (short) 0,
+						(byte) StringUtils.parse(split[2])));
+			} else {
+				array.add(null);
+			}
+		}
+		PlayerInventory inv = new CraftInventoryPlayer(
+				new InventoryPlayer(null));
+		ItemStack[] stacks = inv.getContents();
+		inv.setContents(array.toArray(stacks));
+		return inv;
+	}
+
 	public ArrayList<Integer> getItems(int UID) {
 		ArrayList<Integer> array = new ArrayList<Integer>();
 		String current = items.getString(UID);
@@ -113,8 +157,7 @@ public class BasicProperties extends Saveable {
 			return colours.getInt(UID, 0xf);
 		} catch (NumberFormatException ex) {
 			int colour = 0xf;
-			if (
-					colours.keyExists(UID)) {
+			if (colours.keyExists(UID)) {
 				try {
 					colour = Integer.parseInt(""
 							+ colours.getString(UID).charAt(
@@ -245,6 +288,7 @@ public class BasicProperties extends Saveable {
 		colours.save();
 		owners.save();
 		items.save();
+		inventories.save();
 		talkwhenclose.save();
 		lookat.save();
 		counts.save();
@@ -260,6 +304,7 @@ public class BasicProperties extends Saveable {
 		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
 		saveColour(UID, npcdata.getColour());
 		saveItems(UID, npcdata.getItems());
+		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
 		saveText(UID, npcdata.getTexts());
 		saveLookWhenClose(UID, npcdata.isLookClose());
 		saveTalkWhenClose(UID, npcdata.isTalkClose());
@@ -280,6 +325,10 @@ public class BasicProperties extends Saveable {
 		npcdata.setLookClose(getLookWhenClose(UID));
 		npcdata.setTalkClose(getTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
+		if (getInventory(npc.getUID()) != null) {
+			npc.getInventory().setContents(
+					getInventory(npc.getUID()).getContents());
+		}
 
 		NPCDataManager.addItems(npc, npcdata.getItems());
 		saveState(npc);
@@ -289,6 +338,7 @@ public class BasicProperties extends Saveable {
 	public void removeFromFiles(HumanNPC npc) {
 		colours.removeKey(npc.getUID());
 		items.removeKey(npc.getUID());
+		inventories.removeKey(npc.getUID());
 		locations.removeKey(npc.getUID());
 		locations.setString(
 				"list",
@@ -343,6 +393,8 @@ public class BasicProperties extends Saveable {
 			owners.setString(nextUID, owners.getString(UID));
 		if (items.keyExists(UID))
 			items.setString(nextUID, items.getString(UID));
+		if (inventories.keyExists(UID))
+			inventories.setString(nextUID, inventories.getString(UID));
 		if (talkwhenclose.keyExists(UID))
 			talkwhenclose.setString(nextUID, talkwhenclose.getString(UID));
 		if (lookat.keyExists(UID))

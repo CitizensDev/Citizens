@@ -1,13 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.server.InventoryPlayer;
-
-import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.PropertyHandler;
@@ -16,54 +10,15 @@ import com.fullwall.Citizens.NPCTypes.Traders.Check;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
-import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderProperties extends Saveable {
 	private final PropertyHandler traders = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.traders");
-	private final PropertyHandler inventories = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.inventories");
 	private final PropertyHandler stocking = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.stocking");
 	private final PropertyHandler unlimiteds = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.unlimited");
-
-	private void saveInventory(int UID, PlayerInventory inv) {
-		String save = "";
-		for (ItemStack i : inv.getContents()) {
-			if (i == null) {
-				save += 0 + "/" + 1 + "/" + 0 + ",";
-			} else {
-				save += i.getTypeId() + "/" + i.getAmount() + "/"
-						+ ((i.getData() == null) ? 0 : i.getData().getData())
-						+ ",";
-			}
-		}
-		inventories.setString(UID, save);
-	}
-
-	private PlayerInventory getInventory(int UID) {
-		String save = inventories.getString(UID);
-		if (save.isEmpty())
-			return null;
-		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
-		for (String s : save.split(",")) {
-			String[] split = s.split("/");
-			if (!split[0].equals("0")) {
-				array.add(new ItemStack(StringUtils.parse(split[0]),
-						StringUtils.parse(split[1]), (short) 0,
-						(byte) StringUtils.parse(split[2])));
-			} else {
-				array.add(null);
-			}
-		}
-		PlayerInventory inv = new CraftInventoryPlayer(
-				new InventoryPlayer(null));
-		ItemStack[] stacks = inv.getContents();
-		inv.setContents(array.toArray(stacks));
-		return inv;
-	}
 
 	private void saveUnlimited(int UID, boolean unlimited) {
 		unlimiteds.setBoolean(UID, unlimited);
@@ -158,7 +113,6 @@ public class TraderProperties extends Saveable {
 	@Override
 	public void saveFiles() {
 		traders.save();
-		inventories.save();
 		stocking.save();
 		unlimiteds.save();
 	}
@@ -170,17 +124,11 @@ public class TraderProperties extends Saveable {
 			saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
 			saveStockables(npc.getUID(), npc.getTrader().getStocking());
 		}
-		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
-
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setTrader(getEnabled(npc));
-		if (getInventory(npc.getUID()) != null) {
-			npc.getInventory().setContents(
-					getInventory(npc.getUID()).getContents());
-		}
 		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
 		npc.getTrader().setStocking(getStockables(npc.getUID()));
 		saveState(npc);
@@ -190,7 +138,6 @@ public class TraderProperties extends Saveable {
 	public void removeFromFiles(HumanNPC npc) {
 		traders.removeKey(npc.getUID());
 		stocking.removeKey(npc.getUID());
-		inventories.removeKey(npc.getUID());
 		unlimiteds.removeKey(npc.getUID());
 	}
 
@@ -223,8 +170,6 @@ public class TraderProperties extends Saveable {
 	public void copy(int UID, int nextUID) {
 		if (traders.keyExists(UID))
 			traders.setString(nextUID, traders.getString(UID));
-		if (inventories.keyExists(UID))
-			inventories.setString(nextUID, inventories.getString(UID));
 		if (stocking.keyExists(UID))
 			stocking.setString(nextUID, stocking.getString(UID));
 		if (unlimiteds.keyExists(UID))

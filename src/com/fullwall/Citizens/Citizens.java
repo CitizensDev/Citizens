@@ -1,5 +1,6 @@
 package com.fullwall.Citizens;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,9 +55,11 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
-
 		// Register files.
 		PropertyManager.registerProperties();
+
+		// TODO - remove on update.
+		transferInventories();
 
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
@@ -111,6 +114,24 @@ public class Citizens extends JavaPlugin {
 
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") loaded");
+	}
+
+	private void transferInventories() {
+		File file = new File("plugins/Citizens/Traders/Citizens.inventories");
+		if (file.exists()) {
+			try {
+				PropertyHandler temp = PropertyManager.getBasic().inventories;
+				PropertyHandler handler = new PropertyHandler(
+						"plugins/Citizens/Traders/Citizens.inventories");
+				for (Entry<String, String> entry : handler.returnMap()
+						.entrySet()) {
+					temp.setString(entry.getKey(), entry.getValue());
+				}
+				handler.clear();
+			} catch (Exception e) {
+			}
+			file.delete();
+		}
 	}
 
 	@Override
