@@ -123,4 +123,14 @@ public class StringUtils {
 				+ string.replace("{", "" + ChatColor.YELLOW).replace("}",
 						"" + colour);
 	}
+
+	/**
+	 * Parse an int from a string value
+	 * 
+	 * @param passed
+	 * @return
+	 */
+	public static int parse(String passed) {
+		return Integer.parseInt(passed);
+	}
 }

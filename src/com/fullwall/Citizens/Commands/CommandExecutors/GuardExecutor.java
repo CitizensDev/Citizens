@@ -97,7 +97,7 @@ public class GuardExecutor implements CommandExecutor {
 				} else if (args.length == 2
 						&& args[0].equalsIgnoreCase("whitelist")) {
 					if (Permission.hasPermission(
-							"citizens.guard.bouncer.allow", sender)) {
+							"citizens.guard.bouncer.whitelist", sender)) {
 						addPlayerToWhitelist(player, npc, args[1]);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -106,7 +106,7 @@ public class GuardExecutor implements CommandExecutor {
 				} else if (args.length == 1
 						&& args[0].equalsIgnoreCase("whitelist")) {
 					if (Permission.hasPermission(
-							"citizens.guard.bouncer.allow", sender)) {
+							"citizens.guard.bouncer.whitelist", sender)) {
 						displayWhitelist(player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);

@@ -50,8 +50,9 @@ public class GuardTask implements Runnable {
 							guard.getHalvedRadius(),
 							guard.getProtectionRadius(),
 							guard.getHalvedRadius())) {
-						if (!(temp instanceof LivingEntity))
+						if (!(temp instanceof LivingEntity)) {
 							continue;
+						}
 						entity = (LivingEntity) temp;
 						String name = "";
 						if (entity instanceof Player) {
@@ -149,6 +150,5 @@ public class GuardTask implements Runnable {
 	 */
 	private void attack(LivingEntity entity, HumanNPC npc) {
 		PathUtils.target(npc, entity, true);
-
 	}
 }

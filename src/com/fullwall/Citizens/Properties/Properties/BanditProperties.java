@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.server.InventoryPlayer;
 
@@ -11,6 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditProperties extends Saveable {
@@ -18,11 +20,31 @@ public class BanditProperties extends Saveable {
 			"plugins/Citizens/Bandits/bandits.citizens");
 	private final PropertyHandler inventories = new PropertyHandler(
 			"plugins/Citizens/Bandits/inventories.citizens");
+	private final PropertyHandler stealables = new PropertyHandler(
+			"plugins/Citizens/Bandits/stealables.citizens");
 
 	@Override
 	public void saveFiles() {
 		bandits.save();
 		inventories.save();
+		stealables.save();
+	}
+
+	private void saveStealables(int UID, List<String> steal) {
+		String save = "";
+		for (int x = 0; x < steal.size(); x++) {
+			save += steal.get(x) + ",";
+		}
+		stealables.setString(UID, save);
+	}
+
+	private List<String> getStealables(int UID) {
+		String save = stealables.getString(UID);
+		List<String> items = new ArrayList<String>();
+		for (String s : save.split(",")) {
+			items.add(s);
+		}
+		return items;
 	}
 
 	private void saveInventory(int UID, PlayerInventory inv) {
@@ -47,8 +69,9 @@ public class BanditProperties extends Saveable {
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
 			if (!split[0].equals("0")) {
-				array.add(new ItemStack(parse(split[0]), parse(split[1]),
-						(short) 0, (byte) parse(split[2])));
+				array.add(new ItemStack(StringUtils.parse(split[0]),
+						StringUtils.parse(split[1]), (short) 0,
+						(byte) StringUtils.parse(split[2])));
 			} else {
 				array.add(null);
 			}
@@ -60,14 +83,11 @@ public class BanditProperties extends Saveable {
 		return inv;
 	}
 
-	private int parse(String passed) {
-		return Integer.parseInt(passed);
-	}
-
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isBandit());
+			saveStealables(npc.getUID(), npc.getBandit().getStealables());
 		}
 		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
 	}
@@ -79,6 +99,7 @@ public class BanditProperties extends Saveable {
 			npc.getInventory().setContents(
 					getInventory(npc.getUID()).getContents());
 		}
+		npc.getBandit().setStealables(getStealables(npc.getUID()));
 		saveState(npc);
 	}
 
@@ -86,6 +107,7 @@ public class BanditProperties extends Saveable {
 	public void removeFromFiles(HumanNPC npc) {
 		bandits.removeKey(npc.getUID());
 		inventories.removeKey(npc.getUID());
+		stealables.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -120,6 +142,9 @@ public class BanditProperties extends Saveable {
 		}
 		if (inventories.keyExists(UID)) {
 			inventories.setString(nextUID, inventories.getString(UID));
+		}
+		if (stealables.keyExists(UID)) {
+			stealables.setString(nextUID, stealables.getString(UID));
 		}
 	}
 }

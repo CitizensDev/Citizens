@@ -324,5 +324,4 @@ public class PathNPC extends EntityPlayer {
 	public void setDataWatcher(DataWatcher watcher) {
 		this.datawatcher = watcher;
 	}
-
 }

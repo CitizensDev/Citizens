@@ -16,6 +16,7 @@ import com.fullwall.Citizens.NPCTypes.Traders.Check;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderProperties extends Saveable {
@@ -50,8 +51,9 @@ public class TraderProperties extends Saveable {
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
 			if (!split[0].equals("0")) {
-				array.add(new ItemStack(parse(split[0]), parse(split[1]),
-						(short) 0, (byte) parse(split[2])));
+				array.add(new ItemStack(StringUtils.parse(split[0]),
+						StringUtils.parse(split[1]), (short) 0,
+						(byte) StringUtils.parse(split[2])));
 			} else {
 				array.add(null);
 			}
@@ -61,10 +63,6 @@ public class TraderProperties extends Saveable {
 		ItemStack[] stacks = inv.getContents();
 		inv.setContents(array.toArray(stacks));
 		return inv;
-	}
-
-	private int parse(String passed) {
-		return Integer.parseInt(passed);
 	}
 
 	private void saveUnlimited(int UID, boolean unlimited) {

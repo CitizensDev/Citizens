@@ -36,12 +36,9 @@ public class BanditTask implements Runnable {
 				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();
-					if (npc.getNPCData().isLookClose()
-							|| npc.getNPCData().isTalkClose()) {
-						if (LocationUtils.checkLocation(npc.getLocation(),
-								p.getLocation(), Constants.banditStealRadius)) {
-							cacheActions(p, npc, UID, name);
-						}
+					if (LocationUtils.checkLocation(npc.getLocation(),
+							p.getLocation(), Constants.banditStealRadius)) {
+						cacheActions(p, npc, UID, name);
 					} else if (ActionManager.actions.get(UID) != null
 							&& ActionManager.actions.get(UID).get(name) != null) {
 						resetActions(UID, name, npc);
@@ -81,11 +78,17 @@ public class BanditTask implements Runnable {
 					randomSlot = random.nextInt(limit);
 					item = player.getInventory().getItem(randomSlot);
 					if (item != null) {
-						player.getInventory().removeItem(item);
-						player.sendMessage(ChatColor.RED
-								+ npc.getStrippedName()
-								+ " has stolen from your inventory!");
-						break;
+						if (npc.getBandit().getStealables()
+								.contains(String.valueOf(item.getTypeId()))) {
+							player.getInventory().removeItem(item);
+							player.sendMessage(ChatColor.RED
+									+ npc.getStrippedName()
+									+ " has stolen from your inventory!");
+							break;
+						} else {
+							System.out.println("NOT ON TEH LIST: "
+									+ item.getTypeId());
+						}
 					} else {
 						if (count >= limit) {
 							break;

@@ -164,6 +164,8 @@ public class HelpUtils {
 	 */
 	public static void sendBanditHelp(CommandSender sender) {
 		header(sender, "Bandit", 1, 1);
+		formatCommand(sender, "bandit", "steal [id]",
+				"specify which items a bandit can steal");
 		footer(sender);
 	}
 

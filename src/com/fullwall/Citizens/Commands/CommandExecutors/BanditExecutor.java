@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditExecutor implements CommandExecutor {
@@ -53,8 +55,60 @@ public class BanditExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("steal")) {
+				if (Permission.hasPermission("citizens.bandit.steal", sender)) {
+					addStealableItem(player, npc, args[1]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
 			}
 		}
 		return returnval;
+	}
+
+	/**
+	 * Set an item as stealable by a bandit NPC
+	 * 
+	 * @param id
+	 */
+	private void addStealableItem(Player player, HumanNPC npc, String id) {
+		try {
+			if (!npc.getBandit().getStealables().contains(id)) {
+				if (validateItem(player, id)) {
+					npc.getBandit().addStealable(id);
+					player.sendMessage(ChatColor.GREEN
+							+ "You added "
+							+ StringUtils.wrap(Material.getMaterial(
+									Integer.parseInt(id)).name()) + " to "
+							+ StringUtils.wrap(npc.getStrippedName() + "'s")
+							+ " list of stealable items.");
+				}
+			} else {
+				player.sendMessage(ChatColor.RED
+						+ "That item is already on the list.");
+			}
+		} catch (NumberFormatException ex) {
+			player.sendMessage(ChatColor.RED + "That's not a valid item ID.");
+		}
+	}
+
+	/**
+	 * Verify that the passed string id is a valid item ID
+	 * 
+	 * @param player
+	 * @param id
+	 * @return
+	 */
+	private boolean validateItem(Player player, String passed) {
+		int id = Integer.parseInt(passed);
+		if ((id >= 1 && id <= 28) || (id == 30) || (id == 35)
+				|| (id >= 37 && id <= 95) || (id >= 256 && id <= 357)
+				|| (id >= 2256 && id <= 2257)) {
+			return true;
+		} else {
+			player.sendMessage(ChatColor.RED + "That is not a valid item ID.");
+			return false;
+		}
 	}
 }

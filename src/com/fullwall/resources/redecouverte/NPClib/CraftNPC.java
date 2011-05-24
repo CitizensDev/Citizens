@@ -2,7 +2,6 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
-import net.minecraft.server.DataWatcher;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
