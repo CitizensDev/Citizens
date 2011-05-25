@@ -29,13 +29,13 @@ public class PathNPC extends EntityPlayer {
 	private boolean jumping = false;
 	private int pathTicks = 0;
 	private int stationaryTicks = 0;
-	private int pathTickLimit;
-	private int stationaryTickLimit;
+	private int pathTickLimit = -1;
+	private int stationaryTickLimit = -1;
+	private int attackTimes = 0;
+	private int attackTimesLimit = -1;
 	private int prevX;
 	private int prevY;
 	private int prevZ;
-	private int attackTimes = 0;
-	private int attackTimesLimit = -1;
 	private float pathingRange = 16;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
@@ -186,8 +186,9 @@ public class PathNPC extends EntityPlayer {
 		this.stationaryTicks = 0;
 		this.pathEntity = null;
 		this.npc.getNPCData().setLocation(npc.getPlayer().getLocation());
-		this.pathTickLimit = 0;
-		this.stationaryTickLimit = 0;
+		this.pathTickLimit = -1;
+		this.stationaryTickLimit = -1;
+		this.pathingRange = 16;
 	}
 
 	private void resetTarget() {
