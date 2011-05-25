@@ -24,8 +24,8 @@ public class UtilityProperties {
 	}
 
 	public static String getDefaultText() {
-		String[] split = settings
-				.getString("GeneralSettings.Chat.default-text").split(";");
+		String[] split = settings.getString("general.limits.npcs-per-player")
+				.split(";");
 		String text;
 		if (split != null) {
 			text = split[new Random(System.currentTimeMillis())

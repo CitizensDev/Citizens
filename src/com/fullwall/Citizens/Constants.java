@@ -57,7 +57,7 @@ public class Constants {
 		useSaveTask = settings.getBoolean("ticks.saving.use-task");
 
 		// String defaults
-		chatFormat = settings.getString("general.chat.format");
+		chatFormat = settings.getString("general.chat.siformat");
 		npcColour = UtilityProperties.settings
 				.getString("general.colors.npc-colour");
 
@@ -70,7 +70,7 @@ public class Constants {
 
 		// int defaults
 		banditStealRadius = settings.getInt("range.bandits.steal-radius");
-		maxNPCsPerPlayer = settings.getInt("general.npcs-per-player");
+		maxNPCsPerPlayer = settings.getInt("general.limits.npcs-per-player");
 		evilNPCTameItem = settings.getInt("items.evil.tame-item");
 		healerGiveHealthItem = settings
 				.getInt("items.healers.give-health-item");

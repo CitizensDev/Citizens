@@ -27,7 +27,10 @@ public class DistanceQuest extends Quest {
 	public void updateProgress(Event event) {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
-			// TODO complicated distance-finding equation here!
+			// Note: most likely not correct
+			double x = ev.getTo().getX() - ev.getFrom().getX();
+			double z = ev.getTo().getZ() - ev.getFrom().getZ();
+			traveled = Math.round(Math.sqrt(x * x + z * z) * 100);
 			if (traveled >= distance) {
 				completed = true;
 				super.updateProgress(event);
