@@ -34,8 +34,9 @@ public class Constants {
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean defaultTalkWhenClose = false;
 	public static boolean saveOften = true;
-	public static boolean useSaveTask = true;
+	public static boolean useItemList = true;
 	public static boolean useNPCColours = true;
+	public static boolean useSaveTask = true;
 
 	/**
 	 * Sets up miscellaneous variables, mostly reading from property files.
@@ -45,51 +46,44 @@ public class Constants {
 		Storage settings = UtilityProperties.settings;
 
 		// Boolean defaults
-		convertSlashes = settings
-				.getBoolean("GeneralSettings.Chat.slashes-to-spaces");
+		convertSlashes = settings.getBoolean("general.chat.slashes-to-spaces");
 		defaultFollowingEnabled = settings
-				.getBoolean("GeneralSettings.default-enable-following");
+				.getBoolean("general.defaults.enable-following");
 		defaultTalkWhenClose = settings
-				.getBoolean("GeneralSettings.default-talk-when-close");
-		useSaveTask = settings.getBoolean("TickSettings.Saving.use-save-task");
-		saveOften = settings.getBoolean("TickSettings.Saving.save-often");
-		useNPCColours = settings
-				.getBoolean("GeneralSettings.Colors.use-npc-colours");
+				.getBoolean("general.defaults.talk-when-close");
+		useNPCColours = settings.getBoolean("general.colors.use-npc-colours");
+		useItemList = settings.getBoolean("items.item-list-on");
+		saveOften = settings.getBoolean("ticks.saving.save-often");
+		useSaveTask = settings.getBoolean("ticks.saving.use-task");
 
 		// String defaults
-		chatFormat = settings.getString("GeneralSettings.Chat.chat-format");
+		chatFormat = settings.getString("general.chat.format");
 		npcColour = UtilityProperties.settings
-				.getString("GeneralSettings.Colors.npc-colour");
+				.getString("general.colors.npc-colour");
 
 		// Double defaults
-		npcRange = settings.getDouble("RangeSettings.Basic.look-range");
-		pathFindingRange = (float) settings
-				.getDouble("RangeSettings.Guards.pathfinding-range");
 		defaultBouncerProtectionRadius = settings
-				.getDouble("RangeSettings.Guards.default-bouncer-protection-radius");
+				.getDouble("range.guards.default-bouncer-protection-radius");
+		npcRange = settings.getDouble("range.basic.look");
+		pathFindingRange = (float) settings
+				.getDouble("range.guards.pathfinding");
 
 		// int defaults
-		maxNPCsPerPlayer = settings
-				.getInt("GeneralSettings.max-NPCs-per-player");
+		banditStealRadius = settings.getInt("range.bandits.steal-radius");
+		maxNPCsPerPlayer = settings.getInt("general.npcs-per-player");
+		evilNPCTameItem = settings.getInt("items.evil.tame-item");
 		healerGiveHealthItem = settings
-				.getInt("ItemSettings.Healers.healer-give-health-item");
+				.getInt("items.healers.give-health-item");
 		healerTakeHealthItem = settings
-				.getInt("ItemSettings.Healers.healer-take-health-item");
-		healerHealthRegenIncrement = settings
-				.getInt("TickSettings.Healers.health-regen-increment");
-		tickDelay = settings.getInt("TickSettings.General.tick-delay");
-		saveDelay = settings.getInt("TickSettings.Saving.save-tick-delay");
+				.getInt("items.healers.take-health-item");
 		wizardMaxLocations = settings
-				.getInt("GeneralSettings.Wizards.wizard-max-locations");
-		wizardInteractItem = settings
-				.getInt("ItemSettings.Wizards.wizard-interact-item");
-		evilNPCTameItem = settings
-				.getInt("ItemSettings.EvilNPCs.evil-npc-tame-item");
-		banditStealRadius = settings
-				.getInt("RangeSettings.Bandits.bandit-steal-radius");
-		maxPathingTicks = settings
-				.getInt("TickSettings.Pathing.max-pathing-ticks");
-		maxStationaryTicks = settings
-				.getInt("TickSettings.Pathing.max-stationary-ticks");
+				.getInt("general.wizards.wizard-max-locations");
+		wizardInteractItem = settings.getInt("items.wizards.interact-item");
+		healerHealthRegenIncrement = settings
+				.getInt("ticks.healers.health-regen-increment");
+		maxPathingTicks = settings.getInt("ticks.pathing.max-pathing");
+		maxStationaryTicks = settings.getInt("ticks.pathing.max-stationary");
+		saveDelay = settings.getInt("ticks.saving.delay");
+		tickDelay = settings.getInt("ticks.general.delay");
 	}
 }

@@ -167,8 +167,8 @@ public class EntityListen extends EntityListener implements Listener {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
-				if (plugin.validateTool("select-item", p.getItemInHand()
-						.getTypeId(), p.isSneaking()) == true) {
+				if (plugin.validateTool("items.basic.select-item", p
+						.getItemInHand().getTypeId(), p.isSneaking()) == true) {
 					if (!NPCManager.validateSelected(p, npc.getUID())) {
 						NPCManager.selectedNPCs.put(p.getName(), npc.getUID());
 						p.sendMessage(ChatColor.GREEN + "You selected NPC "
@@ -179,8 +179,8 @@ public class EntityListen extends EntityListener implements Listener {
 					}
 				}
 				// Dispatch text event / select NPC.
-				if (plugin.validateTool("items", p.getItemInHand().getTypeId(),
-						p.isSneaking()) == true) {
+				if (plugin.validateTool("items.basic.talk-items", p
+						.getItemInHand().getTypeId(), p.isSneaking()) == true) {
 					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
 							npc.getName(), MessageUtils.getText(npc,
 									(Player) e.getTarget(), plugin), npc,

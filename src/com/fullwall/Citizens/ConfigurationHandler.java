@@ -17,40 +17,21 @@ public class ConfigurationHandler implements Storage {
 
 	public ConfigurationHandler(String fileName) {
 		this.fileName = fileName;
-
 		File file = getFile();
-
-		if (file.exists()) {
-			load();
-		} else {
+		if (!file.exists()) {
 			create();
-			save();
 		}
-		if (fileName.contains("Citizens.settings")) {
+		load();
+		if (fileName.contains("config.yml")) {
 			loadRenames(Defaults.settingsRenames);
 			loadDefaults(Defaults.settingsDefaults);
 			loadDeletes(Defaults.settingsDeletes);
-		} else if (fileName.contains("Citizens.economy")) {
+		} else if (fileName.contains("economy.yml")) {
 			loadRenames(Defaults.economyRenames);
 			loadDefaults(Defaults.economyDefaults);
 			loadDeletes(Defaults.economyDeletes);
-		} else if (fileName.contains("Citizens.itemlookups")) {
-			loadLookups(Defaults.lookupsDefaults);
 		}
-	}
-
-	private void loadLookups(HashMap<String, String> nodes) {
-		boolean told = false;
-		for (Entry<String, String> entry : nodes.entrySet()) {
-			if (!pathExists(entry.getKey())) {
-				if (!told) {
-					Citizens.log
-							.info("[Citizens]: Missing entry in Citizens.itemlookups - validating file.");
-					told = true;
-				}
-				setString(entry.getKey(), entry.getValue());
-			}
-		}
+		save();
 	}
 
 	private void loadDeletes(ArrayList<String> nodes) {
@@ -64,7 +45,7 @@ public class ConfigurationHandler implements Storage {
 	private void loadDefaults(HashMap<String, String> nodes) {
 		for (Entry<String, String> entry : nodes.entrySet()) {
 			if (!pathExists(entry.getKey())) {
-				Citizens.log.info("[Citizens]: Writing missing setting "
+				Citizens.log.info("[Citizens]: Writing setting "
 						+ entry.getKey() + " as " + entry.getValue() + ".");
 				setString(entry.getKey(), entry.getValue());
 			}

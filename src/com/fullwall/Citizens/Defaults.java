@@ -15,38 +15,38 @@ public class Defaults {
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		// GeneralSettings
-		nodes.put("GeneralSettings.max-NPCs-per-player", "10");
-		nodes.put("GeneralSettings.default-enable-following", "true");
-		nodes.put("GeneralSettings.default-talk-when-close", "false");
-		nodes.put("GeneralSettings.Colors.use-npc-colours", "true");
-		nodes.put("GeneralSettings.Colors.npc-colour", "§f");
-		nodes.put("GeneralSettings.Chat.chat-format", "[%name%]: ");
-		nodes.put("GeneralSettings.Chat.slashes-to-spaces", "true");
+		nodes.put("general.limits.npcs-per-player", "10");
+		nodes.put("general.defaults.enable-following", "true");
+		nodes.put("general.defaults.talk-when-close", "false");
+		nodes.put("general.colors.use-npc-colours", "true");
+		nodes.put("general.colors.npc-colour", "§f");
+		nodes.put("general.chat.format", "[%name%]: ");
+		nodes.put("general.chat.slashes-to-spaces", "true");
 		nodes.put(
-				"GeneralSettings.Chat.default-text",
+				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");
-		nodes.put("GeneralSettings.Wizards.wizard-max-locations", "10");
+		nodes.put("general.wizards.wizard-max-locations", "10");
 		// ItemSettings
-		nodes.put("ItemSettings.Basic.item-list-on", "true");
-		nodes.put("ItemSettings.Basic.talk-items", "340,");
-		nodes.put("ItemSettings.Basic.select-item", "*");
-		nodes.put("ItemSettings.EvilNPCs.evil-npc-tame-item", "354");
-		nodes.put("ItemSettings.Healers.healer-take-health-item", "276");
-		nodes.put("ItemSettings.Healers.healer-give-health-item", "35");
-		nodes.put("ItemSettings.Wizards.wizard-interact-item", "288");
+		nodes.put("items.item-list-on", "true");
+		nodes.put("items.basic.talk-items", "340,");
+		nodes.put("items.basic.select-items", "*");
+		nodes.put("items.evil.tame-item", "354");
+		nodes.put("items.healers.take-health-item", "276");
+		nodes.put("items.healers.give-health-item", "35");
+		nodes.put("items.wizards.interact-item", "288");
 		// TickSettings
-		nodes.put("TickSettings.General.tick-delay", "1");
-		nodes.put("TickSettings.Saving.use-save-task", "true");
-		nodes.put("TickSettings.Saving.save-often", "true");
-		nodes.put("TickSettings.Saving.save-tick-delay", "72000");
-		nodes.put("TickSettings.Pathing.max-stationary-ticks", "25");
-		nodes.put("TickSettings.Pathing.max-pathing-ticks", "-1");
-		nodes.put("TickSettings.Healers.health-regen-increment", "12000");
+		nodes.put("ticks.general.delay", "1");
+		nodes.put("ticks.saving.use-task", "true");
+		nodes.put("ticks.saving.save-often", "true");
+		nodes.put("ticks.saving.delay", "72000");
+		nodes.put("ticks.pathing.max-stationary", "25");
+		nodes.put("ticks.pathing.max-pathing", "-1");
+		nodes.put("ticks.healers.health-regen-increment", "12000");
 		// RangeSettings
-		nodes.put("RangeSettings.Basic.look-range", "4");
-		nodes.put("RangeSettings.Bandits.bandit-steal-radius", "5");
-		nodes.put("RangeSettings.Guards.default-bouncer-protection-radius", "5");
-		nodes.put("RangeSettings.Guards.pathfinding-range", "16");
+		nodes.put("range.basic.look", "4");
+		nodes.put("range.bandits.steal-radius", "5");
+		nodes.put("range.guards.default-bouncer-protection-radius", "5");
+		nodes.put("range.guards.pathfinding", "16");
 		/*
 		 * nodes.put("tick-delay", "1"); nodes.put("use-save-task", "true");
 		 * nodes.put("save-tick-delay", "72000"); nodes.put("save-often",
@@ -71,6 +71,61 @@ public class Defaults {
 		 * "354"); nodes.put( "default-text",
 		 * "Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"
 		 * );
+		 */
+		return nodes;
+	}
+
+	private static HashMap<String, String> writeEconomySettings() {
+		HashMap<String, String> nodes = new HashMap<String, String>();
+		nodes.put("economy.use-economy", "true");
+		nodes.put("economy.use-econplugin", "false");
+		nodes.put("prices.creation.basic.create-item", "10");
+		nodes.put("prices.creation.basic.item-currenccy-id", "37");
+		nodes.put("prices.creation.basic.econplugin", "100");
+		nodes.put("prices.creation.trader.create-item", "20");
+		nodes.put("prices.creation.trader.item-currenccy-id", "37");
+		nodes.put("prices.creation.trader.econplugin", "250");
+		nodes.put("prices.creation.wizard.create-item", "20");
+		nodes.put("prices.creation.wizard.item-currenccy-id", "37");
+		nodes.put("prices.creation.wizard.econplugin", "150");
+		nodes.put("prices.creation.blacksmith.create-item", "10");
+		nodes.put("prices.creation.blacksmith.item-currenccy-id", "37");
+		nodes.put("prices.creation.blacksmith.econplugin", "100");
+		/*
+		 * nodes.put("use-economy", "true"); nodes.put("use-econplugin",
+		 * "false"); nodes.put("basic-npc-create-item-currency-id", "37");
+		 * nodes.put("basic-npc-create-item", "10");
+		 * nodes.put("basic-npc-create-econplugin", "100");
+		 * nodes.put("trader-npc-create-item-currency-id", "37");
+		 * nodes.put("trader-npc-create-item", "20");
+		 * nodes.put("trader-npc-create-econplugin", "250");
+		 * nodes.put("healer-npc-create-item-currency-id", "37");
+		 * nodes.put("healer-npc-create-item", "20");
+		 * nodes.put("healer-npc-create-econplugin", "100");
+		 * nodes.put("healer-level-up-item-currency-id", "37");
+		 * nodes.put("healer-level-up-item", "20");
+		 * nodes.put("healer-level-up-econplugin", "100");
+		 * nodes.put("wizard-npc-create-item-currency-id", "37");
+		 * nodes.put("wizard-npc-create-item", "20");
+		 * nodes.put("wizard-npc-create-econplugin", "250");
+		 * nodes.put("wizard-teleport-item-currency-id", "4");
+		 * nodes.put("wizard-teleport-item", "10");
+		 * nodes.put("wizard-teleport-econplugin", "25");
+		 * nodes.put("blacksmith-npc-create-item-currency-id", "37");
+		 * nodes.put("blacksmith-npc-create-item", "20");
+		 * nodes.put("blacksmith-npc-create-econplugin", "100");
+		 * nodes.put("blacksmith-tool-repair-item-currency-id", "266");
+		 * nodes.put("blacksmith-tool-repair-item", "5");
+		 * nodes.put("blacksmith-tool-repair-econplugin", "50");
+		 * nodes.put("blacksmith-armor-repair-item-currency-id", "266");
+		 * nodes.put("blacksmith-armor-repair-item", "5");
+		 * nodes.put("blacksmith-armor-repair-econplugin", "50");
+		 * nodes.put("bandit-npc-create-item-currency-id", "37");
+		 * nodes.put("bandit-npc-create-item", "20");
+		 * nodes.put("bandit-npc-create-econplugin", "100");
+		 * nodes.put("guard-npc-create-item-currency-id", "37");
+		 * nodes.put("guard-npc-create-item", "20");
+		 * nodes.put("guard-npc-create-econplugin", "100");
 		 */
 		return nodes;
 	}
@@ -557,49 +612,6 @@ public class Defaults {
 		nodes.put("greendisk", "2257");
 		nodes.put("grrecord", "2257");
 		nodes.put("grdisk", "2257");
-		return nodes;
-	}
-
-	private static HashMap<String, String> writeEconomySettings() {
-		HashMap<String, String> nodes = new HashMap<String, String>();
-		nodes.put("economy.use-economy", "true");
-		nodes.put("economy.use-econplugin", "false");
-		/*
-		 * nodes.put("use-economy", "true"); nodes.put("use-econplugin",
-		 * "false"); nodes.put("basic-npc-create-item-currency-id", "37");
-		 * nodes.put("basic-npc-create-item", "10");
-		 * nodes.put("basic-npc-create-econplugin", "100");
-		 * nodes.put("trader-npc-create-item-currency-id", "37");
-		 * nodes.put("trader-npc-create-item", "20");
-		 * nodes.put("trader-npc-create-econplugin", "250");
-		 * nodes.put("healer-npc-create-item-currency-id", "37");
-		 * nodes.put("healer-npc-create-item", "20");
-		 * nodes.put("healer-npc-create-econplugin", "100");
-		 * nodes.put("healer-level-up-item-currency-id", "37");
-		 * nodes.put("healer-level-up-item", "20");
-		 * nodes.put("healer-level-up-econplugin", "100");
-		 * nodes.put("wizard-npc-create-item-currency-id", "37");
-		 * nodes.put("wizard-npc-create-item", "20");
-		 * nodes.put("wizard-npc-create-econplugin", "250");
-		 * nodes.put("wizard-teleport-item-currency-id", "4");
-		 * nodes.put("wizard-teleport-item", "10");
-		 * nodes.put("wizard-teleport-econplugin", "25");
-		 * nodes.put("blacksmith-npc-create-item-currency-id", "37");
-		 * nodes.put("blacksmith-npc-create-item", "20");
-		 * nodes.put("blacksmith-npc-create-econplugin", "100");
-		 * nodes.put("blacksmith-tool-repair-item-currency-id", "266");
-		 * nodes.put("blacksmith-tool-repair-item", "5");
-		 * nodes.put("blacksmith-tool-repair-econplugin", "50");
-		 * nodes.put("blacksmith-armor-repair-item-currency-id", "266");
-		 * nodes.put("blacksmith-armor-repair-item", "5");
-		 * nodes.put("blacksmith-armor-repair-econplugin", "50");
-		 * nodes.put("bandit-npc-create-item-currency-id", "37");
-		 * nodes.put("bandit-npc-create-item", "20");
-		 * nodes.put("bandit-npc-create-econplugin", "100");
-		 * nodes.put("guard-npc-create-item-currency-id", "37");
-		 * nodes.put("guard-npc-create-item", "20");
-		 * nodes.put("guard-npc-create-econplugin", "100");
-		 */
 		return nodes;
 	}
 

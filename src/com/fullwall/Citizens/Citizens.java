@@ -184,15 +184,16 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether "*" is used.
 	 */
 	public boolean canSelectAny() {
-		String[] items = UtilityProperties.settings.getString("select-item")
-				.split(",");
+		String[] items = UtilityProperties.settings.getString(
+				"items.basic.select-item").split(",");
 		ArrayList<String> item = new ArrayList<String>();
 		for (String s : items) {
 			item.add(s);
 		}
 		if (item.contains("*"))
 			return true;
-		items = UtilityProperties.settings.getString("items").split(",");
+		items = UtilityProperties.settings.getString("items.basic.talk-items")
+				.split(",");
 		item = new ArrayList<String>();
 		for (String s : items) {
 			item.add(s);
@@ -210,7 +211,7 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether the ID is used for a tool.
 	 */
 	public boolean validateTool(String key, int type, boolean sneaking) {
-		if (UtilityProperties.settings.getBoolean("item-list-on")) {
+		if (Constants.useItemList) {
 			String[] items = UtilityProperties.settings.getString(key).split(
 					",");
 			List<String> item = Arrays.asList(items);

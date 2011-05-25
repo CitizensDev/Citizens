@@ -73,7 +73,7 @@ public class MessageUtils {
 						+ text;
 			} else
 				text = Constants.chatFormat.replace("%name%",
-						Constants.NPCColour + name + ChatColor.WHITE).replace(
+						Constants.npcColour + name + ChatColor.WHITE).replace(
 						"&", "§")
 						+ text;
 			return text;

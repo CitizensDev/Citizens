@@ -23,7 +23,7 @@ public class GuardProperties extends Saveable {
 			"plugins/Citizens/Guards/Bouncers/radius.citizens");
 
 	private double getProtectionRadius(int UID) {
-		return radius.getDouble(UID, Constants.defaultGuardProtectionRadius);
+		return radius.getDouble(UID, Constants.defaultBouncerProtectionRadius);
 	}
 
 	private void saveProtectionRadius(int UID, double rad) {
