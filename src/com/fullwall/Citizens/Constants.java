@@ -19,7 +19,7 @@ public class Constants {
 	public static int maxPathingTicks = -1;
 
 	public static double npcRange = 5;
-	public static double defaultGuardProtectionRadius = 10;
+	public static double defaultBouncerProtectionRadius = 10;
 	public static final double JUMP_FACTOR = 0.1D;
 	public static final double GRAVITY = 0.02D;
 	public static final double PATH_LEEWAY = 0.5D;
@@ -28,7 +28,7 @@ public class Constants {
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
-	public static String NPCColour = "�f";
+	public static String npcColour = "�f";
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
@@ -45,37 +45,51 @@ public class Constants {
 		Storage settings = UtilityProperties.settings;
 
 		// Boolean defaults
-		convertSlashes = settings.getBoolean("slashes-to-spaces");
+		convertSlashes = settings
+				.getBoolean("GeneralSettings.Chat.slashes-to-spaces");
 		defaultFollowingEnabled = settings
-				.getBoolean("default-enable-following");
-		defaultTalkWhenClose = settings.getBoolean("default-talk-when-close");
-		useSaveTask = settings.getBoolean("use-save-task");
-		saveOften = settings.getBoolean("save-often");
-		useNPCColours = settings.getBoolean("use-npc-colours");
+				.getBoolean("GeneralSettings.default-enable-following");
+		defaultTalkWhenClose = settings
+				.getBoolean("GeneralSettings.default-talk-when-close");
+		useSaveTask = settings.getBoolean("TickSettings.Saving.use-save-task");
+		saveOften = settings.getBoolean("TickSettings.Saving.save-often");
+		useNPCColours = settings
+				.getBoolean("GeneralSettings.Colors.use-npc-colours");
 
 		// String defaults
-		chatFormat = settings.getString("chat-format");
-		NPCColour = UtilityProperties.settings.getString("npc-colour");
+		chatFormat = settings.getString("GeneralSettings.Chat.chat-format");
+		npcColour = UtilityProperties.settings
+				.getString("GeneralSettings.Colors.npc-colour");
 
 		// Double defaults
-		npcRange = settings.getDouble("look-range");
-		pathFindingRange = (float) settings.getDouble("pathfinding-range");
-		defaultGuardProtectionRadius = settings
-				.getDouble("guard-protection-radius");
+		npcRange = settings.getDouble("RangeSettings.Basic.look-range");
+		pathFindingRange = (float) settings
+				.getDouble("RangeSettings.Guards.pathfinding-range");
+		defaultBouncerProtectionRadius = settings
+				.getDouble("RangeSettings.Guards.default-bouncer-protection-radius");
 
 		// int defaults
-		maxNPCsPerPlayer = settings.getInt("max-npcs-per-player");
-		healerGiveHealthItem = settings.getInt("healer-give-health-item");
-		healerTakeHealthItem = settings.getInt("healer-take-health-item");
+		maxNPCsPerPlayer = settings
+				.getInt("GeneralSettings.max-NPCs-per-player");
+		healerGiveHealthItem = settings
+				.getInt("ItemSettings.Healers.healer-give-health-item");
+		healerTakeHealthItem = settings
+				.getInt("ItemSettings.Healers.healer-take-health-item");
 		healerHealthRegenIncrement = settings
-				.getInt("healer-health-regen-increment");
-		tickDelay = settings.getInt("tick-delay");
-		saveDelay = settings.getInt("save-tick-delay");
-		wizardMaxLocations = settings.getInt("wizard-max-locations");
-		wizardInteractItem = settings.getInt("wizard-interact-item");
-		evilNPCTameItem = settings.getInt("evil-npc-tame-item");
-		banditStealRadius = settings.getInt("bandit-steal-radius");
-		maxPathingTicks = settings.getInt("max-pathing-ticks");
-		maxStationaryTicks = settings.getInt("max-stationary-ticks");
+				.getInt("TickSettings.Healers.health-regen-increment");
+		tickDelay = settings.getInt("TickSettings.General.tick-delay");
+		saveDelay = settings.getInt("TickSettings.Saving.save-tick-delay");
+		wizardMaxLocations = settings
+				.getInt("GeneralSettings.Wizards.wizard-max-locations");
+		wizardInteractItem = settings
+				.getInt("ItemSettings.Wizards.wizard-interact-item");
+		evilNPCTameItem = settings
+				.getInt("ItemSettings.EvilNPCs.evil-npc-tame-item");
+		banditStealRadius = settings
+				.getInt("RangeSettings.Bandits.bandit-steal-radius");
+		maxPathingTicks = settings
+				.getInt("TickSettings.Pathing.max-pathing-ticks");
+		maxStationaryTicks = settings
+				.getInt("TickSettings.Pathing.max-stationary-ticks");
 	}
 }

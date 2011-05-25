@@ -181,12 +181,12 @@ public class GuardExecutor implements CommandExecutor {
 	 * @param mob
 	 */
 	private void addMobToBlacklist(Player player, HumanNPC npc, String mob) {
+		mob = mob.toLowerCase();
 		if (npc.getGuard().getMobBlacklist().contains(mob.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That mob is already blacklisted.");
-			// CreatureType.fromName is returning null even when mob is a valid
-			// type
-		} else if (CreatureType.fromName(mob) != null) {
+		} else if (CreatureType.fromName(mob.replaceFirst("" + mob.charAt(0),
+				"" + Character.toUpperCase(mob.charAt(0)))) != null) {
 			npc.getGuard().addMobToBlacklist(mob);
 			player.sendMessage(ChatColor.GREEN + "You added the mob type "
 					+ StringUtils.wrap(mob) + " to "

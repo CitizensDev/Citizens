@@ -14,11 +14,11 @@ public class UtilityProperties {
 			"plugins/Citizens/config.yml");
 
 	public static int getMaxNPCsPerPlayer() {
-		return settings.getInt("max-NPCs-per-player");
+		return settings.getInt("GeneralSettings.max-NPCs-per-player");
 	}
 
 	public static String getDefaultText() {
-		String[] split = settings.getString("default-text").split(";");
+		String[] split = settings.getString("GeneralSettings.Chat.default-text").split(";");
 		String text;
 		if (split != null) {
 			text = split[new Random(System.currentTimeMillis())
@@ -40,10 +40,10 @@ public class UtilityProperties {
 	}
 
 	public static boolean checkEconomyEnabled() {
-		return economy.getBoolean("use-economy");
+		return economy.getBoolean("economy.use-economy");
 	}
 
 	public static boolean checkServerEconomyEnabled() {
-		return economy.getBoolean("use-econplugin");
+		return economy.getBoolean("economy.use-econplugin");
 	}
 }
