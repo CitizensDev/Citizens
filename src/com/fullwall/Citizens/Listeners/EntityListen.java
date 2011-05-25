@@ -167,7 +167,7 @@ public class EntityListen extends EntityListener implements Listener {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
-				if (plugin.validateTool("items.basic.select-item", p
+				if (plugin.validateTool("items.basic.select-items", p
 						.getItemInHand().getTypeId(), p.isSneaking()) == true) {
 					if (!NPCManager.validateSelected(p, npc.getUID())) {
 						NPCManager.selectedNPCs.put(p.getName(), npc.getUID());
@@ -210,12 +210,12 @@ public class EntityListen extends EntityListener implements Listener {
 								.equals("tool")) {
 							npc.getBlacksmith().buyItemRepair(p, npc,
 									p.getItemInHand(),
-									Operation.BLACKSMITH_TOOL_REPAIR);
+									Operation.BLACKSMITH_TOOLREPAIR);
 						} else if (npc.getBlacksmith()
 								.getToolType(p.getItemInHand()).equals("armor")) {
 							npc.getBlacksmith().buyItemRepair(p, npc,
 									p.getItemInHand(),
-									Operation.BLACKSMITH_ARMOR_REPAIR);
+									Operation.BLACKSMITH_ARMORREPAIR);
 						}
 					} else {
 						p.sendMessage(MessageUtils.noPermissionsMessage);

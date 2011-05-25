@@ -134,13 +134,13 @@ public class BlacksmithExecutor implements CommandExecutor {
 			String armorName, boolean plural) {
 		String msg = "";
 		if (!EconomyHandler.useEconomy()
-				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMOR_REPAIR,
+				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMORREPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
 				if (npc.getBlacksmith().validateArmor(armor)) {
 					if (armor.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
-								Operation.BLACKSMITH_ARMOR_REPAIR, player);
+								Operation.BLACKSMITH_ARMORREPAIR, player);
 						if (paid > 0) {
 							armor.setDurability((short) 0);
 							msg = ChatColor.GREEN + ("Your ")
@@ -155,7 +155,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 									+ StringUtils
 											.wrap(EconomyHandler
 													.getPaymentType(
-															Operation.BLACKSMITH_ARMOR_REPAIR,
+															Operation.BLACKSMITH_ARMORREPAIR,
 															"" + paid,
 															ChatColor.YELLOW))
 									+ ".";
@@ -175,7 +175,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
-					Operation.BLACKSMITH_ARMOR_REPAIR, player));
+					Operation.BLACKSMITH_ARMORREPAIR, player));
 			return;
 		}
 	}

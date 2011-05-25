@@ -11,28 +11,30 @@ public class EconomyHandler {
 	private static boolean serverEconomyEnabled = false;
 	private static boolean useServerEconomy = false;
 
+	private static String prefix = "prices.";
+
 	// Parsed and used as settings for Citizens.economy.
 	public enum Operation {
 		/**
 		 * Create a basic NPC
 		 */
-		BASIC_NPC_CREATE,
+		BASIC_CREATION,
 		/**
 		 * Create a trader NPC
 		 */
-		TRADER_NPC_CREATE,
+		TRADER_CREATION,
 		/**
 		 * Create a healer NPC
 		 */
-		HEALER_NPC_CREATE,
+		HEALER_CREATION,
 		/**
 		 * Level-up a healer NPC
 		 */
-		HEALER_LEVEL_UP,
+		HEALER_LEVELUP,
 		/**
 		 * Create a wizard NPC
 		 */
-		WIZARD_NPC_CREATE,
+		WIZARD_CREATION,
 		/**
 		 * Teleport between wizard NPCs
 		 */
@@ -40,27 +42,27 @@ public class EconomyHandler {
 		/**
 		 * Create a quester NPC
 		 */
-		QUESTER_NPC_CREATE,
+		QUESTER_CREATION,
 		/**
 		 * Create a blacksmith NPC
 		 */
-		BLACKSMITH_NPC_CREATE,
+		BLACKSMITH_CREATION,
 		/**
 		 * Repair tools using a blacksmith NPC
 		 */
-		BLACKSMITH_TOOL_REPAIR,
+		BLACKSMITH_TOOLREPAIR,
 		/**
 		 * Repair armor using a blacksmith NPC
 		 */
-		BLACKSMITH_ARMOR_REPAIR,
+		BLACKSMITH_ARMORREPAIR,
 		/**
 		 * Create a bandit NPC
 		 */
-		BANDIT_NPC_CREATE,
+		BANDIT_CREATION,
 		/**
 		 * Create a guard NPC
 		 */
-		GUARD_NPC_CREATE;
+		GUARD_CREATION;
 
 		/**
 		 * Changes an operation enum to a string value for use in settings
@@ -71,7 +73,8 @@ public class EconomyHandler {
 		 * @return
 		 */
 		public static String getString(Operation op, String addendum) {
-			return op.toString().toLowerCase().replace("_", "-") + addendum;
+			return prefix + op.toString().toLowerCase().replace("_", ".")
+					+ addendum;
 		}
 	}
 

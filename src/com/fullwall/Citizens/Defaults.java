@@ -75,9 +75,9 @@ public class Defaults {
 		nodes.put("prices.healer.creation.create-item", "10");
 		nodes.put("prices.healer.creation.item-currency-id", "37");
 		nodes.put("prices.healer.creation.econplugin", "100");
-		nodes.put("prices.blacksmith.level-up.create-item", "10");
-		nodes.put("prices.blacksmith.level-up.item-currency-id", "37");
-		nodes.put("prices.blacksmith.level-up.econplugin", "100");
+		nodes.put("prices.healer.level-up.create-item", "10");
+		nodes.put("prices.healer.level-up.item-currency-id", "37");
+		nodes.put("prices.healer.level-up.econplugin", "100");
 		nodes.put("prices.quester.creation.create-item", "10");
 		nodes.put("prices.quester.creation.item-currency-id", "37");
 		nodes.put("prices.quester.creation.econplugin", "100");

@@ -56,7 +56,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.trader.create", sender)) {
 					if (!PropertyManager.get("trader").exists(npc)) {
 						buyState(player, npc.getTrader(),
-								Operation.TRADER_NPC_CREATE);
+								Operation.TRADER_CREATION);
 					} else {
 						toggleState(player, npc.getTrader());
 					}
@@ -68,7 +68,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.quester.create", sender)) {
 					if (!PropertyManager.get("quester").exists(npc)) {
 						buyState(player, npc.getQuester(),
-								Operation.QUESTER_NPC_CREATE);
+								Operation.QUESTER_CREATION);
 					} else {
 						toggleState(player, npc.getQuester());
 					}
@@ -80,7 +80,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.healer.create", sender)) {
 					if (!PropertyManager.get("healer").exists(npc)) {
 						buyState(player, npc.getHealer(),
-								Operation.HEALER_NPC_CREATE);
+								Operation.HEALER_CREATION);
 					} else {
 						toggleState(player, npc.getHealer());
 					}
@@ -92,7 +92,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.guard.create", sender)) {
 					if (!PropertyManager.get("guard").exists(npc)) {
 						buyState(player, npc.getGuard(),
-								Operation.GUARD_NPC_CREATE);
+								Operation.GUARD_CREATION);
 					} else {
 						toggleState(player, npc.getGuard());
 					}
@@ -104,7 +104,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.wizard.create", sender)) {
 					if (!PropertyManager.get("wizard").exists(npc)) {
 						buyState(player, npc.getWizard(),
-								Operation.WIZARD_NPC_CREATE);
+								Operation.WIZARD_CREATION);
 					} else {
 						toggleState(player, npc.getWizard());
 					}
@@ -118,7 +118,7 @@ public class TogglerExecutor implements CommandExecutor {
 						sender)) {
 					if (!PropertyManager.get("blacksmith").exists(npc)) {
 						buyState(player, npc.getBlacksmith(),
-								Operation.BLACKSMITH_NPC_CREATE);
+								Operation.BLACKSMITH_CREATION);
 					} else {
 						toggleState(player, npc.getBlacksmith());
 					}
@@ -130,7 +130,7 @@ public class TogglerExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.bandit.create", sender)) {
 					if (!PropertyManager.get("bandit").exists(npc)) {
 						buyState(player, npc.getBandit(),
-								Operation.BANDIT_NPC_CREATE);
+								Operation.BANDIT_CREATION);
 					} else {
 						toggleState(player, npc.getBandit());
 					}

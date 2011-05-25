@@ -9,8 +9,8 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class ItemInterface {
-	public static String addendum = "-item";
-	public static String currencyAddendum = "-item-currency-id";
+	public static String addendum = ".create-item";
+	public static String currencyAddendum = ".item-currency-id";
 	private static double price;
 
 	/**

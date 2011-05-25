@@ -111,10 +111,9 @@ public class HealerExecutor implements CommandExecutor {
 	}
 
 	private void displayStatus(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN
-				+ "========== "
-				+ StringUtils.wrap(npc.getStrippedName()
-						+ "'s Healer Status") + " ==========");
+		player.sendMessage(ChatColor.GREEN + "========== "
+				+ StringUtils.wrap(npc.getStrippedName() + "'s Healer Status")
+				+ " ==========");
 		displayStrength(player, npc);
 		displayLevel(player, npc);
 	}
@@ -122,17 +121,16 @@ public class HealerExecutor implements CommandExecutor {
 	private void levelUp(Player player, HumanNPC npc, int multiple) {
 		if (EconomyHandler.useEconomy()) {
 			int level = npc.getHealer().getLevel();
-			double paid = EconomyHandler.pay(Operation.HEALER_LEVEL_UP, player,
+			double paid = EconomyHandler.pay(Operation.HEALER_LEVELUP, player,
 					multiple);
 			if (paid > 0) {
 				if (level < 10) {
 					npc.getHealer().setLevel(level + multiple);
 					player.sendMessage(getLevelUpPaidMessage(
-							Operation.HEALER_LEVEL_UP, npc, paid, level
+							Operation.HEALER_LEVELUP, npc, paid, level
 									+ multiple, multiple));
 				} else {
-					player.sendMessage(StringUtils.wrap(npc
-							.getStrippedName())
+					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " has reached the maximum level.");
 				}
 			}
@@ -150,8 +148,8 @@ public class HealerExecutor implements CommandExecutor {
 				+ " to "
 				+ StringUtils.wrap("Level " + level)
 				+ " for "
-				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, ""
-						+ paid * multiple, ChatColor.GREEN)
+				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, "" + paid
+						* multiple, ChatColor.GREEN)
 						+ ".");
 		return message;
 	}

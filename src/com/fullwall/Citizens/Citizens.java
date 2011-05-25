@@ -301,8 +301,9 @@ public class Citizens extends JavaPlugin {
 			String[] items = UtilityProperties.settings.getString(key).split(
 					",");
 			List<String> item = Arrays.asList(items);
-			if (item.contains("*"))
+			if (item.contains("*")) {
 				return true;
+			}
 			boolean isShift = false;
 			for (String s : item) {
 				isShift = false;
@@ -310,12 +311,14 @@ public class Citizens extends JavaPlugin {
 					s = s.replace("SHIFT-", "");
 					isShift = true;
 				}
-				if (Integer.parseInt(s) == type && isShift == sneaking)
+				if (Integer.parseInt(s) == type && isShift == sneaking) {
 					return true;
+				}
 			}
 			return false;
-		} else
+		} else {
 			return true;
+		}
 	}
 
 	/**

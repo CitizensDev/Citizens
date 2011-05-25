@@ -20,20 +20,22 @@ public class UtilityProperties {
 	}
 
 	public static int getMaxNPCsPerPlayer() {
-		return settings.getInt("GeneralSettings.max-NPCs-per-player");
+		return settings.getInt("general.limits.npcs-per-player");
 	}
 
 	public static String getDefaultText() {
-		String[] split = settings.getString("general.limits.npcs-per-player")
-				.split(";");
+		String[] split = settings.getString("general.chat.default-text").split(
+				";");
 		String text;
 		if (split != null) {
 			text = split[new Random(System.currentTimeMillis())
 					.nextInt(split.length)];
-			if (text == null)
+			if (text == null) {
 				text = "";
-		} else
+			}
+		} else {
 			text = "";
+		}
 		return text.replace('&', '§');
 	}
 

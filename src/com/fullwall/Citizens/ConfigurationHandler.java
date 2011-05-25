@@ -24,7 +24,7 @@ public class ConfigurationHandler implements Storage {
 			create();
 		}
 		load();
-		if (fileName.contains("config.yml") && !b) {
+		if (fileName.contains("citizens.yml") && !b) {
 			loadRenames(Defaults.settingsRenames);
 			loadDefaults(Defaults.settingsDefaults);
 			loadDeletes(Defaults.settingsDeletes);

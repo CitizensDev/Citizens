@@ -44,12 +44,12 @@ public class BasicExecutor implements CommandExecutor {
 		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
 			if (Permission.hasPermission("citizens.basic.create", sender)) {
 				if (!EconomyHandler.useEconomy()
-						|| EconomyHandler.canBuy(Operation.BASIC_NPC_CREATE,
+						|| EconomyHandler.canBuy(Operation.BASIC_CREATION,
 								player)) {
 					create(args, player);
 				} else if (EconomyHandler.useEconomy()) {
 					sender.sendMessage(MessageUtils.getNoMoneyMessage(
-							Operation.BASIC_NPC_CREATE, player));
+							Operation.BASIC_CREATION, player));
 				}
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -532,12 +532,11 @@ public class BasicExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.GREEN + "The NPC "
 					+ StringUtils.wrap(args[1]) + " was born!");
 			if (EconomyHandler.useEconomy()) {
-				double paid = EconomyHandler.pay(Operation.BASIC_NPC_CREATE,
+				double paid = EconomyHandler.pay(Operation.BASIC_CREATION,
 						player);
 				if (paid > 0) {
 					player.sendMessage(MessageUtils.getPaidMessage(
-							Operation.BASIC_NPC_CREATE, paid, args[1], "",
-							false));
+							Operation.BASIC_CREATION, paid, args[1], "", false));
 				}
 			}
 			NPCManager.selectedNPCs.put(player.getName(), UID);
