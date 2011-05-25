@@ -29,7 +29,7 @@ public class GuardNPC implements Toggleable {
 	}
 
 	/**
-	 * Get whether or not a guard NPC is a bodyguard
+	 * Get whether a guard NPC is a bodyguard
 	 * 
 	 * @return
 	 */
@@ -38,7 +38,7 @@ public class GuardNPC implements Toggleable {
 	}
 
 	/**
-	 * Set whether or not a guard NPC is a bodyguard
+	 * Set whether a guard NPC is a bodyguard
 	 * 
 	 * @param state
 	 */
@@ -47,7 +47,7 @@ public class GuardNPC implements Toggleable {
 	}
 
 	/**
-	 * Get whether or not a guard NPC is a bouncer
+	 * Get whether a guard NPC is a bouncer
 	 * 
 	 * @return
 	 */
@@ -56,7 +56,7 @@ public class GuardNPC implements Toggleable {
 	}
 
 	/**
-	 * Set whether or not a guard NPC is a bouncer
+	 * Set whether a guard NPC is a bouncer
 	 * 
 	 * @param state
 	 */

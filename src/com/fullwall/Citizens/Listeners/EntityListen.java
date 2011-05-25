@@ -21,7 +21,6 @@ import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Bandits.BanditInterface;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderInterface;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -168,9 +167,6 @@ public class EntityListen extends EntityListener implements Listener {
 			// The NPC lib handily provides a right click event.
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player p = (Player) event.getTarget();
-				if (QuestManager.hasQuest(p)) {
-					QuestManager.incrementQuest(p, event);
-				}
 				if (plugin.validateTool("select-item", p.getItemInHand()
 						.getTypeId(), p.isSneaking()) == true) {
 					if (!NPCManager.validateSelected(p, npc.getUID())) {
