@@ -6,19 +6,26 @@ import com.fullwall.Citizens.ConfigurationHandler;
 import com.fullwall.Citizens.PropertyHandler;
 
 public class UtilityProperties {
-	public static final ConfigurationHandler economy = new ConfigurationHandler(
-			"plugins/Citizens/economy.yml");
-	public static final PropertyHandler itemlookups = new PropertyHandler(
-			"plugins/Citizens/Citizens.itemlookup");
-	public static final ConfigurationHandler settings = new ConfigurationHandler(
-			"plugins/Citizens/config.yml");
+	public static ConfigurationHandler economy;
+	public static PropertyHandler itemlookups;
+	public static ConfigurationHandler settings;
+
+	public static void initialise() {
+		economy = new ConfigurationHandler("plugins/Citizens/economy.yml",
+				false);
+		itemlookups = new PropertyHandler(
+				"plugins/Citizens/Citizens.itemlookup");
+		settings = new ConfigurationHandler("plugins/Citizens/citizens.yml",
+				false);
+	}
 
 	public static int getMaxNPCsPerPlayer() {
 		return settings.getInt("GeneralSettings.max-NPCs-per-player");
 	}
 
 	public static String getDefaultText() {
-		String[] split = settings.getString("GeneralSettings.Chat.default-text").split(";");
+		String[] split = settings
+				.getString("GeneralSettings.Chat.default-text").split(";");
 		String text;
 		if (split != null) {
 			text = split[new Random(System.currentTimeMillis())

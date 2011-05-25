@@ -15,18 +15,20 @@ public class ConfigurationHandler implements Storage {
 	private Configuration config;
 	private String fileName;
 
-	public ConfigurationHandler(String fileName) {
+	public ConfigurationHandler(String fileName, boolean b) {
+		// TODO: remove boolean in next version (used for transferring
+		// settings).
 		this.fileName = fileName;
 		File file = getFile();
 		if (!file.exists()) {
 			create();
 		}
 		load();
-		if (fileName.contains("config.yml")) {
+		if (fileName.contains("config.yml") && !b) {
 			loadRenames(Defaults.settingsRenames);
 			loadDefaults(Defaults.settingsDefaults);
 			loadDeletes(Defaults.settingsDeletes);
-		} else if (fileName.contains("economy.yml")) {
+		} else if (fileName.contains("economy.yml") && !b) {
 			loadRenames(Defaults.economyRenames);
 			loadDefaults(Defaults.economyDefaults);
 			loadDeletes(Defaults.economyDeletes);

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,22 +46,15 @@ public final class PropertyHandler implements Storage {
 		this.fileName = fileName;
 		this.properties = new Properties();
 		File file = new File(fileName);
-
-		if (file.exists()) {
+		// TODO - remove the inventories part
+		if (file.exists()
+				&& !fileName.contains("/Traders/Citizens.inventories")) {
 			load();
 		} else {
 			createFile(file);
 			save();
 		}
-		if (fileName.contains("Citizens.settings")) {
-			loadRenames(Defaults.settingsRenames);
-			loadDefaults(Defaults.settingsDefaults);
-			loadDeletes(Defaults.settingsDeletes);
-		} else if (fileName.contains("Citizens.economy")) {
-			loadRenames(Defaults.economyRenames);
-			loadDefaults(Defaults.economyDefaults);
-			loadDeletes(Defaults.economyDeletes);
-		} else if (fileName.contains("Citizens.itemlookups")) {
+		if (fileName.contains("Citizens.itemlookups")) {
 			loadLookups(Defaults.lookupsDefaults);
 		}
 	}
@@ -81,17 +73,6 @@ public final class PropertyHandler implements Storage {
 		}
 	}
 
-	private void loadDefaults(HashMap<String, String> nodes) {
-		for (Entry<String, String> entry : nodes.entrySet()) {
-			if (!keyExists(entry.getKey())) {
-				Citizens.log.info("Missing setting " + entry.getKey() + " in "
-						+ this.fileName + "! Writing value as "
-						+ entry.getValue() + ".");
-				setString(entry.getKey(), entry.getValue());
-			}
-		}
-	}
-
 	private void loadLookups(HashMap<String, String> nodes) {
 		boolean told = false;
 		for (Entry<String, String> entry : nodes.entrySet()) {
@@ -105,39 +86,6 @@ public final class PropertyHandler implements Storage {
 		}
 	}
 
-	private void loadDeletes(ArrayList<String> nodes) {
-		for (String entry : nodes) {
-			if (keyExists(entry)) {
-				Citizens.log.info("Deleting unused setting " + entry + ".");
-				removeKey(entry);
-			}
-		}
-	}
-
-	private void loadRenames(HashMap<String, String> nodes) {
-		try {
-			for (Entry<String, String> entry : returnMap().entrySet()) {
-				for (Entry<String, String> secondEntry : nodes.entrySet()) {
-					if (entry.getKey().contains(secondEntry.getKey())) {
-						String key = entry.getKey().replace(
-								secondEntry.getKey(), secondEntry.getValue());
-						String value = entry.getValue();
-						Citizens.log.info("Renaming setting " + entry.getKey()
-								+ " to " + key + ".");
-						removeKey(entry.getKey());
-						setString(key, value);
-					}
-				}
-			}
-		} catch (Exception e) {
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fullwall.Citizens.Storage#load()
-	 */
 	@Override
 	public void load() {
 		try {

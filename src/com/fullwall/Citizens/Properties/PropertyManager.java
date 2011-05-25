@@ -14,6 +14,7 @@ import com.fullwall.Citizens.Properties.Properties.GuardProperties;
 import com.fullwall.Citizens.Properties.Properties.HealerProperties;
 import com.fullwall.Citizens.Properties.Properties.QuesterProperties;
 import com.fullwall.Citizens.Properties.Properties.TraderProperties;
+import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Properties.Properties.WizardProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -37,6 +38,7 @@ public class PropertyManager {
 		properties.put("trader", new TraderProperties());
 		properties.put("wizard", new WizardProperties());
 		basicProperties = basic;
+		UtilityProperties.initialise();
 	}
 
 	public static BasicProperties getBasic() {
@@ -63,8 +65,8 @@ public class PropertyManager {
 		}
 	}
 
-	public static Storage getHandler(Class<?> passedClass,
-			String fieldName, Saveable saveable) {
+	public static Storage getHandler(Class<?> passedClass, String fieldName,
+			Saveable saveable) {
 		try {
 			Field f = passedClass.getDeclaredField(fieldName);
 			Storage handler = (Storage) f.get(saveable);

@@ -55,6 +55,9 @@ public class Citizens extends JavaPlugin {
 	}
 
 	public void onEnable() {
+		// TODO - remove on update.
+		transferSettings();
+
 		// Register files.
 		PropertyManager.registerProperties();
 
@@ -115,6 +118,89 @@ public class Citizens extends JavaPlugin {
 
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "d] (" + codename + ") loaded");
+	}
+
+	private void transferSettings() {
+		File file = new File("plugins/Citizens/Citizens.settings");
+		if (file.exists()) {
+			ConfigurationHandler temp = new ConfigurationHandler(
+					"plugins/Citizens/citizens.yml", true);
+			PropertyHandler handler = new PropertyHandler(
+					"plugins/Citizens/Citizens.settings");
+			/*
+			 * nodes.put("tick-delay", "1"); nodes.put("use-save-task", "true");
+			 * nodes.put("save-tick-delay", "72000"); nodes.put("save-often",
+			 * "true"); nodes.put("look-range", "4"); nodes.put("item-list-on",
+			 * "true"); nodes.put("items", "340,"); nodes.put("select-item",
+			 * "*"); nodes.put("default-enable-following", "true");
+			 * nodes.put("default-talk-when-close", "false");
+			 * nodes.put("use-npc-colours", "true"); nodes.put("npc-colour",
+			 * "§f"); nodes.put("chat-format", "[%name%]: ");
+			 * nodes.put("slashes-to-spaces", "true");
+			 * nodes.put("max-NPCs-per-player", "10");
+			 * nodes.put("healer-take-health-item", "276");
+			 * nodes.put("healer-give-health-item", "35");
+			 * nodes.put("healer-health-regen-increment", "12000");
+			 * nodes.put("wizard-interact-item", "288");
+			 * nodes.put("wizard-max-locations", "10");
+			 * nodes.put("bandit-steal-radius", "5");
+			 * nodes.put("guard-protection-radius", "10");
+			 * nodes.put("pathfinding-range", "16");
+			 * nodes.put("max-stationary-ticks", "25");
+			 * nodes.put("max-pathing-ticks", "-1");
+			 * nodes.put("evil-npc-tame-item", "354"); nodes.put(
+			 * "default-text",
+			 * "Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"
+			 * );
+			 */
+			handler.clear();
+			file.delete();
+		}
+		file = new File("plugins/Citizens/Citizens.economy");
+		if (file.exists()) {
+			ConfigurationHandler temp = new ConfigurationHandler(
+					"plugins/Citizens/economy.yml", true);
+			PropertyHandler handler = new PropertyHandler(
+					"plugins/Citizens/Citizens.economy");
+			/*
+			 * nodes.put("use-economy", "true"); nodes.put("use-econplugin",
+			 * "false"); nodes.put("basic-npc-create-item-currency-id", "37");
+			 * nodes.put("basic-npc-create-item", "10");
+			 * nodes.put("basic-npc-create-econplugin", "100");
+			 * nodes.put("trader-npc-create-item-currency-id", "37");
+			 * nodes.put("trader-npc-create-item", "20");
+			 * nodes.put("trader-npc-create-econplugin", "250");
+			 * nodes.put("healer-npc-create-item-currency-id", "37");
+			 * nodes.put("healer-npc-create-item", "20");
+			 * nodes.put("healer-npc-create-econplugin", "100");
+			 * nodes.put("healer-level-up-item-currency-id", "37");
+			 * nodes.put("healer-level-up-item", "20");
+			 * nodes.put("healer-level-up-econplugin", "100");
+			 * nodes.put("wizard-npc-create-item-currency-id", "37");
+			 * nodes.put("wizard-npc-create-item", "20");
+			 * nodes.put("wizard-npc-create-econplugin", "250");
+			 * nodes.put("wizard-teleport-item-currency-id", "4");
+			 * nodes.put("wizard-teleport-item", "10");
+			 * nodes.put("wizard-teleport-econplugin", "25");
+			 * nodes.put("blacksmith-npc-create-item-currency-id", "37");
+			 * nodes.put("blacksmith-npc-create-item", "20");
+			 * nodes.put("blacksmith-npc-create-econplugin", "100");
+			 * nodes.put("blacksmith-tool-repair-item-currency-id", "266");
+			 * nodes.put("blacksmith-tool-repair-item", "5");
+			 * nodes.put("blacksmith-tool-repair-econplugin", "50");
+			 * nodes.put("blacksmith-armor-repair-item-currency-id", "266");
+			 * nodes.put("blacksmith-armor-repair-item", "5");
+			 * nodes.put("blacksmith-armor-repair-econplugin", "50");
+			 * nodes.put("bandit-npc-create-item-currency-id", "37");
+			 * nodes.put("bandit-npc-create-item", "20");
+			 * nodes.put("bandit-npc-create-econplugin", "100");
+			 * nodes.put("guard-npc-create-item-currency-id", "37");
+			 * nodes.put("guard-npc-create-item", "20");
+			 * nodes.put("guard-npc-create-econplugin", "100");
+			 */
+			handler.clear();
+			file.delete();
+		}
 	}
 
 	private void transferInventories() {
