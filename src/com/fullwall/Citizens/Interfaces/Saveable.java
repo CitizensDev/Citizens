@@ -1,6 +1,5 @@
 package com.fullwall.Citizens.Interfaces;
 
-import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -21,7 +20,7 @@ public abstract class Saveable {
 
 	public abstract boolean getEnabled(HumanNPC npc);
 
-	public PropertyHandler getFile(String name) {
+	public Storage getFile(String name) {
 		return PropertyManager.getHandler(this.getClass(), name, this);
 	}
 

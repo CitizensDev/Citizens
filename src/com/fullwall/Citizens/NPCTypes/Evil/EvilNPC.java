@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.NPCTypes.Evil;
 
+import org.bukkit.util.config.Configuration;
+
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class EvilNPC {

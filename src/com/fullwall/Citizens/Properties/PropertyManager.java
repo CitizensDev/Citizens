@@ -3,8 +3,8 @@ package com.fullwall.Citizens.Properties;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.BanditProperties;
 import com.fullwall.Citizens.Properties.Properties.BasicProperties;
@@ -63,11 +63,11 @@ public class PropertyManager {
 		}
 	}
 
-	public static PropertyHandler getHandler(Class<?> passedClass,
+	public static Storage getHandler(Class<?> passedClass,
 			String fieldName, Saveable saveable) {
 		try {
 			Field f = passedClass.getDeclaredField(fieldName);
-			PropertyHandler handler = (PropertyHandler) f.get(saveable);
+			Storage handler = (Storage) f.get(saveable);
 			return handler;
 		} catch (Exception ex) {
 			return null;

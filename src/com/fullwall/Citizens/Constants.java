@@ -1,6 +1,7 @@
 package com.fullwall.Citizens;
 
 import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
@@ -41,7 +42,7 @@ public class Constants {
 	 */
 	public static void setupVariables() {
 		EconomyHandler.setUpVariables();
-		PropertyHandler settings = UtilityProperties.settings;
+		Storage settings = UtilityProperties.settings;
 
 		// Boolean defaults
 		convertSlashes = settings.getBoolean("slashes-to-spaces");

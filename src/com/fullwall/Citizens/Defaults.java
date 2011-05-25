@@ -14,6 +14,9 @@ public class Defaults {
 
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
+		nodes.put("items.basic.talk-items", "340,"); //example - these also need to be changed in Constants to use the new path.
+		// Below are old settings - need to be kept for transferring.
+		/*
 		nodes.put("tick-delay", "1");
 		nodes.put("use-save-task", "true");
 		nodes.put("save-tick-delay", "72000");
@@ -42,10 +45,10 @@ public class Defaults {
 		nodes.put("evil-npc-tame-item", "354");
 		nodes.put(
 				"default-text",
-				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");
+				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");*/
 		return nodes;
 	}
-
+//Leave this the same.
 	private static HashMap<String, String> writeLookupsSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		nodes.put("air", "0");
@@ -532,7 +535,7 @@ public class Defaults {
 
 	private static HashMap<String, String> writeEconomySettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
-		nodes.put("use-economy", "true");
+		/*nodes.put("use-economy", "true");
 		nodes.put("use-econplugin", "false");
 		nodes.put("basic-npc-create-item-currency-id", "37");
 		nodes.put("basic-npc-create-item", "10");
@@ -566,7 +569,7 @@ public class Defaults {
 		nodes.put("bandit-npc-create-econplugin", "100");
 		nodes.put("guard-npc-create-item-currency-id", "37");
 		nodes.put("guard-npc-create-item", "20");
-		nodes.put("guard-npc-create-econplugin", "100");
+		nodes.put("guard-npc-create-econplugin", "100");*/
 		return nodes;
 	}
 
@@ -577,7 +580,7 @@ public class Defaults {
 
 	private static HashMap<String, String> writeEconomyRenames() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
-		nodes.put("-iconomy", "-econplugin");
+		nodes.put("use-iconomy", "use-econplugin");
 		return nodes;
 	}
 

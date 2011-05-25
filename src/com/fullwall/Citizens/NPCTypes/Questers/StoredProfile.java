@@ -1,9 +1,10 @@
 package com.fullwall.Citizens.NPCTypes.Questers;
 
 import com.fullwall.Citizens.PropertyHandler;
+import com.fullwall.Citizens.Interfaces.Storage;
 
 public class StoredProfile {
-	public PropertyHandler profile;
+	public Storage profile;
 
 	public StoredProfile(String name) {
 		String directory = "plugins/Citizens/Profiles/";

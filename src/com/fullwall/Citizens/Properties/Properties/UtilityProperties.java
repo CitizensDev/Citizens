@@ -2,15 +2,16 @@ package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.Random;
 
+import com.fullwall.Citizens.ConfigurationHandler;
 import com.fullwall.Citizens.PropertyHandler;
 
 public class UtilityProperties {
-	public static final PropertyHandler economy = new PropertyHandler(
-			"plugins/Citizens/Citizens.economy");
+	public static final ConfigurationHandler economy = new ConfigurationHandler(
+			"plugins/Citizens/economy.yml");
 	public static final PropertyHandler itemlookups = new PropertyHandler(
 			"plugins/Citizens/Citizens.itemlookup");
-	public static final PropertyHandler settings = new PropertyHandler(
-			"plugins/Citizens/Citizens.settings");
+	public static final ConfigurationHandler settings = new ConfigurationHandler(
+			"plugins/Citizens/config.yml");
 
 	public static int getMaxNPCsPerPlayer() {
 		return settings.getInt("max-NPCs-per-player");

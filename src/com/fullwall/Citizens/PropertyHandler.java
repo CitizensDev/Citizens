@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import com.fullwall.Citizens.Interfaces.Storage;
+
 /**
  * iConomy v1.x
  * Copyright (C) 2010  Nijikokun <nijikokun@gmail.com>
@@ -37,7 +39,7 @@ import java.util.logging.Level;
  * 
  * @author Nijiko
  */
-public final class PropertyHandler {
+public final class PropertyHandler implements Storage {
 	private Properties properties;
 	private String fileName;
 
@@ -131,6 +133,12 @@ public final class PropertyHandler {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fullwall.Citizens.Storage#load()
+	 */
+	@Override
 	public void load() {
 		try {
 			this.properties.load(new FileInputStream(this.fileName));
@@ -140,6 +148,12 @@ public final class PropertyHandler {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fullwall.Citizens.Storage#save()
+	 */
+	@Override
 	public void save() {
 		try {
 			this.properties.store(new FileOutputStream(this.fileName),
@@ -171,12 +185,14 @@ public final class PropertyHandler {
 		return map;
 	}
 
+	@Override
 	public void removeKey(String key) {
 		this.properties.remove(key);
 		if (Constants.saveOften)
 			save();
 	}
 
+	@Override
 	public void removeKey(int key) {
 		removeKey("" + key);
 	}
@@ -189,6 +205,7 @@ public final class PropertyHandler {
 		return keyExists("" + key);
 	}
 
+	@Override
 	public String getString(String key) {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
@@ -197,10 +214,12 @@ public final class PropertyHandler {
 		return "";
 	}
 
+	@Override
 	public String getString(int key) {
 		return getString("" + key);
 	}
 
+	@Override
 	public String getString(String key, String value) {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
@@ -209,20 +228,24 @@ public final class PropertyHandler {
 		return value;
 	}
 
+	@Override
 	public String getString(int key, String value) {
 		return getString("" + key, value);
 	}
 
+	@Override
 	public void setString(String key, String value) {
 		this.properties.setProperty(key, value);
 		if (Constants.saveOften)
 			save();
 	}
 
+	@Override
 	public void setString(int key, String value) {
 		setString("" + key, value);
 	}
 
+	@Override
 	public int getInt(String key) {
 		if (this.properties.containsKey(key)) {
 			return Integer.parseInt(this.properties.getProperty(key));
@@ -231,10 +254,12 @@ public final class PropertyHandler {
 		return 0;
 	}
 
+	@Override
 	public int getInt(int key) {
 		return getInt("" + key);
 	}
 
+	@Override
 	public int getInt(String key, int value) {
 		if (this.properties.containsKey(key))
 			return Integer.parseInt(this.properties.getProperty(key));
@@ -243,20 +268,24 @@ public final class PropertyHandler {
 		return value;
 	}
 
+	@Override
 	public int getInt(int key, int value) {
 		return getInt("" + key, value);
 	}
 
+	@Override
 	public void setInt(String key, int value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		if (Constants.saveOften)
 			save();
 	}
 
+	@Override
 	public void setInt(int key, int value) {
 		setInt("" + key, value);
 	}
 
+	@Override
 	public double getDouble(String key) {
 		if (this.properties.containsKey(key)) {
 			return Double.parseDouble(this.properties.getProperty(key));
@@ -265,10 +294,12 @@ public final class PropertyHandler {
 		return 0;
 	}
 
+	@Override
 	public double getDouble(int key) {
 		return getDouble("" + key);
 	}
 
+	@Override
 	public double getDouble(String key, double value) {
 		if (this.properties.containsKey(key)) {
 			return Double.parseDouble(this.properties.getProperty(key));
@@ -277,20 +308,24 @@ public final class PropertyHandler {
 		return value;
 	}
 
+	@Override
 	public double getDouble(int key, double value) {
 		return getDouble("" + key, value);
 	}
 
+	@Override
 	public void setDouble(String key, double value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		if (Constants.saveOften)
 			save();
 	}
 
+	@Override
 	public void setDouble(int key, double value) {
 		setDouble("" + key, value);
 	}
 
+	@Override
 	public long getLong(String key) {
 		if (this.properties.containsKey(key)) {
 			return Long.parseLong(this.properties.getProperty(key));
@@ -299,10 +334,12 @@ public final class PropertyHandler {
 		return 0;
 	}
 
+	@Override
 	public long getLong(int key) {
 		return getLong("" + key);
 	}
 
+	@Override
 	public long getLong(String key, long value) {
 		if (this.properties.containsKey(key)) {
 			return Long.parseLong(this.properties.getProperty(key));
@@ -311,20 +348,24 @@ public final class PropertyHandler {
 		return value;
 	}
 
+	@Override
 	public long getLong(int key, long value) {
 		return getLong("" + key, value);
 	}
 
+	@Override
 	public void setLong(String key, long value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		if (Constants.saveOften)
 			save();
 	}
 
+	@Override
 	public void setLong(int key, long value) {
 		setLong("" + key, value);
 	}
 
+	@Override
 	public boolean getBoolean(String key) {
 		if (this.properties.containsKey(key)) {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
@@ -333,10 +374,12 @@ public final class PropertyHandler {
 		return false;
 	}
 
+	@Override
 	public boolean getBoolean(int key) {
 		return getBoolean("" + key);
 	}
 
+	@Override
 	public boolean getBoolean(String key, boolean value) {
 		if (this.properties.containsKey(key)) {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
@@ -345,16 +388,19 @@ public final class PropertyHandler {
 		return value;
 	}
 
+	@Override
 	public boolean getBoolean(int key, boolean value) {
 		return getBoolean("" + key, value);
 	}
 
+	@Override
 	public void setBoolean(String key, boolean value) {
 		this.properties.setProperty(key, String.valueOf(value));
 		if (Constants.saveOften)
 			save();
 	}
 
+	@Override
 	public void setBoolean(int key, boolean value) {
 		setBoolean("" + key, value);
 	}
