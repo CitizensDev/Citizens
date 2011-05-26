@@ -65,8 +65,9 @@ public class TraderNPC implements Toggleable {
 		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
 		if (checkStockingIntegrity()) {
 			for (Stockable s : stocking.values())
-				if (itemID == s.getStockingId() && selling == s.isSelling())
+				if (itemID == s.getStockingId() && selling == s.isSelling()) {
 					stockables.add(s);
+				}
 		}
 		return stockables;
 	}
@@ -75,8 +76,9 @@ public class TraderNPC implements Toggleable {
 		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
 		if (checkStockingIntegrity()) {
 			for (Stockable s : stocking.values())
-				if (selling == s.isSelling())
+				if (selling == s.isSelling()) {
 					stockables.add(s);
+				}
 		}
 		return stockables;
 	}
@@ -112,18 +114,22 @@ public class TraderNPC implements Toggleable {
 		MaterialData first = stockable.getStocking().getData();
 		int data = 0;
 		int data2 = 0;
-		if (first != null)
+		if (first != null) {
 			data = first.getData();
-		if (second != null)
+		}
+		if (second != null) {
 			data2 = second.getData();
-		if (data == data2)
+		}
+		if (data == data2) {
 			return true;
+		}
 		return false;
 	}
 
 	public boolean checkStockingIntegrity() {
-		if (this.stocking == null || this.stocking.isEmpty())
+		if (this.stocking == null || this.stocking.isEmpty()) {
 			return false;
+		}
 		return true;
 	}
 

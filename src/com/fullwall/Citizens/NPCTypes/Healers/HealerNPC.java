@@ -17,11 +17,11 @@ public class HealerNPC implements Toggleable {
 	public HealerNPC(HumanNPC npc) {
 		this.npc = npc;
 	}
-    
+
 	public int getHealth() {
 		return health;
 	}
-    
+
 	public void setHealth(int health) {
 		this.health = health;
 	}

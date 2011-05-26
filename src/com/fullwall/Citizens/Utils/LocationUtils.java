@@ -14,8 +14,9 @@ public class LocationUtils {
 	 */
 	public static boolean checkLocation(Location loc, Location pLoc,
 			double range) {
-		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName()))
+		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName())) {
 			return false;
+		}
 		double pX = pLoc.getX(), pY = pLoc.getY(), pZ = pLoc.getZ();
 		double lX = loc.getX(), lY = loc.getY(), lZ = loc.getZ();
 		if ((pX <= lX + range && pX >= lX - range)

@@ -11,7 +11,7 @@ public class UtilityProperties {
 	public static PropertyHandler itemlookups;
 	private static ConfigurationHandler settings;
 
-	public static void initialise() {
+	public static void initialize() {
 		economy = new ConfigurationHandler("plugins/Citizens/economy.yml",
 				false);
 		itemlookups = new PropertyHandler(

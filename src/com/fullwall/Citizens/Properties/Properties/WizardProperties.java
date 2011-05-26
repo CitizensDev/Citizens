@@ -73,9 +73,11 @@ public class WizardProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (wizards.keyExists(UID))
+		if (wizards.keyExists(UID)) {
 			wizards.setString(nextUID, wizards.getString(UID));
-		if (locations.keyExists(UID))
+		}
+		if (locations.keyExists(UID)) {
 			locations.setString(nextUID, locations.getString(UID));
+		}
 	}
 }

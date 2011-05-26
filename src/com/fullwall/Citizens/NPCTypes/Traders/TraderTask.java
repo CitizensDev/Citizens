@@ -63,16 +63,18 @@ public class TraderTask implements Runnable {
 
 	@Override
 	public void run() {
-		if (stop)
+		if (stop) {
 			return;
+		}
 		if (npc == null || player == null
 				|| mcPlayer.activeContainer == mcPlayer.defaultContainer
 				|| !player.isOnline()) {
 			kill();
 			return;
 		}
-		if (mode == Mode.STOCK)
+		if (mode == Mode.STOCK) {
 			return;
+		}
 		// If the player cursor is empty (no itemstack in it).
 
 		stop = true;
@@ -129,8 +131,9 @@ public class TraderTask implements Runnable {
 		npcInv.setItem(slot, previousTraderInv.getItem(slot));
 		ItemStack i = npcInv.getItem(slot);
 		Stockable stockable = getStockable(i, "sold", false);
-		if (stockable == null)
+		if (stockable == null) {
 			return;
+		}
 		if (previousTraderClickSlot != slot) {
 			previousTraderClickSlot = slot;
 			sendStockableMessage(stockable);
@@ -138,12 +141,14 @@ public class TraderTask implements Runnable {
 		}
 		previousTraderClickSlot = slot;
 		previousPlayerClickSlot = -1;
-		if (checkMiscellaneous(npcInv, stockable, true))
+		if (checkMiscellaneous(npcInv, stockable, true)) {
 			return;
+		}
 		ItemStack buying = stockable.getStocking();
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player, -1);
-		if (mode != Mode.INFINITE)
+		if (mode != Mode.INFINITE) {
 			EconomyHandler.pay(new Payment(buying, false), npc, slot);
+		}
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
 		if (unbought.size() >= 1) {
@@ -176,8 +181,9 @@ public class TraderTask implements Runnable {
 		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
 		ItemStack i = playerInv.getItem(slot);
 		Stockable stockable = getStockable(i, "bought", true);
-		if (stockable == null)
+		if (stockable == null) {
 			return;
+		}
 		if (previousPlayerClickSlot != slot) {
 			previousPlayerClickSlot = slot;
 			sendStockableMessage(stockable);
@@ -185,11 +191,13 @@ public class TraderTask implements Runnable {
 		}
 		previousPlayerClickSlot = slot;
 		previousTraderClickSlot = -1;
-		if (checkMiscellaneous(playerInv, stockable, false))
+		if (checkMiscellaneous(playerInv, stockable, false)) {
 			return;
+		}
 		ItemStack selling = stockable.getStocking();
-		if (mode != Mode.INFINITE)
+		if (mode != Mode.INFINITE) {
 			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, -1);
+		}
 		EconomyHandler.pay(new Payment(stockable.getStocking(), false), player,
 				slot);
 		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
@@ -261,7 +269,6 @@ public class TraderTask implements Runnable {
 			start = "You don't";
 			keyword = "buy";
 		}
-
 		player.sendMessage(ChatColor.RED
 				+ start
 				+ " have enough money available to "
@@ -273,8 +280,9 @@ public class TraderTask implements Runnable {
 
 	private void sendStockableMessage(Stockable stockable) {
 		String keyword = "Buying ";
-		if (stockable.isSelling())
+		if (stockable.isSelling()) {
 			keyword = "Selling ";
+		}
 		player.sendMessage(ChatColor.AQUA
 				+ keyword
 				+ MessageUtils.getStockableMessage(stockable,

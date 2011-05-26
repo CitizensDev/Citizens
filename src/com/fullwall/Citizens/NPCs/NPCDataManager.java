@@ -23,26 +23,26 @@ public class NPCDataManager {
 			Material matBoots = Material.getMaterial(items.get(4));
 
 			// TODO: reduce the long if-tree.
-			if (matHelm != null && matHelm != Material.AIR)
+			if (matHelm != null && matHelm != Material.AIR) {
 				npc.getInventory().setHelmet(new ItemStack(matHelm, 1));
-			else
+			} else {
 				npc.getInventory().setHelmet(null);
-
-			if (matBoots != null && matBoots != Material.AIR)
+			}
+			if (matBoots != null && matBoots != Material.AIR) {
 				npc.getInventory().setBoots(new ItemStack(matBoots, 1));
-			else
+			} else {
 				npc.getInventory().setBoots(null);
-
-			if (matLegs != null && matLegs != Material.AIR)
+			}
+			if (matLegs != null && matLegs != Material.AIR) {
 				npc.getInventory().setLeggings(new ItemStack(matLegs, 1));
-			else
+			} else {
 				npc.getInventory().setLeggings(null);
-
-			if (matTorso != null && matTorso != Material.AIR)
+			}
+			if (matTorso != null && matTorso != Material.AIR) {
 				npc.getInventory().setChestplate(new ItemStack(matTorso, 1));
-			else
+			} else {
 				npc.getInventory().setChestplate(null);
-
+			}
 			npc.getNPCData().setItems(items);
 		}
 	}

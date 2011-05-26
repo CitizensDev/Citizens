@@ -13,7 +13,6 @@ public class EconomyHandler {
 
 	private static String prefix = "prices.";
 
-	// Parsed and used as settings for Citizens.economy.
 	public enum Operation {
 		/**
 		 * Create a basic NPC
@@ -124,12 +123,14 @@ public class EconomyHandler {
 	 */
 	public static boolean canBuy(Operation op, Player player) {
 		if (useEconomy) {
-			if (useIconomy())
+			if (useIconomy()) {
 				return ServerEconomyInterface.hasEnough(player, op);
-			else
+			} else {
 				return ItemInterface.hasEnough(player, op);
-		} else
+			}
+		} else {
 			return true;
+		}
 	}
 
 	/**
@@ -141,12 +142,14 @@ public class EconomyHandler {
 	 */
 	public static boolean canBuy(Payment payment, Player player) {
 		if (useEconomy) {
-			if (payment.isiConomy() && useIconomy())
+			if (payment.isiConomy() && useIconomy()) {
 				return ServerEconomyInterface.hasEnough(payment, player);
-			else
+			} else {
 				return ItemInterface.hasEnough(payment, player);
-		} else
+			}
+		} else {
 			return true;
+		}
 	}
 
 	/**
@@ -159,13 +162,15 @@ public class EconomyHandler {
 	 */
 	public static boolean canBuy(Payment payment, HumanNPC npc) {
 		if (useEconomy) {
-			if (payment.isiConomy() && useIconomy())
+			if (payment.isiConomy() && useIconomy()) {
 				return ServerEconomyInterface.hasEnough(payment, npc);
-			else
+			} else {
 				return ItemInterface.hasEnough(payment,
 						(Player) npc.getPlayer());
-		} else
+			}
+		} else {
 			return true;
+		}
 	}
 
 	/**
@@ -177,12 +182,14 @@ public class EconomyHandler {
 	 */
 	public static double pay(Operation op, Player player) {
 		if (useEconomy) {
-			if (useIconomy())
+			if (useIconomy()) {
 				return ServerEconomyInterface.pay(player, op);
-			else
+			} else {
 				return ItemInterface.pay(player, op);
-		} else
+			}
+		} else {
 			return 0;
+		}
 	}
 
 	/**
@@ -194,12 +201,14 @@ public class EconomyHandler {
 	 */
 	public static double pay(Operation op, Player player, int multiple) {
 		if (useEconomy) {
-			if (useIconomy())
+			if (useIconomy()) {
 				return ServerEconomyInterface.pay(player, op, multiple);
-			else
+			} else {
 				return ItemInterface.pay(player, op, multiple);
-		} else
+			}
+		} else {
 			return 0;
+		}
 	}
 
 	/**
@@ -211,12 +220,14 @@ public class EconomyHandler {
 	 */
 	public static double pay(Payment payment, HumanNPC npc, int slot) {
 		if (useEconomy) {
-			if (payment.isiConomy() && useIconomy())
+			if (payment.isiConomy() && useIconomy()) {
 				return ServerEconomyInterface.pay(npc, payment);
-			else
+			} else {
 				return ItemInterface.pay(npc.getPlayer(), payment, slot);
-		} else
+			}
+		} else {
 			return 0;
+		}
 	}
 
 	/**
@@ -228,12 +239,14 @@ public class EconomyHandler {
 	 */
 	public static double pay(Payment payment, Player player, int slot) {
 		if (useEconomy) {
-			if (payment.isiConomy() && useIconomy())
+			if (payment.isiConomy() && useIconomy()) {
 				return ServerEconomyInterface.pay(player, payment);
-			else
+			} else {
 				return ItemInterface.pay(player, payment, slot);
-		} else
+			}
+		} else {
 			return 0;
+		}
 	}
 
 	/**
@@ -268,12 +281,14 @@ public class EconomyHandler {
 	public static String getPaymentType(Operation op, String amount,
 			ChatColor colour) {
 		if (useEconomy) {
-			if (useIconomy())
+			if (useIconomy()) {
 				return ServerEconomyInterface.format(amount);
-			else
+			} else {
 				return ItemInterface.getCurrency(op, colour);
-		} else
+			}
+		} else {
 			return "None";
+		}
 	}
 
 	/**
@@ -285,12 +300,14 @@ public class EconomyHandler {
 	 */
 	public static String getRemainder(Operation op, Player player) {
 		if (useEconomy) {
-			if (useIconomy())
+			if (useIconomy()) {
 				return ServerEconomyInterface.getRemainder(op, player);
-			else
+			} else {
 				return ItemInterface.getRemainder(op, player);
-		} else
+			}
+		} else {
 			return "0";
+		}
 	}
 
 	/**
@@ -306,7 +323,8 @@ public class EconomyHandler {
 			} else {
 				return ItemInterface.getCurrency(payment, colour);
 			}
-		} else
+		} else {
 			return "0";
+		}
 	}
 }

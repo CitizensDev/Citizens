@@ -110,8 +110,9 @@ public class BasicProperties extends Saveable {
 
 	private PlayerInventory getInventory(int UID) {
 		String save = inventories.getString(UID);
-		if (save.isEmpty())
+		if (save.isEmpty()) {
 			return null;
+		}
 		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
@@ -189,8 +190,9 @@ public class BasicProperties extends Saveable {
 				text.add(string);
 			}
 			return text;
-		} else
+		} else {
 			return null;
+		}
 	}
 
 	public void getSetText(int UID) {
@@ -336,8 +338,9 @@ public class BasicProperties extends Saveable {
 		lookat.removeKey(npc.getUID());
 		talkwhenclose.removeKey(npc.getUID());
 		texts.removeKey(npc.getUID());
-		if (counts.keyExists(npc.getOwner()))
+		if (counts.keyExists(npc.getOwner())) {
 			counts.setInt(npc.getOwner(), counts.getInt(npc.getOwner()) - 1);
+		}
 		balances.removeKey(npc.getUID());
 		if (locations.getString("list").isEmpty()) {
 			locations.removeKey("list");
@@ -370,25 +373,35 @@ public class BasicProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (texts.keyExists(UID))
+		if (texts.keyExists(UID)) {
 			texts.setString(nextUID, texts.getString(UID));
-		if (locations.keyExists(UID))
+		}
+		if (locations.keyExists(UID)) {
 			locations.setString(nextUID, locations.getString(UID));
-		if (colours.keyExists(UID))
+		}
+		if (colours.keyExists(UID)) {
 			colours.setString(nextUID, colours.getString(UID));
-		if (owners.keyExists(UID))
+		}
+		if (owners.keyExists(UID)) {
 			owners.setString(nextUID, owners.getString(UID));
-		if (items.keyExists(UID))
+		}
+		if (items.keyExists(UID)) {
 			items.setString(nextUID, items.getString(UID));
-		if (inventories.keyExists(UID))
+		}
+		if (inventories.keyExists(UID)) {
 			inventories.setString(nextUID, inventories.getString(UID));
-		if (talkwhenclose.keyExists(UID))
+		}
+		if (talkwhenclose.keyExists(UID)) {
 			talkwhenclose.setString(nextUID, talkwhenclose.getString(UID));
-		if (lookat.keyExists(UID))
+		}
+		if (lookat.keyExists(UID)) {
 			lookat.setString(nextUID, lookat.getString(UID));
-		if (counts.keyExists(UID))
+		}
+		if (counts.keyExists(UID)) {
 			counts.setString(nextUID, counts.getString(UID));
-		if (balances.keyExists(UID))
+		}
+		if (balances.keyExists(UID)) {
 			balances.setString(nextUID, balances.getString(UID));
+		}
 	}
 }

@@ -29,8 +29,9 @@ public class TraderProperties extends Saveable {
 	}
 
 	private String addToStockableString(String s, Stockable st) {
-		if (s.contains(st.toString() + ";"))
+		if (s.contains(st.toString() + ";")) {
 			return "";
+		}
 		return st.toString() + ";";
 	}
 
@@ -62,8 +63,9 @@ public class TraderProperties extends Saveable {
 		ConcurrentHashMap<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
 		int i = 0;
 		for (String s : stocking.getString(UID).split(";")) {
-			if (s.isEmpty())
+			if (s.isEmpty()) {
 				continue;
+			}
 			i = 0;
 			ItemStack stack = new ItemStack(37);
 			ItemPrice price = new ItemPrice(0);
@@ -76,8 +78,9 @@ public class TraderProperties extends Saveable {
 							Integer.parseInt(split[1]));
 					MaterialData data = new MaterialData(stack.getType(),
 							Byte.parseByte(split[2]));
-					if (data != null)
+					if (data != null) {
 						stack.setData(data);
+					}
 					break;
 				case 1:
 					String[] parts = main.split("/");
@@ -168,11 +171,14 @@ public class TraderProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (traders.keyExists(UID))
+		if (traders.keyExists(UID)) {
 			traders.setString(nextUID, traders.getString(UID));
-		if (stocking.keyExists(UID))
+		}
+		if (stocking.keyExists(UID)) {
 			stocking.setString(nextUID, stocking.getString(UID));
-		if (unlimiteds.keyExists(UID))
+		}
+		if (unlimiteds.keyExists(UID)) {
 			unlimiteds.setString(nextUID, unlimiteds.getString(UID));
+		}
 	}
 }

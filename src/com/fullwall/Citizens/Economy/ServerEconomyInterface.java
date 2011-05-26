@@ -24,10 +24,11 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static boolean playerHasEnough(String name, double amount) {
-		if (Citizens.economy.hasAccount(name))
+		if (Citizens.economy.hasAccount(name)) {
 			return Citizens.economy.getAccount(name).hasEnough(amount);
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -37,10 +38,11 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static double getBalance(String name) {
-		if (Citizens.economy.hasAccount(name))
+		if (Citizens.economy.hasAccount(name)) {
 			return Citizens.economy.getAccount(name).balance();
-		else
+		} else {
 			return -1;
+		}
 	}
 
 	public static String getFormattedBalance(String name) {

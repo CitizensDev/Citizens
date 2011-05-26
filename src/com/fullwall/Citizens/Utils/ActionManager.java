@@ -17,19 +17,22 @@ public class ActionManager {
 	}
 
 	private static void validateCache(int entityID, String name) {
-		if (actions.get(entityID).get(name) == null)
+		if (actions.get(entityID).get(name) == null) {
 			actions.get(entityID).put(name, new CachedAction());
+		}
 	}
 
 	public static void validateAction(int entityID) {
-		if (actions.get(entityID) == null)
+		if (actions.get(entityID) == null) {
 			actions.put(entityID, new ConcurrentHashMap<String, CachedAction>());
+		}
 	}
 
 	public static void resetAction(int entityID, String name, String string,
 			boolean bool) {
-		if (bool)
+		if (bool) {
 			resetAction(entityID, name, string);
+		}
 	}
 
 	public static void resetAction(int entityID, String name, String string) {

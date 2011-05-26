@@ -29,8 +29,9 @@ public class MessageUtils {
 			+ "You are not the owner of this NPC.";
 
 	public static String stripWhite(String check) {
-		if (check.equals("§f"))
+		if (check.equals("§f")) {
 			return "";
+		}
 		return check;
 	}
 
@@ -43,9 +44,9 @@ public class MessageUtils {
 	 */
 	public static void sendText(HumanNPC npc, Player player, Citizens plugin) {
 		String text = getText(npc, player, plugin);
-		if (!text.isEmpty())
+		if (!text.isEmpty()) {
 			((Player) player).sendMessage(text);
-
+		}
 	}
 
 	/**
@@ -64,18 +65,20 @@ public class MessageUtils {
 		if (array != null && array.size() > 0) {
 			text = array.get(NPCManager.ran.nextInt(array.size()));
 		}
-		if (text.isEmpty())
+		if (text.isEmpty()) {
 			text = UtilityProperties.getDefaultText();
+		}
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
 				text = Constants.chatFormat.replace("&", "§").replace("%name%",
 						npc.getStrippedName())
 						+ text;
-			} else
+			} else {
 				text = Constants.chatFormat.replace("%name%",
 						Constants.npcColour + name + ChatColor.WHITE).replace(
 						"&", "§")
 						+ text;
+			}
 			return text;
 		}
 		return "";
@@ -117,11 +120,12 @@ public class MessageUtils {
 				+ "Paid "
 				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, "" + paid,
 						ChatColor.GREEN)) + " for ";
-		if (useType)
+		if (useType) {
 			message += StringUtils.wrap(npcName) + " to become a "
 					+ StringUtils.wrap(type) + ".";
-		else
+		} else {
 			message += StringUtils.wrap(npcName) + ".";
+		}
 		return message;
 	}
 
@@ -158,13 +162,14 @@ public class MessageUtils {
 	 */
 	public static String getStockableMessage(Stockable s, boolean selling,
 			ChatColor colour) {
-		if (!selling)
+		if (!selling) {
 			return StringUtils.wrap(s.getStocking().getAmount() + " "
 					+ s.getStocking().getType().name(), colour)
 					+ "(s) for "
 					+ MessageUtils.getPriceMessage(s.getPrice(), colour);
-		else
+		} else {
 			return reverseStockableMessage(s, colour);
+		}
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {

@@ -61,16 +61,20 @@ public class PathNPC extends EntityPlayer {
 				float diffYaw = getYawDifference(diffZ, diffX);
 
 				this.yaw += diffYaw;
-				if (diffY > 0.0D)
+				if (diffY > 0.0D) {
 					jumping = true;
+				}
 				move(); // Walk.
 			}
-			if (this.positionChanged && !this.pathFinished())
+			if (this.positionChanged && !this.pathFinished()) {
 				jumping = true;
-			if (this.random.nextFloat() < 0.8F && (inWater || inLava))
+			}
+			if (this.random.nextFloat() < 0.8F && (inWater || inLava)) {
 				jumping = true;
-			if (jumping)
+			}
+			if (jumping) {
 				jump();
+			}
 		} else {
 			super.c_();
 			this.pathEntity = null;
@@ -81,7 +85,7 @@ public class PathNPC extends EntityPlayer {
 		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float diffYaw = vectorYaw - this.yaw;
 
-		for (this.aw = this.aA; diffYaw < -180.0F; diffYaw += 360.0F) {
+		for (this.az = this.aD; diffYaw < -180.0F; diffYaw += 360.0F) {
 		}
 		while (diffYaw >= 180.0F) {
 			diffYaw -= 360.0F;
@@ -120,7 +124,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void move() {
-		this.a(this.av / 2, this.aw / 2);
+		this.a(this.ay / 2, this.az / 2);
 	}
 
 	private void jump() {
@@ -136,10 +140,11 @@ public class PathNPC extends EntityPlayer {
 	private void updatePathingState() {
 		Location loc = this.bukkitEntity.getLocation();
 		if (prevX == loc.getBlockX() && prevY == loc.getBlockY()
-				&& prevZ == loc.getBlockZ())
+				&& prevZ == loc.getBlockZ()) {
 			++stationaryTicks;
-		else
+		} else {
 			stationaryTicks = 0;
+		}
 		++pathTicks;
 		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
 				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
@@ -153,11 +158,12 @@ public class PathNPC extends EntityPlayer {
 	private void updateTarget() {
 		if (target != null) {
 			// Target died.
-			if (!this.target.P()) {
+			if (!this.target.Q()) {
 				resetTarget();
-			} else
+			} else {
 				this.pathEntity = this.world.findPath(this, this.target,
 						pathingRange);
+			}
 			if (target != null && targetAggro) {
 				float distanceToEntity = this.target.f(this);
 				// If we're close enough to attack...
@@ -213,7 +219,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
-		return 0.5F - this.world.l(i, j, k);
+		return 0.5F - this.world.m(i, j, k);
 	}
 
 	public Entity findClosestPlayer(double range) {

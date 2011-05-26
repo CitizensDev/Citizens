@@ -24,8 +24,9 @@ public class ItemInterface {
 		// Get the price/currency from the enum name.
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
-		if (price <= 0)
+		if (price <= 0) {
 			return true;
+		}
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		// The current count.
@@ -85,11 +86,18 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getCurrencyName(Operation op) {
-		int id = UtilityProperties.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
-		return Material.getMaterial(id).name();
+		return Material.getMaterial(
+				UtilityProperties.getCurrencyID(Operation.getString(op,
+						currencyAddendum))).name();
 	}
 
+	/**
+	 * Get the currency using a payment
+	 * 
+	 * @param payment
+	 * @param colour
+	 * @return
+	 */
 	public static String getCurrency(Payment payment, ChatColor colour) {
 		return Material.getMaterial(payment.getItem().getTypeId()) != null ? payment
 				.getItem().getAmount()
@@ -130,8 +138,9 @@ public class ItemInterface {
 	public static double pay(Player player, Operation op) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
-		if (price <= 0)
+		if (price <= 0) {
 			return price;
+		}
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		double current = price;
@@ -160,8 +169,9 @@ public class ItemInterface {
 	public static double pay(Player player, Operation op, int multiple) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum)) * multiple;
-		if (price <= 0)
+		if (price <= 0) {
 			return price;
+		}
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		double current = price;
@@ -189,16 +199,18 @@ public class ItemInterface {
 	public static double pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
 		double current = payment.getPrice();
-		if (current <= 0)
+		if (current <= 0) {
 			return payment.getPrice();
+		}
 		int count = 0;
 		if (slot != -1) {
 			current = decreaseItemStack(player,
 					player.getInventory().getItem(slot), currencyID, current,
 					slot);
 		}
-		if (current <= 0)
+		if (current <= 0) {
 			return payment.getPrice();
+		}
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
 				current = decreaseItemStack(player, i, currencyID, current,
@@ -220,9 +232,9 @@ public class ItemInterface {
 			if (current < 0) {
 				toChange -= current;
 			}
-			if (toChange == 0)
+			if (toChange == 0) {
 				i = null;
-			else {
+			} else {
 				i.setAmount(toChange);
 			}
 			player.getInventory().setItem(slot, i);

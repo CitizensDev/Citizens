@@ -28,7 +28,6 @@ public class PropertyManager {
 
 	public static void registerProperties() {
 		BasicProperties basic = new BasicProperties();
-
 		properties.put("basic", basic);
 		properties.put("bandit", new BanditProperties());
 		properties.put("blacksmith", new BlacksmithProperties());
@@ -39,7 +38,7 @@ public class PropertyManager {
 		properties.put("trader", new TraderProperties());
 		properties.put("wizard", new WizardProperties());
 		basicProperties = basic;
-		UtilityProperties.initialise();
+		UtilityProperties.initialize();
 	}
 
 	public static BasicProperties getBasic() {

@@ -49,15 +49,17 @@ public class NPCManager {
 		int colour = PropertyManager.getBasic().getColour(UID);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
-		if (colour != 0xf)
+		if (colour != 0xf) {
 			npcName = ChatColor.getByCode(colour) + name;
+		}
 		if (Constants.convertSlashes == true) {
 			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
-				if (i == 0)
+				if (i == 0) {
 					npcName = brokenName[i];
-				else
+				} else {
 					npcName += " " + brokenName[i];
+				}
 			}
 		}
 		HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(UID, npcName,
@@ -281,8 +283,9 @@ public class NPCManager {
 	public static boolean validateSelected(Player p, int UID) {
 		if (selectedNPCs.get(p.getName()) != null
 				&& !selectedNPCs.get(p.getName()).toString().isEmpty()) {
-			if (selectedNPCs.get(p.getName()).equals(UID))
+			if (selectedNPCs.get(p.getName()).equals(UID)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -291,10 +294,12 @@ public class NPCManager {
 	// overrides).
 	public static boolean validateOwnership(Player p, int UID, String permission) {
 		if (Permission.generic(p,
-				permission.replace("citizens.", "citizens.admin.")))
+				permission.replace("citizens.", "citizens.admin."))) {
 			return true;
-		if (validateOwnership(p, UID))
+		}
+		if (validateOwnership(p, UID)) {
 			return true;
+		}
 		return false;
 	}
 
@@ -306,8 +311,9 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateOwnership(Player p, int UID) {
-		if (get(UID).getOwner().equals(p.getName()))
+		if (get(UID).getOwner().equals(p.getName())) {
 			return true;
+		}
 		return false;
 	}
 

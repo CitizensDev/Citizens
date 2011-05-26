@@ -125,7 +125,7 @@ public class StringUtils {
 	}
 
 	/**
-	 * Parse an int from a string value
+	 * Parse an integer from a string value
 	 * 
 	 * @param passed
 	 * @return

@@ -48,11 +48,13 @@ public class ConfigurationHandler implements Storage {
 			Citizens.log.info("[Citizens]: Deleting outdated setting " + node
 					+ ".");
 			removeKey(node);
-			if (!found)
+			if (!found) {
 				found = true;
+			}
 		}
-		if (found)
+		if (found) {
 			save();
+		}
 	}
 
 	private void loadDefaults(HashMap<String, String> nodes) {
@@ -62,12 +64,14 @@ public class ConfigurationHandler implements Storage {
 				Citizens.log.info("[Citizens]: Writing default setting "
 						+ node.getKey() + ".");
 				setString(node.getKey(), node.getValue());
-				if (!found)
+				if (!found) {
 					found = true;
+				}
 			}
 		}
-		if (found)
+		if (found) {
 			save();
+		}
 	}
 
 	private void loadRenames(HashMap<String, String> nodes) {
@@ -80,12 +84,14 @@ public class ConfigurationHandler implements Storage {
 						+ node.getKey() + ".");
 				removeKey(node.getKey());
 				setString(key, value);
-				if (!found)
+				if (!found) {
 					found = true;
+				}
 			}
 		}
-		if (found)
+		if (found) {
 			save();
+		}
 	}
 
 	public void load() {
@@ -116,8 +122,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void removeKey(String path) {
 		this.config.removeProperty(path);
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -138,7 +145,6 @@ public class ConfigurationHandler implements Storage {
 		if (pathExists(path)) {
 			return this.config.getString(path);
 		}
-
 		return "";
 	}
 
@@ -151,8 +157,9 @@ public class ConfigurationHandler implements Storage {
 	public String getString(String path, String value) {
 		if (pathExists(path)) {
 			return this.config.getString(path);
-		} else
+		} else {
 			setString(path, value);
+		}
 		return value;
 	}
 
@@ -164,8 +171,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setString(String path, String value) {
 		this.config.setProperty(path, value);
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -178,7 +186,6 @@ public class ConfigurationHandler implements Storage {
 		if (pathExists(path)) {
 			return Integer.parseInt(this.config.getString(path));
 		}
-
 		return 0;
 	}
 
@@ -200,8 +207,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setInt(String path, int value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -214,7 +222,6 @@ public class ConfigurationHandler implements Storage {
 		if (pathExists(path)) {
 			return Double.parseDouble(this.config.getString(path));
 		}
-
 		return 0;
 	}
 
@@ -236,8 +243,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setDouble(String path, double value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -250,7 +258,6 @@ public class ConfigurationHandler implements Storage {
 		if (pathExists(path)) {
 			return Long.parseLong(this.config.getString(path));
 		}
-
 		return 0;
 	}
 
@@ -272,8 +279,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setLong(String path, long value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -286,7 +294,6 @@ public class ConfigurationHandler implements Storage {
 		if (pathExists(path)) {
 			return Boolean.parseBoolean(this.config.getString(path));
 		}
-
 		return false;
 	}
 
@@ -308,8 +315,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setBoolean(String path, boolean value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override

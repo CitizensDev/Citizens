@@ -42,17 +42,22 @@ public class Check {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Check other = (Check) obj;
-		if (itemID != other.itemID)
+		if (itemID != other.itemID) {
 			return false;
-		if (selling != other.selling)
+		}
+		if (selling != other.selling) {
 			return false;
+		}
 		return true;
 	}
 }

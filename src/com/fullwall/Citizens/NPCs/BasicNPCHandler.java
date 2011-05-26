@@ -73,8 +73,9 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	public void addText(int UID, String text) {
 		ArrayList<String> texts = super.getText(UID);
-		if (texts == null)
+		if (texts == null) {
 			texts = new ArrayList<String>();
+		}
 		texts.add(text);
 		super.setText(UID, texts);
 	}
@@ -114,10 +115,11 @@ public class BasicNPCHandler extends NPCManager {
 
 		npc.getNPCData().setItems(items);
 
-		if (mat != null && mat != Material.AIR)
+		if (mat != null && mat != Material.AIR) {
 			npc.getInventory().setItem(0, new ItemStack(mat, 1));
-		else
+		} else {
 			npc.getInventory().setItem(0, null);
+		}
 
 		NPCDataManager.addItems(npc, items);
 
@@ -182,10 +184,11 @@ public class BasicNPCHandler extends NPCManager {
 
 	public ItemStack decreaseItemStack(ItemStack stack) {
 		int amount = stack.getAmount() - 1;
-		if (amount == 0)
+		if (amount == 0) {
 			stack = null;
-		else
+		} else {
 			stack.setAmount(amount);
+		}
 		return stack;
 	}
 }

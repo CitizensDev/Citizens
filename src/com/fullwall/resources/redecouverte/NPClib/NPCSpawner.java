@@ -62,7 +62,7 @@ public class NPCSpawner {
 			CraftNPC eh = new CraftNPC(ms, ws, name, new ItemInWorldManager(ws));
 			eh.setPositionRotation(x, y, z, yaw, pitch);
 			ws.addEntity(eh);
-			ws.players.remove((EntityHuman)eh);
+			ws.players.remove((EntityHuman) eh);
 			return new HumanNPC(eh, UID, name);
 		} catch (Exception e) {
 			e.printStackTrace();

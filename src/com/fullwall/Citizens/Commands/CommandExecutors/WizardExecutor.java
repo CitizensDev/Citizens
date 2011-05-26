@@ -94,10 +94,8 @@ public class WizardExecutor implements CommandExecutor {
 						if (type <= npc.getWizard().getNumberOfLocations()) {
 							this.removeLocation(player, npc, type);
 						} else {
-							sender.sendMessage(ChatColor.RED
-									+ "Wizard "
-									+ StringUtils.wrap(npc
-											.getStrippedName())
+							sender.sendMessage(ChatColor.RED + "Wizard "
+									+ StringUtils.wrap(npc.getStrippedName())
 									+ "doesnt have that location.");
 						}
 					}
@@ -120,8 +118,8 @@ public class WizardExecutor implements CommandExecutor {
 	 */
 	private void addLocation(Player player, HumanNPC npc, String locName) {
 		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.wrap(npc.getStrippedName())
-				+ ChatColor.GREEN + " as " + StringUtils.wrap(locName));
+				+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
+				+ " as " + StringUtils.wrap(locName));
 		npc.getWizard().addLocation(player.getLocation(), locName);
 	}
 

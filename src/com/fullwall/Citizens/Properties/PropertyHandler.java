@@ -63,9 +63,10 @@ public final class PropertyHandler implements Storage {
 
 	private void createFile(File file) {
 		try {
-			if (!fileName.contains("profile"))
+			if (!fileName.contains("profile")) {
 				Citizens.log.info("[Citizens]: Creating missing file at "
 						+ fileName + ".");
+			}
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
@@ -78,9 +79,10 @@ public final class PropertyHandler implements Storage {
 		boolean told = false;
 		for (Entry<String, String> entry : nodes.entrySet()) {
 			if (!keyExists(entry.getKey())) {
-				if (!told)
+				if (!told) {
 					Citizens.log
 							.info("Missing entry in Citizens.itemlookups - restoring settings");
+				}
 				told = true;
 				setString(entry.getKey(), entry.getValue());
 			}
@@ -137,8 +139,9 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void removeKey(String key) {
 		this.properties.remove(key);
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -159,7 +162,6 @@ public final class PropertyHandler implements Storage {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
 		}
-
 		return "";
 	}
 
@@ -172,8 +174,9 @@ public final class PropertyHandler implements Storage {
 	public String getString(String key, String value) {
 		if (this.properties.containsKey(key)) {
 			return this.properties.getProperty(key);
-		} else
+		} else {
 			setString(key, value);
+		}
 		return value;
 	}
 
@@ -185,8 +188,9 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setString(String key, String value) {
 		this.properties.setProperty(key, value);
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -199,7 +203,6 @@ public final class PropertyHandler implements Storage {
 		if (this.properties.containsKey(key)) {
 			return Integer.parseInt(this.properties.getProperty(key));
 		}
-
 		return 0;
 	}
 
@@ -210,10 +213,11 @@ public final class PropertyHandler implements Storage {
 
 	@Override
 	public int getInt(String key, int value) {
-		if (this.properties.containsKey(key))
+		if (this.properties.containsKey(key)) {
 			return Integer.parseInt(this.properties.getProperty(key));
-		else
+		} else {
 			setInt(key, value);
+		}
 		return value;
 	}
 
@@ -225,8 +229,9 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setInt(String key, int value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -239,7 +244,6 @@ public final class PropertyHandler implements Storage {
 		if (this.properties.containsKey(key)) {
 			return Double.parseDouble(this.properties.getProperty(key));
 		}
-
 		return 0;
 	}
 
@@ -252,8 +256,9 @@ public final class PropertyHandler implements Storage {
 	public double getDouble(String key, double value) {
 		if (this.properties.containsKey(key)) {
 			return Double.parseDouble(this.properties.getProperty(key));
-		} else
+		} else {
 			setDouble(key, value);
+		}
 		return value;
 	}
 
@@ -265,8 +270,9 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setDouble(String key, double value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -279,7 +285,6 @@ public final class PropertyHandler implements Storage {
 		if (this.properties.containsKey(key)) {
 			return Long.parseLong(this.properties.getProperty(key));
 		}
-
 		return 0;
 	}
 
@@ -292,8 +297,9 @@ public final class PropertyHandler implements Storage {
 	public long getLong(String key, long value) {
 		if (this.properties.containsKey(key)) {
 			return Long.parseLong(this.properties.getProperty(key));
-		} else
+		} else {
 			setLong(key, value);
+		}
 		return value;
 	}
 
@@ -305,8 +311,9 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setLong(String key, long value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override
@@ -319,7 +326,6 @@ public final class PropertyHandler implements Storage {
 		if (this.properties.containsKey(key)) {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
 		}
-
 		return false;
 	}
 
@@ -332,8 +338,9 @@ public final class PropertyHandler implements Storage {
 	public boolean getBoolean(String key, boolean value) {
 		if (this.properties.containsKey(key)) {
 			return Boolean.parseBoolean(this.properties.getProperty(key));
-		} else
+		} else {
 			setBoolean(key, value);
+		}
 		return value;
 	}
 
@@ -345,8 +352,9 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setBoolean(String key, boolean value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften)
+		if (Constants.saveOften) {
 			save();
+		}
 	}
 
 	@Override

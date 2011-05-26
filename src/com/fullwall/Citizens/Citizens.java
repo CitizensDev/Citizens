@@ -306,8 +306,9 @@ public class Citizens extends JavaPlugin {
 	public boolean validateUID(int UID) {
 		if (NPCManager.GlobalUIDs.containsKey(UID)) {
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**

@@ -56,12 +56,13 @@ public class ItemPrice {
 
 	public String toString() {
 		String ret = "";
-		if (iConomy)
+		if (iConomy) {
 			ret += "" + price + Citizens.separatorChar + iConomy;
-		else
+		} else {
 			ret += "" + item.getAmount() + Citizens.separatorChar
 					+ item.getTypeId() + Citizens.separatorChar + getData()
 					+ Citizens.separatorChar + iConomy + Citizens.separatorChar;
+		}
 		return ret;
 	}
 

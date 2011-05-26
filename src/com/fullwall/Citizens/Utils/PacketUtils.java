@@ -26,15 +26,15 @@ public class PacketUtils {
 		final Vector locationVector = location.toVector();
 		final World world = location.getWorld();
 		for (Player ply : Bukkit.getServer().getOnlinePlayers()) {
-			if (ply.equals(except))
+			if (ply.equals(except)) {
 				continue;
-
-			if (world != ply.getWorld())
+			}
+			if (world != ply.getWorld()) {
 				continue;
-
-			if (locationVector.distanceSquared(ply.getLocation().toVector()) > radius)
+			}
+			if (locationVector.distanceSquared(ply.getLocation().toVector()) > radius) {
 				continue;
-
+			}
 			sendPacketToPlayer(ply, packet);
 		}
 	}

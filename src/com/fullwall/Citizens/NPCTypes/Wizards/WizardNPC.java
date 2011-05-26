@@ -105,8 +105,9 @@ public class WizardNPC implements Toggleable {
 	 */
 	public void cycleLocation() {
 		currentLocation++;
-		if (currentLocation >= numberOfLocations)
+		if (currentLocation >= numberOfLocations) {
 			currentLocation = 0;
+		}
 	}
 
 	/**
@@ -153,17 +154,16 @@ public class WizardNPC implements Toggleable {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0)
+				if (paid > 0) {
 					player.sendMessage(ChatColor.GREEN
 							+ "Paid "
-							+ StringUtils.wrap(EconomyHandler
-									.getPaymentType(op, "" + paid,
-											ChatColor.YELLOW))
+							+ StringUtils.wrap(EconomyHandler.getPaymentType(
+									op, "" + paid, ChatColor.YELLOW))
 							+ " for a teleport to "
-							+ StringUtils.wrap(wizard
-									.getCurrentLocationName()) + ".");
-				player.teleport(wizard.getCurrentLocation());
-
+							+ StringUtils.wrap(wizard.getCurrentLocationName())
+							+ ".");
+					player.teleport(wizard.getCurrentLocation());
+				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "Your server has not turned economy on for Citizens.");
@@ -174,8 +174,7 @@ public class WizardNPC implements Toggleable {
 		} else {
 			player.teleport(wizard.getCurrentLocation());
 			player.sendMessage(ChatColor.GREEN + "You got teleported to "
-					+ StringUtils.wrap(wizard.getCurrentLocationName())
-					+ ".");
+					+ StringUtils.wrap(wizard.getCurrentLocationName()) + ".");
 		}
 	}
 }

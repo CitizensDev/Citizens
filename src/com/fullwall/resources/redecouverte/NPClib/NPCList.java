@@ -14,15 +14,17 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 	}
 
 	public HumanNPC getBasicHumanNpc(Entity entity) {
-		if (entity == null)
+		if (entity == null) {
 			return null;
+		}
 		for (HumanNPC bnpc : this.values()) {
 			if (bnpc == null || bnpc.getPlayer() == null) {
-				if (bnpc == null)
+				if (bnpc == null) {
 					Citizens.log.info("[Citizens]: Null NPC found!");
-				else if (bnpc.getPlayer() == null)
+				} else if (bnpc.getPlayer() == null) {
 					Citizens.log
 							.info("[Citizens]: Craftbukkit entity of NPC was null!");
+				}
 				continue;
 			}
 			if (bnpc.getPlayer().getEntityId() == entity.getEntityId()) {

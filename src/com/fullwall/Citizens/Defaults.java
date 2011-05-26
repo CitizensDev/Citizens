@@ -162,7 +162,9 @@ public class Defaults {
 		nodes.put("spiderweb", "30");
 		nodes.put("cobweb", "30");
 		nodes.put("tallgrass", "31");
+		nodes.put("longgrass", "31");
 		nodes.put("weeds", "31");
+		nodes.put("shrubs", "32");
 		nodes.put("deadshrubs", "32");
 		nodes.put("deadbush", "32");
 		nodes.put("whitecloth", "35");

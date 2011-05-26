@@ -23,10 +23,11 @@ public class NPC {
 			String returnName = "";
 			String[] brokenName = this.name.split(" ");
 			for (int i = 0; i < brokenName.length; i++) {
-				if (i == 0)
+				if (i == 0) {
 					returnName = brokenName[i];
-				else
+				} else {
 					returnName += Constants.convertToSpaceChar + brokenName[i];
+				}
 			}
 			return ChatColor.stripColor(returnName);
 		}
