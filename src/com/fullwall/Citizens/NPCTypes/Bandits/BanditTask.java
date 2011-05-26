@@ -8,11 +8,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.ActionManager;
-import com.fullwall.Citizens.CachedAction;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.ActionManager;
+import com.fullwall.Citizens.Utils.CachedAction;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;

@@ -28,12 +28,17 @@ public class Constants {
 
 	public static String chatFormat = "[%name%]: ";
 	public static String convertToSpaceChar = "/";
+	public static String defaultText = "Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;";
 	public static String npcColour = "�f";
+	public static String talkItems = "340,";
+	public static String selectItems = "*";
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean defaultTalkWhenClose = false;
 	public static boolean saveOften = true;
+	public static boolean useEconomy = true;
+	public static boolean useEconplugin = false;
 	public static boolean useItemList = true;
 	public static boolean useNPCColours = true;
 	public static boolean useSaveTask = true;
@@ -43,7 +48,7 @@ public class Constants {
 	 */
 	public static void setupVariables() {
 		EconomyHandler.setUpVariables();
-		Storage settings = UtilityProperties.settings;
+		Storage settings = UtilityProperties.getSettings();
 
 		// Boolean defaults
 		convertSlashes = settings.getBoolean("general.chat.slashes-to-spaces");
@@ -57,9 +62,11 @@ public class Constants {
 		useSaveTask = settings.getBoolean("ticks.saving.use-task");
 
 		// String defaults
-		chatFormat = settings.getString("general.chat.siformat");
-		npcColour = UtilityProperties.settings
-				.getString("general.colors.npc-colour");
+		chatFormat = settings.getString("general.chat.format");
+		defaultText = settings.getString("general.chat.default-text");
+		npcColour = settings.getString("general.colors.npc-colour");
+		talkItems = settings.getString("items.basic.talk-items");
+		selectItems = settings.getString("items.basic.select-items");
 
 		// Double defaults
 		defaultBouncerProtectionRadius = settings
@@ -70,20 +77,25 @@ public class Constants {
 
 		// int defaults
 		banditStealRadius = settings.getInt("range.bandits.steal-radius");
-		maxNPCsPerPlayer = settings.getInt("general.limits.npcs-per-player");
 		evilNPCTameItem = settings.getInt("items.evil.tame-item");
 		healerGiveHealthItem = settings
 				.getInt("items.healers.give-health-item");
 		healerTakeHealthItem = settings
 				.getInt("items.healers.take-health-item");
-		wizardMaxLocations = settings
-				.getInt("general.wizards.wizard-max-locations");
-		wizardInteractItem = settings.getInt("items.wizards.interact-item");
 		healerHealthRegenIncrement = settings
 				.getInt("ticks.healers.health-regen-increment");
+		maxNPCsPerPlayer = settings.getInt("general.limits.npcs-per-player");
 		maxPathingTicks = settings.getInt("ticks.pathing.max-pathing");
 		maxStationaryTicks = settings.getInt("ticks.pathing.max-stationary");
 		saveDelay = settings.getInt("ticks.saving.delay");
 		tickDelay = settings.getInt("ticks.general.delay");
+		wizardMaxLocations = settings
+				.getInt("general.wizards.wizard-max-locations");
+		wizardInteractItem = settings.getInt("items.wizards.interact-item");
+
+		// ####Economy settings####
+		Storage economy = UtilityProperties.getEconomySettings();
+		useEconplugin = economy.getBoolean("economy.use-economy");
+		useEconomy = economy.getBoolean("economy.use-econplugin");
 	}
 }

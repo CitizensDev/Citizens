@@ -10,12 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
-import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -509,14 +509,12 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			texts.add(text);
 		}
-		if (args[1].length() > 16) {
+		if (args[1].length() > 15) {
 			player.sendMessage(ChatColor.RED
-					+ "NPC name length is too long. The limit is 16 characters.");
-			return;
+					+ "The name of this NPC will be truncated - max name length is 15.");
 		}
-		if ((PropertyManager.getBasic().getNPCAmountPerPlayer(player.getName()) < UtilityProperties
-				.getMaxNPCsPerPlayer())
-				|| (UtilityProperties.settings.getInt("max-NPCs-per-player") == 0)
+		if ((PropertyManager.getBasic().getNPCAmountPerPlayer(player.getName()) < Constants.maxNPCsPerPlayer)
+				|| (Constants.maxNPCsPerPlayer == 0)
 				|| (Permission.hasPermission("citizens.general.nolimit",
 						(CommandSender) player))) {
 			int UID = NPCManager.register(args[1], player.getLocation(),
@@ -546,8 +544,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else {
 			player.sendMessage(ChatColor.GREEN
 					+ "You have reached the NPC-creation limit of "
-					+ StringUtils.wrap(""
-							+ UtilityProperties.getMaxNPCsPerPlayer()) + ".");
+					+ StringUtils.wrap("" + Constants.maxNPCsPerPlayer) + ".");
 		}
 	}
 
@@ -721,7 +718,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 */
 	private void resetText(String[] args, CommandSender sender, HumanNPC npc) {
-		plugin.basicNPCHandler.resetText(npc.getUID());
+		NPCManager.resetText(npc.getUID());
 		sender.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
 				+ " text was reset!");
 	}

@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
-import com.fullwall.Citizens.PropertyHandler;
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 

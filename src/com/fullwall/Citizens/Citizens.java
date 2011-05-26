@@ -23,6 +23,8 @@ import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.ConfigurationHandler;
+import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -46,8 +48,7 @@ public class Citizens extends JavaPlugin {
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static String separatorChar = "/";
 
-	public static final int MAGIC_DATA_VALUE = -1;
-	private static final String codename = "Helpers";
+	private static final String codename = "Realist";
 	public static String version = "1.0.8";
 
 	@Override
@@ -117,7 +118,7 @@ public class Citizens extends JavaPlugin {
 		}
 
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "d] (" + codename + ") loaded");
+				+ pdfFile.getVersion() + "e] (" + codename + ") loaded");
 	}
 
 	private void transferSettings() {
@@ -230,7 +231,7 @@ public class Citizens extends JavaPlugin {
 
 		// Save the local copy of our files to disk.
 		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "d] (" + codename + ") disabled");
+				+ pdfFile.getVersion() + "e] (" + codename + ") disabled");
 	}
 
 	private void setupNPCs() {
@@ -264,32 +265,6 @@ public class Citizens extends JavaPlugin {
 	}
 
 	/**
-	 * If "*" is used as a tool for anything (little bit of a hack for
-	 * displaying selection notifications).
-	 * 
-	 * @return Whether "*" is used.
-	 */
-	public boolean canSelectAny() {
-		String[] items = UtilityProperties.settings.getString(
-				"items.basic.select-item").split(",");
-		ArrayList<String> item = new ArrayList<String>();
-		for (String s : items) {
-			item.add(s);
-		}
-		if (item.contains("*"))
-			return true;
-		items = UtilityProperties.settings.getString("items.basic.talk-items")
-				.split(",");
-		item = new ArrayList<String>();
-		for (String s : items) {
-			item.add(s);
-		}
-		if (item.contains("*"))
-			return true;
-		return false;
-	}
-
-	/**
 	 * Returns whether the given item ID is usable as a tool.
 	 * 
 	 * @param key
@@ -298,8 +273,8 @@ public class Citizens extends JavaPlugin {
 	 */
 	public boolean validateTool(String key, int type, boolean sneaking) {
 		if (Constants.useItemList) {
-			String[] items = UtilityProperties.settings.getString(key).split(
-					",");
+			String[] items = UtilityProperties.getSettings().getString(key)
+					.split(",");
 			List<String> item = Arrays.asList(items);
 			if (item.contains("*")) {
 				return true;

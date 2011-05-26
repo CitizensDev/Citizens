@@ -26,8 +26,8 @@ public class NPCManager {
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<Integer, ArrayList<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayList<String>>();
 	public static ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
-	public Random ran = new Random(new Random(new Random(new Random(
-			System.currentTimeMillis()).nextLong()).nextLong()).nextLong());
+	public static Random ran = new Random(
+			new Random(System.currentTimeMillis()).nextLong());
 	private static NPCList list;
 
 	public NPCManager(Citizens plugin) {
@@ -118,6 +118,15 @@ public class NPCManager {
 	 */
 	public static ArrayList<String> getText(int UID) {
 		return NPCTexts.get(UID);
+	}
+
+	/**
+	 * Resets an NPC's text.
+	 * 
+	 * @param UID
+	 */
+	public static void resetText(int UID) {
+		setText(UID, new ArrayList<String>());
 	}
 
 	/**

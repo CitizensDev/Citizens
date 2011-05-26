@@ -14,19 +14,19 @@ public class Defaults {
 
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
-		// GeneralSettings
+		// General Settings
 		nodes.put("general.limits.npcs-per-player", "10");
 		nodes.put("general.defaults.enable-following", "true");
 		nodes.put("general.defaults.talk-when-close", "false");
 		nodes.put("general.colors.use-npc-colours", "true");
 		nodes.put("general.colors.npc-colour", "§f");
-		nodes.put("general.chat.siformat", "[%name%]: ");
+		nodes.put("general.chat.format", "[%name%]: ");
 		nodes.put("general.chat.slashes-to-spaces", "true");
 		nodes.put(
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");
 		nodes.put("general.wizards.wizard-max-locations", "10");
-		// ItemSettings
+		// Item Settings
 		nodes.put("items.item-list-on", "true");
 		nodes.put("items.basic.talk-items", "340,");
 		nodes.put("items.basic.select-items", "*");
@@ -34,7 +34,7 @@ public class Defaults {
 		nodes.put("items.healers.take-health-item", "276");
 		nodes.put("items.healers.give-health-item", "35");
 		nodes.put("items.wizards.interact-item", "288");
-		// TickSettings
+		// Tick Settings
 		nodes.put("ticks.general.delay", "1");
 		nodes.put("ticks.saving.use-task", "true");
 		nodes.put("ticks.saving.save-often", "true");
@@ -42,7 +42,7 @@ public class Defaults {
 		nodes.put("ticks.pathing.max-stationary", "25");
 		nodes.put("ticks.pathing.max-pathing", "-1");
 		nodes.put("ticks.healers.health-regen-increment", "12000");
-		// RangeSettings
+		// Range Settings
 		nodes.put("range.basic.look", "4");
 		nodes.put("range.bandits.steal-radius", "5");
 		nodes.put("range.guards.default-bouncer-protection-radius", "5");
@@ -54,39 +54,51 @@ public class Defaults {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		nodes.put("economy.use-economy", "true");
 		nodes.put("economy.use-econplugin", "false");
+
 		nodes.put("prices.basic.creation.create-item", "10");
 		nodes.put("prices.basic.creation.item-currency-id", "37");
 		nodes.put("prices.basic.creation.econplugin", "100");
+
 		nodes.put("prices.bandit.creation.create-item", "10");
 		nodes.put("prices.bandit.creation.item-currency-id", "37");
 		nodes.put("prices.bandit.creation.econplugin", "100");
+
 		nodes.put("prices.blacksmith.creation.create-item", "10");
 		nodes.put("prices.blacksmith.creation.item-currency-id", "37");
 		nodes.put("prices.blacksmith.creation.econplugin", "100");
+
 		nodes.put("prices.blacksmith.armorrepair.repair-item", "10");
 		nodes.put("prices.blacksmith.armorrepair.item-currency-id", "37");
 		nodes.put("prices.blacksmith.armorrepair.econplugin", "100");
+
 		nodes.put("prices.blacksmith.toolrepair.create-item", "10");
 		nodes.put("prices.blacksmith.toolrepair.item-currency-id", "37");
 		nodes.put("prices.blacksmith.toolrepair.econplugin", "100");
+
 		nodes.put("prices.guard.creation.create-item", "10");
 		nodes.put("prices.guard.creation.item-currency-id", "37");
 		nodes.put("prices.guard.creation.econplugin", "100");
+
 		nodes.put("prices.healer.creation.create-item", "10");
 		nodes.put("prices.healer.creation.item-currency-id", "37");
 		nodes.put("prices.healer.creation.econplugin", "100");
+
 		nodes.put("prices.healer.level-up.create-item", "10");
 		nodes.put("prices.healer.level-up.item-currency-id", "37");
 		nodes.put("prices.healer.level-up.econplugin", "100");
+
 		nodes.put("prices.quester.creation.create-item", "10");
 		nodes.put("prices.quester.creation.item-currency-id", "37");
 		nodes.put("prices.quester.creation.econplugin", "100");
+
 		nodes.put("prices.trader.creation.create-item", "20");
 		nodes.put("prices.trader.creation.item-currency-id", "37");
 		nodes.put("prices.trader.creation.econplugin", "250");
+
 		nodes.put("prices.wizard.creation.create-item", "20");
 		nodes.put("prices.wizard.creation.item-currency-id", "37");
 		nodes.put("prices.wizard.creation.econplugin", "150");
+
 		nodes.put("prices.wizard.teleport.create-item", "20");
 		nodes.put("prices.wizard.teleport.item-currency-id", "37");
 		nodes.put("prices.wizard.teleport.econplugin", "150");

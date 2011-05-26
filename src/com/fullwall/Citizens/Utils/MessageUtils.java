@@ -62,7 +62,7 @@ public class MessageUtils {
 		ArrayList<String> array = NPCManager.getText(UID);
 		String text = "";
 		if (array != null && array.size() > 0) {
-			text = array.get(plugin.basicNPCHandler.ran.nextInt(array.size()));
+			text = array.get(NPCManager.ran.nextInt(array.size()));
 		}
 		if (text.isEmpty())
 			text = UtilityProperties.getDefaultText();

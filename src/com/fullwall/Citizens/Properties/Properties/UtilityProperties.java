@@ -1,14 +1,15 @@
 package com.fullwall.Citizens.Properties.Properties;
 
-import java.util.Random;
-
-import com.fullwall.Citizens.ConfigurationHandler;
-import com.fullwall.Citizens.PropertyHandler;
+import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.Interfaces.Storage;
+import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.ConfigurationHandler;
+import com.fullwall.Citizens.Properties.PropertyHandler;
 
 public class UtilityProperties {
-	public static ConfigurationHandler economy;
+	private static ConfigurationHandler economy;
 	public static PropertyHandler itemlookups;
-	public static ConfigurationHandler settings;
+	private static ConfigurationHandler settings;
 
 	public static void initialise() {
 		economy = new ConfigurationHandler("plugins/Citizens/economy.yml",
@@ -19,23 +20,18 @@ public class UtilityProperties {
 				false);
 	}
 
-	public static int getMaxNPCsPerPlayer() {
-		return settings.getInt("general.limits.npcs-per-player");
+	public static Storage getSettings() {
+		return settings;
+	}
+
+	public static Storage getEconomySettings() {
+		return economy;
 	}
 
 	public static String getDefaultText() {
-		String[] split = settings.getString("general.chat.default-text").split(
-				";");
-		String text;
-		if (split != null) {
-			text = split[new Random(System.currentTimeMillis())
-					.nextInt(split.length)];
-			if (text == null) {
-				text = "";
-			}
-		} else {
-			text = "";
-		}
+		String[] split = Constants.defaultText.split(";");
+		String text = "";
+		text = split[NPCManager.ran.nextInt(split.length)];
 		return text.replace('&', '§');
 	}
 
@@ -46,13 +42,5 @@ public class UtilityProperties {
 	public static int getCurrencyID(String string) {
 		int ID = economy.getInt(string);
 		return ID == -1 ? 1 : ID;
-	}
-
-	public static boolean checkEconomyEnabled() {
-		return economy.getBoolean("economy.use-economy");
-	}
-
-	public static boolean checkServerEconomyEnabled() {
-		return economy.getBoolean("economy.use-econplugin");
 	}
 }

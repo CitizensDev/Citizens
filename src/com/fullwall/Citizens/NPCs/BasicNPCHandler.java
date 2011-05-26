@@ -80,16 +80,6 @@ public class BasicNPCHandler extends NPCManager {
 	}
 
 	/**
-	 * Resets an npc's text to blank.
-	 * 
-	 * @param UID
-	 */
-	public void resetText(int UID) {
-		ArrayList<String> a = new ArrayList<String>();
-		super.setText(UID, a);
-	}
-
-	/**
 	 * Sets the in-hand item of an npc.
 	 * 
 	 * @param p

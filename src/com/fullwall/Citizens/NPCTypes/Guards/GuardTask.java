@@ -21,10 +21,10 @@ import org.bukkit.entity.Squid;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
-import com.fullwall.Citizens.ActionManager;
-import com.fullwall.Citizens.CachedAction;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.ActionManager;
+import com.fullwall.Citizens.Utils.CachedAction;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.PathUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
