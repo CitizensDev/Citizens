@@ -6,10 +6,9 @@ import java.util.logging.Logger;
 import net.minecraft.server.InventoryPlayer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -98,8 +97,8 @@ public class BasicProperties extends Saveable {
 	private void saveInventory(int UID, PlayerInventory inv) {
 		String save = "";
 		for (ItemStack i : inv.getContents()) {
-			if (i == null) {
-				save += 0 + "/" + 1 + "/" + 0 + ",";
+			if (i == null || i.getType() == Material.AIR) {
+				save += "AIR,";
 			} else {
 				save += i.getTypeId() + "/" + i.getAmount() + "/"
 						+ ((i.getData() == null) ? 0 : i.getData().getData())
@@ -116,7 +115,7 @@ public class BasicProperties extends Saveable {
 		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
-			if (!split[0].equals("0")) {
+			if (!split[0].equals("AIR") && !split[0].equals("0")) {
 				array.add(new ItemStack(StringUtils.parse(split[0]),
 						StringUtils.parse(split[1]), (short) 0,
 						(byte) StringUtils.parse(split[2])));
@@ -144,7 +143,7 @@ public class BasicProperties extends Saveable {
 		return array;
 	}
 
-	public void saveItems(int UID, ArrayList<Integer> items2) {
+	private void saveItems(int UID, ArrayList<Integer> items2) {
 		String toSave = "";
 		for (Integer i : items2) {
 			toSave += "" + i + ",";
@@ -178,7 +177,7 @@ public class BasicProperties extends Saveable {
 		}
 	}
 
-	public void saveColour(int UID, int colour) {
+	private void saveColour(int UID, int colour) {
 		colours.setInt(UID, colour);
 	}
 
@@ -205,7 +204,7 @@ public class BasicProperties extends Saveable {
 		}
 	}
 
-	public void saveText(int UID, ArrayList<String> text) {
+	private void saveText(int UID, ArrayList<String> text) {
 		String adding = "";
 		if (text != null) {
 			for (String string : text) {
@@ -235,20 +234,8 @@ public class BasicProperties extends Saveable {
 		return owners.getString(UID);
 	}
 
-	public void setOwner(int UID, String name) {
+	private void setOwner(int UID, String name) {
 		owners.setString(UID, name);
-	}
-
-	public void addOwner(int UID, String name, Player p) {
-		String[] npcOwners = getOwner(UID).split(",");
-		for (int i = 0; i < npcOwners.length; i++) {
-			if (npcOwners[i].equals(name) == true) {
-				p.sendMessage(ChatColor.RED
-						+ "This NPC already is owned by that player.");
-				return;
-			}
-		}
-		owners.setString(UID, getOwner(UID) + "," + name);
 	}
 
 	public int getNewNpcID() {
@@ -260,11 +247,11 @@ public class BasicProperties extends Saveable {
 		return returnResult;
 	}
 
-	public void saveBalance(int UID, double balance) {
+	private void saveBalance(int UID, double balance) {
 		balances.setDouble(UID, balance);
 	}
 
-	public double getBalance(int UID) {
+	private double getBalance(int UID) {
 		return balances.getDouble(UID);
 	}
 
