@@ -297,6 +297,14 @@ public class Defaults {
 		nodes.put("glowingpumpkin", "91");
 		nodes.put("lightpumpkin", "91");
 		nodes.put("cakeblock", "92");
+		nodes.put("diodeoff", "93");
+		nodes.put("repeateroff", "93");
+		nodes.put("diodeon", "94");
+		nodes.put("repeateron", "94");
+		nodes.put("supplycrate", "95");
+		nodes.put("lockedchest", "95");
+		nodes.put("trapdoor", "96");
+		nodes.put("hatch", "96");
 		nodes.put("#Item ID", "");
 		nodes.put("ironshovel", "256");
 		nodes.put("ironspade", "256");
@@ -579,6 +587,11 @@ public class Defaults {
 		nodes.put("bone", "352");
 		nodes.put("sugar", "353");
 		nodes.put("cake", "354");
+		nodes.put("bed", "355");
+		nodes.put("redstonerepeater", "356");
+		nodes.put("diode", "356");
+		nodes.put("cookie", "357");
+		nodes.put("map", "358");
 		nodes.put("goldrecord", "2256");
 		nodes.put("golddisk", "2256");
 		nodes.put("grecord", "2256");
