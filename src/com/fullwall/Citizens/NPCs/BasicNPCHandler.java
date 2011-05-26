@@ -113,6 +113,12 @@ public class BasicNPCHandler extends NPCManager {
 		items.set(0, mat.getId());
 
 		npc.getNPCData().setItems(items);
+
+		if (mat != null && mat != Material.AIR)
+			npc.getInventory().setItem(0, new ItemStack(mat, 1));
+		else
+			npc.getInventory().setItem(0, null);
+
 		NPCDataManager.addItems(npc, items);
 
 		if ((olditem != 0 && items.get(0) == 0)) {

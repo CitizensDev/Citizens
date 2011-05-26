@@ -28,6 +28,7 @@ public class PropertyManager {
 
 	public static void registerProperties() {
 		BasicProperties basic = new BasicProperties();
+
 		properties.put("basic", basic);
 		properties.put("bandit", new BanditProperties());
 		properties.put("blacksmith", new BlacksmithProperties());

@@ -2,17 +2,12 @@ package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayList;
 
-import com.fullwall.Citizens.Citizens;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class NPCDataManager extends NPCManager {
-
-	public NPCDataManager(Citizens plugin) {
-		super(plugin);
-	}
+public class NPCDataManager {
 
 	/**
 	 * Adds items to an npc so that they are visible.
@@ -22,7 +17,6 @@ public class NPCDataManager extends NPCManager {
 	 */
 	public static void addItems(HumanNPC npc, ArrayList<Integer> items) {
 		if (items != null) {
-			Material matHand = Material.getMaterial(items.get(0));
 			Material matHelm = Material.getMaterial(items.get(1));
 			Material matTorso = Material.getMaterial(items.get(2));
 			Material matLegs = Material.getMaterial(items.get(3));
@@ -49,10 +43,6 @@ public class NPCDataManager extends NPCManager {
 			else
 				npc.getInventory().setChestplate(null);
 
-			if (matHand != null && matHand != Material.AIR)
-				npc.getInventory().setItem(0, new ItemStack(matHand, 1));
-			else
-				npc.getInventory().setItem(0, null);
 			npc.getNPCData().setItems(items);
 		}
 	}
