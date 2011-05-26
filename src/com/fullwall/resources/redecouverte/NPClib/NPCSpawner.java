@@ -2,6 +2,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.lang.reflect.Field;
 import net.minecraft.server.Entity;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityTypes;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -61,6 +62,7 @@ public class NPCSpawner {
 			CraftNPC eh = new CraftNPC(ms, ws, name, new ItemInWorldManager(ws));
 			eh.setPositionRotation(x, y, z, yaw, pitch);
 			ws.addEntity(eh);
+			ws.players.remove((EntityHuman)eh);
 			return new HumanNPC(eh, UID, name);
 		} catch (Exception e) {
 			e.printStackTrace();

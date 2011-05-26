@@ -65,11 +65,7 @@ public class TraderExecutor implements CommandExecutor {
 		} else if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
 			if (Permission.hasPermission("citizens.trader.stock", sender)) {
-				if (!EconomyHandler.useIconomy())
-					player.sendMessage(ChatColor.GRAY
-							+ "This server is not using iConomy.");
-				else
-					displayList(player, npc, args, args[1].contains("s"));
+				displayList(player, npc, args, args[1].contains("s"));
 			} else
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			returnval = true;
