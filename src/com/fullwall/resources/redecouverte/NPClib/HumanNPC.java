@@ -54,7 +54,7 @@ public class HumanNPC extends NPC {
 		return (Player) this.mcEntity.getBukkitEntity();
 	}
 
-	public CraftNPC getMinecraftEntity() {
+	public CraftNPC getHandle() {
 		return this.mcEntity;
 	}
 

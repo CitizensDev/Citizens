@@ -325,6 +325,6 @@ public class NPCManager {
 	 */
 	public static void showInventory(HumanNPC npc, Player player) {
 		((CraftPlayer) player).getHandle()
-				.a(npc.getMinecraftEntity().inventory);
+				.a(npc.getHandle().inventory);
 	}
 }

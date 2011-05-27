@@ -68,9 +68,9 @@ public class TraderTask implements Runnable {
 		}
 		if (npc == null
 				|| player == null
-				|| player.getHandle().activeContainer == player.getHandle().defaultContainer
-				|| player.getHandle().activeContainer != npc
-						.getMinecraftEntity().activeContainer
+				|| checkContainer(player.getHandle())
+				|| checkContainer(npc.getHandle())
+				|| player.getHandle().activeContainer != npc.getHandle().activeContainer
 				|| !player.isOnline()) {
 			kill();
 			return;
@@ -127,6 +127,10 @@ public class TraderTask implements Runnable {
 		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
 		mcPlayer.netServerHandler.sendPacket(packet);
 		stop = false;
+	}
+
+	private boolean checkContainer(EntityPlayer handle) {
+		return handle.activeContainer == handle.defaultContainer;
 	}
 
 	@SuppressWarnings("deprecation")
