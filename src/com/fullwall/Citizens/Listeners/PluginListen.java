@@ -19,7 +19,7 @@ public class PluginListen extends ServerListener implements Listener {
 
 	public PluginListen(Citizens plugin) {
 		this.plugin = plugin;
-		this.methods = new Methods();
+		this.methods = new Methods("iConomy");
 	}
 
 	@Override
