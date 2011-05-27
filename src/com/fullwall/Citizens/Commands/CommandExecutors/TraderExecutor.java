@@ -224,7 +224,6 @@ public class TraderExecutor implements CommandExecutor {
 			String price, boolean selling) {
 		selling = !selling;
 		if (item.contains("rem")) {
-			selling = !selling;
 			ItemStack stack = parseItemStack(price.split(":"));
 			if (stack == null) {
 				player.sendMessage(ChatColor.RED
