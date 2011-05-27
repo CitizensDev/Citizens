@@ -128,32 +128,47 @@ public class Citizens extends JavaPlugin {
 					"plugins/Citizens/citizens.yml", true);
 			PropertyHandler handler = new PropertyHandler(
 					"plugins/Citizens/Citizens.settings");
-			/*
-			 * nodes.put("tick-delay", "1"); nodes.put("use-save-task", "true");
-			 * nodes.put("save-tick-delay", "72000"); nodes.put("save-often",
-			 * "true"); nodes.put("look-range", "4"); nodes.put("item-list-on",
-			 * "true"); nodes.put("items", "340,"); nodes.put("select-item",
-			 * "*"); nodes.put("default-enable-following", "true");
-			 * nodes.put("default-talk-when-close", "false");
-			 * nodes.put("use-npc-colours", "true"); nodes.put("npc-colour",
-			 * "§f"); nodes.put("chat-format", "[%name%]: ");
-			 * nodes.put("slashes-to-spaces", "true");
-			 * nodes.put("max-NPCs-per-player", "10");
-			 * nodes.put("healer-take-health-item", "276");
-			 * nodes.put("healer-give-health-item", "35");
-			 * nodes.put("healer-health-regen-increment", "12000");
-			 * nodes.put("wizard-interact-item", "288");
-			 * nodes.put("wizard-max-locations", "10");
-			 * nodes.put("bandit-steal-radius", "5");
-			 * nodes.put("guard-protection-radius", "10");
-			 * nodes.put("pathfinding-range", "16");
-			 * nodes.put("max-stationary-ticks", "25");
-			 * nodes.put("max-pathing-ticks", "-1");
-			 * nodes.put("evil-npc-tame-item", "354"); nodes.put(
-			 * "default-text",
-			 * "Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"
-			 * );
-			 */
+			temp.setInt("general.limits.npcs-per-player",
+					handler.getInt("max-NPCs-per-player"));
+			temp.setBoolean("general.defaults.enable-following",
+					handler.getBoolean("default-enable-following"));
+			temp.setBoolean("general.defaults.talk-when-close",
+					handler.getBoolean("default-talk-when-close"));
+			temp.setBoolean("general.colors.use-npc-colours",
+					handler.getBoolean("use-npc-colours"));
+			temp.setString("general.colors.npc-colour",
+					handler.getString("npc-colour"));
+			temp.setString("general.chat.format",
+					handler.getString("chat-format"));
+			temp.setBoolean("general.chat.slashes-to-spaces",
+					handler.getBoolean("slashes-to-spaces"));
+			temp.setString("general.chat.default-text",
+					handler.getString("default-text"));
+			temp.setInt("general.wizards.wizard-max-locations",
+					handler.getInt("wizard-max-locations"));
+			// Item Settings
+			temp.setBoolean("items.item-list-on",
+					handler.getBoolean("item-list-on"));
+			temp.setString("items.basic.talk-items", handler.getString("items"));
+			temp.setString("items.basic.select-items",
+					handler.getString("select-item"));
+			temp.setInt("items.healers.take-health-item",
+					handler.getInt("healer-take-health-item"));
+			temp.setInt("items.healers.give-health-item",
+					handler.getInt("healer-give-health-item"));
+			temp.setInt("items.wizards.interact-item",
+					handler.getInt("wizard-interact-item"));
+			// Tick Settings
+			temp.setInt("ticks.general.delay", handler.getInt("tick-delay"));
+			temp.setBoolean("ticks.saving.use-task",
+					handler.getBoolean("use-save-task"));
+			temp.setBoolean("ticks.saving.save-often",
+					handler.getBoolean("save-often"));
+			temp.setInt("ticks.saving.delay", handler.getInt("save-tick-delay"));
+			temp.setInt("ticks.healers.health-regen-increment",
+					handler.getInt("healer-health-regen-increment"));
+			// Range Settings
+			temp.setInt("range.basic.look", handler.getInt("look-range"));
 			handler.clear();
 			file.delete();
 		}
@@ -163,42 +178,73 @@ public class Citizens extends JavaPlugin {
 					"plugins/Citizens/economy.yml", true);
 			PropertyHandler handler = new PropertyHandler(
 					"plugins/Citizens/Citizens.economy");
-			/*
-			 * nodes.put("use-economy", "true"); nodes.put("use-econplugin",
-			 * "false"); nodes.put("basic-npc-create-item-currency-id", "37");
-			 * nodes.put("basic-npc-create-item", "10");
-			 * nodes.put("basic-npc-create-econplugin", "100");
-			 * nodes.put("trader-npc-create-item-currency-id", "37");
-			 * nodes.put("trader-npc-create-item", "20");
-			 * nodes.put("trader-npc-create-econplugin", "250");
-			 * nodes.put("healer-npc-create-item-currency-id", "37");
-			 * nodes.put("healer-npc-create-item", "20");
-			 * nodes.put("healer-npc-create-econplugin", "100");
-			 * nodes.put("healer-level-up-item-currency-id", "37");
-			 * nodes.put("healer-level-up-item", "20");
-			 * nodes.put("healer-level-up-econplugin", "100");
-			 * nodes.put("wizard-npc-create-item-currency-id", "37");
-			 * nodes.put("wizard-npc-create-item", "20");
-			 * nodes.put("wizard-npc-create-econplugin", "250");
-			 * nodes.put("wizard-teleport-item-currency-id", "4");
-			 * nodes.put("wizard-teleport-item", "10");
-			 * nodes.put("wizard-teleport-econplugin", "25");
-			 * nodes.put("blacksmith-npc-create-item-currency-id", "37");
-			 * nodes.put("blacksmith-npc-create-item", "20");
-			 * nodes.put("blacksmith-npc-create-econplugin", "100");
-			 * nodes.put("blacksmith-tool-repair-item-currency-id", "266");
-			 * nodes.put("blacksmith-tool-repair-item", "5");
-			 * nodes.put("blacksmith-tool-repair-econplugin", "50");
-			 * nodes.put("blacksmith-armor-repair-item-currency-id", "266");
-			 * nodes.put("blacksmith-armor-repair-item", "5");
-			 * nodes.put("blacksmith-armor-repair-econplugin", "50");
-			 * nodes.put("bandit-npc-create-item-currency-id", "37");
-			 * nodes.put("bandit-npc-create-item", "20");
-			 * nodes.put("bandit-npc-create-econplugin", "100");
-			 * nodes.put("guard-npc-create-item-currency-id", "37");
-			 * nodes.put("guard-npc-create-item", "20");
-			 * nodes.put("guard-npc-create-econplugin", "100");
-			 */
+			temp.setBoolean("economy.use-economy",
+					handler.getBoolean("use-economy"));
+			temp.setBoolean("economy.use-econplugin",
+					handler.getBoolean("use-econplugin"));
+
+			temp.setInt("prices.basic.creation.item",
+					handler.getInt("basic-npc-create-item"));
+			temp.setInt("prices.basic.creation.item-currency-id",
+					handler.getInt("basic-npc-create-item-currency-id"));
+			temp.setInt("prices.basic.creation.econplugin",
+					handler.getInt("basic-npc-create-econplugin"));
+
+			temp.setInt("prices.blacksmith.creation.item",
+					handler.getInt("blacksmith-npc-create-item"));
+			temp.setInt("prices.blacksmith.creation.item-currency-id",
+					handler.getInt("blacksmith-npc-create-item-currency-id"));
+			temp.setInt("prices.blacksmith.creation.econplugin",
+					handler.getInt("blacksmith-npc-create-econplugin"));
+
+			temp.setInt("prices.blacksmith.armorrepair.item",
+					handler.getInt("blacksmith-armor-repair-item"));
+			temp.setInt("prices.blacksmith.armorrepair.item-currency-id",
+					handler.getInt("blacksmith-armor-repair-item-currency-id"));
+			temp.setInt("prices.blacksmith.armorrepair.econplugin",
+					handler.getInt("blacksmith-armor-repair-econplugin"));
+
+			temp.setInt("prices.blacksmith.toolrepair.item",
+					handler.getInt("blacksmith-tool-repair-item"));
+			temp.setInt("prices.blacksmith.toolrepair.item-currency-id",
+					handler.getInt("blacksmith-tool-repair-item-currency-id"));
+			temp.setInt("prices.blacksmith.toolrepair.econplugin",
+					handler.getInt("blacksmith-tool-repair-econplugin"));
+
+			temp.setInt("prices.healer.creation.item",
+					handler.getInt("healer-npc-create-item"));
+			temp.setInt("prices.healer.creation.item-currency-id",
+					handler.getInt("healer-npc-create-item-currency-id"));
+			temp.setInt("prices.healer.creation.econplugin",
+					handler.getInt("healer-npc-create-econplugin"));
+
+			temp.setInt("prices.healer.levelup.item",
+					handler.getInt("healer-level-up-item"));
+			temp.setInt("prices.healer.levelup.item-currency-id",
+					handler.getInt("healer-level-up-item-currency-id"));
+			temp.setInt("prices.healer.levelup.econplugin",
+					handler.getInt("healer-level-up-econplugin"));
+
+			temp.setInt("prices.trader.creation.item",
+					handler.getInt("trader-npc-create-item"));
+			temp.setInt("prices.trader.creation.item-currency-id",
+					handler.getInt("trader-npc-create-item-currency-id"));
+			temp.setInt("prices.trader.creation.econplugin",
+					handler.getInt("trader-npc-create-econplugin"));
+
+			temp.setInt("prices.wizard.creation.item",
+					handler.getInt("wizard-npc-create-item"));
+			temp.setInt("prices.wizard.creation.item-currency-id",
+					handler.getInt("wizard-npc-create-item-currency-id"));
+			temp.setInt("prices.wizard.creation.econplugin",
+					handler.getInt("wizard-npc-create-econplugin"));
+
+			temp.setInt("prices.wizard.teleport.item",
+					handler.getInt("wizard-teleport-item"));
+			temp.setInt("prices.wizard.teleport.item-currency-id",
+					handler.getInt("wizard-teleport-item-currency-id"));
+			temp.setInt("prices.wizard.teleport.econplugin",
+					handler.getInt("wizard-teleport-econplugin"));
 			handler.clear();
 			file.delete();
 		}

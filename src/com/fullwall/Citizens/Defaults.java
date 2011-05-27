@@ -55,51 +55,51 @@ public class Defaults {
 		nodes.put("economy.use-economy", "true");
 		nodes.put("economy.use-econplugin", "false");
 
-		nodes.put("prices.basic.creation.create-item", "10");
+		nodes.put("prices.basic.creation.item", "10");
 		nodes.put("prices.basic.creation.item-currency-id", "37");
 		nodes.put("prices.basic.creation.econplugin", "100");
 
-		nodes.put("prices.bandit.creation.create-item", "10");
+		nodes.put("prices.bandit.creation.item", "10");
 		nodes.put("prices.bandit.creation.item-currency-id", "37");
 		nodes.put("prices.bandit.creation.econplugin", "100");
 
-		nodes.put("prices.blacksmith.creation.create-item", "10");
+		nodes.put("prices.blacksmith.creation.item", "10");
 		nodes.put("prices.blacksmith.creation.item-currency-id", "37");
 		nodes.put("prices.blacksmith.creation.econplugin", "100");
 
-		nodes.put("prices.blacksmith.armorrepair.repair-item", "10");
+		nodes.put("prices.blacksmith.armorrepair.item", "10");
 		nodes.put("prices.blacksmith.armorrepair.item-currency-id", "37");
 		nodes.put("prices.blacksmith.armorrepair.econplugin", "100");
 
-		nodes.put("prices.blacksmith.toolrepair.create-item", "10");
+		nodes.put("prices.blacksmith.toolrepair.item", "10");
 		nodes.put("prices.blacksmith.toolrepair.item-currency-id", "37");
 		nodes.put("prices.blacksmith.toolrepair.econplugin", "100");
 
-		nodes.put("prices.guard.creation.create-item", "10");
+		nodes.put("prices.guard.creation.item", "10");
 		nodes.put("prices.guard.creation.item-currency-id", "37");
 		nodes.put("prices.guard.creation.econplugin", "100");
 
-		nodes.put("prices.healer.creation.create-item", "10");
+		nodes.put("prices.healer.creation.item", "10");
 		nodes.put("prices.healer.creation.item-currency-id", "37");
 		nodes.put("prices.healer.creation.econplugin", "100");
 
-		nodes.put("prices.healer.level-up.create-item", "10");
-		nodes.put("prices.healer.level-up.item-currency-id", "37");
-		nodes.put("prices.healer.level-up.econplugin", "100");
+		nodes.put("prices.healer.levelup.item", "10");
+		nodes.put("prices.healer.levelup.item-currency-id", "37");
+		nodes.put("prices.healer.levelup.econplugin", "100");
 
-		nodes.put("prices.quester.creation.create-item", "10");
+		nodes.put("prices.quester.creation.item", "10");
 		nodes.put("prices.quester.creation.item-currency-id", "37");
 		nodes.put("prices.quester.creation.econplugin", "100");
 
-		nodes.put("prices.trader.creation.create-item", "20");
+		nodes.put("prices.trader.creation.item", "20");
 		nodes.put("prices.trader.creation.item-currency-id", "37");
 		nodes.put("prices.trader.creation.econplugin", "250");
 
-		nodes.put("prices.wizard.creation.create-item", "20");
+		nodes.put("prices.wizard.creation.item", "20");
 		nodes.put("prices.wizard.creation.item-currency-id", "37");
 		nodes.put("prices.wizard.creation.econplugin", "150");
 
-		nodes.put("prices.wizard.teleport.create-item", "20");
+		nodes.put("prices.wizard.teleport.item", "20");
 		nodes.put("prices.wizard.teleport.item-currency-id", "37");
 		nodes.put("prices.wizard.teleport.econplugin", "150");
 		return nodes;
@@ -623,7 +623,6 @@ public class Defaults {
 
 	private static HashMap<String, String> writeEconomyRenames() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
-		nodes.put("use-iconomy", "use-econplugin");
 		return nodes;
 	}
 
