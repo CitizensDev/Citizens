@@ -20,10 +20,13 @@
     <javac srcdir="${src}" destdir="${build}" encoding="Cp1252" >
  	   <classpath>
  	    	<pathelement path="${libs}"/>
- 	    	<pathelement location="${libs}/iConomy.jar"/>
+ 	    	<pathelement location="${libs}/BOSEconomy.jar"/>
+ 	        <pathelement location="${libs}/Essentials.jar"/>
+ 	    	<pathelement location="${libs}/iCo4.jar"/>
  	    	<pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
  	    	<pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
- 	    	<pathelement location="${libs}/Help.jar"/>
+ 	    	<pathelement location="${libs}/iCo5.jar"/>
+ 	        <pathelement location="${libs}/iConomy.jar"/>
  	    	<pathelement location="${libs}/Permissions.jar"/>
  	    </classpath>
     </javac>
