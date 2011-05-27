@@ -66,8 +66,11 @@ public class TraderTask implements Runnable {
 		if (stop) {
 			return;
 		}
-		if (npc == null || player == null
-				|| mcPlayer.activeContainer == mcPlayer.defaultContainer
+		if (npc == null
+				|| player == null
+				|| player.getHandle().activeContainer == player.getHandle().defaultContainer
+				|| player.getHandle().activeContainer != npc
+						.getMinecraftEntity().activeContainer
 				|| !player.isOnline()) {
 			kill();
 			return;
