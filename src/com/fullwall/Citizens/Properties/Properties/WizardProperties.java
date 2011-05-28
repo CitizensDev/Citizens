@@ -10,6 +10,8 @@ public class WizardProperties extends Saveable {
 			"plugins/Citizens/Wizards/Citizens.wizards");
 	private final PropertyHandler locations = new PropertyHandler(
 			"plugins/Citizens/Wizards/Citizens.locations");
+	private final PropertyHandler mana = new PropertyHandler(
+			"plugins/Citizens/Wizards/mana.citizens");
 
 	private void saveLocations(int UID, String locationString) {
 		locations.setString(UID, locationString.replace(")(", "):("));
@@ -19,10 +21,19 @@ public class WizardProperties extends Saveable {
 		return locations.getString(UID).replace(")(", "):(");
 	}
 
+	private void saveMana(int UID, int manaLevel) {
+		mana.setInt(UID, manaLevel);
+	}
+
+	private int getMana(int UID) {
+		return mana.getInt(UID);
+	}
+
 	@Override
 	public void saveFiles() {
 		wizards.save();
 		locations.save();
+		mana.save();
 	}
 
 	@Override
@@ -30,6 +41,7 @@ public class WizardProperties extends Saveable {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isWizard());
 			saveLocations(npc.getUID(), npc.getWizard().getLocations());
+			saveMana(npc.getUID(), npc.getWizard().getMana());
 		}
 	}
 
@@ -37,6 +49,7 @@ public class WizardProperties extends Saveable {
 	public void loadState(HumanNPC npc) {
 		npc.setWizard(getEnabled(npc));
 		npc.getWizard().setLocations(getLocations(npc.getUID()));
+		npc.getWizard().setMana(getMana(npc.getUID()));
 		saveState(npc);
 	}
 
@@ -44,6 +57,7 @@ public class WizardProperties extends Saveable {
 	public void removeFromFiles(HumanNPC npc) {
 		wizards.removeKey(npc.getUID());
 		locations.removeKey(npc.getUID());
+		mana.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -78,6 +92,9 @@ public class WizardProperties extends Saveable {
 		}
 		if (locations.keyExists(UID)) {
 			locations.setString(nextUID, locations.getString(UID));
+		}
+		if (mana.keyExists(UID)) {
+			mana.setString(nextUID, mana.getString(UID));
 		}
 	}
 }
