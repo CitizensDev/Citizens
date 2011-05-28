@@ -81,9 +81,12 @@ public class GuardTask implements Runnable {
 					String owner = npc.getOwner();
 					Player p = Bukkit.getServer().getPlayer(owner);
 					Location ownerloc = p.getLocation();
+					p.sendMessage("It's a guard");
 					if (p != null) {
+						p.sendMessage("Works1");
 						if (NPCManager.get(npc.getUID()) == null) {
 							npc.getNPCData().setLocation(p.getLocation());
+							p.sendMessage("Spawned npc");
 						}
 						for (Entity temp : p.getNearbyEntities(ownerloc.getX(),
 								ownerloc.getY(), ownerloc.getZ())) {
@@ -112,7 +115,7 @@ public class GuardTask implements Runnable {
 						entity = null;
 						if (LocationUtils.checkLocation(npc.getLocation(), p
 								.getLocation(), 25)) {
-							npc.target(entity, false, -1, -1, 35);
+							npc.target(p, false, -1, 2, 25);
 						} else {
 							npc.moveTo(p.getLocation());
 						}
