@@ -2,6 +2,7 @@ package com.fullwall.Citizens.NPCTypes.Guards;
 
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
@@ -22,7 +23,9 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.Utils.ActionManager;
 import com.fullwall.Citizens.Utils.CachedAction;
 import com.fullwall.Citizens.Utils.LocationUtils;
@@ -57,8 +60,8 @@ public class GuardTask implements Runnable {
 						String name = "";
 						if (entity instanceof Player) {
 							Player player = (Player) entity;
-							if (!NPCManager.validateOwnership(player,
-									npc.getUID())) {
+							if (!NPCManager.validateOwnership(player, npc
+									.getUID())) {
 								name = player.getName();
 							}
 						} else {
@@ -74,6 +77,51 @@ public class GuardTask implements Runnable {
 						}
 					}
 					entity = null;
+				} else if (guard.isBodyguard()) {
+					String owner = npc.getOwner();
+					Player p = Bukkit.getServer().getPlayer(owner);
+					Location ownerloc = p.getLocation();
+					if (p != null) {
+						if (NPCManager.get(npc.getUID()) == null) {
+							npc.getNPCData().setLocation(p.getLocation());
+						}
+						for (Entity temp : p.getNearbyEntities(ownerloc.getX(),
+								ownerloc.getY(), ownerloc.getZ())) {
+							if (!(temp instanceof LivingEntity)) {
+								continue;
+							}
+							entity = (LivingEntity) temp;
+							String name = "";
+							if (entity instanceof Player) {
+								Player player = (Player) entity;
+								if (!NPCManager.validateOwnership(player, npc
+										.getUID())) {
+									name = player.getName();
+								}
+							} else {
+								name = getTypeFromEntity(entity);
+							}
+							if (LocationUtils.checkLocation(ownerloc, entity
+									.getLocation(), 25)) {
+								cacheActions(npc, entity, entity.getEntityId(),
+										name);
+							} else {
+								resetActions(entity.getEntityId(), name, npc);
+							}
+						}
+						entity = null;
+						if (LocationUtils.checkLocation(npc.getLocation(), p
+								.getLocation(), 25)) {
+							npc.target(entity, false, -1, -1, 35);
+						} else {
+							npc.moveTo(p.getLocation());
+						}
+					} else {
+						if (NPCManager.get(npc.getUID()) != null) {
+							PathUtils.cancelPath(npc);
+							NPCManager.despawn(npc.getUID());
+						}
+					}
 				}
 			}
 		}
@@ -115,14 +163,48 @@ public class GuardTask implements Runnable {
 
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
-		CachedAction cached = ActionManager.getAction(entityID, name);
-		if (!cached.has("attemptedEntry")) {
-			if (isBlacklisted(npc, name) || entity instanceof Player) {
-				attack(entity, npc);
+		if (npc.getGuard().isBouncer()) {
+			CachedAction cached = ActionManager.getAction(entityID, name);
+			if (!cached.has("attemptedEntry")) {
+				if (isBlacklisted(npc, name) || entity instanceof Player) {
+					attack(entity, npc);
+				}
+				cached.set("attemptedEntry");
+			}
+			ActionManager.putAction(entityID, name, cached);
+		} else if (npc.getGuard().isBodyguard()) {
+			CachedAction cached = ActionManager.getAction(entityID, name);
+			if (npc.getGuard().isAggressive()) {
+				if (cached.has("attemptedEntry")) {
+					if (!npc.getGuard().getWhitelist().contains(name)) {
+						// have to check if the mob is a player or not.
+						if (itsaplayer) {
+							if (killplayersistrue) {
+								attack(entity, npc);
+							}
+						} else if (itsamob) {
+							if (killmobsistrue) {
+								attack(entity, npc);
+							}
+						}
+					}
+				} else {
+					if (attackedplayer) {
+						if (itsaplayer) {
+							if (killplayersistrue) {
+								attack(entity, npc);
+							}
+						} else if (itsamob) {
+							if (killmobsistrue) {
+								attack(entity, npc);
+							}
+						}
+					}
+				}
 			}
 			cached.set("attemptedEntry");
+			ActionManager.putAction(entityID, name, cached);
 		}
-		ActionManager.putAction(entityID, name, cached);
 	}
 
 	private void resetActions(int entityID, String name, HumanNPC npc) {

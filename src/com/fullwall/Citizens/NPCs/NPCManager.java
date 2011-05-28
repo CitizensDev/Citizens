@@ -187,7 +187,7 @@ public class NPCManager {
 	 * 
 	 * @param UID
 	 */
-	public void despawn(int UID) {
+	public static void despawn(int UID) {
 		GlobalUIDs.remove(UID);
 		NPCSpawner.removeBasicHumanNpc(list.get(UID));
 		list.remove(UID);

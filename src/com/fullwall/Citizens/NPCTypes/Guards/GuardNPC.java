@@ -14,6 +14,9 @@ public class GuardNPC implements Toggleable {
 	private HumanNPC npc;
 	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
+	private boolean killMobs = false;
+	private boolean isAggressive = false;
+	private boolean killPlayers = false;
 	private GuardType guardType = GuardType.NULL;
 	private List<String> mobBlacklist = new ArrayList<String>();
 	private List<String> whitelist = new ArrayList<String>();
@@ -65,6 +68,61 @@ public class GuardNPC implements Toggleable {
 	}
 
 	/**
+	 * Get whether a bodyguard NPC kills mobs
+	 * 
+	 * @return
+	 */
+	public boolean killMobs() {
+		return killMobs;
+	}
+
+	/**
+	 * Set whether a bodyguard kill mobs
+	 * 
+	 * @param state
+	 */
+	public void setkillMobs(boolean state) {
+		this.killMobs = state;
+	}
+
+	/**
+	 * Get whether a bodyguard NPC kills on sight
+	 * 
+	 * @return
+	 */
+
+	public boolean isAggressive() {
+		return isAggressive;
+	}
+
+	/**
+	 * Set whether a bodyguard kills on sight
+	 * 
+	 * @param state
+	 */
+	public void setisAggressive(boolean state) {
+		this.isAggressive = state;
+	}
+
+	/**
+	 * Get whether a bodyguard NPC kills players
+	 * 
+	 * @return
+	 */
+	public boolean killPlayers() {
+		return killPlayers;
+	}
+
+	/**
+	 * Set whether a bodyguard should kill players
+	 * 
+	 * @param state
+	 */
+	public void setkillPlayers(boolean state) {
+		this.killPlayers = state;
+	}
+
+	/**
 	 * Get the type of guard that a guard NPC is
 	 * 
 	 * @return
@@ -110,8 +168,8 @@ public class GuardNPC implements Toggleable {
 		if (mob.equalsIgnoreCase("all")) {
 			for (CreatureType type : CreatureType.values()) {
 				if (!mobBlacklist.contains(type.toString().toLowerCase())) {
-					mobBlacklist.add(type.toString().toLowerCase()
-							.replace("_", " "));
+					mobBlacklist.add(type.toString().toLowerCase().replace("_",
+							" "));
 				}
 			}
 		} else {

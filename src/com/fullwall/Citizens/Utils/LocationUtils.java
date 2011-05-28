@@ -27,4 +27,9 @@ public class LocationUtils {
 			return false;
 		}
 	}
+
+	public Location getLocation() {
+		return new Location(plugin.getServer().getWorld(this.world), x, y, z,
+				pitch, yaw);
+	}
 }
