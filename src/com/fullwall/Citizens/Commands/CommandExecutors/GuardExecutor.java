@@ -160,8 +160,9 @@ public class GuardExecutor implements CommandExecutor {
 					returnval = true;
 				}
 			} else {
-				sender.sendMessage(ChatColor.RED
-						+ "That guard isn't the correct type, so you cannot perform this command.");
+				sender
+						.sendMessage(ChatColor.RED
+								+ "That guard isn't the correct type, so you cannot perform this command.");
 			}
 			PropertyManager.save(npc);
 		}
@@ -250,8 +251,8 @@ public class GuardExecutor implements CommandExecutor {
 	private void addMobToBodyguardBlacklist(Player player, HumanNPC npc,
 			String mob) {
 		mob = mob.toLowerCase();
-		if (npc.getGuard().getBodyguardMobBlacklist()
-				.contains(mob.toLowerCase())) {
+		if (npc.getGuard().getBodyguardMobBlacklist().contains(
+				mob.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That mob is already blacklisted.");
 		} else if (CreatureType.fromName(mob.replaceFirst("" + mob.charAt(0),
@@ -302,16 +303,23 @@ public class GuardExecutor implements CommandExecutor {
 	 */
 	private void addPlayerToBodyguardWhitelist(Player player, HumanNPC npc,
 			String allowed) {
-		if (npc.getGuard().getBodyguardWhitelist()
-				.contains(allowed.toLowerCase())) {
+		if (npc.getGuard().getBodyguardWhitelist().contains(
+				allowed.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That player is already whitelisted.");
 		} else {
+			if (allowed.equalsIgnoreCase("all")) {
+				player.sendMessage(ChatColor.GREEN
+						+ "You added all players to "
+						+ StringUtils.wrap(npc.getStrippedName() + "'s")
+						+ " whitelist.");
+			} else {
+				player.sendMessage(ChatColor.GREEN + "You added "
+						+ StringUtils.wrap(allowed) + " to "
+						+ StringUtils.wrap(npc.getStrippedName() + "'s")
+						+ " whitelist.");
+			}
 			npc.getGuard().addPlayerToBodyguardWhitelist(allowed);
-			player.sendMessage(ChatColor.GREEN + "You added "
-					+ StringUtils.wrap(allowed) + " to "
-					+ StringUtils.wrap(npc.getStrippedName() + "'s")
-					+ " whitelist.");
 		}
 	}
 

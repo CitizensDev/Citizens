@@ -21,9 +21,9 @@ import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.entity.CreatureType;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.Utils.ActionManager;
@@ -173,38 +173,21 @@ public class GuardTask implements Runnable {
 			}
 			ActionManager.putAction(entityID, name, cached);
 		} else if (npc.getGuard().isBodyguard()) {
-			CachedAction cached = ActionManager.getAction(entityID, name);
+			String mob = getTypeFromEntity(entity);
 			if (npc.getGuard().isAggressive()) {
-				if (cached.has("attemptedEntry")) {
-					if (!npc.getGuard().getWhitelist().contains(name)) {
-						// have to check if the mob is a player or not.
-						if (itsaplayer) {
-							if (killplayersistrue) {
+						if (entity instanceof Player) {
+							if (!npc.getGuard().getBodyguardWhitelist().contains(name) && !npc.getGuard().getBodyguardWhitelist().contains("all")) {
 								attack(entity, npc);
 							}
-						} else if (itsamob) {
-							if (killmobsistrue) {
+						} else if (!(entity instanceof Player) && CreatureType.fromName(mob.replaceFirst("" + mob.charAt(0),"" + Character.toUpperCase(mob.charAt(0))))  != null) {
+							if (npc.getGuard().getBodyguardMobBlacklist().contains(getTypeFromEntity(entity)) || npc.getGuard().getBodyguardMobBlacklist().contains("")) {
 								attack(entity, npc);
 							}
 						}
 					}
 				} else {
-					if (attackedplayer) {
-						if (itsaplayer) {
-							if (killplayersistrue) {
-								attack(entity, npc);
-							}
-						} else if (itsamob) {
-							if (killmobsistrue) {
-								attack(entity, npc);
-							}
-						}
-					}
+					//Dostuffherelater
 				}
-			}
-			cached.set("attemptedEntry");
-			ActionManager.putAction(entityID, name, cached);
-		}
 	}
 
 	private void resetActions(int entityID, String name, HumanNPC npc) {
@@ -217,7 +200,7 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-		if (npc.getGuard().getMobBlacklist().contains(name)) {
+		if (npc.getGuard().getBodyguardMobBlacklist().contains(name)) {
 			return true;
 		} else {
 			return false;
