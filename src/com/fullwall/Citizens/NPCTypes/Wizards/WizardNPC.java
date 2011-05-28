@@ -19,6 +19,7 @@ public class WizardNPC implements Toggleable {
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
 	private Location currentLoc;
+	private int mana;
 
 	/**
 	 * Wizard NPC object
@@ -141,6 +142,24 @@ public class WizardNPC implements Toggleable {
 	public String getCurrentLocationName() {
 		String locs[] = locations.split(":")[currentLocation].split(",");
 		return locs[0].replace("(", "");
+	}
+
+	/**
+	 * Get the mana that a wizard NPC has remaining
+	 * 
+	 * @return
+	 */
+	public int getMana() {
+		return mana;
+	}
+
+	/**
+	 * Set the mana of a wizard NPC
+	 * 
+	 * @param mana
+	 */
+	public void setMana(int mana) {
+		this.mana = mana;
 	}
 
 	/**

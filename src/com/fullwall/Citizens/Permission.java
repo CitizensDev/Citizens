@@ -29,20 +29,27 @@ public class Permission {
 
 	public static boolean isAdmin(Player player) {
 		if (permissionsEnabled) {
-			return permission(player, "");
+			return permission(player, "citizens.admin");
 		}
 		return player.isOp();
+	}
+
+	public static boolean isModerator(Player player) {
+		if (permissionsEnabled) {
+			return permission(player, "citizens.mod");
+		}
+		return false;
+	}
+
+	public static boolean isBasic(Player player) {
+		if (permissionsEnabled) {
+			return permission(player, "citizens.basic");
+		}
+		return false;
 	}
 
 	private static boolean permission(Player player, String string) {
 		return Permissions.Security.permission(player, string);
-	}
-
-	public static boolean check(Player player) {
-		if (permissionsEnabled) {
-			return permission(player, "");
-		}
-		return player.isOp();
 	}
 
 	public static boolean generic(Player player, String string) {
