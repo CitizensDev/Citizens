@@ -80,7 +80,7 @@ public class GuardExecutor implements CommandExecutor {
 				if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
 					if (Permission.hasPermission(
 							"citizens.guard.bouncer.blacklist", sender)) {
-						addMobToBlacklist(player, npc, args[1]);
+						addMobToBouncerBlacklist(player, npc, args[1]);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -89,7 +89,7 @@ public class GuardExecutor implements CommandExecutor {
 						&& args[0].equalsIgnoreCase("blacklist")) {
 					if (Permission.hasPermission(
 							"citizens.guard.bouncer.blacklist", sender)) {
-						displayBlacklist(player, npc);
+						displayBouncerBlacklist(player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -98,7 +98,7 @@ public class GuardExecutor implements CommandExecutor {
 						&& args[0].equalsIgnoreCase("whitelist")) {
 					if (Permission.hasPermission(
 							"citizens.guard.bouncer.whitelist", sender)) {
-						addPlayerToWhitelist(player, npc, args[1]);
+						addPlayerToBouncerWhitelist(player, npc, args[1]);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -107,7 +107,7 @@ public class GuardExecutor implements CommandExecutor {
 						&& args[0].equalsIgnoreCase("whitelist")) {
 					if (Permission.hasPermission(
 							"citizens.guard.bouncer.whitelist", sender)) {
-						displayWhitelist(player, npc);
+						displayBouncerWhitelist(player, npc);
 					} else {
 						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
@@ -123,7 +123,42 @@ public class GuardExecutor implements CommandExecutor {
 					returnval = true;
 				}
 			} else if (npc.getGuard().isBodyguard()) {
-				// TODO bodyguard commands here
+				if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bodyguard.blacklist", sender)) {
+						addMobToBodyguardBlacklist(player, npc, args[1]);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
+				} else if (args.length == 1
+						&& args[0].equalsIgnoreCase("blacklist")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bodyguard.blacklist", sender)) {
+						displayBodyguardBlacklist(player, npc);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
+				} else if (args.length == 2
+						&& args[0].equalsIgnoreCase("whitelist")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bodyguard.whitelist", sender)) {
+						addPlayerToBodyguardWhitelist(player, npc, args[1]);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
+				} else if (args.length == 1
+						&& args[0].equalsIgnoreCase("whitelist")) {
+					if (Permission.hasPermission(
+							"citizens.guard.bodyguard.whitelist", sender)) {
+						displayBodyguardWhitelist(player, npc);
+					} else {
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
+					}
+					returnval = true;
+				}
 			} else {
 				sender.sendMessage(ChatColor.RED
 						+ "That guard isn't the correct type, so you cannot perform this command.");
@@ -173,6 +208,8 @@ public class GuardExecutor implements CommandExecutor {
 		}
 	}
 
+	// TODO - this is extremely awful coding......please.....for the love of
+	// God, make it more generic....I feel sick...
 	/**
 	 * Add a mob to a bouncer's blacklist
 	 * 
@@ -180,20 +217,52 @@ public class GuardExecutor implements CommandExecutor {
 	 * @param npc
 	 * @param mob
 	 */
-	private void addMobToBlacklist(Player player, HumanNPC npc, String mob) {
+	private void addMobToBouncerBlacklist(Player player, HumanNPC npc,
+			String mob) {
 		mob = mob.toLowerCase();
-		if (npc.getGuard().getMobBlacklist().contains(mob.toLowerCase())) {
+		if (npc.getGuard().getBouncerMobBlacklist().contains(mob.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That mob is already blacklisted.");
 		} else if (CreatureType.fromName(mob.replaceFirst("" + mob.charAt(0),
 				"" + Character.toUpperCase(mob.charAt(0)))) != null) {
-			npc.getGuard().addMobToBlacklist(mob);
+			npc.getGuard().addMobToBouncerBlacklist(mob);
 			player.sendMessage(ChatColor.GREEN + "You added the mob type "
 					+ StringUtils.wrap(mob) + " to "
 					+ StringUtils.wrap(npc.getStrippedName() + "'s")
 					+ " blacklist.");
 		} else if (mob.equalsIgnoreCase("all")) {
-			npc.getGuard().addMobToBlacklist(mob);
+			npc.getGuard().addMobToBouncerBlacklist(mob);
+			player.sendMessage(ChatColor.GREEN + "You added all mobs to "
+					+ StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " blacklist.");
+		} else {
+			player.sendMessage(ChatColor.RED + "Invalid mob type.");
+		}
+	}
+
+	/**
+	 * Add a mob to a bodyguard's blacklist
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param mob
+	 */
+	private void addMobToBodyguardBlacklist(Player player, HumanNPC npc,
+			String mob) {
+		mob = mob.toLowerCase();
+		if (npc.getGuard().getBodyguardMobBlacklist()
+				.contains(mob.toLowerCase())) {
+			player.sendMessage(ChatColor.RED
+					+ "That mob is already blacklisted.");
+		} else if (CreatureType.fromName(mob.replaceFirst("" + mob.charAt(0),
+				"" + Character.toUpperCase(mob.charAt(0)))) != null) {
+			npc.getGuard().addMobToBodyguardBlacklist(mob);
+			player.sendMessage(ChatColor.GREEN + "You added the mob type "
+					+ StringUtils.wrap(mob) + " to "
+					+ StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " blacklist.");
+		} else if (mob.equalsIgnoreCase("all")) {
+			npc.getGuard().addMobToBodyguardBlacklist(mob);
 			player.sendMessage(ChatColor.GREEN + "You added all mobs to "
 					+ StringUtils.wrap(npc.getStrippedName() + "'s")
 					+ " blacklist.");
@@ -209,13 +278,36 @@ public class GuardExecutor implements CommandExecutor {
 	 * @param npc
 	 * @param mob
 	 */
-	private void addPlayerToWhitelist(Player player, HumanNPC npc,
+	private void addPlayerToBouncerWhitelist(Player player, HumanNPC npc,
 			String allowed) {
-		if (npc.getGuard().getWhitelist().contains(allowed.toLowerCase())) {
+		if (npc.getGuard().getBouncerWhitelist()
+				.contains(allowed.toLowerCase())) {
 			player.sendMessage(ChatColor.RED
 					+ "That player is already whitelisted.");
 		} else {
-			npc.getGuard().addPlayerToWhitelist(allowed);
+			npc.getGuard().addPlayerToBouncerWhitelist(allowed);
+			player.sendMessage(ChatColor.GREEN + "You added "
+					+ StringUtils.wrap(allowed) + " to "
+					+ StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " whitelist.");
+		}
+	}
+
+	/**
+	 * Add a player to a bodyguard's whitelist
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param mob
+	 */
+	private void addPlayerToBodyguardWhitelist(Player player, HumanNPC npc,
+			String allowed) {
+		if (npc.getGuard().getBodyguardWhitelist()
+				.contains(allowed.toLowerCase())) {
+			player.sendMessage(ChatColor.RED
+					+ "That player is already whitelisted.");
+		} else {
+			npc.getGuard().addPlayerToBodyguardWhitelist(allowed);
 			player.sendMessage(ChatColor.GREEN + "You added "
 					+ StringUtils.wrap(allowed) + " to "
 					+ StringUtils.wrap(npc.getStrippedName() + "'s")
@@ -248,12 +340,34 @@ public class GuardExecutor implements CommandExecutor {
 	 * @param player
 	 * @param npc
 	 */
-	private void displayBlacklist(Player player, HumanNPC npc) {
+	private void displayBouncerBlacklist(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ "========== "
 				+ StringUtils.wrap(npc.getStrippedName()
 						+ "'s Blacklisted Mobs") + " ==========");
-		List<String> list = npc.getGuard().getMobBlacklist();
+		List<String> list = npc.getGuard().getBouncerMobBlacklist();
+		if (list.isEmpty()) {
+			player.sendMessage(ChatColor.RED + "No mobs blacklisted");
+		} else {
+			for (int x = 0; x < list.size(); x++) {
+				player.sendMessage(ChatColor.RED
+						+ list.get(x).replace("_", " "));
+			}
+		}
+	}
+
+	/**
+	 * Display the mobs blacklisted by a bodyguard
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void displayBodyguardBlacklist(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.GREEN
+				+ "========== "
+				+ StringUtils.wrap(npc.getStrippedName()
+						+ "'s Blacklisted Mobs") + " ==========");
+		List<String> list = npc.getGuard().getBodyguardMobBlacklist();
 		if (list.isEmpty()) {
 			player.sendMessage(ChatColor.RED + "No mobs blacklisted");
 		} else {
@@ -270,12 +384,33 @@ public class GuardExecutor implements CommandExecutor {
 	 * @param player
 	 * @param npc
 	 */
-	private void displayWhitelist(Player player, HumanNPC npc) {
+	private void displayBouncerWhitelist(Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN
 				+ "========== "
 				+ StringUtils.wrap(npc.getStrippedName()
 						+ "'s Whitelisted Players") + " ==========");
-		List<String> list = npc.getGuard().getWhitelist();
+		List<String> list = npc.getGuard().getBouncerWhitelist();
+		if (list.isEmpty()) {
+			player.sendMessage(ChatColor.RED + "No players whitelisted.");
+		} else {
+			for (int x = 0; x < list.size(); x++) {
+				player.sendMessage(ChatColor.RED + list.get(x));
+			}
+		}
+	}
+
+	/**
+	 * Display the players whitelist by a bodyguard
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void displayBodyguardWhitelist(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.GREEN
+				+ "========== "
+				+ StringUtils.wrap(npc.getStrippedName()
+						+ "'s Whitelisted Players") + " ==========");
+		List<String> list = npc.getGuard().getBodyguardWhitelist();
 		if (list.isEmpty()) {
 			player.sendMessage(ChatColor.RED + "No players whitelisted.");
 		} else {
