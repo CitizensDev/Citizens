@@ -1,6 +1,5 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
-import java.lang.reflect.Field;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityTypes;
@@ -17,14 +16,9 @@ import org.bukkit.entity.CreatureType;
 public class NPCSpawner {
 
 	protected static WorldServer getWorldServer(World world) {
-		try {
+		if (world instanceof CraftWorld) {
 			CraftWorld w = (CraftWorld) world;
-			Field f;
-			f = CraftWorld.class.getDeclaredField("world");
-			f.setAccessible(true);
-			return (WorldServer) f.get(w);
-		} catch (Exception e) {
-			e.printStackTrace();
+			return w.getHandle();
 		}
 		return null;
 	}
@@ -32,24 +26,7 @@ public class NPCSpawner {
 	private static MinecraftServer getMinecraftServer(Server server) {
 		if (server instanceof CraftServer) {
 			CraftServer cs = (CraftServer) server;
-			Field f;
-			try {
-				f = CraftServer.class.getDeclaredField("console");
-			} catch (NoSuchFieldException ex) {
-				return null;
-			} catch (SecurityException ex) {
-				return null;
-			}
-			MinecraftServer ms;
-			try {
-				f.setAccessible(true);
-				ms = (MinecraftServer) f.get(cs);
-			} catch (IllegalArgumentException ex) {
-				return null;
-			} catch (IllegalAccessException ex) {
-				return null;
-			}
-			return ms;
+			return cs.getServer();
 		}
 		return null;
 	}
@@ -91,5 +68,10 @@ public class NPCSpawner {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void removeNPCFromPlayerList(CraftNPC npc) {
+		getWorldServer(npc.getBukkitEntity().getWorld()).players
+				.remove((EntityHuman) npc);
 	}
 }

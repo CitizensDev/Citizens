@@ -11,6 +11,7 @@ import com.fullwall.Citizens.Utils.CachedAction;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
 public class TickTask implements Runnable {
 
@@ -33,6 +34,7 @@ public class TickTask implements Runnable {
 			{
 				npc = entry.getValue();
 				npc.updateMovement();
+				NPCSpawner.removeNPCFromPlayerList(npc.getHandle());
 				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();
