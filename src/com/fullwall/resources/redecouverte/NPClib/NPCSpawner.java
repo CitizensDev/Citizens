@@ -84,7 +84,6 @@ public class NPCSpawner {
 			WorldServer ws = getWorldServer(world);
 			Entity eh = EntityTypes.a(type.getName(), ws);
 			eh.setPositionRotation(x, y, z, 0, 0);
-			// ws.a(eh)?
 			ws.addEntity(eh);
 			return (LivingEntity) eh.getBukkitEntity();
 

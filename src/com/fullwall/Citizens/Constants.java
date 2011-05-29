@@ -93,9 +93,10 @@ public class Constants {
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");
 
 		// ####Economy settings####
-		EconomyHandler.setUpVariables();
 		Storage economy = UtilityProperties.getEconomySettings();
 		useEconplugin = economy.getBoolean("economy.use-economy");
 		useEconomy = economy.getBoolean("economy.use-econplugin");
+		
+		EconomyHandler.setUpVariables();
 	}
 }
