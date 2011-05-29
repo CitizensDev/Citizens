@@ -75,7 +75,7 @@ public class HealerExecutor implements CommandExecutor {
 
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("level-up")) {
 				if (Permission.hasPermission("citizens.healer.level", sender)) {
-					try {
+					if (StringUtils.isNumber(args[1])) {
 						int levels = Integer.parseInt(args[1]);
 						int x = npc.getHealer().getLevel() + levels;
 						if (x <= 10) {
@@ -84,7 +84,7 @@ public class HealerExecutor implements CommandExecutor {
 							sender.sendMessage(ChatColor.RED
 									+ "You cannot exceed Level 10.");
 						}
-					} catch (NumberFormatException e) {
+					} else {
 						sender.sendMessage(ChatColor.RED
 								+ "That's not a number.");
 					}

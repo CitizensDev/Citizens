@@ -83,9 +83,9 @@ public class WizardExecutor implements CommandExecutor {
 				if (Permission.hasPermission("citizens.wizard.removeloc",
 						sender)) {
 					int type = -1;
-					try {
+					if (StringUtils.isNumber(args[1])) {
 						type = Integer.parseInt(args[1]);
-					} catch (Exception e) {
+					} else {
 						sender.sendMessage(ChatColor.RED
 								+ "ID must be a number, see /wizard locations");
 						type = -1;

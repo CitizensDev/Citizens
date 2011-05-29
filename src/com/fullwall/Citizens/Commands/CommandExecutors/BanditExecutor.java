@@ -73,23 +73,23 @@ public class BanditExecutor implements CommandExecutor {
 	 * @param id
 	 */
 	private void addStealableItem(Player player, HumanNPC npc, String id) {
-		try {
-			if (!npc.getBandit().getStealables().contains(Integer.parseInt(id))) {
-				if (validateItem(player, id)) {
-					npc.getBandit().addStealable(Integer.parseInt(id));
-					player.sendMessage(ChatColor.GREEN
-							+ "You added "
-							+ StringUtils.wrap(Material.getMaterial(
-									Integer.parseInt(id)).name()) + " to "
-							+ StringUtils.wrap(npc.getStrippedName() + "'s")
-							+ " list of stealable items.");
-				}
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "That item is already on the list.");
-			}
-		} catch (NumberFormatException ex) {
+		if (!StringUtils.isNumber(id)) {
 			player.sendMessage(ChatColor.RED + "That is not a valid item ID.");
+			return;
+		}
+		if (!npc.getBandit().getStealables().contains(Integer.parseInt(id))) {
+			if (validateItem(player, id)) {
+				npc.getBandit().addStealable(Integer.parseInt(id));
+				player.sendMessage(ChatColor.GREEN
+						+ "You added "
+						+ StringUtils.wrap(Material.getMaterial(
+								Integer.parseInt(id)).name()) + " to "
+						+ StringUtils.wrap(npc.getStrippedName() + "'s")
+						+ " list of stealable items.");
+			}
+		} else {
+			player.sendMessage(ChatColor.RED
+					+ "That item is already on the list.");
 		}
 	}
 

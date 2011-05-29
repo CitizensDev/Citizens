@@ -47,13 +47,10 @@ public class StringUtils {
 		return mat;
 	}
 
-	private static boolean isNumber(String material) {
-		try {
-			Integer.parseInt(material);
+	public static boolean isNumber(String material) {
+		if (material.matches("^[0-9]+$"))
 			return true;
-		} catch (NumberFormatException ex) {
-			return false;
-		}
+		return false;
 	}
 
 	/**
