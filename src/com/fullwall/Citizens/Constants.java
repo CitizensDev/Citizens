@@ -47,7 +47,6 @@ public class Constants {
 	 * Sets up miscellaneous variables, mostly reading from property files.
 	 */
 	public static void setupVariables() {
-		EconomyHandler.setUpVariables();
 		Storage settings = UtilityProperties.getSettings();
 
 		// Boolean defaults
@@ -94,6 +93,7 @@ public class Constants {
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");
 
 		// ####Economy settings####
+		EconomyHandler.setUpVariables();
 		Storage economy = UtilityProperties.getEconomySettings();
 		useEconplugin = economy.getBoolean("economy.use-economy");
 		useEconomy = economy.getBoolean("economy.use-econplugin");

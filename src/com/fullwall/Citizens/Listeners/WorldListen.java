@@ -44,7 +44,7 @@ public class WorldListen extends WorldListener implements Listener {
 				NPCLocation loc = new NPCLocation(plugin, npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, i.getValue());
-				plugin.basicNPCHandler.despawn(i.getKey());
+				NPCManager.despawn(i.getKey());
 			}
 		}
 	}
