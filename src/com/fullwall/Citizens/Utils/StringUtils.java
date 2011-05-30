@@ -48,8 +48,9 @@ public class StringUtils {
 	}
 
 	public static boolean isNumber(String material) {
-		if (material.matches("^[0-9]+$"))
+		if (material.matches("^[0-9]+$")) {
 			return true;
+		}
 		return false;
 	}
 
