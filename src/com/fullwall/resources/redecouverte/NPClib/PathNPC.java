@@ -6,7 +6,6 @@ import org.bukkit.entity.LivingEntity;
 
 import com.fullwall.Citizens.Constants;
 
-import net.minecraft.server.DataWatcher;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
@@ -101,19 +100,12 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getVector() {
 		Vec3D vec3d = pathEntity.a(this);
-		for (double d = width * 1.03F; vec3d != null
+		for (double d = width * 1.02F; vec3d != null
 				&& vec3d.d(locX, vec3d.b, locZ) < d * d;) {
 			// Increment path
 			pathEntity.a();
 			// Is finished?
 			if (pathEntity.b()) {
-				if (target != null) {
-					updateTarget();
-					if (!pathEntity.b()) {
-						return pathEntity.a(this);
-					}
-				}
-
 				vec3d = null;
 				reset();
 			} else {
@@ -123,17 +115,24 @@ public class PathNPC extends EntityPlayer {
 		return vec3d;
 	}
 
-	private void move() {
-		this.a(this.ay / 2, this.az / 2);
-	}
-
-	private void jump() {
-		boolean inWater = this.Z();
-		boolean inLava = this.aa();
-		if (inWater || inLava) {
-			this.motY += 0.03999999910593033D;
-		} else if (this.onGround) {
-			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
+	private void updateTarget() {
+		if (!this.hasAttacked && this.target != null) {
+			this.pathEntity = this.world.findPath(this, this.target,
+					pathingRange);
+		}
+		if (target != null) {
+			// Target died.
+			if (!this.target.Q()) {
+				resetTarget();
+			}
+			if (target != null && targetAggro) {
+				float distanceToEntity = this.target.f(this);
+				// If a direct line of sight exists
+				if (this.e(this.target)) {
+					// Attempt to attack.
+					this.damageEntity(this.target, distanceToEntity);
+				}
+			}
 		}
 	}
 
@@ -155,26 +154,17 @@ public class PathNPC extends EntityPlayer {
 		prevZ = loc.getBlockZ();
 	}
 
-	private void updateTarget() {
-		if (target != null) {
-			// Target died.
-			if (!this.target.Q()) {
-				resetTarget();
-			} else {
-				this.pathEntity = this.world.findPath(this, this.target,
-						pathingRange);
-			}
-			if (target != null && targetAggro) {
-				float distanceToEntity = this.target.f(this);
-				// If we're close enough to attack...
-				if (this.e(this.target)) {
-					// Attack!
-					this.damageEntity(this.target, distanceToEntity);
-					swingArm();
-					hasAttacked = true;
-					incrementAttackTimes();
-				}
-			}
+	private void move() {
+		this.a(this.ay / 2, this.az / 2);
+	}
+
+	private void jump() {
+		boolean inWater = this.Z();
+		boolean inLava = this.aa();
+		if (inWater || inLava) {
+			this.motY += 0.03999999910593033D;
+		} else if (this.onGround) {
+			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
 		}
 	}
 
@@ -209,8 +199,17 @@ public class PathNPC extends EntityPlayer {
 		this.animations.swingArm();
 	}
 
+	private void attackEntity(EntityLiving entity) {
+		this.swingArm();
+		int damage = this.inventory.a(entity);
+		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
+		e.damage(damage);
+		hasAttacked = true;
+		incrementAttackTimes();
+	}
+
 	private void damageEntity(Entity entity, float f) {
-		if (this.attackTicks <= 0 && f < 2.0F
+		if (this.attackTicks <= 0 && f < 1.5F
 				&& entity.boundingBox.e > this.boundingBox.b
 				&& entity.boundingBox.b < this.boundingBox.e) {
 			this.attackTicks = 20;
@@ -313,22 +312,11 @@ public class PathNPC extends EntityPlayer {
 		return pathEntity == null;
 	}
 
-	private void attackEntity(EntityLiving entity) {
-		this.swingArm();
-		int damage = this.inventory.a(entity);
-		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
-		e.damage(damage);
-	}
-
 	public void cancelPath() {
 		reset();
 	}
 
 	public void cancelTarget() {
 		resetTarget();
-	}
-
-	public void setDataWatcher(DataWatcher watcher) {
-		this.datawatcher = watcher;
 	}
 }

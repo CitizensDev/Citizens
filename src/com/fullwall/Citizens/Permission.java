@@ -49,7 +49,7 @@ public class Permission {
 	}
 
 	private static boolean permission(Player player, String string) {
-		return Permissions.Security.permission(player, string);
+		return Permissions.Security.has(player, string);
 	}
 
 	public static boolean generic(Player player, String string) {
