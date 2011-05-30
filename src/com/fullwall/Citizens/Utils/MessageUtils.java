@@ -27,6 +27,7 @@ public class MessageUtils {
 			+ "You must have an NPC selected (right click).";
 	public static String notOwnerMessage = ChatColor.RED
 			+ "You are not the owner of this NPC.";
+	public static String invalidItemIDMessage = ChatColor.RED + "That is not a valid item ID.";
 
 	public static String stripWhite(String check) {
 		if (check.equals("§f")) {

@@ -1,6 +1,9 @@
 package com.fullwall.Citizens;
 
 public class Enums {
+	/**
+	 * Guard types
+	 */
 	public enum GuardType {
 		/**
 		 * Protects land
@@ -24,6 +27,9 @@ public class Enums {
 		}
 	}
 
+	/**
+	 * Types of lists for a guard (bouncer/bodyguard)
+	 */
 	public enum GuardListType {
 		/**
 		 * Blacklist mobs

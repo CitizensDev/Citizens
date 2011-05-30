@@ -3,36 +3,47 @@ package com.fullwall.Citizens.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-/**
- * Help pages for Citizens
- * 
- * @author aPunch
- */
 public class HelpUtils {
+
 	/**
-	 * Sends the help page for /citizens help.
+	 * Sends the help page for /citizens help
 	 * 
 	 * @param sender
 	 */
-	public static void sendHelp(CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap("==========[ ")
-				+ "Citizens Help" + StringUtils.wrap(" ]=========="));
-		sender.sendMessage(ChatColor.GREEN + "  []"
-				+ StringUtils.wrap(" - required") + "  ()"
-				+ StringUtils.wrap(" - optional"));
-		formatCommand(sender, "basic", "help [page]", "basic NPC help pages");
-		formatCommand(sender, "blacksmith", "help", "blacksmith NPC help page");
-		formatCommand(sender, "healer", "help", "healer NPC help page");
-		formatCommand(sender, "trader", "help [page]", "trader NPC help page");
-		formatCommand(sender, "wizard", "help", "wizard NPC help page");
-		formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
-		formatCommand(sender, "toggle", "[all] [on/off]",
-				"toggle all types for an NPC");
-		footer(sender);
+	public static void sendHelp(CommandSender sender, int page) {
+		switch (page) {
+		case 1:
+			header(sender, "Citizens", 1, 2);
+			sender.sendMessage(ChatColor.GREEN + "  []"
+					+ StringUtils.wrap(" - required") + "  ()"
+					+ StringUtils.wrap(" - optional"));
+			formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
+			formatCommand(sender, "toggle", "[all] [on/off]",
+					"toggle all types for an NPC");
+			formatCommand(sender, "basic", "help [page]",
+					"basic NPC help pages");
+			formatCommand(sender, "bandit", "help", "bandit NPC help page");
+			formatCommand(sender, "blacksmith", "help",
+					"blacksmith NPC help page");
+			formatCommand(sender, "guard", "help", "guard NPC help page");
+			formatCommand(sender, "healer", "help", "healer NPC help page");
+			formatCommand(sender, "quester", "help", "quester NPC help page");
+			footer(sender);
+			break;
+		case 2:
+			header(sender, "Citizens", 2, 2);
+			formatCommand(sender, "trader", "help [page]",
+					"trader NPC help page");
+			formatCommand(sender, "wizard", "help", "wizard NPC help page");
+			footer(sender);
+			break;
+		default:
+			maxPagesMessage(sender, page, 2);
+		}
 	}
 
 	/**
-	 * Sends the help page for the basic npc type.
+	 * Sends the help page for the basic npc type
 	 * 
 	 * @param sender
 	 * @param page
@@ -80,7 +91,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the trader npc type.
+	 * Sends the help page for the trader npc type
 	 * 
 	 * @param sender
 	 */
@@ -103,7 +114,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the healer npc type.
+	 * Sends the help page for the healer npc type
 	 * 
 	 * @param sender
 	 */
@@ -117,7 +128,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the wizard npc type.
+	 * Sends the help page for the wizard npc type
 	 * 
 	 * @param sender
 	 */
@@ -132,7 +143,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the quester npc type.
+	 * Sends the help page for the quester npc type
 	 * 
 	 * @param sender
 	 */
@@ -142,7 +153,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the blacksmith npc type.
+	 * Sends the help page for the blacksmith npc type
 	 * 
 	 * @param sender
 	 */
@@ -158,7 +169,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the bandit npc type.
+	 * Sends the help page for the bandit npc type
 	 * 
 	 * @param sender
 	 */
@@ -170,7 +181,7 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the guard npc type.
+	 * Sends the help page for the guard npc type
 	 * 
 	 * @param sender
 	 */
@@ -178,17 +189,17 @@ public class HelpUtils {
 		header(sender, "Guard", 1, 1);
 		formatCommand(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		formatCommand(sender, "guard", "blacklist (mob)",
-				"add mob to a bouncer's blacklist");
-		formatCommand(sender, "guard", "whitelist (player)",
-				"add player to a bouncer's whitelist");
+		formatCommand(sender, "guard", "[type] blacklist (mob)",
+				"add mob to a guard's blacklist");
+		formatCommand(sender, "guard", "[type] whitelist (player)",
+				"add player to a guard's whitelist");
 		formatCommand(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		footer(sender);
 	}
 
 	/**
-	 * Prints the header for the Citizens help menus
+	 * Prints the header for the help menus
 	 * 
 	 * @param sender
 	 * @param npcType
@@ -236,6 +247,11 @@ public class HelpUtils {
 		sender.sendMessage(message);
 	}
 
+	/**
+	 * Prints the footer for the help menus
+	 * 
+	 * @param sender
+	 */
 	private static void footer(CommandSender sender) {
 		sender.sendMessage(ChatColor.DARK_GRAY
 				+ "=====[ fullwall, NeonMaster, TheMPC, aPunch ]=====");

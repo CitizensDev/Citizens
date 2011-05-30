@@ -3,11 +3,14 @@ package com.fullwall.Citizens.NPCTypes.Bandits;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.entity.Player;
+
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class BanditNPC implements Toggleable {
+public class BanditNPC implements Toggleable, Clickable {
 	private HumanNPC npc;
 	private List<Integer> stealables = new ArrayList<Integer>();
 
@@ -75,5 +78,17 @@ public class BanditNPC implements Toggleable {
 	@Override
 	public void register() {
 		PropertyManager.get(getType()).register(npc);
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }

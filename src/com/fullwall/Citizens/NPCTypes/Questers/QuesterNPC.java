@@ -2,11 +2,14 @@ package com.fullwall.Citizens.NPCTypes.Questers;
 
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
+
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class QuesterNPC implements Toggleable {
+public class QuesterNPC implements Toggleable, Clickable {
 	private HumanNPC npc;
 	private HashMap<String, Quest> quests = new HashMap<String, Quest>();
 
@@ -66,5 +69,17 @@ public class QuesterNPC implements Toggleable {
 	@Override
 	public void register() {
 		PropertyManager.get(getType()).register(npc);
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }

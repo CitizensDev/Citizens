@@ -7,13 +7,14 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class WizardNPC implements Toggleable {
+public class WizardNPC implements Toggleable, Clickable {
 	private HumanNPC npc;
 	private String locations = "";
 	private int currentLocation = 0;
@@ -195,5 +196,17 @@ public class WizardNPC implements Toggleable {
 			player.sendMessage(ChatColor.GREEN + "You got teleported to "
 					+ StringUtils.wrap(wizard.getCurrentLocationName()) + ".");
 		}
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }

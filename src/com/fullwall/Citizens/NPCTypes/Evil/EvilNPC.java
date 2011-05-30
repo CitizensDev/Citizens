@@ -1,8 +1,11 @@
 package com.fullwall.Citizens.NPCTypes.Evil;
 
+import org.bukkit.entity.Player;
+
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class EvilNPC {
+public class EvilNPC implements Clickable {
 
 	/**
 	 * Massive Wall of Text Explaining Evil NPCs
@@ -43,5 +46,17 @@ public class EvilNPC {
 	 */
 	public EvilNPC(HumanNPC npc) {
 		this.npc = npc;
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }

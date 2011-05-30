@@ -395,13 +395,20 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if ((command.getName().equalsIgnoreCase("citizens") || command
-				.getName().equalsIgnoreCase("npc"))
-				&& args.length == 1
-				&& (args[0].equalsIgnoreCase("help"))) {
-			if (Permission.hasPermission("citizens.help", sender)) {
-				HelpUtils.sendHelp(sender);
-			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				.getName().equalsIgnoreCase("npc"))) {
+			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
+				if (Permission.hasPermission("citizens.help", sender)) {
+					HelpUtils.sendHelp(sender, 1);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
+				if (Permission.hasPermission("citizens.help", sender)) {
+					int page = Integer.parseInt(args[1]);
+					HelpUtils.sendHelp(sender, page);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 			}
 			return true;
 		} else if (command.getName().equalsIgnoreCase("basic")) {

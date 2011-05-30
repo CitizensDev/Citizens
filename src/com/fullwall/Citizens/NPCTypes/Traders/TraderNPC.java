@@ -3,13 +3,15 @@ package com.fullwall.Citizens.NPCTypes.Traders;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class TraderNPC implements Toggleable {
+public class TraderNPC implements Toggleable, Clickable {
 
 	private HumanNPC npc;
 
@@ -177,5 +179,17 @@ public class TraderNPC implements Toggleable {
 	@Override
 	public void register() {
 		PropertyManager.get(getType()).register(npc);
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }

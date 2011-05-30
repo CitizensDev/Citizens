@@ -7,13 +7,14 @@ import org.bukkit.inventory.ItemStack;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.ItemInterface;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class BlacksmithNPC implements Toggleable {
+public class BlacksmithNPC implements Toggleable, Clickable {
 	private HumanNPC npc;
 
 	/**
@@ -150,5 +151,17 @@ public class BlacksmithNPC implements Toggleable {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 			return;
 		}
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }

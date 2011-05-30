@@ -69,6 +69,13 @@ public class Listing {
 		}
 	}
 
+	/**
+	 * Modify a list
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param toChange
+	 */
 	private void modifyList(Player player, HumanNPC npc, String toChange) {
 		String msg = ChatColor.YELLOW + npc.getStrippedName();
 		if (add) {

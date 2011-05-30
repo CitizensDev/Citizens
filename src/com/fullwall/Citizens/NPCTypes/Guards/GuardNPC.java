@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Enums.GuardType;
+import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class GuardNPC implements Toggleable {
+public class GuardNPC implements Toggleable, Clickable {
 	private HumanNPC npc;
 	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
@@ -302,5 +304,17 @@ public class GuardNPC implements Toggleable {
 
 	public double getHalvedRadius() {
 		return this.radius / 2;
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		// TODO Auto-generated method stub
+		
 	}
 }
