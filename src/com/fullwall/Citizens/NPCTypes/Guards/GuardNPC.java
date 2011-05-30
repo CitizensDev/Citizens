@@ -18,10 +18,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	private boolean isBouncer = false;
 	private boolean isAggressive = false;
 	private GuardType guardType = GuardType.NULL;
-	private List<String> bouncerMobBlacklist = new ArrayList<String>();
-	private List<String> bouncerWhitelist = new ArrayList<String>();
-	private List<String> bodyguardMobBlacklist = new ArrayList<String>();
-	private List<String> bodyguardWhitelist = new ArrayList<String>();
+	private List<String> blacklist = new ArrayList<String>();
+	private List<String> whitelist = new ArrayList<String>();
 	private double radius = 10;
 
 	/**
@@ -88,7 +86,6 @@ public class GuardNPC implements Toggleable, Clickable {
 		this.isAggressive = state;
 	}
 
-
 	/**
 	 * Get the type of guard that a guard NPC is
 	 * 
@@ -119,11 +116,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * 
 	 * @return
 	 */
-	public List<String> getBodyguardMobBlacklist() {
-		for (int x = 0; x < bodyguardMobBlacklist.size(); x++) {
-			bodyguardMobBlacklist.get(x).split(",");
-		}
-		return bodyguardMobBlacklist;
+	public List<String> getBlacklist() {
+		return blacklist;
 	}
 
 	/**
@@ -131,17 +125,16 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * 
 	 * @param mob
 	 */
-	public void addMobToBodyguardBlacklist(String mob) {
+	public void addToBlacklist(String mob) {
 		if (mob.equalsIgnoreCase("all")) {
 			for (CreatureType type : CreatureType.values()) {
-				if (!bodyguardMobBlacklist.contains(type.toString()
-						.toLowerCase())) {
-					bodyguardMobBlacklist.add(type.toString().toLowerCase()
+				if (!blacklist.contains(type.toString().toLowerCase())) {
+					blacklist.add(type.toString().toLowerCase()
 							.replace("_", " "));
 				}
 			}
 		} else {
-			bouncerMobBlacklist.add(mob.toLowerCase());
+			blacklist.add(mob.toLowerCase());
 		}
 	}
 
@@ -150,8 +143,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * 
 	 * @param mobBlacklist
 	 */
-	public void setBodyguardMobBlacklist(List<String> bodyguardMobBlacklist) {
-		this.bodyguardMobBlacklist = bodyguardMobBlacklist;
+	public void setBlacklist(List<String> blacklist) {
+		this.blacklist = blacklist;
 	}
 
 	/**
@@ -159,11 +152,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * 
 	 * @return
 	 */
-	public List<String> getBodyguardWhitelist() {
-		for (int x = 0; x < bodyguardWhitelist.size(); x++) {
-			bodyguardWhitelist.get(x).split(",");
-		}
-		return bodyguardWhitelist;
+	public List<String> getWhitelist() {
+		return whitelist;
 	}
 
 	/**
@@ -171,8 +161,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * 
 	 * @param player
 	 */
-	public void addPlayerToBodyguardWhitelist(String player) {
-		bodyguardWhitelist.add(player.toLowerCase());
+	public void addToWhitelist(String player) {
+		whitelist.add(player.toLowerCase());
 	}
 
 	/**
@@ -180,78 +170,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * 
 	 * @param whitelist
 	 */
-	public void setBodyguardWhitelist(List<String> bodyguardWhitelist) {
-		this.bodyguardWhitelist = bodyguardWhitelist;
-	}
-
-	/**
-	 * Get a list of mobs not allowed entry to a bouncer's zone
-	 * 
-	 * @return
-	 */
-	public List<String> getBouncerMobBlacklist() {
-		for (int x = 0; x < bouncerMobBlacklist.size(); x++) {
-			bouncerMobBlacklist.get(x).split(",");
-		}
-		return bouncerMobBlacklist;
-	}
-
-	/**
-	 * Add a mob to a list of unallowed mobs for a bouncer's zone
-	 * 
-	 * @param mob
-	 */
-	public void addMobToBouncerBlacklist(String mob) {
-		if (mob.equalsIgnoreCase("all")) {
-			for (CreatureType type : CreatureType.values()) {
-				if (!bouncerMobBlacklist
-						.contains(type.toString().toLowerCase())) {
-					bouncerMobBlacklist.add(type.toString().toLowerCase()
-							.replace("_", " "));
-				}
-			}
-		} else {
-			bouncerMobBlacklist.add(mob.toLowerCase());
-		}
-	}
-
-	/**
-	 * Set the list of unallowed mobs for a bouncer's zone
-	 * 
-	 * @param mobBlacklist
-	 */
-	public void setBouncerMobBlacklist(List<String> bouncerMobBlacklist) {
-		this.bouncerMobBlacklist = bouncerMobBlacklist;
-	}
-
-	/**
-	 * Get a list of players allowed to enter a bouncer's zone
-	 * 
-	 * @return
-	 */
-	public List<String> getBouncerWhitelist() {
-		for (int x = 0; x < bouncerWhitelist.size(); x++) {
-			bouncerWhitelist.get(x).split(",");
-		}
-		return bouncerWhitelist;
-	}
-
-	/**
-	 * Add a player to a bouncer's whitelist
-	 * 
-	 * @param player
-	 */
-	public void addPlayerToBouncerWhitelist(String player) {
-		bouncerWhitelist.add(player.toLowerCase());
-	}
-
-	/**
-	 * Set the list of allowed players in a bouncer's zone
-	 * 
-	 * @param whitelist
-	 */
-	public void setBouncerWhitelist(List<String> bouncerWhitelist) {
-		this.bouncerWhitelist = bouncerWhitelist;
+	public void setWhitelist(List<String> whitelist) {
+		this.whitelist = whitelist;
 	}
 
 	/**
@@ -309,12 +229,12 @@ public class GuardNPC implements Toggleable, Clickable {
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

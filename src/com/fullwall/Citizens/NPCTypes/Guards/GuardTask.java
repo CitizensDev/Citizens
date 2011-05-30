@@ -60,8 +60,8 @@ public class GuardTask implements Runnable {
 						String name = "";
 						if (entity instanceof Player) {
 							Player player = (Player) entity;
-							if (!NPCManager.validateOwnership(player, npc
-									.getUID())) {
+							if (!NPCManager.validateOwnership(player,
+									npc.getUID())) {
 								name = player.getName();
 							}
 						} else {
@@ -82,7 +82,7 @@ public class GuardTask implements Runnable {
 					Player p = Bukkit.getServer().getPlayer(owner);
 					Location ownerloc = p.getLocation();
 					p.sendMessage("It's a guard");
-					if (p != null) {
+					if (p != null && p.isOnline()) {
 						p.sendMessage("Works1");
 						if (NPCManager.get(npc.getUID()) == null) {
 							npc.getNPCData().setLocation(p.getLocation());
@@ -97,15 +97,15 @@ public class GuardTask implements Runnable {
 							String name = "";
 							if (entity instanceof Player) {
 								Player player = (Player) entity;
-								if (!NPCManager.validateOwnership(player, npc
-										.getUID())) {
+								if (!NPCManager.validateOwnership(player,
+										npc.getUID())) {
 									name = player.getName();
 								}
 							} else {
 								name = getTypeFromEntity(entity);
 							}
-							if (LocationUtils.checkLocation(ownerloc, entity
-									.getLocation(), 25)) {
+							if (LocationUtils.checkLocation(ownerloc,
+									entity.getLocation(), 25)) {
 								cacheActions(npc, entity, entity.getEntityId(),
 										name);
 							} else {
@@ -113,8 +113,8 @@ public class GuardTask implements Runnable {
 							}
 						}
 						entity = null;
-						if (LocationUtils.checkLocation(npc.getLocation(), p
-								.getLocation(), 25)) {
+						if (LocationUtils.checkLocation(npc.getLocation(),
+								p.getLocation(), 25)) {
 							npc.target(p, false, -1, 2, 25);
 						} else {
 							npc.moveTo(p.getLocation());
@@ -178,19 +178,25 @@ public class GuardTask implements Runnable {
 		} else if (npc.getGuard().isBodyguard()) {
 			String mob = getTypeFromEntity(entity);
 			if (npc.getGuard().isAggressive()) {
-						if (entity instanceof Player) {
-							if (!npc.getGuard().getBodyguardWhitelist().contains(name) && !npc.getGuard().getBodyguardWhitelist().contains("all")) {
-								attack(entity, npc);
-							}
-						} else if (!(entity instanceof Player) && CreatureType.fromName(mob.replaceFirst("" + mob.charAt(0),"" + Character.toUpperCase(mob.charAt(0))))  != null) {
-							if (npc.getGuard().getBodyguardMobBlacklist().contains(getTypeFromEntity(entity)) || npc.getGuard().getBodyguardMobBlacklist().contains("")) {
-								attack(entity, npc);
-							}
-						}
+				if (entity instanceof Player) {
+					if (!npc.getGuard().getWhitelist().contains(name)
+							&& !npc.getGuard().getWhitelist().contains("all")) {
+						attack(entity, npc);
 					}
-				} else {
-					//Dostuffherelater
+				} else if (!(entity instanceof Player)
+						&& CreatureType.fromName(mob.replaceFirst(
+								"" + mob.charAt(0),
+								"" + Character.toUpperCase(mob.charAt(0)))) != null) {
+					if (npc.getGuard().getBlacklist()
+							.contains(getTypeFromEntity(entity))
+							|| npc.getGuard().getBlacklist().contains("all")) {
+						attack(entity, npc);
+					}
 				}
+			}
+		} else {
+			// Dostuffherelater
+		}
 	}
 
 	private void resetActions(int entityID, String name, HumanNPC npc) {
@@ -203,7 +209,7 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-		if (npc.getGuard().getBodyguardMobBlacklist().contains(name)) {
+		if (npc.getGuard().getBlacklist().contains(name)) {
 			return true;
 		} else {
 			return false;
