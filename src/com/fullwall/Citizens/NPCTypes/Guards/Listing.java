@@ -8,12 +8,12 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Enums.GuardListType;
-import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class Listing {
 	private List<String> list;
 	private GuardListType type;
+	private boolean add = true;
 	private boolean changeable = false;
 
 	/**
@@ -32,31 +32,8 @@ public class Listing {
 	 * @param toAdd
 	 */
 	public void add(Player player, HumanNPC npc, String toAdd) {
-		String msg = StringUtils.wrap(npc.getStrippedName()) + " has added ";
-		toAdd = toAdd.toLowerCase();
-		if (type == GuardListType.BLACK) {
-			if (toAdd.equalsIgnoreCase("all")) {
-				changeable = true;
-				addAll();
-				msg += ChatColor.GREEN + "all mobs ";
-			} else if (validateMob(player, toAdd)) {
-				changeable = true;
-				msg += ChatColor.YELLOW + toAdd + " ";
-			}
-		} else if (type == GuardListType.WHITE) {
-			changeable = true;
-			msg += toAdd + " ";
-		} else {
-			changeable = false;
-		}
-		if (!list.contains(toAdd) && changeable) {
-			if (!toAdd.equalsIgnoreCase("all")) {
-				list.add(toAdd);
-			}
-			msg += ChatColor.GREEN + "to it's " + type.toString().toLowerCase()
-					+ "list.";
-			player.sendMessage(msg);
-		}
+		add = true;
+		modifyList(player, npc, toAdd);
 	}
 
 	/**
@@ -67,30 +44,74 @@ public class Listing {
 	 * @param toRemove
 	 */
 	public void remove(Player player, HumanNPC npc, String toRemove) {
-		String msg = StringUtils.wrap(npc.getStrippedName()) + " has removed ";
-		toRemove = toRemove.toLowerCase();
-		if (type == GuardListType.BLACK) {
-			if (toRemove.equalsIgnoreCase("all")) {
-				changeable = true;
-				removeAll();
-				msg += ChatColor.GREEN + "all mobs ";
-			} else if (validateMob(player, toRemove)) {
-				changeable = true;
-				msg += ChatColor.YELLOW + toRemove + " ";
+		add = false;
+		modifyList(player, npc, toRemove);
+	}
+
+	/**
+	 * Change all values from a list
+	 * 
+	 * @return
+	 */
+	private void changeAll() {
+		for (CreatureType type : CreatureType.values()) {
+			if (add) {
+				if (!list.contains(type.toString().toLowerCase()
+						.replace("_", " "))) {
+					list.add(type.toString().toLowerCase().replace("_", " "));
+				}
+			} else {
+				if (list.contains(type.toString().toLowerCase()
+						.replace("_", " "))) {
+					list.remove(type.toString().toLowerCase().replace("_", " "));
+				}
 			}
-		} else if (type == GuardListType.WHITE) {
-			changeable = true;
-			msg += toRemove + " ";
-		} else {
-			changeable = false;
 		}
-		if (!list.contains(toRemove) && changeable) {
-			if (!toRemove.equalsIgnoreCase("all")) {
-				list.remove(toRemove);
+	}
+
+	private void modifyList(Player player, HumanNPC npc, String toChange) {
+		String msg = ChatColor.YELLOW + npc.getStrippedName();
+		if (add) {
+			msg += ChatColor.GREEN + " has added ";
+			if (type == GuardListType.BLACK) {
+				if (toChange.equalsIgnoreCase("all")) {
+					changeable = true;
+					changeAll();
+					msg += ChatColor.GREEN + "all mobs ";
+				} else if (validateMob(player, toChange)) {
+					changeable = true;
+					msg += ChatColor.YELLOW + toChange + " ";
+				}
+			} else if (type == GuardListType.WHITE) {
+				changeable = true;
+				msg += toChange + " ";
+			} else {
+				changeable = false;
 			}
-			msg += ChatColor.GREEN + "from it's "
-					+ type.toString().toLowerCase() + "list.";
-			player.sendMessage(msg);
+		} else {
+			msg += ChatColor.GREEN + " has removed ";
+			if (type == GuardListType.BLACK) {
+				if (toChange.equalsIgnoreCase("all")) {
+					changeable = true;
+					changeAll();
+					msg += ChatColor.GREEN + "all mobs ";
+				} else if (validateMob(player, toChange)) {
+					changeable = true;
+					msg += ChatColor.YELLOW + toChange + " ";
+				}
+			} else if (type == GuardListType.WHITE) {
+				changeable = true;
+				msg += toChange + " ";
+			} else {
+				changeable = false;
+			}
+		}
+		if (!toChange.equalsIgnoreCase("all") && changeable) {
+			if (!list.contains(toChange) && add) {
+				list.add(toChange);
+			} else if (list.contains(toChange) && !add) {
+				list.remove(toChange);
+			}
 		}
 	}
 
@@ -108,38 +129,6 @@ public class Listing {
 		} else {
 			player.sendMessage(ChatColor.RED + "Not a valid mob.");
 			return false;
-		}
-	}
-
-	/**
-	 * Add all mobs to a list
-	 * 
-	 * @return
-	 */
-	private void addAll() {
-		if (type == GuardListType.BLACK) {
-			for (CreatureType type : CreatureType.values()) {
-				if (!list.contains(type.toString().toLowerCase()
-						.replace("_", " "))) {
-					list.add(type.toString().toLowerCase().replace("_", " "));
-				}
-			}
-		}
-	}
-
-	/**
-	 * Remove all mobs from a list
-	 * 
-	 * @return
-	 */
-	private void removeAll() {
-		if (type == GuardListType.BLACK) {
-			for (CreatureType type : CreatureType.values()) {
-				if (list.contains(type.toString().toLowerCase()
-						.replace("_", " "))) {
-					list.remove(type.toString().toLowerCase().replace("_", " "));
-				}
-			}
 		}
 	}
 }
