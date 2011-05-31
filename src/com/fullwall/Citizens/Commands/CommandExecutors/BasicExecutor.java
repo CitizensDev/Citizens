@@ -23,7 +23,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicExecutor implements CommandExecutor {
 
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public BasicExecutor(Citizens plugin) {
 		this.plugin = plugin;
@@ -522,8 +522,8 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		if ((PropertyManager.getBasic().getNPCAmountPerPlayer(player.getName()) < Constants.maxNPCsPerPlayer)
 				|| (Constants.maxNPCsPerPlayer == 0)
-				|| (Permission.hasPermission("citizens.general.nolimit",
-						(CommandSender) player))) {
+				|| (Permission
+						.hasPermission("citizens.general.nolimit", player))) {
 			int UID = NPCManager.register(args[1], player.getLocation(),
 					player.getName());
 			PropertyManager.getBasic().saveNPCAmountPerPlayer(
