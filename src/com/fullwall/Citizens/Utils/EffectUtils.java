@@ -63,7 +63,7 @@ public class EffectUtils {
 	 * Fire Extinguish - plays the 'extinguish fire' sound.
 	 * Record Play - REQUIRES DATA - uses data as the record ID to play.
 	 * Dispenser particle spawn - REQUIRES DATA - creates the particles
-	 * that appear when dispenser is used (data is used as yaw).
+	 * that appear when dispenser is used (data is used as direction (up to 9)).
 	 * Dig - REQUIRES DATA - uses the data as the block id of the
 	 * sound to play, creates dig effects.
 	 */

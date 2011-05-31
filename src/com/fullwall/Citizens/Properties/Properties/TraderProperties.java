@@ -29,13 +29,6 @@ public class TraderProperties extends Saveable {
 		return unlimiteds.getBoolean(UID);
 	}
 
-	private String addToStockableString(String s, Stockable st) {
-		if (s.contains(st.toString() + ";")) {
-			return "";
-		}
-		return st.toString() + ";";
-	}
-
 	private void setStockables(int UID, String set) {
 		stocking.setString(UID, set);
 	}
@@ -54,7 +47,8 @@ public class TraderProperties extends Saveable {
 		setStockables(UID, string);
 		int count = 0;
 		for (Stockable entry : stockables.values()) {
-			string = addToStockableString(string, entry);
+			if (!string.contains(entry.toString()))
+				string += entry.toString();
 			count += 1;
 		}
 		setStockables(UID, string);
