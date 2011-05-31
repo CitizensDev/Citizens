@@ -11,8 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nijikokun.register.payment.Method;
-
 import com.fullwall.Citizens.Commands.CommandHandler;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
@@ -28,6 +26,7 @@ import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.nijikokun.register.payment.Method;
 
 /**
  * Citizens for Bukkit
@@ -51,10 +50,64 @@ public class Citizens extends JavaPlugin {
 	private static final String codename = "Realist";
 	public static String version = "1.0.8";
 
-	@Override
-	public void onLoad() {
+	/**
+	 * Returns the current version of Citizens as specified in the plugin.yml.
+	 * 
+	 * @return
+	 */
+	public static String getVersion() {
+		return version;
 	}
 
+	/**
+	 * A method used for iConomy support.
+	 * 
+	 * @param iConomy
+	 *            plugin
+	 * @return
+	 */
+	public static boolean setMethod(Method method) {
+		if (economy == null) {
+			economy = method;
+		} else {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Schedule a timer to regenerate a healer's health based on their level
+	 * 
+	 * @return
+	 */
+	private int getHealthRegenRate() {
+		int delay = 0;
+		if (!NPCManager.getList().isEmpty()) {
+			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
+					.entrySet()) {
+				int level = entry.getValue().getHealer().getLevel();
+				delay = Constants.healerHealthRegenIncrement * (11 - level);
+				return delay;
+			}
+		} else {
+			return 12000;
+		}
+		return delay;
+	}
+
+	@Override
+	public void onDisable() {
+		PluginDescriptionFile pdfFile = getDescription();
+		PropertyManager.stateSave();
+
+		basicNPCHandler.despawnAll();
+
+		// Save the local copy of our files to disk.
+		log.info("[" + pdfFile.getName() + "]: version ["
+				+ pdfFile.getVersion() + "e] (" + codename + ") disabled");
+	}
+
+	@Override
 	public void onEnable() {
 		// TODO - remove on update.
 		transferSettings();
@@ -75,7 +128,7 @@ public class Citizens extends JavaPlugin {
 		worldListener.registerEvents();
 		serverListener.registerEvents();
 
-		PluginDescriptionFile pdfFile = this.getDescription();
+		PluginDescriptionFile pdfFile = getDescription();
 		version = pdfFile.getVersion();
 
 		Permission.initialize(getServer());
@@ -119,6 +172,58 @@ public class Citizens extends JavaPlugin {
 
 		log.info("[" + pdfFile.getName() + "]: version ["
 				+ pdfFile.getVersion() + "e] (" + codename + ") loaded");
+	}
+
+	@Override
+	public void onLoad() {
+	}
+
+	private void setupNPCs() {
+		// Start reloading old NPCs from the config files.
+		String[] list = PropertyManager.getBasic().locations.getString("list")
+				.split(",");
+		if (list.length > 0 && !list[0].isEmpty()) {
+			for (String name : list) {
+				Location loc = PropertyManager.getBasic().getLocation(
+						Integer.valueOf(name.split("_")[0]));
+				if (loc != null) {
+					NPCManager.register(
+							name.split("_", 2)[1],
+							Integer.valueOf(name.split("_")[0]),
+							PropertyManager.getBasic().getOwner(
+									Integer.valueOf(name.split("_")[0])));
+					ArrayList<String> text = PropertyManager.getBasic()
+							.getText(Integer.valueOf(name.split("_")[0]));
+					if (text != null)
+						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
+								text);
+				} else {
+					PropertyManager.getBasic().deleteNameFromList(name);
+				}
+			}
+		}
+		log.info("[" + getDescription().getName() + "]: Loaded "
+				+ NPCManager.GlobalUIDs.size() + " NPCs.");
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
+	}
+
+	private void transferInventories() {
+		File file = new File("plugins/Citizens/Traders/Citizens.inventories");
+		if (file.exists()) {
+			try {
+				PropertyHandler temp = PropertyManager.getBasic().inventories;
+				PropertyHandler handler = new PropertyHandler(
+						"plugins/Citizens/Traders/Citizens.inventories");
+				for (Entry<String, String> entry : handler.returnMap()
+						.entrySet()) {
+					temp.setString(entry.getKey(), entry.getValue());
+				}
+				handler.clear();
+			} catch (Exception e) {
+			}
+			file.deleteOnExit();
+		}
 	}
 
 	private void transferSettings() {
@@ -170,7 +275,7 @@ public class Citizens extends JavaPlugin {
 			// Range Settings
 			temp.setInt("range.basic.look", handler.getInt("look-range"));
 			handler.clear();
-			file.delete();
+			file.deleteOnExit();
 		}
 		file = new File("plugins/Citizens/Citizens.economy");
 		if (file.exists()) {
@@ -246,68 +351,8 @@ public class Citizens extends JavaPlugin {
 			temp.setInt("prices.wizard.teleport.econplugin",
 					handler.getInt("wizard-teleport-econplugin"));
 			handler.clear();
-			file.delete();
+			file.deleteOnExit();
 		}
-	}
-
-	private void transferInventories() {
-		File file = new File("plugins/Citizens/Traders/Citizens.inventories");
-		if (file.exists()) {
-			try {
-				PropertyHandler temp = PropertyManager.getBasic().inventories;
-				PropertyHandler handler = new PropertyHandler(
-						"plugins/Citizens/Traders/Citizens.inventories");
-				for (Entry<String, String> entry : handler.returnMap()
-						.entrySet()) {
-					temp.setString(entry.getKey(), entry.getValue());
-				}
-				handler.clear();
-			} catch (Exception e) {
-			}
-			file.delete();
-		}
-	}
-
-	@Override
-	public void onDisable() {
-		PluginDescriptionFile pdfFile = this.getDescription();
-		PropertyManager.stateSave();
-
-		basicNPCHandler.despawnAll();
-
-		// Save the local copy of our files to disk.
-		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "e] (" + codename + ") disabled");
-	}
-
-	private void setupNPCs() {
-		// Start reloading old NPCs from the config files.
-		String[] list = PropertyManager.getBasic().locations.getString("list")
-				.split(",");
-		if (list.length > 0 && !list[0].isEmpty()) {
-			for (String name : list) {
-				Location loc = PropertyManager.getBasic().getLocation(
-						Integer.valueOf(name.split("_")[0]));
-				if (loc != null) {
-					NPCManager.register(
-							name.split("_", 2)[1],
-							Integer.valueOf(name.split("_")[0]),
-							PropertyManager.getBasic().getOwner(
-									Integer.valueOf(name.split("_")[0])));
-					ArrayList<String> text = PropertyManager.getBasic()
-							.getText(Integer.valueOf(name.split("_")[0]));
-					if (text != null)
-						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
-								text);
-				} else {
-					PropertyManager.getBasic().deleteNameFromList(name);
-				}
-			}
-		}
-		log.info("[" + this.getDescription().getName() + "]: Loaded "
-				+ NPCManager.GlobalUIDs.size() + " NPCs.");
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
 	}
 
 	/**
@@ -355,50 +400,5 @@ public class Citizens extends JavaPlugin {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * A method used for iConomy support.
-	 * 
-	 * @param iConomy
-	 *            plugin
-	 * @return
-	 */
-	public static boolean setMethod(Method method) {
-		if (economy == null) {
-			economy = method;
-		} else {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Returns the current version of Citizens as specified in the plugin.yml.
-	 * 
-	 * @return
-	 */
-	public static String getVersion() {
-		return version;
-	}
-
-	/**
-	 * Schedule a timer to regenerate a healer's health based on their level
-	 * 
-	 * @return
-	 */
-	private int getHealthRegenRate() {
-		int delay = 0;
-		if (!NPCManager.getList().isEmpty()) {
-			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
-					.entrySet()) {
-				int level = entry.getValue().getHealer().getLevel();
-				delay = Constants.healerHealthRegenIncrement * (11 - level);
-				return delay;
-			}
-		} else {
-			return 12000;
-		}
-		return delay;
 	}
 }

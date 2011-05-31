@@ -5,18 +5,18 @@ import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
-	public static int tickDelay = 1;
-	public static int saveDelay = 72000;
-	public static int maxNPCsPerPlayer = 10;
+	public static int banditStealRadius = 5;
+	public static int evilNPCTameItem = 354;
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
-	public static int wizardMaxLocations = 10;
-	public static int wizardInteractItem = 288;
-	public static int evilNPCTameItem = 354;
 	public static int healerHealthRegenIncrement = 12000;
-	public static int banditStealRadius = 5;
+	public static int maxNPCsPerPlayer = 10;
 	public static int maxStationaryTicks = 25;
 	public static int maxPathingTicks = -1;
+	public static int saveDelay = 72000;
+	public static int tickDelay = 1;
+	public static int wizardMaxLocations = 10;
+	public static int wizardInteractItem = 288;
 
 	public static double npcRange = 5;
 	public static double defaultBouncerProtectionRadius = 10;
@@ -96,7 +96,7 @@ public class Constants {
 		Storage economy = UtilityProperties.getEconomySettings();
 		useEconplugin = economy.getBoolean("economy.use-economy");
 		useEconomy = economy.getBoolean("economy.use-econplugin");
-		
+
 		EconomyHandler.setUpVariables();
 	}
 }

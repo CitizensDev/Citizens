@@ -47,6 +47,16 @@ public class QuestManager {
 
 	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
 
+	public static void load(Player player) {
+		PlayerProfile profile = new PlayerProfile(player.getName());
+		cachedProfiles.put(player.getName(), profile);
+	}
+
+	public static void unload(Player player) {
+		getProfile(player.getName()).save();
+		cachedProfiles.put(player.getName(), null);
+	}
+
 	public static void incrementQuest(Player player, Event event) {
 		getProfile(player.getName()).getCurrentQuest().updateProgress(event);
 	}

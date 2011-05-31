@@ -10,4 +10,8 @@ public class StoredProfile {
 		String directory = "plugins/Citizens/Profiles/";
 		profile = new PropertyHandler(directory + name + ".profile");
 	}
+
+	public void save() {
+		this.profile.save();
+	}
 }

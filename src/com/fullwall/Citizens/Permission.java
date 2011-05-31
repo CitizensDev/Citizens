@@ -1,12 +1,14 @@
 package com.fullwall.Citizens;
 
-import com.nijikokun.bukkit.Permissions.Permissions;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Permission {
 	@SuppressWarnings("unused")
@@ -48,6 +50,13 @@ public class Permission {
 		return false;
 	}
 
+	public static boolean canCreate(Player player, String type) {
+		if (permissionsEnabled) {
+			return permission(player, "citizens.create." + type);
+		}
+		return false;
+	}
+
 	private static boolean permission(Player player, String string) {
 		return Permissions.Security.has(player, string);
 	}
@@ -69,5 +78,10 @@ public class Permission {
 	public static boolean hasPermission(String permission, CommandSender sender) {
 		return (!(sender instanceof Player) || generic((Player) sender,
 				permission));
+	}
+
+	public static void grantRank(Player player, String rank) {
+		if (permissionsEnabled) {
+		}
 	}
 }

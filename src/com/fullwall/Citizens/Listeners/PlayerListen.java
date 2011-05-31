@@ -1,9 +1,11 @@
 package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
@@ -11,7 +13,7 @@ import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
-	private Citizens plugin;
+	private final Citizens plugin;
 	private PluginManager pm;
 
 	public PlayerListen(Citizens plugin) {
@@ -21,10 +23,25 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void registerEvents() {
 		pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
-				Event.Priority.Normal, plugin);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, this, Event.Priority.Normal,
+				plugin);
+		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
+				plugin);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this, Event.Priority.Normal,
 				plugin);
+		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
+				Event.Priority.Normal, plugin);
+
+	}
+
+	@Override
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		QuestManager.load(event.getPlayer());
+	}
+
+	@Override
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		QuestManager.unload(event.getPlayer());
 	}
 
 	@Override

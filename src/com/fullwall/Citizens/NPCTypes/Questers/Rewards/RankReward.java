@@ -2,14 +2,20 @@ package com.fullwall.Citizens.NPCTypes.Questers.Rewards;
 
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCTypes.Questers.Reward;
 
 public class RankReward implements Reward {
 
-	// Reward a player by ranking them up, now possible with Permissions v3.0!
+	private final String reward;
+
+	public RankReward(String reward) {
+		this.reward = reward;
+	}
 
 	@Override
 	public void grant(Player player) {
-		// TODO Auto-generated method stub
+		// TODO - look into 3.0 API and finish grantRank()
+		Permission.grantRank(player, reward);
 	}
 }

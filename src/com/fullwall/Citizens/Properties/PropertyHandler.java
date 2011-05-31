@@ -42,8 +42,8 @@ import com.fullwall.Citizens.Interfaces.Storage;
  * @author Nijiko
  */
 public final class PropertyHandler implements Storage {
-	private Properties properties;
-	private String fileName;
+	private final Properties properties;
+	private final String fileName;
 
 	public PropertyHandler(String fileName) {
 		this.fileName = fileName;
@@ -99,11 +99,6 @@ public final class PropertyHandler implements Storage {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fullwall.Citizens.Storage#save()
-	 */
 	@Override
 	public void save() {
 		try {

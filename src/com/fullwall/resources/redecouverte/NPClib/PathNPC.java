@@ -1,11 +1,5 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
-import org.bukkit.entity.LivingEntity;
-
-import com.fullwall.Citizens.Constants;
-
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
@@ -17,6 +11,12 @@ import net.minecraft.server.PathEntity;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
 
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.entity.LivingEntity;
+
+import com.fullwall.Citizens.Constants;
+
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity pathEntity;
@@ -27,8 +27,8 @@ public class PathNPC extends EntityPlayer {
 	private boolean hasAttacked = false;
 	private boolean jumping = false;
 	private int pathTicks = 0;
-	private int stationaryTicks = 0;
 	private int pathTickLimit = -1;
+	private int stationaryTicks = 0;
 	private int stationaryTickLimit = -1;
 	private int attackTimes = 0;
 	private int attackTimesLimit = -1;
@@ -56,7 +56,7 @@ public class PathNPC extends EntityPlayer {
 			if (vector != null) {
 				double diffX = vector.a - this.locX;
 				double diffZ = vector.c - this.locZ;
-				double diffY = vector.b - (double) yHeight;
+				double diffY = vector.b - yHeight;
 				float diffYaw = getYawDifference(diffZ, diffX);
 
 				this.yaw += diffYaw;
@@ -259,12 +259,12 @@ public class PathNPC extends EntityPlayer {
 			float f2 = -99999.0F;
 
 			for (int l = 0; l < 10; ++l) {
-				int i1 = MathHelper.floor(this.locX
-						+ (double) this.random.nextInt(13) - 6.0D);
-				int j1 = MathHelper.floor(this.locY
-						+ (double) this.random.nextInt(7) - 3.0D);
-				int k1 = MathHelper.floor(this.locZ
-						+ (double) this.random.nextInt(13) - 6.0D);
+				int i1 = MathHelper.floor(this.locX + this.random.nextInt(13)
+						- 6.0D);
+				int j1 = MathHelper.floor(this.locY + this.random.nextInt(7)
+						- 3.0D);
+				int k1 = MathHelper.floor(this.locZ + this.random.nextInt(13)
+						- 6.0D);
 				float f3 = this.getBlockPathWeight(i1, j1, k1);
 
 				if (f3 > f2) {

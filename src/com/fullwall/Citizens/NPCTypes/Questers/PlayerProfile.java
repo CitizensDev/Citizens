@@ -34,4 +34,8 @@ public class PlayerProfile {
 	public boolean hasQuest() {
 		return currentQuest == null;
 	}
+
+	public void save() {
+		this.profile.save();
+	}
 }
