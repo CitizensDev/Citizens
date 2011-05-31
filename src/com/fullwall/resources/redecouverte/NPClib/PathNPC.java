@@ -50,8 +50,8 @@ public class PathNPC extends EntityPlayer {
 		if (this.pathEntity != null) {
 			Vec3D vector = getVector();
 			int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
-			boolean inWater = this.Z();
-			boolean inLava = this.aa();
+			boolean inWater = this.ac();
+			boolean inLava = this.ad();
 
 			if (vector != null) {
 				double diffX = vector.a - this.locX;
@@ -84,7 +84,7 @@ public class PathNPC extends EntityPlayer {
 		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float diffYaw = vectorYaw - this.yaw;
 
-		for (this.az = this.aD; diffYaw < -180.0F; diffYaw += 360.0F) {
+		for (this.aA = this.aE; diffYaw < -180.0F; diffYaw += 360.0F) {
 		}
 		while (diffYaw >= 180.0F) {
 			diffYaw -= 360.0F;
@@ -122,7 +122,7 @@ public class PathNPC extends EntityPlayer {
 		}
 		if (target != null) {
 			// Target died.
-			if (!this.target.Q()) {
+			if (!this.target.S()) {
 				resetTarget();
 			}
 			if (target != null && targetAggro) {
@@ -158,12 +158,12 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void move() {
-		this.a(this.ay / 2, this.az / 2);
+		this.a(this.az / 2, this.aA / 2);
 	}
 
 	private void jump() {
-		boolean inWater = this.Z();
-		boolean inLava = this.aa();
+		boolean inWater = this.ac();
+		boolean inLava = this.ad();
 		if (inWater || inLava) {
 			this.motY += 0.03999999910593033D;
 		} else if (this.onGround) {

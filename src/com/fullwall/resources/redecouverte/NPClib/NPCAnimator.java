@@ -16,7 +16,7 @@ public class NPCAnimator {
 	}
 
 	public DataWatcher getWatcher() {
-		return this.npc.X();
+		return this.npc.Z();
 	}
 
 	public void crouch() {
