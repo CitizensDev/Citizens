@@ -129,8 +129,11 @@ public class PathNPC extends EntityPlayer {
 				float distanceToEntity = this.target.f(this);
 				// If a direct line of sight exists
 				if (this.e(this.target)) {
-					// Attempt to attack.
-					this.damageEntity(this.target, distanceToEntity);
+					// In range?
+					if (withinAttackRange(this.target, distanceToEntity)) {
+						// Attack.
+						this.damageEntity(this.target);
+					}
 				}
 			}
 		}
@@ -208,13 +211,17 @@ public class PathNPC extends EntityPlayer {
 		incrementAttackTimes();
 	}
 
-	private void damageEntity(Entity entity, float f) {
-		if (this.attackTicks <= 0 && f < 1.5F
+	private boolean withinAttackRange(Entity entity, float distance) {
+		if (this.attackTicks <= 0 && distance < 1.5F
 				&& entity.boundingBox.e > this.boundingBox.b
-				&& entity.boundingBox.b < this.boundingBox.e) {
-			this.attackTicks = 20;
-			this.attackEntity((EntityLiving) entity);
-		}
+				&& entity.boundingBox.b < this.boundingBox.e)
+			return true;
+		return false;
+	}
+
+	private void damageEntity(Entity entity) {
+		this.attackTicks = 20;
+		this.attackEntity((EntityLiving) entity);
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
