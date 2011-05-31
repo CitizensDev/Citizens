@@ -13,7 +13,15 @@ public class EffectUtils {
 		}
 
 		public enum Effect implements IEffect {
+			/**
+			 * creates the particles that appear when dispenser is used, data is
+			 * used as direction (up to 9)
+			 */
 			DISPENSER_PARTICLE_SPAWN(2000),
+			/**
+			 * creates dig effects, uses the data as the block ID of the sound
+			 * to play
+			 */
 			DIG(2001);
 			private final int effectIdentifier;
 
@@ -28,12 +36,33 @@ public class EffectUtils {
 		}
 
 		public enum Sound implements IEffect {
+			/**
+			 * Plays the sound when dispensers are fired
+			 */
 			DISPENSER_FIRE(1000),
+			/**
+			 * Plays the sound when an empty dispenser attempts to fire
+			 */
 			DISPENSER_FIRE_EMPTY(1001),
+			/**
+			 * Plays the open/close door sound (50/50)
+			 */
 			DOOR_SOUND(1003),
+			/**
+			 * Plays the sound when a fire is extinguised
+			 */
 			FIRE_EXTINGUISH(1004),
+			/**
+			 * Plays the open/close trapdoor sound
+			 */
 			TRAPDOOR_SOUND(1003),
+			/**
+			 * Plays the fired arrow sound
+			 */
 			PROJECTILE_FIRE(1002),
+			/**
+			 * Plays a record, uses data as the item ID of the record to play
+			 */
 			RECORD_PLAY(1005);
 			private final int soundIdentifier;
 
@@ -54,18 +83,4 @@ public class EffectUtils {
 				location.getBlockY(), location.getBlockZ(), data);
 		PacketUtils.sendPacketNearby(location, 64, packet);
 	}
-	/*
-	 * Documentation for effects.
-	 * 
-	 * Projectile Fire - plays the fired arrow sound.
-	 * Dispenser fire - sound when dispensers are fired.
-	 * (Trap)Door Sound - plays at random the (trap)door open/close sound (50/50).
-	 * Fire Extinguish - plays the 'extinguish fire' sound.
-	 * Record Play - REQUIRES DATA - uses data as the record ID to play.
-	 * Dispenser particle spawn - REQUIRES DATA - creates the particles
-	 * that appear when dispenser is used (data is used as direction (up to 9)).
-	 * Dig - REQUIRES DATA - uses the data as the block id of the
-	 * sound to play, creates dig effects.
-	 */
-
 }
