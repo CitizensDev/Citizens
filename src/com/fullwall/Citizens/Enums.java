@@ -26,26 +26,4 @@ public class Enums {
 			}
 		}
 	}
-
-	/**
-	 * Types of lists for a guard (bouncer/bodyguard)
-	 */
-	public enum GuardListType {
-		/**
-		 * Blacklist mobs
-		 */
-		BLACK,
-		/**
-		 * Whitelist players
-		 */
-		WHITE;
-
-		public static GuardListType parse(String string) {
-			try {
-				return GuardListType.valueOf(string.toUpperCase());
-			} catch (Exception ex) {
-				return null;
-			}
-		}
-	}
 }
