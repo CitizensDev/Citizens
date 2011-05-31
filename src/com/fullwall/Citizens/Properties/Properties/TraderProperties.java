@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
@@ -53,7 +54,7 @@ public class TraderProperties extends Saveable {
 		setStockables(UID, string);
 		int count = 0;
 		for (Stockable entry : stockables.values()) {
-			string += addToStockableString(string, entry);
+			string = addToStockableString(string, entry);
 			count += 1;
 		}
 		setStockables(UID, string);
