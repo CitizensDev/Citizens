@@ -131,7 +131,7 @@ public class Citizens extends JavaPlugin {
 		PluginDescriptionFile pdfFile = getDescription();
 		version = pdfFile.getVersion();
 
-		Permission.initialize(getServer());
+		// Permission.initialize(getServer());
 		Constants.setupVariables();
 
 		plugin = this;
