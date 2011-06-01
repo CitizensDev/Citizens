@@ -27,7 +27,8 @@ public class MessageUtils {
 			+ "You must have an NPC selected (right click).";
 	public static String notOwnerMessage = ChatColor.RED
 			+ "You are not the owner of this NPC.";
-	public static String invalidItemIDMessage = ChatColor.RED + "That is not a valid item ID.";
+	public static String invalidItemIDMessage = ChatColor.RED
+			+ "That is not a valid item ID.";
 
 	public static String stripWhite(String check) {
 		if (check.equals("§f")) {
@@ -46,7 +47,7 @@ public class MessageUtils {
 	public static void sendText(HumanNPC npc, Player player, Citizens plugin) {
 		String text = getText(npc, player, plugin);
 		if (!text.isEmpty()) {
-			((Player) player).sendMessage(text);
+			(player).sendMessage(text);
 		}
 	}
 
@@ -145,15 +146,6 @@ public class MessageUtils {
 		return message;
 	}
 
-	private static String reverseStockableMessage(Stockable stockable,
-			ChatColor colour) {
-		return MessageUtils.getPriceMessage(stockable.getPrice(), colour)
-				+ " for "
-				+ StringUtils.wrap(stockable.getStocking().getAmount() + " "
-						+ stockable.getStocking().getType().name(), colour)
-				+ "(s)";
-	}
-
 	/**
 	 * Formats the ItemStack contained in a stockable to a string.
 	 * 
@@ -161,16 +153,11 @@ public class MessageUtils {
 	 * @param colour
 	 * @return
 	 */
-	public static String getStockableMessage(Stockable s, boolean selling,
-			ChatColor colour) {
-		if (!selling) {
-			return StringUtils.wrap(s.getStocking().getAmount() + " "
-					+ s.getStocking().getType().name(), colour)
-					+ "(s) for "
-					+ MessageUtils.getPriceMessage(s.getPrice(), colour);
-		} else {
-			return reverseStockableMessage(s, colour);
-		}
+	public static String getStockableMessage(Stockable s, ChatColor colour) {
+		return StringUtils.wrap(s.getStocking().getAmount() + " "
+				+ s.getStocking().getType().name(), colour)
+				+ "(s) for "
+				+ MessageUtils.getPriceMessage(s.getPrice(), colour);
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {

@@ -14,8 +14,8 @@ import org.bukkit.material.MaterialData;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
-import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
+import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -28,7 +28,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class TraderExecutor implements CommandExecutor {
 
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public TraderExecutor(Citizens plugin) {
 		this.plugin = plugin;
@@ -179,10 +179,9 @@ public class TraderExecutor implements CommandExecutor {
 		for (int i = startPoint; i != startPoint + 6; ++i) {
 			if ((stock.size() - 1) >= i) {
 				Stockable s = stock.get(i);
-				player.sendMessage(ChatColor.GREEN
-						+ keyword
-						+ MessageUtils.getStockableMessage(s, selling,
-								ChatColor.GREEN) + ".");
+				player.sendMessage(ChatColor.GREEN + keyword
+						+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
+						+ ".");
 			} else {
 				player.sendMessage(ChatColor.AQUA
 						+ "-------------------------------");
@@ -302,13 +301,12 @@ public class TraderExecutor implements CommandExecutor {
 					+ keyword
 					+ " that at "
 					+ MessageUtils.getStockableMessage(npc.getTrader()
-							.getStockable(s), selling, ChatColor.RED) + ".");
+							.getStockable(s), ChatColor.RED) + ".");
 			return;
 		}
 		npc.getTrader().addStockable(s);
 		player.sendMessage(ChatColor.GREEN + "The trader is now " + keyword
-				+ " "
-				+ MessageUtils.getStockableMessage(s, selling, ChatColor.GREEN)
+				+ " " + MessageUtils.getStockableMessage(s, ChatColor.GREEN)
 				+ ".");
 	}
 

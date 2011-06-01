@@ -289,10 +289,9 @@ public class TraderTask implements Runnable {
 		if (stockable.isSelling()) {
 			keyword = "Selling ";
 		}
-		player.sendMessage(ChatColor.AQUA
-				+ keyword
-				+ MessageUtils.getStockableMessage(stockable,
-						stockable.isSelling(), ChatColor.AQUA) + ".");
+		player.sendMessage(ChatColor.AQUA + keyword
+				+ MessageUtils.getStockableMessage(stockable, ChatColor.AQUA)
+				+ ".");
 	}
 
 	private Stockable getStockable(ItemStack i, String keyword, boolean selling) {

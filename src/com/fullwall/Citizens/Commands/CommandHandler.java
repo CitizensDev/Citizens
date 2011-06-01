@@ -12,7 +12,7 @@ import com.fullwall.Citizens.Commands.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.WizardExecutor;
 
 public class CommandHandler {
-	private Citizens plugin;
+	private final Citizens plugin;
 	private BasicExecutor basic;
 	private HealerExecutor healer;
 	private TraderExecutor trader;

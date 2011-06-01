@@ -20,7 +20,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class TogglerExecutor implements CommandExecutor {
 
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public TogglerExecutor(Citizens plugin) {
 		this.plugin = plugin;
