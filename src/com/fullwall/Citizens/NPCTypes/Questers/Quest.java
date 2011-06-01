@@ -16,6 +16,10 @@ public abstract class Quest implements CompletedQuest {
 	protected boolean completed = false;
 	protected ArrayList<Reward> rewards = new ArrayList<Reward>();
 
+	public Quest() {
+
+	}
+
 	public Quest(HumanNPC quester, Player player) {
 		this.quester = quester;
 		this.player = player;
@@ -26,6 +30,7 @@ public abstract class Quest implements CompletedQuest {
 	 * 
 	 * @return
 	 */
+	@Override
 	public HumanNPC getQuester() {
 		return quester;
 	}
@@ -35,6 +40,7 @@ public abstract class Quest implements CompletedQuest {
 	 * 
 	 * @return
 	 */
+	@Override
 	public Player getPlayer() {
 		return player;
 	}
@@ -44,6 +50,7 @@ public abstract class Quest implements CompletedQuest {
 	 * 
 	 * @return
 	 */
+	@Override
 	public String getName() {
 		return questName;
 	}
@@ -62,6 +69,7 @@ public abstract class Quest implements CompletedQuest {
 	 * 
 	 * @param questName
 	 */
+	@Override
 	public void setName(String questName) {
 		this.questName = questName;
 	}
@@ -102,4 +110,8 @@ public abstract class Quest implements CompletedQuest {
 		if (isCompleted())
 			player.sendMessage(getCompletedText());
 	}
+
+	public abstract Quest parse(String string);
+
+	public abstract String createString();
 }

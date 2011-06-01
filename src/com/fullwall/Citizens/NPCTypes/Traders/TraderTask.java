@@ -17,7 +17,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
-import com.fullwall.Citizens.NPCTypes.Traders.TraderInterface.Mode;
+import com.fullwall.Citizens.NPCTypes.Traders.TraderManager.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -314,9 +314,9 @@ public class TraderTask implements Runnable {
 		stop = true;
 		this.npc.getTrader().setFree(true);
 		sendLeaveMessage();
-		int index = TraderInterface.tasks.indexOf(taskID);
+		int index = TraderManager.tasks.indexOf(taskID);
 		if (index != -1) {
-			TraderInterface.tasks.remove(TraderInterface.tasks.indexOf(taskID));
+			TraderManager.tasks.remove(TraderManager.tasks.indexOf(taskID));
 		}
 		plugin.getServer().getScheduler().cancelTask(taskID);
 	}

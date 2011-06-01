@@ -12,6 +12,10 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class LocationQuest extends Quest {
 	private Location location;
 
+	public LocationQuest() {
+		super();
+	}
+
 	public LocationQuest(HumanNPC quester, Player player, Location location) {
 		super(quester, player);
 		this.location = location;
@@ -31,5 +35,17 @@ public class LocationQuest extends Quest {
 				super.updateProgress(event);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

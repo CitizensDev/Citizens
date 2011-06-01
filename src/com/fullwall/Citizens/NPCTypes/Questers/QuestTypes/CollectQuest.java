@@ -15,6 +15,10 @@ public class CollectQuest extends Quest {
 	private int amount;
 	private int collected = 0;
 
+	public CollectQuest() {
+		super();
+	}
+
 	public CollectQuest(HumanNPC quester, Player player, Material collect,
 			int amount) {
 		super(quester, player);
@@ -41,5 +45,17 @@ public class CollectQuest extends Quest {
 				super.updateProgress(ev);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

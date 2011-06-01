@@ -3,17 +3,23 @@ package com.fullwall.Citizens.NPCTypes.Traders;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
+import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
+import com.fullwall.Citizens.NPCTypes.Traders.TraderManager.Mode;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC implements Toggleable, Clickable {
 
-	private HumanNPC npc;
+	private final HumanNPC npc;
 
 	private boolean unlimited = false;
 	private boolean free = true;
@@ -187,6 +193,26 @@ public class TraderNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		TraderInterface.handleRightClick(npc, player);
+		if (npc.getTrader().isFree()) {
+			if (!Permission.canModify(player, "trader")) {
+				return;
+			}
+			Mode mode = Mode.NORMAL;
+			if (NPCManager.validateOwnership(player, npc.getUID())) {
+				mode = Mode.STOCK;
+			} else if (npc.getTrader().isUnlimited()) {
+				mode = Mode.INFINITE;
+			}
+			TraderTask task = new TraderTask(npc, player, Citizens.plugin, mode);
+			int id = Bukkit.getServer().getScheduler()
+					.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 0);
+			TraderManager.tasks.add(id);
+			task.addID(id);
+			npc.getTrader().setFree(false);
+			NPCManager.showInventory(npc, player);
+		} else {
+			player.sendMessage(ChatColor.RED
+					+ "Only one person may be served at a time!");
+		}
 	}
 }

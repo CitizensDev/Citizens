@@ -12,6 +12,10 @@ public class QuestManager {
 		 */
 		BUILD,
 		/**
+		 * Collect item(s)/blocks(s)
+		 */
+		COLLECT,
+		/**
 		 * Deliver item(s) to an NPC
 		 */
 		DELIVERY,
@@ -20,9 +24,9 @@ public class QuestManager {
 		 */
 		DESTROY_BLOCK,
 		/**
-		 * Kill players
+		 * Earn money
 		 */
-		PLAYER_COMBAT,
+		EARN,
 		/**
 		 * Kill mobs
 		 */
@@ -36,13 +40,13 @@ public class QuestManager {
 		 */
 		MOVE_LOCATION,
 		/**
-		 * Collect item(s)/blocks(s)
+		 * Kill players
 		 */
-		COLLECT,
-		/**
-		 * Earn money
-		 */
-		EARN;
+		PLAYER_COMBAT;
+
+		public static QuestType getType(String string) {
+			return QuestType.valueOf(string);
+		}
 	}
 
 	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();

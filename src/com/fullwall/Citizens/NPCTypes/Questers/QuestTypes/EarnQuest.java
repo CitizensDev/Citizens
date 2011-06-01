@@ -9,8 +9,11 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.events.AccountUpdateEvent;
 
 public class EarnQuest extends Quest {
-
 	private double amount;
+
+	public EarnQuest() {
+		super();
+	}
 
 	public EarnQuest(HumanNPC quester, Player player, double amount) {
 		super(quester, player);
@@ -34,5 +37,17 @@ public class EarnQuest extends Quest {
 				super.updateProgress(ev);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

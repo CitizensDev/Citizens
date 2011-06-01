@@ -14,13 +14,13 @@ public class EffectUtils {
 
 		public enum Effect implements IEffect {
 			/**
-			 * creates the particles that appear when dispenser is used, data is
-			 * used as direction (up to 9)
+			 * Creates the particles that appear when dispenser is used, data is
+			 * used as direction (up to 9).
 			 */
 			DISPENSER_PARTICLE_SPAWN(2000),
 			/**
-			 * creates dig effects, uses the data as the block ID of the sound
-			 * to play
+			 * Creates dig effects, uses the data as the block ID of the sound
+			 * to play.
 			 */
 			DIG(2001);
 			private final int effectIdentifier;
@@ -49,11 +49,11 @@ public class EffectUtils {
 			 */
 			DOOR_SOUND(1003),
 			/**
-			 * Plays the sound when a fire is extinguised
+			 * Plays the sound when a fire is extinguished
 			 */
 			FIRE_EXTINGUISH(1004),
 			/**
-			 * Plays the open/close trapdoor sound
+			 * Plays the open/close trapdoor sound (50/50)
 			 */
 			TRAPDOOR_SOUND(1003),
 			/**

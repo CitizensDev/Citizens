@@ -13,6 +13,10 @@ public class CombatQuest extends Quest {
 	private int kills = 0;
 	private int amount;
 
+	public CombatQuest() {
+		super();
+	}
+
 	public CombatQuest(HumanNPC quester, Player player, int amount) {
 		super(quester, player);
 		this.amount = amount;
@@ -35,5 +39,17 @@ public class CombatQuest extends Quest {
 				super.updateProgress(event);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

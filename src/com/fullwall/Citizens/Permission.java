@@ -24,7 +24,7 @@ public class Permission {
 		} else {
 			Logger log = Logger.getLogger("Minecraft");
 			log.log(Level.SEVERE,
-					"[Citizens]: The Permissions plugin isn't loaded, commands can only be used by ops.");
+					"[Citizens]: A Permissions plugin isn't loaded, commands can only be used by ops.");
 		}
 	}
 
@@ -42,7 +42,7 @@ public class Permission {
 			}
 			return permission(player, "citizens.create." + type);
 		}
-		return false;
+		return player.isOp();
 	}
 
 	public static boolean canModify(Player player, String type) {
@@ -52,7 +52,7 @@ public class Permission {
 			}
 			return permission(player, "citizens.modify." + type);
 		}
-		return false;
+		return player.isOp();
 	}
 
 	public static boolean canUse(Player player, String type) {
@@ -62,7 +62,7 @@ public class Permission {
 			}
 			return permission(player, "citizens.use." + type);
 		}
-		return false;
+		return player.isOp();
 	}
 
 	private static boolean permission(Player player, String string) {

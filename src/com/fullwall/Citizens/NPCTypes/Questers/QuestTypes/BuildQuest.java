@@ -14,8 +14,13 @@ public class BuildQuest extends Quest {
 	private Material build;
 	private int built = 0;
 
+	public BuildQuest() {
+		super();
+	}
+
 	public BuildQuest(HumanNPC quester, Player player, int amount) {
 		super(quester, player);
+
 		this.amount = amount;
 	}
 
@@ -36,5 +41,17 @@ public class BuildQuest extends Quest {
 				super.updateProgress(event);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

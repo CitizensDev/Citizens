@@ -12,6 +12,10 @@ public class DistanceQuest extends Quest {
 	private double distance;
 	private double traveled;
 
+	public DistanceQuest() {
+		super();
+	}
+
 	public DistanceQuest(HumanNPC quester, Player player, double distance) {
 		super(quester, player);
 		this.distance = distance;
@@ -44,5 +48,17 @@ public class DistanceQuest extends Quest {
 				super.updateProgress(event);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

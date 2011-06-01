@@ -14,6 +14,10 @@ public class DestroyQuest extends Quest {
 	private Material destroy;
 	private int destroyed = 0;
 
+	public DestroyQuest() {
+		super();
+	}
+
 	public DestroyQuest(HumanNPC quester, Player player, Material destroy,
 			int amount) {
 		super(quester, player);
@@ -38,5 +42,17 @@ public class DestroyQuest extends Quest {
 				super.updateProgress(event);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

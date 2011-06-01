@@ -15,6 +15,10 @@ public class HuntQuest extends Quest {
 	private int kills = 0;
 	private int amount;
 
+	public HuntQuest() {
+		super();
+	}
+
 	public HuntQuest(HumanNPC quester, Player player, int amount) {
 		super(quester, player);
 		this.amount = amount;
@@ -38,5 +42,17 @@ public class HuntQuest extends Quest {
 				super.updateProgress(event);
 			}
 		}
+	}
+
+	@Override
+	public Quest parse(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String createString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
