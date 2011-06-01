@@ -11,8 +11,8 @@ import com.iConomy.events.AccountUpdateEvent;
 public class EarnQuest extends Quest {
 	private double amount;
 
-	public EarnQuest() {
-		super();
+	public EarnQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public EarnQuest(HumanNPC quester, Player player, double amount) {

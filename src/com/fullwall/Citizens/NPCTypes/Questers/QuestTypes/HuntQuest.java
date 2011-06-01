@@ -15,8 +15,8 @@ public class HuntQuest extends Quest {
 	private int kills = 0;
 	private int amount;
 
-	public HuntQuest() {
-		super();
+	public HuntQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public HuntQuest(HumanNPC quester, Player player, int amount) {

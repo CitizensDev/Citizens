@@ -12,8 +12,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class LocationQuest extends Quest {
 	private Location location;
 
-	public LocationQuest() {
-		super();
+	public LocationQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public LocationQuest(HumanNPC quester, Player player, Location location) {

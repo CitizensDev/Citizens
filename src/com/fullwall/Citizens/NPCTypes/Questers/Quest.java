@@ -16,10 +16,6 @@ public abstract class Quest implements CompletedQuest {
 	protected boolean completed = false;
 	protected ArrayList<Reward> rewards = new ArrayList<Reward>();
 
-	public Quest() {
-
-	}
-
 	public Quest(HumanNPC quester, Player player) {
 		this.quester = quester;
 		this.player = player;
@@ -109,6 +105,10 @@ public abstract class Quest implements CompletedQuest {
 	public void updateProgress(Event event) {
 		if (isCompleted())
 			player.sendMessage(getCompletedText());
+	}
+
+	public String getString() {
+		return "[" + this.getType() + "]";
 	}
 
 	public abstract Quest parse(String string);

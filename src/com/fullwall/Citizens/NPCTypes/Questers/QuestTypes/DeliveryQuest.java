@@ -15,8 +15,8 @@ public class DeliveryQuest extends Quest {
 	private HumanNPC destination;
 	private ItemStack item;
 
-	public DeliveryQuest() {
-		super();
+	public DeliveryQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public DeliveryQuest(HumanNPC quester, Player player, HumanNPC destination,

@@ -14,8 +14,8 @@ public class DestroyQuest extends Quest {
 	private Material destroy;
 	private int destroyed = 0;
 
-	public DestroyQuest() {
-		super();
+	public DestroyQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public DestroyQuest(HumanNPC quester, Player player, Material destroy,

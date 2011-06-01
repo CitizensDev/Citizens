@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
+import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -15,8 +16,8 @@ public class CollectQuest extends Quest {
 	private int amount;
 	private int collected = 0;
 
-	public CollectQuest() {
-		super();
+	public CollectQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public CollectQuest(HumanNPC quester, Player player, Material collect,
@@ -55,7 +56,8 @@ public class CollectQuest extends Quest {
 
 	@Override
 	public String createString() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getString() + Citizens.separatorChar
+				+ this.collect.getId() + Citizens.separatorChar + this.amount
+				+ Citizens.separatorChar + this.collected;
 	}
 }

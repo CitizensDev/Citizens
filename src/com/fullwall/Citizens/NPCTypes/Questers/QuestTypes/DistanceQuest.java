@@ -12,8 +12,8 @@ public class DistanceQuest extends Quest {
 	private double distance;
 	private double traveled;
 
-	public DistanceQuest() {
-		super();
+	public DistanceQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public DistanceQuest(HumanNPC quester, Player player, double distance) {

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -13,8 +14,8 @@ public class CombatQuest extends Quest {
 	private int kills = 0;
 	private int amount;
 
-	public CombatQuest() {
-		super();
+	public CombatQuest(HumanNPC quester, Player player) {
+		super(quester, player);
 	}
 
 	public CombatQuest(HumanNPC quester, Player player, int amount) {
@@ -49,7 +50,7 @@ public class CombatQuest extends Quest {
 
 	@Override
 	public String createString() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getString() + Citizens.separatorChar + kills
+				+ Citizens.separatorChar + amount;
 	}
 }
