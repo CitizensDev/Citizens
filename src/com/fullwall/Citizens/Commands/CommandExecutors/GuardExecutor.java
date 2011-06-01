@@ -20,7 +20,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public GuardExecutor(Citizens plugin) {
 		this.plugin = plugin;
@@ -106,8 +106,7 @@ public class GuardExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			}
-			if (npc.getGuard().isBouncer() && args.length == 2
+			} else if (npc.getGuard().isBouncer() && args.length == 2
 					&& args[0].equalsIgnoreCase("radius")) {
 				if (Permission.canModify(player, "guard")) {
 					setProtectionRadius(player, npc, args[1]);
@@ -115,9 +114,13 @@ public class GuardExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else {
+			} else if (!npc.getGuard().isBouncer() && args.length == 2
+					&& args[0].equalsIgnoreCase("radius")) {
 				sender.sendMessage(ChatColor.RED
 						+ "That guard isn't the correct type, so you cannot perform this command.");
+			} else {
+				sender.sendMessage(ChatColor.GRAY
+						+ "Couldn't recognise your command.");
 			}
 			PropertyManager.save(npc);
 		}
@@ -164,8 +167,6 @@ public class GuardExecutor implements CommandExecutor {
 		}
 	}
 
-	// TODO - this is extremely awful coding......please.....for the love of
-	// God, make it more generic....I feel sick...
 	/**
 	 * Add a mob to a bouncer's blacklist
 	 * 

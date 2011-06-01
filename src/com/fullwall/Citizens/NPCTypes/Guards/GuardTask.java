@@ -165,7 +165,9 @@ public class GuardTask implements Runnable {
 		if (npc.getGuard().isBouncer()) {
 			CachedAction cached = ActionManager.getAction(entityID, name);
 			if (!cached.has("attemptedEntry")) {
-				if (isBlacklisted(npc, name) || entity instanceof Player) {
+				if (isBlacklisted(npc, name)
+						|| (entity instanceof Player && !((Player) entity)
+								.getName().equals(npc.getOwner()))) {
 					attack(entity, npc);
 				}
 				cached.set("attemptedEntry");
