@@ -52,7 +52,7 @@ public class GuardExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.guard.help", sender)) {
+				if (Permission.canUse(player, "guard")) {
 					HelpUtils.sendGuardHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -60,16 +60,14 @@ public class GuardExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 1
 					&& args[0].equalsIgnoreCase("bodyguard")) {
-				if (Permission.hasPermission("citizens.guard.bodyguard.create",
-						sender)) {
+				if (Permission.canModify(player, "guard")) {
 					toggleBodyguard(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("bouncer")) {
-				if (Permission.hasPermission("citizens.guard.bouncer.create",
-						sender)) {
+				if (Permission.canModify(player, "guard")) {
 					toggleBouncer(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -78,8 +76,7 @@ public class GuardExecutor implements CommandExecutor {
 			}
 
 			if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
-				if (Permission
-						.hasPermission("citizens.guard.blacklist", sender)) {
+				if (Permission.canModify(player, "guard")) {
 					addToBlacklist(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -87,8 +84,7 @@ public class GuardExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 1
 					&& args[0].equalsIgnoreCase("blacklist")) {
-				if (Permission
-						.hasPermission("citizens.guard.blacklist", sender)) {
+				if (Permission.canUse(player, "guard")) {
 					displayBlacklist(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -96,8 +92,7 @@ public class GuardExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 2
 					&& args[0].equalsIgnoreCase("whitelist")) {
-				if (Permission
-						.hasPermission("citizens.guard.whitelist", sender)) {
+				if (Permission.canModify(player, "guard")) {
 					addToWhitelist(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -105,8 +100,7 @@ public class GuardExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 1
 					&& args[0].equalsIgnoreCase("whitelist")) {
-				if (Permission
-						.hasPermission("citizens.guard.whitelist", sender)) {
+				if (Permission.canUse(player, "guard")) {
 					displayWhitelist(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -115,8 +109,7 @@ public class GuardExecutor implements CommandExecutor {
 			}
 			if (npc.getGuard().isBouncer() && args.length == 2
 					&& args[0].equalsIgnoreCase("radius")) {
-				if (Permission.hasPermission("citizens.guard.bouncer.radius",
-						sender)) {
+				if (Permission.canModify(player, "guard")) {
 					setProtectionRadius(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

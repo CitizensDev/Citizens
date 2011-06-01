@@ -56,7 +56,7 @@ public class TraderExecutor implements CommandExecutor {
 			return true;
 		}
 		if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-			if (Permission.hasPermission("citizens.trader.help", sender)) {
+			if (Permission.canUse(player, "trader")) {
 				HelpUtils.sendTraderHelp(sender);
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -64,13 +64,14 @@ public class TraderExecutor implements CommandExecutor {
 			returnval = true;
 		} else if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
-			if (Permission.hasPermission("citizens.trader.stock", sender)) {
+			if (Permission.canUse(player, "trader")) {
 				displayList(player, npc, args, args[1].contains("s"));
-			} else
+			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
+			}
 			returnval = true;
 		} else if (args.length == 1 && args[0].contains("money")) {
-			if (Permission.hasPermission("citizens.trader.viewmoney", sender)) {
+			if (Permission.canUse(player, "trader")) {
 				displayMoney(player, npc);
 			} else
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -83,7 +84,7 @@ public class TraderExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 3 && args[0].equalsIgnoreCase("balance")) {
-				if (Permission.hasPermission("citizens.trader.balance", sender)) {
+				if (Permission.canModify(player, "trader")) {
 					if (!EconomyHandler.useIconomy()) {
 						player.sendMessage(ChatColor.GRAY
 								+ "This server is not using iConomy.");
@@ -96,7 +97,7 @@ public class TraderExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 3
 					&& (args[0].contains("bu") || args[0].contains("sel"))) {
-				if (Permission.hasPermission("citizens.trader.stock", sender)) {
+				if (Permission.canModify(player, "trader")) {
 					changeTraderStock(player, npc, args[1], args[2],
 							args[0].contains("bu"));
 				} else {
@@ -104,8 +105,7 @@ public class TraderExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args.length == 2 && (args[0].contains("unl"))) {
-				if (Permission.hasPermission("citizens.admin.unlimitedtrader",
-						sender)) {
+				if (Permission.canModify(player, "trader")) {
 					changeUnlimited(npc, sender, args[1]);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -117,6 +117,12 @@ public class TraderExecutor implements CommandExecutor {
 		return returnval;
 	}
 
+	/**
+	 * Display a trader's balance
+	 * 
+	 * @param player
+	 * @param npc
+	 */
 	private void displayMoney(Player player, HumanNPC npc) {
 		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " has "

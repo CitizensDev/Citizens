@@ -183,13 +183,10 @@ public class TraderNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+		TraderInterface.handleRightClick(npc, player);
 	}
 }

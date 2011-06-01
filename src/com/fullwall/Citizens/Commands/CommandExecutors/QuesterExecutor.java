@@ -48,7 +48,7 @@ public class QuesterExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.quester.help", sender)) {
+				if (Permission.canUse(player, "quester")) {
 					HelpUtils.sendQuesterHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

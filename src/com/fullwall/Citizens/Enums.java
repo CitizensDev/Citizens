@@ -26,4 +26,22 @@ public class Enums {
 			}
 		}
 	}
+
+	/**
+	 * Wizard modes
+	 */
+	public enum WizardMode {
+		/**
+		 * Teleports players
+		 */
+		TELEPORTER,
+		/**
+		 * Changes the time of the world
+		 */
+		TIME_CHANGER,
+		/**
+		 * Spawns mobs into the world
+		 */
+		MOB_SPAWNER;
+	}
 }

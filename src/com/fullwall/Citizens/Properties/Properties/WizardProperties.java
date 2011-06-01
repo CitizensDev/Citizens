@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Properties.Properties;
 
+import com.fullwall.Citizens.Enums.WizardMode;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
@@ -12,6 +13,8 @@ public class WizardProperties extends Saveable {
 			"plugins/Citizens/Wizards/Citizens.locations");
 	private final PropertyHandler mana = new PropertyHandler(
 			"plugins/Citizens/Wizards/mana.citizens");
+	private final PropertyHandler mode = new PropertyHandler(
+			"plugins/Citizens/Wizards/mode.citizens");
 
 	private void saveLocations(int UID, String locationString) {
 		locations.setString(UID, locationString.replace(")(", "):("));
@@ -29,11 +32,20 @@ public class WizardProperties extends Saveable {
 		return mana.getInt(UID);
 	}
 
+	private void saveMode(int UID, WizardMode wizardMode) {
+		mode.setString(UID, wizardMode.toString());
+	}
+
+	private WizardMode getMode(int UID) {
+		return WizardMode.valueOf(mode.getString(UID));
+	}
+
 	@Override
 	public void saveFiles() {
 		wizards.save();
 		locations.save();
 		mana.save();
+		mode.save();
 	}
 
 	@Override
@@ -42,6 +54,7 @@ public class WizardProperties extends Saveable {
 			setEnabled(npc, npc.isWizard());
 			saveLocations(npc.getUID(), npc.getWizard().getLocations());
 			saveMana(npc.getUID(), npc.getWizard().getMana());
+			saveMode(npc.getUID(), npc.getWizard().getMode());
 		}
 	}
 
@@ -50,6 +63,7 @@ public class WizardProperties extends Saveable {
 		npc.setWizard(getEnabled(npc));
 		npc.getWizard().setLocations(getLocations(npc.getUID()));
 		npc.getWizard().setMana(getMana(npc.getUID()));
+		npc.getWizard().setMode(getMode(npc.getUID()));
 		saveState(npc);
 	}
 
@@ -58,6 +72,7 @@ public class WizardProperties extends Saveable {
 		wizards.removeKey(npc.getUID());
 		locations.removeKey(npc.getUID());
 		mana.removeKey(npc.getUID());
+		mode.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -95,6 +110,9 @@ public class WizardProperties extends Saveable {
 		}
 		if (mana.keyExists(UID)) {
 			mana.setString(nextUID, mana.getString(UID));
+		}
+		if (mode.keyExists(UID)) {
+			mode.setString(nextUID, mode.getString(UID));
 		}
 	}
 }

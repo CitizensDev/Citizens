@@ -5,6 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.Enums.WizardMode;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
@@ -20,6 +23,7 @@ public class WizardNPC implements Toggleable, Clickable {
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
 	private Location currentLoc;
+	private WizardMode mode;
 	private int mana;
 
 	/**
@@ -164,6 +168,24 @@ public class WizardNPC implements Toggleable, Clickable {
 	}
 
 	/**
+	 * Get the mode of a wizard
+	 * 
+	 * @return
+	 */
+	public WizardMode getMode() {
+		return mode;
+	}
+
+	/**
+	 * Set the mode of a wizard
+	 * 
+	 * @param mode
+	 */
+	public void setMode(WizardMode mode) {
+		this.mode = mode;
+	}
+
+	/**
 	 * Purchase a teleport
 	 * 
 	 * @param player
@@ -200,13 +222,32 @@ public class WizardNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+		if (Permission.canUse(player, getType())) {
+			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
+				if (npc.getWizard().getNumberOfLocations() > 0) {
+					npc.getWizard().cycleLocation();
+					player.sendMessage(ChatColor.GREEN
+							+ "Location set to "
+							+ StringUtils.wrap(npc.getWizard()
+									.getCurrentLocationName()));
+				}
+			}
+		} else {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
+		}
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+		if (Permission.canUse(player, getType())) {
+			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
+				if (npc.getWizard().getNumberOfLocations() > 0) {
+					npc.getWizard().buyTeleport(player, npc.getWizard(),
+							Operation.WIZARD_TELEPORT);
+				}
+			}
+		} else {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
+		}
 	}
 }

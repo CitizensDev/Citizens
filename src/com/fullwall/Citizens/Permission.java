@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -36,23 +35,32 @@ public class Permission {
 		return player.isOp();
 	}
 
-	public static boolean isModerator(Player player) {
-		if (permissionsEnabled) {
-			return permission(player, "citizens.mod");
-		}
-		return false;
-	}
-
-	public static boolean isBasic(Player player) {
-		if (permissionsEnabled) {
-			return permission(player, "citizens.basic");
-		}
-		return false;
-	}
-
 	public static boolean canCreate(Player player, String type) {
 		if (permissionsEnabled) {
+			if (isAdmin(player)) {
+				return true;
+			}
 			return permission(player, "citizens.create." + type);
+		}
+		return false;
+	}
+
+	public static boolean canModify(Player player, String type) {
+		if (permissionsEnabled) {
+			if (isAdmin(player)) {
+				return true;
+			}
+			return permission(player, "citizens.modify." + type);
+		}
+		return false;
+	}
+
+	public static boolean canUse(Player player, String type) {
+		if (permissionsEnabled) {
+			if (isAdmin(player)) {
+				return true;
+			}
+			return permission(player, "citizens.use." + type);
 		}
 		return false;
 	}
@@ -66,18 +74,6 @@ public class Permission {
 			return permission(player, string);
 		}
 		return player.isOp();
-	}
-
-	/**
-	 * Checks for permission given a permission string.
-	 * 
-	 * @param permission
-	 * @param sender
-	 * @return
-	 */
-	public static boolean hasPermission(String permission, CommandSender sender) {
-		return (!(sender instanceof Player) || generic((Player) sender,
-				permission));
 	}
 
 	public static void grantRank(Player player, String rank) {

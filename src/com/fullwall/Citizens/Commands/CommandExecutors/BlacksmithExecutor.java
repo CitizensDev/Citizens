@@ -56,32 +56,28 @@ public class BlacksmithExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.blacksmith.create",
-						sender)) {
+				if (Permission.canUse(player, "blacksmith")) {
 					HelpUtils.sendBlacksmithHelp(player);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
 			} else if (args.length == 2 && args[0].contains("repair")) {
-				if (Permission.hasPermission("citizens.blacksmith.repair",
-						sender)) {
+				if (Permission.canUse(player, "blacksmith")) {
 					repairArmor(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-				if (Permission.hasPermission("citizens.blacksmith.repair",
-						sender)) {
+				if (Permission.canUse(player, "blacksmith")) {
 					listValidArmorNames(player);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("uses")) {
-				if (Permission
-						.hasPermission("citizens.blacksmith.uses", sender)) {
+				if (Permission.canUse(player, "blacksmith")) {
 					showUsesRemaining(player, npc.getBlacksmith(),
 							Material.getMaterial(player.getItemInHand()
 									.getTypeId()));

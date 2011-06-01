@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.ItemInterface;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -155,13 +156,23 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+		if (Permission.canUse(player, getType())) {
+			Operation op = null;
+			if (npc.getBlacksmith().getToolType(player.getItemInHand())
+					.equals("tool")) {
+				op = Operation.BLACKSMITH_TOOLREPAIR;
+			} else if (npc.getBlacksmith().getToolType(player.getItemInHand())
+					.equals("armor")) {
+				op = Operation.BLACKSMITH_ARMORREPAIR;
+			}
+			npc.getBlacksmith().buyItemRepair(player, npc,
+					player.getItemInHand(), op);
+		} else {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
+		}
 	}
 }

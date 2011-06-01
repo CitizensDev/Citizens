@@ -42,7 +42,7 @@ public class BasicExecutor implements CommandExecutor {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		}
 		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
-			if (Permission.hasPermission("citizens.basic.create", sender)) {
+			if (Permission.canCreate(player, "basic")) {
 				if (!EconomyHandler.useEconomy()
 						|| EconomyHandler.canBuy(Operation.BASIC_CREATION,
 								player)) {
@@ -57,154 +57,110 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && (args[0].equalsIgnoreCase("move"))) {
-			if (Permission.hasPermission("citizens.general.move", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.move")) {
-						move(player, npc.getName(), npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					move(player, npc.getName(), npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if ((args.length == 1 || args.length == 2)
 				&& args[0].equalsIgnoreCase("remove")) {
-			if (Permission.hasPermission("citizens.general.remove.singular",
-					sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.remove.singular")) {
-						remove(args, sender, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
-				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-				}
-			} else if (Permission.hasPermission("citizens.general.remove.all",
-					sender)) {
-				if (args.length == 2 && args[1].equalsIgnoreCase("all")) {
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.admin")) {
 					remove(args, sender, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("name")) {
-			if (Permission.hasPermission("citizens.general.setname", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.setname")) {
-						rename(args[1], sender, npc);
-						NPCManager.selectedNPCs.remove(player.getName());
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					rename(args[1], sender, npc);
+					NPCManager.selectedNPCs.remove(player.getName());
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 2
 				&& (args[0].equalsIgnoreCase("colour") || args[0]
 						.equalsIgnoreCase("color"))) {
-			if (Permission.hasPermission("citizens.general.colour", sender)
-					|| Permission.hasPermission("citizens.general.color",
-							sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.colour")
-							|| NPCManager.validateOwnership(player,
-									npc.getUID(), "citizens.general.color")) {
-						setColour(args, player, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					setColour(args, player, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.notOwnerMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("add")) {
-			if (Permission.hasPermission("citizens.basic.settext", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.basic.settext")) {
-						addText(args, sender, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					addText(args, sender, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {
-			if (Permission.hasPermission("citizens.basic.settext", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.basic.settext")) {
-						setText(args, sender, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					setText(args, sender, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("reset")) {
-			if (Permission.hasPermission("citizens.basic.settext", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.basic.settext")) {
-						resetText(args, sender, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					resetText(args, sender, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("item")) {
-			if (Permission.hasPermission("citizens.general.setitem", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.setitem")) {
-						setItemInHand(args[1], sender, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					setItemInHand(args[1], sender, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
@@ -213,80 +169,65 @@ public class BasicExecutor implements CommandExecutor {
 						|| args[0].startsWith("leg")
 						|| args[0].startsWith("helm") || args[0]
 						.startsWith("boot"))) {
-			if (Permission.hasPermission("citizens.general.setitem", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.setitem")) {
-						setArmor(args, sender, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					setArmor(args, sender, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("tp")) {
-			if (Permission.hasPermission("citizens.general.tp", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.tp")) {
-						player.teleport(npc.getNPCData().getLocation());
-						sender.sendMessage(ChatColor.GREEN
-								+ "Teleported you to the NPC named "
-								+ StringUtils.wrap(npc.getStrippedName())
-								+ ". Enjoy!");
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.use.basic")) {
+					player.teleport(npc.getNPCData().getLocation());
+					sender.sendMessage(ChatColor.GREEN
+							+ "Teleported you to the NPC named "
+							+ StringUtils.wrap(npc.getStrippedName())
+							+ ". Enjoy!");
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("copy")) {
-			if (Permission.hasPermission("citizens.general.copy", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.copy")) {
-						copy(npc.getUID(), npc.getName(), player);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					copy(npc.getUID(), npc.getName(), player);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
+
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("id")) {
-			if (Permission.hasPermission("citizens.general.id", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.getid")) {
-						player.sendMessage(ChatColor.GREEN
-								+ "The ID of this NPC is "
-								+ StringUtils.wrap("" + npc.getUID()) + ".");
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.use.basic")) {
+					player.sendMessage(ChatColor.GREEN
+							+ "The ID of this NPC is "
+							+ StringUtils.wrap("" + npc.getUID()) + ".");
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("select")) {
-			if (Permission.hasPermission("citizens.general.select", sender)) {
+			if (Permission.canUse(player, "basic")) {
 				// BUILD CHECK
 				if (!Character.isDigit(args[1].charAt(0))) {
 					player.sendMessage(ChatColor.RED
@@ -310,100 +251,70 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("owner")) {
-			if (Permission.hasPermission("citizens.general.owner", sender)) {
-				if (npc != null) {
+			if (npc != null) {
+				if (Permission.canUse(player, "basic")) {
 					player.sendMessage(ChatColor.GREEN
 							+ "The owner of this NPC is "
 							+ StringUtils.wrap(npc.getOwner()) + ".");
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("setowner")) {
-			if (Permission.hasPermission("citizens.general.setowner", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.setowner")) {
-						setOwner(player, npc, args[1]);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					setOwner(player, npc, args[1]);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
+
 		} else if (args.length == 2
 				&& args[0].equalsIgnoreCase("talkwhenclose")) {
-			if (Permission.hasPermission("citizens.general.talkwhenclose",
-					sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.talkwhenclose")) {
-						changeTalkWhenClose(args[1], player, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					changeTalkWhenClose(args[1], player, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if (args.length == 2
 				&& args[0].equalsIgnoreCase("lookatplayers")) {
-			if (Permission.hasPermission("citizens.general.lookatplayers",
-					sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.lookatplayers")) {
-						changeLookWhenClose(args[1], player, npc);
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
+			if (npc != null) {
+				if (NPCManager.validateOwnership(player, npc.getUID(),
+						"citizens.modify.basic")) {
+					changeLookWhenClose(args[1], player, npc);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
-			}
-			return true;
-
-		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
-			if (Permission.hasPermission("citizens.general.list", sender)) {
-				if (npc != null) {
-					if (NPCManager.validateOwnership(player, npc.getUID(),
-							"citizens.general.list")) {
-						// list stuff goes here
-					} else {
-						sender.sendMessage(MessageUtils.notOwnerMessage);
-					}
-				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-				}
-			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
 
 		} else if ((command.getName().equalsIgnoreCase("citizens") || command
 				.getName().equalsIgnoreCase("npc"))) {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.help", sender)) {
+				if (Permission.canUse(player, "basic")) {
 					HelpUtils.sendHelp(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.help", sender)) {
+				if (Permission.canUse(player, "basic")) {
 					int page = Integer.parseInt(args[1]);
 					HelpUtils.sendHelp(sender, page);
 				} else {
@@ -411,9 +322,10 @@ public class BasicExecutor implements CommandExecutor {
 				}
 			}
 			return true;
+
 		} else if (command.getName().equalsIgnoreCase("basic")) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.basic.help", sender)) {
+				if (Permission.canUse(player, "basic")) {
 					int page = Integer.parseInt(args[1]);
 					HelpUtils.sendBasicHelpPage(sender, page);
 				} else {
@@ -421,13 +333,14 @@ public class BasicExecutor implements CommandExecutor {
 				}
 				return true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.basic.help", sender)) {
+				if (Permission.canUse(player, "basic")) {
 					HelpUtils.sendBasicHelpPage(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
 			}
+
 		} else {
 			if (args.length >= 2 && args[0].equalsIgnoreCase("move")) {
 				sender.sendMessage(ChatColor.RED
@@ -522,8 +435,7 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		if ((PropertyManager.getBasic().getNPCAmountPerPlayer(player.getName()) < Constants.maxNPCsPerPlayer)
 				|| (Constants.maxNPCsPerPlayer == 0)
-				|| (Permission
-						.hasPermission("citizens.general.nolimit", player))) {
+				|| (Permission.isAdmin(player))) {
 			int UID = NPCManager.register(args[1], player.getLocation(),
 					player.getName());
 			PropertyManager.getBasic().saveNPCAmountPerPlayer(

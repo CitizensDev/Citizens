@@ -3,10 +3,12 @@ package com.fullwall.Citizens.NPCTypes.Bandits;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -82,13 +84,15 @@ public class BanditNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+		if (NPCManager.validateOwnership(player, npc.getUID())) {
+			NPCManager.showInventory(npc, player);
+		} else {
+			player.sendMessage(ChatColor.RED
+					+ "You cannot loot from a bandit that is not yours.");
+		}
 	}
 }

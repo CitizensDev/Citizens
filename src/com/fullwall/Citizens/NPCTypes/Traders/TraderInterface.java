@@ -26,7 +26,7 @@ public class TraderInterface {
 	 */
 	public static void handleRightClick(HumanNPC npc, Player player) {
 		if (npc.getTrader().isFree()) {
-			if (!Permission.hasPermission("citizens.trader.stock", player)) {
+			if (!Permission.canModify(player, "trader")) {
 				return;
 			}
 			Mode mode = Mode.NORMAL;

@@ -53,7 +53,7 @@ public class TogglerExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args[0].equalsIgnoreCase("trader")) {
-				if (Permission.hasPermission("citizens.trader.create", sender)) {
+				if (Permission.canCreate(player, "trader")) {
 					if (!PropertyManager.get("trader").exists(npc)) {
 						buyState(player, npc.getTrader(),
 								Operation.TRADER_CREATION);
@@ -65,7 +65,7 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("quester")) {
-				if (Permission.hasPermission("citizens.quester.create", sender)) {
+				if (Permission.canCreate(player, "quester")) {
 					if (!PropertyManager.get("quester").exists(npc)) {
 						buyState(player, npc.getQuester(),
 								Operation.QUESTER_CREATION);
@@ -77,7 +77,7 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("healer")) {
-				if (Permission.hasPermission("citizens.healer.create", sender)) {
+				if (Permission.canCreate(player, "healer")) {
 					if (!PropertyManager.get("healer").exists(npc)) {
 						buyState(player, npc.getHealer(),
 								Operation.HEALER_CREATION);
@@ -89,7 +89,7 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("guard")) {
-				if (Permission.hasPermission("citizens.guard.create", sender)) {
+				if (Permission.canCreate(player, "guard")) {
 					if (!PropertyManager.get("guard").exists(npc)) {
 						buyState(player, npc.getGuard(),
 								Operation.GUARD_CREATION);
@@ -101,21 +101,19 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("wizard")) {
-				if (Permission.hasPermission("citizens.wizard.create", sender)) {
+				if (Permission.canCreate(player, "wizard")) {
 					if (!PropertyManager.get("wizard").exists(npc)) {
 						buyState(player, npc.getWizard(),
 								Operation.WIZARD_CREATION);
 					} else {
 						toggleState(player, npc.getWizard());
 					}
-
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("blacksmith")) {
-				if (Permission.hasPermission("citizens.blacksmith.create",
-						sender)) {
+				if (Permission.canCreate(player, "blacksmith")) {
 					if (!PropertyManager.get("blacksmith").exists(npc)) {
 						buyState(player, npc.getBlacksmith(),
 								Operation.BLACKSMITH_CREATION);
@@ -127,7 +125,7 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("bandit")) {
-				if (Permission.hasPermission("citizens.bandit.create", sender)) {
+				if (Permission.canCreate(player, "bandit")) {
 					if (!PropertyManager.get("bandit").exists(npc)) {
 						buyState(player, npc.getBandit(),
 								Operation.BANDIT_CREATION);
@@ -184,9 +182,10 @@ public class TogglerExecutor implements CommandExecutor {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0)
+				if (paid > 0) {
 					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
 							toggleable.getName(), toggleable.getType(), true));
+				}
 				toggleable.register();
 				toggleState(player, toggleable);
 			} else {

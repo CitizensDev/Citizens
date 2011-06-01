@@ -27,11 +27,11 @@ public class HelpUtils {
 					"blacksmith NPC help page");
 			formatCommand(sender, "guard", "help", "guard NPC help page");
 			formatCommand(sender, "healer", "help", "healer NPC help page");
-			formatCommand(sender, "quester", "help", "quester NPC help page");
 			footer(sender);
 			break;
 		case 2:
 			header(sender, "Citizens", 2, 2);
+			formatCommand(sender, "quester", "help", "quester NPC help page");
 			formatCommand(sender, "trader", "help [page]",
 					"trader NPC help page");
 			formatCommand(sender, "wizard", "help", "wizard NPC help page");

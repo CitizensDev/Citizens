@@ -2,6 +2,7 @@ package com.fullwall.Citizens.NPCTypes.Evil;
 
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -49,14 +50,13 @@ public class EvilNPC implements Clickable {
 	}
 
 	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+	public void onLeftClick(Player player, HumanNPC npc) {	
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-		
+		if (player.getItemInHand().getTypeId() == Constants.evilNPCTameItem) {
+			// TODO tame Evil NPC here
+		}
 	}
 }

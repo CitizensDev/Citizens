@@ -50,7 +50,7 @@ public class WizardExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.wizard.help", sender)) {
+				if (Permission.canUse(player, "wizard")) {
 					HelpUtils.sendWizardHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -58,15 +58,14 @@ public class WizardExecutor implements CommandExecutor {
 				return true;
 			} else if (args.length == 1
 					&& args[0].equalsIgnoreCase("locations")) {
-				if (Permission.hasPermission("citizens.wizard.locations",
-						sender)) {
+				if (Permission.canUse(player, "wizard")) {
 					this.displayLocations(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 2 && args[0].contains("addloc")) {
-				if (Permission.hasPermission("citizens.wizard.addloc", sender)) {
+				if (Permission.canModify(player, "wizard")) {
 					if (npc.getWizard().getNumberOfLocations() < Constants.wizardMaxLocations) {
 						this.addLocation(player, npc, args[1]);
 					} else {
@@ -80,8 +79,7 @@ public class WizardExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args.length == 2 && args[0].contains("removeloc")) {
-				if (Permission.hasPermission("citizens.wizard.removeloc",
-						sender)) {
+				if (Permission.canModify(player, "wizard")) {
 					int type = -1;
 					if (StringUtils.isNumber(args[1])) {
 						type = Integer.parseInt(args[1]);

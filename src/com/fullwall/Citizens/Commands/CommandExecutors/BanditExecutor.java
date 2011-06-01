@@ -18,7 +18,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class BanditExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
 	private Citizens plugin;
-
+	
 	public BanditExecutor(Citizens plugin) {
 		this.plugin = plugin;
 	}
@@ -49,14 +49,14 @@ public class BanditExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.hasPermission("citizens.bandit.help", sender)) {
+				if (Permission.canUse(player, "bandit")) {
 					HelpUtils.sendBanditHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("steal")) {
-				if (Permission.hasPermission("citizens.bandit.steal", sender)) {
+				if (Permission.canModify(player, "bandit")) {
 					addStealableItem(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
