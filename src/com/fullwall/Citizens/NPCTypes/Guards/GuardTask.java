@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Ghast;
@@ -21,11 +22,9 @@ import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.entity.CreatureType;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.Utils.ActionManager;
 import com.fullwall.Citizens.Utils.CachedAction;
 import com.fullwall.Citizens.Utils.LocationUtils;
@@ -34,7 +33,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardTask implements Runnable {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 	private LivingEntity entity;
 
 	public GuardTask(Citizens plugin) {
@@ -80,13 +79,10 @@ public class GuardTask implements Runnable {
 				} else if (guard.isBodyguard()) {
 					String owner = npc.getOwner();
 					Player p = Bukkit.getServer().getPlayer(owner);
-					Location ownerloc = p.getLocation();
-					p.sendMessage("It's a guard");
 					if (p != null && p.isOnline()) {
-						p.sendMessage("Works1");
+						Location ownerloc = p.getLocation();
 						if (NPCManager.get(npc.getUID()) == null) {
 							npc.getNPCData().setLocation(p.getLocation());
-							p.sendMessage("Spawned npc");
 						}
 						for (Entity temp : p.getNearbyEntities(ownerloc.getX(),
 								ownerloc.getY(), ownerloc.getZ())) {

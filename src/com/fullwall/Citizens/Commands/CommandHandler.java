@@ -49,9 +49,9 @@ public class CommandHandler {
 		plugin.getCommand("trader").setExecutor(trader);
 		plugin.getCommand("wizard").setExecutor(wizard);
 		plugin.getCommand("blacksmith").setExecutor(blacksmith);
-		// plugin.getCommand("quester").setExecutor(quester);
+		plugin.getCommand("quester").setExecutor(quester);
 		plugin.getCommand("bandit").setExecutor(bandit);
-		// plugin.getCommand("guard").setExecutor(guard);
+		plugin.getCommand("guard").setExecutor(guard);
 		plugin.getCommand("toggle").setExecutor(toggle);
 	}
 }
