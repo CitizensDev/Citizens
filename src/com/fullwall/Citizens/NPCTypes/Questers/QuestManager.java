@@ -24,10 +24,6 @@ public class QuestManager {
 		 */
 		DESTROY_BLOCK,
 		/**
-		 * Earn money
-		 */
-		EARN,
-		/**
 		 * Kill mobs
 		 */
 		HUNT,
@@ -50,6 +46,7 @@ public class QuestManager {
 	}
 
 	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
+	private static HashMap<String, Quest> quests = new HashMap<String, Quest>();
 
 	public static void load(Player player) {
 		PlayerProfile profile = new PlayerProfile(player.getName());
@@ -62,7 +59,7 @@ public class QuestManager {
 	}
 
 	public static void incrementQuest(Player player, Event event) {
-		getProfile(player.getName()).getCurrentQuest().updateProgress(event);
+		getProfile(player.getName()).getProgress().updateProgress(event);
 	}
 
 	public static boolean hasQuest(Player player) {
@@ -71,5 +68,9 @@ public class QuestManager {
 
 	private static PlayerProfile getProfile(String name) {
 		return cachedProfiles.get(name);
+	}
+
+	public static Quest getQuest(String questName) {
+		return quests.get(questName);
 	}
 }

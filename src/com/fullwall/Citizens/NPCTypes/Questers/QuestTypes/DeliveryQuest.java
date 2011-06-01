@@ -2,48 +2,29 @@ package com.fullwall.Citizens.NPCTypes.Questers.QuestTypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.NPCTypes.Questers.Quest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
+import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
 
-public class DeliveryQuest extends Quest {
-	private HumanNPC destination;
-	private ItemStack item;
-
-	public DeliveryQuest(HumanNPC quester, Player player) {
-		super(quester, player);
-	}
-
-	public DeliveryQuest(HumanNPC quester, Player player, HumanNPC destination,
-			ItemStack item) {
-		super(quester, player);
-		this.destination = destination;
-		this.item = item;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.DELIVERY;
+public class DeliveryQuest extends QuestProgress {
+	public DeliveryQuest(HumanNPC npc, Player player, String questName) {
+		super(npc, player, questName);
 	}
 
 	@Override
 	public void updateProgress(Event event) {
-		if (event instanceof EntityTargetEvent) {
-			EntityTargetEvent ev = (EntityTargetEvent) event;
-			if (ev.getTarget() == destination) {
-				NPCEntityTargetEvent e = (NPCEntityTargetEvent) ev;
-				if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
-					if (ev.getEntity() instanceof Player) {
-						Player player = (Player) ev.getEntity();
-						if (player.getItemInHand() == item) {
-							completed = true;
-							super.updateProgress(event);
-						}
+		if (event instanceof NPCEntityTargetEvent) {
+			NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
+			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED
+					&& e.getTarget().getEntityId() == this.player.getEntityId()) {
+				if (((HumanNPC) e.getEntity()).getUID() == this.quester
+						.getUID()) {
+					Player player = (Player) e.getTarget();
+					if (player.getItemInHand().getType() == getObjectiveItem()
+							.getType()) {
+						this.lastItem = player.getItemInHand();
 					}
 				}
 			}
@@ -51,14 +32,7 @@ public class DeliveryQuest extends Quest {
 	}
 
 	@Override
-	public Quest parse(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String createString() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean isCompleted() {
+		return this.lastItem.getAmount() >= getObjectiveItem().getAmount();
 	}
 }

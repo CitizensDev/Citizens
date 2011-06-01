@@ -4,35 +4,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.fullwall.Citizens.NPCTypes.Questers.Quest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
+import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class DistanceQuest extends Quest {
-	private double distance;
-	private double traveled;
-
-	public DistanceQuest(HumanNPC quester, Player player) {
-		super(quester, player);
-	}
-
-	public DistanceQuest(HumanNPC quester, Player player, double distance) {
-		super(quester, player);
-		this.distance = distance;
-		traveled = 0;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.MOVE_DISTANCE;
+public class DistanceQuest extends QuestProgress {
+	public DistanceQuest(HumanNPC npc, Player player, String questName) {
+		super(npc, player, questName);
 	}
 
 	@Override
 	public void updateProgress(Event event) {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
-			// Note: most likely not correct
-			double x = ev.getTo().getX() - ev.getFrom().getX();
+			// Considering doing this a different way.
+			// Object for distance type?
+			/*double x = ev.getTo().getX() - ev.getFrom().getX();
 			double z = ev.getTo().getZ() - ev.getFrom().getZ();
 			traveled = Math.round(Math.sqrt(x * x + z * z) * 100);
 			double m = traveled / 100D;
@@ -43,22 +29,12 @@ public class DistanceQuest extends Quest {
 				; // Metres
 			else
 				; // Centimetres
-			if (traveled >= distance) {
-				completed = true;
-				super.updateProgress(event);
-			}
+			*/
 		}
 	}
 
 	@Override
-	public Quest parse(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String createString() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean isCompleted() {
+		return this.amountCompleted >= getObjectiveAmount();
 	}
 }

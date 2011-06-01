@@ -15,24 +15,24 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
-import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.Economy.Payment;
+import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderManager.Mode;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderTask implements Runnable {
-	private HumanNPC npc;
-	private CraftPlayer player;
+	private final HumanNPC npc;
+	private final CraftPlayer player;
 	private int taskID;
 	private int previousTraderClickSlot = -1;
 	private int previousPlayerClickSlot = -1;
-	private Citizens plugin;
-	private PlayerInventory previousTraderInv;
-	private PlayerInventory previousPlayerInv;
-	private Mode mode;
-	private EntityPlayer mcPlayer;
+	private final Citizens plugin;
+	private final PlayerInventory previousTraderInv;
+	private final PlayerInventory previousPlayerInv;
+	private final Mode mode;
+	private final EntityPlayer mcPlayer;
 	private boolean stop;
 
 	/**
@@ -154,7 +154,7 @@ public class TraderTask implements Runnable {
 		ItemStack buying = stockable.getStocking();
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player, -1);
 		if (mode != Mode.INFINITE) {
-			EconomyHandler.pay(new Payment(buying, false), npc, slot);
+			EconomyHandler.pay(new Payment(buying), npc, slot);
 		}
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
@@ -205,8 +205,7 @@ public class TraderTask implements Runnable {
 		if (mode != Mode.INFINITE) {
 			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, -1);
 		}
-		EconomyHandler.pay(new Payment(stockable.getStocking(), false), player,
-				slot);
+		EconomyHandler.pay(new Payment(stockable.getStocking()), player, slot);
 		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
 		if (mode != Mode.INFINITE) {
 			unsold = npc.getInventory().addItem(stockable.getStocking());
@@ -247,7 +246,7 @@ public class TraderTask implements Runnable {
 			Stockable stockable, boolean buying) {
 		ItemStack stocking = stockable.getStocking();
 		if (buying) {
-			if (!EconomyHandler.canBuy(new Payment(stocking, false), npc)) {
+			if (!EconomyHandler.canBuy(new Payment(stocking), npc)) {
 				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
@@ -257,7 +256,7 @@ public class TraderTask implements Runnable {
 				return true;
 			}
 		} else {
-			if (!EconomyHandler.canBuy(new Payment(stocking, false), player)) {
+			if (!EconomyHandler.canBuy(new Payment(stocking), player)) {
 				sendNoMoneyMessage(stocking, true);
 				return true;
 			}

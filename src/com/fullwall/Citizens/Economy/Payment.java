@@ -45,8 +45,8 @@ public class Payment {
 		this.setiConomy(price2.isiConomy());
 	}
 
-	public Payment(ItemStack stocking, boolean iConomy) {
-		this.setiConomy(iConomy);
+	public Payment(ItemStack stocking) {
+		this.setiConomy(false);
 		this.setItem(stocking);
 		this.setPrice(stocking.getAmount());
 	}

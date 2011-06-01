@@ -1,21 +1,8 @@
 package com.fullwall.Citizens.NPCTypes.Questers;
 
-import org.bukkit.entity.Player;
-
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.BuildQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.CollectQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.CombatQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.DeliveryQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.DestroyQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.DistanceQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.EarnQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.HuntQuest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.LocationQuest;
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestFactory {
-	public static Quest newParsedQuest(HumanNPC npc, Player player,
+	/*public static Quest newParsedQuest(HumanNPC npc, Player player,
 			QuestType type, String string) {
 		switch (type) {
 		case BUILD:
@@ -39,5 +26,5 @@ public class QuestFactory {
 		default:
 			return null;
 		}
-	}
+	}*/
 }

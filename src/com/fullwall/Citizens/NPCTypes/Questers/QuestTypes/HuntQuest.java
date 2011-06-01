@@ -6,27 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.fullwall.Citizens.NPCTypes.Questers.Quest;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
+import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class HuntQuest extends Quest {
-
-	private int kills = 0;
-	private int amount;
-
-	public HuntQuest(HumanNPC quester, Player player) {
-		super(quester, player);
-	}
-
-	public HuntQuest(HumanNPC quester, Player player, int amount) {
-		super(quester, player);
-		this.amount = amount;
-	}
-
-	@Override
-	public QuestType getType() {
-		return QuestType.HUNT;
+public class HuntQuest extends QuestProgress {
+	public HuntQuest(HumanNPC npc, Player player, String questName) {
+		super(npc, player, questName);
 	}
 
 	@Override
@@ -35,24 +20,13 @@ public class HuntQuest extends Quest {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
 			if (ev.getEntity() instanceof Monster
 					|| ev.getEntity() instanceof Creature) {
-				kills += 1;
-			}
-			if (kills >= amount) {
-				completed = true;
-				super.updateProgress(event);
+				this.amountCompleted += 1;
 			}
 		}
 	}
 
 	@Override
-	public Quest parse(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String createString() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean isCompleted() {
+		return this.amountCompleted >= getObjectiveAmount();
 	}
 }

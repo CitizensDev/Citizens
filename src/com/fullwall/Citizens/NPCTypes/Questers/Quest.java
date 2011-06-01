@@ -1,44 +1,21 @@
 package com.fullwall.Citizens.NPCTypes.Questers;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
 
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+public class Quest implements CompletedQuest {
+	private String questName = "";
+	private String completionText = "";
+	private String description = "";
+	private final List<Reward> rewards = new ArrayList<Reward>();
+	private Objective objective;
+	private QuestType type;
 
-public abstract class Quest implements CompletedQuest {
-	protected HumanNPC quester;
-	protected Player player;
-	protected String questName = "";
-	protected String completionText = "";
-	protected String description = "";
-	protected boolean completed = false;
-	protected ArrayList<Reward> rewards = new ArrayList<Reward>();
-
-	public Quest(HumanNPC quester, Player player) {
-		this.quester = quester;
-		this.player = player;
-	}
-
-	/**
-	 * Get the quester assigned to a quest
-	 * 
-	 * @return
-	 */
-	@Override
-	public HumanNPC getQuester() {
-		return quester;
-	}
-
-	/**
-	 * Get the player doing the questing
-	 * 
-	 * @return
-	 */
-	@Override
-	public Player getPlayer() {
-		return player;
+	public Quest(String name, QuestType type) {
+		this.questName = name;
+		this.type = type;
 	}
 
 	/**
@@ -70,6 +47,10 @@ public abstract class Quest implements CompletedQuest {
 		this.questName = questName;
 	}
 
+	public List<Reward> getRewards() {
+		return this.rewards;
+	}
+
 	/**
 	 * Get the description of a quest
 	 * 
@@ -77,6 +58,10 @@ public abstract class Quest implements CompletedQuest {
 	 */
 	public String getDescription() {
 		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
@@ -88,30 +73,24 @@ public abstract class Quest implements CompletedQuest {
 		return completionText;
 	}
 
-	/**
-	 * Get whether a quest is completed
-	 * 
-	 * @return
-	 */
-	public boolean isCompleted() {
-		return completed;
+	public void setCompletedText(String text) {
+		this.completionText = text;
 	}
 
-	/**
-	 * Update the progress of a quest
-	 * 
-	 * @param event
-	 */
-	public void updateProgress(Event event) {
-		if (isCompleted())
-			player.sendMessage(getCompletedText());
+	public void setObjective(Objective objective) {
+		this.objective = objective;
 	}
 
-	public String getString() {
-		return "[" + this.getType() + "]";
+	public Objective getObjective() {
+		return objective;
 	}
 
-	public abstract Quest parse(String string);
+	public void setType(QuestType type) {
+		this.type = type;
+	}
 
-	public abstract String createString();
+	@Override
+	public QuestType getType() {
+		return this.type;
+	}
 }

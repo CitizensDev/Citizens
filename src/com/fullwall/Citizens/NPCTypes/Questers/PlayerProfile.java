@@ -6,7 +6,8 @@ public class PlayerProfile {
 	private StoredProfile profile;
 	private int rank;
 	private ArrayList<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
-	private Quest currentQuest = null;
+	private Quest currentQuest;
+	private QuestProgress progress;
 
 	public PlayerProfile(String name) {
 		profile = new StoredProfile(name);
@@ -31,6 +32,14 @@ public class PlayerProfile {
 
 	public Quest getCurrentQuest() {
 		return currentQuest;
+	}
+
+	public QuestProgress getProgress() {
+		return progress;
+	}
+
+	public void setProgress(QuestProgress progress) {
+		this.progress = progress;
 	}
 
 	public void setRank(int rank) {
