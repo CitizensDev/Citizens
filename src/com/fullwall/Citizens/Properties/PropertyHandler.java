@@ -93,7 +93,7 @@ public final class PropertyHandler implements Storage {
 	public void load() {
 		try {
 			this.properties.load(new FileInputStream(this.fileName));
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			Citizens.log.log(Level.SEVERE, "[Citizens]: Unable to load "
 					+ this.fileName, ex);
 		}
