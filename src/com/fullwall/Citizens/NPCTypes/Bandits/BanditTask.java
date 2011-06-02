@@ -83,11 +83,7 @@ public class BanditTask implements Runnable {
 					if (item != null) {
 						if (npc.getBandit().getStealables()
 								.contains(item.getTypeId())) {
-							if (item.getAmount() > 1)
-								item.setAmount(item.getAmount() - 1);
-							else
-								item = null;
-							player.getInventory().setItem(randomSlot, item);
+							player.getInventory().setItem(randomSlot, null);
 							player.sendMessage(StringUtils.wrap(
 									npc.getStrippedName(), ChatColor.RED)
 									+ " has stolen "
