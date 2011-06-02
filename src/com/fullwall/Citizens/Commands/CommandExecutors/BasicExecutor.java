@@ -482,7 +482,6 @@ public class BasicExecutor implements CommandExecutor {
 		PropertyManager.copy(UID, newUID);
 		NPCManager.removeForRespawn(newUID);
 		NPCManager.register(name, newUID, newNPC.getOwner());
-		PropertyManager.save(NPCManager.get(newUID));
 	}
 
 	/**
