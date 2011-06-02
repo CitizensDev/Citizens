@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import net.minecraft.server.InventoryPlayer;
@@ -182,10 +183,10 @@ public class BasicProperties extends Saveable {
 		colours.setInt(UID, colour);
 	}
 
-	public ArrayList<String> getText(int UID) {
+	public LinkedList<String> getText(int UID) {
 		String current = texts.getString(UID);
 		if (!current.isEmpty()) {
-			ArrayList<String> text = new ArrayList<String>();
+			LinkedList<String> text = new LinkedList<String>();
 			for (String string : current.split(";")) {
 				text.add(string);
 			}
@@ -198,7 +199,7 @@ public class BasicProperties extends Saveable {
 	public void getSetText(int UID) {
 		String current = texts.getString(UID);
 		if (!current.isEmpty()) {
-			ArrayList<String> text = new ArrayList<String>();
+			LinkedList<String> text = new LinkedList<String>();
 			for (String string : current.split(";")) {
 				text.add(string);
 			}
@@ -206,7 +207,7 @@ public class BasicProperties extends Saveable {
 		}
 	}
 
-	private void saveText(int UID, ArrayList<String> text) {
+	private void saveText(int UID, LinkedList<String> text) {
 		String adding = "";
 		if (text != null) {
 			for (String string : text) {

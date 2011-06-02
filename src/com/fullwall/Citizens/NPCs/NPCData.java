@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.bukkit.Location;
 
@@ -11,7 +12,7 @@ public class NPCData {
 	private Location location;
 	private int colour = 0xf;
 	private ArrayList<Integer> items;
-	private ArrayList<String> texts;
+	private LinkedList<String> texts;
 	private boolean lookClose;
 	private boolean talkClose;
 	private String owner;
@@ -30,7 +31,7 @@ public class NPCData {
 	 * @param owner
 	 */
 	public NPCData(String name, int UID, Location loc, int colour,
-			ArrayList<Integer> items, ArrayList<String> texts,
+			ArrayList<Integer> items, LinkedList<String> texts,
 			boolean lookClose, boolean talkClose, String owner) {
 		this.setName(name);
 		this.setUID(UID);
@@ -83,11 +84,11 @@ public class NPCData {
 		return items;
 	}
 
-	public void setTexts(ArrayList<String> texts) {
-		this.texts = texts;
+	public void setTexts(LinkedList<String> text) {
+		this.texts = text;
 	}
 
-	public ArrayList<String> getTexts() {
+	public LinkedList<String> getTexts() {
 		return texts;
 	}
 

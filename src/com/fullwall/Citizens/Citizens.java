@@ -1,8 +1,8 @@
 package com.fullwall.Citizens;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -192,7 +192,7 @@ public class Citizens extends JavaPlugin {
 							Integer.valueOf(name.split("_")[0]),
 							PropertyManager.getBasic().getOwner(
 									Integer.valueOf(name.split("_")[0])));
-					ArrayList<String> text = PropertyManager.getBasic()
+					LinkedList<String> text = PropertyManager.getBasic()
 							.getText(Integer.valueOf(name.split("_")[0]));
 					if (text != null)
 						NPCManager.setText(Integer.valueOf(name.split("_")[0]),

@@ -1,6 +1,6 @@
 package com.fullwall.Citizens.Utils;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -62,10 +62,12 @@ public class MessageUtils {
 	public static String getText(HumanNPC npc, Player player, Citizens plugin) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
 		int UID = npc.getUID();
-		ArrayList<String> array = NPCManager.getText(UID);
+		LinkedList<String> array = NPCManager.getText(UID);
 		String text = "";
 		if (array != null && array.size() > 0) {
-			text = array.get(NPCManager.ran.nextInt(array.size()));
+			text = array.getLast();
+			array.push(array.pop());
+			NPCManager.setText(UID, array);
 		}
 		if (text.isEmpty()) {
 			text = UtilityProperties.getDefaultText();

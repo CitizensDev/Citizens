@@ -23,7 +23,15 @@ public class PropertyManager {
 	private static BasicProperties basicProperties;
 
 	public enum PropertyType {
-		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, BANDIT, GUARD, EVIL;
+		BASIC,
+		TRADER,
+		HEALER,
+		WIZARD,
+		QUESTER,
+		BLACKSMITH,
+		BANDIT,
+		GUARD,
+		EVIL;
 	}
 
 	public static void registerProperties() {
