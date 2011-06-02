@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.NPCTypes.Bandits;
 
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +20,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditTask implements Runnable {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public BanditTask(Citizens plugin) {
 		this.plugin = plugin;
@@ -83,7 +83,11 @@ public class BanditTask implements Runnable {
 					if (item != null) {
 						if (npc.getBandit().getStealables()
 								.contains(item.getTypeId())) {
-							player.getInventory().removeItem(item);
+							if (item.getAmount() > 1)
+								item.setAmount(item.getAmount() - 1);
+							else
+								item = null;
+							player.getInventory().setItem(randomSlot, item);
 							player.sendMessage(StringUtils.wrap(
 									npc.getStrippedName(), ChatColor.RED)
 									+ " has stolen "
