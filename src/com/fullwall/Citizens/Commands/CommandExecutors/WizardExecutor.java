@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.Enums.WizardMode;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
@@ -55,7 +56,21 @@ public class WizardExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-				return true;
+				returnval = true;
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("mode")) {
+				if (Permission.canModify(player, npc, "wizard")) {
+					changeMode(player, npc, args[1]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
+				if (Permission.canUse(player, npc, "wizard")) {
+					displayStatus(player, npc);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+				returnval = true;
 			} else if (args.length == 1
 					&& args[0].equalsIgnoreCase("locations")) {
 				if (Permission.canUse(player, npc, "wizard")) {
@@ -108,6 +123,49 @@ public class WizardExecutor implements CommandExecutor {
 	}
 
 	/**
+	 * Change the mode of a wizard
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param mode
+	 */
+	private void changeMode(Player player, HumanNPC npc, String mode) {
+		WizardMode wizardMode;
+		if (WizardMode.parse(mode) != null) {
+			wizardMode = WizardMode.parse(mode);
+			if (wizardMode != npc.getWizard().getMode()) {
+				npc.getWizard().setMode(wizardMode);
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName()
+						+ "'s")
+						+ " mode was set to "
+						+ StringUtils.wrap(wizardMode + "") + ".");
+			} else {
+				player.sendMessage(ChatColor.RED + npc.getStrippedName()
+						+ " is already that mode.");
+			}
+		} else {
+			player.sendMessage(ChatColor.RED
+					+ "That is not a valid wizard mode.");
+		}
+	}
+
+	/**
+	 * Display the status of a wizard (total mana and current mode)
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void displayStatus(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.BLUE + "========== " + ChatColor.GOLD
+				+ npc.getStrippedName() + "'s Wizard Status" + ChatColor.BLUE
+				+ " ==========");
+		player.sendMessage(ChatColor.BLUE + "Mode: " + ChatColor.GOLD
+				+ npc.getWizard().getMode());
+		player.sendMessage(ChatColor.BLUE + "Mana: " + ChatColor.GOLD
+				+ npc.getWizard().getMana());
+	}
+
+	/**
 	 * Adds a teleport location to the wizard.
 	 * 
 	 * @param player
@@ -115,10 +173,14 @@ public class WizardExecutor implements CommandExecutor {
 	 * @param locName
 	 */
 	private void addLocation(Player player, HumanNPC npc, String locName) {
-		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
-				+ " as " + StringUtils.wrap(locName));
-		npc.getWizard().addLocation(player.getLocation(), locName);
+		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+			player.sendMessage(ChatColor.GREEN + "Added current location to "
+					+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
+					+ " as " + StringUtils.wrap(locName));
+			npc.getWizard().addLocation(player.getLocation(), locName);
+		} else {
+			wrongModeMessage(player, npc);
+		}
 	}
 
 	/**
@@ -129,51 +191,60 @@ public class WizardExecutor implements CommandExecutor {
 	 * @param parseInt
 	 */
 	private void removeLocation(Player player, HumanNPC npc, int parseInt) {
-		String locations[] = npc.getWizard().getLocations().split(":");
-		String newLoc = "";
-		String removedName = "";
-		for (int i = 0; i < locations.length; i++) {
-			if (i + 1 != parseInt) {
-				newLoc = newLoc + locations[i];
-			} else {
-				removedName = locations[i].split(",")[0].replace("(", "");
+		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+			String locations[] = npc.getWizard().getLocations().split(":");
+			String newLoc = "";
+			String removedName = "";
+			for (int i = 0; i < locations.length; i++) {
+				if (i + 1 != parseInt) {
+					newLoc = newLoc + locations[i];
+				} else {
+					removedName = locations[i].split(",")[0].replace("(", "");
+				}
 			}
-		}
-		npc.getWizard().cycleLocation();
-		npc.getWizard().setLocations(newLoc);
-		player.sendMessage(ChatColor.GREEN + "Wizard "
-				+ StringUtils.wrap(npc.getStrippedName())
-				+ " had amnesia and forgot about "
-				+ StringUtils.wrap(removedName));
-	}
-
-	/**
-	 * Followup function for displaying the list of locations that the wizard
-	 * has.
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	private void listLocations(Player player, HumanNPC npc) {
-		String locations[] = npc.getWizard().getLocations().split(":");
-		for (int i = 0; i < locations.length; i++) {
-			player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
-					+ ChatColor.GREEN + ": "
-					+ locations[i].split(",")[0].replace("(", ""));
+			npc.getWizard().cycleLocation();
+			npc.getWizard().setLocations(newLoc);
+			player.sendMessage(ChatColor.GREEN + "Wizard "
+					+ StringUtils.wrap(npc.getStrippedName())
+					+ " had amnesia and forgot about "
+					+ StringUtils.wrap(removedName));
+		} else {
+			wrongModeMessage(player, npc);
 		}
 	}
 
 	/**
-	 * Function for displaying the list of locations that the wizard has.
+	 * Display the list of locations that the wizard has.
 	 * 
 	 * @param player
 	 * @param npc
 	 */
 	private void displayLocations(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN
-				+ "========== "
-				+ StringUtils.wrap(npc.getStrippedName()
-						+ "'s Wizard Locations") + " ==========");
-		listLocations(player, npc);
+		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+			player.sendMessage(ChatColor.GREEN
+					+ "========== "
+					+ StringUtils.wrap(npc.getStrippedName()
+							+ "'s Wizard Locations") + " ==========");
+			String locations[] = npc.getWizard().getLocations().split(":");
+			for (int i = 0; i < locations.length; i++) {
+				player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
+						+ ChatColor.GREEN + ": "
+						+ locations[i].split(",")[0].replace("(", ""));
+			}
+		} else {
+			wrongModeMessage(player, npc);
+		}
+	}
+
+	/**
+	 * Prints when a wizard cannot perform an action because they are not in the
+	 * right mode
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	private void wrongModeMessage(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.RED + npc.getStrippedName()
+				+ " cannot perform that action in this mode.");
 	}
 }

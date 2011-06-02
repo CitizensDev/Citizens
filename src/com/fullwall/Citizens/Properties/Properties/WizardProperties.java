@@ -37,7 +37,7 @@ public class WizardProperties extends Saveable {
 	}
 
 	private WizardMode getMode(int UID) {
-		return WizardMode.valueOf(mode.getString(UID));
+		return WizardMode.parse(mode.getString(UID));
 	}
 
 	@Override

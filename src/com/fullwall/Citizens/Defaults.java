@@ -102,6 +102,18 @@ public class Defaults {
 		nodes.put("prices.wizard.teleport.item", "20");
 		nodes.put("prices.wizard.teleport.item-currency-id", "37");
 		nodes.put("prices.wizard.teleport.econplugin", "150");
+
+		nodes.put("prices.wizard.changetime.item", "20");
+		nodes.put("prices.wizard.changetime.item-currency-id", "37");
+		nodes.put("prices.wizard.changetime.econplugin", "150");
+
+		nodes.put("prices.wizard.spawnmob.item", "20");
+		nodes.put("prices.wizard.spawnmob.item-currency-id", "37");
+		nodes.put("prices.wizard.spawnmob.econplugin", "150");
+
+		nodes.put("prices.wizard.togglestorm.item", "20");
+		nodes.put("prices.wizard.togglestorm.item-currency-id", "37");
+		nodes.put("prices.wizard.togglestorm.econplugin", "150");
 		return nodes;
 	}
 

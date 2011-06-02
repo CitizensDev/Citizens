@@ -39,6 +39,18 @@ public class EconomyHandler {
 		 */
 		WIZARD_TELEPORT,
 		/**
+		 * Change the time with a wizard NPC
+		 */
+		WIZARD_CHANGETIME,
+		/**
+		 * Spawn a mob with a wizard NPC
+		 */
+		WIZARD_SPAWNMOB,
+		/**
+		 * Toggle a storm with a wizard NPC
+		 */
+		WIZARD_TOGGLESTORM,
+		/**
 		 * Create a quester NPC
 		 */
 		QUESTER_CREATION,

@@ -34,18 +34,26 @@ public class Enums {
 		/**
 		 * Teleports players
 		 */
-		TELEPORTER,
+		TELEPORT,
 		/**
 		 * Changes the time of the world
 		 */
-		TIME_CHANGER,
+		TIME,
 		/**
 		 * Spawns mobs into the world
 		 */
-		MOB_SPAWNER,
+		SPAWN,
 		/**
 		 * Strikes lightning/makes it rain
 		 */
-		WEATHER_MAN;
+		WEATHER;
+
+		public static WizardMode parse(String string) {
+			try {
+				return WizardMode.valueOf(string.toUpperCase());
+			} catch (Exception ex) {
+				return null;
+			}
+		}
 	}
 }

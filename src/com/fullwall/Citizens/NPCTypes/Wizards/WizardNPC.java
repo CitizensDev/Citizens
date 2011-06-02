@@ -23,7 +23,7 @@ public class WizardNPC implements Toggleable, Clickable {
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
 	private Location currentLoc;
-	private WizardMode mode;
+	private WizardMode mode = WizardMode.TELEPORT;
 	private int mana = 10;
 
 	/**
@@ -204,7 +204,7 @@ public class WizardNPC implements Toggleable, Clickable {
 							+ " for a teleport to "
 							+ StringUtils.wrap(wizard.getCurrentLocationName())
 							+ ".");
-					player.teleport(wizard.getCurrentLocation());
+					WizardAction.teleportPlayer(player, npc);
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
@@ -214,8 +214,8 @@ public class WizardNPC implements Toggleable, Clickable {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 			return;
 		} else {
-			player.teleport(wizard.getCurrentLocation());
-			player.sendMessage(ChatColor.GREEN + "You got teleported to "
+			WizardAction.teleportPlayer(player, npc);
+			player.sendMessage(ChatColor.GREEN + "You were teleported to "
 					+ StringUtils.wrap(wizard.getCurrentLocationName()) + ".");
 		}
 	}
@@ -224,12 +224,14 @@ public class WizardNPC implements Toggleable, Clickable {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-				if (npc.getWizard().getNumberOfLocations() > 0) {
-					npc.getWizard().cycleLocation();
-					player.sendMessage(ChatColor.GREEN
-							+ "Location set to "
-							+ StringUtils.wrap(npc.getWizard()
-									.getCurrentLocationName()));
+				if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+					if (npc.getWizard().getNumberOfLocations() > 0) {
+						npc.getWizard().cycleLocation();
+						player.sendMessage(ChatColor.GREEN
+								+ "Location set to "
+								+ StringUtils.wrap(npc.getWizard()
+										.getCurrentLocationName()));
+					}
 				}
 			}
 		} else {
@@ -241,9 +243,11 @@ public class WizardNPC implements Toggleable, Clickable {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-				if (npc.getWizard().getNumberOfLocations() > 0) {
-					npc.getWizard().buyTeleport(player, npc.getWizard(),
-							Operation.WIZARD_TELEPORT);
+				if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+					if (npc.getWizard().getNumberOfLocations() > 0) {
+						npc.getWizard().buyTeleport(player, npc.getWizard(),
+								Operation.WIZARD_TELEPORT);
+					}
 				}
 			}
 		} else {
