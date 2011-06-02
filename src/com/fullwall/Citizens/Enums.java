@@ -42,6 +42,10 @@ public class Enums {
 		/**
 		 * Spawns mobs into the world
 		 */
-		MOB_SPAWNER;
+		MOB_SPAWNER,
+		/**
+		 * Strikes lightning/makes it rain
+		 */
+		WEATHER_MAN;
 	}
 }

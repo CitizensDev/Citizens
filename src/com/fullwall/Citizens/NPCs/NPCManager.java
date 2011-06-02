@@ -324,7 +324,6 @@ public class NPCManager {
 	 * @param player
 	 */
 	public static void showInventory(HumanNPC npc, Player player) {
-		((CraftPlayer) player).getHandle()
-				.a(npc.getHandle().inventory);
+		((CraftPlayer) player).getHandle().a(npc.getHandle().inventory);
 	}
 }

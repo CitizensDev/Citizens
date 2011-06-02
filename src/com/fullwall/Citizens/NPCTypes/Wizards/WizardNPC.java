@@ -24,7 +24,7 @@ public class WizardNPC implements Toggleable, Clickable {
 	private int numberOfLocations = 0;
 	private Location currentLoc;
 	private WizardMode mode;
-	private int mana;
+	private int mana = 10;
 
 	/**
 	 * Wizard NPC object
@@ -222,7 +222,7 @@ public class WizardNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		if (Permission.canUse(player, getType())) {
+		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
 				if (npc.getWizard().getNumberOfLocations() > 0) {
 					npc.getWizard().cycleLocation();
@@ -239,7 +239,7 @@ public class WizardNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (Permission.canUse(player, getType())) {
+		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
 				if (npc.getWizard().getNumberOfLocations() > 0) {
 					npc.getWizard().buyTeleport(player, npc.getWizard(),

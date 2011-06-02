@@ -160,7 +160,7 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (Permission.canUse(player, getType())) {
+		if (Permission.canUse(player, npc, getType())) {
 			Operation op = null;
 			if (npc.getBlacksmith().getToolType(player.getItemInHand())
 					.equals("tool")) {

@@ -194,7 +194,7 @@ public class TraderNPC implements Toggleable, Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (npc.getTrader().isFree()) {
-			if (!Permission.canModify(player, "trader")) {
+			if (!Permission.canModify(player, npc, "trader")) {
 				return;
 			}
 			Mode mode = Mode.NORMAL;
