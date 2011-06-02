@@ -1,8 +1,9 @@
 name: Citizens
 main: com.fullwall.Citizens.Citizens
 version: 1.0.8
-author: fullwall
-authors: [NeonMaster, aPunch, TheMPC]
+authors: [fullwall, NeonMaster, aPunch, TheMPC]
+softdepend: [Permissions]
+
 commands:
     npc:
         description: Performs various NPC-related commands.
