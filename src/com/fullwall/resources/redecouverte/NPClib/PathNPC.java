@@ -100,16 +100,18 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getVector() {
 		Vec3D vec3d = pathEntity.a(this);
-		for (double d = width * 1.02F; vec3d != null
-				&& vec3d.d(locX, vec3d.b, locZ) < d * d;) {
-			// Increment path
-			pathEntity.a();
-			// Is finished?
-			if (pathEntity.b()) {
+		// was * 2.0F;
+		double length = (this.length * 1.9F);
+		while (vec3d != null
+				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
+			// Increment path.
+			this.pathEntity.a();
+			// Is path finished?
+			if (this.pathEntity.b()) {
 				vec3d = null;
 				reset();
 			} else {
-				vec3d = pathEntity.a(this);
+				vec3d = this.pathEntity.a(this);
 			}
 		}
 		return vec3d;
@@ -126,6 +128,8 @@ public class PathNPC extends EntityPlayer {
 				resetTarget();
 			}
 			if (target != null && targetAggro) {
+				if (this.attackTicks != 0)
+					--this.attackTicks;
 				float distanceToEntity = this.target.f(this);
 				// If a direct line of sight exists
 				if (this.e(this.target)) {
@@ -220,7 +224,8 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void damageEntity(Entity entity) {
-		this.attackTicks = 20;
+		// Default is 20, changed to be less spammy.
+		this.attackTicks = 30;
 		this.attackEntity((EntityLiving) entity);
 	}
 
