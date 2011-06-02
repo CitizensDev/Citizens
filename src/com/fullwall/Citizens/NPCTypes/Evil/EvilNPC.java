@@ -50,7 +50,7 @@ public class EvilNPC implements Clickable {
 	}
 
 	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {	
+	public void onLeftClick(Player player, HumanNPC npc) {
 	}
 
 	@Override

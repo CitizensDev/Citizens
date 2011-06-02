@@ -18,18 +18,13 @@ public class DistanceQuest extends QuestProgress {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			// Considering doing this a different way.
 			// Object for distance type?
-			/*double x = ev.getTo().getX() - ev.getFrom().getX();
-			double z = ev.getTo().getZ() - ev.getFrom().getZ();
-			traveled = Math.round(Math.sqrt(x * x + z * z) * 100);
-			double m = traveled / 100D;
-			double km = m / 1000D;
-			if (km > 0.5D)
-				; // Kilometres
-			if (m > 0.5D)
-				; // Metres
-			else
-				; // Centimetres
-			*/
+			/*
+			 * double x = ev.getTo().getX() - ev.getFrom().getX(); double z =
+			 * ev.getTo().getZ() - ev.getFrom().getZ(); traveled =
+			 * Math.round(Math.sqrt(x * x + z * z) * 100); double m = traveled /
+			 * 100D; double km = m / 1000D; if (km > 0.5D) ; // Kilometres if (m
+			 * > 0.5D) ; // Metres else ; // Centimetres
+			 */
 		}
 	}
 

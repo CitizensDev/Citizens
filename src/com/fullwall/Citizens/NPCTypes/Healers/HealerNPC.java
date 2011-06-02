@@ -96,7 +96,7 @@ public class HealerNPC implements Toggleable, Clickable {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		int playerHealth = player.getHealth();
 		int healerHealth = npc.getHealer().getHealth();
-		if (Permission.canUse(player, getType())) {
+		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {

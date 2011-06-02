@@ -56,7 +56,7 @@ public class TraderExecutor implements CommandExecutor {
 			return true;
 		}
 		if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-			if (Permission.canUse(player, "trader")) {
+			if (Permission.canUse(player, npc, "trader")) {
 				HelpUtils.sendTraderHelp(sender);
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -64,14 +64,14 @@ public class TraderExecutor implements CommandExecutor {
 			returnval = true;
 		} else if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
-			if (Permission.canUse(player, "trader")) {
+			if (Permission.canUse(player, npc, "trader")) {
 				displayList(player, npc, args, args[1].contains("s"));
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			returnval = true;
 		} else if (args.length == 1 && args[0].contains("money")) {
-			if (Permission.canUse(player, "trader")) {
+			if (Permission.canUse(player, npc, "trader")) {
 				displayMoney(player, npc);
 			} else
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -84,7 +84,7 @@ public class TraderExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 3 && args[0].equalsIgnoreCase("balance")) {
-				if (Permission.canModify(player, "trader")) {
+				if (Permission.canModify(player, npc, "trader")) {
 					if (!EconomyHandler.useIconomy()) {
 						player.sendMessage(ChatColor.GRAY
 								+ "This server is not using iConomy.");
@@ -97,7 +97,7 @@ public class TraderExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args.length == 3
 					&& (args[0].contains("bu") || args[0].contains("sel"))) {
-				if (Permission.canModify(player, "trader")) {
+				if (Permission.canModify(player, npc, "trader")) {
 					changeTraderStock(player, npc, args[1], args[2],
 							args[0].contains("bu"));
 				} else {
@@ -105,7 +105,7 @@ public class TraderExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args.length == 2 && (args[0].contains("unl"))) {
-				if (Permission.canModify(player, "trader")) {
+				if (Permission.canModify(player, npc, "trader")) {
 					changeUnlimited(npc, sender, args[1]);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);

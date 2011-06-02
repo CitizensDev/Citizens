@@ -7,6 +7,8 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Permission {
@@ -45,9 +47,12 @@ public class Permission {
 		return player.isOp();
 	}
 
-	public static boolean canModify(Player player, String type) {
+	public static boolean canModify(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
 			if (isAdmin(player)) {
+				return true;
+			}
+			if (NPCManager.validateOwnership(player, npc.getUID())) {
 				return true;
 			}
 			return permission(player, "citizens.modify." + type);
@@ -55,9 +60,12 @@ public class Permission {
 		return player.isOp();
 	}
 
-	public static boolean canUse(Player player, String type) {
+	public static boolean canUse(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
 			if (isAdmin(player)) {
+				return true;
+			}
+			if (NPCManager.validateOwnership(player, npc.getUID())) {
 				return true;
 			}
 			return permission(player, "citizens.use." + type);

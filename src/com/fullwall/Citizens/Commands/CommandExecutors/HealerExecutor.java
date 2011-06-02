@@ -51,14 +51,14 @@ public class HealerExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, "healer")) {
+				if (Permission.canUse(player, npc, "healer")) {
 					HelpUtils.sendHealerHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
-				if (Permission.canUse(player, "healer")) {
+				if (Permission.canUse(player, npc, "healer")) {
 					displayStatus(player, npc);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -66,7 +66,7 @@ public class HealerExecutor implements CommandExecutor {
 				returnval = true;
 
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("level-up")) {
-				if (Permission.canModify(player, "healer")) {
+				if (Permission.canModify(player, npc, "healer")) {
 					levelUp(player, npc, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -74,7 +74,7 @@ public class HealerExecutor implements CommandExecutor {
 				returnval = true;
 
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("level-up")) {
-				if (Permission.canModify(player, "healer")) {
+				if (Permission.canModify(player, npc, "healer")) {
 					if (StringUtils.isNumber(args[1])) {
 						int levels = Integer.parseInt(args[1]);
 						int x = npc.getHealer().getLevel() + levels;
