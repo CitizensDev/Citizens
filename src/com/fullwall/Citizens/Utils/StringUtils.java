@@ -1,6 +1,6 @@
 package com.fullwall.Citizens.Utils;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,9 +22,9 @@ public class StringUtils {
 		return ChatColor.stripColor(toStrip);
 	}
 
-	public static ArrayList<String> colourise(ArrayList<String> text) {
+	public static LinkedList<String> colourise(LinkedList<String> text) {
 		int index = 0;
-		ArrayList<String> newText = new ArrayList<String>();
+		LinkedList<String> newText = new LinkedList<String>();
 		for (String string : text) {
 			newText.add(index, string.replace("&", "§"));
 			index += 1;

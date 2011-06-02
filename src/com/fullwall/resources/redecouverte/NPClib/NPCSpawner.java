@@ -1,32 +1,30 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import net.minecraft.server.Entity;
-import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityTypes;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldServer;
+
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.LivingEntity;
 
 public class NPCSpawner {
 
 	protected static WorldServer getWorldServer(World world) {
 		if (world instanceof CraftWorld) {
-			CraftWorld w = (CraftWorld) world;
-			return w.getHandle();
+			return ((CraftWorld) world).getHandle();
 		}
 		return null;
 	}
 
 	private static MinecraftServer getMinecraftServer(Server server) {
 		if (server instanceof CraftServer) {
-			CraftServer cs = (CraftServer) server;
-			return cs.getServer();
+			return ((CraftServer) server).getServer();
 		}
 		return null;
 	}
@@ -39,7 +37,7 @@ public class NPCSpawner {
 			CraftNPC eh = new CraftNPC(ms, ws, name, new ItemInWorldManager(ws));
 			eh.setPositionRotation(x, y, z, yaw, pitch);
 			ws.addEntity(eh);
-			ws.players.remove((EntityHuman) eh);
+			ws.players.remove(eh);
 			return new HumanNPC(eh, UID, name);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,7 +69,6 @@ public class NPCSpawner {
 	}
 
 	public static void removeNPCFromPlayerList(CraftNPC npc) {
-		getWorldServer(npc.getBukkitEntity().getWorld()).players
-				.remove((EntityHuman) npc);
+		getWorldServer(npc.getBukkitEntity().getWorld()).players.remove(npc);
 	}
 }

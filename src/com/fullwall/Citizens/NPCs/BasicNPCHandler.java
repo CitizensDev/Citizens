@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -72,9 +73,9 @@ public class BasicNPCHandler extends NPCManager {
 	 * @param text
 	 */
 	public void addText(int UID, String text) {
-		ArrayList<String> texts = super.getText(UID);
+		LinkedList<String> texts = super.getText(UID);
 		if (texts == null) {
-			texts = new ArrayList<String>();
+			texts = new LinkedList<String>();
 		}
 		texts.add(text);
 		super.setText(UID, texts);
