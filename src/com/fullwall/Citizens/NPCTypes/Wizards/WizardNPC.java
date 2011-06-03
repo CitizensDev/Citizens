@@ -168,6 +168,24 @@ public class WizardNPC implements Toggleable, Clickable {
 	}
 
 	/**
+	 * Increase the mana of a wizard
+	 * 
+	 * @param mana
+	 */
+	public void increaseMana(int mana) {
+		setMana(getMana() + mana);
+	}
+
+	/**
+	 * Decrease the mana of a wizard
+	 * 
+	 * @param mana
+	 */
+	public void decreaseMana(int mana) {
+		setMana(getMana() - mana);
+	}
+
+	/**
 	 * Get the mode of a wizard
 	 * 
 	 * @return

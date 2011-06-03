@@ -9,6 +9,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.nijiko.permissions.Group;
+import com.nijiko.permissions.User;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Permission {
@@ -84,8 +86,21 @@ public class Permission {
 		return player.isOp();
 	}
 
+	// Note: this may or may not work, the API is kind of fuzzy; even the Perm
+	// dev himself admits there is terrible documentation at the moment
 	public static void grantRank(Player player, String rank) {
 		if (permissionsEnabled) {
+			User user = Permissions.Security.getUserObject("world",
+					"playerNameToPromote");
+			if (user == null) {
+				return;
+			}
+			Group group = Permissions.Security.getGroupObject("world",
+					"groupToPromoteUserTo");
+			if (group == null) {
+				return;
+			}
+			user.addParent(group);
 		}
 	}
 }

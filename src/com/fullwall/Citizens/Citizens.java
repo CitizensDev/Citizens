@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fullwall.Citizens.Commands.CommandHandler;
@@ -48,14 +47,15 @@ public class Citizens extends JavaPlugin {
 	public static String separatorChar = "/";
 
 	private static final String codename = "Realist";
-	public static String version = "1.0.8";
+	private static final String letter = "e";
+	private static String version = "1.0.8" + letter;
 
 	/**
-	 * Returns the current version of Citizens as specified in the plugin.yml.
+	 * Returns the current version of Citizens
 	 * 
 	 * @return
 	 */
-	public static String getVersion() {
+	private static String getVersion() {
 		return version;
 	}
 
@@ -76,7 +76,7 @@ public class Citizens extends JavaPlugin {
 	}
 
 	/**
-	 * Schedule a timer to regenerate a healer's health based on their level
+	 * Get the health regeneration rate for a healer based on its level
 	 * 
 	 * @return
 	 */
@@ -85,26 +85,24 @@ public class Citizens extends JavaPlugin {
 		if (!NPCManager.getList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 					.entrySet()) {
-				int level = entry.getValue().getHealer().getLevel();
-				delay = Constants.healerHealthRegenIncrement * (11 - level);
-				return delay;
+				delay = Constants.healerHealthRegenIncrement
+						* (11 - (entry.getValue().getHealer().getLevel()));
 			}
 		} else {
-			return 12000;
+			delay = 12000;
 		}
 		return delay;
 	}
 
 	@Override
 	public void onDisable() {
-		PluginDescriptionFile pdfFile = getDescription();
 		PropertyManager.stateSave();
 
 		basicNPCHandler.despawnAll();
 
 		// Save the local copy of our files to disk.
-		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "e] (" + codename + ") disabled");
+		log.info("[Citizens]: version [" + getVersion() + "] (" + codename
+				+ ") disabled");
 	}
 
 	@Override
@@ -127,9 +125,6 @@ public class Citizens extends JavaPlugin {
 		customListener.registerEvents();
 		worldListener.registerEvents();
 		serverListener.registerEvents();
-
-		PluginDescriptionFile pdfFile = getDescription();
-		version = pdfFile.getVersion();
 
 		// Permission.initialize(getServer());
 		Constants.setupVariables();
@@ -170,8 +165,8 @@ public class Citizens extends JavaPlugin {
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
 
-		log.info("[" + pdfFile.getName() + "]: version ["
-				+ pdfFile.getVersion() + "e] (" + codename + ") loaded");
+		log.info("[Citizens]: version [" + getVersion() + "] (" + codename
+				+ ") loaded");
 	}
 
 	@Override
@@ -359,7 +354,9 @@ public class Citizens extends JavaPlugin {
 	 * Returns whether the given item ID is usable as a tool.
 	 * 
 	 * @param key
-	 *            , type
+	 * @param type
+	 * @param sneaking
+	 * 
 	 * @return Whether the ID is used for a tool.
 	 */
 	public boolean validateTool(String key, int type, boolean sneaking) {
