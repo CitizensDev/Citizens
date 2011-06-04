@@ -126,7 +126,7 @@ public class Citizens extends JavaPlugin {
 		worldListener.registerEvents();
 		serverListener.registerEvents();
 
-		// Permission.initialize(getServer());
+		Permission.initialize(getServer());
 		Constants.setupVariables();
 
 		plugin = this;

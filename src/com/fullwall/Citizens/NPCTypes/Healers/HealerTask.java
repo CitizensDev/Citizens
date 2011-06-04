@@ -2,6 +2,7 @@ package com.fullwall.Citizens.NPCTypes.Healers;
 
 import java.util.Map.Entry;
 
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -10,7 +11,9 @@ public class HealerTask implements Runnable {
 	@Override
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
-			regenerateHealth(entry.getValue());
+			if (Constants.regenHealerHealth) {
+				regenerateHealth(entry.getValue());
+			}
 		}
 	}
 

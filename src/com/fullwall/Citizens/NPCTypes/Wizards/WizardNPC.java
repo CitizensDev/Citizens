@@ -108,6 +108,8 @@ public class WizardNPC implements Toggleable, Clickable {
 
 	/**
 	 * Sets the next location in the list as active.
+	 * 
+	 * @return
 	 */
 	public void cycleLocation() {
 		currentLocation++;
@@ -168,24 +170,6 @@ public class WizardNPC implements Toggleable, Clickable {
 	}
 
 	/**
-	 * Increase the mana of a wizard
-	 * 
-	 * @param mana
-	 */
-	public void increaseMana(int mana) {
-		setMana(getMana() + mana);
-	}
-
-	/**
-	 * Decrease the mana of a wizard
-	 * 
-	 * @param mana
-	 */
-	public void decreaseMana(int mana) {
-		setMana(getMana() - mana);
-	}
-
-	/**
 	 * Get the mode of a wizard
 	 * 
 	 * @return
@@ -210,19 +194,43 @@ public class WizardNPC implements Toggleable, Clickable {
 	 * @param wizard
 	 * @param op
 	 */
-	public void buyTeleport(Player player, WizardNPC wizard, Operation op) {
+	private void buy(Player player, Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0) {
-					player.sendMessage(ChatColor.GREEN
+					String msg = ChatColor.GREEN
 							+ "Paid "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid, ChatColor.YELLOW))
-							+ " for a teleport to "
-							+ StringUtils.wrap(wizard.getCurrentLocationName())
-							+ ".");
-					WizardAction.teleportPlayer(player, npc);
+									op, "" + paid, ChatColor.YELLOW));
+					switch (op) {
+					case WIZARD_TELEPORT:
+						msg += " for a teleport to "
+								+ StringUtils.wrap(this
+										.getCurrentLocationName()) + ".";
+						WizardManager.teleportPlayer(player, npc);
+						break;
+					case WIZARD_SPAWNMOB:
+						msg += " to spawn ";
+						WizardManager.spawnMob(player, npc);
+						break;
+					case WIZARD_CHANGETIME:
+						msg += " to change the time to ";
+						WizardManager.changeTime(player, npc);
+						break;
+					case WIZARD_TOGGLESTORM:
+						msg += " toggled a thunderstorm in the world "
+								+ StringUtils.wrap(player.getWorld().getName());
+						WizardManager.toggleStorm(player, npc);
+						break;
+					default:
+						player.sendMessage(ChatColor.RED
+								+ "No valid mode selected.");
+						break;
+					}
+					msg += StringUtils.wrap(getName() + "'s")
+							+ " mana was decreased by 5.";
+					player.sendMessage(msg);
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY
@@ -231,10 +239,6 @@ public class WizardNPC implements Toggleable, Clickable {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 			return;
-		} else {
-			WizardAction.teleportPlayer(player, npc);
-			player.sendMessage(ChatColor.GREEN + "You were teleported to "
-					+ StringUtils.wrap(wizard.getCurrentLocationName()) + ".");
 		}
 	}
 
@@ -242,7 +246,9 @@ public class WizardNPC implements Toggleable, Clickable {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-				if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+				WizardMode mode = npc.getWizard().getMode();
+				switch (mode) {
+				case TELEPORT:
 					if (npc.getWizard().getNumberOfLocations() > 0) {
 						npc.getWizard().cycleLocation();
 						player.sendMessage(ChatColor.GREEN
@@ -250,6 +256,13 @@ public class WizardNPC implements Toggleable, Clickable {
 								+ StringUtils.wrap(npc.getWizard()
 										.getCurrentLocationName()));
 					}
+					break;
+				case SPAWN:
+				case TIME:
+				default:
+					player.sendMessage(ChatColor.RED
+							+ "No valid mode selected.");
+					break;
 				}
 			}
 		} else {
@@ -261,11 +274,22 @@ public class WizardNPC implements Toggleable, Clickable {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-				if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+				WizardMode mode = npc.getWizard().getMode();
+				switch (mode) {
+				case TELEPORT:
 					if (npc.getWizard().getNumberOfLocations() > 0) {
-						npc.getWizard().buyTeleport(player, npc.getWizard(),
-								Operation.WIZARD_TELEPORT);
+						npc.getWizard().buy(player, Operation.WIZARD_TELEPORT);
 					}
+					break;
+				case SPAWN:
+				case TIME:
+				case WEATHER:
+					npc.getWizard().buy(player, Operation.WIZARD_TOGGLESTORM);
+					break;
+				default:
+					player.sendMessage(ChatColor.RED
+							+ "No valid mode selected.");
+					break;
 				}
 			}
 		} else {

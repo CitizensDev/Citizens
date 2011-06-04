@@ -39,6 +39,7 @@ public class HelpUtils {
 			break;
 		default:
 			maxPagesMessage(sender, page, 2);
+			break;
 		}
 	}
 

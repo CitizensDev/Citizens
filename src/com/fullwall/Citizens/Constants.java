@@ -17,6 +17,7 @@ public class Constants {
 	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
+	public static int maxWizardMana = 100;
 
 	public static double npcRange = 5;
 	public static double defaultBouncerProtectionRadius = 10;
@@ -42,6 +43,8 @@ public class Constants {
 	public static boolean useItemList = true;
 	public static boolean useNPCColours = true;
 	public static boolean useSaveTask = true;
+	public static boolean regenHealerHealth = true;
+	public static boolean regenWizardMana = true;
 
 	/**
 	 * Sets up miscellaneous variables, mostly reading from property files.
@@ -59,6 +62,8 @@ public class Constants {
 		useItemList = settings.getBoolean("items.item-list-on");
 		saveOften = settings.getBoolean("ticks.saving.save-often");
 		useSaveTask = settings.getBoolean("ticks.saving.use-task");
+		regenHealerHealth = settings.getBoolean("general.healers.regen-health");
+		regenWizardMana = settings.getBoolean("general.wizards.regen-mana");
 
 		// String defaults
 		chatFormat = settings.getString("general.chat.format");
@@ -91,6 +96,7 @@ public class Constants {
 		wizardMaxLocations = settings
 				.getInt("general.wizards.wizard-max-locations");
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");
+		maxWizardMana = settings.getInt("general.wizards.max-mana");
 
 		// ####Economy settings####
 		Storage economy = UtilityProperties.getEconomySettings();

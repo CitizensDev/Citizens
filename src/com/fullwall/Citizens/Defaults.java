@@ -26,6 +26,9 @@ public class Defaults {
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");
 		nodes.put("general.wizards.wizard-max-locations", "10");
+		nodes.put("general.healers.regen-health", "true");
+		nodes.put("general.wizards.regen-mana", "true");
+		nodes.put("general.wizards.max-mana", "100");
 		// Item Settings
 		nodes.put("items.item-list-on", "true");
 		nodes.put("items.basic.talk-items", "340,");
