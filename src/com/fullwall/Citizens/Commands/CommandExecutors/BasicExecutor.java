@@ -1,6 +1,6 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -400,7 +400,7 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void create(String[] args, Player player) {
 		String text = "";
-		LinkedList<String> texts = new LinkedList<String>();
+		ArrayDeque<String> texts = new ArrayDeque<String>();
 		if (args.length >= 3) {
 			int i = 0;
 			for (String s : args) {
@@ -574,7 +574,7 @@ public class BasicExecutor implements CommandExecutor {
 				i += 1;
 			}
 		}
-		LinkedList<String> texts = new LinkedList<String>();
+		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
 		NPCManager.setText(npc.getUID(), texts);
 		sender.sendMessage(StringUtils.wrapFull("{" + npc.getName()

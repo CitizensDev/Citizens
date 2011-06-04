@@ -1,12 +1,11 @@
 package com.fullwall.Citizens.Utils;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -30,13 +29,6 @@ public class MessageUtils {
 	public static String invalidItemIDMessage = ChatColor.RED
 			+ "That is not a valid item ID.";
 
-	public static String stripWhite(String check) {
-		if (check.equals("§f")) {
-			return "";
-		}
-		return check;
-	}
-
 	/**
 	 * Parses a basic npc's text for sending.
 	 * 
@@ -44,10 +36,10 @@ public class MessageUtils {
 	 * @param player
 	 * @param plugin
 	 */
-	public static void sendText(HumanNPC npc, Player player, Citizens plugin) {
-		String text = getText(npc, player, plugin);
+	public static void sendText(HumanNPC npc, Player player) {
+		String text = getText(npc, player);
 		if (!text.isEmpty()) {
-			(player).sendMessage(text);
+			Messaging.send(player, text);
 		}
 	}
 
@@ -59,15 +51,14 @@ public class MessageUtils {
 	 * @param plugin
 	 * @return
 	 */
-	public static String getText(HumanNPC npc, Player player, Citizens plugin) {
+	public static String getText(HumanNPC npc, Player player) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
-		int UID = npc.getUID();
-		LinkedList<String> array = NPCManager.getText(UID);
+		ArrayDeque<String> array = NPCManager.getText(npc.getUID());
 		String text = "";
 		if (array != null && array.size() > 0) {
 			text = array.getLast();
 			array.push(array.pop());
-			NPCManager.setText(UID, array);
+			NPCManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
 			text = UtilityProperties.getDefaultText();

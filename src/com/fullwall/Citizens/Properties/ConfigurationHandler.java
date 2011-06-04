@@ -9,14 +9,14 @@ import java.util.logging.Level;
 
 import org.bukkit.util.config.Configuration;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Defaults;
 import com.fullwall.Citizens.Interfaces.Storage;
+import com.fullwall.Citizens.Utils.Messaging;
 
 public class ConfigurationHandler implements Storage {
-	private Configuration config;
-	private String fileName;
+	private final Configuration config;
+	private final String fileName;
 
 	public ConfigurationHandler(String fileName, boolean b) {
 		// TODO: remove boolean in next version (used for transferring
@@ -45,8 +45,7 @@ public class ConfigurationHandler implements Storage {
 	private void loadDeletes(ArrayList<String> nodes) {
 		boolean found = false;
 		for (String node : nodes) {
-			Citizens.log.info("[Citizens]: Deleting outdated setting " + node
-					+ ".");
+			Messaging.log("Deleting outdated setting " + node + ".");
 			removeKey(node);
 			if (!found) {
 				found = true;
@@ -61,8 +60,7 @@ public class ConfigurationHandler implements Storage {
 		boolean found = false;
 		for (Entry<String, String> node : nodes.entrySet()) {
 			if (!pathExists(node.getKey())) {
-				Citizens.log.info("[Citizens]: Writing default setting "
-						+ node.getKey() + ".");
+				Messaging.log("Writing default setting " + node.getKey() + ".");
 				setString(node.getKey(), node.getValue());
 				if (!found) {
 					found = true;
@@ -80,8 +78,7 @@ public class ConfigurationHandler implements Storage {
 			if (pathExists(node.getKey())) {
 				String key = node.getValue();
 				String value = getString(node.getKey());
-				Citizens.log.info("[Citizens]: Renaming setting "
-						+ node.getKey() + ".");
+				Messaging.log("Renaming setting " + node.getKey() + ".");
 				removeKey(node.getKey());
 				setString(key, value);
 				if (!found) {
@@ -94,10 +91,12 @@ public class ConfigurationHandler implements Storage {
 		}
 	}
 
+	@Override
 	public void load() {
 		config.load();
 	}
 
+	@Override
 	public void save() {
 		this.config.save();
 	}
@@ -105,13 +104,12 @@ public class ConfigurationHandler implements Storage {
 	private void create() {
 		File file = getFile();
 		try {
-			Citizens.log.info("[Citizens]: Creating new config file at "
-					+ fileName + ".");
+			Messaging.log("Creating new config file at " + fileName + ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
-			Citizens.log.log(Level.SEVERE, "[Citizens]: Unable to create "
-					+ file.getPath(), ex);
+			Messaging.log("Unable to create " + file.getPath() + ".",
+					Level.SEVERE);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.NPCs;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import org.bukkit.Location;
 
@@ -12,7 +12,7 @@ public class NPCData {
 	private Location location;
 	private int colour = 0xf;
 	private ArrayList<Integer> items;
-	private LinkedList<String> texts;
+	private ArrayDeque<String> texts;
 	private boolean lookClose;
 	private boolean talkClose;
 	private String owner;
@@ -31,7 +31,7 @@ public class NPCData {
 	 * @param owner
 	 */
 	public NPCData(String name, int UID, Location loc, int colour,
-			ArrayList<Integer> items, LinkedList<String> texts,
+			ArrayList<Integer> items, ArrayDeque<String> texts,
 			boolean lookClose, boolean talkClose, String owner) {
 		this.setName(name);
 		this.setUID(UID);
@@ -84,11 +84,11 @@ public class NPCData {
 		return items;
 	}
 
-	public void setTexts(LinkedList<String> text) {
+	public void setTexts(ArrayDeque<String> text) {
 		this.texts = text;
 	}
 
-	public LinkedList<String> getTexts() {
+	public ArrayDeque<String> getTexts() {
 		return texts;
 	}
 

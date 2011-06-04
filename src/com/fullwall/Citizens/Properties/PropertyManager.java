@@ -1,10 +1,8 @@
 package com.fullwall.Citizens.Properties;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
-import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.BanditProperties;
 import com.fullwall.Citizens.Properties.Properties.BasicProperties;
@@ -12,6 +10,7 @@ import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
 import com.fullwall.Citizens.Properties.Properties.EvilProperties;
 import com.fullwall.Citizens.Properties.Properties.GuardProperties;
 import com.fullwall.Citizens.Properties.Properties.HealerProperties;
+import com.fullwall.Citizens.Properties.Properties.QuestProperties;
 import com.fullwall.Citizens.Properties.Properties.QuesterProperties;
 import com.fullwall.Citizens.Properties.Properties.TraderProperties;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
@@ -19,7 +18,7 @@ import com.fullwall.Citizens.Properties.Properties.WizardProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
-	public static HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
+	private static HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
 	private static BasicProperties basicProperties;
 
 	public enum PropertyType {
@@ -71,17 +70,7 @@ public class PropertyManager {
 		for (Saveable saveable : properties.values()) {
 			saveable.saveFiles();
 		}
-	}
-
-	public static Storage getHandler(Class<?> passedClass, String fieldName,
-			Saveable saveable) {
-		try {
-			Field f = passedClass.getDeclaredField(fieldName);
-			Storage handler = (Storage) f.get(saveable);
-			return handler;
-		} catch (Exception ex) {
-			return null;
-		}
+		QuestProperties.save();
 	}
 
 	public static void remove(HumanNPC npc) {

@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Entity;
 
-import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Utils.Messaging;
 
 @SuppressWarnings("serial")
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
@@ -20,10 +20,9 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 		for (HumanNPC bnpc : this.values()) {
 			if (bnpc == null || bnpc.getPlayer() == null) {
 				if (bnpc == null) {
-					Citizens.log.info("[Citizens]: Null NPC found!");
+					Messaging.log("Null NPC found!");
 				} else if (bnpc.getPlayer() == null) {
-					Citizens.log
-							.info("[Citizens]: Craftbukkit entity of NPC was null!");
+					Messaging.log("Craftbukkit entity was null!");
 				}
 				continue;
 			}

@@ -5,14 +5,19 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.NPCTypes.Questers.Reward;
 
 public class HealthReward implements Reward {
-	private int reward;
+	private final int reward;
+	private final boolean take;
 
-	public HealthReward(int reward) {
+	public HealthReward(int reward, boolean take) {
 		this.reward = reward;
+		this.take = take;
 	}
 
 	@Override
 	public void grant(Player player) {
-		player.setHealth(player.getHealth() + reward);
+		if (this.take)
+			player.setHealth(player.getHealth() - reward);
+		else
+			player.setHealth(player.getHealth() + reward);
 	}
 }

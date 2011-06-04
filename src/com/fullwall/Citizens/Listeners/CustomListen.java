@@ -9,10 +9,10 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Properties.PropertyManager;
+import com.iConomy.util.Messaging;
 
 public class CustomListen extends CustomEventListener implements Listener {
-	private Citizens plugin;
+	private final Citizens plugin;
 	private PluginManager pm;
 
 	public CustomListen(Citizens plugin) {
@@ -33,15 +33,14 @@ public class CustomListen extends CustomEventListener implements Listener {
 		}
 		if (ev.getEventName().equals("CitizensBasicNPCEvent")) {
 			CitizensBasicNPCEvent e = (CitizensBasicNPCEvent) ev;
-			if (e.isCancelled() == true) {
+			if (e.isCancelled()) {
 				return;
 			}
-			if (!PropertyManager.getBasic().getLookWhenClose(
-					e.getNPC().getUID())) {
+			if (!e.getNPC().getNPCData().isLookClose()) {
 				NPCManager.facePlayer(e.getNPC(), e.getPlayer());
 			}
 			if (!e.getText().isEmpty()) {
-				e.getPlayer().sendMessage(e.getText());
+				Messaging.send(e.getPlayer(), e.getText());
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -7,8 +8,10 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.Utils.Messaging;
 import com.nijikokun.register.payment.Methods;
 
 public class PluginListen extends ServerListener implements Listener {
@@ -32,11 +35,14 @@ public class PluginListen extends ServerListener implements Listener {
 
 	@Override
 	public void onPluginEnable(PluginEnableEvent event) {
+		if (event.getPlugin().getDescription().getName().equals("Permissions")) {
+			Permission.initialize(Bukkit.getServer());
+		}
 		if (!this.methods.hasMethod()) {
 			if (this.methods.setMethod(event.getPlugin())) {
 				Citizens.setMethod(this.methods.getMethod());
 				EconomyHandler.setServerEconomyEnabled(true);
-				System.out.println("[Citizens]: Payment method found ("
+				Messaging.log("Payment method found ("
 						+ methods.getMethod().getName() + " version: "
 						+ methods.getMethod().getVersion() + ")");
 			}
@@ -48,7 +54,7 @@ public class PluginListen extends ServerListener implements Listener {
 		if (this.methods != null && this.methods.hasMethod()) {
 			Boolean check = this.methods.checkDisabled(event.getPlugin());
 			if (check) {
-				Citizens.log.info("[Citizens]: Payment method disabled.");
+				Messaging.log("Payment method disabled.");
 			}
 			EconomyHandler.setServerEconomyEnabled(false);
 		}

@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.NPCs;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,7 +25,7 @@ public class NPCManager {
 	@SuppressWarnings("unused")
 	private final Citizens plugin;
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
-	public static ConcurrentHashMap<Integer, LinkedList<String>> NPCTexts = new ConcurrentHashMap<Integer, LinkedList<String>>();
+	public static ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
 	public static ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	public static Random ran = new Random(
 			new Random(System.currentTimeMillis()).nextLong());
@@ -107,7 +107,7 @@ public class NPCManager {
 	 * @param UID
 	 * @param text
 	 */
-	public static void setText(int UID, LinkedList<String> text) {
+	public static void setText(int UID, ArrayDeque<String> text) {
 		text = StringUtils.colourise(text);
 		NPCTexts.put(UID, text);
 		get(UID).getNPCData().setTexts(text);
@@ -119,7 +119,7 @@ public class NPCManager {
 	 * @param UID
 	 * @return
 	 */
-	public static LinkedList<String> getText(int UID) {
+	public static ArrayDeque<String> getText(int UID) {
 		return NPCTexts.get(UID);
 	}
 
@@ -129,7 +129,7 @@ public class NPCManager {
 	 * @param UID
 	 */
 	public static void resetText(int UID) {
-		setText(UID, new LinkedList<String>());
+		setText(UID, new ArrayDeque<String>());
 	}
 
 	/**

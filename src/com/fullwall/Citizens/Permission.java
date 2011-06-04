@@ -90,17 +90,28 @@ public class Permission {
 	// dev himself admits there is terrible documentation at the moment
 	public static void grantRank(Player player, String rank) {
 		if (permissionsEnabled) {
-			User user = Permissions.Security.getUserObject("world",
-					"playerNameToPromote");
+			User user = Permissions.Security.getUserObject(player.getWorld()
+					.getName(), player.getName());
 			if (user == null) {
 				return;
 			}
-			Group group = Permissions.Security.getGroupObject("world",
-					"groupToPromoteUserTo");
+			Group group = Permissions.Security.getGroupObject(player.getWorld()
+					.getName(), rank);
 			if (group == null) {
 				return;
 			}
 			user.addParent(group);
+		}
+	}
+
+	public static void givePermission(Player player, String reward) {
+		if (permissionsEnabled) {
+			User user = Permissions.Security.getUserObject(player.getWorld()
+					.getName(), player.getName());
+			if (user == null) {
+				return;
+			}
+			user.addPermission(reward);
 		}
 	}
 }
