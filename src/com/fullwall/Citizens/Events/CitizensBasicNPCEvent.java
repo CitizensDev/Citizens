@@ -27,31 +27,20 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 	private String text;
 
 	/**
-	 * The name of the NPC.
-	 */
-
-	private String name;
-
-	/**
 	 * The NPC object (requires redecouverte's NPC lib)
 	 */
 
 	private HumanNPC NPC;
 
-	private Reason reason;
+	private final Location location;
 
-	private Location location;
+	private final Player player;
 
-	private Player player;
-
-	public CitizensBasicNPCEvent(String name, String text, HumanNPC npc,
-			Reason reason, Player player) {
+	public CitizensBasicNPCEvent(HumanNPC npc, Player player, String text) {
 		super("CitizensBasicNPCEvent");
 		this.NPC = npc;
 		this.location = npc.getLocation();
-		this.name = name;
 		this.text = text;
-		this.reason = reason;
 		this.player = player;
 	}
 
@@ -97,7 +86,7 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 	 * @return The name of the NPC.
 	 */
 	public String getName() {
-		return this.name;
+		return this.NPC.getStrippedName();
 	}
 
 	/**
@@ -131,13 +120,5 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 	 */
 	public Player getPlayer() {
 		return this.player;
-	}
-
-	public Reason getReason() {
-		return this.reason;
-	}
-
-	public enum Reason {
-		RIGHT_CLICK
 	}
 }

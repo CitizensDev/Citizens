@@ -1,4 +1,4 @@
-package com.fullwall.Citizens.Utils;
+package com.fullwall.Citizens.Misc;
 
 import org.bukkit.Location;
 

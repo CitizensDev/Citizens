@@ -5,19 +5,19 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Misc.ActionManager;
+import com.fullwall.Citizens.Misc.CachedAction;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.ActionManager;
-import com.fullwall.Citizens.Utils.CachedAction;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
 public class TickTask implements Runnable {
-
-	private Citizens plugin;
+	@SuppressWarnings("unused")
+	private final Citizens plugin;
 	// How far an NPC can 'see'
-	private double range;
+	private final double range;
 
 	public TickTask(Citizens plugin, double range) {
 		this.plugin = plugin;
@@ -64,7 +64,7 @@ public class TickTask implements Runnable {
 	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
 		if (!cached.has("saidText") && npc.getNPCData().isTalkClose()) {
-			MessageUtils.sendText(npc, p, plugin);
+			MessageUtils.sendText(npc, p);
 			cached.set("saidText");
 		}
 		ActionManager.putAction(entityID, name, cached);

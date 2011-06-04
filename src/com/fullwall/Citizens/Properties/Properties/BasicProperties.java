@@ -1,7 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import net.minecraft.server.InventoryPlayer;
@@ -183,12 +183,12 @@ public class BasicProperties extends Saveable {
 		colours.setInt(UID, colour);
 	}
 
-	public LinkedList<String> getText(int UID) {
+	public ArrayDeque<String> getText(int UID) {
 		String current = texts.getString(UID);
 		if (!current.isEmpty()) {
-			LinkedList<String> text = new LinkedList<String>();
+			ArrayDeque<String> text = new ArrayDeque<String>();
 			for (String string : current.split(";")) {
-				text.add(string);
+				text.push(string);
 			}
 			return text;
 		} else {
@@ -199,15 +199,15 @@ public class BasicProperties extends Saveable {
 	public void getSetText(int UID) {
 		String current = texts.getString(UID);
 		if (!current.isEmpty()) {
-			LinkedList<String> text = new LinkedList<String>();
+			ArrayDeque<String> text = new ArrayDeque<String>();
 			for (String string : current.split(";")) {
-				text.add(string);
+				text.push(string);
 			}
 			NPCManager.setText(UID, text);
 		}
 	}
 
-	private void saveText(int UID, LinkedList<String> text) {
+	private void saveText(int UID, ArrayDeque<String> text) {
 		String adding = "";
 		if (text != null) {
 			for (String string : text) {

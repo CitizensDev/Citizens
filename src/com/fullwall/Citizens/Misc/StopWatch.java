@@ -1,8 +1,8 @@
-package com.fullwall.Citizens.Utils;
+package com.fullwall.Citizens.Misc;
 
 import java.lang.reflect.Method;
 
-import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Utils.Messaging;
 
 /*
  Copyright (c) 2005, Corey Goldberg
@@ -38,7 +38,7 @@ public class StopWatch {
 				}
 			}
 		} catch (Exception ex) {
-			Citizens.log.info("Error while calling method " + methodName
+			Messaging.log("Error while calling method " + methodName
 					+ ". Error " + ex.getMessage() + ".");
 		}
 	}
@@ -49,19 +49,19 @@ public class StopWatch {
 	}
 
 	public void print() {
-		Citizens.log.info("Start time: " + convertHours(startTime)
-				+ "h. Elapsed: " + toMilliseconds(getElapsedTime())
-				+ "ms. Stopped: " + convertHours(stopTime) + "h.");
+		Messaging.log("Start time: " + convertHours(startTime) + "h. Elapsed: "
+				+ toMilliseconds(getElapsedTime()) + "ms. Stopped: "
+				+ convertHours(stopTime) + "h.");
 	}
 
 	public void printElapsed() {
-		Citizens.log.info("Elapsed: " + getElapsedTime() + "ns / "
+		Messaging.log("Elapsed: " + getElapsedTime() + "ns / "
 				+ toMilliseconds(getElapsedTime()) + "ms ("
 				+ toSeconds(getElapsedTime()) + "s).");
 	}
 
 	public void printElapsed(String method) {
-		Citizens.log.info("Elapsed: " + getElapsedTime() + "ns / "
+		Messaging.log("Elapsed: " + getElapsedTime() + "ns / "
 				+ toMilliseconds(getElapsedTime()) + "ms ("
 				+ toSeconds(getElapsedTime()) + "s) while calling " + method
 				+ ".");

@@ -1,11 +1,10 @@
 package com.fullwall.Citizens;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +23,7 @@ import com.fullwall.Citizens.Properties.ConfigurationHandler;
 import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.register.payment.Method;
 
@@ -43,7 +43,6 @@ public class Citizens extends JavaPlugin {
 
 	public static Method economy;
 
-	public static Logger log = Logger.getLogger("Minecraft");
 	public static String separatorChar = "/";
 
 	private static final String codename = "Realist";
@@ -101,20 +100,12 @@ public class Citizens extends JavaPlugin {
 		basicNPCHandler.despawnAll();
 
 		// Save the local copy of our files to disk.
-		log.info("[Citizens]: version [" + getVersion() + "] (" + codename
+		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") disabled");
 	}
 
 	@Override
 	public void onEnable() {
-		// TODO - remove on update.
-		transferSettings();
-
-		// Register files.
-		PropertyManager.registerProperties();
-
-		// TODO - remove on update.
-		transferInventories();
 
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
@@ -127,6 +118,15 @@ public class Citizens extends JavaPlugin {
 		serverListener.registerEvents();
 
 		Permission.initialize(getServer());
+
+		// TODO - remove on update.
+		transferSettings();
+
+		// Register files.
+		PropertyManager.registerProperties();
+
+		// TODO - remove on update.
+		transferInventories();
 		Constants.setupVariables();
 
 		plugin = this;
@@ -141,7 +141,8 @@ public class Citizens extends JavaPlugin {
 						setupNPCs();
 					}
 				}) == -1) {
-			log.info("[Citizens]: Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
+			Messaging
+					.log("Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
 			setupNPCs();
 		}
 
@@ -158,14 +159,14 @@ public class Citizens extends JavaPlugin {
 					new Runnable() {
 						@Override
 						public void run() {
-							log.info("[Citizens]: Saving npc files to disk...");
+							Messaging.log("Saving npc files to disk...");
 							PropertyManager.stateSave();
-							log.info("[Citizens]: Saved.");
+							Messaging.log("Saved.");
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
 
-		log.info("[Citizens]: version [" + getVersion() + "] (" + codename
+		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") loaded");
 	}
 
@@ -187,7 +188,7 @@ public class Citizens extends JavaPlugin {
 							Integer.valueOf(name.split("_")[0]),
 							PropertyManager.getBasic().getOwner(
 									Integer.valueOf(name.split("_")[0])));
-					LinkedList<String> text = PropertyManager.getBasic()
+					ArrayDeque<String> text = PropertyManager.getBasic()
 							.getText(Integer.valueOf(name.split("_")[0]));
 					if (text != null)
 						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
@@ -197,8 +198,7 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
-		log.info("[" + getDescription().getName() + "]: Loaded "
-				+ NPCManager.GlobalUIDs.size() + " NPCs.");
+		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
 	}

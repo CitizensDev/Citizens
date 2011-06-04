@@ -12,10 +12,10 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Defaults;
 import com.fullwall.Citizens.Interfaces.Storage;
+import com.fullwall.Citizens.Utils.Messaging;
 
 /**
  * iConomy v1.x
@@ -64,14 +64,13 @@ public final class PropertyHandler implements Storage {
 	private void createFile(File file) {
 		try {
 			if (!fileName.contains("profile")) {
-				Citizens.log.info("[Citizens]: Creating missing file at "
-						+ fileName + ".");
+				Messaging.log("Creating missing file at " + fileName + ".");
 			}
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
-			Citizens.log.log(Level.SEVERE,
-					"Unable to create " + file.getPath(), ex);
+			Messaging.log("Unable to create " + file.getPath() + ".",
+					Level.SEVERE);
 		}
 	}
 
@@ -80,8 +79,8 @@ public final class PropertyHandler implements Storage {
 		for (Entry<String, String> entry : nodes.entrySet()) {
 			if (!keyExists(entry.getKey())) {
 				if (!told) {
-					Citizens.log
-							.info("Missing entry in Citizens.itemlookups - restoring settings");
+					Messaging
+							.log("Missing entry in itemlookups - restoring settings.");
 				}
 				told = true;
 				setString(entry.getKey(), entry.getValue());
@@ -94,8 +93,7 @@ public final class PropertyHandler implements Storage {
 		try {
 			this.properties.load(new FileInputStream(this.fileName));
 		} catch (Exception ex) {
-			Citizens.log.log(Level.SEVERE, "[Citizens]: Unable to load "
-					+ this.fileName, ex);
+			Messaging.log("Unable to load " + this.fileName, Level.SEVERE);
 		}
 	}
 
@@ -105,8 +103,7 @@ public final class PropertyHandler implements Storage {
 			this.properties.store(new FileOutputStream(this.fileName),
 					"Citizens File");
 		} catch (IOException ex) {
-			Citizens.log.log(Level.SEVERE, "[Citizens]: Unable to save "
-					+ this.fileName, ex);
+			Messaging.log("Unable to save " + this.fileName, Level.SEVERE);
 		}
 	}
 

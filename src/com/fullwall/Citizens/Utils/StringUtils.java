@@ -1,6 +1,6 @@
 package com.fullwall.Citizens.Utils;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,12 +22,10 @@ public class StringUtils {
 		return ChatColor.stripColor(toStrip);
 	}
 
-	public static LinkedList<String> colourise(LinkedList<String> text) {
-		int index = 0;
-		LinkedList<String> newText = new LinkedList<String>();
+	public static ArrayDeque<String> colourise(ArrayDeque<String> text) {
+		ArrayDeque<String> newText = new ArrayDeque<String>();
 		for (String string : text) {
-			newText.add(index, string.replace("&", "§"));
-			index += 1;
+			newText.add(string.replace("&", "§"));
 		}
 		return newText;
 	}

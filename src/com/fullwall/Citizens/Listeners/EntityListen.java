@@ -13,7 +13,6 @@ import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
-import com.fullwall.Citizens.Events.CitizensBasicNPCEvent.Reason;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -97,10 +96,9 @@ public class EntityListen extends EntityListener implements Listener {
 				// Dispatch text event / select NPC.
 				if (plugin.validateTool("items.basic.talk-items", player
 						.getItemInHand().getTypeId(), player.isSneaking()) == true) {
-					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(
-							npc.getName(), MessageUtils.getText(npc,
-									(Player) e.getTarget(), plugin), npc,
-							Reason.RIGHT_CLICK, (Player) e.getTarget());
+					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(npc,
+							(Player) e.getTarget(), MessageUtils.getText(npc,
+									(Player) e.getTarget()));
 					plugin.getServer().getPluginManager().callEvent(ev);
 				}
 				if (npc.isTrader()) {
