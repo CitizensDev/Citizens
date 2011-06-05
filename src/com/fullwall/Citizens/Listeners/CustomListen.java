@@ -9,7 +9,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.iConomy.util.Messaging;
+import com.fullwall.Citizens.Utils.Messaging;
 
 public class CustomListen extends CustomEventListener implements Listener {
 	private final Citizens plugin;

@@ -140,6 +140,10 @@ public class HelpUtils {
 		formatCommand(sender, "wizard", "addloc [name]",
 				"add your location to the wizard");
 		formatCommand(sender, "wizard", "removeloc [id]", "remove the location");
+		formatCommand(sender, "wizard", "mode [mode]",
+				"change the mode of a wizard");
+		formatCommand(sender, "wizard", "status",
+				"display the mode/mana of a wizard");
 		footer(sender);
 	}
 

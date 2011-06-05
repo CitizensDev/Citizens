@@ -43,7 +43,7 @@ public class Citizens extends JavaPlugin {
 	public static String separatorChar = "/";
 
 	private static final String codename = "Realist";
-	private static final String letter = "e";
+	private static final String letter = "f";
 	private static String version = "1.0.8" + letter;
 
 	/**

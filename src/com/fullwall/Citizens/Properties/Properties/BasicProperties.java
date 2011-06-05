@@ -294,7 +294,7 @@ public class BasicProperties extends Saveable {
 		saveLocation(npcdata.getName(), npcdata.getLocation(), UID);
 		saveColour(UID, npcdata.getColour());
 		saveItems(UID, npcdata.getItems());
-		saveInventory(npc.getUID(), npc.getPlayer().getInventory());
+		saveInventory(UID, npc.getPlayer().getInventory());
 		saveText(UID, npcdata.getTexts());
 		saveLookWhenClose(UID, npcdata.isLookClose());
 		saveTalkWhenClose(UID, npcdata.isTalkClose());

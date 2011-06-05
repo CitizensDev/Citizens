@@ -3,12 +3,12 @@ package com.fullwall.Citizens.NPCTypes.Wizards;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Enums.WizardMode;
 import com.fullwall.Citizens.Permission;
-import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
@@ -25,6 +25,8 @@ public class WizardNPC implements Toggleable, Clickable {
 	private Location currentLoc;
 	private WizardMode mode = WizardMode.TELEPORT;
 	private int mana = 10;
+	private String time = "morning";
+	private CreatureType mob = CreatureType.CHICKEN;
 
 	/**
 	 * Wizard NPC object
@@ -33,36 +35,6 @@ public class WizardNPC implements Toggleable, Clickable {
 	 */
 	public WizardNPC(HumanNPC npc) {
 		this.npc = npc;
-	}
-
-	@Override
-	public void toggle() {
-		npc.setWizard(!npc.isWizard());
-	}
-
-	@Override
-	public boolean getToggle() {
-		return npc.isWizard();
-	}
-
-	@Override
-	public String getName() {
-		return npc.getStrippedName();
-	}
-
-	@Override
-	public String getType() {
-		return "wizard";
-	}
-
-	@Override
-	public void saveState() {
-		PropertyManager.get(getType()).saveState(npc);
-	}
-
-	@Override
-	public void register() {
-		PropertyManager.get(getType()).register(npc);
 	}
 
 	/**
@@ -188,58 +160,59 @@ public class WizardNPC implements Toggleable, Clickable {
 	}
 
 	/**
-	 * Purchase a teleport
+	 * Get the time setting of a wizard
 	 * 
-	 * @param player
-	 * @param wizard
-	 * @param op
+	 * @return
 	 */
-	private void buy(Player player, Operation op) {
-		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
-			if (EconomyHandler.useEconomy()) {
-				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0) {
-					String msg = ChatColor.GREEN
-							+ "Paid "
-							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid, ChatColor.YELLOW));
-					switch (op) {
-					case WIZARD_TELEPORT:
-						msg += " for a teleport to "
-								+ StringUtils.wrap(this
-										.getCurrentLocationName()) + ".";
-						WizardManager.teleportPlayer(player, npc);
-						break;
-					case WIZARD_SPAWNMOB:
-						msg += " to spawn ";
-						WizardManager.spawnMob(player, npc);
-						break;
-					case WIZARD_CHANGETIME:
-						msg += " to change the time to ";
-						WizardManager.changeTime(player, npc);
-						break;
-					case WIZARD_TOGGLESTORM:
-						msg += " toggled a thunderstorm in the world "
-								+ StringUtils.wrap(player.getWorld().getName());
-						WizardManager.toggleStorm(player, npc);
-						break;
-					default:
-						player.sendMessage(ChatColor.RED
-								+ "No valid mode selected.");
-						break;
-					}
-					msg += StringUtils.wrap(getName() + "'s")
-							+ " mana was decreased by 5.";
-					player.sendMessage(msg);
-				}
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "Your server has not turned economy on for Citizens.");
-			}
-		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
-			return;
-		}
+	public String getTime() {
+		return time;
+	}
+
+	/**
+	 * Set the time setting for a wizard
+	 * 
+	 * @param time
+	 */
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public CreatureType getMob() {
+		return mob;
+	}
+
+	public void setMob(CreatureType mob) {
+		this.mob = mob;
+	}
+
+	@Override
+	public void toggle() {
+		npc.setWizard(!npc.isWizard());
+	}
+
+	@Override
+	public boolean getToggle() {
+		return npc.isWizard();
+	}
+
+	@Override
+	public String getName() {
+		return npc.getStrippedName();
+	}
+
+	@Override
+	public String getType() {
+		return "wizard";
+	}
+
+	@Override
+	public void saveState() {
+		PropertyManager.get(getType()).saveState(npc);
+	}
+
+	@Override
+	public void register() {
+		PropertyManager.get(getType()).register(npc);
 	}
 
 	@Override
@@ -278,13 +251,15 @@ public class WizardNPC implements Toggleable, Clickable {
 				switch (mode) {
 				case TELEPORT:
 					if (npc.getWizard().getNumberOfLocations() > 0) {
-						npc.getWizard().buy(player, Operation.WIZARD_TELEPORT);
+						WizardManager.buy(player, npc,
+								Operation.WIZARD_TELEPORT);
 					}
 					break;
 				case SPAWN:
 				case TIME:
 				case WEATHER:
-					npc.getWizard().buy(player, Operation.WIZARD_TOGGLESTORM);
+					WizardManager
+							.buy(player, npc, Operation.WIZARD_TOGGLESTORM);
 					break;
 				default:
 					player.sendMessage(ChatColor.RED

@@ -35,9 +35,7 @@ public class PluginListen extends ServerListener implements Listener {
 
 	@Override
 	public void onPluginEnable(PluginEnableEvent event) {
-		if (event.getPlugin().getDescription().getName().equals("Permissions")) {
-			Permission.initialize(Bukkit.getServer());
-		}
+		Permission.initialize(Bukkit.getServer());
 		if (!this.methods.hasMethod()) {
 			if (this.methods.setMethod(event.getPlugin())) {
 				Citizens.setMethod(this.methods.getMethod());

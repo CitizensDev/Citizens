@@ -16,5 +16,4 @@ public class QuestReward implements Reward {
 	public void grant(Player player) {
 		// TODO: quest giving code here.
 	}
-
 }

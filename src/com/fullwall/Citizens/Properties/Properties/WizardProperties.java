@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
+import org.bukkit.entity.CreatureType;
+
 import com.fullwall.Citizens.Enums.WizardMode;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyHandler;
@@ -15,6 +17,10 @@ public class WizardProperties extends Saveable {
 			"plugins/Citizens/Wizards/mana.citizens");
 	private final PropertyHandler mode = new PropertyHandler(
 			"plugins/Citizens/Wizards/mode.citizens");
+	private final PropertyHandler time = new PropertyHandler(
+			"plugins/Citizens/Wizards/time.citizens");
+	private final PropertyHandler mob = new PropertyHandler(
+			"plugins/Citizens/Wizards/mob.citizens");
 
 	private void saveLocations(int UID, String locationString) {
 		locations.setString(UID, locationString.replace(")(", "):("));
@@ -40,12 +46,30 @@ public class WizardProperties extends Saveable {
 		return WizardMode.parse(mode.getString(UID));
 	}
 
+	private void saveTime(int UID, String worldTime) {
+		time.setString(UID, worldTime);
+	}
+
+	private String getTime(int UID) {
+		return time.getString(UID);
+	}
+
+	private void saveMob(int UID, CreatureType type) {
+		mob.setString(UID, type.getName());
+	}
+
+	private CreatureType getMob(int UID) {
+		return CreatureType.valueOf(mob.getString(UID));
+	}
+
 	@Override
 	public void saveFiles() {
 		wizards.save();
 		locations.save();
 		mana.save();
 		mode.save();
+		time.save();
+		mob.save();
 	}
 
 	@Override
@@ -55,6 +79,8 @@ public class WizardProperties extends Saveable {
 			saveLocations(npc.getUID(), npc.getWizard().getLocations());
 			saveMana(npc.getUID(), npc.getWizard().getMana());
 			saveMode(npc.getUID(), npc.getWizard().getMode());
+			saveTime(npc.getUID(), npc.getWizard().getTime());
+			saveMob(npc.getUID(), npc.getWizard().getMob());
 		}
 	}
 
@@ -64,6 +90,8 @@ public class WizardProperties extends Saveable {
 		npc.getWizard().setLocations(getLocations(npc.getUID()));
 		npc.getWizard().setMana(getMana(npc.getUID()));
 		npc.getWizard().setMode(getMode(npc.getUID()));
+		npc.getWizard().setTime(getTime(npc.getUID()));
+		npc.getWizard().setMob(getMob(npc.getUID()));
 		saveState(npc);
 	}
 
@@ -73,6 +101,8 @@ public class WizardProperties extends Saveable {
 		locations.removeKey(npc.getUID());
 		mana.removeKey(npc.getUID());
 		mode.removeKey(npc.getUID());
+		time.removeKey(npc.getUID());
+		mob.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -113,6 +143,12 @@ public class WizardProperties extends Saveable {
 		}
 		if (mode.keyExists(UID)) {
 			mode.setString(nextUID, mode.getString(UID));
+		}
+		if (time.keyExists(UID)) {
+			time.setString(nextUID, time.getString(UID));
+		}
+		if (mob.keyExists(UID)) {
+			mob.setString(nextUID, mob.getString(UID));
 		}
 	}
 }

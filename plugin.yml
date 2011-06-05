@@ -50,9 +50,9 @@ commands:
         usage: |
                         The command was not recognised. Was it typed in correctly?
                         See /citizens help for a list of commands.
-    toggle:
+    tog:
         description: Toggles between various NPC states.
-        aliases: [t, tog, togg]
+        aliases: [t, togg, toggle]
         usage: |
                         The command was not recognised. The correct syntax is
                         /<command> [type]

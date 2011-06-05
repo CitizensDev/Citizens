@@ -141,7 +141,7 @@ public class GuardTask implements Runnable {
 		} else if (entity instanceof Pig) {
 			name = "pig";
 		} else if (entity instanceof PigZombie) {
-			name = "sigZombie";
+			name = "pigzombie";
 		} else if (entity instanceof Sheep) {
 			name = "sheep";
 		} else if (entity instanceof Skeleton) {

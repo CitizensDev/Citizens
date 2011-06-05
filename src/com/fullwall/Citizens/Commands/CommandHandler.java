@@ -52,6 +52,6 @@ public class CommandHandler {
 		plugin.getCommand("quester").setExecutor(quester);
 		plugin.getCommand("bandit").setExecutor(bandit);
 		plugin.getCommand("guard").setExecutor(guard);
-		plugin.getCommand("toggle").setExecutor(toggle);
+		plugin.getCommand("tog").setExecutor(toggle);
 	}
 }
