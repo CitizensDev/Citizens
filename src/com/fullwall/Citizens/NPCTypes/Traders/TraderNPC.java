@@ -194,14 +194,22 @@ public class TraderNPC implements Toggleable, Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (npc.getTrader().isFree()) {
-			if (!Permission.canModify(player, npc, "trader")) {
-				return;
-			}
-			Mode mode = Mode.NORMAL;
+			Mode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID())) {
+				if (!Permission.canModify(player, npc, "trader")) {
+					return;
+				}
 				mode = Mode.STOCK;
 			} else if (npc.getTrader().isUnlimited()) {
 				mode = Mode.INFINITE;
+				if (!Permission.canUse(player, npc, "trader")) {
+					return;
+				}
+			} else {
+				mode = Mode.NORMAL;
+				if (!Permission.canUse(player, npc, "trader")) {
+					return;
+				}
 			}
 			TraderTask task = new TraderTask(npc, player, Citizens.plugin, mode);
 			int id = Bukkit.getServer().getScheduler()

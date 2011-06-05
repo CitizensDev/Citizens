@@ -11,13 +11,13 @@ import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.Misc.NPCLocation;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.NPCLocation;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WorldListen extends WorldListener implements Listener {
-	private Citizens plugin;
-	private ConcurrentHashMap<NPCLocation, String> toRespawn = new ConcurrentHashMap<NPCLocation, String>();
+	private final Citizens plugin;
+	private final ConcurrentHashMap<NPCLocation, String> toRespawn = new ConcurrentHashMap<NPCLocation, String>();
 	private PluginManager pm;
 
 	public WorldListen(Citizens plugin) {
