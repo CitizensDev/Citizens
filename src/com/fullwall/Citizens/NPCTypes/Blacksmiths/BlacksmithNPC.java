@@ -65,12 +65,12 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	 */
 	public boolean validateTool(ItemStack item) {
 		int id = item.getTypeId();
-		if (id >= 256 && id <= 259 || id >= 267 && id <= 279 || id >= 283
-				&& id <= 286 || id >= 290 && id <= 294 || id == 346) {
+		if ((id >= 256 && id <= 259) || (id >= 267 && id <= 279)
+				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
+				|| id == 346) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -83,9 +83,8 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 		int id = armor.getTypeId();
 		if (id >= 298 && id <= 317) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -164,9 +163,10 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 					.equals("armor")) {
 				op = Operation.BLACKSMITH_ARMORREPAIR;
 			}
-			if (op != null)
+			if (op != null) {
 				npc.getBlacksmith().buyItemRepair(player, npc,
 						player.getItemInHand(), op);
+			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}

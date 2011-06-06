@@ -55,9 +55,14 @@ public class BanditExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("steal")) {
+			} else if (args.length == 3
+					&& args[0].equalsIgnoreCase("stealable")) {
 				if (Permission.canModify(player, npc, "bandit")) {
-					addStealableItem(player, npc, args[1]);
+					if (args[1].equalsIgnoreCase("add")) {
+						changeStealable(player, npc, args[2], true);
+					} else if (args[1].equalsIgnoreCase("remove")) {
+						changeStealable(player, npc, args[2], false);
+					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -68,43 +73,50 @@ public class BanditExecutor implements CommandExecutor {
 	}
 
 	/**
-	 * Set an item as stealable by a bandit NPC
-	 * 
-	 * @param id
-	 */
-	private void addStealableItem(Player player, HumanNPC npc, String id) {
-		if (!StringUtils.isNumber(id)) {
-			player.sendMessage(ChatColor.RED + "That is not a valid item ID.");
-			return;
-		}
-		if (!npc.getBandit().getStealables().contains(Integer.parseInt(id))) {
-			if (validateItem(player, id)) {
-				npc.getBandit().addStealable(Integer.parseInt(id));
-				player.sendMessage(ChatColor.GREEN
-						+ "You added "
-						+ StringUtils.wrap(Material.getMaterial(
-								Integer.parseInt(id)).name()) + " to "
-						+ StringUtils.wrap(npc.getStrippedName() + "'s")
-						+ " list of stealable items.");
-			}
-		} else {
-			player.sendMessage(ChatColor.RED
-					+ "That item is already on the list.");
-		}
-	}
-
-	/**
-	 * Verify that the passed string id is a valid item ID
+	 * Add/remove an item from a bandit NPC's list of stealable items
 	 * 
 	 * @param player
-	 * @param id
+	 * @param npc
+	 * @param passed
 	 * @return
 	 */
-	private boolean validateItem(Player player, String passed) {
-		if (Material.getMaterial(Integer.parseInt(passed)) == null) {
-			player.sendMessage(ChatColor.RED + "That is not a valid item ID.");
-			return false;
+	private void changeStealable(Player player, HumanNPC npc, String passed,
+			boolean add) {
+		String action = " added ";
+		int id = 0;
+		if (StringUtils.isNumber(passed)
+				&& Material.getMaterial(Integer.parseInt(passed)) != null) {
+			id = Integer.parseInt(passed);
+		} else {
+			player.sendMessage(MessageUtils.invalidItemIDMessage);
+			return;
 		}
-		return true;
+		String material = StringUtils.wrap(Material.getMaterial(id).name());
+		String keyword = " to ";
+		boolean successful = false;
+		if (add) {
+			if (!npc.getBandit().getStealables().contains(id)) {
+				npc.getBandit().addStealable(id);
+				successful = true;
+			} else {
+				player.sendMessage(ChatColor.RED + "That item is already on "
+						+ npc.getStrippedName() + "'s list of stealable items.");
+			}
+		} else {
+			if (npc.getBandit().getStealables().contains(id)) {
+				npc.getBandit().removeStealable(id);
+				action = " removed ";
+				keyword = " from ";
+				successful = true;
+			} else {
+				player.sendMessage(ChatColor.RED + "That item is not on "
+						+ npc.getStrippedName() + "'s list of stealable items.");
+			}
+		}
+		if (successful) {
+			player.sendMessage(ChatColor.GREEN + "You" + action + material
+					+ keyword + StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " list of stealable items.");
+		}
 	}
 }
