@@ -2,6 +2,8 @@ package com.fullwall.Citizens.NPCTypes.Questers;
 
 import java.util.ArrayList;
 
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestProgress;
+
 public class PlayerProfile {
 	private StoredProfile profile;
 	private int rank;

@@ -3,19 +3,18 @@ package com.fullwall.Citizens.NPCTypes.Questers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager.QuestType;
+import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objective;
+import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives;
 
 public class Quest implements CompletedQuest {
 	private String questName = "";
 	private String completionText = "";
 	private String description = "";
 	private final List<Reward> rewards = new ArrayList<Reward>();
-	private Objective objective;
-	private QuestType type;
+	private Objectives objectives;
 
-	public Quest(String name, QuestType type) {
+	public Quest(String name) {
 		this.questName = name;
-		this.type = type;
 	}
 
 	/**
@@ -77,20 +76,11 @@ public class Quest implements CompletedQuest {
 		this.completionText = text;
 	}
 
-	public void setObjective(Objective objective) {
-		this.objective = objective;
+	public void addObjective(Objective objective) {
+		this.objectives.add(objective);
 	}
 
-	public Objective getObjective() {
-		return objective;
-	}
-
-	public void setType(QuestType type) {
-		this.type = type;
-	}
-
-	@Override
-	public QuestType getType() {
-		return this.type;
+	public Objectives getObjectives() {
+		return objectives;
 	}
 }

@@ -7,14 +7,18 @@ import com.fullwall.Citizens.NPCTypes.Questers.Reward;
 
 public class PermissionReward implements Reward {
 	private final String reward;
+	private final boolean take;
 
-	public PermissionReward(String reward) {
+	public PermissionReward(String reward, boolean take) {
 		this.reward = reward;
+		this.take = take;
 	}
 
 	@Override
 	public void grant(Player player) {
-		Permission.givePermission(player, reward);
+		if (take)
+			Permission.givePermission(player, reward, true);
+		else
+			Permission.givePermission(player, reward, false);
 	}
-
 }

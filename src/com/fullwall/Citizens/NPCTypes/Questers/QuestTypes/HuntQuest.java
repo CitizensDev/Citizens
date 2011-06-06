@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class HuntQuest extends QuestProgress {
+public class HuntQuest extends QuestIncrementer {
 	public HuntQuest(HumanNPC npc, Player player, String questName) {
 		super(npc, player, questName);
 	}
@@ -20,13 +20,13 @@ public class HuntQuest extends QuestProgress {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
 			if (ev.getEntity() instanceof Monster
 					|| ev.getEntity() instanceof Creature) {
-				this.amountCompleted += 1;
+				this.getProgress().incrementCompleted(1);
 			}
 		}
 	}
 
 	@Override
 	public boolean isCompleted() {
-		return this.amountCompleted >= getObjectiveAmount();
+		return this.getProgress().getAmount() >= this.objective.getAmount();
 	}
 }

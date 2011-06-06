@@ -10,7 +10,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Listener;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
 	private final Citizens plugin;

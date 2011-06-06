@@ -10,6 +10,7 @@ import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
 import com.fullwall.Citizens.Properties.Properties.EvilProperties;
 import com.fullwall.Citizens.Properties.Properties.GuardProperties;
 import com.fullwall.Citizens.Properties.Properties.HealerProperties;
+import com.fullwall.Citizens.Properties.Properties.QuestProperties;
 import com.fullwall.Citizens.Properties.Properties.QuesterProperties;
 import com.fullwall.Citizens.Properties.Properties.TraderProperties;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
@@ -45,6 +46,7 @@ public class PropertyManager {
 		properties.put("wizard", new WizardProperties());
 		basicProperties = basic;
 		UtilityProperties.initialize();
+		QuestProperties.initialize();
 	}
 
 	public static BasicProperties getBasic() {
@@ -69,7 +71,7 @@ public class PropertyManager {
 		for (Saveable saveable : properties.values()) {
 			saveable.saveFiles();
 		}
-		// QuestProperties.save();
+		QuestProperties.save();
 	}
 
 	public static void remove(HumanNPC npc) {

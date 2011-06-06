@@ -3,12 +3,12 @@ package com.fullwall.Citizens.NPCTypes.Questers.QuestTypes;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
 
-public class DeliveryQuest extends QuestProgress {
+public class DeliveryQuest extends QuestIncrementer {
 	public DeliveryQuest(HumanNPC npc, Player player, String questName) {
 		super(npc, player, questName);
 	}
@@ -19,12 +19,12 @@ public class DeliveryQuest extends QuestProgress {
 			NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED
 					&& e.getTarget().getEntityId() == this.player.getEntityId()) {
-				if (((HumanNPC) e.getEntity()).getUID() == this.quester
-						.getUID()) {
+				if (((HumanNPC) e.getEntity()).getUID() == this.objective
+						.getDestinationNPCID()) {
 					Player player = (Player) e.getTarget();
-					if (player.getItemInHand().getType() == getObjectiveItem()
-							.getType()) {
-						this.lastItem = player.getItemInHand();
+					if (player.getItemInHand().getType() == this.objective
+							.getItem().getType()) {
+						this.getProgress().setLastItem(player.getItemInHand());
 					}
 				}
 			}
@@ -33,6 +33,7 @@ public class DeliveryQuest extends QuestProgress {
 
 	@Override
 	public boolean isCompleted() {
-		return this.lastItem.getAmount() >= getObjectiveItem().getAmount();
+		return this.getProgress().getAmount() >= this.objective.getItem()
+				.getAmount();
 	}
 }

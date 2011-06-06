@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
-import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class CollectQuest extends QuestProgress {
+public class CollectQuest extends QuestIncrementer {
 	public CollectQuest(HumanNPC npc, Player player, String questName) {
 		super(npc, player, questName);
 	}
@@ -16,15 +16,16 @@ public class CollectQuest extends QuestProgress {
 	public void updateProgress(Event event) {
 		if (event instanceof PlayerPickupItemEvent) {
 			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
-			if (ev.getItem().getItemStack().getType() == getObjectiveItem()
-					.getType()) {
-				this.amountCompleted += ev.getItem().getItemStack().getAmount();
+			if (ev.getItem().getItemStack().getType() == this.objective
+					.getItem().getType()) {
+				this.getProgress().incrementCompleted(
+						ev.getItem().getItemStack().getAmount());
 			}
 		}
 	}
 
 	@Override
 	public boolean isCompleted() {
-		return this.amountCompleted >= getObjectiveAmount();
+		return this.getProgress().getAmount() >= this.objective.getAmount();
 	}
 }

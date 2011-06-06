@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import com.fullwall.Citizens.NPCTypes.Questers.QuestProgress;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class BuildQuest extends QuestProgress {
+public class BuildQuest extends QuestIncrementer {
 	public BuildQuest(HumanNPC npc, Player player, String questName) {
 		super(npc, player, questName);
 	}
@@ -16,14 +16,15 @@ public class BuildQuest extends QuestProgress {
 	public void updateProgress(Event event) {
 		if (event instanceof BlockPlaceEvent) {
 			BlockPlaceEvent ev = (BlockPlaceEvent) event;
-			if (ev.getBlockPlaced().getType() == getObjectiveItem().getType()) {
-				amountCompleted += 1;
+			if (ev.getBlockPlaced().getType() == this.objective.getItem()
+					.getType()) {
+				this.getProgress().incrementCompleted(1);
 			}
 		}
 	}
 
 	@Override
 	public boolean isCompleted() {
-		return amountCompleted >= getObjectiveAmount();
+		return this.getProgress().getAmount() >= this.objective.getAmount();
 	}
 }

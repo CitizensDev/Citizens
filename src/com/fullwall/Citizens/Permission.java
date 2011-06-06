@@ -104,14 +104,17 @@ public class Permission {
 		}
 	}
 
-	public static void givePermission(Player player, String reward) {
+	public static void givePermission(Player player, String reward, boolean take) {
 		if (permissionsEnabled) {
 			User user = Permissions.Security.getUserObject(player.getWorld()
 					.getName(), player.getName());
 			if (user == null) {
 				return;
 			}
-			user.addPermission(reward);
+			if (take)
+				user.removePermission(reward);
+			else
+				user.addPermission(reward);
 		}
 	}
 }
