@@ -10,10 +10,10 @@ public class HelpUtils {
 	 * 
 	 * @param sender
 	 */
-	public static void sendHelp(CommandSender sender, int page) {
+	public static void sendHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:
-			header(sender, "Citizens", 1, 2);
+			header(sender, "General", 1, 2);
 			sender.sendMessage(ChatColor.GREEN + "  []"
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
@@ -30,7 +30,7 @@ public class HelpUtils {
 			footer(sender);
 			break;
 		case 2:
-			header(sender, "Citizens", 2, 2);
+			header(sender, "General", 2, 2);
 			formatCommand(sender, "quester", "help", "quester NPC help page");
 			formatCommand(sender, "trader", "help [page]",
 					"trader NPC help page");
@@ -52,7 +52,7 @@ public class HelpUtils {
 	public static void sendBasicHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:
-			header(sender, "Basic", 1, 2);
+			header(sender, "Basic NPC", 1, 2);
 			formatCommand(sender, "npc", "create [name]", "create an NPC");
 			formatCommand(sender, "npc", "set [text]", "set the text of an NPC");
 			formatCommand(sender, "npc", "add [text]", "add text to an NPC");
@@ -68,7 +68,7 @@ public class HelpUtils {
 			formatCommand(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
-			header(sender, "Basic", 2, 2);
+			header(sender, "Basic NPC", 2, 2);
 			formatCommand(sender, "npc", "tp",
 					"teleport to the location of an NPC");
 			formatCommand(sender, "npc", "copy",
@@ -180,8 +180,8 @@ public class HelpUtils {
 	 */
 	public static void sendBanditHelp(CommandSender sender) {
 		header(sender, "Bandit", 1, 1);
-		formatCommand(sender, "bandit", "steal [id]",
-				"specify which items a bandit can steal");
+		formatCommand(sender, "bandit", "stealable [add|remove] [id]",
+				"specify stealable items");
 		footer(sender);
 	}
 

@@ -290,41 +290,60 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if ((command.getName().equalsIgnoreCase("citizens") || command
-				.getName().equalsIgnoreCase("npc"))) {
-			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
+		} else if ((commandLabel.equalsIgnoreCase("citizens") || commandLabel
+				.equalsIgnoreCase("npc"))) {
+			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.canUse(player, npc, "basic")) {
-					HelpUtils.sendHelp(sender, 1);
+					int page = 0;
+					boolean canSend = false;
+					if (StringUtils.isNumber(args[1])) {
+						page = Integer.parseInt(args[1]);
+						canSend = true;
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "That is not a number.");
+					}
+					if (canSend) {
+						HelpUtils.sendHelpPage(sender, page);
+					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
+			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.canUse(player, npc, "basic")) {
-					int page = Integer.parseInt(args[1]);
-					HelpUtils.sendHelp(sender, page);
+					HelpUtils.sendHelpPage(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			}
 			return true;
 
-		} else if (command.getName().equalsIgnoreCase("basic")) {
+		} else if (commandLabel.equalsIgnoreCase("basic")) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.canUse(player, npc, "basic")) {
-					int page = Integer.parseInt(args[1]);
-					HelpUtils.sendBasicHelpPage(sender, page);
+					int page = 0;
+					boolean canSend = false;
+					if (StringUtils.isNumber(args[1])) {
+						page = Integer.parseInt(args[1]);
+						canSend = true;
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "That is not a number.");
+					}
+					if (canSend) {
+						HelpUtils.sendBasicHelpPage(sender, page);
+					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-				return true;
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.canUse(player, npc, "basic")) {
 					HelpUtils.sendBasicHelpPage(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
-				return true;
 			}
+			return true;
 
 		} else {
 			if (args.length >= 2 && args[0].equalsIgnoreCase("move")) {

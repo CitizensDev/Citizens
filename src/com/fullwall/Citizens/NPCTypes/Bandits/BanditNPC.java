@@ -44,6 +44,15 @@ public class BanditNPC implements Toggleable, Clickable {
 	}
 
 	/**
+	 * Remove an item ID from the list of items a bandit can steal
+	 * 
+	 * @param id
+	 */
+	public void removeStealable(Integer id) {
+		stealables.remove(id);
+	}
+
+	/**
 	 * Set the list of items that a bandit can steal
 	 * 
 	 * @param stealables

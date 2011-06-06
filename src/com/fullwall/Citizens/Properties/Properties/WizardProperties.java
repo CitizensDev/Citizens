@@ -59,7 +59,11 @@ public class WizardProperties extends Saveable {
 	}
 
 	private CreatureType getMob(int UID) {
-		return CreatureType.valueOf(mob.getString(UID));
+		if(CreatureType.fromName(mob.getString(UID)) != null) {
+			return CreatureType.fromName(mob.getString(UID));
+		}
+		System.out.println("[Citizens] Error.");
+		return CreatureType.CREEPER;
 	}
 
 	@Override
