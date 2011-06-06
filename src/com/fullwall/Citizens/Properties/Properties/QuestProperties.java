@@ -7,7 +7,7 @@ public class QuestProperties {
 	private static ConfigurationHandler quests;
 
 	public static void initialize() {
-		quests = new ConfigurationHandler("plugins/Citizens/economy.yml", false);
+		quests = new ConfigurationHandler("plugins/Citizens/quests.yml", false);
 		QuestFactory.instantiateQuests(quests);
 	}
 

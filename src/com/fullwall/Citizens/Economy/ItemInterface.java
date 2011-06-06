@@ -147,8 +147,7 @@ public class ItemInterface {
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
-				current = decreaseItemStack(player, i, currencyID, current,
-						count);
+				current = decreaseItemStack(player, currencyID, current, count);
 				if (current <= 0)
 					break;
 			}
@@ -178,8 +177,7 @@ public class ItemInterface {
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
-				current = decreaseItemStack(player, i, currencyID, current,
-						count);
+				current = decreaseItemStack(player, currencyID, current, count);
 				if (current <= 0)
 					break;
 			}
@@ -199,22 +197,17 @@ public class ItemInterface {
 	public static double pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
 		double current = payment.getPrice();
-		if (current <= 0) {
+		if (current <= 0)
 			return payment.getPrice();
-		}
 		int count = 0;
 		if (slot != -1) {
-			current = decreaseItemStack(player,
-					player.getInventory().getItem(slot), currencyID, current,
-					slot);
+			current = decreaseItemStack(player, currencyID, current, slot);
 		}
-		if (current <= 0) {
+		if (current <= 0)
 			return payment.getPrice();
-		}
-		for (ItemStack i : player.getInventory().getContents()) {
-			if (i != null) {
-				current = decreaseItemStack(player, i, currencyID, current,
-						count);
+		for (ItemStack item : player.getInventory().getContents()) {
+			if (item != null) {
+				current = decreaseItemStack(player, currencyID, current, count);
 				if (current <= 0)
 					break;
 			}
@@ -223,21 +216,22 @@ public class ItemInterface {
 		return payment.getPrice();
 	}
 
-	public static double decreaseItemStack(Player player, ItemStack i,
-			int currencyID, double current, int slot) {
-		if (i.getTypeId() == currencyID) {
-			int amount = i.getAmount();
+	public static double decreaseItemStack(Player player, int currencyID,
+			double current, int slot) {
+		ItemStack item = player.getInventory().getItem(slot);
+		if (item.getTypeId() == currencyID) {
+			int amount = item.getAmount();
 			int toChange = 0;
 			current -= amount;
 			if (current < 0) {
 				toChange -= current;
 			}
 			if (toChange == 0) {
-				i = null;
+				item = null;
 			} else {
-				i.setAmount(toChange);
+				item.setAmount(toChange);
 			}
-			player.getInventory().setItem(slot, i);
+			player.getInventory().setItem(slot, item);
 		}
 		return current;
 	}
@@ -258,8 +252,7 @@ public class ItemInterface {
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
-				current = decreaseItemStack(player, i, currencyID, current,
-						count);
+				current = decreaseItemStack(player, currencyID, current, count);
 				if (current <= 0)
 					break;
 			}
@@ -281,7 +274,7 @@ public class ItemInterface {
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
 		double percentage = ((double) maxDurability - item.getDurability())
-				/ (double) maxDurability;
+				/ maxDurability;
 		price = (1.0 - percentage)
 				* UtilityProperties.getPrice(Operation.getString(op, addendum));
 		if (price < 1.0) {

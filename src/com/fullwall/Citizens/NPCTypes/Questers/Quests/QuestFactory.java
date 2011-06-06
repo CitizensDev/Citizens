@@ -53,78 +53,85 @@ public class QuestFactory {
 	}
 
 	public static void instantiateQuests(ConfigurationHandler quests) {
-		for (String questName : quests.getKeys("")) {
+		for (String questName : quests.getKeys(null)) {
 			String path = questName + ".";
 			Quest quest = new Quest(questName);
 			String description = quests.getString(path + "texts.description");
 			String completion = quests.getString(path + "texts.completion");
 			quest.setDescription(description);
 			quest.setCompletedText(completion);
-			for (String reward : quests.getKeys(path + "rewards")) {
-				path += "rewards." + reward + ".";
-				String type = quests.getString(path + "type");
-				boolean take = quests.getBoolean(path + "take");
-				if (type.equals("item")) {
-					int id = quests.getInt(path + "id");
-					int amount = quests.getInt(path + "amount");
-					byte data = 0;
-					if (quests.pathExists(path + "data"))
-						data = (byte) quests.getInt(path + "data");
-					ItemStack stack = new ItemStack(id, amount);
-					stack.setData(new MaterialData(id, data));
-					quest.addReward(new ItemReward(stack, take));
-				} else if (type.equals("money")) {
-					double amount = quests.getDouble(path + "amount");
-					quest.addReward(new EconpluginReward(amount, take));
-				} else if (type.equals("health")) {
-					int amount = quests.getInt(path + "amount");
-					quest.addReward(new HealthReward(amount, take));
-				} else if (type.equals("permission")) {
-					String permission = quests.getString(path + "permission");
-					quest.addReward(new PermissionReward(permission, take));
-				} else if (type.equals("quest")) {
-					String questToGive = quests.getString(path + "quest");
-					quest.addReward(new QuestReward(questToGive));
+			if (quests.pathExists(path + "rewards")) {
+				for (String reward : quests.getKeys(path + "rewards")) {
+					path += "rewards." + reward + ".";
+					String type = quests.getString(path + "type");
+					boolean take = quests.getBoolean(path + "take");
+					if (type.equals("item")) {
+						int id = quests.getInt(path + "id");
+						int amount = quests.getInt(path + "amount");
+						byte data = 0;
+						if (quests.pathExists(path + "data"))
+							data = (byte) quests.getInt(path + "data");
+						ItemStack stack = new ItemStack(id, amount);
+						stack.setData(new MaterialData(id, data));
+						quest.addReward(new ItemReward(stack, take));
+					} else if (type.equals("money")) {
+						double amount = quests.getDouble(path + "amount");
+						quest.addReward(new EconpluginReward(amount, take));
+					} else if (type.equals("health")) {
+						int amount = quests.getInt(path + "amount");
+						quest.addReward(new HealthReward(amount, take));
+					} else if (type.equals("permission")) {
+						String permission = quests.getString(path
+								+ "permission");
+						quest.addReward(new PermissionReward(permission, take));
+					} else if (type.equals("quest")) {
+						String questToGive = quests.getString(path + "quest");
+						quest.addReward(new QuestReward(questToGive));
+					}
 				}
 			}
 			path = questName + ".objectives";
 			Objectives objectives = new Objectives();
-			for (@SuppressWarnings("unused")
-			String objective : quests.getKeys(path)) {
-				QuestType type = QuestType.getType(quests.getString(
-						path + ".type").toUpperCase());
-				Objective obj = new Objective(type);
-				if (quests.pathExists(path + ".amount"))
-					obj.setAmount(quests.getInt(path + ".amount"));
-				if (quests.pathExists(path + ".npcdestination"))
-					obj.setDestination(quests.getInt(path + ".npcdestination"));
-				if (quests.pathExists(path + ".item")) {
-					int id = quests.getInt(path + ".item.id");
-					int amount = quests.getInt(path + ".item.amount");
-					byte data = 0;
-					if (quests.pathExists(path + ".item.data"))
-						data = (byte) quests.getInt(path + ".item.data");
-					ItemStack stack = new ItemStack(id, amount);
-					stack.setData(new MaterialData(id, data));
-					obj.setItem(stack);
+			if (quests.pathExists(path)) {
+				for (@SuppressWarnings("unused")
+				String objective : quests.getKeys(path)) {
+					QuestType type = QuestType.getType(quests.getString(
+							path + ".type").toUpperCase());
+					Objective obj = new Objective(type);
+					if (quests.pathExists(path + ".amount"))
+						obj.setAmount(quests.getInt(path + ".amount"));
+					if (quests.pathExists(path + ".npcdestination"))
+						obj.setDestination(quests.getInt(path
+								+ ".npcdestination"));
+					if (quests.pathExists(path + ".item")) {
+						int id = quests.getInt(path + ".item.id");
+						int amount = quests.getInt(path + ".item.amount");
+						byte data = 0;
+						if (quests.pathExists(path + ".item.data"))
+							data = (byte) quests.getInt(path + ".item.data");
+						ItemStack stack = new ItemStack(id, amount);
+						stack.setData(new MaterialData(id, data));
+						obj.setItem(stack);
+					}
+					if (quests.pathExists(path + ".location")) {
+						String world = quests.getString(path
+								+ ".location.world");
+						double x = quests.getDouble(path + ".location.x");
+						double y = quests.getDouble(path + ".location.y");
+						double z = quests.getDouble(path + ".location.z");
+						float yaw = (float) quests.getDouble(path
+								+ ".location.yaw");
+						float pitch = (float) quests.getDouble(path
+								+ ".location.pitch");
+						Location loc = new Location(Bukkit.getServer()
+								.getWorld(world), x, y, z, yaw, pitch);
+						obj.setLocation(loc);
+					}
+					if (quests.pathExists(path + ".message")) {
+						obj.setMessage(quests.getString(path + ".message"));
+					}
+					objectives.add(obj);
 				}
-				if (quests.pathExists(path + ".location")) {
-					String world = quests.getString(path + ".location.world");
-					double x = quests.getDouble(path + ".location.x");
-					double y = quests.getDouble(path + ".location.y");
-					double z = quests.getDouble(path + ".location.z");
-					float yaw = (float) quests
-							.getDouble(path + ".location.yaw");
-					float pitch = (float) quests.getDouble(path
-							+ ".location.pitch");
-					Location loc = new Location(Bukkit.getServer().getWorld(
-							world), x, y, z, yaw, pitch);
-					obj.setLocation(loc);
-				}
-				if (quests.pathExists(path + ".message")) {
-					obj.setMessage(quests.getString(path + ".message"));
-				}
-				objectives.add(obj);
 			}
 		}
 	}
