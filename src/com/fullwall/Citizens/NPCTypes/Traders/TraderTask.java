@@ -6,6 +6,7 @@ import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.InventoryPlayer;
 import net.minecraft.server.Packet103SetSlot;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.Economy.ServerEconomyInterface;
@@ -28,7 +28,6 @@ public class TraderTask implements Runnable {
 	private int taskID;
 	private int previousTraderClickSlot = -1;
 	private int previousPlayerClickSlot = -1;
-	private final Citizens plugin;
 	private final PlayerInventory previousTraderInv;
 	private final PlayerInventory previousPlayerInv;
 	private final Mode mode;
@@ -43,11 +42,10 @@ public class TraderTask implements Runnable {
 	 * @param plugin
 	 * @param mode
 	 */
-	public TraderTask(HumanNPC npc, Player player, Citizens plugin, Mode mode) {
+	public TraderTask(HumanNPC npc, Player player, Mode mode) {
 		this.npc = npc;
 		this.player = (CraftPlayer) player;
 		this.mcPlayer = this.player.getHandle();
-		this.plugin = plugin;
 		// Create the inventory objects
 		this.previousTraderInv = new CraftInventoryPlayer(new InventoryPlayer(
 				null));
@@ -66,11 +64,7 @@ public class TraderTask implements Runnable {
 		if (stop) {
 			return;
 		}
-		if (npc == null
-				|| player == null
-				|| checkContainer(player.getHandle())
-				|| checkContainer(npc.getHandle())
-				|| player.getHandle().activeContainer != npc.getHandle().activeContainer
+		if (npc == null || player == null || checkContainer(player.getHandle())
 				|| !player.isOnline()) {
 			kill();
 			return;
@@ -316,7 +310,7 @@ public class TraderTask implements Runnable {
 		if (index != -1) {
 			TraderManager.tasks.remove(TraderManager.tasks.indexOf(taskID));
 		}
-		plugin.getServer().getScheduler().cancelTask(taskID);
+		Bukkit.getServer().getScheduler().cancelTask(taskID);
 	}
 
 	private void sendJoinMessage() {

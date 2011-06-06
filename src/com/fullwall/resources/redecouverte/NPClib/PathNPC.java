@@ -16,6 +16,7 @@ import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 
 import com.fullwall.Citizens.Constants;
+import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
@@ -202,12 +203,8 @@ public class PathNPC extends EntityPlayer {
 		reset();
 	}
 
-	public void swingArm() {
-		this.animations.swingArm();
-	}
-
 	private void attackEntity(EntityLiving entity) {
-		this.swingArm();
+		this.performAction(Action.SWING_ARM);
 		int damage = this.inventory.a(entity);
 		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
 		e.damage(damage);
@@ -330,5 +327,9 @@ public class PathNPC extends EntityPlayer {
 
 	public void cancelTarget() {
 		resetTarget();
+	}
+
+	public void performAction(Action action) {
+		this.animations.performAction(action);
 	}
 }

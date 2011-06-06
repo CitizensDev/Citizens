@@ -62,8 +62,9 @@ public class BasicProperties extends Saveable {
 			return null;
 		} else {
 			Location loc = new Location(Bukkit.getServer().getWorld(values[0]),
-					NPCManager.get(UID).getX(), NPCManager.get(UID).getY(),
-					NPCManager.get(UID).getZ(), Float.parseFloat(values[4]),
+					NPCManager.get(UID).getLocation().getX(), NPCManager
+							.get(UID).getLocation().getY(), NPCManager.get(UID)
+							.getLocation().getZ(), Float.parseFloat(values[4]),
 					Float.parseFloat(values[5]));
 			return loc;
 		}

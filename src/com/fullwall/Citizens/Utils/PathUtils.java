@@ -47,15 +47,15 @@ public class PathUtils {
 	}
 
 	public static boolean pathFinished(HumanNPC npc) {
-		return npc.pathFinished();
+		return npc.getHandle().pathFinished();
 	}
 
 	public static void cancelPath(HumanNPC npc) {
-		npc.cancelPath();
+		npc.getHandle().cancelPath();
 	}
 
 	public static void cancelTarget(HumanNPC npc) {
-		npc.cancelTarget();
+		npc.getHandle().cancelTarget();
 	}
 
 	public static void setAttackTimes(HumanNPC npc, int times) {

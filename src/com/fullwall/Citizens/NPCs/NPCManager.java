@@ -179,7 +179,7 @@ public class NPCManager {
 		if (zDiff < 0.0) {
 			yaw = yaw + (Math.abs(180 - yaw) * 2);
 		}
-		npc.moveTo(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
+		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
 				(float) pitch);
 	}
 

@@ -113,7 +113,7 @@ public class GuardTask implements Runnable {
 								p.getLocation(), 25)) {
 							npc.target(p, false, -1, 2, 25);
 						} else {
-							npc.moveTo(p.getLocation());
+							npc.teleport(p.getLocation());
 						}
 					} else {
 						if (NPCManager.get(npc.getUID()) != null) {

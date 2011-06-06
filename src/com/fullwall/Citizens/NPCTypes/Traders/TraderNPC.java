@@ -211,7 +211,7 @@ public class TraderNPC implements Toggleable, Clickable {
 					return;
 				}
 			}
-			TraderTask task = new TraderTask(npc, player, Citizens.plugin, mode);
+			TraderTask task = new TraderTask(npc, player, mode);
 			int id = Bukkit.getServer().getScheduler()
 					.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 0);
 			TraderManager.tasks.add(id);

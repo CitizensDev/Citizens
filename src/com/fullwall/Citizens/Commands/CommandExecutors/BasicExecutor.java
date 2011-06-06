@@ -464,7 +464,7 @@ public class BasicExecutor implements CommandExecutor {
 		player.sendMessage(StringUtils.wrap(name)
 				+ " is enroute to your location!");
 		npc.getNPCData().setLocation(loc);
-		npc.moveTo(player.getLocation());
+		npc.teleport(player.getLocation());
 	}
 
 	/**
@@ -476,7 +476,7 @@ public class BasicExecutor implements CommandExecutor {
 	private void copy(int UID, String name, Player p) {
 		int newUID = NPCManager.register(name, p.getLocation(), p.getName());
 		HumanNPC newNPC = NPCManager.get(newUID);
-		newNPC.moveTo(p.getLocation());
+		newNPC.teleport(p.getLocation());
 
 		newNPC.getNPCData().setLocation(p.getLocation());
 		PropertyManager.copy(UID, newUID);

@@ -16,10 +16,11 @@ import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
+import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
 
 public class HumanNPC extends NPC {
 
-	private CraftNPC mcEntity;
+	private final CraftNPC mcEntity;
 
 	private double balance;
 	private boolean isTrader = false;
@@ -31,14 +32,14 @@ public class HumanNPC extends NPC {
 	private boolean isGuard = false;
 	private boolean isEvil = false;
 
-	private TraderNPC traderNPC = new TraderNPC(this);
-	private HealerNPC healerNPC = new HealerNPC(this);
-	private WizardNPC wizardNPC = new WizardNPC(this);
-	private BlacksmithNPC blacksmithNPC = new BlacksmithNPC(this);
-	private QuesterNPC questerNPC = new QuesterNPC(this);
-	private BanditNPC banditNPC = new BanditNPC(this);
-	private GuardNPC guardNPC = new GuardNPC(this);
-	private EvilNPC evilNPC = new EvilNPC(this);
+	private final TraderNPC traderNPC = new TraderNPC(this);
+	private final HealerNPC healerNPC = new HealerNPC(this);
+	private final WizardNPC wizardNPC = new WizardNPC(this);
+	private final BlacksmithNPC blacksmithNPC = new BlacksmithNPC(this);
+	private final QuesterNPC questerNPC = new QuesterNPC(this);
+	private final BanditNPC banditNPC = new BanditNPC(this);
+	private final GuardNPC guardNPC = new GuardNPC(this);
+	private final EvilNPC evilNPC = new EvilNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -158,60 +159,22 @@ public class HumanNPC extends NPC {
 		return this.isEvil;
 	}
 
-	// For Teleportation
-	public void moveTo(double x, double y, double z, float yaw, float pitch) {
+	public void teleport(double x, double y, double z, float yaw, float pitch) {
 		this.mcEntity.setLocation(x, y, z, yaw, pitch);
 	}
 
-	public void moveTo(Location loc) {
+	public void teleport(Location loc) {
 		this.mcEntity.setLocation(loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), loc.getPitch());
 	}
 
-	// For NPC movement
-	public void moveNPC(double x, double y, double z) {
-		this.mcEntity.setPosition(x, y, z);
-	}
-
-	public double getX() {
-		return this.mcEntity.locX;
-	}
-
-	public double getY() {
-		return this.mcEntity.locY;
-	}
-
-	public double getZ() {
-		return this.mcEntity.locZ;
-	}
-
 	public void updateMovement() {
-		this.moveNPCTowardsTarget();
-		this.applyGravity();
-	}
-
-	private void applyGravity() {
+		this.mcEntity.updateMove();
 		this.mcEntity.applyGravity();
 	}
 
-	private void moveNPCTowardsTarget() {
-		this.mcEntity.updateMove();
-	}
-
-	public void animateArmSwing() {
-		this.mcEntity.swingArm();
-	}
-
-	public void actHurt() {
-		this.mcEntity.actHurt();
-	}
-
-	public void crouch() {
-		this.mcEntity.crouch();
-	}
-
-	public void uncrouch() {
-		this.mcEntity.uncrouch();
+	public void performAction(Action action) {
+		this.mcEntity.performAction(action);
 	}
 
 	public String getOwner() {
@@ -245,18 +208,6 @@ public class HumanNPC extends NPC {
 	public boolean createPath(Location loc, int pathTicks, int stationaryTicks,
 			float range) {
 		return this.mcEntity.startPath(loc, pathTicks, stationaryTicks, range);
-	}
-
-	public boolean pathFinished() {
-		return mcEntity.pathFinished();
-	}
-
-	public void cancelPath() {
-		mcEntity.cancelPath();
-	}
-
-	public void cancelTarget() {
-		mcEntity.cancelTarget();
 	}
 
 	public void target(LivingEntity entity, boolean aggro, int pathTicks,

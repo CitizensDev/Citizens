@@ -56,8 +56,8 @@ public class MessageUtils {
 		ArrayDeque<String> array = NPCManager.getText(npc.getUID());
 		String text = "";
 		if (array != null && array.size() > 0) {
-			text = array.getLast();
-			array.push(array.pop());
+			text = array.pop();
+			array.addLast(text);
 			NPCManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {

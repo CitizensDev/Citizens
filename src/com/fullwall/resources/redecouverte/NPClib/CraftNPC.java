@@ -38,7 +38,6 @@ public class CraftNPC extends PathNPC {
 				});
 		this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
 		// netMgr.a(this.netServerHandler);
-
 		this.lastTargetId = -1;
 		this.lastBounceId = -1;
 		this.lastBounceTick = 0;
@@ -78,10 +77,8 @@ public class CraftNPC extends PathNPC {
 					NPCEntityTargetEvent.NpcTargetReason.NPC_BOUNCED);
 			CraftServer server = ((WorldServer) this.world).getServer();
 			server.getPluginManager().callEvent(event);
-
 			lastBounceTick = System.currentTimeMillis();
 		}
-
 		lastBounceId = entity.id;
 
 		super.c(entity);
@@ -99,20 +96,7 @@ public class CraftNPC extends PathNPC {
 		super.a(entityliving);
 	}
 
-	public void actHurt() {
-		this.animations.actHurt();
-	}
-
-	public void crouch() {
-		this.animations.crouch();
-	}
-
-	public void uncrouch() {
-		this.animations.uncrouch();
-	}
-
 	public void applyGravity() {
-		if (this.motY > 0)
-			this.motY -= Constants.GRAVITY;
+		this.motY -= Constants.GRAVITY;
 	}
 }
