@@ -93,12 +93,12 @@ public class ConfigurationHandler implements Storage {
 	}
 
 	@Override
-	public void load() {
+	public synchronized void load() {
 		config.load();
 	}
 
 	@Override
-	public void save() {
+	public synchronized void save() {
 		this.config.save();
 	}
 

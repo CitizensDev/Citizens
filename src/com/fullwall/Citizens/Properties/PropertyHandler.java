@@ -89,7 +89,7 @@ public final class PropertyHandler implements Storage {
 	}
 
 	@Override
-	public void load() {
+	public synchronized void load() {
 		try {
 			this.properties.load(new FileInputStream(this.fileName));
 		} catch (Exception ex) {
@@ -98,7 +98,7 @@ public final class PropertyHandler implements Storage {
 	}
 
 	@Override
-	public void save() {
+	public synchronized void save() {
 		try {
 			this.properties.store(new FileOutputStream(this.fileName),
 					"Citizens File");
