@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -321,5 +322,9 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setBoolean(int path, boolean value) {
 		setBoolean("" + path, value);
+	}
+
+	public List<String> getKeys(String path) {
+		return this.config.getKeys(path);
 	}
 }

@@ -2,13 +2,12 @@ package com.fullwall.Citizens.NPCTypes.Questers.Rewards;
 
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.Reward;
 
 public class QuestReward implements Reward {
-	private final Quest reward;
+	private final String reward;
 
-	public QuestReward(Quest quest) {
+	public QuestReward(String quest) {
 		this.reward = quest;
 	}
 

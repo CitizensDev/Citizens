@@ -1,9 +1,12 @@
-package com.fullwall.Citizens.NPCTypes.Questers;
+package com.fullwall.Citizens.NPCTypes.Questers.Quests;
 
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+
+import com.fullwall.Citizens.NPCTypes.Questers.PlayerProfile;
+import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 
 public class QuestManager {
 	public enum QuestType {

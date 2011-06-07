@@ -54,6 +54,7 @@ public class ItemPrice {
 		return item.getData() == null ? 0 : item.getData().getData();
 	}
 
+	@Override
 	public String toString() {
 		String ret = "";
 		if (iConomy) {

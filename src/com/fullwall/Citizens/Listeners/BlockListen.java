@@ -8,7 +8,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Listener;
-import com.fullwall.Citizens.NPCTypes.Questers.QuestManager;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class BlockListen extends BlockListener implements Listener {
 	private Citizens plugin;
