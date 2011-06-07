@@ -51,10 +51,8 @@ public class Permission {
 
 	public static boolean canModify(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
-			if (isAdmin(player)) {
-				return true;
-			}
-			if (NPCManager.validateOwnership(player, npc.getUID())) {
+			if (isAdmin(player)
+					|| NPCManager.validateOwnership(player, npc.getUID())) {
 				return true;
 			}
 			return permission(player, "citizens.modify." + type);
@@ -64,10 +62,8 @@ public class Permission {
 
 	public static boolean canUse(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
-			if (isAdmin(player)) {
-				return true;
-			}
-			if (NPCManager.validateOwnership(player, npc.getUID())) {
+			if (isAdmin(player)
+					|| NPCManager.validateOwnership(player, npc.getUID())) {
 				return true;
 			}
 			return permission(player, "citizens.use." + type);

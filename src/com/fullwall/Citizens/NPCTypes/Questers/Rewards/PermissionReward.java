@@ -16,5 +16,4 @@ public class PermissionReward implements Reward {
 	public void grant(Player player) {
 		Permission.givePermission(player, reward);
 	}
-
 }

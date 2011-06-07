@@ -104,43 +104,37 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	}
 
 	/**
-	 * Purchase a item repair
+	 * Purchase an item repair
 	 * 
 	 * @param player
 	 * @param npc
 	 * @param op
 	 */
-	public void buyItemRepair(Player player, HumanNPC npc, ItemStack item,
+	private void buyItemRepair(Player player, HumanNPC npc, ItemStack item,
 			Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
-			if (EconomyHandler.useEconomy()) {
-				if (item.getDurability() > 0) {
-					double paid = EconomyHandler.payBlacksmith(op, player);
-					if (paid > 0) {
-						item.setDurability((short) 0);
-						player.setItemInHand(item);
-						String msg = StringUtils.wrap(npc.getStrippedName())
-								+ " has repaired your item for ";
-						if (EconomyHandler.useIconomy()) {
-							msg += StringUtils.wrap(EconomyHandler
-									.getPaymentType(op, "" + paid,
-											ChatColor.YELLOW));
-						} else {
-							msg += StringUtils.wrap(ItemInterface
-									.getBlacksmithPrice(player, item, op)
-									+ " "
-									+ ItemInterface.getCurrencyName(op));
-						}
-						msg += ChatColor.GREEN + ".";
-						player.sendMessage(msg);
+			if (item.getDurability() > 0) {
+				double paid = EconomyHandler.payBlacksmith(op, player);
+				if (paid > 0) {
+					item.setDurability((short) 0);
+					player.setItemInHand(item);
+					String msg = StringUtils.wrap(npc.getStrippedName())
+							+ " has repaired your item for ";
+					if (EconomyHandler.useIconomy()) {
+						msg += StringUtils.wrap(EconomyHandler.getPaymentType(
+								op, "" + paid, ChatColor.YELLOW));
+					} else {
+						msg += StringUtils.wrap(ItemInterface
+								.getBlacksmithPrice(player, item, op)
+								+ " "
+								+ ItemInterface.getCurrencyName(op));
 					}
-				} else {
-					player.sendMessage(ChatColor.RED
-							+ "Your item is already fully repaired.");
+					msg += ChatColor.GREEN + ".";
+					player.sendMessage(msg);
 				}
 			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "Your server has not turned economy on for Citizens.");
+				player.sendMessage(ChatColor.RED
+						+ "Your item is already fully repaired.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));

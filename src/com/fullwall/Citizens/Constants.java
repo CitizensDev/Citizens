@@ -43,6 +43,7 @@ public class Constants {
 	public static boolean useItemList = true;
 	public static boolean useNPCColours = true;
 	public static boolean useSaveTask = true;
+	public static boolean payForHealerHeal = true;
 	public static boolean regenHealerHealth = true;
 	public static boolean regenWizardMana = true;
 
@@ -62,6 +63,7 @@ public class Constants {
 		useItemList = settings.getBoolean("items.item-list-on");
 		saveOften = settings.getBoolean("ticks.saving.save-often");
 		useSaveTask = settings.getBoolean("ticks.saving.use-task");
+		payForHealerHeal = settings.getBoolean("general.healers.pay-for-heal");
 		regenHealerHealth = settings.getBoolean("general.healers.regen-health");
 		regenWizardMana = settings.getBoolean("general.wizards.regen-mana");
 

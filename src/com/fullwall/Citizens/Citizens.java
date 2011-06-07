@@ -92,18 +92,17 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		// Save the local copy of our files to disk.
 		PropertyManager.stateSave();
 
 		basicNPCHandler.despawnAll();
 
-		// Save the local copy of our files to disk.
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") disabled");
 	}
 
 	@Override
 	public void onEnable() {
-
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();
@@ -117,6 +116,7 @@ public class Citizens extends JavaPlugin {
 		// Register files.
 		PropertyManager.registerProperties();
 
+		// set up settings and economy file variables
 		Constants.setupVariables();
 
 		plugin = this;
@@ -180,9 +180,10 @@ public class Citizens extends JavaPlugin {
 									Integer.valueOf(name.split("_")[0])));
 					ArrayDeque<String> text = PropertyManager.getBasic()
 							.getText(Integer.valueOf(name.split("_")[0]));
-					if (text != null)
+					if (text != null) {
 						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
 								text);
+					}
 				} else {
 					PropertyManager.getBasic().deleteNameFromList(name);
 				}
@@ -222,9 +223,8 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
@@ -237,8 +237,7 @@ public class Citizens extends JavaPlugin {
 	public boolean validateUID(int UID) {
 		if (NPCManager.GlobalUIDs.containsKey(UID)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }
