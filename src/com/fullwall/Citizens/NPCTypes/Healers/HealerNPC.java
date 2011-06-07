@@ -7,9 +7,12 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Economy.EconomyHandler;
+import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -92,6 +95,46 @@ public class HealerNPC implements Toggleable, Clickable {
 		PropertyManager.get(getType()).register(npc);
 	}
 
+	/**
+	 * Purchase a heal from a healer
+	 * 
+	 * @param player
+	 * @param npc
+	 * @param op
+	 */
+	private void buyHeal(Player player, HumanNPC npc, Operation op,
+			boolean healPlayer) {
+		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+			double paid = EconomyHandler.pay(op, player);
+			if (paid > 0) {
+				int playerHealth = 0;
+				int healerHealth = 0;
+				String msg = StringUtils.wrap(npc.getStrippedName());
+				if (healPlayer) {
+					playerHealth = player.getHealth() + 1;
+					healerHealth = npc.getHealer().getHealth() - 1;
+					msg += " healed you for "
+							+ StringUtils.wrap(EconomyHandler.getPaymentType(
+									op, "" + paid, ChatColor.YELLOW)) + ".";
+				} else {
+					playerHealth = player.getHealth();
+					healerHealth = npc.getHealer().getHealth() + 1;
+					msg += " has been healed for "
+							+ StringUtils.wrap(EconomyHandler.getPaymentType(
+									op, "" + paid, ChatColor.YELLOW)) + ".";
+				}
+				player.setHealth(playerHealth);
+				npc.getHealer().setHealth(healerHealth);
+				player.sendMessage(msg);
+			}
+		} else if (EconomyHandler.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(
+					Operation.HEALER_HEAL, player));
+			return;
+		}
+	}
+
+	// TODO Make this less ugly to look at
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		int playerHealth = player.getHealth();
@@ -100,11 +143,16 @@ public class HealerNPC implements Toggleable, Clickable {
 			if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
-						player.setHealth(playerHealth + 1);
-						npc.getHealer().setHealth(healerHealth - 1);
-						player.sendMessage(ChatColor.GREEN
-								+ "You drained health from the healer "
-								+ StringUtils.wrap(npc.getStrippedName()) + ".");
+						if (Constants.payForHealerHeal) {
+							buyHeal(player, npc, Operation.HEALER_HEAL, true);
+						} else {
+							player.setHealth(playerHealth + 1);
+							npc.getHealer().setHealth(healerHealth - 1);
+							player.sendMessage(ChatColor.GREEN
+									+ "You drained health from the healer "
+									+ StringUtils.wrap(npc.getStrippedName())
+									+ ".");
+						}
 					} else {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName())
@@ -117,11 +165,16 @@ public class HealerNPC implements Toggleable, Clickable {
 			} else if (player.getItemInHand().getTypeId() == Constants.healerGiveHealthItem) {
 				if (playerHealth >= 1) {
 					if (healerHealth < npc.getHealer().getMaxHealth()) {
-						player.setHealth(playerHealth - 1);
-						npc.getHealer().setHealth(healerHealth + 1);
-						player.sendMessage(ChatColor.GREEN
-								+ "You donated some health to the healer "
-								+ StringUtils.wrap(npc.getStrippedName()) + ".");
+						if (Constants.payForHealerHeal) {
+							buyHeal(player, npc, Operation.HEALER_HEAL, false);
+						} else {
+							player.setHealth(playerHealth - 1);
+							npc.getHealer().setHealth(healerHealth + 1);
+							player.sendMessage(ChatColor.GREEN
+									+ "You donated some health to the healer "
+									+ StringUtils.wrap(npc.getStrippedName())
+									+ ".");
+						}
 					} else {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName()) + " is fully healed.");

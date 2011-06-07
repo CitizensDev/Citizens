@@ -111,10 +111,11 @@ public class Permission {
 			if (user == null) {
 				return;
 			}
-			if (take)
+			if (take) {
 				user.removePermission(reward);
-			else
+			} else {
 				user.addPermission(reward);
+			}
 		}
 	}
 }

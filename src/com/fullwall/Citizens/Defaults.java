@@ -26,6 +26,7 @@ public class Defaults {
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");
 		nodes.put("general.wizards.wizard-max-locations", "10");
+		nodes.put("general.healers.pay-for-heal", "true");
 		nodes.put("general.healers.regen-health", "true");
 		nodes.put("general.wizards.regen-mana", "true");
 		nodes.put("general.wizards.max-mana", "100");
@@ -89,6 +90,10 @@ public class Defaults {
 		nodes.put("prices.healer.levelup.item", "10");
 		nodes.put("prices.healer.levelup.item-currency-id", "37");
 		nodes.put("prices.healer.levelup.econplugin", "100");
+
+		nodes.put("prices.healer.heal.item", "10");
+		nodes.put("prices.healer.heal.item-currency-id", "37");
+		nodes.put("prices.healer.heal.econplugin", "100");
 
 		nodes.put("prices.quester.creation.item", "10");
 		nodes.put("prices.quester.creation.item-currency-id", "37");

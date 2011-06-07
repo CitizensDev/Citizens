@@ -31,6 +31,10 @@ public class EconomyHandler {
 		 */
 		HEALER_LEVELUP,
 		/**
+		 * Heal a player using a healer-NPC
+		 */
+		HEALER_HEAL,
+		/**
 		 * Create a wizard NPC
 		 */
 		WIZARD_CREATION,
