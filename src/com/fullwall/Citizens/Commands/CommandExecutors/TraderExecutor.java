@@ -228,7 +228,6 @@ public class TraderExecutor implements CommandExecutor {
 	 */
 	private void changeTraderStock(Player player, HumanNPC npc, String item,
 			String price, boolean selling) {
-		selling = !selling;
 		if (item.contains("rem")) {
 			ItemStack stack = parseItemStack(price.split(":"));
 			if (stack == null) {
@@ -255,6 +254,7 @@ public class TraderExecutor implements CommandExecutor {
 			}
 			return;
 		}
+		selling = !selling;
 		String[] split = item.split(":");
 		ItemStack stack = parseItemStack(split);
 		if (stack == null) {

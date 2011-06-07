@@ -268,6 +268,7 @@ public class TraderTask implements Runnable {
 	}
 
 	private void sendNoMoneyMessage(ItemStack stocking, boolean selling) {
+		selling = !selling;
 		String start = "The trader doesn't";
 		if (selling) {
 			start = "You don't";

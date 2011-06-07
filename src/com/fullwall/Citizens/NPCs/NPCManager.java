@@ -65,8 +65,8 @@ public class NPCManager {
 		}
 		HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(UID, npcName,
 				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
-				loc.getYaw(), 0.0F);
-
+				loc.getYaw(), 0F);
+		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, NPCTexts
@@ -181,6 +181,8 @@ public class NPCManager {
 		}
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
 				(float) pitch);
+		if (player.getName().equals(npc.getOwner()))
+			npc.getNPCData().setLocation(npc.getLocation());
 	}
 
 	/**
