@@ -163,7 +163,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void move() {
-		this.a(this.az / 2, this.aA / 2);
+		this.a(this.az, this.aA);
 	}
 
 	private void jump() {

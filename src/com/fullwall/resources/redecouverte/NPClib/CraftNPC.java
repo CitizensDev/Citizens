@@ -15,8 +15,6 @@ import net.minecraft.server.WorldServer;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import com.fullwall.Citizens.Constants;
-
 public class CraftNPC extends PathNPC {
 
 	@SuppressWarnings("unused")
@@ -97,6 +95,9 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		this.motY -= Constants.GRAVITY;
+		double last = this.lastY;
+		this.move(0, -0.1, 0);
+		if (Math.floor(last) != Math.floor(this.y))
+			this.npc.getNPCData().setLocation(this.npc.getLocation());
 	}
 }
