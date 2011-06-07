@@ -181,7 +181,7 @@ public class NPCManager {
 		}
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
 				(float) pitch);
-		if (player.getName().equals(npc.getOwner()))
+		if (npc.getOwner().equals(player.getName()))
 			npc.getNPCData().setLocation(npc.getLocation());
 	}
 

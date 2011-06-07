@@ -236,7 +236,7 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 			String keyword = "buying";
-			if (selling) {
+			if (!selling) {
 				keyword = "selling";
 			}
 			if (npc.getTrader().getStockable(stack.getTypeId(), selling,
