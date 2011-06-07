@@ -28,6 +28,8 @@ public class MessageUtils {
 			+ "You are not the owner of this NPC.";
 	public static String invalidItemIDMessage = ChatColor.RED
 			+ "That is not a valid item ID.";
+	public static String noEconomyMessage = ChatColor.GRAY
+			+ "This server is not using an economy plugin.";
 
 	/**
 	 * Parses a basic npc's text for sending.

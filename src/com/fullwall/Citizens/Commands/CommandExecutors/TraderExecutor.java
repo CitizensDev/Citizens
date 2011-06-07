@@ -72,7 +72,10 @@ public class TraderExecutor implements CommandExecutor {
 			returnval = true;
 		} else if (args.length == 1 && args[0].contains("money")) {
 			if (Permission.canUse(player, npc, "trader")) {
-				displayMoney(player, npc);
+				if (!EconomyHandler.useIconomy())
+					player.sendMessage(MessageUtils.noEconomyMessage);
+				else
+					displayMoney(player, npc);
 			} else
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			returnval = true;
@@ -85,12 +88,10 @@ public class TraderExecutor implements CommandExecutor {
 		} else {
 			if (args.length == 3 && args[0].equalsIgnoreCase("balance")) {
 				if (Permission.canModify(player, npc, "trader")) {
-					if (!EconomyHandler.useIconomy()) {
-						player.sendMessage(ChatColor.GRAY
-								+ "This server is not using iConomy.");
-					} else {
+					if (!EconomyHandler.useIconomy())
+						player.sendMessage(MessageUtils.noEconomyMessage);
+					else
 						changeBalance(player, npc, args);
-					}
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -273,8 +274,8 @@ public class TraderExecutor implements CommandExecutor {
 		}
 		if (cost == null && !EconomyHandler.useIconomy()) {
 			player.sendMessage(ChatColor.GRAY
-					+ "This server is not using iConomy, so the price cannot be an iConomy value. "
-					+ "If you meant to use an item as currency, "
+					+ "This server is not using an economy plugin, so the price cannot be "
+					+ "that kind of value. If you meant to use an item as currency, "
 					+ "please format it in this format: item ID:amount(:data).");
 			return;
 		}
@@ -374,7 +375,6 @@ public class TraderExecutor implements CommandExecutor {
 			} else {
 				player.sendMessage(ChatColor.RED
 						+ "You don't have enough money for that! Need "
-						+ " "
 						+ StringUtils.wrap(
 								ServerEconomyInterface.format(amount
 										- ServerEconomyInterface

@@ -48,7 +48,7 @@ public class TraderProperties extends Saveable {
 		int count = 0;
 		for (Stockable entry : stockables.values()) {
 			if (!string.contains(entry.toString()))
-				string += entry.toString();
+				string += (entry.toString() + ";");
 			count += 1;
 		}
 		setStockables(UID, string);
