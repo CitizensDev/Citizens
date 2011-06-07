@@ -11,7 +11,7 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 public class ItemInterface {
 	public static String addendum = ".item";
 	public static String currencyAddendum = ".item-currency-id";
-	private static double price;
+	private static double blacksmithPrice;
 
 	/**
 	 * Checks the inventory of a player for having enough for an operation.
@@ -24,11 +24,12 @@ public class ItemInterface {
 		// Get the price/currency from the enum name.
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
-		if (price <= 0) {
-			return true;
-		}
+
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
+		if (price <= 0 || currencyID == 0) {
+			return true;
+		}
 		// The current count.
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
@@ -51,8 +52,10 @@ public class ItemInterface {
 	 */
 	public static boolean hasEnough(Payment payment, Player player) {
 		int current = 0;
-		if (payment.getPrice() <= 0)
+		if (payment.getItem().getAmount() <= 0
+				|| payment.getItem().getTypeId() == 0) {
 			return true;
+		}
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == payment.getItem().getTypeId()) {
 				current += i.getAmount();
@@ -138,11 +141,11 @@ public class ItemInterface {
 	public static double pay(Player player, Operation op) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
-		if (price <= 0) {
-			return price;
-		}
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
+		if (price <= 0 || currencyID == 0) {
+			return price;
+		}
 		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
@@ -168,11 +171,11 @@ public class ItemInterface {
 	public static double pay(Player player, Operation op, int multiple) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum)) * multiple;
-		if (price <= 0) {
-			return price;
-		}
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
+		if (price <= 0 || currencyID == 0) {
+			return price;
+		}
 		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
@@ -198,7 +201,7 @@ public class ItemInterface {
 		int currencyID = payment.getItem().getTypeId();
 		double current = payment.getPrice();
 		if (current <= 0)
-			return payment.getPrice();
+			return current;
 		int count = 0;
 		if (slot != -1) {
 			current = decreaseItemStack(player, currencyID, current, slot);
@@ -249,6 +252,9 @@ public class ItemInterface {
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		double current = getBlacksmithPrice(player, item, op);
+		if (current <= 0 || currencyID == 0) {
+			return blacksmithPrice;
+		}
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
@@ -258,7 +264,7 @@ public class ItemInterface {
 			}
 			count += 1;
 		}
-		return price;
+		return blacksmithPrice;
 	}
 
 	/**
@@ -275,11 +281,11 @@ public class ItemInterface {
 				.getMaxDurability();
 		double percentage = ((double) maxDurability - item.getDurability())
 				/ maxDurability;
-		price = (1.0 - percentage)
+		blacksmithPrice = (1.0 - percentage)
 				* UtilityProperties.getPrice(Operation.getString(op, addendum));
-		if (price < 1.0) {
-			price += 1;
+		if (blacksmithPrice < 1.0) {
+			blacksmithPrice += 1;
 		}
-		return (int) price;
+		return (int) blacksmithPrice;
 	}
 }
