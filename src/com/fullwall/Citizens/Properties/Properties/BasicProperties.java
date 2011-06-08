@@ -49,10 +49,10 @@ public class BasicProperties extends Saveable {
 			"plugins/Citizens/Traders/Citizens.balances");
 
 	public String getName(int UID) {
-		Matcher matcher = Pattern.compile(UID + "_[A-Za-z]*").matcher(
+		Matcher matcher = Pattern.compile(UID + "_.*,").matcher(
 				locations.getString("list"));
 		matcher.find();
-		return matcher.group().replace(UID + "_", "");
+		return matcher.group().replace(UID + "_", "").replace(",", "");
 	}
 
 	public int getNPCAmountPerPlayer(String name) {
