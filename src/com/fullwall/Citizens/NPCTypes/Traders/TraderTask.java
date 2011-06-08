@@ -306,7 +306,6 @@ public class TraderTask implements Runnable {
 	}
 
 	public void kill() {
-		stop = true;
 		this.npc.getTrader().setFree(true);
 		sendLeaveMessage();
 		int index = TraderManager.tasks.indexOf(taskID);

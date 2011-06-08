@@ -1,8 +1,9 @@
 package com.fullwall.Citizens.Properties.Properties;
 
+import java.util.Random;
+
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Storage;
-import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.ConfigurationHandler;
 import com.fullwall.Citizens.Properties.PropertyHandler;
 
@@ -31,7 +32,7 @@ public class UtilityProperties {
 	public static String getDefaultText() {
 		String[] split = Constants.defaultText.split(";");
 		String text = "";
-		text = split[NPCManager.ran.nextInt(split.length)];
+		text = split[new Random().nextInt(split.length)];
 		return text.replace('&', '§');
 	}
 
