@@ -16,6 +16,7 @@ import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCTypes.Bandits.BanditTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
@@ -192,6 +193,9 @@ public class Citizens extends JavaPlugin {
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new WizardTask(), Constants.wizardManaRegenRate,
+				Constants.wizardManaRegenRate);
 	}
 
 	/**

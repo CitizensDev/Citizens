@@ -83,11 +83,76 @@ public class WizardNPC implements Toggleable, Clickable {
 	 * 
 	 * @return
 	 */
-	public void cycleLocation() {
-		currentLocation++;
-		if (currentLocation >= numberOfLocations) {
-			currentLocation = 0;
+	public void cycle(HumanNPC npc, WizardMode mode) {
+		switch (mode) {
+		case TELEPORT:
+			currentLocation++;
+			if (currentLocation >= numberOfLocations) {
+				currentLocation = 0;
+			}
+			break;
+		case SPAWN:
+			CreatureType type = npc.getWizard().getMob();
+			CreatureType newType = null;
+			switch (type) {
+			case PIG:
+				newType = CreatureType.WOLF;
+				break;
+			case WOLF:
+				newType = CreatureType.COW;
+				break;
+			case COW:
+				newType = CreatureType.CHICKEN;
+				break;
+			case CHICKEN:
+				newType = CreatureType.SHEEP;
+				break;
+			case SHEEP:
+				newType = CreatureType.SQUID;
+				break;
+			case SQUID:
+				newType = CreatureType.PIG_ZOMBIE;
+				break;
+			case PIG_ZOMBIE:
+				newType = CreatureType.GHAST;
+				break;
+			case GHAST:
+				newType = CreatureType.GIANT;
+				break;
+			case GIANT:
+				newType = CreatureType.CREEPER;
+				break;
+			case CREEPER:
+				newType = CreatureType.ZOMBIE;
+				break;
+			case ZOMBIE:
+				newType = CreatureType.SPIDER;
+				break;
+			case SPIDER:
+				newType = CreatureType.SKELETON;
+				break;
+			case SKELETON:
+				newType = CreatureType.PIG;
+				break;
+			}
+			npc.getWizard().setMob(newType);
+			break;
+		case TIME:
+			String time = npc.getWizard().getTime();
+			String newTime = "";
+			if (time.equals("day")) {
+				newTime = "afternoon";
+			} else if (time.equals("night")) {
+				newTime = "morning";
+			} else if (time.equals("morning")) {
+				newTime = "day";
+			} else if (time.equals("afternoon")) {
+				newTime = "night";
+			}
+			npc.getWizard().setTime(newTime);
+			break;
 		}
+
 	}
 
 	/**
@@ -220,22 +285,40 @@ public class WizardNPC implements Toggleable, Clickable {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
 				WizardMode mode = npc.getWizard().getMode();
+				String msg = ChatColor.GREEN + "";
+				boolean canSend = false;
 				switch (mode) {
 				case TELEPORT:
 					if (npc.getWizard().getNumberOfLocations() > 0) {
-						npc.getWizard().cycleLocation();
-						player.sendMessage(ChatColor.GREEN
-								+ "Location set to "
+						npc.getWizard().cycle(npc, WizardMode.TELEPORT);
+						msg += "Location set to "
 								+ StringUtils.wrap(npc.getWizard()
-										.getCurrentLocationName()));
+										.getCurrentLocationName());
+						canSend = true;
 					}
 					break;
 				case SPAWN:
+					npc.getWizard().cycle(npc, WizardMode.SPAWN);
+					msg += "Mob to spawn set to "
+							+ StringUtils.wrap(npc.getWizard().getMob().name()
+									.toLowerCase().replace("_", " "));
+					canSend = true;
+					break;
 				case TIME:
+					npc.getWizard().cycle(npc, WizardMode.TIME);
+					msg += "Time setting set to "
+							+ StringUtils.wrap(npc.getWizard().getTime());
+					canSend = true;
+					break;
+				case WEATHER:
+					break;
 				default:
 					player.sendMessage(ChatColor.RED
 							+ "No valid mode selected.");
 					break;
+				}
+				if (canSend) {
+					player.sendMessage(msg);
 				}
 			}
 		} else {
@@ -256,7 +339,11 @@ public class WizardNPC implements Toggleable, Clickable {
 					}
 					break;
 				case SPAWN:
+					WizardManager.buy(player, npc, Operation.WIZARD_SPAWNMOB);
+					break;
 				case TIME:
+					WizardManager.buy(player, npc, Operation.WIZARD_CHANGETIME);
+					break;
 				case WEATHER:
 					WizardManager
 							.buy(player, npc, Operation.WIZARD_TOGGLESTORM);

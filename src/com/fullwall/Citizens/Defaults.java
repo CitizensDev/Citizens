@@ -46,6 +46,7 @@ public class Defaults {
 		nodes.put("ticks.pathing.max-stationary", "25");
 		nodes.put("ticks.pathing.max-pathing", "-1");
 		nodes.put("ticks.healers.health-regen-increment", "12000");
+		nodes.put("ticks.wizards.mana-regen-rate", "6000");
 		// Range Settings
 		nodes.put("range.basic.look", "4");
 		nodes.put("range.bandits.steal-radius", "5");

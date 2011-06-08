@@ -12,19 +12,9 @@ public class WizardTask implements Runnable {
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			if (Constants.regenWizardMana) {
-				regenerateMana(entry.getValue());
+				HumanNPC npc = entry.getValue();
+				WizardManager.increaseMana(npc, 1);
 			}
-		}
-	}
-
-	/**
-	 * Regenerate's a wizard's mana
-	 * 
-	 * @param npc
-	 */
-	private void regenerateMana(HumanNPC npc) {
-		if (npc.getWizard().getMana() < Constants.maxWizardMana) {
-			WizardManager.increaseMana(npc, 1);
 		}
 	}
 }

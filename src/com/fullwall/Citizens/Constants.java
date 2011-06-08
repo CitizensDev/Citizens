@@ -10,6 +10,7 @@ public class Constants {
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
 	public static int healerHealthRegenIncrement = 12000;
+	public static int wizardManaRegenRate = 6000;
 	public static int maxNPCsPerPlayer = 10;
 	public static int maxStationaryTicks = 25;
 	public static int maxPathingTicks = -1;
@@ -90,6 +91,7 @@ public class Constants {
 				.getInt("items.healers.take-health-item");
 		healerHealthRegenIncrement = settings
 				.getInt("ticks.healers.health-regen-increment");
+		wizardManaRegenRate = settings.getInt("ticks.wizards.mana-regen-rate");
 		maxNPCsPerPlayer = settings.getInt("general.limits.npcs-per-player");
 		maxPathingTicks = settings.getInt("ticks.pathing.max-pathing");
 		maxStationaryTicks = settings.getInt("ticks.pathing.max-stationary");

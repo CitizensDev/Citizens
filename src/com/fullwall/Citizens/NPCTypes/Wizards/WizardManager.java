@@ -3,6 +3,7 @@ package com.fullwall.Citizens.NPCTypes.Wizards;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -17,9 +18,12 @@ public class WizardManager {
 	 * @param player
 	 * @param npc
 	 */
-	public static void teleportPlayer(Player player, HumanNPC npc) {
-		player.teleport(npc.getWizard().getCurrentLocation());
-		decreaseMana(player, npc, 5);
+	public static boolean teleportPlayer(Player player, HumanNPC npc) {
+		if (decreaseMana(player, npc, 5)) {
+			player.teleport(npc.getWizard().getCurrentLocation());
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -28,21 +32,22 @@ public class WizardManager {
 	 * @param player
 	 * @param npc
 	 */
-	public static void changeTime(Player player, HumanNPC npc) {
+	public static boolean changeTime(Player player, HumanNPC npc) {
 		long time = 0;
 		if (npc.getWizard().getTime().equals("day")) {
-			time = 12L;
+			time = 5000;
 		} else if (npc.getWizard().getTime().equals("night")) {
-			time = 0L;
+			time = 13000;
 		} else if (npc.getWizard().getTime().equals("morning")) {
-			time = 6L;
+			time = 0;
 		} else if (npc.getWizard().getTime().equals("afternoon")) {
-			time = 18L;
-		} else {
-			time = 0L;
+			time = 10000;
 		}
-		player.getWorld().setTime(time);
-		decreaseMana(player, npc, 5);
+		if (decreaseMana(player, npc, 5)) {
+			player.getWorld().setTime(time);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -51,10 +56,13 @@ public class WizardManager {
 	 * @param player
 	 * @param npc
 	 */
-	public static void spawnMob(Player player, HumanNPC npc) {
-		player.getWorld().spawnCreature(player.getLocation(),
-				npc.getWizard().getMob());
-		decreaseMana(player, npc, 5);
+	public static boolean spawnMob(Player player, HumanNPC npc) {
+		if (decreaseMana(player, npc, 5)) {
+			player.getWorld().spawnCreature(player.getLocation(),
+					npc.getWizard().getMob());
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -63,9 +71,12 @@ public class WizardManager {
 	 * @param player
 	 * @param npc
 	 */
-	public static void toggleStorm(Player player, HumanNPC npc) {
-		player.getWorld().setStorm(!player.getWorld().hasStorm());
-		decreaseMana(player, npc, 5);
+	public static boolean toggleStorm(Player player, HumanNPC npc) {
+		if (decreaseMana(player, npc, 5)) {
+			player.getWorld().setStorm(!player.getWorld().hasStorm());
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -74,7 +85,9 @@ public class WizardManager {
 	 * @param mana
 	 */
 	public static void increaseMana(HumanNPC npc, int mana) {
-		npc.getWizard().setMana(npc.getWizard().getMana() + mana);
+		if (npc.getWizard().getMana() + mana < Constants.maxWizardMana) {
+			npc.getWizard().setMana(npc.getWizard().getMana() + mana);
+		}
 	}
 
 	/**
@@ -82,12 +95,16 @@ public class WizardManager {
 	 * 
 	 * @param mana
 	 */
-	public static void decreaseMana(Player player, HumanNPC npc, int mana) {
-		if (npc.getWizard().getMana() - mana > 0) {
+	public static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
+		if (npc.getWizard().getMana() - mana >= 0) {
 			npc.getWizard().setMana(npc.getWizard().getMana() - mana);
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " has lost 5 mana.");
+			return true;
 		} else {
-			player.sendMessage(npc.getStrippedName()
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " does not have enough mana to do that.");
+			return false;
 		}
 	}
 
@@ -103,6 +120,7 @@ public class WizardManager {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0) {
+					boolean canSend = false;
 					String msg = ChatColor.GREEN
 							+ "Paid "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(
@@ -112,29 +130,44 @@ public class WizardManager {
 						msg += " for a teleport to "
 								+ StringUtils.wrap(npc.getWizard()
 										.getCurrentLocationName()) + ".";
-						teleportPlayer(player, npc);
+						if (teleportPlayer(player, npc)) {
+							canSend = true;
+						}
 						break;
 					case WIZARD_SPAWNMOB:
-						msg += " to spawn ";
-						spawnMob(player, npc);
+						msg += " to spawn a "
+								+ StringUtils
+										.wrap(npc.getWizard().getMob().name()
+												.toLowerCase()
+												.replace("_", " ")) + ".";
+						if (spawnMob(player, npc)) {
+							canSend = true;
+						}
 						break;
 					case WIZARD_CHANGETIME:
-						msg += " to change the time to ";
-						changeTime(player, npc);
+						msg += " to change the time to "
+								+ StringUtils.wrap(npc.getWizard().getTime())
+								+ ".";
+						if (changeTime(player, npc)) {
+							canSend = true;
+						}
 						break;
 					case WIZARD_TOGGLESTORM:
 						msg += " toggled a thunderstorm in the world "
-								+ StringUtils.wrap(player.getWorld().getName());
-						toggleStorm(player, npc);
+								+ StringUtils.wrap(player.getWorld().getName())
+								+ ".";
+						if (toggleStorm(player, npc)) {
+							canSend = true;
+						}
 						break;
 					default:
 						player.sendMessage(ChatColor.RED
 								+ "No valid mode selected.");
 						break;
 					}
-					msg += StringUtils.wrap(npc.getStrippedName())
-							+ " has lost 5 mana.";
-					player.sendMessage(msg);
+					if (canSend) {
+						player.sendMessage(msg);
+					}
 				}
 			} else {
 				player.sendMessage(ChatColor.GRAY

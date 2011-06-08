@@ -179,7 +179,8 @@ public class WizardExecutor implements CommandExecutor {
 					+ " as " + StringUtils.wrap(locName));
 			npc.getWizard().addLocation(player.getLocation(), locName);
 		} else {
-			wrongModeMessage(player, npc);
+			player.sendMessage(ChatColor.RED + npc.getStrippedName()
+					+ " cannot perform that action in this mode.");
 		}
 	}
 
@@ -202,14 +203,15 @@ public class WizardExecutor implements CommandExecutor {
 					removedName = locations[i].split(",")[0].replace("(", "");
 				}
 			}
-			npc.getWizard().cycleLocation();
+			npc.getWizard().cycle(npc, WizardMode.TELEPORT);
 			npc.getWizard().setLocations(newLoc);
 			player.sendMessage(ChatColor.GREEN + "Wizard "
 					+ StringUtils.wrap(npc.getStrippedName())
 					+ " had amnesia and forgot about "
 					+ StringUtils.wrap(removedName));
 		} else {
-			wrongModeMessage(player, npc);
+			player.sendMessage(ChatColor.RED + npc.getStrippedName()
+					+ " cannot perform that action in this mode.");
 		}
 	}
 
@@ -232,19 +234,8 @@ public class WizardExecutor implements CommandExecutor {
 						+ locations[i].split(",")[0].replace("(", ""));
 			}
 		} else {
-			wrongModeMessage(player, npc);
+			player.sendMessage(ChatColor.RED + npc.getStrippedName()
+					+ " cannot perform that action in this mode.");
 		}
-	}
-
-	/**
-	 * Prints when a wizard cannot perform an action because they are not in the
-	 * right mode
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	private void wrongModeMessage(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.RED + npc.getStrippedName()
-				+ " cannot perform that action in this mode.");
 	}
 }
