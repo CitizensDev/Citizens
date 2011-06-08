@@ -734,9 +734,10 @@ public class BasicExecutor implements CommandExecutor {
 				+ StringUtils.wrap(player.getName()) + " ==========");
 		player.sendMessage(ChatColor.GRAY + "ID " + ChatColor.YELLOW + "Name");
 		for (HumanNPC hnpc : NPCManager.getList().values()) {
-			if (hnpc.getOwner().equals(player.getName()))
+			if (hnpc.getOwner().equals(player.getName())) {
 				player.sendMessage(ChatColor.GRAY + "" + hnpc.getUID()
 						+ ChatColor.YELLOW + " " + npc.getStrippedName());
+			}
 		}
 	}
 }

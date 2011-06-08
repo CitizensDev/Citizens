@@ -148,8 +148,9 @@ public class ItemInterface {
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
 				current = decreaseItemStack(player, currencyID, current, count);
-				if (current <= 0)
+				if (current <= 0) {
 					break;
+				}
 			}
 			count += 1;
 		}
@@ -216,26 +217,6 @@ public class ItemInterface {
 		return payment.getPrice();
 	}
 
-	public static double decreaseItemStack(Player player, int currencyID,
-			double current, int slot) {
-		ItemStack item = player.getInventory().getItem(slot);
-		if (item.getTypeId() == currencyID) {
-			int amount = item.getAmount();
-			int toChange = 0;
-			current -= amount;
-			if (current < 0) {
-				toChange -= current;
-			}
-			if (toChange == 0) {
-				item = null;
-			} else {
-				item.setAmount(toChange);
-			}
-			player.getInventory().setItem(slot, item);
-		}
-		return current;
-	}
-
 	/**
 	 * Pays for a blacksmith operation
 	 * 
@@ -284,5 +265,34 @@ public class ItemInterface {
 			blacksmithPrice += 1;
 		}
 		return (int) blacksmithPrice;
+	}
+
+	/**
+	 * Removes item(s) from an inventory
+	 * 
+	 * @param player
+	 * @param currencyID
+	 * @param current
+	 * @param slot
+	 * @return
+	 */
+	private static double decreaseItemStack(Player player, int currencyID,
+			double current, int slot) {
+		ItemStack item = player.getInventory().getItem(slot);
+		if (item.getTypeId() == currencyID) {
+			int amount = item.getAmount();
+			int toChange = 0;
+			current -= amount;
+			if (current < 0) {
+				toChange -= current;
+			}
+			if (toChange == 0) {
+				item = null;
+			} else {
+				item.setAmount(toChange);
+			}
+			player.getInventory().setItem(slot, item);
+		}
+		return current;
 	}
 }

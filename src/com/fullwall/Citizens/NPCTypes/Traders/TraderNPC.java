@@ -15,6 +15,7 @@ import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderManager.Mode;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC implements Toggleable, Clickable {
@@ -217,7 +218,7 @@ public class TraderNPC implements Toggleable, Clickable {
 			TraderManager.tasks.add(id);
 			task.addID(id);
 			npc.getTrader().setFree(false);
-			NPCManager.showInventory(npc, player);
+			InventoryUtils.showInventory(npc, player);
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ "Only one person may be served at a time!");

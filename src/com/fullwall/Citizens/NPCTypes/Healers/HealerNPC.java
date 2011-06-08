@@ -3,7 +3,6 @@ package com.fullwall.Citizens.NPCTypes.Healers;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
@@ -12,6 +11,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -190,14 +190,9 @@ public class HealerNPC implements Toggleable, Clickable {
 					player.sendMessage(ChatColor.GREEN + "You restored all of "
 							+ StringUtils.wrap(npc.getStrippedName())
 							+ "'s health with a magical block of diamond.");
-					int amountInHand = player.getItemInHand().getAmount();
-					if (amountInHand == 1) {
-						ItemStack emptyStack = null;
-						player.setItemInHand(emptyStack);
-					} else {
-						player.setItemInHand(new ItemStack(
-								Material.DIAMOND_BLOCK, amountInHand - 1));
-					}
+					InventoryUtils.decreaseItemInHand(player,
+							Material.DIAMOND_BLOCK, player.getItemInHand()
+									.getAmount());
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " is fully healed.");

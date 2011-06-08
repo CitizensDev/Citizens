@@ -118,9 +118,9 @@ public class WizardManager {
 	public static void buy(Player player, HumanNPC npc, Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
+				boolean canSend = false;
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0) {
-					boolean canSend = false;
 					String msg = ChatColor.GREEN
 							+ "Paid "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(
@@ -153,7 +153,7 @@ public class WizardManager {
 						}
 						break;
 					case WIZARD_TOGGLESTORM:
-						msg += " toggled a thunderstorm in the world "
+						msg += " to toggle a thunderstorm in the world "
 								+ StringUtils.wrap(player.getWorld().getName())
 								+ ".";
 						if (toggleStorm(player, npc)) {
@@ -161,8 +161,8 @@ public class WizardManager {
 						}
 						break;
 					default:
-						player.sendMessage(ChatColor.RED
-								+ "No valid mode selected.");
+						msg = ChatColor.RED + "No valid mode selected.";
+						canSend = true;
 						break;
 					}
 					if (canSend) {

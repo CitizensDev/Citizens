@@ -10,6 +10,7 @@ import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditNPC implements Toggleable, Clickable {
@@ -98,7 +99,7 @@ public class BanditNPC implements Toggleable, Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (NPCManager.validateOwnership(player, npc.getUID())) {
-			NPCManager.showInventory(npc, player);
+			InventoryUtils.showInventory(npc, player);
 		} else {
 			player.sendMessage(ChatColor.RED
 					+ "You cannot loot from a bandit that is not yours.");

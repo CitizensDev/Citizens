@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -317,15 +316,5 @@ public class NPCManager {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Uses craftbukkit methods to show a player an npc's inventory screen.
-	 * 
-	 * @param npc
-	 * @param player
-	 */
-	public static void showInventory(HumanNPC npc, Player player) {
-		((CraftPlayer) player).getHandle().a(npc.getHandle().inventory);
 	}
 }

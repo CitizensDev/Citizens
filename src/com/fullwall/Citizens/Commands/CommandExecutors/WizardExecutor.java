@@ -107,9 +107,9 @@ public class WizardExecutor implements CommandExecutor {
 						if (type <= npc.getWizard().getNumberOfLocations()) {
 							this.removeLocation(player, npc, type);
 						} else {
-							sender.sendMessage(ChatColor.RED + "Wizard "
-									+ StringUtils.wrap(npc.getStrippedName())
-									+ "doesnt have that location.");
+							sender.sendMessage(StringUtils.wrap(npc
+									.getStrippedName())
+									+ " does not have that location.");
 						}
 					}
 				} else {
@@ -176,7 +176,7 @@ public class WizardExecutor implements CommandExecutor {
 		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN + "Added current location to "
 					+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
-					+ " as " + StringUtils.wrap(locName));
+					+ " as " + StringUtils.wrap(locName) + ".");
 			npc.getWizard().addLocation(player.getLocation(), locName);
 		} else {
 			player.sendMessage(ChatColor.RED + npc.getStrippedName()
@@ -205,10 +205,9 @@ public class WizardExecutor implements CommandExecutor {
 			}
 			npc.getWizard().cycle(npc, WizardMode.TELEPORT);
 			npc.getWizard().setLocations(newLoc);
-			player.sendMessage(ChatColor.GREEN + "Wizard "
-					+ StringUtils.wrap(npc.getStrippedName())
-					+ " had amnesia and forgot about "
-					+ StringUtils.wrap(removedName));
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " has amnesia and forgot about "
+					+ StringUtils.wrap(removedName) + ".");
 		} else {
 			player.sendMessage(ChatColor.RED + npc.getStrippedName()
 					+ " cannot perform that action in this mode.");

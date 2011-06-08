@@ -3,6 +3,7 @@ package com.fullwall.Citizens.NPCTypes.Wizards;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,7 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -286,7 +288,6 @@ public class WizardNPC implements Toggleable, Clickable {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
 				WizardMode mode = npc.getWizard().getMode();
 				String msg = ChatColor.GREEN + "";
-				boolean canSend = false;
 				switch (mode) {
 				case TELEPORT:
 					if (npc.getWizard().getNumberOfLocations() > 0) {
@@ -294,7 +295,9 @@ public class WizardNPC implements Toggleable, Clickable {
 						msg += "Location set to "
 								+ StringUtils.wrap(npc.getWizard()
 										.getCurrentLocationName());
-						canSend = true;
+					} else {
+						msg += ChatColor.RED + npc.getStrippedName()
+								+ " has no locations.";
 					}
 					break;
 				case SPAWN:
@@ -302,24 +305,19 @@ public class WizardNPC implements Toggleable, Clickable {
 					msg += "Mob to spawn set to "
 							+ StringUtils.wrap(npc.getWizard().getMob().name()
 									.toLowerCase().replace("_", " "));
-					canSend = true;
 					break;
 				case TIME:
 					npc.getWizard().cycle(npc, WizardMode.TIME);
 					msg += "Time setting set to "
 							+ StringUtils.wrap(npc.getWizard().getTime());
-					canSend = true;
 					break;
 				case WEATHER:
-					break;
+					return;
 				default:
-					player.sendMessage(ChatColor.RED
-							+ "No valid mode selected.");
+					msg = ChatColor.RED + "No valid mode selected.";
 					break;
 				}
-				if (canSend) {
-					player.sendMessage(msg);
-				}
+				player.sendMessage(msg);
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -354,14 +352,29 @@ public class WizardNPC implements Toggleable, Clickable {
 					break;
 				}
 			} else if (player.getItemInHand().getTypeId() == Constants.wizardManaRegenItem) {
-				if (npc.getWizard().getMana() < Constants.maxWizardMana) {
-					npc.getWizard().setMana(Constants.maxWizardMana);
-					player.sendMessage(StringUtils.wrap(npc.getStrippedName()
-							+ "'s")
-							+ " mana has been fully replenished.");
+				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
+				int mana = 0;
+				boolean canChangeMana = false;
+				if (npc.getWizard().getMana() + 10 < Constants.maxWizardMana) {
+					mana = npc.getWizard().getMana() + 10;
+					canChangeMana = true;
+					msg += " mana has been increased to "
+							+ StringUtils.wrap(mana) + ".";
+				} else if (npc.getWizard().getMana() + 10 == Constants.maxWizardMana) {
+					mana = Constants.maxWizardMana;
+					canChangeMana = true;
+					msg += " mana has been fully replenished.";
 				} else {
-					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-							+ " already has full mana.");
+					msg += " mana cannot be regenerated with that item any further.";
+				}
+				player.sendMessage(msg);
+				if (canChangeMana) {
+					npc.getWizard().setMana(mana);
+					InventoryUtils
+							.decreaseItemInHand(
+									player,
+									Material.getMaterial(Constants.wizardManaRegenItem),
+									player.getItemInHand().getAmount());
 				}
 			}
 		} else {
