@@ -27,13 +27,11 @@ public class NPCManager {
 	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
 	public static ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
-	public static Random ran = new Random(
-			new Random(System.currentTimeMillis()).nextLong());
 	private static NPCList list;
 
 	public NPCManager(Citizens plugin) {
 		this.plugin = plugin;
-		NPCManager.list = new NPCList();
+		list = new NPCList();
 	}
 
 	/**
@@ -239,12 +237,12 @@ public class NPCManager {
 	}
 
 	@SuppressWarnings("unused")
-	private String generateUID() {
+	private int generateUID() {
 		boolean found = false;
 		// Change this to an integer return?
-		String UID = "";
+		int UID = 0;
 		while (found != true) {
-			UID = "" + ran.nextInt();
+			UID = new Random().nextInt();
 			if (!GlobalUIDs.containsKey(UID)) {
 				found = true;
 				break;
@@ -287,7 +285,7 @@ public class NPCManager {
 	public static boolean validateSelected(Player p, int UID) {
 		if (selectedNPCs.get(p.getName()) != null
 				&& !selectedNPCs.get(p.getName()).toString().isEmpty()) {
-			if (selectedNPCs.get(p.getName()).equals(UID)) {
+			if (selectedNPCs.get(p.getName()) == UID) {
 				return true;
 			}
 		}

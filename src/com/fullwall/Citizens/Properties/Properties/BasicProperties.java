@@ -51,6 +51,7 @@ public class BasicProperties extends Saveable {
 	public String getName(int UID) {
 		Matcher matcher = Pattern.compile(UID + "_[A-Za-z]*").matcher(
 				locations.getString("list"));
+		matcher.find();
 		return matcher.group().replace(UID + "_", "");
 	}
 
