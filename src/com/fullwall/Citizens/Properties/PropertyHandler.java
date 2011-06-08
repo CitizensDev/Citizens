@@ -90,20 +90,37 @@ public final class PropertyHandler implements Storage {
 
 	@Override
 	public synchronized void load() {
+		FileInputStream stream = null;
 		try {
-			this.properties.load(new FileInputStream(this.fileName));
+			stream = new FileInputStream(this.fileName);
+			this.properties.load(stream);
 		} catch (Exception ex) {
 			Messaging.log("Unable to load " + this.fileName, Level.SEVERE);
+		} finally {
+			try {
+				if (stream != null)
+					stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@Override
 	public synchronized void save() {
+		FileOutputStream stream = null;
 		try {
-			this.properties.store(new FileOutputStream(this.fileName),
-					"Citizens File");
+			stream = new FileOutputStream(this.fileName);
+			this.properties.store(stream, "Citizens File");
 		} catch (IOException ex) {
 			Messaging.log("Unable to save " + this.fileName, Level.SEVERE);
+		} finally {
+			try {
+				if (stream != null)
+					stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
