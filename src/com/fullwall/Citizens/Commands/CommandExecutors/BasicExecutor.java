@@ -1,6 +1,8 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
 import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -290,6 +292,14 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
+			if (Permission.canUse(player, npc, "basic")) {
+				displayList(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+
 		} else if ((commandLabel.equalsIgnoreCase("citizens") || commandLabel
 				.equalsIgnoreCase("npc"))) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
@@ -320,21 +330,25 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (commandLabel.equalsIgnoreCase("basic")) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "basic")) {
-					int page = 0;
-					boolean canSend = false;
-					if (StringUtils.isNumber(args[1])) {
-						page = Integer.parseInt(args[1]);
-						canSend = true;
+				if (npc != null) {
+					if (Permission.canUse(player, npc, "basic")) {
+						int page = 0;
+						boolean canSend = false;
+						if (StringUtils.isNumber(args[1])) {
+							page = Integer.parseInt(args[1]);
+							canSend = true;
+						} else {
+							player.sendMessage(ChatColor.RED
+									+ "That is not a number.");
+						}
+						if (canSend) {
+							HelpUtils.sendBasicHelpPage(sender, page);
+						}
 					} else {
-						player.sendMessage(ChatColor.RED
-								+ "That is not a number.");
-					}
-					if (canSend) {
-						HelpUtils.sendBasicHelpPage(sender, page);
+						sender.sendMessage(MessageUtils.noPermissionsMessage);
 					}
 				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
+					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 				}
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.canUse(player, npc, "basic")) {
@@ -712,18 +726,24 @@ public class BasicExecutor implements CommandExecutor {
 	}
 
 	/**
-	 * Checks whether a UID has an npc attached to it.
+	 * Display a list of NPCs owned by a player
 	 * 
-	 * @param UID
-	 * @param sender
-	 * @return
+	 * @param player
+	 * @param npc
 	 */
-	public boolean validateUID(int UID, CommandSender sender) {
-		if (!plugin.validateUID(UID)) {
-			sender.sendMessage(ChatColor.GRAY
-					+ "Couldn't find the NPC with id " + UID + ".");
-			return false;
+	private void displayList(Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.GREEN + "========== List of NPCs for "
+				+ StringUtils.wrap(player.getName()) + " ==========");
+		player.sendMessage(ChatColor.GRAY + "ID " + ChatColor.YELLOW + "Name");
+		HashMap<Integer, HumanNPC> npcs = new HashMap<Integer, HumanNPC>();
+		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
+			if (entry.getValue().getOwner().equals(player.getName())) {
+				npcs.put(entry.getKey(), entry.getValue());
+			}
 		}
-		return true;
+		for (HumanNPC hnpc : npcs.values()) {
+			player.sendMessage(ChatColor.GRAY + "" + hnpc.getUID()
+					+ ChatColor.YELLOW + " " + npc.getStrippedName());
+		}
 	}
 }

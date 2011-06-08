@@ -18,6 +18,7 @@ public class Constants {
 	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
+	public static int wizardManaRegenItem = 348;
 	public static int maxWizardMana = 100;
 
 	public static double npcRange = 5;
@@ -100,6 +101,7 @@ public class Constants {
 		wizardMaxLocations = settings
 				.getInt("general.wizards.wizard-max-locations");
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");
+		wizardManaRegenItem = settings.getInt("items.wizards.mana-regen-item");
 		maxWizardMana = settings.getInt("general.wizards.max-mana");
 
 		// ####Economy settings####

@@ -38,6 +38,7 @@ public class Defaults {
 		nodes.put("items.healers.take-health-item", "276");
 		nodes.put("items.healers.give-health-item", "35");
 		nodes.put("items.wizards.interact-item", "288");
+		nodes.put("items.wizards.mana-regen-item", "348");
 		// Tick Settings
 		nodes.put("ticks.general.delay", "1");
 		nodes.put("ticks.saving.use-task", "true");

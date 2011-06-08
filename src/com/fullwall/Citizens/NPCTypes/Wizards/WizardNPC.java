@@ -353,6 +353,16 @@ public class WizardNPC implements Toggleable, Clickable {
 							+ "No valid mode selected.");
 					break;
 				}
+			} else if (player.getItemInHand().getTypeId() == Constants.wizardManaRegenItem) {
+				if (npc.getWizard().getMana() < Constants.maxWizardMana) {
+					npc.getWizard().setMana(Constants.maxWizardMana);
+					player.sendMessage(StringUtils.wrap(npc.getStrippedName()
+							+ "'s")
+							+ " mana has been fully replenished.");
+				} else {
+					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+							+ " already has full mana.");
+				}
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);

@@ -52,7 +52,7 @@ public class HelpUtils {
 	public static void sendBasicHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:
-			header(sender, "Basic NPC", 1, 2);
+			header(sender, "Basic NPC", 1, 3);
 			formatCommand(sender, "npc", "create [name]", "create an NPC");
 			formatCommand(sender, "npc", "set [text]", "set the text of an NPC");
 			formatCommand(sender, "npc", "add [text]", "add text to an NPC");
@@ -68,7 +68,7 @@ public class HelpUtils {
 			formatCommand(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
-			header(sender, "Basic NPC", 2, 2);
+			header(sender, "Basic NPC", 2, 3);
 			formatCommand(sender, "npc", "tp",
 					"teleport to the location of an NPC");
 			formatCommand(sender, "npc", "copy",
@@ -85,8 +85,13 @@ public class HelpUtils {
 					"make an NPC look at players");
 			footer(sender);
 			break;
+		case 3:
+			header(sender, "Basic NPC", 3, 3);
+			formatCommand(sender, "npc", "list", "list all of your NPCs");
+			footer(sender);
+			break;
 		default:
-			maxPagesMessage(sender, page, 2);
+			maxPagesMessage(sender, page, 3);
 			break;
 		}
 	}
