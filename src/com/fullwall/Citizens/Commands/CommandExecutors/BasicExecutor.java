@@ -1,8 +1,6 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
 import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -732,18 +730,13 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 */
 	private void displayList(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN + "========== List of NPCs for "
+		player.sendMessage(ChatColor.GREEN + "========== NPC List for "
 				+ StringUtils.wrap(player.getName()) + " ==========");
 		player.sendMessage(ChatColor.GRAY + "ID " + ChatColor.YELLOW + "Name");
-		HashMap<Integer, HumanNPC> npcs = new HashMap<Integer, HumanNPC>();
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
-			if (entry.getValue().getOwner().equals(player.getName())) {
-				npcs.put(entry.getKey(), entry.getValue());
-			}
-		}
-		for (HumanNPC hnpc : npcs.values()) {
-			player.sendMessage(ChatColor.GRAY + "" + hnpc.getUID()
-					+ ChatColor.YELLOW + " " + npc.getStrippedName());
+		for (HumanNPC hnpc : NPCManager.getList().values()) {
+			if (hnpc.getOwner().equals(player.getName()))
+				player.sendMessage(ChatColor.GRAY + "" + hnpc.getUID()
+						+ ChatColor.YELLOW + " " + npc.getStrippedName());
 		}
 	}
 }

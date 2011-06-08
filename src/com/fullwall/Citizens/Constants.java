@@ -12,7 +12,7 @@ public class Constants {
 	public static int healerHealthRegenIncrement = 12000;
 	public static int wizardManaRegenRate = 6000;
 	public static int maxNPCsPerPlayer = 10;
-	public static int maxStationaryTicks = 25;
+	public static int maxStationaryTicks = -1;
 	public static int maxPathingTicks = -1;
 	public static int saveDelay = 72000;
 	public static int tickDelay = 1;

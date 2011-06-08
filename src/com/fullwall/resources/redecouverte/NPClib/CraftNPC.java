@@ -95,9 +95,11 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		double last = this.lastY;
-		this.move(0, -0.1, 0);
-		if (Math.floor(last) != Math.floor(this.y))
-			this.npc.getNPCData().setLocation(this.npc.getLocation());
+		if (this.motY <= 0.15F) {
+			double last = this.lastY;
+			this.move(0, -0.1, 0);
+			if (Math.floor(last) != Math.floor(this.y))
+				this.npc.getNPCData().setLocation(this.npc.getLocation());
+		}
 	}
 }

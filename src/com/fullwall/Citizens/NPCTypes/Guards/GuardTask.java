@@ -81,9 +81,8 @@ public class GuardTask implements Runnable {
 					}
 					entity = null;
 				} else if (guard.isBodyguard()) {
-					String owner = npc.getOwner();
-					Player p = Bukkit.getServer().getPlayer(owner);
-					if (p != null && p.isOnline()) {
+					Player p = Bukkit.getServer().getPlayer(npc.getOwner());
+					if (p != null) {
 						Location ownerloc = p.getLocation();
 						if (NPCManager.get(npc.getUID()) == null) {
 							npc.getNPCData().setLocation(p.getLocation());
@@ -229,7 +228,7 @@ public class GuardTask implements Runnable {
 	 * @param npc
 	 */
 	private void attack(LivingEntity entity, HumanNPC npc) {
-		PathUtils.target(npc, entity, true);
+		PathUtils.target(npc, entity, true, -1, -1, 25);
 	}
 
 	public static void checkRespawn(Player player) {

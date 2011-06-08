@@ -26,7 +26,7 @@ public class PathNPC extends EntityPlayer {
 
 	private boolean targetAggro = false;
 	private boolean hasAttacked = false;
-	private boolean jumping = false;
+	protected boolean jumping = false;
 	private int pathTicks = 0;
 	private int pathTickLimit = -1;
 	private int stationaryTicks = 0;
@@ -205,9 +205,8 @@ public class PathNPC extends EntityPlayer {
 
 	private void attackEntity(EntityLiving entity) {
 		this.performAction(Action.SWING_ARM);
-		int damage = this.inventory.a(entity);
 		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
-		e.damage(damage);
+		e.damage(this.inventory.a(entity));
 		hasAttacked = true;
 		incrementAttackTimes();
 	}
