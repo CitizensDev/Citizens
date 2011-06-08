@@ -29,6 +29,10 @@ public class StringUtils {
 		return newText;
 	}
 
+	public static String colourise(String string) {
+		return string.replace("&", "§");
+	}
+
 	public static Material parseMaterial(String material) {
 		Material mat = Material.matchMaterial(material);
 		if (mat == null) {
