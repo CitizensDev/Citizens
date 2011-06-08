@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Utils;
 import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -149,16 +150,19 @@ public class MessageUtils {
 	 * @return
 	 */
 	public static String getStockableMessage(Stockable s, ChatColor colour) {
-		return StringUtils.wrap(s.getStocking().getAmount() + " "
-				+ s.getStocking().getType().name(), colour)
-				+ "(s) for "
+		return getStackString(s.getStocking(), colour) + " for "
 				+ MessageUtils.getPriceMessage(s.getPrice(), colour);
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {
-		return StringUtils.wrap(stack.getAmount() + " "
-				+ stack.getType().name(), colour)
-				+ "(s)";
+		String name = getItemName(stack.getTypeId());
+		return StringUtils.wrap(stack.getAmount() + " " + name, colour) + "(s)";
+	}
+
+	public static String getItemName(int itemID) {
+		return UtilityProperties.itemlookups.getString(itemID).isEmpty() ? Material
+				.getMaterial(itemID).name() : UtilityProperties.itemlookups
+				.getString(itemID);
 	}
 
 	public static String getStackString(ItemStack item) {

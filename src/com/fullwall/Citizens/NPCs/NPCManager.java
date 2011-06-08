@@ -43,11 +43,12 @@ public class NPCManager {
 	 * @param UID
 	 * @param owner
 	 */
-	public static void register(String name, int UID, String owner) {
+	public static void register(int UID, String owner) {
 		Location loc = PropertyManager.getBasic().getLocation(UID);
 		// String uniqueID = generateID(NPCType.BASIC);
 
 		int colour = PropertyManager.getBasic().getColour(UID);
+		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
 		if (colour != 0xf) {
@@ -97,7 +98,7 @@ public class NPCManager {
 				Constants.defaultFollowingEnabled);
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
 				Constants.defaultTalkWhenClose);
-		register(name, UID, owner);
+		register(UID, owner);
 		return UID;
 	}
 

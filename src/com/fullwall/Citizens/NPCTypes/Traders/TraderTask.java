@@ -273,11 +273,9 @@ public class TraderTask implements Runnable {
 		if (selling) {
 			start = "You don't";
 		}
-		player.sendMessage(ChatColor.RED
-				+ start
+		player.sendMessage(ChatColor.RED + start
 				+ " have enough money available to buy "
-				+ StringUtils.wrap(stocking.getAmount() + " "
-						+ stocking.getType().name(), ChatColor.RED) + "(s).");
+				+ MessageUtils.getStackString(stocking) + ".");
 	}
 
 	private void sendStockableMessage(Stockable stockable) {
@@ -294,8 +292,9 @@ public class TraderTask implements Runnable {
 			boolean selling) {
 		if (!npc.getTrader().isStocked(item.getTypeId(), selling,
 				item.getData())) {
-			player.sendMessage(StringUtils.wrap(item.getType().name(),
-					ChatColor.RED) + " isn't being " + keyword + " here.");
+			player.sendMessage(StringUtils.wrap(
+					MessageUtils.getItemName(item.getTypeId()), ChatColor.RED)
+					+ " isn't being " + keyword + " here.");
 			return null;
 		}
 		return npc.getTrader().getStockable(item.getTypeId(), selling,

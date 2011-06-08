@@ -19,7 +19,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
 	private static HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
-	private static BasicProperties basicProperties;
 
 	public enum PropertyType {
 		BASIC,
@@ -34,8 +33,7 @@ public class PropertyManager {
 	}
 
 	public static void registerProperties() {
-		BasicProperties basic = new BasicProperties();
-		properties.put("basic", basic);
+		properties.put("basic", new BasicProperties());
 		properties.put("bandit", new BanditProperties());
 		properties.put("blacksmith", new BlacksmithProperties());
 		properties.put("evil", new EvilProperties());
@@ -44,13 +42,12 @@ public class PropertyManager {
 		properties.put("quester", new QuesterProperties());
 		properties.put("trader", new TraderProperties());
 		properties.put("wizard", new WizardProperties());
-		basicProperties = basic;
 		UtilityProperties.initialize();
 		QuestProperties.initialize();
 	}
 
 	public static BasicProperties getBasic() {
-		return basicProperties;
+		return (BasicProperties) get("basic");
 	}
 
 	public static void load(HumanNPC npc) {

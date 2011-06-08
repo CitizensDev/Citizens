@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class StringUtils {
-
 	public static String parseColour(String s) {
 		if (s.startsWith("&")) {
 			String colour = "";

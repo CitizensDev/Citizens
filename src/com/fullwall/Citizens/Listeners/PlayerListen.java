@@ -10,6 +10,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
@@ -37,6 +38,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		QuestManager.load(event.getPlayer());
+		GuardTask.checkRespawn(event.getPlayer());
 	}
 
 	@Override

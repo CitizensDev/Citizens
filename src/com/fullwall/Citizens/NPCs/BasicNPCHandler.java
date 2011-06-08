@@ -49,7 +49,7 @@ public class BasicNPCHandler extends NPCManager {
 		PropertyManager.getBasic().changeName(UID, n.getName(), changeTo);
 		n.getNPCData().setName(changeTo);
 		super.removeForRespawn(UID);
-		super.register(changeTo, UID, owner);
+		super.register(UID, owner);
 	}
 
 	/**
@@ -61,9 +61,8 @@ public class BasicNPCHandler extends NPCManager {
 	 */
 	// TODO: maybe remove this, since it changes the skin URL.
 	public void setColour(int UID, String owner) {
-		HumanNPC n = super.get(UID);
 		super.removeForRespawn(UID);
-		super.register(n.getName(), UID, owner);
+		super.register(UID, owner);
 	}
 
 	/**
@@ -126,7 +125,7 @@ public class BasicNPCHandler extends NPCManager {
 
 		if ((olditem != 0 && items.get(0) == 0)) {
 			super.removeForRespawn(npc.getUID());
-			super.register(npc.getName(), npc.getUID(), npc.getOwner());
+			super.register(npc.getUID(), npc.getOwner());
 		}
 		p.sendMessage(StringUtils.wrap(npc.getName())
 				+ "'s in-hand item was set to " + StringUtils.wrap(mat.name())
@@ -177,7 +176,7 @@ public class BasicNPCHandler extends NPCManager {
 		if ((oldhelmet != 0 && items.get(1) == 0)) {
 			// Despawn the old NPC, register our new one.
 			super.removeForRespawn(npc.getUID());
-			super.register(npc.getName(), npc.getUID(), npc.getOwner());
+			super.register(npc.getUID(), npc.getOwner());
 		}
 		p.sendMessage(StringUtils.wrap(npc.getName()) + "'s " + args[0]
 				+ " was set to " + StringUtils.wrap(mat.name()) + ".");

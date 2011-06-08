@@ -3,6 +3,8 @@ package com.fullwall.Citizens.Properties.Properties;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.minecraft.server.InventoryPlayer;
 
@@ -45,6 +47,12 @@ public class BasicProperties extends Saveable {
 			"plugins/Citizens/Basic NPCs/Citizens.counts");
 	public final PropertyHandler balances = new PropertyHandler(
 			"plugins/Citizens/Traders/Citizens.balances");
+
+	public String getName(int UID) {
+		Matcher matcher = Pattern.compile(UID + "_[A-Za-z]*").matcher(
+				locations.getString("list"));
+		return matcher.group().replace(UID + "_", "");
+	}
 
 	public int getNPCAmountPerPlayer(String name) {
 		return counts.getInt(name);

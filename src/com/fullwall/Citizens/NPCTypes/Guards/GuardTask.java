@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.NPCTypes.Guards;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -26,6 +28,7 @@ import org.bukkit.entity.Zombie;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Misc.ActionManager;
 import com.fullwall.Citizens.Misc.CachedAction;
+import com.fullwall.Citizens.Misc.NPCLocation;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.PathUtils;
@@ -35,6 +38,7 @@ public class GuardTask implements Runnable {
 	@SuppressWarnings("unused")
 	private final Citizens plugin;
 	private LivingEntity entity;
+	private final static Map<String, NPCLocation> toRespawn = new HashMap<String, NPCLocation>();
 
 	public GuardTask(Citizens plugin) {
 		this.plugin = plugin;
@@ -118,6 +122,10 @@ public class GuardTask implements Runnable {
 					} else {
 						if (NPCManager.get(npc.getUID()) != null) {
 							PathUtils.cancelPath(npc);
+							toRespawn.put(
+									npc.getOwner(),
+									new NPCLocation(npc.getLocation(), npc
+											.getUID(), npc.getOwner()));
 							NPCManager.despawn(npc.getUID());
 						}
 					}
@@ -222,5 +230,14 @@ public class GuardTask implements Runnable {
 	 */
 	private void attack(LivingEntity entity, HumanNPC npc) {
 		PathUtils.target(npc, entity, true);
+	}
+
+	public static void checkRespawn(Player player) {
+		String owner = player.getName();
+		if (toRespawn.containsKey(owner)) {
+			NPCManager.register(toRespawn.get(owner).getUID(), owner);
+			NPCManager.get(toRespawn.get(owner).getUID()).teleport(
+					player.getLocation());
+		}
 	}
 }

@@ -175,7 +175,6 @@ public class Citizens extends JavaPlugin {
 						Integer.valueOf(name.split("_")[0]));
 				if (loc != null) {
 					NPCManager.register(
-							name.split("_", 2)[1],
 							Integer.valueOf(name.split("_")[0]),
 							PropertyManager.getBasic().getOwner(
 									Integer.valueOf(name.split("_")[0])));

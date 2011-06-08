@@ -1,7 +1,8 @@
 package com.fullwall.Citizens.Listeners;
 
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -17,7 +18,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WorldListen extends WorldListener implements Listener {
 	private final Citizens plugin;
-	private final ConcurrentHashMap<NPCLocation, String> toRespawn = new ConcurrentHashMap<NPCLocation, String>();
+	private final List<NPCLocation> toRespawn = Collections
+			.synchronizedList(new ArrayList<NPCLocation>());
 	private PluginManager pm;
 
 	public WorldListen(Citizens plugin) {
@@ -36,15 +38,15 @@ public class WorldListen extends WorldListener implements Listener {
 	@Override
 	public void onChunkUnload(ChunkUnloadEvent e) {
 		// Stores NPC location/name for later respawn.
-		for (Entry<Integer, String> i : NPCManager.GlobalUIDs.entrySet()) {
-			HumanNPC npc = NPCManager.get(i.getKey());
+		for (Integer entry : NPCManager.GlobalUIDs.keySet()) {
+			HumanNPC npc = NPCManager.get(entry);
 			if (npc != null
 					&& npc.getLocation().getBlock().getChunk()
 							.equals(e.getChunk())) {
-				NPCLocation loc = new NPCLocation(plugin, npc.getLocation(),
+				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
-				toRespawn.put(loc, i.getValue());
-				NPCManager.despawn(i.getKey());
+				toRespawn.add(loc);
+				NPCManager.despawn(entry);
 			}
 		}
 	}
@@ -52,13 +54,11 @@ public class WorldListen extends WorldListener implements Listener {
 	@Override
 	public void onChunkLoad(ChunkLoadEvent e) {
 		// Respawns any existing NPCs in the loaded chunk
-		for (Entry<NPCLocation, String> i : toRespawn.entrySet()) {
-			NPCLocation tempLoc = i.getKey();
+		for (NPCLocation tempLoc : toRespawn) {
 			if (e.getChunk().getWorld()
 					.getChunkAt(tempLoc.getX(), tempLoc.getZ())
 					.equals(e.getChunk())) {
-				NPCManager.register(i.getValue(), tempLoc.getUID(),
-						tempLoc.getOwner());
+				NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
 				toRespawn.remove(tempLoc);
 			}
 		}

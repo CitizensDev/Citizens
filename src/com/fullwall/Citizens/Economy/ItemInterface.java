@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+import com.fullwall.Citizens.Utils.MessageUtils;
 
 public class ItemInterface {
 	public static String addendum = ".item";
@@ -78,8 +79,8 @@ public class ItemInterface {
 				addendum));
 		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
 				currencyAddendum));
-		return Material.getMaterial(ID) != null ? price + " "
-				+ Material.getMaterial(ID).name() + colour + "(s)" : "";
+		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
+				ID, (int) price)));
 	}
 
 	/**
@@ -102,12 +103,8 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getCurrency(Payment payment, ChatColor colour) {
-		return Material.getMaterial(payment.getItem().getTypeId()) != null ? payment
-				.getItem().getAmount()
-				+ " "
-				+ Material.getMaterial(payment.getItem().getTypeId()).name()
-				+ colour + "(s)"
-				: "";
+		return ChatColor.stripColor(MessageUtils.getStackString(payment
+				.getItem()));
 	}
 
 	/**

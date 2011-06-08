@@ -1,20 +1,18 @@
 package com.fullwall.Citizens.Misc;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-
-import com.fullwall.Citizens.Citizens;
 
 public class NPCLocation {
 
-	private int x;
-	private int y;
-	private int z;
-	private float yaw;
-	private float pitch;
-	private String world;
-	private Citizens plugin;
-	private int UID;
-	private String owner;
+	private final int x;
+	private final int y;
+	private final int z;
+	private final float yaw;
+	private final float pitch;
+	private final String world;
+	private final int UID;
+	private final String owner;
 
 	/**
 	 * Used for respawning npcs.
@@ -24,8 +22,7 @@ public class NPCLocation {
 	 * @param UID
 	 * @param owner
 	 */
-	public NPCLocation(Citizens plugin, Location loc, int UID, String owner) {
-		this.plugin = plugin;
+	public NPCLocation(Location loc, int UID, String owner) {
 		this.x = loc.getBlockX();
 		this.y = loc.getBlockY();
 		this.z = loc.getBlockZ();
@@ -49,7 +46,7 @@ public class NPCLocation {
 	}
 
 	public Location getLocation() {
-		return new Location(plugin.getServer().getWorld(this.world), x, y, z,
+		return new Location(Bukkit.getServer().getWorld(this.world), x, y, z,
 				pitch, yaw);
 	}
 
