@@ -1,12 +1,17 @@
 package com.fullwall.Citizens.NPCTypes.Evil;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Clickable;
+import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class EvilNPC implements Clickable {
+
+	private boolean isTame = false;
 
 	/**
 	 * Massive Wall of Text Explaining Evil NPCs
@@ -49,6 +54,24 @@ public class EvilNPC implements Clickable {
 		this.npc = npc;
 	}
 
+	/**
+	 * Get whether the evil NPC is tamed
+	 * 
+	 * @return
+	 */
+	public boolean isTame() {
+		return isTame;
+	}
+
+	/**
+	 * Set the tamed state of an evil NPC
+	 * 
+	 * @param isTame
+	 */
+	public void setTame(boolean isTame) {
+		this.isTame = isTame;
+	}
+
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 	}
@@ -56,7 +79,12 @@ public class EvilNPC implements Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (player.getItemInHand().getTypeId() == Constants.evilNPCTameItem) {
-			// TODO tame Evil NPC here
+			setTame(true);
+			NPCManager.register(NPCManager.register(npc.getName(),
+					player.getLocation(), player.getName()), player.getName());
+			player.sendMessage(ChatColor.GREEN + "You have tamed "
+					+ StringUtils.wrap(npc.getStrippedName())
+					+ "! You can now toggle it to be any type.");
 		}
 	}
 }

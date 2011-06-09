@@ -7,6 +7,7 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 public class Constants {
 	public static int banditStealRadius = 5;
 	public static int evilNPCTameItem = 354;
+	public static int maxEvilNPCs = 2;
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
 	public static int healerHealthRegenIncrement = 12000;
@@ -35,6 +36,7 @@ public class Constants {
 	public static String npcColour = "�f";
 	public static String talkItems = "340,";
 	public static String selectItems = "*";
+	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,";
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
@@ -53,6 +55,7 @@ public class Constants {
 	 * Sets up miscellaneous variables, mostly reading from property files.
 	 */
 	public static void setupVariables() {
+		// ####Citizens settings####
 		Storage settings = UtilityProperties.getSettings();
 
 		// Boolean defaults
@@ -75,6 +78,7 @@ public class Constants {
 		npcColour = settings.getString("general.colors.npc-colour");
 		talkItems = settings.getString("items.basic.talk-items");
 		selectItems = settings.getString("items.basic.select-items");
+		defaultEvilNames = settings.getString("general.evil.names");
 
 		// Double defaults
 		defaultBouncerProtectionRadius = settings
@@ -86,6 +90,7 @@ public class Constants {
 		// int defaults
 		banditStealRadius = settings.getInt("range.bandits.steal-radius");
 		evilNPCTameItem = settings.getInt("items.evil.tame-item");
+		maxEvilNPCs = settings.getInt("general.evil.max-to-spawn");
 		healerGiveHealthItem = settings
 				.getInt("items.healers.give-health-item");
 		healerTakeHealthItem = settings

@@ -200,7 +200,7 @@ public class GuardTask implements Runnable {
 				}
 			}
 		} else {
-			// Dostuffherelater
+			// TODO Dostuffherelater
 		}
 	}
 
@@ -216,9 +216,8 @@ public class GuardTask implements Runnable {
 	private boolean isBlacklisted(HumanNPC npc, String name) {
 		if (npc.getGuard().getBlacklist().contains(name)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

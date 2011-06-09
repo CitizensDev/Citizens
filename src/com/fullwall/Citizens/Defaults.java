@@ -30,6 +30,8 @@ public class Defaults {
 		nodes.put("general.healers.regen-health", "true");
 		nodes.put("general.wizards.regen-mana", "true");
 		nodes.put("general.wizards.max-mana", "100");
+		nodes.put("general.evil.max-to-spawn", "2");
+		nodes.put("general.evil.names", "Herobrine, aPunch, fullwall,");
 		// Item Settings
 		nodes.put("items.item-list-on", "true");
 		nodes.put("items.basic.talk-items", "340,");

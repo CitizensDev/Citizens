@@ -14,6 +14,7 @@ import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCTypes.Bandits.BanditTask;
+import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
@@ -104,6 +105,8 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new EvilTask(), 100, 100);
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();

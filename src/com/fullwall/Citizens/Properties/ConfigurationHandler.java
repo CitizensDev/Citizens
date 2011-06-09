@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.util.config.Configuration;
+import org.bukkit.util.config.ConfigurationNode;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Defaults;
@@ -19,9 +20,7 @@ public class ConfigurationHandler implements Storage {
 	private final Configuration config;
 	private final String fileName;
 
-	public ConfigurationHandler(String fileName, boolean b) {
-		// TODO: remove boolean in next version (used for transferring
-		// settings).
+	public ConfigurationHandler(String fileName) {
 		this.fileName = fileName;
 		File file = getFile();
 		this.config = new Configuration(file);
@@ -31,11 +30,11 @@ public class ConfigurationHandler implements Storage {
 		} else {
 			load();
 		}
-		if (fileName.contains("citizens.yml") && !b) {
+		if (fileName.contains("citizens.yml")) {
 			loadRenames(Defaults.settingsRenames);
 			loadDefaults(Defaults.settingsDefaults);
 			loadDeletes(Defaults.settingsDeletes);
-		} else if (fileName.contains("economy.yml") && !b) {
+		} else if (fileName.contains("economy.yml")) {
 			loadRenames(Defaults.economyRenames);
 			loadDefaults(Defaults.economyDefaults);
 			loadDeletes(Defaults.economyDeletes);
@@ -326,5 +325,9 @@ public class ConfigurationHandler implements Storage {
 
 	public List<String> getKeys(String path) {
 		return this.config.getKeys(path);
+	}
+
+	public ConfigurationNode getNode(String path) {
+		return this.config.getNode(path);
 	}
 }

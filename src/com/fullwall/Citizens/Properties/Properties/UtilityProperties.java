@@ -13,12 +13,10 @@ public class UtilityProperties {
 	private static ConfigurationHandler settings;
 
 	public static void initialize() {
-		economy = new ConfigurationHandler("plugins/Citizens/economy.yml",
-				false);
+		economy = new ConfigurationHandler("plugins/Citizens/economy.yml");
 		itemlookups = new PropertyHandler(
 				"plugins/Citizens/Citizens.itemlookup");
-		settings = new ConfigurationHandler("plugins/Citizens/citizens.yml",
-				false);
+		settings = new ConfigurationHandler("plugins/Citizens/citizens.yml");
 	}
 
 	public static Storage getSettings() {
@@ -43,5 +41,10 @@ public class UtilityProperties {
 	public static int getCurrencyID(String string) {
 		int ID = economy.getInt(string);
 		return ID == -1 ? 1 : ID;
+	}
+
+	public static String getRandomName() {
+		String[] split = Constants.defaultEvilNames.split(",");
+		return split[new Random().nextInt(split.length)];
 	}
 }
