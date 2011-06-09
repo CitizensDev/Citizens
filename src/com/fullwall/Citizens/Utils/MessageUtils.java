@@ -161,8 +161,8 @@ public class MessageUtils {
 
 	public static String getItemName(int itemID) {
 		return UtilityProperties.itemlookups.getString(itemID).isEmpty() ? Material
-				.getMaterial(itemID).name() : UtilityProperties.itemlookups
-				.getString(itemID);
+				.getMaterial(itemID).name().toLowerCase().replace("_", " ")
+				: UtilityProperties.itemlookups.getString(itemID);
 	}
 
 	public static String getStackString(ItemStack item) {

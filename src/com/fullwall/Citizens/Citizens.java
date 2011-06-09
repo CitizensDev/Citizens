@@ -171,18 +171,15 @@ public class Citizens extends JavaPlugin {
 				.split(",");
 		if (list.length > 0 && !list[0].isEmpty()) {
 			for (String name : list) {
-				Location loc = PropertyManager.getBasic().getLocation(
-						Integer.valueOf(name.split("_")[0]));
+				int UID = Integer.parseInt(name.split("_")[0]);
+				Location loc = PropertyManager.getBasic().getLocation(UID);
 				if (loc != null) {
-					NPCManager.register(
-							Integer.valueOf(name.split("_")[0]),
-							PropertyManager.getBasic().getOwner(
-									Integer.valueOf(name.split("_")[0])));
+					NPCManager.register(UID, PropertyManager.getBasic()
+							.getOwner(UID));
 					ArrayDeque<String> text = PropertyManager.getBasic()
-							.getText(Integer.valueOf(name.split("_")[0]));
+							.getText(UID);
 					if (text != null) {
-						NPCManager.setText(Integer.valueOf(name.split("_")[0]),
-								text);
+						NPCManager.setText(UID, text);
 					}
 				} else {
 					PropertyManager.getBasic().deleteNameFromList(name);

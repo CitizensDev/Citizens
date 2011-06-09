@@ -20,6 +20,7 @@ import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PageUtils;
 import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
+import com.fullwall.Citizens.Utils.ServerUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -294,7 +295,23 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.canUse(player, npc, "basic")) {
-				displayList(player, npc, args[1]);
+				switch (args.length) {
+				case 1:
+					displayList(player, player, npc, "1");
+					break;
+				case 2:
+					if (StringUtils.isNumber(args[1])) {
+						displayList(player, player, npc, args[1]);
+					} else {
+						displayList(player, ServerUtils.matchPlayer(args[1]),
+								npc, "1");
+					}
+					break;
+				case 3:
+					displayList(player, ServerUtils.matchPlayer(args[1]), npc,
+							args[2]);
+					break;
+				}
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
@@ -432,20 +449,20 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param player
 	 */
 	private void create(String[] args, Player player) {
-		String text = "";
 		ArrayDeque<String> texts = new ArrayDeque<String>();
+		StringBuffer buf = new StringBuffer();
 		if (args.length >= 3) {
 			int i = 0;
 			for (String s : args) {
 				if (i == 2 && !s.isEmpty() && !s.equals(";")) {
-					text += s;
+					buf.append(s);
 				}
 				if (i > 2 && !s.isEmpty() && !s.equals(";")) {
-					text += " " + s;
+					buf.append(" " + s);
 				}
 				i += 1;
 			}
-			texts.add(text);
+			texts.add(buf.toString());
 		}
 		if (args[1].length() > 15) {
 			player.sendMessage(ChatColor.RED
@@ -726,15 +743,13 @@ public class BasicExecutor implements CommandExecutor {
 	}
 
 	/**
-	 * Display a list of NPCs owned by a player
-	 * 
-	 * @param player
-	 * @param npc
+	 * * Display a list of NPCs owned by a player * * @param player * @param npc
 	 */
-	private void displayList(Player player, HumanNPC npc, String passed) {
-		PageInstance paginate = PageUtils.newInstance(player);
+	private void displayList(Player sender, Player toDisplay, HumanNPC npc,
+			String passed) {
+		PageInstance paginate = PageUtils.newInstance(sender);
 		for (HumanNPC hnpc : NPCManager.getList().values()) {
-			if (hnpc.getOwner().equals(player.getName())) {
+			if (hnpc.getOwner().equals(toDisplay.getName())) {
 				paginate.push(ChatColor.GRAY + "" + hnpc.getUID()
 						+ ChatColor.YELLOW + " " + hnpc.getStrippedName());
 			}
@@ -743,15 +758,16 @@ public class BasicExecutor implements CommandExecutor {
 			int page = Integer.parseInt(passed);
 			if (page <= paginate.maxPages()) {
 				paginate.header(ChatColor.GREEN + "========== NPC List for "
-						+ StringUtils.wrap(player.getName())
+						+ StringUtils.wrap(toDisplay.getName())
 						+ " (%x/%y) ==========");
 				paginate.process(page);
 			} else {
-				player.sendMessage(MessageUtils.getMaxPagesMessage(page,
+				sender.sendMessage(MessageUtils.getMaxPagesMessage(page,
 						paginate.maxPages()));
 			}
 		} else {
-			player.sendMessage(ChatColor.RED + "That is not a number.");
+			sender.sendMessage(ChatColor.RED
+					+ "Incorrect syntax. Correct syntax: /npc list (playername) (page)");
 		}
 	}
 }

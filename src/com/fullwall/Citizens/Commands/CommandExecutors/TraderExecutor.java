@@ -22,6 +22,8 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.PageUtils;
+import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -142,54 +144,36 @@ public class TraderExecutor implements CommandExecutor {
 	private void displayList(Player player, HumanNPC npc, String[] args,
 			boolean selling) {
 		ArrayList<Stockable> stock = npc.getTrader().getStockables(!selling);
-		int page = 0;
-		int startPoint = 0;
-		int numPages = stock.size() / 6;
-		if (stock.size() % 6 > 0)
-			numPages += 1;
-		if (numPages == 0)
-			numPages = 1;
-		String keyword = "";
-		if (selling) {
+		int page = 1, startPoint = 0;
+		String keyword = "Buying ";
+		if (selling)
 			keyword = "Selling ";
-		} else {
-			keyword = "Buying ";
-		}
 		if (stock.size() == 0) {
 			player.sendMessage(ChatColor.GRAY + "This trader isn't "
 					+ keyword.toLowerCase() + "any items.");
 			return;
 		}
-		if (stock.size() > 6 && args.length == 3) {
+		if (stock.size() > 9 && args.length == 3) {
 			page = Integer.parseInt(args[2]);
-			if (page == 0)
-				page = 1;
-			page -= 1;
-			startPoint = (6 * page);
+			startPoint = (9 * page);
 		}
-		if (startPoint > stock.size() - 1) {
-			player.sendMessage(ChatColor.RED
-					+ "Invalid page number. There are "
-					+ StringUtils.wrap(numPages, ChatColor.RED) + " pages.");
-			return;
-		}
-		player.sendMessage(ChatColor.GOLD + "Trader " + keyword + "List (Page "
-				+ StringUtils.wrap((page == 0 ? 1 : page), ChatColor.GOLD)
-				+ " of " + StringUtils.wrap(numPages, ChatColor.GOLD) + ")");
-		player.sendMessage(ChatColor.AQUA + "-------------------------------");
-		for (int i = startPoint; i != startPoint + 6; ++i) {
-			if ((stock.size() - 1) >= i) {
+		PageInstance instance = PageUtils.newInstance(player);
+		for (int i = startPoint; i != startPoint + 9; ++i) {
+			if (stock.size() > i) {
 				Stockable s = stock.get(i);
-				player.sendMessage(ChatColor.GREEN + keyword
+				instance.push(ChatColor.GREEN + keyword + ": "
 						+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
 						+ ".");
-			} else {
-				player.sendMessage(ChatColor.AQUA
-						+ "-------------------------------");
-				return;
 			}
 		}
-		player.sendMessage(ChatColor.AQUA + "-------------------------------");
+		if (page <= instance.maxPages()) {
+			instance.header(ChatColor.GOLD + "========== Trader " + keyword
+					+ "List (Page %x/%y) ==========");
+			instance.process(page);
+		} else {
+			player.sendMessage(MessageUtils.getMaxPagesMessage(page,
+					instance.maxPages()));
+		}
 	}
 
 	/**

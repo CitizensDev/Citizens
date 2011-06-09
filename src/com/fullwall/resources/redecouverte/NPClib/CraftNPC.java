@@ -12,6 +12,7 @@ import net.minecraft.server.NetworkManager;
 import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
 
@@ -95,11 +96,11 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		if (this.motY <= 0.15F) {
-			double last = this.lastY;
-			this.move(0, -0.1, 0);
-			if (Math.floor(last) != Math.floor(this.y))
-				this.npc.getNPCData().setLocation(this.npc.getLocation());
+		Location loc = this.getBukkitEntity().getLocation();
+		if (this.fallDistance > 0
+				&& loc.getWorld().getBlockTypeIdAt(loc.getBlockX(),
+						loc.getBlockY() - 1, loc.getBlockZ()) == 0) {
+			this.move(0, -0.05, 0);
 		}
 	}
 }

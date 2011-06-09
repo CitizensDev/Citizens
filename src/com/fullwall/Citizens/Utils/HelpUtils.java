@@ -87,7 +87,9 @@ public class HelpUtils {
 			break;
 		case 3:
 			header(sender, "Basic NPC", 3, 3);
-			formatCommand(sender, "npc", "list", "list all of your NPCs");
+			formatCommand(sender, "npc", "list (name) (page)",
+					"show a list of NPCs");
+
 			footer(sender);
 			break;
 		default:

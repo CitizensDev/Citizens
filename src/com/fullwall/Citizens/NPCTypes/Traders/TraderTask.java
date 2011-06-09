@@ -171,7 +171,8 @@ public class TraderTask implements Runnable {
 				return;
 			}
 		} else {
-			npc.setBalance(npc.getBalance() + stockable.getPrice().getPrice());
+			double price = stockable.getPrice().getPrice();
+			npc.setBalance(npc.getBalance() + price);
 		}
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
@@ -225,8 +226,8 @@ public class TraderTask implements Runnable {
 				return;
 			}
 		} else {
-			ServerEconomyInterface.add(player.getName(), stockable.getPrice()
-					.getPrice());
+			double price = stockable.getPrice().getPrice();
+			ServerEconomyInterface.add(player.getName(), price);
 		}
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
@@ -281,11 +282,11 @@ public class TraderTask implements Runnable {
 	private void sendStockableMessage(Stockable stockable) {
 		String keyword = "Buying ";
 		if (stockable.isSelling()) {
-			keyword = "Selling ";
+			keyword = "Selling  ";
 		}
 		player.sendMessage(ChatColor.AQUA + keyword
 				+ MessageUtils.getStockableMessage(stockable, ChatColor.AQUA)
-				+ ".");
+				+ ". Click to confirm.");
 	}
 
 	private Stockable getStockable(ItemStack item, String keyword,

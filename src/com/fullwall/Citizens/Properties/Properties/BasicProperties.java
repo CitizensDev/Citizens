@@ -3,8 +3,6 @@ package com.fullwall.Citizens.Properties.Properties;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.minecraft.server.InventoryPlayer;
 
@@ -49,10 +47,14 @@ public class BasicProperties extends Saveable {
 			"plugins/Citizens/Traders/Citizens.balances");
 
 	public String getName(int UID) {
-		Matcher matcher = Pattern.compile(UID + "_.*,").matcher(
-				locations.getString("list"));
-		matcher.find();
-		return matcher.group().replace(UID + "_", "").replace(",", "");
+		String[] list = locations.getString("list").split(",");
+		for (String name : list) {
+			int id = Integer.parseInt(name.split("_")[0]);
+			if (id == UID) {
+				return name.split("_")[1];
+			}
+		}
+		return "";
 	}
 
 	public int getNPCAmountPerPlayer(String name) {
@@ -106,17 +108,17 @@ public class BasicProperties extends Saveable {
 	}
 
 	private void saveInventory(int UID, PlayerInventory inv) {
-		String save = "";
+		StringBuffer save = new StringBuffer();
 		for (ItemStack i : inv.getContents()) {
 			if (i == null || i.getType() == Material.AIR) {
-				save += "AIR,";
+				save.append("AIR,");
 			} else {
-				save += i.getTypeId() + "/" + i.getAmount() + "/"
+				save.append(i.getTypeId() + "/" + i.getAmount() + "/"
 						+ ((i.getData() == null) ? 0 : i.getData().getData())
-						+ ",";
+						+ ",");
 			}
 		}
-		inventories.setString(UID, save);
+		inventories.setString(UID, save.toString());
 	}
 
 	private PlayerInventory getInventory(int UID) {
@@ -156,11 +158,11 @@ public class BasicProperties extends Saveable {
 	}
 
 	private void saveItems(int UID, ArrayList<Integer> items2) {
-		String toSave = "";
+		StringBuffer toSave = new StringBuffer();
 		for (Integer i : items2) {
-			toSave += "" + i + ",";
+			toSave.append(i + ",");
 		}
-		items.setString(UID, toSave);
+		items.setString(UID, toSave.toString());
 	}
 
 	public int getColour(int UID) {
@@ -218,13 +220,13 @@ public class BasicProperties extends Saveable {
 	}
 
 	private void saveText(int UID, ArrayDeque<String> text) {
-		String adding = "";
+		StringBuffer buf = new StringBuffer();
 		if (text != null) {
 			for (String string : text) {
-				adding += string + ";";
+				buf.append(string + ";");
 			}
 		}
-		texts.setString(UID, adding);
+		texts.setString(UID, buf.toString());
 	}
 
 	public boolean getLookWhenClose(int UID) {

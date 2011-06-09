@@ -181,8 +181,7 @@ public class EconomyHandler {
 			if (payment.isiConomy() && useIconomy()) {
 				return ServerEconomyInterface.hasEnough(payment, npc);
 			} else {
-				return ItemInterface.hasEnough(payment,
-						(Player) npc.getPlayer());
+				return ItemInterface.hasEnough(payment, npc.getPlayer());
 			}
 		} else {
 			return true;
