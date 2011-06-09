@@ -282,8 +282,8 @@ public class TraderTask implements Runnable {
 	private void sendStockableMessage(Stockable stockable) {
 		String[] message = MessageUtils.getStockableMessage(stockable,
 				ChatColor.AQUA).split("for");
-		player.sendMessage(ChatColor.AQUA + "Item: " + message[0]);
-		player.sendMessage(ChatColor.AQUA + "Price: " + message[1]);
+		player.sendMessage(ChatColor.AQUA + "Item: " + message[0].trim());
+		player.sendMessage(ChatColor.AQUA + "Price: " + message[1].trim());
 		player.sendMessage(ChatColor.GOLD + "Click to confirm.");
 	}
 
