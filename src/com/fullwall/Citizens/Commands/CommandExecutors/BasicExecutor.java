@@ -20,6 +20,7 @@ import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PageUtils;
 import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
+import com.fullwall.Citizens.Utils.ServerUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -292,9 +293,21 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
+		} else if (args.length >= 1 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.canUse(player, npc, "basic")) {
-				displayList(player, npc, args[1]);
+				if (args.length == 1) {
+					displayList(player, player, npc, "" + 1);
+				} else if (args.length == 2) {
+					if (StringUtils.isNumber(args[1])) {
+						displayList(player, player, npc, args[1]);
+					} else {
+						displayList(player, ServerUtils.matchPlayer(args[1]),
+								npc, "" + 1);
+					}
+				} else if (args.length == 3) {
+					displayList(player, ServerUtils.matchPlayer(args[1]), npc,
+							args[2]);
+				}
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
@@ -731,10 +744,11 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param player
 	 * @param npc
 	 */
-	private void displayList(Player player, HumanNPC npc, String passed) {
-		PageInstance paginate = PageUtils.newInstance(player);
+	private void displayList(Player sender, Player toDisplay, HumanNPC npc,
+			String passed) {
+		PageInstance paginate = PageUtils.newInstance(sender);
 		for (HumanNPC hnpc : NPCManager.getList().values()) {
-			if (hnpc.getOwner().equals(player.getName())) {
+			if (hnpc.getOwner().equals(toDisplay.getName())) {
 				paginate.push(ChatColor.GRAY + "" + hnpc.getUID()
 						+ ChatColor.YELLOW + " " + hnpc.getStrippedName());
 			}
@@ -743,15 +757,16 @@ public class BasicExecutor implements CommandExecutor {
 			int page = Integer.parseInt(passed);
 			if (page <= paginate.maxPages()) {
 				paginate.header(ChatColor.GREEN + "========== NPC List for "
-						+ StringUtils.wrap(player.getName())
+						+ StringUtils.wrap(toDisplay.getName())
 						+ " (%x/%y) ==========");
 				paginate.process(page);
 			} else {
-				player.sendMessage(MessageUtils.getMaxPagesMessage(page,
+				sender.sendMessage(MessageUtils.getMaxPagesMessage(page,
 						paginate.maxPages()));
 			}
 		} else {
-			player.sendMessage(ChatColor.RED + "That is not a number.");
+			sender.sendMessage(ChatColor.RED
+					+ "Incorrect syntax. Correct syntax: /npc list (playername) (page)");
 		}
 	}
 }
