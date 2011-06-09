@@ -18,6 +18,8 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.PageUtils;
+import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -290,9 +292,9 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.canUse(player, npc, "basic")) {
-				displayList(player, npc);
+				displayList(player, npc, args[1]);
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
@@ -729,15 +731,27 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param player
 	 * @param npc
 	 */
-	private void displayList(Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN + "========== NPC List for "
-				+ StringUtils.wrap(player.getName()) + " ==========");
-		player.sendMessage(ChatColor.GRAY + "ID " + ChatColor.YELLOW + "Name");
+	private void displayList(Player player, HumanNPC npc, String passed) {
+		PageInstance paginate = PageUtils.newInstance(player);
 		for (HumanNPC hnpc : NPCManager.getList().values()) {
 			if (hnpc.getOwner().equals(player.getName())) {
-				player.sendMessage(ChatColor.GRAY + "" + hnpc.getUID()
-						+ ChatColor.YELLOW + " " + npc.getStrippedName());
+				paginate.push(ChatColor.GRAY + "" + hnpc.getUID()
+						+ ChatColor.YELLOW + " " + hnpc.getStrippedName());
 			}
+		}
+		if (StringUtils.isNumber(passed)) {
+			int page = Integer.parseInt(passed);
+			if (page <= paginate.maxPages()) {
+				paginate.header(ChatColor.GREEN + "========== NPC List for "
+						+ StringUtils.wrap(player.getName())
+						+ " (%x/%y) ==========");
+				paginate.process(page);
+			} else {
+				player.sendMessage(MessageUtils.getMaxPagesMessage(page,
+						paginate.maxPages()));
+			}
+		} else {
+			player.sendMessage(ChatColor.RED + "That is not a number.");
 		}
 	}
 }

@@ -168,4 +168,16 @@ public class MessageUtils {
 	public static String getStackString(ItemStack item) {
 		return getStackString(item, ChatColor.YELLOW);
 	}
+
+	/**
+	 * Get the max-pages message
+	 * 
+	 * @param sender
+	 * @param page
+	 * @param maxPages
+	 */
+	public static String getMaxPagesMessage(int page, int maxPages) {
+		return ChatColor.GRAY + "The total number of pages is " + maxPages
+				+ ", page: " + page + " is not available.";
+	}
 }

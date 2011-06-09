@@ -40,8 +40,7 @@ public class PageUtils {
 			String tempHeader = header;
 			int pages = maxPages();
 
-			tempHeader = header.replace("%x", "" + page);
-			tempHeader = header.replace("%y", "" + pages);
+			tempHeader = header.replace("%x/%y", page + "/" + pages);
 			send(tempHeader);
 
 			int highNum = (page * 9);

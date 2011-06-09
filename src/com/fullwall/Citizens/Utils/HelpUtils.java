@@ -38,7 +38,7 @@ public class HelpUtils {
 			footer(sender);
 			break;
 		default:
-			maxPagesMessage(sender, page, 2);
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
 			break;
 		}
 	}
@@ -91,7 +91,7 @@ public class HelpUtils {
 			footer(sender);
 			break;
 		default:
-			maxPagesMessage(sender, page, 3);
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
 			break;
 		}
 	}
@@ -223,19 +223,6 @@ public class HelpUtils {
 				+ "Citizens " + npcType + " Help" + ChatColor.WHITE + " <"
 				+ page + "/" + maxPages + ">"
 				+ StringUtils.wrap(" ]=========="));
-	}
-
-	/**
-	 * Sends the max-pages message
-	 * 
-	 * @param sender
-	 * @param page
-	 * @param maxPages
-	 */
-	private static void maxPagesMessage(CommandSender sender, int page,
-			int maxPages) {
-		sender.sendMessage(ChatColor.GRAY + "The total number of pages is "
-				+ maxPages + ", page: " + page + " is not available.");
 	}
 
 	/**
