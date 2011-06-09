@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Utils;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -160,9 +161,20 @@ public class MessageUtils {
 	}
 
 	public static String getItemName(int itemID) {
-		return UtilityProperties.itemlookups.getString(itemID).isEmpty() ? Material
-				.getMaterial(itemID).name().toLowerCase().replace("_", " ")
+		return UtilityProperties.itemlookups.getString(itemID).isEmpty() ? getMaterialName(itemID)
 				: UtilityProperties.itemlookups.getString(itemID);
+	}
+
+	private static String getMaterialName(int itemID) {
+		String[] parts = Material.getMaterial(itemID).name().toLowerCase()
+				.split("_");
+		int count = 0;
+		for (String s : parts) {
+			parts[count] = s.replaceFirst("" + s.charAt(0),
+					"" + Character.toUpperCase(s.charAt(0)));
+			++count;
+		}
+		return Arrays.toString(parts).replace("[", "").replace("]", "").replace(", ", "");
 	}
 
 	public static String getStackString(ItemStack item) {

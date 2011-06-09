@@ -280,13 +280,11 @@ public class TraderTask implements Runnable {
 	}
 
 	private void sendStockableMessage(Stockable stockable) {
-		String keyword = "Buying ";
-		if (stockable.isSelling()) {
-			keyword = "Selling  ";
-		}
-		player.sendMessage(ChatColor.AQUA + keyword
-				+ MessageUtils.getStockableMessage(stockable, ChatColor.AQUA)
-				+ ". Click to confirm.");
+		String[] message = MessageUtils.getStockableMessage(stockable,
+				ChatColor.AQUA).split("for");
+		player.sendMessage(ChatColor.AQUA + "Item: " + message[0]);
+		player.sendMessage(ChatColor.AQUA + "Price: " + message[1]);
+		player.sendMessage(ChatColor.GOLD + "Click to confirm.");
 	}
 
 	private Stockable getStockable(ItemStack item, String keyword,
@@ -307,6 +305,7 @@ public class TraderTask implements Runnable {
 	}
 
 	public void kill() {
+		stop = true;
 		this.npc.getTrader().setFree(true);
 		sendLeaveMessage();
 		int index = TraderManager.tasks.indexOf(taskID);

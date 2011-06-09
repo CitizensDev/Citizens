@@ -13,7 +13,11 @@ import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public class CraftNPC extends PathNPC {
@@ -96,11 +100,17 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		Location loc = this.getBukkitEntity().getLocation();
-		if (this.fallDistance > 0
-				&& loc.getWorld().getBlockTypeIdAt(loc.getBlockX(),
-						loc.getBlockY() - 1, loc.getBlockZ()) == 0) {
-			this.move(0, -0.05, 0);
+		Location loc = ((Player) this.getBukkitEntity()).getEyeLocation();
+		boolean move = false;
+		Block down = loc.getBlock().getFace(BlockFace.DOWN);
+		if (loc.getY() % 1 <= 0.62) {
+			move = true;
+		}
+		if (down != null && down.getType() == Material.WATER
+				|| down.getType() == Material.STATIONARY_WATER)
+			move = false;
+		if (move) {
+			this.move(0, -0.1, 0);
 		}
 	}
 }

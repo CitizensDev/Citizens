@@ -103,7 +103,7 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getCurrency(Payment payment, ChatColor colour) {
-		return MessageUtils.getStackString(payment.getItem());
+		return MessageUtils.getStackString(payment.getItem(), colour);
 	}
 
 	/**

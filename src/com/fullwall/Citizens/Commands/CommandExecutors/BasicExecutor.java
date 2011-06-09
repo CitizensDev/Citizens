@@ -293,7 +293,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length >= 1 && args[0].equalsIgnoreCase("list")) {
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.canUse(player, npc, "basic")) {
 				switch (args.length) {
 				case 1:
@@ -311,7 +311,6 @@ public class BasicExecutor implements CommandExecutor {
 					displayList(player, ServerUtils.matchPlayer(args[1]), npc,
 							args[2]);
 					break;
-					}
 				}
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
