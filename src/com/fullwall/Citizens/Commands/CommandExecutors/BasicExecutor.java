@@ -293,7 +293,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
+		} else if (args.length >= 1 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.canUse(player, npc, "basic")) {
 				switch (args.length) {
 				case 1:
@@ -303,13 +303,25 @@ public class BasicExecutor implements CommandExecutor {
 					if (StringUtils.isNumber(args[1])) {
 						displayList(player, player, npc, args[1]);
 					} else {
-						displayList(player, ServerUtils.matchPlayer(args[1]),
-								npc, "1");
+						if (ServerUtils.matchPlayer(player, args[1]) != null) {
+							displayList(player,
+									ServerUtils.matchPlayer(player, args[1]),
+									npc, "1");
+						} else {
+							player.sendMessage(ChatColor.RED
+									+ "Could not match player.");
+						}
 					}
 					break;
 				case 3:
-					displayList(player, ServerUtils.matchPlayer(args[1]), npc,
-							args[2]);
+					if (ServerUtils.matchPlayer(player, args[1]) != null) {
+						displayList(player,
+								ServerUtils.matchPlayer(player, args[1]), npc,
+								args[2]);
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "Could not match player.");
+					}
 					break;
 				}
 			} else {
@@ -756,6 +768,9 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		if (StringUtils.isNumber(passed)) {
 			int page = Integer.parseInt(passed);
+			if (page == 0) {
+				page = 1;
+			}
 			if (page <= paginate.maxPages()) {
 				paginate.header(ChatColor.GREEN + "========== NPC List for "
 						+ StringUtils.wrap(toDisplay.getName())

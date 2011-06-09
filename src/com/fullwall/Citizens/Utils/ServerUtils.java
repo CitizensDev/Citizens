@@ -13,10 +13,12 @@ public class ServerUtils {
 	 * @param name
 	 * @return
 	 */
-	public static Player matchPlayer(String name) {
+	public static Player matchPlayer(Player toSend, String name) {
 		List<Player> players = Bukkit.getServer().matchPlayer(name);
 		if (!players.isEmpty()) {
-			return players.get(0);
+			if (players.get(0) != null) {
+				return players.get(0);
+			}
 		}
 		return null;
 	}
