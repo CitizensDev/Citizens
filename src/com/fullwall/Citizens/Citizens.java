@@ -98,6 +98,7 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.stateSave();
 
 		basicNPCHandler.despawnAll();
+		EvilTask.despawnAll();
 
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") disabled");
@@ -105,8 +106,6 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new EvilTask(), 100, 100);
 		// Register our commands.
 		CommandHandler commandHandler = new CommandHandler(this);
 		commandHandler.registerCommands();
@@ -123,6 +122,13 @@ public class Citizens extends JavaPlugin {
 		// set up settings and economy file variables
 		Constants.setupVariables();
 
+		if (Constants.spawnEvil) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new EvilTask(), Constants.spawnEvilDelay,
+					Constants.spawnEvilDelay);
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new EvilTask.EvilTick(), 0, 1);
+		}
 		plugin = this;
 
 		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
@@ -169,7 +175,6 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupNPCs() {
-		// Start reloading old NPCs from the config files.
 		String[] list = PropertyManager.getBasic().locations.getString("list")
 				.split(",");
 		if (list.length > 0 && !list[0].isEmpty()) {

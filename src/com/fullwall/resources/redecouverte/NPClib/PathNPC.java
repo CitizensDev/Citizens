@@ -254,30 +254,29 @@ public class PathNPC extends EntityPlayer {
 				&& (this.pathEntity == null && this.random.nextInt(80) == 0 || this.random
 						.nextInt(80) == 0)) {
 			boolean flag = false;
-			int i = -1;
-			int j = -1;
-			int k = -1;
-			float f2 = -99999.0F;
-
+			int x = -1;
+			int y = -1;
+			int z = -1;
+			float pathWeight = -99999.0F;
 			for (int l = 0; l < 10; ++l) {
-				int i1 = MathHelper.floor(this.locX + this.random.nextInt(13)
+				int x2 = MathHelper.floor(this.locX + this.random.nextInt(13)
 						- 6.0D);
-				int j1 = MathHelper.floor(this.locY + this.random.nextInt(7)
+				int y2 = MathHelper.floor(this.locY + this.random.nextInt(7)
 						- 3.0D);
-				int k1 = MathHelper.floor(this.locZ + this.random.nextInt(13)
+				int z2 = MathHelper.floor(this.locZ + this.random.nextInt(13)
 						- 6.0D);
-				float f3 = this.getBlockPathWeight(i1, j1, k1);
+				float tempPathWeight = this.getBlockPathWeight(x2, y2, z2);
 
-				if (f3 > f2) {
-					f2 = f3;
-					i = i1;
-					j = j1;
-					k = k1;
+				if (tempPathWeight > pathWeight) {
+					pathWeight = tempPathWeight;
+					x = x2;
+					y = y2;
+					z = z2;
 					flag = true;
 				}
 			}
 			if (flag) {
-				this.pathEntity = this.world.a(this, i, j, k, pathingRange);
+				this.pathEntity = this.world.a(this, x, y, z, pathingRange);
 			}
 		}
 	}

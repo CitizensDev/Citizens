@@ -1,5 +1,7 @@
 package com.fullwall.Citizens.NPCTypes.Evil;
 
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -43,7 +45,7 @@ public class EvilNPC implements Clickable {
 	// remarks -> need to be made more generic OFC.
 
 	@SuppressWarnings("unused")
-	private HumanNPC npc;
+	private final HumanNPC npc;
 
 	/**
 	 * Evil NPC object
@@ -78,10 +80,11 @@ public class EvilNPC implements Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (player.getItemInHand().getTypeId() == Constants.evilNPCTameItem) {
+		if (player.getItemInHand().getTypeId() == Constants.evilNPCTameItem
+				&& new Random().nextInt(100) <= Constants.evilNPCTameChance) {
 			setTame(true);
-			NPCManager.register(NPCManager.register(npc.getName(),
-					player.getLocation(), player.getName()), player.getName());
+			NPCManager.register(npc.getName(), player.getLocation(),
+					player.getName());
 			player.sendMessage(ChatColor.GREEN + "You have tamed "
 					+ StringUtils.wrap(npc.getStrippedName())
 					+ "! You can now toggle it to be any type.");

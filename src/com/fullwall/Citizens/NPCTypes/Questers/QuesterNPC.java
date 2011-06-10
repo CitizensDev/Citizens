@@ -1,17 +1,26 @@
 package com.fullwall.Citizens.NPCTypes.Questers;
 
-import java.util.HashMap;
+import java.util.ArrayDeque;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.fullwall.Citizens.NPCTypes.Questers.Rewards.QuestReward;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Utils.PageUtils;
+import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.iConomy.util.Messaging;
 
 public class QuesterNPC implements Toggleable, Clickable {
-	private HumanNPC npc;
-	private HashMap<String, Quest> quests = new HashMap<String, Quest>();
+	private final HumanNPC npc;
+	private PageInstance display;
+	private Player previous;
+	private final ArrayDeque<String> quests = new ArrayDeque<String>();
 
 	/**
 	 * Quester NPC object
@@ -28,17 +37,7 @@ public class QuesterNPC implements Toggleable, Clickable {
 	 * @param quest
 	 */
 	public void addQuest(Quest quest) {
-		quests.put(quest.getName(), quest);
-	}
-
-	/**
-	 * Get a quest
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public Quest getQuest(String name) {
-		return quests.get(name);
+		quests.push(quest.getName());
 	}
 
 	@Override
@@ -73,13 +72,60 @@ public class QuesterNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
+		previous = player;
+		cycle(player);
+	}
 
+	private void cycle(Player player) {
+		quests.addLast(quests.pop());
+		Quest quest = getQuest(quests.peek());
+		display = PageUtils.newInstance(player);
+		display.setSmoothTransition(true);
+		display.header(ChatColor.GREEN + "======= Quest %x/%y - "
+				+ StringUtils.wrap(quest.getName()) + " =======");
+		for (String push : quest.getDescription().split("<br>"))
+			display.push(push);
+		if (display.maxPages() == 1)
+			display.push(ChatColor.GOLD + "Right click to accept.");
+		display.process(1);
+	}
+
+	private Quest getQuest(String name) {
+		return QuestManager.getQuest(name);
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-
+		if (QuestManager.getProfile(player.getName()).hasQuest()) {
+			PlayerProfile profile = QuestManager.getProfile(player.getName());
+			if (profile.getProgress().getQuesterUID() == this.npc.getUID()) {
+				Quest quest = QuestManager.getQuest(profile.getProgress()
+						.getQuestName());
+				Messaging.send(quest.getCompletedText());
+				for (Reward reward : quest.getRewards()) {
+					if (reward instanceof QuestReward)
+						((QuestReward) reward).grantQuest(player, npc);
+					else
+						reward.grant(player);
+				}
+				profile.setProgress(null);
+				QuestManager.setProfile(player.getName(), profile);
+			}
+		} else {
+			if (previous == null
+					|| !previous.getName().equals(player.getName())) {
+				previous = player;
+				cycle(player);
+			}
+			if (display.currentPage() != display.maxPages()) {
+				display.displayNext();
+				if (display.currentPage() == display.maxPages()) {
+					player.sendMessage(ChatColor.GOLD
+							+ "Right click to accept.");
+				}
+			} else {
+				QuestManager.assignQuest(this.npc, player, quests.peek());
+			}
+		}
 	}
 }

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.NPCTypes.Questers.Reward;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 
 public class EconpluginReward implements Reward {
 	private final double reward;
@@ -24,5 +25,20 @@ public class EconpluginReward implements Reward {
 				ServerEconomyInterface.add(player.getName(), reward);
 		}
 
+	}
+
+	@Override
+	public RewardType getType() {
+		return RewardType.MONEY;
+	}
+
+	@Override
+	public Object getReward() {
+		return reward;
+	}
+
+	@Override
+	public boolean isTake() {
+		return take;
 	}
 }

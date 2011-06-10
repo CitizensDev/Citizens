@@ -3,14 +3,16 @@ package com.fullwall.Citizens.NPCTypes.Questers.QuestTypes;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
+import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
 
 public class DeliveryQuest extends QuestIncrementer {
-	public DeliveryQuest(HumanNPC npc, Player player, String questName) {
-		super(npc, player, questName);
+	public DeliveryQuest(HumanNPC npc, Player player, String questName,
+			ObjectiveCycler objectives) {
+		super(npc, player, questName, objectives);
 	}
 
 	@Override

@@ -14,6 +14,9 @@ public class PageUtils {
 		private String header = "";
 		private final List<String> lines = new ArrayList<String>();
 		private final Player player;
+		private boolean smoothTransition = false;
+		private boolean hasDisplayed = false;
+		private int currentPage = 1;
 
 		public PageInstance(Player player) {
 			this.player = player;
@@ -27,6 +30,10 @@ public class PageUtils {
 			lines.add(line);
 		}
 
+		public void setSmoothTransition(boolean smooth) {
+			this.smoothTransition = smooth;
+		}
+
 		public int maxPages() {
 			int pages = lines.size() / 9;
 			if (lines.size() % 9 != 0)
@@ -37,11 +44,15 @@ public class PageUtils {
 		}
 
 		public void process(int page) {
+			if (!hasDisplayed)
+				hasDisplayed = true;
 			String tempHeader = header;
 			int pages = maxPages();
 
-			tempHeader = header.replace("%x/%y", page + "/" + pages);
-			send(tempHeader);
+			if (!(hasDisplayed && smoothTransition)) {
+				tempHeader = header.replace("%x/%y", page + "/" + pages);
+				send(tempHeader);
+			}
 
 			int highNum = (page * 9);
 			int lowNum = (page - 1) * 9;
@@ -51,8 +62,19 @@ public class PageUtils {
 			}
 		}
 
+		public void displayNext() {
+			if (currentPage <= maxPages()) {
+				++currentPage;
+				process(currentPage);
+			}
+		}
+
+		public int currentPage() {
+			return this.currentPage;
+		}
+
 		private void send(String line) {
-			player.sendMessage(line);
+			Messaging.send(player, line);
 		}
 
 		private String colour(String line) {

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCTypes.Questers.Reward;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 
 public class PermissionReward implements Reward {
 	private final String reward;
@@ -20,5 +21,20 @@ public class PermissionReward implements Reward {
 			Permission.givePermission(player, reward, true);
 		else
 			Permission.givePermission(player, reward, false);
+	}
+
+	@Override
+	public RewardType getType() {
+		return RewardType.PERMISSION;
+	}
+
+	@Override
+	public Object getReward() {
+		return reward;
+	}
+
+	@Override
+	public boolean isTake() {
+		return take;
 	}
 }

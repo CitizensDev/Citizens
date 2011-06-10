@@ -1,14 +1,14 @@
 package com.fullwall.Citizens.NPCTypes.Questers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestProgress;
 
 public class PlayerProfile {
 	private StoredProfile profile;
 	private int rank;
-	private ArrayList<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
-	private String currentQuest = "";
+	private final List<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
 	private QuestProgress progress;
 
 	public PlayerProfile(String name) {
@@ -20,20 +20,12 @@ public class PlayerProfile {
 		this.profile = profile;
 	}
 
-	public void setCompletedQuests(ArrayList<CompletedQuest> completedQuests) {
-		this.completedQuests = completedQuests;
-	}
-
-	public ArrayList<CompletedQuest> getCompletedQuests() {
+	public List<CompletedQuest> getCompletedQuests() {
 		return completedQuests;
 	}
 
-	public void setCurrentQuest(String currentQuest) {
-		this.currentQuest = currentQuest;
-	}
-
-	public String getCurrentQuest() {
-		return currentQuest;
+	public void addCompletedQuest(CompletedQuest quest) {
+		this.completedQuests.add(quest);
 	}
 
 	public QuestProgress getProgress() {
@@ -53,7 +45,7 @@ public class PlayerProfile {
 	}
 
 	public boolean hasQuest() {
-		return currentQuest == null;
+		return progress == null;
 	}
 
 	public void save() {

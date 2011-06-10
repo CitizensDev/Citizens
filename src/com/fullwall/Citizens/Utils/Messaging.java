@@ -9,6 +9,7 @@ public class Messaging {
 	private static Logger log = Logger.getLogger("Minecraft");
 
 	public static void send(Player player, String message) {
+		message = StringUtils.colourise(message);
 		message = message.replace("<h>", "" + player.getHealth());
 		message = message.replace("<name>", player.getName());
 		message = message.replace("<world>", player.getWorld().getName());

@@ -63,9 +63,7 @@ public final class PropertyHandler implements Storage {
 
 	private void createFile(File file) {
 		try {
-			if (!fileName.contains("profile")) {
-				Messaging.log("Creating missing file at " + fileName + ".");
-			}
+			Messaging.log("Creating missing file at " + fileName + ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
@@ -89,25 +87,25 @@ public final class PropertyHandler implements Storage {
 	}
 
 	@Override
-	public synchronized void load() {
+	public void load() {
 		FileInputStream stream = null;
 		try {
 			stream = new FileInputStream(this.fileName);
 			this.properties.load(stream);
-		} catch (Exception ex) {
+		} catch (IOException ex) {
 			Messaging.log("Unable to load " + this.fileName, Level.SEVERE);
 		} finally {
 			try {
 				if (stream != null)
 					stream.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Messaging.log("Unable to close " + this.fileName, Level.SEVERE);
 			}
 		}
 	}
 
 	@Override
-	public synchronized void save() {
+	public void save() {
 		FileOutputStream stream = null;
 		try {
 			stream = new FileOutputStream(this.fileName);
@@ -119,7 +117,7 @@ public final class PropertyHandler implements Storage {
 				if (stream != null)
 					stream.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Messaging.log("Unable to close " + this.fileName, Level.SEVERE);
 			}
 		}
 	}

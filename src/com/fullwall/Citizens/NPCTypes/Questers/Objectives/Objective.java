@@ -6,13 +6,13 @@ import org.bukkit.inventory.ItemStack;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
 
 public class Objective {
-	private int destination;
-	private ItemStack item;
-	private int amount;
-	private Location location;
+	private int destination = -1;
+	private ItemStack item = null;
+	private int amount = -1;
+	private Location location = null;
 	private final Progress progress = new Progress();
 	private final QuestType type;
-	private String message;
+	private String message = "";
 
 	public QuestType getType() {
 		return type;

@@ -9,6 +9,7 @@ import org.bukkit.material.MaterialData;
 import com.fullwall.Citizens.NPCTypes.Questers.Quest;
 import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objective;
 import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives;
+import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.BuildQuest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.CollectQuest;
 import com.fullwall.Citizens.NPCTypes.Questers.QuestTypes.CombatQuest;
@@ -23,30 +24,32 @@ import com.fullwall.Citizens.NPCTypes.Questers.Rewards.HealthReward;
 import com.fullwall.Citizens.NPCTypes.Questers.Rewards.ItemReward;
 import com.fullwall.Citizens.NPCTypes.Questers.Rewards.PermissionReward;
 import com.fullwall.Citizens.NPCTypes.Questers.Rewards.QuestReward;
+import com.fullwall.Citizens.NPCTypes.Questers.Rewards.RankReward;
 import com.fullwall.Citizens.Properties.ConfigurationHandler;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestFactory {
 
 	public static QuestIncrementer createIncrementer(HumanNPC npc,
-			Player player, String questName, QuestType type) {
+			Player player, String questName, QuestType type,
+			ObjectiveCycler objectives) {
 		switch (type) {
 		case BUILD:
-			return new BuildQuest(npc, player, questName);
+			return new BuildQuest(npc, player, questName, objectives);
 		case COLLECT:
-			return new CollectQuest(npc, player, questName);
+			return new CollectQuest(npc, player, questName, objectives);
 		case DELIVERY:
-			return new DeliveryQuest(npc, player, questName);
+			return new DeliveryQuest(npc, player, questName, objectives);
 		case DESTROY_BLOCK:
-			return new DestroyQuest(npc, player, questName);
+			return new DestroyQuest(npc, player, questName, objectives);
 		case HUNT:
-			return new HuntQuest(npc, player, questName);
+			return new HuntQuest(npc, player, questName, objectives);
 		case MOVE_DISTANCE:
-			return new DistanceQuest(npc, player, questName);
+			return new DistanceQuest(npc, player, questName, objectives);
 		case MOVE_LOCATION:
-			return new LocationQuest(npc, player, questName);
+			return new LocationQuest(npc, player, questName, objectives);
 		case PLAYER_COMBAT:
-			return new CombatQuest(npc, player, questName);
+			return new CombatQuest(npc, player, questName, objectives);
 		default:
 			return null;
 		}
@@ -56,16 +59,17 @@ public class QuestFactory {
 		for (String questName : quests.getKeys(null)) {
 			String path = questName + ".";
 			Quest quest = new Quest(questName);
-			String description = quests.getString(path + "texts.description");
-			String completion = quests.getString(path + "texts.completion");
-			quest.setDescription(description);
-			quest.setCompletedText(completion);
+			quest.setDescription(quests.getString(path + "texts.description"));
+			quest.setCompletedText(quests.getString(path + "texts.completion"));
 			if (quests.pathExists(path + "rewards")) {
 				for (String reward : quests.getKeys(path + "rewards")) {
 					path += "rewards." + reward + ".";
 					String type = quests.getString(path + "type");
 					boolean take = quests.getBoolean(path + "take");
-					if (type.equals("item")) {
+					if (type.equals("health")) {
+						int amount = quests.getInt(path + "amount");
+						quest.addReward(new HealthReward(amount, take));
+					} else if (type.equals("item")) {
 						int id = quests.getInt(path + "id");
 						int amount = quests.getInt(path + "amount");
 						byte data = 0;
@@ -77,9 +81,6 @@ public class QuestFactory {
 					} else if (type.equals("money")) {
 						double amount = quests.getDouble(path + "amount");
 						quest.addReward(new EconpluginReward(amount, take));
-					} else if (type.equals("health")) {
-						int amount = quests.getInt(path + "amount");
-						quest.addReward(new HealthReward(amount, take));
 					} else if (type.equals("permission")) {
 						String permission = quests.getString(path
 								+ "permission");
@@ -87,6 +88,9 @@ public class QuestFactory {
 					} else if (type.equals("quest")) {
 						String questToGive = quests.getString(path + "quest");
 						quest.addReward(new QuestReward(questToGive));
+					} else if (type.equals("rank")) {
+						String rank = quests.getString(path + "rank");
+						quest.addReward(new RankReward(rank));
 					}
 				}
 			}

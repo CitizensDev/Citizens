@@ -127,8 +127,7 @@ public class TraderTask implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void handleTraderClick(int slot, PlayerInventory npcInv) {
 		npcInv.setItem(slot, previousTraderInv.getItem(slot));
-		ItemStack item = npcInv.getItem(slot);
-		Stockable stockable = getStockable(item, "sold", false);
+		Stockable stockable = getStockable(npcInv.getItem(slot), "sold", false);
 		if (stockable == null) {
 			return;
 		}
@@ -145,7 +144,7 @@ public class TraderTask implements Runnable {
 		// /trader sell 1:1 1:5
 		// stocking is 1 stone
 		// price is 5 stone
-		ItemStack buying = stockable.getStocking();
+		ItemStack buying = stockable.getStocking().clone();
 		EconomyHandler.pay(new Payment(stockable.getPrice()), player, -1);
 		if (mode != Mode.INFINITE) {
 			EconomyHandler.pay(new Payment(buying), npc, slot);
@@ -182,8 +181,7 @@ public class TraderTask implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void handlePlayerClick(int slot, PlayerInventory playerInv) {
 		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
-		ItemStack i = playerInv.getItem(slot);
-		Stockable stockable = getStockable(i, "bought", true);
+		Stockable stockable = getStockable(playerInv.getItem(slot), "bought", true);
 		if (stockable == null) {
 			return;
 		}
@@ -197,7 +195,7 @@ public class TraderTask implements Runnable {
 		if (checkMiscellaneous(playerInv, stockable, false)) {
 			return;
 		}
-		ItemStack selling = stockable.getStocking();
+		ItemStack selling = stockable.getStocking().clone();
 		if (mode != Mode.INFINITE) {
 			EconomyHandler.pay(new Payment(stockable.getPrice()), npc, -1);
 		}

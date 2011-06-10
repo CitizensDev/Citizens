@@ -96,13 +96,23 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		if (!this.onGround
-				|| ((Player) this.getBukkitEntity()).getEyeLocation().getY() % 1 <= 0.62) {
+		if (chunkLoaded()
+				&& (!this.onGround || ((Player) this.getBukkitEntity())
+						.getEyeLocation().getY() % 1 <= 0.62)) {
 			float yaw = this.yaw;
 			float pitch = this.pitch;
 			this.a(0, 0);
 			this.yaw = yaw;
 			this.pitch = pitch;
 		}
+	}
+
+	private boolean chunkLoaded() {
+		return this
+				.getBukkitEntity()
+				.getWorld()
+				.isChunkLoaded(
+						this.getBukkitEntity().getLocation().getBlock()
+								.getChunk());
 	}
 }

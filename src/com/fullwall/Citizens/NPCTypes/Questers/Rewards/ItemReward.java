@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.NPCTypes.Questers.Reward;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 
 public class ItemReward implements Reward {
 	private final ItemStack reward;
@@ -23,5 +24,20 @@ public class ItemReward implements Reward {
 					.getInventory().getHeldItemSlot());
 		else
 			player.getWorld().dropItemNaturally(player.getLocation(), reward);
+	}
+
+	@Override
+	public RewardType getType() {
+		return RewardType.ITEM;
+	}
+
+	@Override
+	public Object getReward() {
+		return reward;
+	}
+
+	@Override
+	public boolean isTake() {
+		return take;
 	}
 }

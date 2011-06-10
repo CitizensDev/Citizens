@@ -7,16 +7,19 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 public class Constants {
 	public static int banditStealRadius = 5;
 	public static int evilNPCTameItem = 354;
-	public static int maxEvilNPCs = 2;
+	public static int evilNPCTameChance = 5;
+	public static int evilLookRange = 25;
 	public static int healerGiveHealthItem = 35;
 	public static int healerTakeHealthItem = 276;
 	public static int healerHealthRegenIncrement = 12000;
 	public static int wizardManaRegenRate = 6000;
+	public static int maxEvilNPCs = 2;
 	public static int maxNPCsPerPlayer = 10;
 	public static int maxStationaryTicks = -1;
 	public static int maxPathingTicks = -1;
 	public static int saveDelay = 72000;
 	public static int tickDelay = 1;
+	public static int spawnEvilDelay = 200;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
 	public static int wizardManaRegenItem = 348;
@@ -42,6 +45,7 @@ public class Constants {
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean defaultTalkWhenClose = false;
 	public static boolean saveOften = true;
+	public static boolean spawnEvil = false;
 	public static boolean useEconomy = true;
 	public static boolean useEconplugin = false;
 	public static boolean useItemList = true;
@@ -64,6 +68,7 @@ public class Constants {
 				.getBoolean("general.defaults.enable-following");
 		defaultTalkWhenClose = settings
 				.getBoolean("general.defaults.talk-when-close");
+		spawnEvil = settings.getBoolean("general.evil.spawn");
 		useNPCColours = settings.getBoolean("general.colors.use-npc-colours");
 		useItemList = settings.getBoolean("items.item-list-on");
 		saveOften = settings.getBoolean("ticks.saving.save-often");
@@ -90,6 +95,8 @@ public class Constants {
 		// int defaults
 		banditStealRadius = settings.getInt("range.bandits.steal-radius");
 		evilNPCTameItem = settings.getInt("items.evil.tame-item");
+		evilNPCTameChance = settings.getInt("general.evil.tame-chance");
+		evilLookRange = settings.getInt("general.evil.look-range");
 		maxEvilNPCs = settings.getInt("general.evil.max-to-spawn");
 		healerGiveHealthItem = settings
 				.getInt("items.healers.give-health-item");
@@ -103,6 +110,7 @@ public class Constants {
 		maxStationaryTicks = settings.getInt("ticks.pathing.max-stationary");
 		saveDelay = settings.getInt("ticks.saving.delay");
 		tickDelay = settings.getInt("ticks.general.delay");
+		spawnEvilDelay = settings.getInt("general.evil.spawn-delay");
 		wizardMaxLocations = settings
 				.getInt("general.wizards.wizard-max-locations");
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");

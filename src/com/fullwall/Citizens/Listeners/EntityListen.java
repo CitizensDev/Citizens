@@ -48,7 +48,7 @@ public class EntityListen extends EntityListener implements Listener {
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			HumanNPC npc = NPCManager.get(e.getEntity());
-			if (e.getEntity() instanceof Player && npc != null) {
+			if (npc != null && e.getEntity() instanceof Player) {
 				e.setCancelled(true);
 			}
 			if (npc != null && e.getDamager() instanceof Player) {

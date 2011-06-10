@@ -14,7 +14,6 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.LivingEntity;
 
 public class NPCSpawner {
-
 	protected static WorldServer getWorldServer(World world) {
 		if (world instanceof CraftWorld) {
 			return ((CraftWorld) world).getHandle();
@@ -47,7 +46,7 @@ public class NPCSpawner {
 
 	public static void removeBasicHumanNpc(HumanNPC npc) {
 		try {
-			npc.getMCEntity().world.removeEntity(npc.getMCEntity());
+			npc.getHandle().world.removeEntity(npc.getHandle());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

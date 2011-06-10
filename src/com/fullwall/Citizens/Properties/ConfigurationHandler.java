@@ -92,19 +92,21 @@ public class ConfigurationHandler implements Storage {
 	}
 
 	@Override
-	public synchronized void load() {
+	public void load() {
 		config.load();
 	}
 
 	@Override
-	public synchronized void save() {
+	public void save() {
 		this.config.save();
 	}
 
 	private void create() {
 		File file = getFile();
 		try {
-			Messaging.log("Creating new config file at " + fileName + ".");
+			if (!fileName.contains("profile")) {
+				Messaging.log("Creating new config file at " + fileName + ".");
+			}
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {

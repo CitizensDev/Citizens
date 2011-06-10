@@ -7,6 +7,7 @@ import org.bukkit.event.Event;
 
 import com.fullwall.Citizens.NPCTypes.Questers.PlayerProfile;
 import com.fullwall.Citizens.NPCTypes.Questers.Quest;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestManager {
 	public enum QuestType {
@@ -41,11 +42,21 @@ public class QuestManager {
 		/**
 		 * Kill players
 		 */
-		PLAYER_COMBAT;
+		PLAYER_COMBAT,
+		NULL;
 
 		public static QuestType getType(String string) {
 			return QuestType.valueOf(string);
 		}
+	}
+
+	public enum RewardType {
+		HEALTH,
+		ITEM,
+		MONEY,
+		PERMISSION,
+		QUEST,
+		RANK;
 	}
 
 	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
@@ -62,18 +73,33 @@ public class QuestManager {
 	}
 
 	public static void incrementQuest(Player player, Event event) {
-		getProfile(player.getName()).getProgress().updateProgress(event);
+		boolean completed = getProfile(player.getName()).getProgress()
+				.updateProgress(event);
+		if (completed) {
+			QuestProgress progress = getProfile(player.getName()).getProgress();
+			progress.cycle();
+		}
 	}
 
 	public static boolean hasQuest(Player player) {
 		return getProfile(player.getName()).hasQuest();
 	}
 
-	private static PlayerProfile getProfile(String name) {
+	public static PlayerProfile getProfile(String name) {
 		return cachedProfiles.get(name);
 	}
 
 	public static Quest getQuest(String questName) {
 		return quests.get(questName);
+	}
+
+	public static void assignQuest(HumanNPC npc, Player player, String quest) {
+		PlayerProfile profile = getProfile(player.getName());
+		profile.setProgress(new QuestProgress(npc, player, quest));
+		setProfile(player.getName(), profile);
+	}
+
+	public static void setProfile(String name, PlayerProfile profile) {
+		cachedProfiles.put(name, profile);
 	}
 }
