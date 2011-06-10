@@ -1,6 +1,7 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import net.minecraft.server.Entity;
+import net.minecraft.server.EntityArrow;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityPlayer;
@@ -204,17 +205,37 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void attackEntity(EntityLiving entity) {
-		this.performAction(Action.SWING_ARM);
-		LivingEntity e = (LivingEntity) entity.getBukkitEntity();
-		e.damage(this.inventory.a(entity));
+		if (holdingBow()) {
+			double distX = entity.locX - this.locX;
+			double distZ = entity.locZ - this.locZ;
+			EntityArrow entityarrow = new EntityArrow(this.world, this);
+
+			++entityarrow.locY;
+			double arrowDistY = entity.locY - 0.20000000298023224D
+					- entityarrow.locY;
+			float distance = (float) (Math.sqrt(distX * distX + distZ * distZ) * 0.2F);
+
+			this.world.makeSound(this, "random.bow", 1.0F,
+					1.0F / (this.random.nextFloat() * 0.4F + 0.8F));
+			this.world.addEntity(entityarrow);
+			entityarrow.a(distX, arrowDistY + distance, distZ, 0.6F, 12.0F);
+		} else {
+			this.performAction(Action.SWING_ARM);
+			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
+			e.damage(this.inventory.a(entity));
+		}
 		hasAttacked = true;
 		incrementAttackTimes();
 	}
 
+	private boolean holdingBow() {
+		return this.inventory.items[this.inventory.itemInHandIndex].id == 261;
+	}
+
 	private boolean withinAttackRange(Entity entity, float distance) {
-		if (this.attackTicks <= 0 && distance < 1.5F
-				&& entity.boundingBox.e > this.boundingBox.b
-				&& entity.boundingBox.b < this.boundingBox.e)
+		if ((holdingBow() && distance < 10)
+				|| (this.attackTicks <= 0 && distance < 1.5F
+						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e))
 			return true;
 		return false;
 	}

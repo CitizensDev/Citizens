@@ -70,6 +70,7 @@ public class EvilTask implements Runnable {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
 					if (world.getBlockTypeIdAt(x, y, z) == 0
 							&& world.getBlockTypeIdAt(x, y, z) == 0) {
+						// TODO: check if entity is already there.
 						return NPCSpawner
 								.spawnBasicHumanNpc(0,
 										UtilityProperties.getRandomName(),

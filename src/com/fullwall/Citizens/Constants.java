@@ -5,6 +5,12 @@ import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
+	public enum Constant {
+		Constant() {
+
+		}
+	}
+
 	public static int banditStealRadius = 5;
 	public static int evilNPCTameItem = 354;
 	public static int evilNPCTameChance = 5;
