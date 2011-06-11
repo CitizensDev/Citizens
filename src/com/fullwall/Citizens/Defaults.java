@@ -34,7 +34,7 @@ public class Defaults {
 		nodes.put("general.evil.spawn-delay", "200");
 		nodes.put("general.evil.max-to-spawn", "2");
 		nodes.put("general.evil.look-range", "25");
-		nodes.put("general.evil.names", "Herobrine, aPunch, fullwall,");
+		nodes.put("general.evil.names", "Herobrine,aPunch,fullwall,");
 		nodes.put("general.evil.tame-chance", "5");
 		// Item Settings
 		nodes.put("items.item-list-on", "true");

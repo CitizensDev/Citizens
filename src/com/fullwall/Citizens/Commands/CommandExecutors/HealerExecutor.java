@@ -86,7 +86,7 @@ public class HealerExecutor implements CommandExecutor {
 						}
 					} else {
 						sender.sendMessage(ChatColor.RED
-								+ "That's not a number.");
+								+ "That's not a valid number.");
 					}
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

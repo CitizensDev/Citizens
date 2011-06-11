@@ -7,7 +7,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuesterProperties extends Saveable {
 	private final PropertyHandler questers = new PropertyHandler(
-			"plugins/Citizens/Questers/Citizens.questers");
+			"plugins/Citizens/Questers/questers.citizens");
 
 	@Override
 	public void saveFiles() {

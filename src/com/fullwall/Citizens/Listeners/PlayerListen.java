@@ -32,7 +32,6 @@ public class PlayerListen extends PlayerListener implements Listener {
 				plugin);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
 				Event.Priority.Normal, plugin);
-
 	}
 
 	@Override

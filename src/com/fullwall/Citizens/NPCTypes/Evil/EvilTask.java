@@ -97,8 +97,9 @@ public class EvilTask implements Runnable {
 			if (entity instanceof LivingEntity) {
 				Location loc = entity.getLocation();
 				if (loc.getBlockX() == x && loc.getBlockY() == y
-						&& loc.getBlockZ() == z)
+						&& loc.getBlockZ() == z) {
 					return false;
+				}
 			}
 		}
 		return true;

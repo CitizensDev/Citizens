@@ -124,7 +124,6 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
-		// TODO How to get killer from this event - HuntQuest
 		if (EvilTask.getEvil(event.getEntity()) != null) {
 			EvilTask.despawn(event.getEntity());
 		}

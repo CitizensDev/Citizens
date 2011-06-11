@@ -36,6 +36,7 @@ public class Citizens extends JavaPlugin {
 	private final CustomListen customListener = new CustomListen(this);
 	private final WorldListen worldListener = new WorldListen(this);
 	private final PluginListen serverListener = new PluginListen(this);
+	// private final PlayerListen playerListener = new PlayerListen(this);
 	public final BasicNPCHandler basicNPCHandler = new BasicNPCHandler(this);
 
 	public static Citizens plugin;
@@ -45,7 +46,7 @@ public class Citizens extends JavaPlugin {
 	public static String separatorChar = "/";
 
 	private static final String codename = "Realist";
-	private static final String letter = "g";
+	private static final String letter = "h";
 	private static String version = "1.0.8" + letter;
 
 	/**
@@ -115,6 +116,7 @@ public class Citizens extends JavaPlugin {
 		customListener.registerEvents();
 		worldListener.registerEvents();
 		serverListener.registerEvents();
+		// playerListener.registerEvents();
 
 		// Register files.
 		PropertyManager.registerProperties();
