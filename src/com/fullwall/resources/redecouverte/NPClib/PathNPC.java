@@ -28,6 +28,7 @@ public class PathNPC extends EntityPlayer {
 	private boolean targetAggro = false;
 	private boolean hasAttacked = false;
 	protected boolean jumping = false;
+	private boolean randomPather = false;
 	private int pathTicks = 0;
 	private int pathTickLimit = -1;
 	private int stationaryTicks = 0;
@@ -47,6 +48,8 @@ public class PathNPC extends EntityPlayer {
 	public void updateMove() {
 		hasAttacked = false;
 		jumping = false;
+		if (randomPather)
+			takeRandomPath();
 		updateTarget();
 		updatePathingState();
 		if (this.pathEntity != null) {
@@ -250,23 +253,7 @@ public class PathNPC extends EntityPlayer {
 		return 0.5F - this.world.m(i, j, k);
 	}
 
-	public Entity findClosestPlayer(double range) {
-		EntityHuman entityhuman = this.world.a(this, range);
-		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
-	}
-
-	public void targetClosestPlayer(boolean aggro, double range) {
-		if (this.target == null) {
-			this.target = this.findClosestPlayer(range);
-			this.targetAggro = aggro;
-			if (this.target != null) {
-				this.pathEntity = this.world.findPath(this, this.target,
-						pathingRange);
-			}
-		}
-	}
-
-	public void takeRandomPath() {
+	private void takeRandomPath() {
 		if (!hasAttacked && this.target != null
 				&& (this.pathEntity == null || this.random.nextInt(20) == 0)) {
 			this.pathEntity = this.world.findPath(this, this.target,
@@ -298,6 +285,26 @@ public class PathNPC extends EntityPlayer {
 			}
 			if (flag) {
 				createPathEntity(x, y, z);
+			}
+		}
+	}
+
+	public void setRandomPather(boolean random) {
+		this.randomPather = random;
+	}
+
+	public Entity findClosestPlayer(double range) {
+		EntityHuman entityhuman = this.world.a(this, range);
+		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
+	}
+
+	public void targetClosestPlayer(boolean aggro, double range) {
+		if (this.target == null) {
+			this.target = this.findClosestPlayer(range);
+			this.targetAggro = aggro;
+			if (this.target != null) {
+				this.pathEntity = this.world.findPath(this, this.target,
+						pathingRange);
 			}
 		}
 	}

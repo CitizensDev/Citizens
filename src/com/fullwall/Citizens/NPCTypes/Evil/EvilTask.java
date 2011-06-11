@@ -34,6 +34,7 @@ public class EvilTask implements Runnable {
 							new ItemStack(weapons[new Random()
 									.nextInt(weapons.length)], 1));
 					npc.setEvil(true);
+					npc.getHandle().setRandomPather(true);
 					evilNPCs.add(npc);
 				}
 			}
@@ -120,6 +121,15 @@ public class EvilTask implements Runnable {
 			evilNPCs.remove(count);
 	}
 
+	public static HumanNPC getEvil(Entity entity) {
+		for (HumanNPC npc : evilNPCs) {
+			if (npc.getPlayer().getEntityId() == entity.getEntityId()) {
+				return npc;
+			}
+		}
+		return null;
+	}
+
 	public static class EvilTick implements Runnable {
 		@Override
 		public void run() {
@@ -130,19 +140,10 @@ public class EvilTask implements Runnable {
 							&& npc.getHandle().findClosestPlayer(25) != null) {
 						npc.getHandle().targetClosestPlayer(true, 25);
 					} else {
-						npc.getHandle().takeRandomPath();
+						npc.getHandle().updateMove();
 					}
 				}
 			}
 		}
-	}
-
-	public static HumanNPC getEvil(Entity entity) {
-		for (HumanNPC npc : evilNPCs) {
-			if (npc.getPlayer().getEntityId() == entity.getEntityId()) {
-				return npc;
-			}
-		}
-		return null;
 	}
 }
