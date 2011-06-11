@@ -7,6 +7,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -21,6 +22,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 public class EvilTask implements Runnable {
 	public final static List<HumanNPC> evilNPCs = new ArrayList<HumanNPC>();
 	private final Integer[] weapons = { 261, 267, 268, 272, 276, 283 };
+	private static int heldItem = 261;
 
 	@Override
 	public void run() {
@@ -33,6 +35,7 @@ public class EvilTask implements Runnable {
 					npc.getInventory().setItemInHand(
 							new ItemStack(weapons[new Random()
 									.nextInt(weapons.length)], 1));
+					heldItem = npc.getInventory().getItemInHand().getTypeId();
 					npc.setEvil(true);
 					npc.getHandle().setRandomPather(true);
 					evilNPCs.add(npc);
@@ -114,11 +117,33 @@ public class EvilTask implements Runnable {
 			if (evil.getPlayer().getEntityId() == entity.getEntityId()) {
 				NPCSpawner.removeBasicHumanNpc(evil);
 				found = true;
-			} else
+			} else {
 				++count;
+			}
 		}
-		if (found)
+		if (found) {
 			evilNPCs.remove(count);
+			dropEvilLoot(entity);
+		}
+	}
+
+	private static void dropEvilLoot(Entity entity) {
+		entity.getWorld().dropItemNaturally(entity.getLocation(),
+				new ItemStack(Material.getMaterial(heldItem), 1));
+		Random random = new Random();
+		List<Integer> itemIDs = new ArrayList<Integer>();
+		for (int id = 0; id < 400; id++) {
+			if (Material.getMaterial(id) != null) {
+				itemIDs.add(id);
+			}
+		}
+		Material randomItem = Material.getMaterial(random.nextInt(itemIDs
+				.size()));
+		if (randomItem == null) {
+			return;
+		}
+		entity.getWorld().dropItemNaturally(entity.getLocation(),
+				new ItemStack(randomItem, random.nextInt(2)));
 	}
 
 	public static HumanNPC getEvil(Entity entity) {
