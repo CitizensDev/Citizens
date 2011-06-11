@@ -22,7 +22,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity pathEntity;
-	private Entity target;
+	protected Entity target;
 	protected NPCAnimator animations = new NPCAnimator(this);
 
 	private boolean targetAggro = false;
@@ -297,7 +297,7 @@ public class PathNPC extends EntityPlayer {
 				}
 			}
 			if (flag) {
-				this.pathEntity = this.world.a(this, x, y, z, pathingRange);
+				createPathEntity(x, y, z);
 			}
 		}
 	}
@@ -346,6 +346,10 @@ public class PathNPC extends EntityPlayer {
 
 	public void cancelTarget() {
 		resetTarget();
+	}
+
+	public boolean hasTarget() {
+		return this.target == null;
 	}
 
 	public void performAction(Action action) {

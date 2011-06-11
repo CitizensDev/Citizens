@@ -5,12 +5,6 @@ import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
-	public enum Constant {
-		Constant() {
-
-		}
-	}
-
 	public static int banditStealRadius = 5;
 	public static int evilNPCTameItem = 354;
 	public static int evilNPCTameChance = 5;
@@ -125,8 +119,8 @@ public class Constants {
 
 		// ####Economy settings####
 		Storage economy = UtilityProperties.getEconomySettings();
-		useEconplugin = economy.getBoolean("economy.use-economy");
-		useEconomy = economy.getBoolean("economy.use-econplugin");
+		useEconplugin = economy.getBoolean("economy.use-econplugin");
+		useEconomy = economy.getBoolean("economy.use-economy");
 
 		EconomyHandler.setUpVariables();
 	}

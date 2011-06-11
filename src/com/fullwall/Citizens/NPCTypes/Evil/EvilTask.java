@@ -16,7 +16,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
 public class EvilTask implements Runnable {
-	private final static List<HumanNPC> evilNPCs = new ArrayList<HumanNPC>();
+	public final static List<HumanNPC> evilNPCs = new ArrayList<HumanNPC>();
 	private final Integer[] weapons = { 261, 267, 268, 272, 276, 283 };
 
 	@Override
@@ -63,19 +63,21 @@ public class EvilTask implements Runnable {
 		}
 		int startX = loc.getBlockX() + offsetX;
 		int startZ = loc.getBlockZ() + offsetZ;
-		int searchY = 1, searchXZ = 4;
+		int searchY = 3, searchXZ = 4;
 		World world = loc.getWorld();
-		for (int y = loc.getBlockY() - searchY; y <= loc.getBlockY() + searchY; ++y) {
+		for (int y = loc.getBlockY() + searchY; y <= loc.getBlockY() - searchY; --y) {
 			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					if (world.getBlockTypeIdAt(x, y, z) == 0
-							&& world.getBlockTypeIdAt(x, y, z) == 0) {
-						// TODO: check if entity is already there.
-						return NPCSpawner
-								.spawnBasicHumanNpc(0,
-										UtilityProperties.getRandomName(),
-										loc.getWorld(), x, y, z,
-										random.nextInt(360), 0);
+					if (world.getBlockTypeIdAt(x, y - 1, z) != 0
+							&& world.getBlockTypeIdAt(x, y, z) == 0
+							&& world.getBlockTypeIdAt(x, y + 1, z) == 0) {
+						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
+							// TODO: check if entity is already there.
+							return NPCSpawner.spawnBasicHumanNpc(0,
+									UtilityProperties.getRandomName(),
+									loc.getWorld(), x, y, z,
+									random.nextInt(360), 0);
+						}
 					}
 				}
 			}
@@ -92,13 +94,14 @@ public class EvilTask implements Runnable {
 	public static class EvilTick implements Runnable {
 		@Override
 		public void run() {
-			for (HumanNPC evil : evilNPCs) {
-				if (!evil.getEvil().isTame()) {
+			for (HumanNPC npc : evilNPCs) {
+				if (!npc.getEvil().isTame()) {
 					// TODO: better range? changes to pathing?
-					if (evil.getHandle().findClosestPlayer(25) == null) {
-						evil.getHandle().takeRandomPath();
+					if (!npc.getHandle().hasTarget()
+							&& npc.getHandle().findClosestPlayer(25) != null) {
+						npc.getHandle().targetClosestPlayer(true, 25);
 					} else {
-						evil.getHandle().targetClosestPlayer(true, 25);
+						npc.getHandle().takeRandomPath();
 					}
 				}
 			}

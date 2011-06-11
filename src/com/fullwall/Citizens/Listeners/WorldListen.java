@@ -11,6 +11,7 @@ import org.bukkit.plugin.PluginManager;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.Misc.NPCLocation;
+import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -33,28 +34,36 @@ public class WorldListen extends WorldListener implements Listener {
 	}
 
 	@Override
-	public void onChunkUnload(ChunkUnloadEvent e) {
+	public void onChunkUnload(ChunkUnloadEvent event) {
 		// Stores NPC location/name for later respawn.
 		for (Integer entry : NPCManager.GlobalUIDs.keySet()) {
 			HumanNPC npc = NPCManager.get(entry);
 			if (npc != null
 					&& npc.getLocation().getBlock().getChunk()
-							.equals(e.getChunk())) {
+							.equals(event.getChunk())) {
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, npc.getUID());
 				NPCManager.despawn(entry);
 			}
 		}
+		int count = 0;
+		for (HumanNPC entry : EvilTask.evilNPCs) {
+			if (entry.getLocation().getBlock().getChunk()
+					.equals(event.getChunk())) {
+				EvilTask.evilNPCs.remove(count);
+			}
+			++count;
+		}
 	}
 
 	@Override
-	public void onChunkLoad(ChunkLoadEvent e) {
+	public void onChunkLoad(ChunkLoadEvent event) {
 		// Respawns any existing NPCs in the loaded chunk
 		for (NPCLocation tempLoc : toRespawn.keySet()) {
-			if (e.getChunk().getWorld()
+			if (event.getChunk().getWorld()
 					.getChunkAt(tempLoc.getX(), tempLoc.getZ())
-					.equals(e.getChunk())) {
+					.equals(event.getChunk())) {
 				NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
 				toRespawn.remove(tempLoc);
 			}
