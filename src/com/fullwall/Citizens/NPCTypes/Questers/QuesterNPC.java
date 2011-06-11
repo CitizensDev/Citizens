@@ -83,10 +83,18 @@ public class QuesterNPC implements Toggleable, Clickable {
 		display.setSmoothTransition(true);
 		display.header(ChatColor.GREEN + "======= Quest %x/%y - "
 				+ StringUtils.wrap(quest.getName()) + " =======");
-		for (String push : quest.getDescription().split("<br>"))
+		for (String push : quest.getDescription().split("<br>")) {
 			display.push(push);
+			if (display.elements() % 8 == 0 && display.maxPages() == 1) {
+				display.push(ChatColor.GOLD
+						+ "Right click to continue description.");
+			} else if (display.elements() % 9 == 0) {
+				display.push(ChatColor.GOLD
+						+ "Right click to continue description.");
+			}
+		}
 		if (display.maxPages() == 1)
-			display.push(ChatColor.GOLD + "Right click to accept.");
+			player.sendMessage(ChatColor.GOLD + "Right click to accept.");
 		display.process(1);
 	}
 

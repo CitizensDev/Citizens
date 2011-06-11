@@ -45,6 +45,9 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
+		if (EvilTask.creatureNPCs.get(event.getEntity().getEntityId()) != null) {
+			EvilTask.onDamage(event.getEntity(), event);
+		}
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			HumanNPC npc = NPCManager.get(e.getEntity());
@@ -125,7 +128,7 @@ public class EntityListen extends EntityListener implements Listener {
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
 		if (EvilTask.getEvil(event.getEntity()) != null) {
-			EvilTask.despawn(event.getEntity());
+			EvilTask.onEntityDeath(event.getEntity());
 		}
 	}
 }

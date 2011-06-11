@@ -13,6 +13,7 @@ import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.Misc.NPCLocation;
 import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.resources.redecouverte.NPClib.CreatureNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WorldListen extends WorldListener implements Listener {
@@ -48,10 +49,10 @@ public class WorldListen extends WorldListener implements Listener {
 			}
 		}
 		int count = 0;
-		for (HumanNPC entry : EvilTask.evilNPCs) {
-			if (entry.getLocation().getBlock().getChunk()
+		for (CreatureNPC entry : EvilTask.creatureNPCs.values()) {
+			if (entry.getBukkitEntity().getLocation().getBlock().getChunk()
 					.equals(event.getChunk())) {
-				EvilTask.evilNPCs.remove(count);
+				EvilTask.despawn(entry);
 			}
 			++count;
 		}

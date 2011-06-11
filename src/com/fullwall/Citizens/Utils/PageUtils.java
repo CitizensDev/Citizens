@@ -80,5 +80,9 @@ public class PageUtils {
 		private String colour(String line) {
 			return StringUtils.colourise(line);
 		}
+
+		public int elements() {
+			return lines.size();
+		}
 	}
 }

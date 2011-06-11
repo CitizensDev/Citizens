@@ -7,7 +7,7 @@ import com.fullwall.Citizens.Constants;
 public class NPC {
 
 	private String name;
-	private int UID;
+	private final int UID;
 
 	public NPC(int UID, String name) {
 		this.name = name;

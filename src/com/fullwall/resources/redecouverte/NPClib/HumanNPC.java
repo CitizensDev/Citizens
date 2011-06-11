@@ -20,7 +20,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
 
 public class HumanNPC extends NPC {
 
-	private final CraftNPC mcEntity;
+	private CraftNPC mcEntity;
 
 	private double balance;
 	private boolean isTrader = false;
@@ -57,6 +57,10 @@ public class HumanNPC extends NPC {
 
 	public CraftNPC getHandle() {
 		return this.mcEntity;
+	}
+
+	public void setHandle(CraftNPC handle) {
+		this.mcEntity = handle;
 	}
 
 	public TraderNPC getTrader() {
