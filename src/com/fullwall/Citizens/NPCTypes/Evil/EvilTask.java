@@ -17,7 +17,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
 public class EvilTask implements Runnable {
 	private final static List<HumanNPC> evilNPCs = new ArrayList<HumanNPC>();
-	private final Integer[] swords = { 267, 268, 272, 276, 283 };
+	private final Integer[] weapons = { 261, 267, 268, 272, 276, 283 };
 
 	@Override
 	public void run() {
@@ -26,11 +26,11 @@ public class EvilTask implements Runnable {
 			Player player = online[new Random().nextInt(online.length)];
 			if (evilNPCs.size() <= Constants.maxEvilNPCs - 1) {
 				// TODO: better spawning code
-				HumanNPC npc = spawnNPC(player.getLocation());
+				HumanNPC npc = spawnEvil(player.getLocation());
 				if (npc != null) {
 					npc.getInventory().setItemInHand(
-							new ItemStack(swords[new Random()
-									.nextInt(swords.length)], 1));
+							new ItemStack(weapons[new Random()
+									.nextInt(weapons.length)], 1));
 					npc.setEvil(true);
 					evilNPCs.add(npc);
 				}
@@ -38,7 +38,7 @@ public class EvilTask implements Runnable {
 		}
 	}
 
-	private HumanNPC spawnNPC(Location loc) {
+	private HumanNPC spawnEvil(Location loc) {
 		Random random = new Random(System.currentTimeMillis());
 		int offsetX = 0, offsetZ = 0;
 		int offset = 25;
@@ -92,13 +92,14 @@ public class EvilTask implements Runnable {
 	public static class EvilTick implements Runnable {
 		@Override
 		public void run() {
-			for (HumanNPC hnpc : evilNPCs) {
-				if (!hnpc.getEvil().isTame()) {
+			for (HumanNPC evil : evilNPCs) {
+				if (!evil.getEvil().isTame()) {
 					// TODO: better range? changes to pathing?
-					if (hnpc.getHandle().findClosestPlayer(25) == null)
-						hnpc.getHandle().takeRandomPath();
-					else
-						hnpc.getHandle().targetClosestPlayer(true, 25);
+					if (evil.getHandle().findClosestPlayer(25) == null) {
+						evil.getHandle().takeRandomPath();
+					} else {
+						evil.getHandle().targetClosestPlayer(true, 25);
+					}
 				}
 			}
 		}

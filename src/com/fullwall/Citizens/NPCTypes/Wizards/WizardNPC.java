@@ -8,11 +8,11 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.Enums.WizardMode;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;

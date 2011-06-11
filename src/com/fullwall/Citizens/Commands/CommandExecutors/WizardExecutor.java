@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.Enums.WizardMode;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;

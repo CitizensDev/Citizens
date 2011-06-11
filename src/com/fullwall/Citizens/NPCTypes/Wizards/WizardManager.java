@@ -11,6 +11,35 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WizardManager {
+	/**
+	 * Wizard modes
+	 */
+	public enum WizardMode {
+		/**
+		 * Teleports players
+		 */
+		TELEPORT,
+		/**
+		 * Changes the time of the world
+		 */
+		TIME,
+		/**
+		 * Spawns mobs into the world
+		 */
+		SPAWN,
+		/**
+		 * Strikes lightning/makes it rain
+		 */
+		WEATHER;
+
+		public static WizardMode parse(String string) {
+			try {
+				return WizardMode.valueOf(string.toUpperCase());
+			} catch (Exception ex) {
+				return null;
+			}
+		}
+	}
 
 	/**
 	 * Teleport a player to one of a wizard's locations

@@ -26,34 +26,4 @@ public class Enums {
 			}
 		}
 	}
-
-	/**
-	 * Wizard modes
-	 */
-	public enum WizardMode {
-		/**
-		 * Teleports players
-		 */
-		TELEPORT,
-		/**
-		 * Changes the time of the world
-		 */
-		TIME,
-		/**
-		 * Spawns mobs into the world
-		 */
-		SPAWN,
-		/**
-		 * Strikes lightning/makes it rain
-		 */
-		WEATHER;
-
-		public static WizardMode parse(String string) {
-			try {
-				return WizardMode.valueOf(string.toUpperCase());
-			} catch (Exception ex) {
-				return null;
-			}
-		}
-	}
 }

@@ -2,7 +2,7 @@ package com.fullwall.Citizens.Properties.Properties;
 
 import org.bukkit.entity.CreatureType;
 
-import com.fullwall.Citizens.Enums.WizardMode;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
@@ -59,7 +59,7 @@ public class WizardProperties extends Saveable {
 	}
 
 	private CreatureType getMob(int UID) {
-		if(CreatureType.fromName(mob.getString(UID)) != null) {
+		if (CreatureType.fromName(mob.getString(UID)) != null) {
 			return CreatureType.fromName(mob.getString(UID));
 		}
 		System.out.println("[Citizens] Error.");
