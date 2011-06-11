@@ -1,7 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,6 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -48,13 +48,12 @@ public class EntityListen extends EntityListener implements Listener {
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			HumanNPC npc = NPCManager.get(e.getEntity());
-			if (npc != null && e.getEntity() instanceof Player) {
-				e.setCancelled(true);
-			}
-			if (npc != null && e.getDamager() instanceof Player) {
-				Entity entity = e.getDamager();
-				if (entity instanceof Player) {
-					Player player = (Player) entity;
+			if (npc != null) {
+				if (e.getEntity() instanceof Player) {
+					e.setCancelled(true);
+				}
+				if (e.getDamager() instanceof Player) {
+					Player player = (Player) e.getDamager();
 					if (npc.isHealer()) {
 						npc.getHealer().onLeftClick(player, npc);
 					}
@@ -101,18 +100,21 @@ public class EntityListen extends EntityListener implements Listener {
 									(Player) e.getTarget()));
 					plugin.getServer().getPluginManager().callEvent(ev);
 				}
-				if (npc.isTrader()) {
+				if (npc.isTrader())
 					npc.getTrader().onRightClick(player, npc);
-				}
-				if (npc.isWizard()) {
+
+				if (npc.isWizard())
 					npc.getWizard().onRightClick(player, npc);
-				}
-				if (npc.isBlacksmith()) {
+
+				if (npc.isBlacksmith())
 					npc.getBlacksmith().onRightClick(player, npc);
-				}
-				if (npc.isBandit()) {
+
+				if (npc.isBandit())
 					npc.getBandit().onRightClick(player, npc);
-				}
+
+				if (npc.isQuester())
+					npc.getQuester().onRightClick(player, npc);
+
 				if (npc.isEvil()) {
 					npc.getEvil().onRightClick(player, npc);
 				}
@@ -122,6 +124,9 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
-		// TODO How to get killer from this event?
+		// TODO How to get killer from this event - HuntQuest
+		if (EvilTask.getEvil(event.getEntity()) != null) {
+			EvilTask.despawn(event.getEntity());
+		}
 	}
 }

@@ -102,4 +102,8 @@ public class QuestManager {
 	public static void setProfile(String name, PlayerProfile profile) {
 		cachedProfiles.put(name, profile);
 	}
+
+	public static boolean validQuest(String quest) {
+		return getQuest(quest) == null;
+	}
 }

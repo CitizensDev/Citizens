@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +28,6 @@ public class EvilTask implements Runnable {
 		if (online.length > 0) {
 			Player player = online[new Random().nextInt(online.length)];
 			if (evilNPCs.size() <= Constants.maxEvilNPCs - 1) {
-				// TODO: better spawning code
 				HumanNPC npc = spawnEvil(player.getLocation());
 				if (npc != null) {
 					npc.getInventory().setItemInHand(
@@ -72,11 +74,12 @@ public class EvilTask implements Runnable {
 							&& world.getBlockTypeIdAt(x, y, z) == 0
 							&& world.getBlockTypeIdAt(x, y + 1, z) == 0) {
 						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
-							// TODO: check if entity is already there.
-							return NPCSpawner.spawnBasicHumanNpc(0,
-									UtilityProperties.getRandomName(),
-									loc.getWorld(), x, y, z,
-									random.nextInt(360), 0);
+							if (spaceEntityFree(world.getChunkAt(x, z), x, y, z)) {
+								return NPCSpawner.spawnBasicHumanNpc(0,
+										UtilityProperties.getRandomName(),
+										loc.getWorld(), x, y, z,
+										random.nextInt(360), 0);
+							}
 						}
 					}
 				}
@@ -85,10 +88,36 @@ public class EvilTask implements Runnable {
 		return null;
 	}
 
+	private boolean spaceEntityFree(Chunk chunk, int x, int y, int z) {
+		for (Entity entity : chunk.getEntities()) {
+			if (entity instanceof LivingEntity) {
+				Location loc = entity.getLocation();
+				if (loc.getBlockX() == x && loc.getBlockY() == y
+						&& loc.getBlockZ() == z)
+					return false;
+			}
+		}
+		return true;
+	}
+
 	public static void despawnAll() {
 		for (HumanNPC evil : evilNPCs) {
 			NPCSpawner.removeBasicHumanNpc(evil);
 		}
+	}
+
+	public static void despawn(Entity entity) {
+		int count = 0;
+		boolean found = false;
+		for (HumanNPC evil : evilNPCs) {
+			if (evil.getPlayer().getEntityId() == entity.getEntityId()) {
+				NPCSpawner.removeBasicHumanNpc(evil);
+				found = true;
+			} else
+				++count;
+		}
+		if (found)
+			evilNPCs.remove(count);
 	}
 
 	public static class EvilTick implements Runnable {
@@ -106,5 +135,14 @@ public class EvilTask implements Runnable {
 				}
 			}
 		}
+	}
+
+	public static HumanNPC getEvil(Entity entity) {
+		for (HumanNPC npc : evilNPCs) {
+			if (npc.getPlayer().getEntityId() == entity.getEntityId()) {
+				return npc;
+			}
+		}
+		return null;
 	}
 }

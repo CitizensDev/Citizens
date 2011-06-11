@@ -36,8 +36,8 @@ public class QuesterNPC implements Toggleable, Clickable {
 	 * 
 	 * @param quest
 	 */
-	public void addQuest(Quest quest) {
-		quests.push(quest.getName());
+	public void addQuest(String quest) {
+		quests.push(quest);
 	}
 
 	@Override
@@ -127,5 +127,9 @@ public class QuesterNPC implements Toggleable, Clickable {
 				QuestManager.assignQuest(this.npc, player, quests.peek());
 			}
 		}
+	}
+
+	public ArrayDeque<String> getQuests() {
+		return quests;
 	}
 }

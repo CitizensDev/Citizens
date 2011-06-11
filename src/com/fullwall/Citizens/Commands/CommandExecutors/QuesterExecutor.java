@@ -8,15 +8,17 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuesterExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public QuesterExecutor(Citizens plugin) {
 		this.plugin = plugin;
@@ -54,9 +56,30 @@ public class QuesterExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
+			} else if (args.length == 2 && args[0].equalsIgnoreCase("assign")) {
+				if (Permission.canModify(player, npc, "quester")) {
+					assignQuest(player, npc, args[1]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
 			}
 			PropertyManager.save(npc);
 		}
 		return returnval;
+	}
+
+	private void assignQuest(Player player, HumanNPC npc, String quest) {
+		if (QuestManager.validQuest(quest)) {
+			npc.getQuester().addQuest(quest);
+			player.sendMessage(ChatColor.GREEN + "Quest "
+					+ StringUtils.wrap(quest) + " added to "
+					+ StringUtils.wrap(npc.getName()) + "'s quests. "
+					+ StringUtils.wrap(npc.getName()) + " has "
+					+ StringUtils.wrap(npc.getQuester().getQuests().size())
+					+ " quests.");
+		} else {
+			player.sendMessage(ChatColor.GRAY
+					+ "There is no quest by that name.");
+		}
 	}
 }
