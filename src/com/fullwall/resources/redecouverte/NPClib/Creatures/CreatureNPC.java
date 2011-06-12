@@ -7,6 +7,7 @@ import net.minecraft.server.World;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -55,7 +56,7 @@ public abstract class CreatureNPC extends CraftNPC {
 	 * @param event
 	 */
 	public void onDamage(EntityDamageEvent event) {
-		this.animations.performAction(Action.ACT_HURT);
+		/*this.animations.performAction(Action.ACT_HURT);
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			if (e.getDamager() instanceof Player) {
@@ -70,11 +71,13 @@ public abstract class CreatureNPC extends CraftNPC {
 						- this.yaw;
 				this.a(entity, e.getDamage(), d0, d1);
 				this.world
-						.makeSound(this, this.h(), this.k(),
+						.makeSound(this, "random.hurt", (float) 1.0,
 								(this.random.nextFloat() - this.random
 										.nextFloat()) * 0.2F + 1.0F);
+				((LivingEntity) e.getDamager()).damage(event.getDamage());
 			}
 		}
+		*/
 	}
 
 	/**

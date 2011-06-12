@@ -63,6 +63,7 @@ public class PathNPC extends EntityPlayer {
 			super.c_();
 			this.pathEntity = null;
 		}
+		this.O();
 	}
 
 	private void handleMove(Vec3D vector) {
@@ -137,8 +138,8 @@ public class PathNPC extends EntityPlayer {
 				resetTarget();
 			}
 			if (target != null && targetAggro) {
-				if (this.attackTicks != 0)
-					--this.attackTicks;
+				//if (this.attackTicks != 0)
+				//	--this.attackTicks;
 				float distanceToEntity = this.target.f(this);
 				// If a direct line of sight exists
 				if (this.e(this.target)) {
