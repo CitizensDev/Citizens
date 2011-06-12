@@ -48,50 +48,6 @@ public class Citizens extends JavaPlugin {
 	private static final String letter = "h";
 	private static String version = "1.0.8" + letter;
 
-	/**
-	 * Returns the current version of Citizens
-	 * 
-	 * @return
-	 */
-	private static String getVersion() {
-		return version;
-	}
-
-	/**
-	 * A method used for iConomy support.
-	 * 
-	 * @param iConomy
-	 *            plugin
-	 * @return
-	 */
-	public static boolean setMethod(Method method) {
-		if (economy == null) {
-			economy = method;
-		} else {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Get the health regeneration rate for a healer based on its level
-	 * 
-	 * @return
-	 */
-	private int getHealthRegenRate() {
-		int delay = 0;
-		if (!NPCManager.getList().isEmpty()) {
-			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
-					.entrySet()) {
-				delay = Constants.healerHealthRegenIncrement
-						* (11 - (entry.getValue().getHealer().getLevel()));
-			}
-		} else {
-			delay = 12000;
-		}
-		return delay;
-	}
-
 	@Override
 	public void onDisable() {
 		// Save the local copy of our files to disk.
@@ -201,6 +157,50 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new WizardTask(), Constants.wizardManaRegenRate,
 				Constants.wizardManaRegenRate);
+	}
+
+	/**
+	 * Get the health regeneration rate for a healer based on its level
+	 * 
+	 * @return
+	 */
+	private int getHealthRegenRate() {
+		int delay = 0;
+		if (!NPCManager.getList().isEmpty()) {
+			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
+					.entrySet()) {
+				delay = Constants.healerHealthRegenIncrement
+						* (11 - (entry.getValue().getHealer().getLevel()));
+			}
+		} else {
+			delay = 12000;
+		}
+		return delay;
+	}
+
+	/**
+	 * Returns the current version of Citizens
+	 * 
+	 * @return
+	 */
+	private static String getVersion() {
+		return version;
+	}
+
+	/**
+	 * A method used for iConomy support.
+	 * 
+	 * @param iConomy
+	 *            plugin
+	 * @return
+	 */
+	public static boolean setMethod(Method method) {
+		if (economy == null) {
+			economy = method;
+		} else {
+			return false;
+		}
+		return true;
 	}
 
 	/**

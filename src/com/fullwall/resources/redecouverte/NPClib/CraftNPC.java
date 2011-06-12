@@ -23,6 +23,7 @@ public class CraftNPC extends PathNPC {
 	private int lastTargetId;
 	private long lastBounceTick;
 	private int lastBounceId;
+	boolean said = false;
 
 	public CraftNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -55,7 +56,7 @@ public class CraftNPC extends PathNPC {
 
 	@Override
 	public void b(EntityHuman entity) {
-		if (lastTargetId == -1 || lastTargetId != entity.id) {
+		if (lastTargetId != entity.id) {
 			EntityTargetEvent event = new NPCEntityTargetEvent(
 					getBukkitEntity(), entity.getBukkitEntity(),
 					NPCEntityTargetEvent.NpcTargetReason.CLOSEST_PLAYER);
@@ -63,7 +64,6 @@ public class CraftNPC extends PathNPC {
 			server.getPluginManager().callEvent(event);
 		}
 		lastTargetId = entity.id;
-
 		super.b(entity);
 	}
 
@@ -108,11 +108,7 @@ public class CraftNPC extends PathNPC {
 	}
 
 	private boolean chunkLoaded() {
-		return this
-				.getBukkitEntity()
-				.getWorld()
-				.isChunkLoaded(
-						this.getBukkitEntity().getLocation().getBlock()
-								.getChunk());
+		return this.bukkitEntity.getWorld().isChunkLoaded(
+				this.bukkitEntity.getLocation().getBlock().getChunk());
 	}
 }

@@ -24,7 +24,7 @@ public class CreatureTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new HashMap<Integer, CreatureNPC>();
 	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
 			CreatureNPCType.class);
-	public static boolean dirty = false;
+	public static boolean dirty = true;
 	private Player[] online;
 
 	@Override
@@ -46,9 +46,14 @@ public class CreatureTask implements Runnable {
 					spawned.put(type, spawned.get(type) + 1);
 					creatureNPCs.put(npc.getPlayer().getEntityId(),
 							(CreatureNPC) npc.getHandle());
+					onSpawn(creatureNPCs.get(npc.getPlayer().getEntityId()));
 				}
 			}
 		}
+	}
+
+	private void onSpawn(CreatureNPC creatureNPC) {
+		creatureNPC.onSpawn();
 	}
 
 	private HumanNPC spawnCreature(CreatureNPCType type, Location loc) {
@@ -168,7 +173,7 @@ public class CreatureTask implements Runnable {
 		@Override
 		public void run() {
 			for (CreatureNPC npc : creatureNPCs.values()) {
-				NPCSpawner.removeBasicHumanNpc(npc.npc);
+				NPCSpawner.removeNPCFromPlayerList(npc.npc);
 				npc.doTick();
 			}
 		}

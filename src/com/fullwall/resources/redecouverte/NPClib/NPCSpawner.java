@@ -54,8 +54,8 @@ public class NPCSpawner {
 			MinecraftServer ms = getMinecraftServer(ws.getServer());
 			CraftNPC eh = (CraftNPC) type.getEntityClass().getConstructors()[0]
 					.newInstance(ms, ws, name, new ItemInWorldManager(ws));
-			eh.setLocation(x, y, z, yaw, pitch);
 			ws.addEntity(eh);
+			eh.setLocation(x, y, z, yaw, pitch);
 			ws.players.remove(eh);
 			return new HumanNPC(eh, UID, name);
 		} catch (Exception e) {
@@ -87,7 +87,8 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static void removeNPCFromPlayerList(CraftNPC npc) {
-		getWorldServer(npc.getBukkitEntity().getWorld()).players.remove(npc);
+	public static void removeNPCFromPlayerList(HumanNPC npc) {
+		getWorldServer(npc.getPlayer().getWorld()).players.remove(npc
+				.getHandle());
 	}
 }

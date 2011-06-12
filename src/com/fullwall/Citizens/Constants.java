@@ -27,7 +27,7 @@ public class Constants {
 
 	public static double npcRange = 5;
 	public static double defaultBouncerProtectionRadius = 10;
-	public static final double JUMP_FACTOR = 0.1D;
+	public static final double JUMP_FACTOR = 0.08D;
 	public static final double GRAVITY = 0.02D;
 	public static final double PATH_LEEWAY = 0.5D;
 

@@ -37,15 +37,15 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		CreatureTask.setDirty();
 		QuestManager.load(event.getPlayer());
 		GuardTask.checkRespawn(event.getPlayer());
+		CreatureTask.setDirty();
 	}
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		CreatureTask.setDirty();
 		QuestManager.unload(event.getPlayer());
+		CreatureTask.setDirty();
 	}
 
 	@Override

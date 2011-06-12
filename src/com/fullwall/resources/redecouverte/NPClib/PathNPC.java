@@ -1,7 +1,6 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import net.minecraft.server.Entity;
-import net.minecraft.server.EntityArrow;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityPlayer;
@@ -15,9 +14,11 @@ import net.minecraft.server.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.util.Vector;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
+import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
@@ -28,7 +29,7 @@ public class PathNPC extends EntityPlayer {
 	protected boolean targetAggro = false;
 	private boolean hasAttacked = false;
 	protected boolean jumping = false;
-	private boolean randomPather = false;
+	protected boolean randomPather = false;
 	private int pathTicks = 0;
 	private int pathTickLimit = -1;
 	private int stationaryTicks = 0;
@@ -48,8 +49,9 @@ public class PathNPC extends EntityPlayer {
 	public void updateMove() {
 		hasAttacked = false;
 		jumping = false;
-		if (randomPather)
+		if (randomPather) {
 			takeRandomPath();
+		}
 		updateTarget();
 		updatePathingState();
 		if (this.pathEntity != null) {
@@ -195,7 +197,8 @@ public class PathNPC extends EntityPlayer {
 		this.pathTicks = 0;
 		this.stationaryTicks = 0;
 		this.pathEntity = null;
-		this.npc.getNPCData().setLocation(npc.getPlayer().getLocation());
+		if (!(this instanceof CreatureNPC))
+			this.npc.getNPCData().setLocation(npc.getPlayer().getLocation());
 		this.pathTickLimit = -1;
 		this.stationaryTickLimit = -1;
 		this.pathingRange = 16;
@@ -209,30 +212,6 @@ public class PathNPC extends EntityPlayer {
 		reset();
 	}
 
-	private void attackEntity(EntityLiving entity) {
-		if (holdingBow()) {
-			double distX = entity.locX - this.locX;
-			double distZ = entity.locZ - this.locZ;
-			EntityArrow entityarrow = new EntityArrow(this.world, this);
-
-			++entityarrow.locY;
-			double arrowDistY = entity.locY - 0.20000000298023224D
-					- entityarrow.locY;
-			float distance = (float) (Math.sqrt(distX * distX + distZ * distZ) * 0.2F);
-
-			this.world.makeSound(this, "random.bow", 1.0F,
-					1.0F / (this.random.nextFloat() * 0.4F + 0.8F));
-			this.world.addEntity(entityarrow);
-			entityarrow.a(distX, arrowDistY + distance, distZ, 0.6F, 12.0F);
-		} else {
-			this.performAction(Action.SWING_ARM);
-			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
-			e.damage(this.inventory.a(entity));
-		}
-		hasAttacked = true;
-		incrementAttackTimes();
-	}
-
 	private boolean holdingBow() {
 		return this.inventory.items[this.inventory.itemInHandIndex].id == 261;
 	}
@@ -243,6 +222,26 @@ public class PathNPC extends EntityPlayer {
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e))
 			return true;
 		return false;
+	}
+
+	private void attackEntity(EntityLiving entity) {
+		if (holdingBow()) {
+			double distX = entity.locX - this.locX;
+			double distZ = entity.locZ - this.locZ;
+			double arrowDistY = entity.locY - 0.20000000298023224D
+					- entity.locY;
+			float distance = (float) (Math.sqrt(distX * distX + distZ * distZ) * 0.2F);
+			Vector velocity = new Vector(distX, arrowDistY + distance, distZ);
+
+			this.bukkitEntity.getWorld().spawnArrow(
+					this.getBukkitEntity().getLocation(), velocity, 0.6F, 12F);
+		} else {
+			this.performAction(Action.SWING_ARM);
+			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
+			e.damage(this.inventory.a(entity));
+		}
+		hasAttacked = true;
+		incrementAttackTimes();
 	}
 
 	private void damageEntity(Entity entity) {
@@ -261,8 +260,8 @@ public class PathNPC extends EntityPlayer {
 			this.pathEntity = this.world.findPath(this, this.target,
 					pathingRange);
 		} else if (!hasAttacked
-				&& (this.pathEntity == null && this.random.nextInt(80) == 0 || this.random
-						.nextInt(80) == 0)) {
+				&& (this.pathEntity == null && this.random.nextInt(70) == 0 || this.random
+						.nextInt(70) == 0)) { // 80 -> 70 - path faster.
 			boolean flag = false;
 			int x = -1;
 			int y = -1;
@@ -291,24 +290,18 @@ public class PathNPC extends EntityPlayer {
 		}
 	}
 
-	public void setRandomPather(boolean random) {
-		this.randomPather = random;
-	}
-
-	public Entity findClosestPlayer(double range) {
+	public EntityHuman findClosestPlayer(double range) {
 		EntityHuman entityhuman = this.world.a(this, range);
 		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
 	}
 
 	public void targetClosestPlayer(boolean aggro, double range) {
-		if (this.target == null) {
-			this.target = this.findClosestPlayer(range);
-			this.targetAggro = aggro;
-			if (this.target != null) {
-				this.pathEntity = this.world.findPath(this, this.target,
-						pathingRange);
-			}
-		}
+		this.target = this.findClosestPlayer(range);
+		this.targetAggro = aggro;
+		/* if (this.target != null) {
+			this.pathEntity = this.world.findPath(this, this.target,
+					pathingRange);
+		}*/
 	}
 
 	public boolean startPath(Location loc, int maxTicks,

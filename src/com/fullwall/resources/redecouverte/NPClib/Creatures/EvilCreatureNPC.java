@@ -10,6 +10,7 @@ import net.minecraft.server.World;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,11 +34,10 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void doTick() {
 		if (!this.npc.getEvil().isTame()) {
-			if (!hasTarget() && findClosestPlayer(this.range) != null) {
+			if (!hasTarget() && findClosestPlayer(this.range) != null)
 				targetClosestPlayer(true, this.range);
-			} else {
-				super.doTick();
-			}
+			super.doTick();
+
 		}
 	}
 
@@ -64,10 +64,13 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void onDamage(EntityDamageEvent event) {
 		if (event instanceof EntityDamageByEntityEvent) {
-			this.targetAggro = true;
-			this.target = ((CraftEntity) ((EntityDamageByEntityEvent) event)
-					.getDamager()).getHandle();
+			Entity entity = ((EntityDamageByEntityEvent) event).getDamager();
+			if (entity != null) {
+				this.targetAggro = true;
+				this.target = ((CraftEntity) entity).getHandle();
+			}
 		}
+		super.onDamage(event);
 	}
 
 	@Override

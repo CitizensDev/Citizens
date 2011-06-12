@@ -34,7 +34,7 @@ public class TickTask implements Runnable {
 			{
 				npc = entry.getValue();
 				npc.updateMovement();
-				NPCSpawner.removeNPCFromPlayerList(npc.getHandle());
+				NPCSpawner.removeNPCFromPlayerList(npc);
 				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();
