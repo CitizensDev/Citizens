@@ -126,7 +126,7 @@ public class Constants {
 		spawnEvil = mobs.getBoolean("evil.spawn.spawn");
 
 		maxEvilNPCs = mobs.getInt("evil.spawn.max");
-		spawnEvilDelay = mobs.getInt("evil.delay");
+		spawnEvilDelay = mobs.getInt("evil.spawn.delay");
 		evilLookRange = mobs.getInt("evil.look-range");
 		evilNPCTameItem = mobs.getInt("evil.misc.tame-item");
 		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");

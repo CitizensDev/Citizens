@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.fullwall.resources.redecouverte.NPClib.CraftNPC;
 
 public abstract class CreatureNPC extends CraftNPC {
-	private final double range = 25;
+	protected final double range = 25;
 
 	public CreatureNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -35,11 +35,7 @@ public abstract class CreatureNPC extends CraftNPC {
 	 * closest player based on a predefined range, else takes a random path.
 	 */
 	public void doTick() {
-		if (!hasTarget() && findClosestPlayer(this.range) != null) {
-			targetClosestPlayer(true, this.range);
-		} else {
-			updateMove();
-		}
+		updateMove();
 	}
 
 	/**

@@ -24,11 +24,16 @@ public class EvilTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new HashMap<Integer, CreatureNPC>();
 	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
 			CreatureNPCType.class);
+	public static boolean dirty = false;
+	private Player[] online;
 
 	@Override
 	public void run() {
-		Player[] online = Bukkit.getServer().getOnlinePlayers();
-		if (online.length > 0) {
+		if (dirty) {
+			online = Bukkit.getServer().getOnlinePlayers();
+			dirty = false;
+		}
+		if (online != null && online.length > 0) {
 			Player player = online[new Random().nextInt(online.length)];
 			// TODO - work out best method of getting creature type to spawn
 			// (perhaps randomly?).
@@ -111,6 +116,10 @@ public class EvilTask implements Runnable {
 			}
 		}
 		return true;
+	}
+
+	public static void setDirty() {
+		dirty = true;
 	}
 
 	public static void despawnAll() {
