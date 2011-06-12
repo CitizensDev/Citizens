@@ -25,7 +25,7 @@ public class PathNPC extends EntityPlayer {
 	protected Entity target;
 	protected NPCAnimator animations = new NPCAnimator(this);
 
-	private boolean targetAggro = false;
+	protected boolean targetAggro = false;
 	private boolean hasAttacked = false;
 	protected boolean jumping = false;
 	private boolean randomPather = false;
@@ -38,7 +38,7 @@ public class PathNPC extends EntityPlayer {
 	private int prevX;
 	private int prevY;
 	private int prevZ;
-	private float pathingRange = 16;
+	protected float pathingRange = 16;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -54,35 +54,37 @@ public class PathNPC extends EntityPlayer {
 		updatePathingState();
 		if (this.pathEntity != null) {
 			Vec3D vector = getVector();
-			int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
-			boolean inWater = this.ac();
-			boolean inLava = this.ad();
-
 			if (vector != null) {
-				double diffX = vector.a - this.locX;
-				double diffZ = vector.c - this.locZ;
-				double diffY = vector.b - yHeight;
-				float diffYaw = getYawDifference(diffZ, diffX);
-
-				this.yaw += diffYaw;
-				if (diffY > 0.0D) {
-					jumping = true;
-				}
-				move(); // Walk.
-			}
-			if (this.positionChanged && !this.pathFinished()) {
-				jumping = true;
-			}
-			if (this.random.nextFloat() < 0.8F && (inWater || inLava)) {
-				jumping = true;
-			}
-			if (jumping) {
-				jump();
+				handleMove(vector);
 			}
 		} else {
 			super.c_();
 			this.pathEntity = null;
 		}
+	}
+
+	private void handleMove(Vec3D vector) {
+		int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
+		boolean inWater = this.ac();
+		boolean inLava = this.ad();
+		if (vector != null) {
+			double diffX = vector.a - this.locX;
+			double diffZ = vector.c - this.locZ;
+			double diffY = vector.b - yHeight;
+			float diffYaw = getYawDifference(diffZ, diffX);
+
+			this.yaw += diffYaw;
+			if (diffY > 0.0D)
+				jumping = true;
+			// Walk.
+			move();
+		}
+		if (this.positionChanged && !this.pathFinished())
+			jumping = true;
+		if (this.random.nextFloat() < 0.8F && (inWater || inLava))
+			jumping = true;
+		if (jumping)
+			jump();
 	}
 
 	private float getYawDifference(double diffZ, double diffX) {

@@ -54,11 +54,10 @@ public class NPCManager {
 		if (Constants.convertSlashes == true) {
 			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
-				if (i == 0) {
+				if (i == 0)
 					npcName = brokenName[i];
-				} else {
+				else
 					npcName += " " + brokenName[i];
-				}
 			}
 		}
 		HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(UID, npcName,

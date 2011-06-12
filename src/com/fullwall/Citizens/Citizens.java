@@ -14,7 +14,6 @@ import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCTypes.Bandits.BanditTask;
-import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
@@ -99,7 +98,7 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.stateSave();
 
 		basicNPCHandler.despawnAll();
-		EvilTask.despawnAll();
+		CreatureTask.despawnAll();
 
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") disabled");
@@ -126,10 +125,10 @@ public class Citizens extends JavaPlugin {
 
 		if (Constants.spawnEvil) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new EvilTask(), Constants.spawnEvilDelay,
+					new CreatureTask(), Constants.spawnEvilDelay,
 					Constants.spawnEvilDelay);
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new EvilTask.EvilTick(), 0, 1);
+					new CreatureTask.CreatureTick(), 0, 1);
 		}
 		plugin = this;
 

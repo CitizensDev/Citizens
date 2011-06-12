@@ -4,6 +4,7 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -17,8 +18,22 @@ public abstract class CreatureNPC extends CraftNPC {
 		super(minecraftserver, world, s, iteminworldmanager);
 	}
 
+	/**
+	 * Helper method.
+	 * 
+	 * @return
+	 */
 	public Player getEntity() {
 		return (Player) this.bukkitEntity;
+	}
+
+	/**
+	 * Helper method.
+	 * 
+	 * @return
+	 */
+	public Location getLocation() {
+		return this.getEntity().getLocation();
 	}
 
 	/**
@@ -60,5 +75,4 @@ public abstract class CreatureNPC extends CraftNPC {
 	 * @return
 	 */
 	public abstract CreatureNPCType getType();
-
 }

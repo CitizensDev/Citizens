@@ -9,9 +9,9 @@ import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.Misc.NPCLocation;
-import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
@@ -49,10 +49,10 @@ public class WorldListen extends WorldListener implements Listener {
 			}
 		}
 		int count = 0;
-		for (CreatureNPC entry : EvilTask.creatureNPCs.values()) {
+		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
 			if (entry.getBukkitEntity().getLocation().getBlock().getChunk()
 					.equals(event.getChunk())) {
-				EvilTask.despawn(entry);
+				CreatureTask.despawn(entry);
 			}
 			++count;
 		}

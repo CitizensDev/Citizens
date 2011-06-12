@@ -1,4 +1,4 @@
-package com.fullwall.Citizens.NPCTypes.Evil;
+package com.fullwall.Citizens;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
-public class EvilTask implements Runnable {
+public class CreatureTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new HashMap<Integer, CreatureNPC>();
 	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
 			CreatureNPCType.class);
@@ -58,24 +58,32 @@ public class EvilTask implements Runnable {
 		switch (random.nextInt(7)) {
 		case 0:
 			offsetX = offset;
+			break;
 		case 1:
 			offsetZ = offset;
+			break;
 		case 2:
 			offsetX = -offset;
+			break;
 		case 3:
 			offsetZ = -offset;
+			break;
 		case 4:
 			offsetX = offset;
 			offsetZ = offset;
+			break;
 		case 5:
 			offsetX = -offset;
 			offsetZ = offset;
+			break;
 		case 6:
 			offsetX = offset;
 			offsetZ = -offset;
+			break;
 		case 7:
 			offsetX = -offset;
 			offsetZ = -offset;
+			break;
 		}
 		int startX = loc.getBlockX() + offsetX;
 		int startZ = loc.getBlockZ() + offsetZ;
@@ -138,11 +146,13 @@ public class EvilTask implements Runnable {
 	}
 
 	public static void onDamage(Entity entity, EntityDamageEvent event) {
-		creatureNPCs.get(entity.getEntityId()).onDamage(event);
+		if (getCreature(entity) != null) {
+			creatureNPCs.get(entity.getEntityId()).onDamage(event);
+		}
 	}
 
 	public static void onEntityDeath(Entity entity) {
-		if (creatureNPCs.get(entity.getEntityId()) != null) {
+		if (getCreature(entity) != null) {
 			CreatureNPC creatureNPC = creatureNPCs.get(entity.getEntityId());
 			creatureNPC.onDeath();
 			removeFromMaps(creatureNPC);
@@ -150,11 +160,11 @@ public class EvilTask implements Runnable {
 		}
 	}
 
-	public static CreatureNPC getEvil(Entity entity) {
+	public static CreatureNPC getCreature(Entity entity) {
 		return creatureNPCs.get(entity.getEntityId());
 	}
 
-	public static class EvilTick implements Runnable {
+	public static class CreatureTick implements Runnable {
 		@Override
 		public void run() {
 			for (CreatureNPC npc : creatureNPCs.values()) {

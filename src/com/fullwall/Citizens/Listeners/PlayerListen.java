@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Interfaces.Listener;
-import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
@@ -37,14 +37,14 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		EvilTask.setDirty();
+		CreatureTask.setDirty();
 		QuestManager.load(event.getPlayer());
 		GuardTask.checkRespawn(event.getPlayer());
 	}
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		EvilTask.setDirty();
+		CreatureTask.setDirty();
 		QuestManager.unload(event.getPlayer());
 	}
 

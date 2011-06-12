@@ -11,9 +11,9 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
-import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -45,9 +45,8 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
-		if (EvilTask.creatureNPCs.get(event.getEntity().getEntityId()) != null) {
-			EvilTask.onDamage(event.getEntity(), event);
-		}
+		CreatureTask.onDamage(event.getEntity(), event);
+
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			HumanNPC npc = NPCManager.get(e.getEntity());
@@ -127,8 +126,6 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
-		if (EvilTask.getEvil(event.getEntity()) != null) {
-			EvilTask.onEntityDeath(event.getEntity());
-		}
+		CreatureTask.onEntityDeath(event.getEntity());
 	}
 }
