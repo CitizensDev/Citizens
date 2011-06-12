@@ -2,15 +2,22 @@ package com.fullwall.Citizens;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Defaults {
-	public static HashMap<String, String> settingsDefaults = writeDefaultSettings();
-	public static HashMap<String, String> lookupsDefaults = writeLookupsSettings();
-	public static HashMap<String, String> economyDefaults = writeEconomySettings();
-	public static HashMap<String, String> settingsRenames = writeSettingsRenames();
-	public static HashMap<String, String> economyRenames = writeEconomyRenames();
-	public static ArrayList<String> settingsDeletes = writeSettingsDeletes();
-	public static ArrayList<String> economyDeletes = writeEconomyDeletes();
+	public static Map<String, String> settingsDefaults = writeDefaultSettings();
+	public static Map<String, String> lookupsDefaults = writeLookupsSettings();
+	public static Map<String, String> mobDefaults = writeMobSettings();
+	public static Map<String, String> economyDefaults = writeEconomySettings();
+
+	public static Map<String, String> settingsRenames = writeSettingsRenames();
+	public static Map<String, String> economyRenames = writeEconomyRenames();
+	public static Map<String, String> mobRenames = writeMobRenames();
+
+	public static List<String> settingsDeletes = writeSettingsDeletes();
+	public static List<String> economyDeletes = writeEconomyDeletes();
+	public static List<String> mobDeletes = writeMobDeletes();
 
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
@@ -30,17 +37,10 @@ public class Defaults {
 		nodes.put("general.healers.regen-health", "true");
 		nodes.put("general.wizards.regen-mana", "true");
 		nodes.put("general.wizards.max-mana", "100");
-		nodes.put("general.evil.spawn", "true");
-		nodes.put("general.evil.spawn-delay", "200");
-		nodes.put("general.evil.max-to-spawn", "2");
-		nodes.put("general.evil.look-range", "25");
-		nodes.put("general.evil.names", "Herobrine,aPunch,fullwall,");
-		nodes.put("general.evil.tame-chance", "5");
 		// Item Settings
 		nodes.put("items.item-list-on", "true");
 		nodes.put("items.basic.talk-items", "340,");
 		nodes.put("items.basic.select-items", "*");
-		nodes.put("items.evil.tame-item", "354");
 		nodes.put("items.healers.take-health-item", "276");
 		nodes.put("items.healers.give-health-item", "35");
 		nodes.put("items.wizards.interact-item", "288");
@@ -130,6 +130,18 @@ public class Defaults {
 		nodes.put("prices.wizard.togglestorm.item", "20");
 		nodes.put("prices.wizard.togglestorm.item-currency-id", "37");
 		nodes.put("prices.wizard.togglestorm.econplugin", "150");
+		return nodes;
+	}
+
+	private static HashMap<String, String> writeMobSettings() {
+		HashMap<String, String> nodes = new HashMap<String, String>();
+		nodes.put("evil.spawn.spawn", "true");
+		nodes.put("evil.spawn.delay", "200");
+		nodes.put("evil.spawn.max", "2");
+		nodes.put("evil.look-range", "25");
+		nodes.put("evil.names", "Herobrine,aPunch,fullwall,");
+		nodes.put("evil.misc.tame-chance", "5");
+		nodes.put("evil.misc.tame-item", "354");
 		return nodes;
 	}
 
@@ -654,12 +666,22 @@ public class Defaults {
 		return nodes;
 	}
 
+	private static Map<String, String> writeMobRenames() {
+		HashMap<String, String> nodes = new HashMap<String, String>();
+		return nodes;
+	}
+
 	private static ArrayList<String> writeSettingsDeletes() {
 		ArrayList<String> nodes = new ArrayList<String>();
 		return nodes;
 	}
 
 	private static ArrayList<String> writeEconomyDeletes() {
+		ArrayList<String> nodes = new ArrayList<String>();
+		return nodes;
+	}
+
+	private static ArrayList<String> writeMobDeletes() {
 		ArrayList<String> nodes = new ArrayList<String>();
 		return nodes;
 	}

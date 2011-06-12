@@ -13,8 +13,8 @@ import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.Misc.NPCLocation;
 import com.fullwall.Citizens.NPCTypes.Evil.EvilTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.resources.redecouverte.NPClib.CreatureNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 
 public class WorldListen extends WorldListener implements Listener {
 	private final Citizens plugin;

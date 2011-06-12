@@ -2,9 +2,8 @@ package com.fullwall.Citizens.Properties;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -38,11 +37,15 @@ public class ConfigurationHandler implements Storage {
 			loadRenames(Defaults.economyRenames);
 			loadDefaults(Defaults.economyDefaults);
 			loadDeletes(Defaults.economyDeletes);
+		} else if (fileName.contains("mobs.yml")) {
+			loadRenames(Defaults.mobRenames);
+			loadDefaults(Defaults.mobDefaults);
+			loadDeletes(Defaults.mobDeletes);
 		}
 		save();
 	}
 
-	private void loadDeletes(ArrayList<String> nodes) {
+	private void loadDeletes(List<String> nodes) {
 		boolean found = false;
 		for (String node : nodes) {
 			Messaging.log("Deleting outdated setting " + node + ".");
@@ -56,7 +59,7 @@ public class ConfigurationHandler implements Storage {
 		}
 	}
 
-	private void loadDefaults(HashMap<String, String> nodes) {
+	private void loadDefaults(Map<String, String> nodes) {
 		boolean found = false;
 		for (Entry<String, String> node : nodes.entrySet()) {
 			if (!pathExists(node.getKey())) {
@@ -72,7 +75,7 @@ public class ConfigurationHandler implements Storage {
 		}
 	}
 
-	private void loadRenames(HashMap<String, String> nodes) {
+	private void loadRenames(Map<String, String> nodes) {
 		boolean found = false;
 		for (Entry<String, String> node : nodes.entrySet()) {
 			if (pathExists(node.getKey())) {

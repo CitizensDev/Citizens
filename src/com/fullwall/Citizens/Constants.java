@@ -10,20 +10,20 @@ public class Constants {
 	public static int evilNPCTameChance = 5;
 	public static int evilLookRange = 25;
 	public static int healerGiveHealthItem = 35;
-	public static int healerTakeHealthItem = 276;
 	public static int healerHealthRegenIncrement = 12000;
-	public static int wizardManaRegenRate = 6000;
+	public static int healerTakeHealthItem = 276;
 	public static int maxEvilNPCs = 2;
 	public static int maxNPCsPerPlayer = 10;
 	public static int maxStationaryTicks = -1;
 	public static int maxPathingTicks = -1;
+	public static int maxWizardMana = 100;
 	public static int saveDelay = 72000;
-	public static int tickDelay = 1;
 	public static int spawnEvilDelay = 200;
+	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
 	public static int wizardManaRegenItem = 348;
-	public static int maxWizardMana = 100;
+	public static int wizardManaRegenRate = 6000;
 
 	public static double npcRange = 5;
 	public static double defaultBouncerProtectionRadius = 10;
@@ -41,19 +41,20 @@ public class Constants {
 	public static String selectItems = "*";
 	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,";
 
-	public static boolean convertSlashes = false;
 	public static boolean defaultFollowingEnabled = true;
-	public static boolean defaultTalkWhenClose = false;
-	public static boolean saveOften = true;
-	public static boolean spawnEvil = false;
-	public static boolean useEconomy = true;
-	public static boolean useEconplugin = false;
-	public static boolean useItemList = true;
-	public static boolean useNPCColours = true;
-	public static boolean useSaveTask = true;
 	public static boolean payForHealerHeal = true;
 	public static boolean regenHealerHealth = true;
 	public static boolean regenWizardMana = true;
+	public static boolean saveOften = true;
+	public static boolean useEconomy = true;
+	public static boolean useItemList = true;
+	public static boolean useNPCColours = true;
+	public static boolean useSaveTask = true;
+
+	public static boolean convertSlashes = false;
+	public static boolean defaultTalkWhenClose = false;
+	public static boolean spawnEvil = false;
+	public static boolean useEconplugin = false;
 
 	/**
 	 * Sets up miscellaneous variables, mostly reading from property files.
@@ -68,7 +69,6 @@ public class Constants {
 				.getBoolean("general.defaults.enable-following");
 		defaultTalkWhenClose = settings
 				.getBoolean("general.defaults.talk-when-close");
-		spawnEvil = settings.getBoolean("general.evil.spawn");
 		useNPCColours = settings.getBoolean("general.colors.use-npc-colours");
 		useItemList = settings.getBoolean("items.item-list-on");
 		saveOften = settings.getBoolean("ticks.saving.save-often");
@@ -83,8 +83,6 @@ public class Constants {
 		npcColour = settings.getString("general.colors.npc-colour");
 		talkItems = settings.getString("items.basic.talk-items");
 		selectItems = settings.getString("items.basic.select-items");
-		defaultEvilNames = settings.getString("general.evil.names");
-
 		// Double defaults
 		defaultBouncerProtectionRadius = settings
 				.getDouble("range.guards.default-bouncer-protection-radius");
@@ -94,10 +92,6 @@ public class Constants {
 
 		// int defaults
 		banditStealRadius = settings.getInt("range.bandits.steal-radius");
-		evilNPCTameItem = settings.getInt("items.evil.tame-item");
-		evilNPCTameChance = settings.getInt("general.evil.tame-chance");
-		evilLookRange = settings.getInt("general.evil.look-range");
-		maxEvilNPCs = settings.getInt("general.evil.max-to-spawn");
 		healerGiveHealthItem = settings
 				.getInt("items.healers.give-health-item");
 		healerTakeHealthItem = settings
@@ -110,7 +104,6 @@ public class Constants {
 		maxStationaryTicks = settings.getInt("ticks.pathing.max-stationary");
 		saveDelay = settings.getInt("ticks.saving.delay");
 		tickDelay = settings.getInt("ticks.general.delay");
-		spawnEvilDelay = settings.getInt("general.evil.spawn-delay");
 		wizardMaxLocations = settings
 				.getInt("general.wizards.wizard-max-locations");
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");
@@ -123,5 +116,19 @@ public class Constants {
 		useEconomy = economy.getBoolean("economy.use-economy");
 
 		EconomyHandler.setUpVariables();
+
+		// ####Mob settings####
+		Storage mobs = UtilityProperties.getMobSettings();
+
+		// Load evils.
+		defaultEvilNames = mobs.getString("evil.names");
+
+		spawnEvil = mobs.getBoolean("evil.spawn.spawn");
+
+		maxEvilNPCs = mobs.getInt("evil.spawn.max");
+		spawnEvilDelay = mobs.getInt("evil.delay");
+		evilLookRange = mobs.getInt("evil.look-range");
+		evilNPCTameItem = mobs.getInt("evil.misc.tame-item");
+		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");
 	}
 }

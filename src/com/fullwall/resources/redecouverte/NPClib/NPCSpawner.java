@@ -13,6 +13,8 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.LivingEntity;
 
+import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
+
 public class NPCSpawner {
 	protected static WorldServer getWorldServer(World world) {
 		if (world instanceof CraftWorld) {
@@ -34,6 +36,24 @@ public class NPCSpawner {
 			WorldServer ws = getWorldServer(world);
 			MinecraftServer ms = getMinecraftServer(ws.getServer());
 			CraftNPC eh = new CraftNPC(ms, ws, name, new ItemInWorldManager(ws));
+			eh.setLocation(x, y, z, yaw, pitch);
+			ws.addEntity(eh);
+			ws.players.remove(eh);
+			return new HumanNPC(eh, UID, name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static HumanNPC spawnBasicHumanNpc(int UID, String name,
+			World world, double x, double y, double z, float yaw, float pitch,
+			CreatureNPCType type) {
+		try {
+			WorldServer ws = getWorldServer(world);
+			MinecraftServer ms = getMinecraftServer(ws.getServer());
+			CraftNPC eh = (CraftNPC) type.getEntityClass().getConstructors()[0]
+					.newInstance(ms, ws, name, new ItemInWorldManager(ws));
 			eh.setLocation(x, y, z, yaw, pitch);
 			ws.addEntity(eh);
 			ws.players.remove(eh);

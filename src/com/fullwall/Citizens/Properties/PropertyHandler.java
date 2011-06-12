@@ -72,7 +72,7 @@ public final class PropertyHandler implements Storage {
 		}
 	}
 
-	private void loadLookups(HashMap<String, String> nodes) {
+	private void loadLookups(Map<String, String> nodes) {
 		boolean told = false;
 		for (Entry<String, String> entry : nodes.entrySet()) {
 			if (!keyExists(entry.getKey())) {

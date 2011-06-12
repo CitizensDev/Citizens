@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.NPCTypes.Evil;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -12,34 +13,32 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
-import com.fullwall.Citizens.Utils.Messaging;
-import com.fullwall.resources.redecouverte.NPClib.CreatureNPC;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
+import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
+import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
 public class EvilTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new HashMap<Integer, CreatureNPC>();
-	private final Integer[] weapons = { 261, 267, 268, 272, 276, 283 };
+	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
+			CreatureNPCType.class);
 
 	@Override
 	public void run() {
 		Player[] online = Bukkit.getServer().getOnlinePlayers();
 		if (online.length > 0) {
 			Player player = online[new Random().nextInt(online.length)];
-			// TODO - record per-type amount spawned and spawn according types.
-			if (creatureNPCs.size() <= Constants.maxEvilNPCs - 1) {
-				HumanNPC npc = spawnEvil(player.getLocation());
-				Messaging.log("" + (npc == null));
+			// TODO - work out best method of getting creature type to spawn
+			// (perhaps randomly?).
+			CreatureNPCType type = CreatureNPCType.EVIL;
+			if (spawned.get(type) == null)
+				spawned.put(type, 0);
+			else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
+				HumanNPC npc = spawnCreature(type, player.getLocation());
 				if (npc != null) {
-					npc.getInventory().setItemInHand(
-							new ItemStack(weapons[new Random()
-									.nextInt(weapons.length)], 1));
-					npc.setEvil(true);
-					npc.getHandle().setRandomPather(true);
+					spawned.put(type, spawned.get(type) + 1);
 					creatureNPCs.put(npc.getPlayer().getEntityId(),
 							(CreatureNPC) npc.getHandle());
 				}
@@ -47,7 +46,7 @@ public class EvilTask implements Runnable {
 		}
 	}
 
-	private HumanNPC spawnEvil(Location loc) {
+	private HumanNPC spawnCreature(CreatureNPCType type, Location loc) {
 		Random random = new Random(System.currentTimeMillis());
 		int offsetX = 0, offsetZ = 0;
 		int offset = 25;
@@ -69,31 +68,32 @@ public class EvilTask implements Runnable {
 		case 6:
 			offsetX = offset;
 			offsetZ = -offset;
+		case 7:
+			offsetX = -offset;
+			offsetZ = -offset;
 		}
 		int startX = loc.getBlockX() + offsetX;
 		int startZ = loc.getBlockZ() + offsetZ;
 		int searchY = 3, searchXZ = 4;
 		World world = loc.getWorld();
-		for (int y = loc.getBlockY() + searchY; y <= loc.getBlockY() - searchY; --y) {
+		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
 			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					// TODO: find a way to make this per-type.
+					// TODO: find a way to make block underneath per-type.
 					if (world.getBlockTypeIdAt(x, y - 1, z) != 0
-							&& world.getBlockTypeIdAt(x, y, z) == 0
-							&& world.getBlockTypeIdAt(x, y + 1, z) == 0) {
+							&& world.getBlockTypeIdAt(x, y, z) == type
+									.getSpawnIn().getId()
+							&& world.getBlockTypeIdAt(x, y + 1, z) == type
+									.getSpawnIn().getId()) {
 						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
 							if (spaceEntityFree(world.getChunkAt(x, z), x, y, z)) {
-								Messaging.log("Success?");
 								return NPCSpawner.spawnBasicHumanNpc(0,
-										UtilityProperties.getRandomName(),
+										UtilityProperties.getRandomName(type),
 										loc.getWorld(), x, y, z,
-										random.nextInt(360), 0);
-							} else
-								Messaging.log("Failed at 3");
-						} else
-							Messaging.log("Failed at 2");
-					} else
-						Messaging.log("Failed at 1");
+										random.nextInt(360), 0, type);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -120,7 +120,12 @@ public class EvilTask implements Runnable {
 	}
 
 	public static void despawn(CreatureNPC npc) {
+		removeFromMaps(npc);
+	}
+
+	public static void removeFromMaps(CreatureNPC npc) {
 		creatureNPCs.remove(npc.getBukkitEntity().getEntityId());
+		spawned.put(npc.getType(), spawned.get(npc.getType()) - 1);
 	}
 
 	public static void onDamage(Entity entity, EntityDamageEvent event) {
@@ -131,8 +136,8 @@ public class EvilTask implements Runnable {
 		if (creatureNPCs.get(entity.getEntityId()) != null) {
 			CreatureNPC creatureNPC = creatureNPCs.get(entity.getEntityId());
 			creatureNPC.onDeath();
+			removeFromMaps(creatureNPC);
 			NPCSpawner.removeBasicHumanNpc(creatureNPC.npc);
-			creatureNPCs.remove(entity.getEntityId());
 		}
 	}
 
@@ -144,6 +149,7 @@ public class EvilTask implements Runnable {
 		@Override
 		public void run() {
 			for (CreatureNPC npc : creatureNPCs.values()) {
+				NPCSpawner.removeBasicHumanNpc(npc.npc);
 				npc.doTick();
 			}
 		}
