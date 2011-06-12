@@ -148,7 +148,7 @@ public class HealerExecutor implements CommandExecutor {
 				+ StringUtils.wrap("Level " + level)
 				+ " for "
 				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, "" + paid
-						* multiple, ChatColor.GREEN)
+						* multiple)
 						+ ".");
 		return message;
 	}

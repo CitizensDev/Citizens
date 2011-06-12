@@ -5,7 +5,7 @@ import org.bukkit.Location;
 public class LocationUtils {
 
 	/**
-	 * Checks whether two locations are within a certain distance of each other.
+	 * Checks whether two locations are within range of each other.
 	 * 
 	 * @param loc
 	 * @param pLoc

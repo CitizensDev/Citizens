@@ -122,12 +122,10 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 							+ " has repaired your item for ";
 					if (EconomyHandler.useIconomy()) {
 						msg += StringUtils.wrap(EconomyHandler.getPaymentType(
-								op, "" + paid, ChatColor.YELLOW));
+								op, "" + paid));
 					} else {
 						msg += StringUtils.wrap(ItemInterface
-								.getBlacksmithPrice(player, item, op)
-								+ " "
-								+ ItemInterface.getCurrencyName(op));
+								.getBlacksmithCurrency(player, op));
 					}
 					msg += ChatColor.GREEN + ".";
 					player.sendMessage(msg);

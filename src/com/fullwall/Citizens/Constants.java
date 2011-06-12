@@ -132,7 +132,7 @@ public class Constants {
 		evilLookRange = mobs.getInt("evil.misc.look-range");
 		evilNPCTameItem = mobs.getInt("evil.misc.tame-item");
 		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");
-		failureToTameMessages = settings
+		failureToTameMessages = mobs
 				.getString("evil.misc.failed-tame-messages");
 	}
 }

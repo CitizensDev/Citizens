@@ -69,22 +69,22 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityTarget(EntityTargetEvent event) {
-		// Note: For some reason, the getTarget target in this case is the
-		// player and the getEntity entity is the NPC
+		if (!(event instanceof NPCEntityTargetEvent)) {
+			return;
+		}
+		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 		if (CreatureTask.getCreature(event.getEntity()) != null) {
 			HumanNPC creature = CreatureTask.getCreature(event.getEntity()).npc;
 			if (creature.isEvil()) {
-				creature.getEvil().onRightClick((Player) event.getTarget(),
-						creature);
+				if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
+					creature.getEvil().onRightClick((Player) event.getTarget(),
+							creature);
+				}
 			}
 		}
 		if (NPCManager.isNPC(event.getTarget())) {
 			event.setCancelled(true);
 		}
-		if (!(event instanceof NPCEntityTargetEvent)) {
-			return;
-		}
-		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 		HumanNPC npc = NPCManager.get(e.getEntity());
 		if (npc != null && event.getTarget() instanceof Player) {
 			// The NPC lib handily provides a right click event.

@@ -54,10 +54,11 @@ public class NPCManager {
 		if (Constants.convertSlashes == true) {
 			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
-				if (i == 0)
+				if (i == 0) {
 					npcName = brokenName[i];
-				else
+				} else {
 					npcName += " " + brokenName[i];
+				}
 			}
 		}
 		HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(UID, npcName,
@@ -239,7 +240,7 @@ public class NPCManager {
 		boolean found = false;
 		// Change this to an integer return?
 		int UID = 0;
-		while (found != true) {
+		while (!found) {
 			UID = new Random().nextInt();
 			if (!GlobalUIDs.containsKey(UID)) {
 				found = true;

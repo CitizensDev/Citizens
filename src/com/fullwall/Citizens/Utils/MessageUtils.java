@@ -49,11 +49,10 @@ public class MessageUtils {
 	}
 
 	/**
-	 * Gets the text to be said for a basic npc.
+	 * Gets the text to be said for a basic NPC
 	 * 
 	 * @param npc
 	 * @param player
-	 * @param plugin
 	 * @return
 	 */
 	public static String getText(HumanNPC npc, Player player) {
@@ -97,9 +96,8 @@ public class MessageUtils {
 				+ "You need "
 				+ StringUtils.wrap(
 						EconomyHandler.getPaymentType(op,
-								EconomyHandler.getRemainder(op, player),
-								ChatColor.RED), ChatColor.RED)
-				+ " more to do that.";
+								EconomyHandler.getRemainder(op, player)),
+						ChatColor.RED) + " more to do that.";
 		return message;
 	}
 
@@ -118,8 +116,9 @@ public class MessageUtils {
 		String message = "";
 		message = ChatColor.GREEN
 				+ "Paid "
-				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, "" + paid,
-						ChatColor.GREEN)) + " for ";
+				+ StringUtils
+						.wrap(EconomyHandler.getPaymentType(op, "" + paid))
+				+ " for ";
 		if (useType) {
 			message += StringUtils.wrap(npcName) + " to become a "
 					+ StringUtils.wrap(type) + ".";
@@ -157,8 +156,9 @@ public class MessageUtils {
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {
-		String name = getItemName(stack.getTypeId());
-		return StringUtils.wrap(stack.getAmount() + " " + name, colour) + "(s)";
+		return StringUtils.wrap(
+				stack.getAmount() + " " + getMaterialName(stack.getTypeId()),
+				colour) + "(s)";
 	}
 
 	public static String getItemName(int itemID) {
@@ -203,8 +203,7 @@ public class MessageUtils {
 	 */
 	public static String getRandomMessage(String messages) {
 		String[] split = messages.split(";");
-		String text = "";
-		text = split[new Random().nextInt(split.length)];
+		String text = split[new Random().nextInt(split.length)];
 		if (text.equals(Constants.defaultText)) {
 			return text.replace('&', '§');
 		}

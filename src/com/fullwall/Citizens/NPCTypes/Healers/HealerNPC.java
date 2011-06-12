@@ -115,13 +115,13 @@ public class HealerNPC implements Toggleable, Clickable {
 					healerHealth = npc.getHealer().getHealth() - 1;
 					msg += " healed you for "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid, ChatColor.YELLOW)) + ".";
+									op, "" + paid)) + ".";
 				} else {
 					playerHealth = player.getHealth();
 					healerHealth = npc.getHealer().getHealth() + 1;
 					msg += " has been healed for "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid, ChatColor.YELLOW)) + ".";
+									op, "" + paid)) + ".";
 				}
 				player.setHealth(playerHealth);
 				npc.getHealer().setHealth(healerHealth);

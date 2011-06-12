@@ -74,7 +74,7 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static String getCurrency(Operation op, ChatColor colour) {
+	public static String getCurrency(Operation op) {
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
 		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
@@ -83,16 +83,12 @@ public class ItemInterface {
 				ID, (int) price)));
 	}
 
-	/**
-	 * Get the name of an item currency by its item ID
-	 * 
-	 * @param op
-	 * @return
-	 */
-	public static String getCurrencyName(Operation op) {
-		return Material.getMaterial(
-				UtilityProperties.getCurrencyID(Operation.getString(op,
-						currencyAddendum))).name();
+	public static String getBlacksmithCurrency(Player player, Operation op) {
+		int price = getBlacksmithPrice(player, player.getItemInHand(), op);
+		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
+				currencyAddendum));
+		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
+				ID, price)));
 	}
 
 	/**

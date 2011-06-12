@@ -143,6 +143,7 @@ public class CreatureTask implements Runnable {
 
 	public static void despawn(CreatureNPC npc) {
 		removeFromMaps(npc);
+		NPCSpawner.removeBasicHumanNpc(npc.npc);
 	}
 
 	public static void removeFromMaps(CreatureNPC npc) {

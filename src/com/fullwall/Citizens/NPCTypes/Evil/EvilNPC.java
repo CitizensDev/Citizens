@@ -6,8 +6,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -54,8 +56,15 @@ public class EvilNPC implements Clickable {
 			if (new Random().nextInt(100) <= Constants.evilNPCTameChance) {
 				setTame(true);
 				npc.setEvil(false);
-				NPCManager.register(npc.getName(), player.getLocation(),
-						player.getName());
+				CreatureTask.despawn(CreatureTask.getCreature(npc.getHandle()
+						.getBukkitEntity()));
+				int UID = NPCManager.register(npc.getName(),
+						player.getLocation(), player.getName());
+				PropertyManager.getBasic().saveNPCAmountPerPlayer(
+						player.getName(),
+						PropertyManager.getBasic().getNPCAmountPerPlayer(
+								player.getName()) + 1);
+				NPCManager.get(UID).getNPCData().setOwner(player.getName());
 				player.sendMessage(ChatColor.GREEN + "You have tamed "
 						+ StringUtils.wrap(npc.getStrippedName())
 						+ "! You can now toggle it to be any type.");

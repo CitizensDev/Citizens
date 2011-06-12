@@ -153,7 +153,7 @@ public class WizardManager {
 					String msg = ChatColor.GREEN
 							+ "Paid "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid, ChatColor.YELLOW));
+									op, "" + paid));
 					switch (op) {
 					case WIZARD_TELEPORT:
 						msg += " for a teleport to "

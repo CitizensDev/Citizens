@@ -293,13 +293,12 @@ public class EconomyHandler {
 	 * @param amount
 	 * @return
 	 */
-	public static String getPaymentType(Operation op, String amount,
-			ChatColor colour) {
+	public static String getPaymentType(Operation op, String amount) {
 		if (useEconomy) {
 			if (useIconomy()) {
 				return ServerEconomyInterface.format(amount);
 			} else {
-				return ItemInterface.getCurrency(op, colour);
+				return ItemInterface.getCurrency(op);
 			}
 		} else {
 			return "None";
