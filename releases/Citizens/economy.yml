@@ -1,0 +1,76 @@
+economy:
+    use-econplugin: 'false'
+    use-economy: 'true'
+prices:
+    blacksmith:
+        creation:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+        toolrepair:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+        armorrepair:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+    basic:
+        creation:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+    guard:
+        creation:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+    wizard:
+        creation:
+            item: '20'
+            econplugin: '150'
+            item-currency-id: '37'
+        changetime:
+            item: '20'
+            econplugin: '150'
+            item-currency-id: '37'
+        spawnmob:
+            item: '20'
+            econplugin: '150'
+            item-currency-id: '37'
+        teleport:
+            item: '20'
+            econplugin: '150'
+            item-currency-id: '37'
+        togglestorm:
+            item: '20'
+            econplugin: '150'
+            item-currency-id: '37'
+    trader:
+        creation:
+            item: '20'
+            econplugin: '250'
+            item-currency-id: '37'
+    bandit:
+        creation:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+    healer:
+        creation:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+        heal:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+        levelup:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'
+    quester:
+        creation:
+            item: '10'
+            econplugin: '100'
+            item-currency-id: '37'

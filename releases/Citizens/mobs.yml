@@ -1,0 +1,11 @@
+evil:
+    spawn:
+        spawn: 'true'
+        max: '2'
+        delay: '200'
+    names: Herobrine,aPunch,fullwall,
+    look-range: '25'
+    misc:
+        tame-chance: '5'
+        tame-item: '354'
+        failed-tame-messages: Ha! You can't tame me!;Better luck next time, fool!;

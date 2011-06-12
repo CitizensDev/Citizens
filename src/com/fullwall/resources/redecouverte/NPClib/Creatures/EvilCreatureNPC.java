@@ -70,7 +70,6 @@ public class EvilCreatureNPC extends CreatureNPC {
 				this.target = ((CraftEntity) entity).getHandle();
 			}
 		}
-		super.onDamage(event);
 	}
 
 	@Override

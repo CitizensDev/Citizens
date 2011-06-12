@@ -1,0 +1,53 @@
+range:
+    guards:
+        default-bouncer-protection-radius: '5'
+        pathfinding: '16'
+    basic:
+        look: '4'
+    bandits:
+        steal-radius: '5'
+items:
+    item-list-on: 'true'
+    basic:
+        select-items: '*'
+        talk-items: 340,
+    healers:
+        give-health-item: '35'
+        take-health-item: '276'
+    wizards:
+        mana-regen-item: '348'
+        interact-item: '288'
+ticks:
+    healers:
+        health-regen-increment: '12000'
+    wizards:
+        mana-regen-rate: '6000'
+    saving:
+        save-often: 'true'
+        use-task: 'true'
+        delay: '72000'
+    pathing:
+        max-stationary: '25'
+        max-pathing: '-1'
+    general:
+        delay: '1'
+general:
+    limits:
+        npcs-per-player: '10'
+    defaults:
+        enable-following: 'true'
+        talk-when-close: 'false'
+    healers:
+        pay-for-heal: 'true'
+        regen-health: 'true'
+    colors:
+        use-npc-colours: 'true'
+        npc-colour: §f
+    wizards:
+        max-mana: '100'
+        regen-mana: 'true'
+        wizard-max-locations: '10'
+    chat:
+        slashes-to-spaces: 'true'
+        default-text: Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;
+        format: '[%name%]: '
