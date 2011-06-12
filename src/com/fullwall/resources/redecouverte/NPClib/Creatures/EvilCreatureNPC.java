@@ -21,23 +21,22 @@ public class EvilCreatureNPC extends CreatureNPC {
 		super(minecraftserver, world, s, iteminworldmanager);
 	}
 
-	private final Integer[] weapons = { 261, 267, 268, 272, 276, 283 };
+	private final Integer[] weapons = { 267, 268, 272, 276, 283 };
 
 	@Override
 	public void onSpawn() {
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
-		npc.setEvil(true);
 		super.onSpawn();
 	}
 
 	@Override
 	public void doTick() {
 		if (!this.npc.getEvil().isTame()) {
-			if (!hasTarget() && findClosestPlayer(this.range) != null)
+			if (!hasTarget() && findClosestPlayer(this.range) != null) {
 				targetClosestPlayer(true, this.range);
+			}
 			super.doTick();
-
 		}
 	}
 
@@ -48,8 +47,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 				.dropItemNaturally(this.getLocation(),
 						new CraftItemStack(this.inventory.getItemInHand()));
 		List<Integer> itemIDs = new ArrayList<Integer>();
-		for (Material mat : Material.values())
+		for (Material mat : Material.values()) {
 			itemIDs.add(mat.getId());
+		}
 		Material randomItem = Material.getMaterial(this.random.nextInt(itemIDs
 				.size()));
 		if (randomItem == null) {

@@ -69,6 +69,15 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityTarget(EntityTargetEvent event) {
+		// Note: For some reason, the getTarget target in this case is the
+		// player and the getEntity entity is the NPC
+		if (CreatureTask.getCreature(event.getEntity()) != null) {
+			HumanNPC creature = CreatureTask.getCreature(event.getEntity()).npc;
+			if (creature.isEvil()) {
+				creature.getEvil().onRightClick((Player) event.getTarget(),
+						creature);
+			}
+		}
 		if (NPCManager.isNPC(event.getTarget())) {
 			event.setCancelled(true);
 		}
@@ -102,23 +111,20 @@ public class EntityListen extends EntityListener implements Listener {
 									(Player) e.getTarget()));
 					plugin.getServer().getPluginManager().callEvent(ev);
 				}
-				if (npc.isTrader())
+				if (npc.isTrader()) {
 					npc.getTrader().onRightClick(player, npc);
-
-				if (npc.isWizard())
+				}
+				if (npc.isWizard()) {
 					npc.getWizard().onRightClick(player, npc);
-
-				if (npc.isBlacksmith())
+				}
+				if (npc.isBlacksmith()) {
 					npc.getBlacksmith().onRightClick(player, npc);
-
-				if (npc.isBandit())
+				}
+				if (npc.isBandit()) {
 					npc.getBandit().onRightClick(player, npc);
-
-				if (npc.isQuester())
+				}
+				if (npc.isQuester()) {
 					npc.getQuester().onRightClick(player, npc);
-
-				if (npc.isEvil()) {
-					npc.getEvil().onRightClick(player, npc);
 				}
 			}
 		}

@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Utils;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,7 +66,7 @@ public class MessageUtils {
 			NPCManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
-			text = UtilityProperties.getDefaultText();
+			text = getRandomMessage(Constants.defaultText);
 		}
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
@@ -174,7 +175,8 @@ public class MessageUtils {
 					"" + Character.toUpperCase(s.charAt(0)));
 			++count;
 		}
-		return Arrays.toString(parts).replace("[", "").replace("]", "").replace(", ", "");
+		return Arrays.toString(parts).replace("[", "").replace("]", "")
+				.replace(", ", "");
 	}
 
 	public static String getStackString(ItemStack item) {
@@ -191,5 +193,21 @@ public class MessageUtils {
 	public static String getMaxPagesMessage(int page, int maxPages) {
 		return ChatColor.GRAY + "The total number of pages is " + maxPages
 				+ ", page: " + page + " is not available.";
+	}
+
+	/**
+	 * Pulls a random message from a string of messages split by a semi-colon
+	 * 
+	 * @param messages
+	 * @return
+	 */
+	public static String getRandomMessage(String messages) {
+		String[] split = messages.split(";");
+		String text = "";
+		text = split[new Random().nextInt(split.length)];
+		if (text.equals(Constants.defaultText)) {
+			return text.replace('&', '§');
+		}
+		return text;
 	}
 }

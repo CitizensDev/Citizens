@@ -40,6 +40,7 @@ public class Constants {
 	public static String talkItems = "340,";
 	public static String selectItems = "*";
 	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,";
+	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>;Better luck next time, fool!;";
 
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean payForHealerHeal = true;
@@ -83,6 +84,7 @@ public class Constants {
 		npcColour = settings.getString("general.colors.npc-colour");
 		talkItems = settings.getString("items.basic.talk-items");
 		selectItems = settings.getString("items.basic.select-items");
+
 		// Double defaults
 		defaultBouncerProtectionRadius = settings
 				.getDouble("range.guards.default-bouncer-protection-radius");
@@ -127,8 +129,10 @@ public class Constants {
 
 		maxEvilNPCs = mobs.getInt("evil.spawn.max");
 		spawnEvilDelay = mobs.getInt("evil.spawn.delay");
-		evilLookRange = mobs.getInt("evil.look-range");
+		evilLookRange = mobs.getInt("evil.misc.look-range");
 		evilNPCTameItem = mobs.getInt("evil.misc.tame-item");
 		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");
+		failureToTameMessages = settings
+				.getString("evil.misc.failed-tame-messages");
 	}
 }

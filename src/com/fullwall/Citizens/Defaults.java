@@ -142,6 +142,8 @@ public class Defaults {
 		nodes.put("evil.names", "Herobrine,aPunch,fullwall,");
 		nodes.put("evil.misc.tame-chance", "5");
 		nodes.put("evil.misc.tame-item", "354");
+		nodes.put("evil.misc.failed-tame-messages",
+				"Ha! You can't tame me!;Better luck next time, fool!;");
 		return nodes;
 	}
 

@@ -162,6 +162,8 @@ public class HelpUtils {
 	 */
 	public static void sendQuesterHelp(CommandSender sender) {
 		header(sender, "Quester", 1, 1);
+		formatCommand(sender, "quester", "assign [quest]",
+				"assign a quest to an NPC");
 		footer(sender);
 	}
 

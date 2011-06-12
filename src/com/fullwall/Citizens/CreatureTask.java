@@ -31,16 +31,16 @@ public class CreatureTask implements Runnable {
 	public void run() {
 		if (dirty) {
 			online = Bukkit.getServer().getOnlinePlayers();
-			dirty = false;
+			// dirty = false;
 		}
 		if (online != null && online.length > 0) {
 			Player player = online[new Random().nextInt(online.length)];
 			// TODO - work out best method of getting creature type to spawn
 			// (perhaps randomly?).
 			CreatureNPCType type = CreatureNPCType.EVIL;
-			if (spawned.get(type) == null)
+			if (spawned.get(type) == null) {
 				spawned.put(type, 0);
-			else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
+			} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
 				HumanNPC npc = spawnCreature(type, player.getLocation());
 				if (npc != null) {
 					spawned.put(type, spawned.get(type) + 1);

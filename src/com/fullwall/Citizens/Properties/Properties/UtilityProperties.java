@@ -2,7 +2,6 @@ package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.Random;
 
-import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.ConfigurationHandler;
 import com.fullwall.Citizens.Properties.PropertyHandler;
@@ -28,13 +27,6 @@ public class UtilityProperties {
 
 	public static Storage getEconomySettings() {
 		return economy;
-	}
-
-	public static String getDefaultText() {
-		String[] split = Constants.defaultText.split(";");
-		String text = "";
-		text = split[new Random().nextInt(split.length)];
-		return text.replace('&', '§');
 	}
 
 	public static double getPrice(String operation) {

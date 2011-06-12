@@ -30,7 +30,7 @@ public class HumanNPC extends NPC {
 	private boolean isQuester = false;
 	private boolean isBandit = false;
 	private boolean isGuard = false;
-	private boolean isEvil = false;
+	private boolean isEvil = true;
 
 	private final TraderNPC traderNPC = new TraderNPC(this);
 	private final HealerNPC healerNPC = new HealerNPC(this);

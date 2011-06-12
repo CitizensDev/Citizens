@@ -62,7 +62,6 @@ public abstract class CreatureNPC extends CraftNPC {
 				Entity entity = ((CraftEntity) e.getDamager()).getHandle();
 				double d0 = entity.locX - this.locX;
 				double d1;
-
 				for (d1 = entity.locZ - this.locZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math
 						.random() - Math.random()) * 0.01D) {
 					d0 = (Math.random() - Math.random()) * 0.01D;
@@ -70,6 +69,10 @@ public abstract class CreatureNPC extends CraftNPC {
 				this.af = (float) (Math.atan2(d1, d0) * 180.0D / 3.1415927410125732D)
 						- this.yaw;
 				this.a(entity, e.getDamage(), d0, d1);
+				this.world
+						.makeSound(this, this.h(), this.k(),
+								(this.random.nextFloat() - this.random
+										.nextFloat()) * 0.2F + 1.0F);
 			}
 		}
 	}
