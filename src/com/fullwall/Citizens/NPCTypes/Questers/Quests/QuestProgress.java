@@ -24,12 +24,25 @@ public class QuestProgress {
 		if (!this.objectives.isCompleted()) {
 			String message = this.objectives.current().getMessage();
 			if (!message.isEmpty())
-				Messaging.send(this.incrementer.player, message);
-			this.objectives.cycle();
-			this.incrementer = QuestFactory.createIncrementer(
-					incrementer.getQuester(), incrementer.getPlayer(),
-					getQuestName(), this.objectives.current().getType(),
-					this.objectives);
+				Messaging.send(this.getIncrementer().player, message);
+			next();
+		}
+	}
+
+	private void next() {
+		this.objectives.cycle();
+		this.incrementer = QuestFactory.createIncrementer(getIncrementer()
+				.getQuester(), getIncrementer().getPlayer(), getQuestName(),
+				this.objectives.current().getType(), this.objectives);
+	}
+
+	public int getStep() {
+		return this.objectives.currentStep();
+	}
+
+	public void setStep(int step) {
+		while (this.objectives.currentStep() != step) {
+			next();
 		}
 	}
 
@@ -42,16 +55,20 @@ public class QuestProgress {
 	}
 
 	public int getQuesterUID() {
-		return this.incrementer.getQuester().getUID();
+		return this.getIncrementer().getQuester().getUID();
 	}
 
 	public boolean updateProgress(Event event) {
-		if (incrementer != null)
-			this.incrementer.updateProgress(event);
-		return this.incrementer.isCompleted();
+		if (getIncrementer() != null)
+			this.getIncrementer().updateProgress(event);
+		return this.getIncrementer().isCompleted();
 	}
 
 	public String getQuestName() {
 		return questName;
+	}
+
+	public QuestIncrementer getIncrementer() {
+		return incrementer;
 	}
 }

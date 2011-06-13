@@ -1,10 +1,9 @@
 package com.fullwall.Citizens.NPCTypes.Questers.Objectives;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
 
 public class Objectives {
-	private final List<Objective> objectives = new ArrayList<Objective>();
+	private final ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();
 
 	public Objectives(Objective... objectives) {
 		for (Objective obj : objectives) {
@@ -16,7 +15,7 @@ public class Objectives {
 		this.objectives.add(objective);
 	}
 
-	public List<Objective> all() {
+	public ArrayDeque<Objective> all() {
 		return objectives;
 	}
 
@@ -25,7 +24,7 @@ public class Objectives {
 	}
 
 	public static class ObjectiveCycler {
-		private List<Objective> objectives = new ArrayList<Objective>();
+		private ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();
 
 		public ObjectiveCycler(Objectives objectives) {
 			this.objectives = objectives.all();
@@ -33,13 +32,16 @@ public class Objectives {
 
 		public Objective current() {
 			if (this.objectives.size() > 0)
-				return this.objectives.get(0);
+				return this.objectives.peek();
 			return null;
 		}
 
 		public void cycle() {
-			if (this.objectives.size() > 0)
-				this.objectives.remove(0);
+			this.objectives.pop();
+		}
+
+		public int currentStep() {
+			return this.objectives.size();
 		}
 
 		public boolean isCompleted() {

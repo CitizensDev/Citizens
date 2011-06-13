@@ -30,7 +30,7 @@ public abstract class QuestIncrementer {
 		return player;
 	}
 
-	protected Progress getProgress() {
+	public Progress getProgress() {
 		return this.objective.getProgress();
 	}
 

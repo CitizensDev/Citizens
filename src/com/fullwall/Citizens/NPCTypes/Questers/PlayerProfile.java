@@ -3,21 +3,31 @@ package com.fullwall.Citizens.NPCTypes.Questers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
+import com.fullwall.Citizens.Interfaces.Storage;
+import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objective.Progress;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestProgress;
+import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Properties.ConfigurationHandler;
 
 public class PlayerProfile {
-	private StoredProfile profile;
+	private final ConfigurationHandler profile;
 	private int rank;
 	private final List<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
 	private QuestProgress progress;
+	private final String name;
 
 	public PlayerProfile(String name) {
-		profile = new StoredProfile(name);
+		profile = new ConfigurationHandler("plugins/Citizens/Profiles/" + name
+				+ ".yml");
+		this.name = name;
+		this.load();
 		rank = 1;
-	}
-
-	public void setProfile(StoredProfile profile) {
-		this.profile = profile;
 	}
 
 	public List<CompletedQuest> getCompletedQuests() {
@@ -25,7 +35,7 @@ public class PlayerProfile {
 	}
 
 	public void addCompletedQuest(CompletedQuest quest) {
-		this.completedQuests.add(quest);
+		completedQuests.add(quest);
 	}
 
 	public QuestProgress getProgress() {
@@ -34,6 +44,7 @@ public class PlayerProfile {
 
 	public void setProgress(QuestProgress progress) {
 		this.progress = progress;
+		this.profile.removeKey("quests.current");
 	}
 
 	public void setRank(int rank) {
@@ -45,10 +56,81 @@ public class PlayerProfile {
 	}
 
 	public boolean hasQuest() {
-		return progress == null;
+		return progress != null;
+	}
+
+	public Storage getStorage() {
+		return profile;
 	}
 
 	public void save() {
-		this.profile.save();
+		if (progress != null) {
+			String path = "quests.current.";
+			profile.setString(path + "name", progress.getQuestName());
+			profile.setInt(path + "step", progress.getStep());
+			profile.setInt(path + "giver", progress.getQuesterUID());
+			Progress questProgress = progress.getIncrementer().getProgress();
+			profile.setInt(path + "progress.amount", questProgress.getAmount());
+			if (questProgress.getLastItem() != null) {
+				profile.setInt(path + "progress.item.id", questProgress
+						.getLastItem().getTypeId());
+				profile.setInt(path + "progress.item.amount", questProgress
+						.getLastItem().getAmount());
+				profile.setInt(path + "progress.item.id", questProgress
+						.getLastItem().getData() == null ? 0 : questProgress
+						.getLastItem().getData().getData());
+			}
+			if (questProgress.getLastLocation() != null) {
+				profile.setString(path + "progress.location.world",
+						questProgress.getLastLocation().getWorld().getName());
+				profile.setDouble(path + "progress.location.x", questProgress
+						.getLastLocation().getX());
+				profile.setDouble(path + "progress.location.y", questProgress
+						.getLastLocation().getY());
+				profile.setDouble(path + "progress.location.z", questProgress
+						.getLastLocation().getZ());
+				profile.setDouble(path + "progress.location.yaw", questProgress
+						.getLastLocation().getYaw());
+				profile.setDouble(path + "progress.location.pitch",
+						questProgress.getLastLocation().getPitch());
+			}
+		}
+		profile.save();
+	}
+
+	private void load() {
+		String path = "quests.current.";
+		if (!profile.getString(path + "name").isEmpty()) {
+			QuestManager.assignQuest(NPCManager.get(profile.getInt(path
+					+ "giver")), Bukkit.getServer().getPlayer(name), profile
+					.getString(path + "name"));
+			progress.setStep(profile.getInt(path + "step"));
+			Progress questProgress = progress.getIncrementer().getProgress();
+			questProgress.setAmountCompleted(this.profile.getInt(path
+					+ "progress.amount"));
+			int itemID = profile.getInt(path + "progress.item.id");
+			int amount = profile.getInt(path + "progress.item.amount");
+			if (itemID != 0 && amount > 0) {
+				ItemStack item = null;
+				item = new ItemStack(itemID, amount);
+				item.setData(new MaterialData(itemID, (byte) profile
+						.getInt(path + "progress.item.data")));
+				questProgress.setLastItem(item);
+			}
+			String name = profile.getString(path + "progress.location.world");
+			if (!name.isEmpty()) {
+				Location loc = null;
+				double x = profile.getDouble(path + "progress.location.x");
+				double y = profile.getDouble(path + "progress.location.y");
+				double z = profile.getDouble(path + "progress.location.z");
+				float yaw = (float) profile.getDouble(path
+						+ "progress.location.yaw");
+				float pitch = (float) profile.getDouble(path
+						+ "progress.location.pitch");
+				loc = new Location(Bukkit.getServer().getWorld(name), x, y, z,
+						yaw, pitch);
+				questProgress.setLastLocation(loc);
+			}
+		}
 	}
 }

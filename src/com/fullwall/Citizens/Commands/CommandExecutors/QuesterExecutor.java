@@ -62,12 +62,14 @@ public class QuesterExecutor implements CommandExecutor {
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				returnval = true;
 			} else if (args.length == 2 && args[0].contains("rem")) {
 				if (Permission.canModify(player, npc, "quester")) {
 					removeQuest(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
+				returnval = true;
 			}
 			PropertyManager.save(npc);
 		}

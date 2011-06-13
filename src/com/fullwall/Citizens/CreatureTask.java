@@ -32,7 +32,7 @@ public class CreatureTask implements Runnable {
 	public void run() {
 		if (dirty) {
 			online = Bukkit.getServer().getOnlinePlayers();
-			// dirty = false;
+			dirty = false;
 		}
 		if (online != null && online.length > 0) {
 			Player player = online[new Random().nextInt(online.length)];

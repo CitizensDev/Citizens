@@ -114,10 +114,10 @@ public class Constants {
 
 		// ####Economy settings####
 		Storage economy = UtilityProperties.getEconomySettings();
-		useEconplugin = economy.getBoolean("economy.use-econplugin");
 		useEconomy = economy.getBoolean("economy.use-economy");
+		useEconplugin = economy.getBoolean("economy.use-econplugin");
 
-		EconomyHandler.setUpVariables();
+		EconomyHandler.setUpVariables(useEconomy, useEconplugin);
 
 		// ####Mob settings####
 		Storage mobs = UtilityProperties.getMobSettings();

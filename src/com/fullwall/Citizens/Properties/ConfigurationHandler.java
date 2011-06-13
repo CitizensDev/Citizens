@@ -107,9 +107,7 @@ public class ConfigurationHandler implements Storage {
 	private void create() {
 		File file = getFile();
 		try {
-			if (!fileName.contains("profile")) {
-				Messaging.log("Creating new config file at " + fileName + ".");
-			}
+			Messaging.log("Creating new config file at " + fileName + ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {

@@ -82,19 +82,15 @@ public class Objective {
 		private Location lastLocation;
 
 		public void incrementCompleted(int i) {
-			this.setAmountCompleted(this.getAmountCompleted() + 1);
+			this.setAmountCompleted(this.getAmount() + 1);
 		}
 
 		public int getAmount() {
-			return getAmountCompleted();
+			return amountCompleted;
 		}
 
 		public void setAmountCompleted(int amountCompleted) {
 			this.amountCompleted = amountCompleted;
-		}
-
-		public int getAmountCompleted() {
-			return amountCompleted;
 		}
 
 		public void setLastItem(ItemStack lastItem) {

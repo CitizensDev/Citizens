@@ -11,11 +11,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.fullwall.Citizens.Commands.CommandHandler;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
+import com.fullwall.Citizens.Listeners.PlayerListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCTypes.Bandits.BanditTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
 import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -35,7 +37,7 @@ public class Citizens extends JavaPlugin {
 	private final CustomListen customListener = new CustomListen(this);
 	private final WorldListen worldListener = new WorldListen(this);
 	private final PluginListen serverListener = new PluginListen(this);
-	// private final PlayerListen playerListener = new PlayerListen(this);
+	private final PlayerListen playerListener = new PlayerListen(this);
 	public final BasicNPCHandler basicNPCHandler = new BasicNPCHandler(this);
 
 	public static Citizens plugin;
@@ -71,7 +73,7 @@ public class Citizens extends JavaPlugin {
 		customListener.registerEvents();
 		worldListener.registerEvents();
 		serverListener.registerEvents();
-		// playerListener.registerEvents();
+		playerListener.registerEvents();
 
 		// Register files.
 		PropertyManager.registerProperties();
@@ -123,6 +125,7 @@ public class Citizens extends JavaPlugin {
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
 
+		QuestManager.initialise();
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") loaded");
 	}

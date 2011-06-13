@@ -3,6 +3,7 @@ package com.fullwall.Citizens.NPCTypes.Questers.Quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -92,6 +93,11 @@ public class QuestManager {
 				progress.cycle();
 			}
 		}
+	}
+
+	public static void initialise() {
+		for (Player player : Bukkit.getServer().getOnlinePlayers())
+			load(player);
 	}
 
 	public static boolean hasQuest(Player player) {
