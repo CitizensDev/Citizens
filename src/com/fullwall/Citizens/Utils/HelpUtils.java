@@ -17,24 +17,21 @@ public class HelpUtils {
 			sender.sendMessage(ChatColor.GREEN + "  []"
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
-			formatCommand(sender, "toggle", "[type]", "toggle an NPC type");
-			formatCommand(sender, "toggle", "[all] [on/off]",
+			format(sender, "toggle", "[type]", "toggle an NPC type");
+			format(sender, "toggle", "[all] [on/off]",
 					"toggle all types for an NPC");
-			formatCommand(sender, "basic", "help [page]",
-					"basic NPC help pages");
-			formatCommand(sender, "bandit", "help", "bandit NPC help page");
-			formatCommand(sender, "blacksmith", "help",
-					"blacksmith NPC help page");
-			formatCommand(sender, "guard", "help", "guard NPC help page");
-			formatCommand(sender, "healer", "help", "healer NPC help page");
+			format(sender, "basic", "help [page]", "basic NPC help pages");
+			format(sender, "bandit", "help", "bandit NPC help page");
+			format(sender, "blacksmith", "help", "blacksmith NPC help page");
+			format(sender, "guard", "help", "guard NPC help page");
+			format(sender, "healer", "help", "healer NPC help page");
 			footer(sender);
 			break;
 		case 2:
 			header(sender, "General", 2, 2);
-			formatCommand(sender, "quester", "help", "quester NPC help page");
-			formatCommand(sender, "trader", "help [page]",
-					"trader NPC help page");
-			formatCommand(sender, "wizard", "help", "wizard NPC help page");
+			format(sender, "quester", "help", "quester NPC help page");
+			format(sender, "trader", "help [page]", "trader NPC help page");
+			format(sender, "wizard", "help", "wizard NPC help page");
 			footer(sender);
 			break;
 		default:
@@ -53,42 +50,37 @@ public class HelpUtils {
 		switch (page) {
 		case 1:
 			header(sender, "Basic NPC", 1, 3);
-			formatCommand(sender, "npc", "create [name]", "create an NPC");
-			formatCommand(sender, "npc", "set [text]", "set the text of an NPC");
-			formatCommand(sender, "npc", "add [text]", "add text to an NPC");
-			formatCommand(sender, "npc", "reset", "reset the text of an NPC");
-			formatCommand(sender, "npc", "name [name]",
-					"set the new name of an NPC");
-			formatCommand(sender, "npc", "remove (all)",
-					"remove and despawn NPC(s)");
-			formatCommand(sender, "npc", "item [itemID|item-name]",
+			format(sender, "npc", "create [name]", "create an NPC");
+			format(sender, "npc", "set [text]", "set the text of an NPC");
+			format(sender, "npc", "add [text]", "add text to an NPC");
+			format(sender, "npc", "reset", "reset the text of an NPC");
+			format(sender, "npc", "name [name]", "set the new name of an NPC");
+			format(sender, "npc", "remove (all)", "remove and despawn NPC(s)");
+			format(sender, "npc", "item [itemID|item-name]",
 					"set the item that an NPC holds");
-			formatCommand(sender, "npc", "[slot] [itemID|name]",
+			format(sender, "npc", "[slot] [itemID|name]",
 					"set the armor slot of an NPC");
-			formatCommand(sender, "npc", "move", "move an NPC to your location");
+			format(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
 			header(sender, "Basic NPC", 2, 3);
-			formatCommand(sender, "npc", "tp",
-					"teleport to the location of an NPC");
-			formatCommand(sender, "npc", "copy",
+			format(sender, "npc", "tp", "teleport to the location of an NPC");
+			format(sender, "npc", "copy",
 					"make a clone of an NPC at your location");
-			formatCommand(sender, "npc", "id", "get the ID of an NPC");
-			formatCommand(sender, "npc", "select [ID]",
+			format(sender, "npc", "id", "get the ID of an NPC");
+			format(sender, "npc", "select [ID]",
 					"select an NPC with the given ID");
-			formatCommand(sender, "npc", "owner", "get the owner of an NPC");
-			formatCommand(sender, "npc", "setowner [name]",
-					"set the owner of an NPC");
-			formatCommand(sender, "npc", "talkwhenclose [true|false]",
+			format(sender, "npc", "owner", "get the owner of an NPC");
+			format(sender, "npc", "setowner [name]", "set the owner of an NPC");
+			format(sender, "npc", "talkwhenclose [true|false]",
 					"make an NPC talk to players");
-			formatCommand(sender, "npc", "lookatplayers [true|false]",
+			format(sender, "npc", "lookatplayers [true|false]",
 					"make an NPC look at players");
 			footer(sender);
 			break;
 		case 3:
 			header(sender, "Basic NPC", 3, 3);
-			formatCommand(sender, "npc", "list (name) (page)",
-					"show a list of NPCs");
+			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
 
 			footer(sender);
 			break;
@@ -105,19 +97,18 @@ public class HelpUtils {
 	 */
 	public static void sendTraderHelp(CommandSender sender) {
 		header(sender, "Trader", 1, 1);
-		formatCommand(sender, "trader", "list [buy|sell] (page)",
+		format(sender, "trader", "list [buy|sell] (page)",
 				"list a trader's buy/sell list");
-		formatCommand(sender, "trader",
+		format(sender, "trader",
 				"[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]",
 				"start an NPC stocking an item");
-		formatCommand(sender, "trader", "[buy|sell] remove [itemID]",
+		format(sender, "trader", "[buy|sell] remove [itemID]",
 				"stop the item from being stocked");
-		formatCommand(sender, "trader", "balance [give|take]",
+		format(sender, "trader", "balance [give|take]",
 				"set a trader's balance if using iConomy");
-		formatCommand(sender, "trader", "unlimited [true|false]",
+		format(sender, "trader", "unlimited [true|false]",
 				"set whether a trader has unlimited stock");
-		formatCommand(sender, "trader", "money",
-				"check how much money a trader has");
+		format(sender, "trader", "money", "check how much money a trader has");
 		footer(sender);
 	}
 
@@ -128,10 +119,9 @@ public class HelpUtils {
 	 */
 	public static void sendHealerHelp(CommandSender sender) {
 		header(sender, "Healer", 1, 1);
-		formatCommand(sender, "healer", "status",
+		format(sender, "healer", "status",
 				"view the health and level of a healer");
-		formatCommand(sender, "healer", "level-up (levels)",
-				"level-up a healer");
+		format(sender, "healer", "level-up (levels)", "level-up a healer");
 		footer(sender);
 	}
 
@@ -142,16 +132,13 @@ public class HelpUtils {
 	 */
 	public static void sendWizardHelp(CommandSender sender) {
 		header(sender, "Wizard", 1, 1);
-		formatCommand(sender, "wizard", "locations",
+		format(sender, "wizard", "locations",
 				"view the tp locations of a wizard");
-		formatCommand(sender, "wizard", "addloc [name]",
+		format(sender, "wizard", "addloc [name]",
 				"add a tp location to the wizard");
-		formatCommand(sender, "wizard", "removeloc [id]",
-				"remove the tp location");
-		formatCommand(sender, "wizard", "mode [mode]",
-				"change the mode of a wizard");
-		formatCommand(sender, "wizard", "status",
-				"display the mode/mana of a wizard");
+		format(sender, "wizard", "removeloc [id]", "remove the tp location");
+		format(sender, "wizard", "mode [mode]", "change the mode of a wizard");
+		format(sender, "wizard", "status", "display the mode/mana of a wizard");
 		footer(sender);
 	}
 
@@ -162,8 +149,7 @@ public class HelpUtils {
 	 */
 	public static void sendQuesterHelp(CommandSender sender) {
 		header(sender, "Quester", 1, 1);
-		formatCommand(sender, "quester", "assign [quest]",
-				"assign a quest to an NPC");
+		format(sender, "quester", "assign [quest]", "assign a quest to an NPC");
 		footer(sender);
 	}
 
@@ -174,11 +160,9 @@ public class HelpUtils {
 	 */
 	public static void sendBlacksmithHelp(CommandSender sender) {
 		header(sender, "Blacksmith", 1, 1);
-		formatCommand(sender, "blacksmith", "repair [type]",
-				"repair your armor");
-		formatCommand(sender, "blacksmith", "list",
-				"list the available armor names");
-		formatCommand(sender, "blacksmith", "uses",
+		format(sender, "blacksmith", "repair [type]", "repair your armor");
+		format(sender, "blacksmith", "list", "list the available armor names");
+		format(sender, "blacksmith", "uses",
 				"show how many uses your item has left");
 		footer(sender);
 	}
@@ -190,7 +174,7 @@ public class HelpUtils {
 	 */
 	public static void sendBanditHelp(CommandSender sender) {
 		header(sender, "Bandit", 1, 1);
-		formatCommand(sender, "bandit", "stealable [add|remove] [id]",
+		format(sender, "bandit", "stealable [add|remove] [id]",
 				"specify stealable items");
 		footer(sender);
 	}
@@ -202,13 +186,13 @@ public class HelpUtils {
 	 */
 	public static void sendGuardHelp(CommandSender sender) {
 		header(sender, "Guard", 1, 1);
-		formatCommand(sender, "guard", "[type]",
+		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		formatCommand(sender, "guard", "blacklist (mob)",
+		format(sender, "guard", "blacklist (mob)",
 				"add mob to a guard's blacklist");
-		formatCommand(sender, "guard", "whitelist (player)",
+		format(sender, "guard", "whitelist (player)",
 				"add player to a guard's whitelist");
-		formatCommand(sender, "guard", "radius [amount]",
+		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		footer(sender);
 	}
@@ -236,7 +220,7 @@ public class HelpUtils {
 	 * @param command
 	 * @param desc
 	 */
-	private static void formatCommand(CommandSender sender, String command,
+	private static void format(CommandSender sender, String command,
 			String args, String desc) {
 		String message = "";
 		if (args.isEmpty()) {

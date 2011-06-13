@@ -1,18 +1,20 @@
 package com.fullwall.Citizens.NPCTypes.Questers.Objectives;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
 
 public class Objective {
+	private int amount = -1;
 	private int destination = -1;
 	private ItemStack item = null;
-	private int amount = -1;
 	private Location location = null;
+	private String message = "";
+	private Material material = null;
 	private final Progress progress = new Progress();
 	private final QuestType type;
-	private String message = "";
 
 	public QuestType getType() {
 		return type;
@@ -64,6 +66,14 @@ public class Objective {
 
 	public String getMessage() {
 		return this.message;
+	}
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 
 	public class Progress {

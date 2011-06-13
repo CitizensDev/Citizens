@@ -40,6 +40,10 @@ public class QuesterNPC implements Toggleable, Clickable {
 		quests.push(quest);
 	}
 
+	public void removeQuest(String quest) {
+		quests.removeFirstOccurrence(quest);
+	}
+
 	@Override
 	public void toggle() {
 		npc.setQuester(!npc.isQuester());

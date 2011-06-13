@@ -56,9 +56,15 @@ public class QuesterExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				return true;
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("assign")) {
+			} else if (args.length == 2 && args[0].contains("assi")) {
 				if (Permission.canModify(player, npc, "quester")) {
 					assignQuest(player, npc, args[1]);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+			} else if (args.length == 2 && args[0].contains("rem")) {
+				if (Permission.canModify(player, npc, "quester")) {
+					removeQuest(player, npc, args[1]);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -69,17 +75,31 @@ public class QuesterExecutor implements CommandExecutor {
 	}
 
 	private void assignQuest(Player player, HumanNPC npc, String quest) {
-		if (QuestManager.validQuest(quest)) {
-			npc.getQuester().addQuest(quest);
-			player.sendMessage(ChatColor.GREEN + "Quest "
-					+ StringUtils.wrap(quest) + " added to "
-					+ StringUtils.wrap(npc.getName()) + "'s quests. "
-					+ StringUtils.wrap(npc.getName()) + " has "
-					+ StringUtils.wrap(npc.getQuester().getQuests().size())
-					+ " quests.");
-		} else {
+
+		if (!QuestManager.validQuest(quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
+			return;
 		}
+		npc.getQuester().addQuest(quest);
+		player.sendMessage(ChatColor.GREEN + "Quest " + StringUtils.wrap(quest)
+				+ " added to " + StringUtils.wrap(npc.getName())
+				+ "'s quests. " + StringUtils.wrap(npc.getName()) + " now has "
+				+ StringUtils.wrap(npc.getQuester().getQuests().size())
+				+ " quests.");
+	}
+
+	private void removeQuest(Player player, HumanNPC npc, String quest) {
+		if (!QuestManager.validQuest(quest)) {
+			player.sendMessage(ChatColor.GRAY
+					+ "There is no quest by that name.");
+			return;
+		}
+		npc.getQuester().removeQuest(quest);
+		player.sendMessage(ChatColor.GREEN + "Quest " + StringUtils.wrap(quest)
+				+ " added to " + StringUtils.wrap(npc.getName())
+				+ "'s quests. " + StringUtils.wrap(npc.getName()) + " now has "
+				+ StringUtils.wrap(npc.getQuester().getQuests().size())
+				+ " quests.");
 	}
 }

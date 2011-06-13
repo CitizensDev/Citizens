@@ -7,21 +7,13 @@ import com.fullwall.Citizens.Commands.CommandExecutors.BlacksmithExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.GuardExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.HealerExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.QuesterExecutor;
+import com.fullwall.Citizens.Commands.CommandExecutors.QuestsExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.TogglerExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.WizardExecutor;
 
 public class CommandHandler {
 	private final Citizens plugin;
-	private BasicExecutor basic;
-	private HealerExecutor healer;
-	private TraderExecutor trader;
-	private WizardExecutor wizard;
-	private BlacksmithExecutor blacksmith;
-	private QuesterExecutor quester;
-	private BanditExecutor bandit;
-	private GuardExecutor guard;
-	private TogglerExecutor toggle;
 
 	public CommandHandler(Citizens plugin) {
 		this.plugin = plugin;
@@ -33,25 +25,18 @@ public class CommandHandler {
 	 * @return
 	 */
 	public void registerCommands() {
-		basic = new BasicExecutor(plugin);
-		healer = new HealerExecutor(plugin);
-		trader = new TraderExecutor(plugin);
-		wizard = new WizardExecutor(plugin);
-		blacksmith = new BlacksmithExecutor(plugin);
-		quester = new QuesterExecutor(plugin);
-		bandit = new BanditExecutor(plugin);
-		guard = new GuardExecutor(plugin);
-		toggle = new TogglerExecutor(plugin);
-		plugin.getCommand("npc").setExecutor(basic);
-		plugin.getCommand("citizens").setExecutor(basic);
-		plugin.getCommand("basic").setExecutor(basic);
-		plugin.getCommand("healer").setExecutor(healer);
-		plugin.getCommand("trader").setExecutor(trader);
-		plugin.getCommand("wizard").setExecutor(wizard);
-		plugin.getCommand("blacksmith").setExecutor(blacksmith);
-		plugin.getCommand("quester").setExecutor(quester);
-		plugin.getCommand("bandit").setExecutor(bandit);
-		plugin.getCommand("guard").setExecutor(guard);
-		plugin.getCommand("tog").setExecutor(toggle);
+		plugin.getCommand("npc").setExecutor(new BasicExecutor(plugin));
+		plugin.getCommand("citizens").setExecutor(new BasicExecutor(plugin));
+		plugin.getCommand("basic").setExecutor(new BasicExecutor(plugin));
+		plugin.getCommand("healer").setExecutor(new HealerExecutor(plugin));
+		plugin.getCommand("trader").setExecutor(new TraderExecutor(plugin));
+		plugin.getCommand("wizard").setExecutor(new WizardExecutor(plugin));
+		plugin.getCommand("blacksmith").setExecutor(
+				new BlacksmithExecutor(plugin));
+		plugin.getCommand("quester").setExecutor(new QuesterExecutor(plugin));
+		plugin.getCommand("bandit").setExecutor(new BanditExecutor(plugin));
+		plugin.getCommand("guard").setExecutor(new GuardExecutor(plugin));
+		plugin.getCommand("tog").setExecutor(new TogglerExecutor(plugin));
+		plugin.getCommand("quests").setExecutor(new QuestsExecutor(plugin));
 	}
 }

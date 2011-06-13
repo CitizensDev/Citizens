@@ -3,40 +3,44 @@ main: com.fullwall.Citizens.Citizens
 version: 1.0.8
 authors: [fullwall, NeonMaster, aPunch, TheMPC]
 softdepend: [Permissions]
-
 commands:
     npc:
         description: Performs various NPC-related commands.
         usage: |
                     The command was not recognised. Was it typed in correctly?
-                    See /citizens help for a list of commands.   
+                    See /basic help for a list of commands.   
     basic:
         description: Basic NPC help menu.
         usage: |
                     The command was not recognised. Was it typed in correctly?
-                    See /citizens help for a list of commands.
+                    See /basic help for a list of commands.
     blacksmith:
         description: Performs various Blacksmith NPC-related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
-                        See /citizens help for a list of commands.           
+                        See /blacksmith help for a list of commands.           
     trader:
         description: Performs various Trader NPC-related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
-                        See /citizens help for a list of commands.
+                        See /trader help for a list of commands.
     guard:
         description: Performs various Guard NPC-related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
-                        See /citizens help for a list of commands.
+                        See /guard help for a list of commands.
     healer:
         description: Performs various Healer NPC-related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
-                        See /citizens help for a list of commands.
+                        See /healer help for a list of commands.
     wizard:
         description: Performs various Wizard NPC-related commands.
+        usage: |
+                        The command was not recognised. Was it typed in correctly?
+                        See /wizard help for a list of commands.
+    quests:
+        description: Performs player-quest related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
                         See /citizens help for a list of commands.
@@ -44,15 +48,20 @@ commands:
         description: Performs various Quester NPC-related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
-                        See /citizens help for a list of commands.
+                        See /quester help for a list of commands.
+    questedit:
+        description: Enters quest-edit mode.
+        usage: |
+                        The command was not recognised. The correct syntax is
+                        /<command>
     bandit:
         description: Performs various Bandit NPC-related commands.
         usage: |
                         The command was not recognised. Was it typed in correctly?
-                        See /citizens help for a list of commands.
-    tog:
+                        See /bandit help for a list of commands.
+    toggle:
         description: Toggles between various NPC states.
-        aliases: [t, togg, toggle]
+        aliases: [t, tog, togg]
         usage: |
                         The command was not recognised. The correct syntax is
                         /<command> [type]

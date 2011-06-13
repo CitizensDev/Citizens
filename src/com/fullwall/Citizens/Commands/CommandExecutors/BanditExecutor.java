@@ -17,7 +17,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BanditExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public BanditExecutor(Citizens plugin) {
 		this.plugin = plugin;

@@ -11,7 +11,7 @@ import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class BlockListen extends BlockListener implements Listener {
-	private Citizens plugin;
+	private final Citizens plugin;
 	private PluginManager pm;
 
 	public BlockListen(Citizens plugin) {
@@ -29,15 +29,11 @@ public class BlockListen extends BlockListener implements Listener {
 
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (QuestManager.hasQuest(event.getPlayer())) {
-			QuestManager.incrementQuest(event.getPlayer(), event);
-		}
+		QuestManager.incrementQuest(event.getPlayer(), event);
 	}
 
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (QuestManager.hasQuest(event.getPlayer())) {
-			QuestManager.incrementQuest(event.getPlayer(), event);
-		}
+		QuestManager.incrementQuest(event.getPlayer(), event);
 	}
 }

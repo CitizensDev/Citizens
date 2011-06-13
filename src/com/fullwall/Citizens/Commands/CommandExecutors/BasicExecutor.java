@@ -203,6 +203,31 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
+		} else if (args.length == 2
+				&& args[0].equalsIgnoreCase("talkwhenclose")) {
+			if (npc != null) {
+				if (Permission.canModify(player, npc, "basic")) {
+					changeTalkWhenClose(args[1], player, npc);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+			} else {
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			}
+			return true;
+
+		} else if (args.length == 2
+				&& args[0].equalsIgnoreCase("lookatplayers")) {
+			if (npc != null) {
+				if (Permission.canModify(player, npc, "basic")) {
+					changeLookWhenClose(args[1], player, npc);
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
+				}
+			} else {
+				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			}
+			return true;
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("id")) {
 			if (npc != null) {
 				if (Permission.canUse(player, npc, "basic")) {
@@ -219,8 +244,7 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("select")) {
 			if (Permission.canUse(player, npc, "basic")) {
-				// BUILD CHECK
-				if (!Character.isDigit(args[1].charAt(0))) {
+				if (!StringUtils.isNumber(args[1])) {
 					player.sendMessage(ChatColor.RED
 							+ "The ID must be a number.");
 					return true;
@@ -266,33 +290,6 @@ public class BasicExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			}
 			return true;
-
-		} else if (args.length == 2
-				&& args[0].equalsIgnoreCase("talkwhenclose")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					changeTalkWhenClose(args[1], player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			}
-			return true;
-
-		} else if (args.length == 2
-				&& args[0].equalsIgnoreCase("lookatplayers")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					changeLookWhenClose(args[1], player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			}
-			return true;
-
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("list")) {
 			if (Permission.canUse(player, npc, "basic")) {
 				switch (args.length) {
@@ -387,67 +384,6 @@ public class BasicExecutor implements CommandExecutor {
 				}
 			}
 			return true;
-
-		} else {
-			if (args.length >= 2 && args[0].equalsIgnoreCase("move")) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc move");
-			} else if (args.length >= 3 && args[0].equalsIgnoreCase("remove")) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc remove OR /npc remove all");
-			} else if (args.length >= 3 && args[0].equalsIgnoreCase("name")) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc name [name]");
-			} else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("colour") || args[0]
-							.equalsIgnoreCase("color"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc color [color]");
-			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("reset"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc reset");
-			} else if (args.length >= 3 && (args[0].equalsIgnoreCase("item"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc item [id|item name]");
-			} else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("torso")
-							|| args[0].equalsIgnoreCase("legs")
-							|| args[0].equalsIgnoreCase("helmet") || args[0]
-							.equalsIgnoreCase("boots"))) {
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc "
-						+ args[0] + " [id|item name]");
-			} else if (args.length >= 2 && args[0].equalsIgnoreCase("tp")) {
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc tp");
-			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("copy"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc copy");
-			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("id"))) {
-				sender.sendMessage(ChatColor.RED + "Incorrect Syntax: /npc id");
-			} else if (args.length >= 3 && (args[0].equalsIgnoreCase("select"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc select [id]");
-			} else if (args.length >= 2 && (args[0].equalsIgnoreCase("owner"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc owner");
-			} else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("setowner"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc setowner [player name]");
-			} else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("addowner"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc addowner [player name]");
-			} else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("talkwhenclose"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc talkwhenclose [true|false]");
-			} else if (args.length >= 3
-					&& (args[0].equalsIgnoreCase("lookatplayers"))) {
-				sender.sendMessage(ChatColor.RED
-						+ "Incorrect Syntax: /npc lookatplayers [true|false]");
-			} else {
-				return false;
-			}
 		}
 		PropertyManager.get("basic").saveState(npc);
 		return false;

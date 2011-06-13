@@ -144,7 +144,7 @@ public class TraderExecutor implements CommandExecutor {
 	private void displayList(Player player, HumanNPC npc, String[] args,
 			boolean selling) {
 		ArrayList<Stockable> stock = npc.getTrader().getStockables(!selling);
-		int page = 1, startPoint = 0;
+		int page = 1;
 		String keyword = "Buying ";
 		if (selling)
 			keyword = "Selling ";
@@ -153,18 +153,13 @@ public class TraderExecutor implements CommandExecutor {
 					+ keyword.toLowerCase() + "any items.");
 			return;
 		}
-		if (stock.size() > 9 && args.length == 3) {
-			page = Integer.parseInt(args[2]);
-			startPoint = (9 * page);
-		}
 		PageInstance instance = PageUtils.newInstance(player);
-		for (int i = startPoint; i != startPoint + 9; ++i) {
-			if (stock.size() > i) {
-				Stockable s = stock.get(i);
-				instance.push(ChatColor.GREEN + keyword + ": "
-						+ MessageUtils.getStockableMessage(s, ChatColor.GREEN)
-						+ ".");
-			}
+		for (Stockable stockable : stock) {
+			instance.push(ChatColor.GREEN
+					+ keyword
+					+ ": "
+					+ MessageUtils.getStockableMessage(stockable,
+							ChatColor.GREEN) + ".");
 		}
 		if (page <= instance.maxPages()) {
 			instance.header(ChatColor.GOLD + "========== Trader " + keyword

@@ -19,7 +19,7 @@ public class CollectQuest extends QuestIncrementer {
 		if (event instanceof PlayerPickupItemEvent) {
 			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
 			if (ev.getItem().getItemStack().getType() == this.objective
-					.getItem().getType()) {
+					.getMaterial()) {
 				this.getProgress().incrementCompleted(
 						ev.getItem().getItemStack().getAmount());
 			}

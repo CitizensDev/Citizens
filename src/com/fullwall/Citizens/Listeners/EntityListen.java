@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,6 +15,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Events.CitizensBasicNPCEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -64,6 +66,11 @@ public class EntityListen extends EntityListener implements Listener {
 					}
 				}
 			} else if (e.getDamager() instanceof Player) {
+				if (((LivingEntity) e.getEntity()).getHealth() - e.getDamage() <= 0) {
+					QuestManager.incrementQuest((Player) e.getDamager(),
+							new EntityDeathEvent(e.getEntity(), null));
+
+				}
 				CreatureTask.onLeftClick(e);
 			}
 		}

@@ -48,13 +48,11 @@ public class WorldListen extends WorldListener implements Listener {
 				NPCManager.despawn(entry);
 			}
 		}
-		int count = 0;
 		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
 			if (entry.getBukkitEntity().getLocation().getBlock().getChunk()
 					.equals(event.getChunk())) {
 				CreatureTask.despawn(entry);
 			}
-			++count;
 		}
 	}
 

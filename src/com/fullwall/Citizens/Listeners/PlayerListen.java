@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -33,6 +34,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 				plugin);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
 				Event.Priority.Normal, plugin);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
+				plugin);
 	}
 
 	@Override
@@ -50,15 +53,16 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		if (QuestManager.hasQuest(event.getPlayer())) {
-			QuestManager.incrementQuest(event.getPlayer(), event);
-		}
+		QuestManager.incrementQuest(event.getPlayer(), event);
 	}
 
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if (QuestManager.hasQuest(event.getPlayer())) {
-			QuestManager.incrementQuest(event.getPlayer(), event);
-		}
+		QuestManager.incrementQuest(event.getPlayer(), event);
+	}
+
+	@Override
+	public void onPlayerChat(PlayerChatEvent event) {
+
 	}
 }

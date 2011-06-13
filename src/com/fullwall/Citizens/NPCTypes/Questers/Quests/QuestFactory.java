@@ -2,6 +2,7 @@ package com.fullwall.Citizens.NPCTypes.Questers.Quests;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -26,6 +27,7 @@ import com.fullwall.Citizens.NPCTypes.Questers.Rewards.PermissionReward;
 import com.fullwall.Citizens.NPCTypes.Questers.Rewards.QuestReward;
 import com.fullwall.Citizens.NPCTypes.Questers.Rewards.RankReward;
 import com.fullwall.Citizens.Properties.ConfigurationHandler;
+import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestFactory {
@@ -56,14 +58,16 @@ public class QuestFactory {
 	}
 
 	public static void instantiateQuests(ConfigurationHandler quests) {
+		int questCount = 0;
 		for (String questName : quests.getKeys(null)) {
 			String path = questName + ".";
 			Quest quest = new Quest(questName);
 			quest.setDescription(quests.getString(path + "texts.description"));
 			quest.setCompletedText(quests.getString(path + "texts.completion"));
+			String tempPath = path;
 			if (quests.pathExists(path + "rewards")) {
 				for (String reward : quests.getKeys(path + "rewards")) {
-					path += "rewards." + reward + ".";
+					path = tempPath + "rewards." + reward + ".";
 					String type = quests.getString(path + "type");
 					boolean take = quests.getBoolean(path + "take");
 					if (type.equals("health")) {
@@ -95,12 +99,14 @@ public class QuestFactory {
 				}
 			}
 			path = questName + ".objectives";
+			tempPath = path;
 			Objectives objectives = new Objectives();
 			if (quests.pathExists(path)) {
-				for (@SuppressWarnings("unused")
-				String objective : quests.getKeys(path)) {
-					QuestType type = QuestType.getType(quests.getString(
-							path + ".type").toUpperCase());
+				for (Object objective : quests.getKeys(path)) {
+					path = tempPath + objective;
+					QuestType type = QuestType.getType(quests
+							.getString(path + ".type").toUpperCase()
+							.replace(" ", "_"));
 					Objective obj = new Objective(type);
 					if (quests.pathExists(path + ".amount"))
 						obj.setAmount(quests.getInt(path + ".amount"));
@@ -134,9 +140,16 @@ public class QuestFactory {
 					if (quests.pathExists(path + ".message")) {
 						obj.setMessage(quests.getString(path + ".message"));
 					}
+					if (quests.pathExists(path + ".materialid")) {
+						if (quests.getInt(path + ".materialid") != 0)
+							obj.setMaterial(Material.getMaterial(quests
+									.getInt(path + ".materialid")));
+					}
 					objectives.add(obj);
 				}
 			}
+			++questCount;
 		}
+		Messaging.log("Loaded " + questCount + " quests.");
 	}
 }

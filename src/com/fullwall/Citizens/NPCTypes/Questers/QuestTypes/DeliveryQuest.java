@@ -25,7 +25,7 @@ public class DeliveryQuest extends QuestIncrementer {
 						.getDestinationNPCID()) {
 					Player player = (Player) e.getTarget();
 					if (player.getItemInHand().getType() == this.objective
-							.getItem().getType()) {
+							.getMaterial()) {
 						this.getProgress().setLastItem(player.getItemInHand());
 					}
 				}
@@ -35,7 +35,6 @@ public class DeliveryQuest extends QuestIncrementer {
 
 	@Override
 	public boolean isCompleted() {
-		return this.getProgress().getAmount() >= this.objective.getItem()
-				.getAmount();
+		return this.getProgress().getAmount() >= this.objective.getAmount();
 	}
 }

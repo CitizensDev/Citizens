@@ -90,6 +90,10 @@ public class QuestProperties {
 				quests.setDouble(path + ".location.yaw", loc.getYaw());
 				quests.setDouble(path + ".location.pitch", loc.getPitch());
 			}
+			if (objective.getMaterial() != null) {
+				quests.setInt(path + ".materialid", objective.getMaterial()
+						.getId());
+			}
 			++count;
 		}
 	}

@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.NPCTypes.Questers.Quests;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -42,11 +43,20 @@ public class QuestManager {
 		/**
 		 * Kill players
 		 */
-		PLAYER_COMBAT,
-		NULL;
+		PLAYER_COMBAT;
+		private final static Map<String, QuestType> lookupNames = new HashMap<String, QuestType>();
+		static {
+			for (QuestType type : QuestType.values()) {
+				lookupNames.put(type.name(), type);
+			}
+		}
 
 		public static QuestType getType(String string) {
-			return QuestType.valueOf(string);
+			QuestType result = null;
+			String filtered = string.toUpperCase();
+			filtered = filtered.replaceAll("\\s+", "_").replaceAll("\\W", "");
+			result = lookupNames.get(filtered);
+			return result;
 		}
 	}
 
@@ -73,11 +83,14 @@ public class QuestManager {
 	}
 
 	public static void incrementQuest(Player player, Event event) {
-		boolean completed = getProfile(player.getName()).getProgress()
-				.updateProgress(event);
-		if (completed) {
-			QuestProgress progress = getProfile(player.getName()).getProgress();
-			progress.cycle();
+		if (hasQuest(player)) {
+			boolean completed = getProfile(player.getName()).getProgress()
+					.updateProgress(event);
+			if (completed) {
+				QuestProgress progress = getProfile(player.getName())
+						.getProgress();
+				progress.cycle();
+			}
 		}
 	}
 

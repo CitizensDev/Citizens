@@ -18,7 +18,7 @@ public class DestroyQuest extends QuestIncrementer {
 	public void updateProgress(Event event) {
 		if (event instanceof BlockBreakEvent) {
 			BlockBreakEvent ev = (BlockBreakEvent) event;
-			if (ev.getBlock().getType() == this.objective.getItem().getType()) {
+			if (ev.getBlock().getType() == this.objective.getMaterial()) {
 				this.getProgress().incrementCompleted(1);
 			}
 		}
