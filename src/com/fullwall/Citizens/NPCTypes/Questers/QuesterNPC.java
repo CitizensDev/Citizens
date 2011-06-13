@@ -110,7 +110,9 @@ public class QuesterNPC implements Toggleable, Clickable {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (QuestManager.getProfile(player.getName()).hasQuest()) {
 			PlayerProfile profile = QuestManager.getProfile(player.getName());
-			if (profile.getProgress().getQuesterUID() == this.npc.getUID()) {
+			if (profile.getProgress().fullyCompleted()
+					&& profile.getProgress().getQuesterUID() == this.npc
+							.getUID()) {
 				Quest quest = QuestManager.getQuest(profile.getProgress()
 						.getQuestName());
 				Messaging.send(quest.getCompletedText());
@@ -122,6 +124,7 @@ public class QuesterNPC implements Toggleable, Clickable {
 				}
 				profile.setProgress(null);
 				QuestManager.setProfile(player.getName(), profile);
+
 			}
 		} else {
 			if (previous == null

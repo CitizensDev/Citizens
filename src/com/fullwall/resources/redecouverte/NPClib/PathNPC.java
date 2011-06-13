@@ -212,7 +212,8 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private boolean holdingBow() {
-		return this.inventory.items[this.inventory.itemInHandIndex].id == 261;
+		return this.inventory.items[this.inventory.itemInHandIndex] != null
+				&& this.inventory.items[this.inventory.itemInHandIndex].id == 261;
 	}
 
 	private boolean withinAttackRange(Entity entity, float distance) {
