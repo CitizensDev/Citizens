@@ -63,6 +63,8 @@ public class EntityListen extends EntityListener implements Listener {
 						npc.getWizard().onLeftClick(player, npc);
 					}
 				}
+			} else if (e.getDamager() instanceof Player) {
+				CreatureTask.onLeftClick(e);
 			}
 		}
 	}
@@ -74,13 +76,9 @@ public class EntityListen extends EntityListener implements Listener {
 		}
 		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
 		if (CreatureTask.getCreature(event.getEntity()) != null) {
-			HumanNPC creature = CreatureTask.getCreature(event.getEntity()).npc;
-			if (creature.isEvil()) {
-				if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
-					creature.getEvil().onRightClick((Player) event.getTarget(),
-							creature);
-				}
-			}
+			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED)
+				CreatureTask.getCreature(event.getEntity()).onRightClick(
+						(Player) event.getTarget());
 		}
 		if (NPCManager.isNPC(event.getTarget())) {
 			event.setCancelled(true);

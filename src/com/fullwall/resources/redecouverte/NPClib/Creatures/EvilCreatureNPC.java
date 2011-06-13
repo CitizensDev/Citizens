@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
@@ -75,5 +76,15 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public CreatureNPCType getType() {
 		return CreatureNPCType.EVIL;
+	}
+
+	@Override
+	public void onRightClick(Player player) {
+		if (this.npc.isEvil())
+			this.npc.getEvil().onRightClick(player, this.npc);
+	}
+
+	@Override
+	public void onLeftClick(Player player) {
 	}
 }

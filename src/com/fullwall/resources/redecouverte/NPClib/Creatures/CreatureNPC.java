@@ -76,4 +76,19 @@ public abstract class CreatureNPC extends CraftNPC {
 	public Location getLocation() {
 		return this.getEntity().getLocation();
 	}
+
+	/**
+	 * Called when a player right clicks the entity.
+	 * 
+	 * @param player
+	 */
+	public abstract void onRightClick(Player player);
+
+	/**
+	 * Called when a player left clicks the entity - this can cause a damage
+	 * event as well.
+	 * 
+	 * @param target
+	 */
+	public abstract void onLeftClick(Player player);
 }
