@@ -16,6 +16,8 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
+import com.fullwall.Citizens.Citizens;
+
 public class CraftNPC extends PathNPC {
 
 	@SuppressWarnings("unused")
@@ -96,9 +98,13 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		if (chunkLoaded()
+		if (Citizens.initialised
+				&& chunkLoaded()
 				&& (!this.onGround || ((Player) this.getBukkitEntity())
 						.getEyeLocation().getY() % 1 <= 0.62)) {
+			// onGround doesn't check if the player is actually standing on a
+			// block, just that they're at least below above 0.62 -> need to
+			// check 0.62.
 			float yaw = this.yaw;
 			float pitch = this.pitch;
 			this.a(0, 0);

@@ -125,4 +125,8 @@ public class QuestManager {
 	public static boolean validQuest(String quest) {
 		return getQuest(quest) != null;
 	}
+
+	public static void addQuest(Quest quest) {
+		quests.put(quest.getName(), quest);
+	}
 }

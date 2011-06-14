@@ -63,7 +63,7 @@ public class PathNPC extends EntityPlayer {
 			super.c_();
 			this.pathEntity = null;
 		}
-		this.O();
+		this.O(); // Update entity
 	}
 
 	private void handleMove(Vec3D vector) {
@@ -110,12 +110,11 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getVector() {
 		Vec3D vec3d = pathEntity.a(this);
-		// was * 2.0F;
 		double length = (this.length * 1.9F);
+		// 2.0 -> 1.9 - closer to destination before stopping.
 		while (vec3d != null
 				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
-			// Increment path.
-			this.pathEntity.a();
+			this.pathEntity.a(); // Increment path index.
 			// Is path finished?
 			if (this.pathEntity.b()) {
 				vec3d = null;
@@ -133,13 +132,13 @@ public class PathNPC extends EntityPlayer {
 					pathingRange);
 		}
 		if (target != null) {
-			// Target died.
+			// Has target died?
 			if (!this.target.S()) {
 				resetTarget();
 			}
 			if (target != null && targetAggro) {
 				float distanceToEntity = this.target.f(this);
-				// If a direct line of sight exists
+				// If a direct line of sight exists.
 				if (this.e(this.target)) {
 					// In range?
 					if (withinAttackRange(this.target, distanceToEntity)) {
@@ -176,10 +175,12 @@ public class PathNPC extends EntityPlayer {
 	private void jump() {
 		boolean inWater = this.ac();
 		boolean inLava = this.ad();
+		// Both values taken from minecraft source.
 		if (inWater || inLava) {
 			this.motY += 0.03999999910593033D;
 		} else if (this.onGround) {
 			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
+			// Default (0.42) not enough to get over a block (bug?).
 		}
 	}
 
@@ -217,6 +218,8 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private boolean withinAttackRange(Entity entity, float distance) {
+		// Bow distance from EntitySkeleton.
+		// Other from EntityCreature.
 		if ((holdingBow() && distance < 10)
 				|| (this.attackTicks <= 0 && distance < 1.5F
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e))
@@ -226,6 +229,7 @@ public class PathNPC extends EntityPlayer {
 
 	private void attackEntity(EntityLiving entity) {
 		if (holdingBow()) {
+			// Code from EntitySkeleton.
 			double distX = entity.locX - this.locX;
 			double distZ = entity.locZ - this.locZ;
 			double arrowDistY = entity.locY - 0.20000000298023224D
@@ -245,8 +249,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void damageEntity(Entity entity) {
-		// Default is 20, changed to be less spammy.
-		this.attackTicks = 30;
+		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
 		this.attackEntity((EntityLiving) entity);
 	}
 
@@ -298,10 +301,6 @@ public class PathNPC extends EntityPlayer {
 	public void targetClosestPlayer(boolean aggro, double range) {
 		this.target = this.findClosestPlayer(range);
 		this.targetAggro = aggro;
-		/* if (this.target != null) {
-			this.pathEntity = this.world.findPath(this, this.target,
-					pathingRange);
-		}*/
 	}
 
 	public boolean startPath(Location loc, int maxTicks,

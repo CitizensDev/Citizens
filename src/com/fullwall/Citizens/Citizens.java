@@ -49,6 +49,7 @@ public class Citizens extends JavaPlugin {
 	private static final String codename = "Realist";
 	private static final String letter = "h";
 	private static String version = "1.0.8" + letter;
+	public static boolean initialised = false;
 
 	@Override
 	public void onDisable() {
@@ -160,6 +161,7 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new WizardTask(), Constants.wizardManaRegenRate,
 				Constants.wizardManaRegenRate);
+		initialised = true;
 	}
 
 	/**

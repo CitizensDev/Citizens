@@ -44,6 +44,10 @@ public class QuesterNPC implements Toggleable, Clickable {
 		quests.removeFirstOccurrence(quest);
 	}
 
+	public ArrayDeque<String> getQuests() {
+		return quests;
+	}
+
 	@Override
 	public void toggle() {
 		npc.setQuester(!npc.isQuester());
@@ -146,9 +150,5 @@ public class QuesterNPC implements Toggleable, Clickable {
 				QuestManager.assignQuest(this.npc, player, quests.peek());
 			}
 		}
-	}
-
-	public ArrayDeque<String> getQuests() {
-		return quests;
 	}
 }
