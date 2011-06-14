@@ -122,7 +122,11 @@ public class QuesterNPC implements Toggleable, Clickable {
 					else
 						reward.grant(player);
 				}
+				long elapsed = System.currentTimeMillis()
+						- profile.getProgress().getStartTime();
 				profile.setProgress(null);
+				profile.addCompletedQuest(new CompletedQuest(quest, npc
+						.getStrippedName(), elapsed));
 				QuestManager.setProfile(player.getName(), profile);
 
 			}

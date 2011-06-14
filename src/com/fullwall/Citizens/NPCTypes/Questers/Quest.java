@@ -6,7 +6,7 @@ import java.util.List;
 import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objective;
 import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives;
 
-public class Quest implements CompletedQuest {
+public class Quest {
 	private String questName = "";
 	private String completionText = "";
 	private String description = "";
@@ -22,7 +22,6 @@ public class Quest implements CompletedQuest {
 	 * 
 	 * @return
 	 */
-	@Override
 	public String getName() {
 		return questName;
 	}
@@ -41,7 +40,6 @@ public class Quest implements CompletedQuest {
 	 * 
 	 * @param questName
 	 */
-	@Override
 	public void setName(String questName) {
 		this.questName = questName;
 	}

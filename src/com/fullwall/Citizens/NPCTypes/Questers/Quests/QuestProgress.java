@@ -12,8 +12,10 @@ public class QuestProgress {
 	private QuestIncrementer incrementer;
 	private final String questName;
 	private final ObjectiveCycler objectives;
+	private long startTime;
 
 	public QuestProgress(HumanNPC npc, Player player, String questName) {
+		this.setStartTime(System.currentTimeMillis());
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
 		this.incrementer = QuestFactory.createIncrementer(npc, player,
@@ -70,5 +72,13 @@ public class QuestProgress {
 
 	public QuestIncrementer getIncrementer() {
 		return incrementer;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
+	public long getStartTime() {
+		return startTime;
 	}
 }

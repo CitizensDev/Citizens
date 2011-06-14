@@ -8,6 +8,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class QuesterProperties extends Saveable {
 	private final PropertyHandler questers = new PropertyHandler(
 			"plugins/Citizens/Questers/questers.citizens");
+	private final PropertyHandler quests = new PropertyHandler(
+			"plugins/Citizens/Questers/quests.citizens");
 
 	@Override
 	public void saveFiles() {
@@ -18,12 +20,28 @@ public class QuesterProperties extends Saveable {
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isQuester());
+			setQuests(npc);
+		}
+	}
+
+	private void setQuests(HumanNPC npc) {
+		String write = "";
+		for (String quest : npc.getQuester().getQuests()) {
+			write = write + quest + ";";
+		}
+		quests.setString(npc.getUID(), write);
+	}
+
+	private void loadQuests(HumanNPC npc) {
+		for (String quest : quests.getString(npc.getUID()).split(";")) {
+			npc.getQuester().addQuest(quest);
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setQuester(getEnabled(npc));
+		loadQuests(npc);
 		saveState(npc);
 	}
 

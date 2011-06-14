@@ -68,6 +68,7 @@ public class PlayerProfile {
 			String path = "quests.current.";
 			profile.setString(path + "name", progress.getQuestName());
 			profile.setInt(path + "step", progress.getStep());
+			profile.setLong(path + "start-time", progress.getStartTime());
 			profile.setInt(path + "giver", progress.getQuesterUID());
 			Progress questProgress = progress.getIncrementer().getProgress();
 			profile.setInt(path + "progress.amount", questProgress.getAmount());
@@ -104,6 +105,7 @@ public class PlayerProfile {
 			QuestManager.assignQuest(NPCManager.get(profile.getInt(path
 					+ "giver")), Bukkit.getServer().getPlayer(name), profile
 					.getString(path + "name"));
+			progress.setStartTime(profile.getInt(path + "start-time"));
 			progress.setStep(profile.getInt(path + "step"));
 			Progress questProgress = progress.getIncrementer().getProgress();
 			questProgress.setAmountCompleted(this.profile.getInt(path

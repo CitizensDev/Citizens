@@ -146,6 +146,12 @@ public class QuestFactory {
 					}
 					objectives.add(obj);
 				}
+				if (objectives.all().size() == 0) {
+					quests = null;
+					Messaging.log("Quest number " + questCount
+							+ " is invalid - no objectives set.");
+					continue;
+				}
 				quest.setObjectives(objectives);
 			}
 			++questCount;
