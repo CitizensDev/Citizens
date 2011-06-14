@@ -37,8 +37,7 @@ public class QuesterExecutor implements CommandExecutor {
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
-			sender.sendMessage(ChatColor.RED
-					+ MessageUtils.mustHaveNPCSelectedMessage);
+			sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
 		if (!NPCManager.validateOwnership(player, npc.getUID())) {

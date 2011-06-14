@@ -291,14 +291,22 @@ public class NPCManager {
 		return false;
 	}
 
-	// Overloaded method to add an optional permission string parameter (admin
-	// overrides).
-	public static boolean validateOwnership(Player p, int UID, String permission) {
-		if (Permission.generic(p,
+	/**
+	 * Overloaded method to add an optional permission string parameter (admin
+	 * overrides)
+	 * 
+	 * @param player
+	 * @param UID
+	 * @param permission
+	 * @return
+	 */
+	public static boolean validateOwnership(Player player, int UID,
+			String permission) {
+		if (Permission.generic(player,
 				permission.replace("citizens.", "citizens.admin."))) {
 			return true;
 		}
-		if (validateOwnership(p, UID)) {
+		if (validateOwnership(player, UID)) {
 			return true;
 		}
 		return false;
@@ -311,8 +319,8 @@ public class NPCManager {
 	 * @param p
 	 * @return
 	 */
-	public static boolean validateOwnership(Player p, int UID) {
-		if (get(UID).getOwner().equals(p.getName())) {
+	public static boolean validateOwnership(Player player, int UID) {
+		if (get(UID).getOwner().equals(player.getName())) {
 			return true;
 		}
 		return false;

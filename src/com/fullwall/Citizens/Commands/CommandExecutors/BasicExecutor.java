@@ -59,102 +59,70 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 1 && (args[0].equalsIgnoreCase("move"))) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					move(player, npc.getName(), npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				move(player, npc, npc.getName());
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if ((args.length == 1 || args.length == 2)
 				&& args[0].equalsIgnoreCase("remove")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					remove(args, sender, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				remove(player, npc, args);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("name")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					rename(args[1], sender, npc);
-					NPCManager.selectedNPCs.remove(player.getName());
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				rename(player, npc, args[1]);
+				NPCManager.selectedNPCs.remove(player.getName());
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2
 				&& (args[0].equalsIgnoreCase("colour") || args[0]
 						.equalsIgnoreCase("color"))) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					setColour(args, player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.notOwnerMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				setColour(player, npc, args);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.notOwnerMessage);
 			}
 			return true;
 
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("add")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					addText(args, sender, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				addText(player, npc, args);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					setText(args, sender, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				setText(player, npc, args);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("reset")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					resetText(args, sender, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				resetText(player, npc, args);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("item")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					setItemInHand(args[1], sender, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				setItemInHand(player, npc, args[1]);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -163,14 +131,10 @@ public class BasicExecutor implements CommandExecutor {
 						|| args[0].startsWith("leg")
 						|| args[0].startsWith("helm") || args[0]
 						.startsWith("boot"))) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					setArmor(args, sender, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				setArmor(player, npc, args);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
@@ -204,27 +168,19 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (args.length == 2
 				&& args[0].equalsIgnoreCase("talkwhenclose")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					changeTalkWhenClose(args[1], player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				changeTalkWhenClose(player, npc, args[1]);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 
 		} else if (args.length == 2
 				&& args[0].equalsIgnoreCase("lookatplayers")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					changeLookWhenClose(args[1], player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				changeLookWhenClose(player, npc, args[1]);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("id")) {
@@ -279,14 +235,10 @@ public class BasicExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("setowner")) {
-			if (npc != null) {
-				if (Permission.canModify(player, npc, "basic")) {
-					setOwner(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
+			if (Permission.canModify(player, npc, "basic")) {
+				setOwner(player, npc, args[1]);
 			} else {
-				sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			return true;
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("list")) {
@@ -355,25 +307,18 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (commandLabel.equalsIgnoreCase("basic")) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (npc != null) {
-					if (Permission.canUse(player, npc, "basic")) {
-						int page = 0;
-						boolean canSend = false;
-						if (StringUtils.isNumber(args[1])) {
-							page = Integer.parseInt(args[1]);
-							canSend = true;
-						} else {
-							player.sendMessage(ChatColor.RED
-									+ "That is not a number.");
-						}
-						if (canSend) {
-							HelpUtils.sendBasicHelpPage(sender, page);
-						}
+				if (Permission.canUse(player, npc, "basic")) {
+					int page = 0;
+					if (StringUtils.isNumber(args[1])) {
+						page = Integer.parseInt(args[1]);
 					} else {
-						sender.sendMessage(MessageUtils.noPermissionsMessage);
+						player.sendMessage(ChatColor.RED
+								+ "That is not a number.");
+						return true;
 					}
+					HelpUtils.sendBasicHelpPage(sender, page);
 				} else {
-					sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
 				if (Permission.canUse(player, npc, "basic")) {
@@ -452,16 +397,20 @@ public class BasicExecutor implements CommandExecutor {
 	/**
 	 * Moves the selected NPC to the current location of a player.
 	 * 
-	 * @param sender
-	 * @param name
+	 * @param player
 	 * @param npc
+	 * @param name
 	 */
-	private void move(Player player, String name, HumanNPC npc) {
-		Location loc = npc.getNPCData().getLocation();
-		player.sendMessage(StringUtils.wrap(name)
-				+ " is enroute to your location!");
-		npc.getNPCData().setLocation(loc);
-		npc.teleport(player.getLocation());
+	private void move(Player player, HumanNPC npc, String name) {
+		if (npc != null) {
+			Location loc = npc.getNPCData().getLocation();
+			player.sendMessage(StringUtils.wrap(name)
+					+ " is enroute to your location!");
+			npc.getNPCData().setLocation(loc);
+			npc.teleport(player.getLocation());
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+		}
 	}
 
 	/**
@@ -484,49 +433,62 @@ public class BasicExecutor implements CommandExecutor {
 	/**
 	 * Removes the selected NPC (can optionally be all NPCs).
 	 * 
+	 * @param player
+	 * @param npc
 	 * @param args
-	 * @param sender
 	 */
-	private void remove(String[] args, CommandSender sender, HumanNPC npc) {
-		Player p = (Player) sender;
-		if (Permission.isAdmin(p) && args.length == 2
+	private void remove(Player player, HumanNPC npc, String[] args) {
+		if (npc == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
+		if (Permission.isAdmin(player) && args.length == 2
 				&& args[1].equalsIgnoreCase("all")) {
 			plugin.basicNPCHandler.removeAll();
-			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
+			player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			PropertyManager.getBasic().locations.setInt("currentID", 0);
 			PropertyManager.getBasic().locations.removeKey("list");
 		} else {
 			plugin.basicNPCHandler.remove(npc.getUID());
-			sender.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
+			player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 		}
-		NPCManager.selectedNPCs.remove(p.getName());
+		NPCManager.selectedNPCs.remove(player.getName());
 	}
 
 	/**
 	 * Renames the selected NPC.
 	 * 
+	 * @param player
+	 * @param npc
 	 * @param name
-	 * @param sender
 	 */
-	private void rename(String name, CommandSender sender, HumanNPC npc) {
-		if (name.length() > 16) {
-			sender.sendMessage(ChatColor.RED
-					+ "Max name length is 16 - NPC name length will be truncated.");
+	private void rename(Player player, HumanNPC npc, String name) {
+		if (npc != null) {
+			if (name.length() > 16) {
+				player.sendMessage(ChatColor.RED
+						+ "Max name length is 16 - NPC name length will be truncated.");
+			}
+			plugin.basicNPCHandler.rename(npc.getUID(), name, npc.getOwner());
+			player.sendMessage(ChatColor.GREEN
+					+ StringUtils.wrap(npc.getName()) + "'s name was set to "
+					+ StringUtils.wrap(name) + ".");
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 		}
-		plugin.basicNPCHandler.rename(npc.getUID(), name, npc.getOwner());
-		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap(npc.getName())
-				+ "'s name was set to " + StringUtils.wrap(name) + ".");
-		return;
 	}
 
 	/**
 	 * Sets the colour of the selected NPC's name.
 	 * 
-	 * @param args
 	 * @param player
 	 * @param npc
+	 * @param args
 	 */
-	private void setColour(String[] args, Player player, HumanNPC npc) {
+	private void setColour(Player player, HumanNPC npc, String[] args) {
+		if (npc == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
 		if (!args[1].substring(0, 1).equals("&")) {
 			player.sendMessage(ChatColor.RED + "Use an & to specify " + args[0]
 					+ ".");
@@ -554,11 +516,15 @@ public class BasicExecutor implements CommandExecutor {
 	/**
 	 * Resets the selected NPC's text to a given text.
 	 * 
-	 * @param args
-	 * @param sender
+	 * @param player
 	 * @param npc
+	 * @param args
 	 */
-	private void setText(String[] args, CommandSender sender, HumanNPC npc) {
+	private void setText(Player player, HumanNPC npc, String[] args) {
+		if (npc == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
 		String text = "";
 		if (args.length >= 2) {
 			int i = 0;
@@ -575,7 +541,7 @@ public class BasicExecutor implements CommandExecutor {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
 		NPCManager.setText(npc.getUID(), texts);
-		sender.sendMessage(StringUtils.wrapFull("{" + npc.getName()
+		player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
 				+ "}'s text was set to {" + text + "}."));
 
 	}
@@ -583,11 +549,15 @@ public class BasicExecutor implements CommandExecutor {
 	/**
 	 * Adds text to the selected NPC's text, picked randomly on right click.
 	 * 
-	 * @param args
-	 * @param sender
+	 * @param player
 	 * @param npc
+	 * @param args
 	 */
-	private void addText(String[] args, CommandSender sender, HumanNPC npc) {
+	private void addText(Player player, HumanNPC npc, String[] args) {
+		if (npc == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
 		String text = "";
 		int i = 0;
 		for (String s : args) {
@@ -600,93 +570,117 @@ public class BasicExecutor implements CommandExecutor {
 			i += 1;
 		}
 		plugin.basicNPCHandler.addText(npc.getUID(), text);
-		sender.sendMessage(StringUtils.wrap(text) + " was added to "
+		player.sendMessage(StringUtils.wrap(text) + " was added to "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
 	}
 
 	private void setOwner(Player player, HumanNPC npc, String name) {
-		player.sendMessage(ChatColor.GREEN + "The owner of "
-				+ StringUtils.wrap(npc.getStrippedName()) + " is now "
-				+ StringUtils.wrap(name) + ".");
-		npc.getNPCData().setOwner(name);
+		if (npc != null) {
+			player.sendMessage(ChatColor.GREEN + "The owner of "
+					+ StringUtils.wrap(npc.getStrippedName()) + " is now "
+					+ StringUtils.wrap(name) + ".");
+			npc.getNPCData().setOwner(name);
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+		}
 	}
 
 	/**
 	 * Clears all of an NPC's text.
 	 * 
-	 * @param args
-	 * @param sender
+	 * @param player
 	 * @param npc
+	 * @param args
 	 */
-	private void resetText(String[] args, CommandSender sender, HumanNPC npc) {
-		NPCManager.resetText(npc.getUID());
-		sender.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
-				+ " text was reset!");
+	private void resetText(Player player, HumanNPC npc, String[] args) {
+		if (npc != null) {
+			NPCManager.resetText(npc.getUID());
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+					+ " text was reset!");
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+		}
 	}
 
 	/**
 	 * Sets the selected npc's item in hand.
 	 * 
-	 * @param name
-	 * @param sender
+	 * @param player
 	 * @param npc
+	 * @param name
 	 */
-	private void setItemInHand(String name, CommandSender sender, HumanNPC npc) {
-		plugin.basicNPCHandler.setItemInHand((Player) sender, npc, name);
+	private void setItemInHand(Player player, HumanNPC npc, String name) {
+		if (npc != null) {
+			plugin.basicNPCHandler.setItemInHand(player, npc, name);
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+		}
 	}
 
 	/**
 	 * Sets the armor of a given type of the npc.
 	 * 
-	 * @param args
-	 * @param sender
+	 * @param player
 	 * @param npc
+	 * @param args
 	 */
-	private void setArmor(String[] args, CommandSender sender, HumanNPC npc) {
-		plugin.basicNPCHandler.setItemInSlot(args, (Player) sender, npc);
+	private void setArmor(Player player, HumanNPC npc, String[] args) {
+		if (npc != null) {
+			plugin.basicNPCHandler.setItemInSlot(args, player, npc);
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+		}
 	}
 
 	/**
 	 * Changes whether the selected npc will talk when a player gets near.
 	 * 
-	 * @param bool
 	 * @param p
 	 * @param npc
+	 * @param bool
 	 */
-	private void changeTalkWhenClose(String bool, Player p, HumanNPC npc) {
+	private void changeTalkWhenClose(Player player, HumanNPC npc, String bool) {
 		boolean talk = false;
 		if (bool.equals("true")) {
 			talk = true;
 		}
-		npc.getNPCData().setTalkClose(talk);
-		if (talk) {
-			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will now talk to nearby players.");
-		} else if (!talk) {
-			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will stop talking to nearby players.");
+		if (npc != null) {
+			npc.getNPCData().setTalkClose(talk);
+			if (talk) {
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+						+ " will now talk to nearby players.");
+			} else if (!talk) {
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+						+ " will stop talking to nearby players.");
+			}
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 		}
 	}
 
 	/**
 	 * Changes whether the selected npc will look at nearby players.
 	 * 
-	 * @param bool
 	 * @param p
 	 * @param npc
+	 * @param bool
 	 */
-	private void changeLookWhenClose(String bool, Player p, HumanNPC npc) {
+	private void changeLookWhenClose(Player player, HumanNPC npc, String bool) {
 		boolean look = false;
 		if (bool.equals("true")) {
 			look = true;
 		}
-		npc.getNPCData().setLookClose(look);
-		if (look) {
-			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will now look at players.");
-		} else if (!look) {
-			p.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will stop looking at players.");
+		if (npc != null) {
+			npc.getNPCData().setLookClose(look);
+			if (look) {
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+						+ " will now look at players.");
+			} else if (!look) {
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+						+ " will stop looking at players.");
+			}
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 		}
 	}
 

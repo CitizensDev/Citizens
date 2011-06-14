@@ -48,8 +48,7 @@ public class TraderExecutor implements CommandExecutor {
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		} else {
-			player.sendMessage(ChatColor.RED
-					+ MessageUtils.mustHaveNPCSelectedMessage);
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			return true;
 		}
 		if (!npc.isTrader()) {
