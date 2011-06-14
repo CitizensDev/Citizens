@@ -146,6 +146,7 @@ public class QuestFactory {
 					}
 					objectives.add(obj);
 				}
+				quest.setObjectives(objectives);
 			}
 			++questCount;
 		}

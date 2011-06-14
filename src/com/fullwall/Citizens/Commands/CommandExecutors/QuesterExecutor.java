@@ -77,7 +77,6 @@ public class QuesterExecutor implements CommandExecutor {
 	}
 
 	private void assignQuest(Player player, HumanNPC npc, String quest) {
-
 		if (!QuestManager.validQuest(quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");

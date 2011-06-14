@@ -489,7 +489,8 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void remove(String[] args, CommandSender sender, HumanNPC npc) {
 		Player p = (Player) sender;
-		if (args.length == 2 && args[1].equalsIgnoreCase("all")) {
+		if (Permission.isAdmin(p) && args.length == 2
+				&& args[1].equalsIgnoreCase("all")) {
 			plugin.basicNPCHandler.removeAll();
 			sender.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			PropertyManager.getBasic().locations.setInt("currentID", 0);

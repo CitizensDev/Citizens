@@ -83,4 +83,8 @@ public class Quest implements CompletedQuest {
 	public Objectives getObjectives() {
 		return objectives;
 	}
+
+	public void setObjectives(Objectives objectives) {
+		this.objectives = objectives;
+	}
 }

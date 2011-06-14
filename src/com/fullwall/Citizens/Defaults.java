@@ -135,7 +135,7 @@ public class Defaults {
 
 	private static HashMap<String, String> writeMobSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
-		nodes.put("evil.spawn.spawn", "true");
+		nodes.put("evil.spawn.spawn", "false");
 		nodes.put("evil.spawn.delay", "200");
 		nodes.put("evil.spawn.max", "2");
 		nodes.put("evil.look-range", "25");

@@ -123,6 +123,6 @@ public class QuestManager {
 	}
 
 	public static boolean validQuest(String quest) {
-		return getQuest(quest) == null;
+		return getQuest(quest) != null;
 	}
 }
