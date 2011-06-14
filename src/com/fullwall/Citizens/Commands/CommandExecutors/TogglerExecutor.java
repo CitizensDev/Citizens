@@ -18,7 +18,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TogglerExecutor implements CommandExecutor {
-
 	@SuppressWarnings("unused")
 	private final Citizens plugin;
 

@@ -19,7 +19,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WizardExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public WizardExecutor(Citizens plugin) {
 		this.plugin = plugin;

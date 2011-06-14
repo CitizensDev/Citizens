@@ -23,7 +23,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public BlacksmithExecutor(Citizens plugin) {
 		this.plugin = plugin;

@@ -19,7 +19,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerExecutor implements CommandExecutor {
 	@SuppressWarnings("unused")
-	private Citizens plugin;
+	private final Citizens plugin;
 
 	public HealerExecutor(Citizens plugin) {
 		this.plugin = plugin;

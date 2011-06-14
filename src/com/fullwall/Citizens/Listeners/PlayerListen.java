@@ -13,6 +13,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
+import com.fullwall.Citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
@@ -63,6 +64,13 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
-
+		String msg = event.getMessage();
+		String name = event.getPlayer().getName();
+		if (!ChatManager.hasEditMode(name)) {
+			return;
+		}
+		if (ChatManager.isAnswer(name, msg)) {
+			event.setCancelled(true);
+		}
 	}
 }

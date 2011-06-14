@@ -25,7 +25,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicExecutor implements CommandExecutor {
-
 	private final Citizens plugin;
 
 	public BasicExecutor(Citizens plugin) {
