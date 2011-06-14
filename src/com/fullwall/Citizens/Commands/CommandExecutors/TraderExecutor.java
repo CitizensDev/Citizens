@@ -56,7 +56,7 @@ public class TraderExecutor implements CommandExecutor {
 			return true;
 		}
 		if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-			if (Permission.canUse(player, npc, "trader")) {
+			if (Permission.canHelp(player, npc, "trader")) {
 				HelpUtils.sendTraderHelp(sender);
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);

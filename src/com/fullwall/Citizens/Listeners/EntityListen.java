@@ -48,7 +48,6 @@ public class EntityListen extends EntityListener implements Listener {
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
 		CreatureTask.onDamage(event.getEntity(), event);
-
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			HumanNPC npc = NPCManager.get(e.getEntity());
@@ -69,9 +68,8 @@ public class EntityListen extends EntityListener implements Listener {
 				if (((LivingEntity) e.getEntity()).getHealth() - e.getDamage() <= 0) {
 					QuestManager.incrementQuest((Player) e.getDamager(),
 							new EntityDeathEvent(e.getEntity(), null));
-
 				}
-				CreatureTask.onLeftClick(e);
+				CreatureTask.onDamage(e.getEntity(), event);
 			}
 		}
 	}

@@ -55,7 +55,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "blacksmith")) {
+				if (Permission.canHelp(player, npc, "blacksmith")) {
 					HelpUtils.sendBlacksmithHelp(player);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

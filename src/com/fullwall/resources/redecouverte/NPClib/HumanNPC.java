@@ -193,6 +193,14 @@ public class HumanNPC extends NPC {
 		return getPlayer().getLocation();
 	}
 
+	public int getHealth() {
+		return getPlayer().getHealth();
+	}
+
+	public void setHealth(int health) {
+		getPlayer().setHealth(health);
+	}
+
 	public NPCData getNPCData() {
 		return npcdata;
 	}

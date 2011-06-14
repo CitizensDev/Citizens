@@ -280,24 +280,21 @@ public class BasicExecutor implements CommandExecutor {
 		} else if ((commandLabel.equalsIgnoreCase("citizens") || commandLabel
 				.equalsIgnoreCase("npc"))) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "basic")) {
+				if (Permission.canHelp(player, npc, "basic")) {
 					int page = 0;
-					boolean canSend = false;
 					if (StringUtils.isNumber(args[1])) {
 						page = Integer.parseInt(args[1]);
-						canSend = true;
 					} else {
 						player.sendMessage(ChatColor.RED
 								+ "That is not a number.");
+						return true;
 					}
-					if (canSend) {
-						HelpUtils.sendHelpPage(sender, page);
-					}
+					HelpUtils.sendHelpPage(sender, page);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "basic")) {
+				if (Permission.canHelp(player, npc, "basic")) {
 					HelpUtils.sendHelpPage(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
@@ -307,7 +304,7 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (commandLabel.equalsIgnoreCase("basic")) {
 			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "basic")) {
+				if (Permission.canHelp(player, npc, "basic")) {
 					int page = 0;
 					if (StringUtils.isNumber(args[1])) {
 						page = Integer.parseInt(args[1]);
@@ -321,7 +318,7 @@ public class BasicExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "basic")) {
+				if (Permission.canHelp(player, npc, "basic")) {
 					HelpUtils.sendBasicHelpPage(sender, 1);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

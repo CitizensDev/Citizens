@@ -12,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
@@ -179,10 +178,5 @@ public class CreatureTask implements Runnable {
 				npc.doTick();
 			}
 		}
-	}
-
-	public static void onLeftClick(EntityDamageByEntityEvent e) {
-		if (getCreature(e.getEntity()) != null)
-			getCreature(e.getEntity()).onLeftClick((Player) e.getDamager());
 	}
 }

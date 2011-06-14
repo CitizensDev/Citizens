@@ -48,7 +48,7 @@ public class BanditExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "bandit")) {
+				if (Permission.canHelp(player, npc, "bandit")) {
 					HelpUtils.sendBanditHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

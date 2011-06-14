@@ -2,6 +2,10 @@ package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.Random;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.ConfigurationHandler;
 import com.fullwall.Citizens.Properties.PropertyHandler;
@@ -15,8 +19,7 @@ public class UtilityProperties {
 
 	public static void initialize() {
 		economy = new ConfigurationHandler("plugins/Citizens/economy.yml");
-		itemlookups = new PropertyHandler(
-				"plugins/Citizens/Citizens.itemlookup");
+		itemlookups = new PropertyHandler("plugins/Citizens/items.citizens");
 		settings = new ConfigurationHandler("plugins/Citizens/citizens.yml");
 		mobs = new ConfigurationHandler("plugins/Citizens/mobs.yml");
 	}
@@ -41,6 +44,18 @@ public class UtilityProperties {
 	public static String getRandomName(CreatureNPCType type) {
 		String[] split = type.getPossibleNames().split(",");
 		return split[new Random().nextInt(split.length)];
+	}
+
+	public static ItemStack getRandomDrop() {
+		String[] split = Constants.evilDrops.split(",");
+		int id = Integer.parseInt(split[new Random().nextInt(split.length)]);
+		int amount = new Random().nextInt(3);
+		if (Material.getMaterial(id) != null) {
+			if (amount != 0) {
+				return new ItemStack(id, amount);
+			}
+		}
+		return null;
 	}
 
 	public static Storage getMobSettings() {

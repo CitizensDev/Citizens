@@ -77,17 +77,21 @@ public class PathNPC extends EntityPlayer {
 			float diffYaw = getYawDifference(diffZ, diffX);
 
 			this.yaw += diffYaw;
-			if (diffY > 0.0D)
+			if (diffY > 0.0D) {
 				jumping = true;
+			}
 			// Walk.
 			move();
 		}
-		if (this.positionChanged && !this.pathFinished())
+		if (this.positionChanged && !this.pathFinished()) {
 			jumping = true;
-		if (this.random.nextFloat() < 0.8F && (inWater || inLava))
+		}
+		if (this.random.nextFloat() < 0.8F && (inWater || inLava)) {
 			jumping = true;
-		if (jumping)
+		}
+		if (jumping) {
 			jump();
+		}
 	}
 
 	private float getYawDifference(double diffZ, double diffX) {
@@ -137,6 +141,9 @@ public class PathNPC extends EntityPlayer {
 				resetTarget();
 			}
 			if (target != null && targetAggro) {
+				if (this.attackTicks != 0) {
+					--this.attackTicks;
+				}
 				float distanceToEntity = this.target.f(this);
 				// If a direct line of sight exists.
 				if (this.e(this.target)) {
@@ -197,8 +204,9 @@ public class PathNPC extends EntityPlayer {
 		this.pathTicks = 0;
 		this.stationaryTicks = 0;
 		this.pathEntity = null;
-		if (!(this instanceof CreatureNPC))
+		if (!(this instanceof CreatureNPC)) {
 			this.npc.getNPCData().setLocation(npc.getPlayer().getLocation());
+		}
 		this.pathTickLimit = -1;
 		this.stationaryTickLimit = -1;
 		this.pathingRange = 16;
@@ -222,8 +230,9 @@ public class PathNPC extends EntityPlayer {
 		// Other from EntityCreature.
 		if ((holdingBow() && distance < 10)
 				|| (this.attackTicks <= 0 && distance < 1.5F
-						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e))
+						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)) {
 			return true;
+		}
 		return false;
 	}
 

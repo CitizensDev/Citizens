@@ -23,8 +23,7 @@ public class LocationUtils {
 				&& (pY >= lY - range && pY <= lY + range)
 				&& (pZ >= lZ - range && pZ <= lZ + range)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }

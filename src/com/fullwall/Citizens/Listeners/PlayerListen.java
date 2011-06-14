@@ -64,12 +64,12 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
-		String msg = event.getMessage();
 		String name = event.getPlayer().getName();
 		if (!ChatManager.hasEditMode(name)) {
 			return;
 		}
-		if (ChatManager.isAnswer(name, msg)) {
+		String msg = event.getMessage();
+		if (ChatManager.isValidAnswer(name, msg, ChatManager.getMaxOptions(ChatManager.currentQuestion))) {
 			event.setCancelled(true);
 		}
 	}

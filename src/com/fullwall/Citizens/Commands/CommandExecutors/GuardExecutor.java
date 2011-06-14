@@ -51,7 +51,7 @@ public class GuardExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "guard")) {
+				if (Permission.canHelp(player, npc, "guard")) {
 					HelpUtils.sendGuardHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

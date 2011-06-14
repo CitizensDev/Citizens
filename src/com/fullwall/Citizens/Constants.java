@@ -41,6 +41,7 @@ public class Constants {
 	public static String selectItems = "*";
 	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,";
 	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>;Better luck next time, fool!;";
+	public static String evilDrops = "260,357,2256";
 
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean payForHealerHeal = true;
@@ -130,9 +131,10 @@ public class Constants {
 		maxEvilNPCs = mobs.getInt("evil.spawn.max");
 		spawnEvilDelay = mobs.getInt("evil.spawn.delay");
 		evilLookRange = mobs.getInt("evil.misc.look-range");
-		evilNPCTameItem = mobs.getInt("evil.misc.tame-item");
+		evilNPCTameItem = mobs.getInt("evil.items.tame-item");
 		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");
 		failureToTameMessages = mobs
 				.getString("evil.misc.failed-tame-messages");
+		evilDrops = mobs.getString("evil.items.drops");
 	}
 }

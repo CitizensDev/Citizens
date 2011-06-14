@@ -50,7 +50,7 @@ public class HealerExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "healer")) {
+				if (Permission.canHelp(player, npc, "healer")) {
 					HelpUtils.sendHealerHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);

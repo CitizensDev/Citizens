@@ -52,7 +52,6 @@ public class CraftNPC extends PathNPC {
 				NPCEntityTargetEvent.NpcTargetReason.NPC_RIGHTCLICKED);
 		CraftServer server = ((WorldServer) this.world).getServer();
 		server.getPluginManager().callEvent(event);
-
 		return super.a(entity);
 	}
 
@@ -81,19 +80,18 @@ public class CraftNPC extends PathNPC {
 			lastBounceTick = System.currentTimeMillis();
 		}
 		lastBounceId = entity.id;
-
 		super.c(entity);
 	}
 
 	@Override
 	public void a(Entity entity) {
-		System.out.println(entity);
+		// System.out.println(entity);
 		super.a(entity);
 	}
 
 	@Override
 	public void a(EntityLiving entityliving) {
-		System.out.println(entityliving);
+		// System.out.println(entityliving);
 		super.a(entityliving);
 	}
 

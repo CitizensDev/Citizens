@@ -50,7 +50,7 @@ public class WizardExecutor implements CommandExecutor {
 			return true;
 		} else {
 			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canUse(player, npc, "wizard")) {
+				if (Permission.canHelp(player, npc, "wizard")) {
 					HelpUtils.sendWizardHelp(sender);
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
