@@ -51,10 +51,9 @@ public class Permission {
 
 	public static boolean canModify(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
-			if (isAdmin(player)) {
-				return true;
-			}
-			if (NPCManager.validateOwnership(player, npc.getUID())) {
+			if ((isAdmin(player))
+					|| (npc != null && NPCManager.validateOwnership(player,
+							npc.getUID()))) {
 				return true;
 			}
 			return permission(player, "citizens.modify." + type);
@@ -64,10 +63,9 @@ public class Permission {
 
 	public static boolean canUse(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
-			if (isAdmin(player)) {
-				return true;
-			}
-			if (NPCManager.validateOwnership(player, npc.getUID())) {
+			if ((isAdmin(player))
+					|| (npc != null && NPCManager.validateOwnership(player,
+							npc.getUID()))) {
 				return true;
 			}
 			return permission(player, "citizens.use." + type);
@@ -86,8 +84,6 @@ public class Permission {
 		return player.isOp();
 	}
 
-	// Note: this may or may not work, the API is kind of fuzzy; even the Perm
-	// dev himself admits there is terrible documentation at the moment
 	public static void grantRank(Player player, String rank) {
 		if (permissionsEnabled) {
 			User user = Permissions.Security.getUserObject(player.getWorld()
