@@ -55,13 +55,13 @@ public class TraderExecutor implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a trader yet.");
 			return true;
 		}
-		if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-			if (Permission.canHelp(player, npc, "trader")) {
+		if (args[0].equalsIgnoreCase("help")) {
+			if (Permission.canUse(player, npc, "trader")) {
 				HelpUtils.sendTraderHelp(sender);
 			} else {
-				player.sendMessage(MessageUtils.noPermissionsMessage);
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
-			returnval = true;
+			return true;
 		} else if (args.length >= 2 && args[0].contains("list")
 				&& (args[1].contains("s") || args[1].contains("b"))) {
 			if (Permission.canUse(player, npc, "trader")) {

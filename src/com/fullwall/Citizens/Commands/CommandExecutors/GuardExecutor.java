@@ -49,80 +49,73 @@ public class GuardExecutor implements CommandExecutor {
 		if (!npc.isGuard()) {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a guard yet.");
 			return true;
-		} else {
-			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "guard")) {
-					HelpUtils.sendGuardHelp(sender);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1
-					&& args[0].equalsIgnoreCase("bodyguard")) {
-				if (Permission.canModify(player, npc, "guard")) {
-					toggleBodyguard(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("bouncer")) {
-				if (Permission.canModify(player, npc, "guard")) {
-					toggleBouncer(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			}
-
-			if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
-				if (Permission.canModify(player, npc, "guard")) {
-					addToBlacklist(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1
-					&& args[0].equalsIgnoreCase("blacklist")) {
-				if (Permission.canUse(player, npc, "guard")) {
-					displayBlacklist(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2
-					&& args[0].equalsIgnoreCase("whitelist")) {
-				if (Permission.canModify(player, npc, "guard")) {
-					addToWhitelist(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1
-					&& args[0].equalsIgnoreCase("whitelist")) {
-				if (Permission.canUse(player, npc, "guard")) {
-					displayWhitelist(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (npc.getGuard().isBouncer() && args.length == 2
-					&& args[0].equalsIgnoreCase("radius")) {
-				if (Permission.canModify(player, npc, "guard")) {
-					setProtectionRadius(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (!npc.getGuard().isBouncer() && args.length == 2
-					&& args[0].equalsIgnoreCase("radius")) {
-				sender.sendMessage(ChatColor.RED
-						+ "That guard isn't the correct type, so you cannot perform this command.");
-			} else {
-				sender.sendMessage(ChatColor.GRAY
-						+ "Couldn't recognise your command.");
-			}
-			PropertyManager.save(npc);
 		}
+		if (args[0].equalsIgnoreCase("help")) {
+			if (Permission.canUse(player, npc, "guard")) {
+				HelpUtils.sendGuardHelp(sender);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("bodyguard")) {
+			if (Permission.canModify(player, npc, "guard")) {
+				toggleBodyguard(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("bouncer")) {
+			if (Permission.canModify(player, npc, "guard")) {
+				toggleBouncer(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("blacklist")) {
+			if (Permission.canModify(player, npc, "guard")) {
+				addToBlacklist(player, npc, args[1]);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("blacklist")) {
+			if (Permission.canUse(player, npc, "guard")) {
+				displayBlacklist(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("whitelist")) {
+			if (Permission.canModify(player, npc, "guard")) {
+				addToWhitelist(player, npc, args[1]);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("whitelist")) {
+			if (Permission.canUse(player, npc, "guard")) {
+				displayWhitelist(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (npc.getGuard().isBouncer() && args.length == 2
+				&& args[0].equalsIgnoreCase("radius")) {
+			if (Permission.canModify(player, npc, "guard")) {
+				setProtectionRadius(player, npc, args[1]);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (!npc.getGuard().isBouncer() && args.length == 2
+				&& args[0].equalsIgnoreCase("radius")) {
+			sender.sendMessage(ChatColor.RED
+					+ "That guard isn't the correct type, so you cannot perform this command.");
+		} else {
+			sender.sendMessage(ChatColor.GRAY
+					+ "Couldn't recognise your command.");
+		}
+		PropertyManager.save(npc);
 		return returnval;
 	}
 

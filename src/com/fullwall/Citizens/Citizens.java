@@ -184,11 +184,11 @@ public class Citizens extends JavaPlugin {
 	}
 
 	/**
-	 * Returns the current version of Citizens
+	 * Get the current version of Citizens
 	 * 
 	 * @return
 	 */
-	private static String getVersion() {
+	public static String getVersion() {
 		return version;
 	}
 

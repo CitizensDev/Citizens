@@ -54,11 +54,6 @@ commands:
         usage: |
                         The command was not recognised. The correct syntax is
                         /<command>
-    bandit:
-        description: Performs various Bandit NPC-related commands.
-        usage: |
-                        The command was not recognised. Was it typed in correctly?
-                        See /bandit help for a list of commands.
     toggle:
         description: Toggles between various NPC states.
         aliases: [t, tog, togg]

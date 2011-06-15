@@ -47,31 +47,30 @@ public class QuesterExecutor implements CommandExecutor {
 		if (!npc.isQuester()) {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
 			return true;
-		} else {
-			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "quester")) {
-					HelpUtils.sendQuesterHelp(sender);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				return true;
-			} else if (args.length == 2 && args[0].contains("assi")) {
-				if (Permission.canModify(player, npc, "quester")) {
-					assignQuest(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2 && args[0].contains("rem")) {
-				if (Permission.canModify(player, npc, "quester")) {
-					removeQuest(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			}
-			PropertyManager.save(npc);
 		}
+		if (args[0].equalsIgnoreCase("help")) {
+			if (Permission.canUse(player, npc, "quester")) {
+				HelpUtils.sendQuesterHelp(sender);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if (args.length == 2 && args[0].contains("assi")) {
+			if (Permission.canModify(player, npc, "quester")) {
+				assignQuest(player, npc, args[1]);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 2 && args[0].contains("rem")) {
+			if (Permission.canModify(player, npc, "quester")) {
+				removeQuest(player, npc, args[1]);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		}
+		PropertyManager.save(npc);
 		return returnval;
 	}
 

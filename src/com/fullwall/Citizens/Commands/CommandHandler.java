@@ -1,7 +1,6 @@
 package com.fullwall.Citizens.Commands;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Commands.CommandExecutors.BanditExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.BasicExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.BlacksmithExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.GuardExecutor;
@@ -34,7 +33,6 @@ public class CommandHandler {
 		plugin.getCommand("blacksmith").setExecutor(
 				new BlacksmithExecutor(plugin));
 		plugin.getCommand("quester").setExecutor(new QuesterExecutor(plugin));
-		plugin.getCommand("bandit").setExecutor(new BanditExecutor(plugin));
 		plugin.getCommand("guard").setExecutor(new GuardExecutor(plugin));
 		plugin.getCommand("tog").setExecutor(new TogglerExecutor(plugin));
 		plugin.getCommand("quests").setExecutor(new QuestsExecutor(plugin));

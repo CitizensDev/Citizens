@@ -143,7 +143,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else {
 				player.sendMessage(ChatColor.RED
-						+ "Entered npc type was not recognized.");
+						+ "Entered NPC type was not recognized.");
 				returnval = true;
 			}
 		}

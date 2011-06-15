@@ -44,17 +44,16 @@ public class QuestsExecutor implements CommandExecutor {
 		if (!npc.isQuester()) {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
 			return true;
-		} else {
-			if (args.length == 1 && commandLabel.equalsIgnoreCase("quests")) {
-				if (Permission.canModify(player, npc, "quester")) {
-					if (args[0].equalsIgnoreCase("edit")) {
-						ChatManager.enterEditMode(player.getName());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
+		}
+		if (args.length == 1 && commandLabel.equalsIgnoreCase("quests")) {
+			if (Permission.canModify(player, npc, "quester")) {
+				if (args[0].equalsIgnoreCase("edit")) {
+					ChatManager.enterEditMode(player.getName());
 				}
-				returnval = true;
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
+			returnval = true;
 		}
 		return returnval;
 	}

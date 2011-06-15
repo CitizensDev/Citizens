@@ -48,52 +48,51 @@ public class HealerExecutor implements CommandExecutor {
 		if (!npc.isHealer()) {
 			sender.sendMessage(ChatColor.RED + "Your NPC isn't a healer yet.");
 			return true;
-		} else {
-			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "healer")) {
-					HelpUtils.sendHealerHelp(sender);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
-				if (Permission.canUse(player, npc, "healer")) {
-					displayStatus(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
+		}
+		if (args[0].equalsIgnoreCase("help")) {
+			if (Permission.canUse(player, npc, "healer")) {
+				HelpUtils.sendHealerHelp(sender);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
+			if (Permission.canUse(player, npc, "healer")) {
+				displayStatus(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
 
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("level-up")) {
-				if (Permission.canModify(player, npc, "healer")) {
-					levelUp(player, npc, 1);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("level-up")) {
+			if (Permission.canModify(player, npc, "healer")) {
+				levelUp(player, npc, 1);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
 
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("level-up")) {
-				if (Permission.canModify(player, npc, "healer")) {
-					if (StringUtils.isNumber(args[1])) {
-						int levels = Integer.parseInt(args[1]);
-						int x = npc.getHealer().getLevel() + levels;
-						if (x <= 10) {
-							levelUp(player, npc, levels);
-						} else {
-							sender.sendMessage(ChatColor.RED
-									+ "You cannot exceed Level 10.");
-						}
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("level-up")) {
+			if (Permission.canModify(player, npc, "healer")) {
+				if (StringUtils.isNumber(args[1])) {
+					int levels = Integer.parseInt(args[1]);
+					int x = npc.getHealer().getLevel() + levels;
+					if (x <= 10) {
+						levelUp(player, npc, levels);
 					} else {
 						sender.sendMessage(ChatColor.RED
-								+ "That's not a valid number.");
+								+ "You cannot exceed Level 10.");
 					}
 				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
+					sender.sendMessage(ChatColor.RED
+							+ "That's not a valid number.");
 				}
-				returnval = true;
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
-			PropertyManager.save(npc);
+			returnval = true;
 		}
+		PropertyManager.save(npc);
 		return returnval;
 	}
 

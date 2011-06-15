@@ -17,20 +17,21 @@ public class HelpUtils {
 			sender.sendMessage(ChatColor.GREEN + "  []"
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
+			format(sender, "citizens", "", "display Citizens information");
+			format(sender, "citizens", "reload", "toggle all types for an NPC");
 			format(sender, "toggle", "[type]", "toggle an NPC type");
-			format(sender, "toggle", "[all] [on/off]",
+			format(sender, "toggle", "all [on/off]",
 					"toggle all types for an NPC");
 			format(sender, "basic", "help [page]", "basic NPC help pages");
-			format(sender, "bandit", "help", "bandit NPC help page");
 			format(sender, "blacksmith", "help", "blacksmith NPC help page");
 			format(sender, "guard", "help", "guard NPC help page");
-			format(sender, "healer", "help", "healer NPC help page");
 			footer(sender);
 			break;
 		case 2:
 			header(sender, "General", 2, 2);
+			format(sender, "healer", "help", "healer NPC help page");
 			format(sender, "quester", "help", "quester NPC help page");
-			format(sender, "trader", "help [page]", "trader NPC help page");
+			format(sender, "trader", "help", "trader NPC help page");
 			format(sender, "wizard", "help", "wizard NPC help page");
 			footer(sender);
 			break;
@@ -85,7 +86,7 @@ public class HelpUtils {
 			footer(sender);
 			break;
 		default:
-			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 3));
 			break;
 		}
 	}
@@ -164,18 +165,6 @@ public class HelpUtils {
 		format(sender, "blacksmith", "list", "list the available armor names");
 		format(sender, "blacksmith", "uses",
 				"show how many uses your item has left");
-		footer(sender);
-	}
-
-	/**
-	 * Sends the help page for the bandit npc type
-	 * 
-	 * @param sender
-	 */
-	public static void sendBanditHelp(CommandSender sender) {
-		header(sender, "Bandit", 1, 1);
-		format(sender, "bandit", "stealable [add|remove] [id]",
-				"specify stealable items");
 		footer(sender);
 	}
 

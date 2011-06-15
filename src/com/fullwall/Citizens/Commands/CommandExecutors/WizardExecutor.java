@@ -48,76 +48,74 @@ public class WizardExecutor implements CommandExecutor {
 		if (!npc.isWizard()) {
 			player.sendMessage(ChatColor.RED + "Your NPC isn't a wizard yet.");
 			return true;
-		} else {
-			if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "wizard")) {
-					HelpUtils.sendWizardHelp(sender);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("mode")) {
-				if (Permission.canModify(player, npc, "wizard")) {
-					changeMode(player, npc, args[1]);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
-				if (Permission.canUse(player, npc, "wizard")) {
-					displayStatus(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 1
-					&& args[0].equalsIgnoreCase("locations")) {
-				if (Permission.canUse(player, npc, "wizard")) {
-					this.displayLocations(player, npc);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2 && args[0].contains("addloc")) {
-				if (Permission.canModify(player, npc, "wizard")) {
-					if (npc.getWizard().getNumberOfLocations() < Constants.wizardMaxLocations) {
-						this.addLocation(player, npc, args[1]);
-					} else {
-						sender.sendMessage(ChatColor.RED + "Wizard "
-								+ StringUtils.wrap(npc.getStrippedName())
-								+ " already knows "
-								+ Constants.wizardMaxLocations + " locations");
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2 && args[0].contains("removeloc")) {
-				if (Permission.canModify(player, npc, "wizard")) {
-					int type = -1;
-					if (StringUtils.isNumber(args[1])) {
-						type = Integer.parseInt(args[1]);
-					} else {
-						sender.sendMessage(ChatColor.RED
-								+ "ID must be a number, see /wizard locations");
-						type = -1;
-					}
-					if (type != -1) {
-						if (type <= npc.getWizard().getNumberOfLocations()) {
-							this.removeLocation(player, npc, type);
-						} else {
-							sender.sendMessage(StringUtils.wrap(npc
-									.getStrippedName())
-									+ " does not have that location.");
-						}
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			}
-			PropertyManager.save(npc);
 		}
+		if (args[0].equalsIgnoreCase("help")) {
+			if (Permission.canUse(player, npc, "wizard")) {
+				HelpUtils.sendWizardHelp(sender);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("mode")) {
+			if (Permission.canModify(player, npc, "wizard")) {
+				changeMode(player, npc, args[1]);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
+			if (Permission.canUse(player, npc, "wizard")) {
+				displayStatus(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("locations")) {
+			if (Permission.canUse(player, npc, "wizard")) {
+				this.displayLocations(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 2 && args[0].contains("addloc")) {
+			if (Permission.canModify(player, npc, "wizard")) {
+				if (npc.getWizard().getNumberOfLocations() < Constants.wizardMaxLocations) {
+					this.addLocation(player, npc, args[1]);
+				} else {
+					sender.sendMessage(ChatColor.RED + "Wizard "
+							+ StringUtils.wrap(npc.getStrippedName())
+							+ " already knows " + Constants.wizardMaxLocations
+							+ " locations");
+				}
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		} else if (args.length == 2 && args[0].contains("removeloc")) {
+			if (Permission.canModify(player, npc, "wizard")) {
+				int type = -1;
+				if (StringUtils.isNumber(args[1])) {
+					type = Integer.parseInt(args[1]);
+				} else {
+					sender.sendMessage(ChatColor.RED
+							+ "ID must be a number, see /wizard locations");
+					type = -1;
+				}
+				if (type != -1) {
+					if (type <= npc.getWizard().getNumberOfLocations()) {
+						this.removeLocation(player, npc, type);
+					} else {
+						sender.sendMessage(StringUtils.wrap(npc
+								.getStrippedName())
+								+ " does not have that location.");
+					}
+				}
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+		}
+		PropertyManager.save(npc);
 		return returnval;
 	}
 

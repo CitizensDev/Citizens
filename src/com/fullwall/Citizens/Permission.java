@@ -73,22 +73,6 @@ public class Permission {
 		return player.isOp();
 	}
 
-	public static boolean canHelp(Player player, HumanNPC npc, String type) {
-		if (permissionsEnabled) {
-			if (npc != null) {
-				if (canUse(player, npc, type) || canModify(player, npc, type)) {
-					return true;
-				}
-			} else {
-				if (isAdmin(player) || canCreate(player, type)) {
-					return true;
-				}
-			}
-			return permission(player, "citizens.help." + type);
-		}
-		return player.isOp();
-	}
-
 	private static boolean permission(Player player, String string) {
 		return Permissions.Security.has(player, string);
 	}

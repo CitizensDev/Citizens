@@ -43,7 +43,53 @@ public class BasicExecutor implements CommandExecutor {
 		if (NPCManager.validateSelected(player)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
 		}
-		if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
+		if (args.length == 0) {
+			if (Permission.isAdmin(player)) {
+				showInfo(player);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if ((commandLabel.equalsIgnoreCase("npc") || commandLabel
+				.equalsIgnoreCase("citizens"))
+				&& args.length == 1
+				&& args[0].equalsIgnoreCase("help")) {
+			HelpUtils.sendHelpPage(sender, 1);
+			return true;
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+			if (Permission.isAdmin(player)) {
+				reload(player);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+		} else if ((commandLabel.equalsIgnoreCase("npc") || commandLabel
+				.equalsIgnoreCase("citizens"))
+				&& args[0].equalsIgnoreCase("help")) {
+			if (args.length == 1) {
+				HelpUtils.sendHelpPage(sender, 1);
+			} else if (args.length == 2) {
+				if (StringUtils.isNumber(args[1])) {
+					HelpUtils.sendHelpPage(sender, Integer.parseInt(args[1]));
+				} else {
+					sender.sendMessage(ChatColor.RED + "That's not a number.");
+				}
+			}
+			return true;
+		} else if (commandLabel.equalsIgnoreCase("basic")
+				&& args[0].equalsIgnoreCase("help")) {
+			if (args.length == 1) {
+				HelpUtils.sendBasicHelpPage(sender, 1);
+			} else if (args.length == 2) {
+				if (StringUtils.isNumber(args[1])) {
+					HelpUtils.sendBasicHelpPage(sender,
+							Integer.parseInt(args[1]));
+				} else {
+					sender.sendMessage(ChatColor.RED + "That's not a number.");
+				}
+			}
+			return true;
+		} else if (args.length >= 2 && args[0].equalsIgnoreCase("create")) {
 			if (Permission.canCreate(player, "basic")) {
 				if (!EconomyHandler.useEconomy()
 						|| EconomyHandler.canBuy(Operation.BASIC_CREATION,
@@ -157,7 +203,7 @@ public class BasicExecutor implements CommandExecutor {
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("copy")) {
 			if (npc != null) {
 				if (Permission.canModify(player, npc, "basic")) {
-					copy(npc.getUID(), npc.getName(), player);
+					copy(player, npc.getUID(), npc.getName());
 				} else {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
@@ -277,56 +323,10 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if ((commandLabel.equalsIgnoreCase("citizens") || commandLabel
-				.equalsIgnoreCase("npc"))) {
-			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "basic")) {
-					int page = 0;
-					if (StringUtils.isNumber(args[1])) {
-						page = Integer.parseInt(args[1]);
-					} else {
-						player.sendMessage(ChatColor.RED
-								+ "That is not a number.");
-						return true;
-					}
-					HelpUtils.sendHelpPage(sender, page);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "basic")) {
-					HelpUtils.sendHelpPage(sender, 1);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			}
-			return true;
-
-		} else if (commandLabel.equalsIgnoreCase("basic")) {
-			if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "basic")) {
-					int page = 0;
-					if (StringUtils.isNumber(args[1])) {
-						page = Integer.parseInt(args[1]);
-					} else {
-						player.sendMessage(ChatColor.RED
-								+ "That is not a number.");
-						return true;
-					}
-					HelpUtils.sendBasicHelpPage(sender, page);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			} else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
-				if (Permission.canHelp(player, npc, "basic")) {
-					HelpUtils.sendBasicHelpPage(sender, 1);
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-			}
-			return true;
 		}
-		PropertyManager.get("basic").saveState(npc);
+		if (npc != null) {
+			PropertyManager.get("basic").saveState(npc);
+		}
 		return false;
 	}
 
@@ -413,15 +413,16 @@ public class BasicExecutor implements CommandExecutor {
 	/**
 	 * Copies an npc's data and position to another npc.
 	 * 
-	 * @param npc
-	 * @param p
+	 * @param player
+	 * @param UID
+	 * @param name
 	 */
-	private void copy(int UID, String name, Player p) {
-		int newUID = NPCManager.register(name, p.getLocation(), p.getName());
+	private void copy(Player player, int UID, String name) {
+		int newUID = NPCManager.register(name, player.getLocation(),
+				player.getName());
 		HumanNPC newNPC = NPCManager.get(newUID);
-		newNPC.teleport(p.getLocation());
-
-		newNPC.getNPCData().setLocation(p.getLocation());
+		newNPC.teleport(player.getLocation());
+		newNPC.getNPCData().setLocation(player.getLocation());
 		PropertyManager.copy(UID, newUID);
 		NPCManager.removeForRespawn(newUID);
 		NPCManager.register(newUID, newNPC.getOwner());
@@ -711,5 +712,34 @@ public class BasicExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED
 					+ "Incorrect syntax. Correct syntax: /npc list (playername) (page)");
 		}
+	}
+
+	/**
+	 * Reload Citizens
+	 * 
+	 * @param player
+	 */
+	private void reload(Player player) {
+		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
+		plugin.getServer().getPluginManager().disablePlugin(plugin);
+		plugin.getServer().getPluginManager().enablePlugin(plugin);
+		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
+	}
+
+	/**
+	 * Show Citizens plugin information
+	 * 
+	 * @param player
+	 */
+	private void showInfo(Player player) {
+		player.sendMessage(ChatColor.GREEN + "==========[ "
+				+ StringUtils.wrap("Citizens") + " ]==========");
+		player.sendMessage(ChatColor.GREEN + "  Version: "
+				+ StringUtils.wrap(Citizens.getVersion()));
+		player.sendMessage(ChatColor.GREEN + "  Authors: ");
+		player.sendMessage(ChatColor.YELLOW + "      - fullwall");
+		player.sendMessage(ChatColor.YELLOW + "      - aPunch");
+		player.sendMessage(ChatColor.YELLOW + "      - NeonMaster");
+		player.sendMessage(ChatColor.YELLOW + "      - TheMPC");
 	}
 }
