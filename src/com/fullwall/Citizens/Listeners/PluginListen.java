@@ -1,6 +1,5 @@
 package com.fullwall.Citizens.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -8,7 +7,6 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.Utils.Messaging;
@@ -35,8 +33,6 @@ public class PluginListen extends ServerListener implements Listener {
 
 	@Override
 	public void onPluginEnable(PluginEnableEvent event) {
-		if (event.getPlugin().getDescription().getName().contains("Permission"))
-			Permission.initialize(Bukkit.getServer());
 		if (!this.methods.hasMethod()) {
 			if (this.methods.setMethod(event.getPlugin())) {
 				Citizens.setMethod(this.methods.getMethod());

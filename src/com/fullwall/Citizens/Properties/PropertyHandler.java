@@ -96,8 +96,10 @@ public final class PropertyHandler implements Storage {
 			Messaging.log("Unable to load " + this.fileName, Level.SEVERE);
 		} finally {
 			try {
-				if (stream != null)
+				if (stream != null) {
+					Messaging.debug("Load stream closed.");
 					stream.close();
+				}
 			} catch (IOException e) {
 				Messaging.log("Unable to close " + this.fileName, Level.SEVERE);
 			}
@@ -114,8 +116,10 @@ public final class PropertyHandler implements Storage {
 			Messaging.log("Unable to save " + this.fileName, Level.SEVERE);
 		} finally {
 			try {
-				if (stream != null)
+				if (stream != null) {
+					Messaging.debug("Save stream closed.");
 					stream.close();
+				}
 			} catch (IOException e) {
 				Messaging.log("Unable to close " + this.fileName, Level.SEVERE);
 			}

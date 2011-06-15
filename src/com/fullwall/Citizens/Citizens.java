@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -79,7 +80,10 @@ public class Citizens extends JavaPlugin {
 		// Register files.
 		PropertyManager.registerProperties();
 
-		// set up settings and economy file variables
+		// Initialise Permissions.
+		Permission.initialize(Bukkit.getServer());
+
+		// Load settings.
 		Constants.setupVariables();
 
 		if (Constants.spawnEvil) {
@@ -92,8 +96,7 @@ public class Citizens extends JavaPlugin {
 		plugin = this;
 
 		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
-		// loaded. This means that multiworld will now work without hacky
-		// workarounds.
+		// loaded -> gives multiworld support.
 		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
 				new Runnable() {
 					@Override
