@@ -1,9 +1,9 @@
 package com.fullwall.Citizens;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -21,7 +21,7 @@ import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
 public class CreatureTask implements Runnable {
-	public final static Map<Integer, CreatureNPC> creatureNPCs = new HashMap<Integer, CreatureNPC>();
+	public final static Map<Integer, CreatureNPC> creatureNPCs = new ConcurrentHashMap<Integer, CreatureNPC>();
 	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
 			CreatureNPCType.class);
 	public static boolean dirty = true;

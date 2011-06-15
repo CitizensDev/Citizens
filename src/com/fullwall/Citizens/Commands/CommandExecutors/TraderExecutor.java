@@ -70,7 +70,7 @@ public class TraderExecutor implements CommandExecutor {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			returnval = true;
-		} else if (args.length == 1 && args[0].contains("money")) {
+		} else if (args.length == 1 && args[0].contains("mon")) {
 			if (Permission.canUse(player, npc, "trader")) {
 				if (!EconomyHandler.useIconomy())
 					player.sendMessage(MessageUtils.noEconomyMessage);
@@ -86,7 +86,7 @@ public class TraderExecutor implements CommandExecutor {
 			}
 			return true;
 		} else {
-			if (args.length == 3 && args[0].equalsIgnoreCase("balance")) {
+			if (args.length == 3 && args[0].contains("mon")) {
 				if (Permission.canModify(player, npc, "trader")) {
 					if (!EconomyHandler.useIconomy())
 						player.sendMessage(MessageUtils.noEconomyMessage);
