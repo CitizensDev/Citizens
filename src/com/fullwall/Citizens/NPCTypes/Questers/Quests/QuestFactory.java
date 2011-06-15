@@ -98,7 +98,7 @@ public class QuestFactory {
 					}
 				}
 			}
-			path = tempPath = questName + ".objectives";
+			path = tempPath = questName + ".objectives.";
 			Objectives objectives = new Objectives();
 			if (quests.pathExists(path)) {
 				for (Object objective : quests.getKeys(path)) {

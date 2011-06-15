@@ -39,9 +39,9 @@ public class Constants {
 	public static String npcColour = "�f";
 	public static String talkItems = "340,";
 	public static String selectItems = "*";
-	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,";
-	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>;Better luck next time, fool!;";
-	public static String evilDrops = "260,357,2256";
+	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,Notch,EvilSeph,";
+	public static String failureToTameMessages = "Ha! You can't tame me!;Muahahaha! No one can tame me!;";
+	public static String evilDrops = "260,357,2256,";
 
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean payForHealerHeal = true;

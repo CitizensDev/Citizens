@@ -62,12 +62,7 @@ public class QuestManager {
 	}
 
 	public enum RewardType {
-		HEALTH,
-		ITEM,
-		MONEY,
-		PERMISSION,
-		QUEST,
-		RANK;
+		HEALTH, ITEM, MONEY, PERMISSION, QUEST, RANK;
 	}
 
 	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
