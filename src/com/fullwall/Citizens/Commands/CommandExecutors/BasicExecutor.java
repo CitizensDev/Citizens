@@ -353,9 +353,10 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			texts.add(buf.toString());
 		}
-		if (args[1].length() > 15) {
+		if (args[1].length() > 16) {
 			player.sendMessage(ChatColor.RED
-					+ "The name of this NPC will be truncated - max name length is 15.");
+					+ "The name of this NPC will be truncated - max name length is 16.");
+			args[1] = args[1].substring(0, 16);
 		}
 		if ((PropertyManager.getBasic().getNPCAmountPerPlayer(player.getName()) < Constants.maxNPCsPerPlayer)
 				|| (Constants.maxNPCsPerPlayer == 0)
@@ -465,6 +466,7 @@ public class BasicExecutor implements CommandExecutor {
 			if (name.length() > 16) {
 				player.sendMessage(ChatColor.RED
 						+ "Max name length is 16 - NPC name length will be truncated.");
+				name = name.substring(0, 16);
 			}
 			plugin.basicNPCHandler.rename(npc.getUID(), name, npc.getOwner());
 			player.sendMessage(ChatColor.GREEN

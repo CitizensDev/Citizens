@@ -40,11 +40,10 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onDeath() {
-		if (UtilityProperties.getRandomDrop() != null) {
-			this.getEntity()
-					.getWorld()
-					.dropItemNaturally(this.getLocation(),
-							UtilityProperties.getRandomDrop());
+		ItemStack item;
+		if ((item = UtilityProperties.getRandomDrop()) != null) {
+			this.getEntity().getWorld()
+					.dropItemNaturally(this.getLocation(), item);
 		}
 	}
 
