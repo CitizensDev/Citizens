@@ -63,7 +63,7 @@ public class PathNPC extends EntityPlayer {
 			super.c_();
 			this.pathEntity = null;
 		}
-		this.O(); // Update entity
+		this.Q(); // Update entity
 	}
 
 	private void handleMove(Vec3D vector) {

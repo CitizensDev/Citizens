@@ -106,7 +106,7 @@ public class TraderExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args.length == 2 && (args[0].contains("unl"))) {
-				if (Permission.canModify(player, npc, "trader")) {
+				if (Permission.isAdmin(player)) {
 					changeUnlimited(npc, sender, args[1]);
 				} else {
 					player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -153,6 +153,8 @@ public class TraderExecutor implements CommandExecutor {
 		}
 		PageInstance instance = PageUtils.newInstance(player);
 		for (Stockable stockable : stock) {
+			if (stockable == null)
+				continue;
 			instance.push(ChatColor.GREEN
 					+ keyword
 					+ ": "

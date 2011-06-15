@@ -97,12 +97,12 @@ public class CreatureTask implements Runnable {
 		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
 			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					// TODO: find a way to make block underneath per-type.
-					if (world.getBlockTypeIdAt(x, y - 1, z) != 0
-							&& world.getBlockTypeIdAt(x, y, z) == type
-									.getSpawnIn().getId()
-							&& world.getBlockTypeIdAt(x, y + 1, z) == type
-									.getSpawnIn().getId()) {
+					if (type.spawnOn().valid(
+							world.getBlockTypeIdAt(x, y - 1, z))
+							& type.spawnIn().valid(
+									world.getBlockTypeIdAt(x, y, z))
+							&& type.spawnIn().valid(
+									world.getBlockTypeIdAt(x, y + 1, z))) {
 						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
 							if (spaceEntityFree(world.getChunkAt(x, z), x, y, z)) {
 								return NPCSpawner.spawnBasicHumanNpc(0,
