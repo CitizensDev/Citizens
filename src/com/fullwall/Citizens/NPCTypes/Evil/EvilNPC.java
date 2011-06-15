@@ -11,6 +11,7 @@ import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -69,13 +70,15 @@ public class EvilNPC implements Clickable {
 						+ StringUtils.wrap(npc.getStrippedName())
 						+ "! You can now toggle it to be any type.");
 			} else {
-				player.sendMessage(ChatColor.RED
-						+ "["
-						+ npc.getStrippedName()
-						+ "] "
-						+ ChatColor.WHITE
-						+ MessageUtils
-								.getRandomMessage(Constants.failureToTameMessages));
+				Messaging
+						.send(player,
+								ChatColor.RED
+										+ "["
+										+ npc.getStrippedName()
+										+ "] "
+										+ ChatColor.WHITE
+										+ MessageUtils
+												.getRandomMessage(Constants.failureToTameMessages));
 			}
 		}
 	}

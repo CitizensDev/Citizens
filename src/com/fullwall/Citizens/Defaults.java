@@ -139,12 +139,12 @@ public class Defaults {
 		nodes.put("evil.spawn.delay", "200");
 		nodes.put("evil.spawn.max", "2");
 		nodes.put("evil.look-range", "25");
-		nodes.put("evil.names", "Herobrine,aPunch,fullwall,");
+		nodes.put("evil.names", "Herobrine,aPunch,fullwall,Notch,EvilSeph,");
 		nodes.put("evil.misc.tame-chance", "5");
 		nodes.put("evil.items.tame-item", "354");
 		nodes.put("evil.misc.failed-tame-messages",
-				"Ha! You can't tame me!;Better luck next time, fool!;");
-		nodes.put("evil.items.drops", "260,357,2256");
+				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;");
+		nodes.put("evil.items.drops", "260,357,2256,");
 		return nodes;
 	}
 

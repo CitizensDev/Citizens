@@ -30,7 +30,8 @@ public class Messaging {
 	}
 
 	public static void debug(String message) {
-		if (debug)
+		if (debug) {
 			log(message);
+		}
 	}
 }
