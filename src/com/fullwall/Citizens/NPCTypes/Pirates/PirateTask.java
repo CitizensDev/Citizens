@@ -1,4 +1,4 @@
-package com.fullwall.Citizens.NPCTypes.Bandits;
+package com.fullwall.Citizens.NPCTypes.Pirates;
 
 import java.util.Map.Entry;
 import java.util.Random;
@@ -15,14 +15,14 @@ import com.fullwall.Citizens.Misc.CachedAction;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.iConomy.util.Messaging;
 
-public class BanditTask implements Runnable {
+public class PirateTask implements Runnable {
 	@SuppressWarnings("unused")
 	private final Citizens plugin;
 
-	public BanditTask(Citizens plugin) {
+	public PirateTask(Citizens plugin) {
 		this.plugin = plugin;
 	}
 
@@ -39,7 +39,7 @@ public class BanditTask implements Runnable {
 				for (Player p : online) {
 					String name = p.getName();
 					if (LocationUtils.checkLocation(npc.getLocation(),
-							p.getLocation(), Constants.banditStealRadius)) {
+							p.getLocation(), 0)) {
 						cacheActions(p, npc, UID, name);
 					} else {
 						resetActions(UID, name, npc);
@@ -50,12 +50,12 @@ public class BanditTask implements Runnable {
 	}
 
 	private void resetActions(int entityID, String name, HumanNPC npc) {
-		ActionManager.resetAction(entityID, name, "takenItem", npc.isBandit());
+		ActionManager.resetAction(entityID, name, "takenItem", npc.isPirate());
 	}
 
 	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
-		if (!cached.has("takenItem") && npc.isBandit()) {
+		if (!cached.has("takenItem") && npc.isPirate()) {
 			stealItem(p, npc);
 			cached.set("takenItem");
 		}
@@ -63,7 +63,7 @@ public class BanditTask implements Runnable {
 	}
 
 	/**
-	 * Steal an item from a player's inventory and put it in a bandit's
+	 * Steal an item from a player's inventory and put it in a pirate's
 	 * inventory
 	 * 
 	 * @param player
@@ -74,34 +74,31 @@ public class BanditTask implements Runnable {
 		int randomSlot;
 		int count = 0;
 		ItemStack item = null;
-		if (npc.isBandit()) {
-			if (!NPCManager.validateOwnership(player, npc.getUID())) {
-				int limit = player.getInventory().getSize();
-				while (true) {
-					randomSlot = random.nextInt(limit);
-					item = player.getInventory().getItem(randomSlot);
-					if (item != null) {
-						if (npc.getBandit().getStealables()
-								.contains(item.getTypeId())) {
-							player.getInventory().setItem(randomSlot, null);
-							player.sendMessage(StringUtils.wrap(
-									npc.getStrippedName(), ChatColor.RED)
-									+ " has stolen "
-									+ StringUtils.wrap(
-											MessageUtils.getStackString(item),
-											ChatColor.RED)
-									+ " from your inventory!");
-							// may want to check if this returns a non-empty
-							// hashmap (bandit didn't have enough room).
-							npc.getInventory().addItem(item);
-						}
+		if (npc.isPirate()) {
+			int limit = player.getInventory().getSize();
+			while (true) {
+				randomSlot = random.nextInt(limit);
+				item = player.getInventory().getItem(randomSlot);
+				if (item != null) {
+					player.getInventory().setItem(randomSlot, null);
+					Messaging
+							.send(player,
+									ChatColor.RED
+											+ "["
+											+ npc.getStrippedName()
+											+ "] "
+											+ ChatColor.WHITE
+											+ MessageUtils
+													.getRandomMessage(Constants.pirateStealMessages));
+					// may want to check if this returns a non-empty
+					// hashmap (bandit didn't have enough room).
+					npc.getInventory().addItem(item);
+					break;
+				} else {
+					if (count >= limit) {
 						break;
-					} else {
-						if (count >= limit) {
-							break;
-						}
-						count += 1;
 					}
+					count += 1;
 				}
 			}
 		}

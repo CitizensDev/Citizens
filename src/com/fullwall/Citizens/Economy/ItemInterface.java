@@ -10,8 +10,8 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.MessageUtils;
 
 public class ItemInterface {
-	public static String addendum = ".item";
-	public static String currencyAddendum = ".item-currency-id";
+	private static String addendum = ".item";
+	private static String currencyAddendum = ".item-currency-id";
 	private static double blacksmithPrice;
 
 	/**
@@ -25,6 +25,39 @@ public class ItemInterface {
 		// Get the price/currency from the enum name.
 		double price = UtilityProperties.getPrice(Operation.getString(op,
 				addendum));
+
+		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+				op, currencyAddendum));
+		if (price <= 0 || currencyID == 0) {
+			return true;
+		}
+		// The current count.
+		int current = 0;
+		for (ItemStack i : player.getInventory().getContents()) {
+			if (i != null && i.getTypeId() == currencyID) {
+				current += i.getAmount();
+				if (current >= price) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks the inventory if a player has enough of an item for a blacksmith
+	 * operation
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
+	public static boolean hasEnoughBlacksmith(Player player, Operation op) {
+		double price = UtilityProperties.getPrice(Operation.getString(
+				op,
+				addendum
+						+ EconomyHandler.materialAddendums[EconomyHandler
+								.getBlacksmithIndex(player.getItemInHand())]));
 
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
@@ -83,10 +116,21 @@ public class ItemInterface {
 				ID, (int) price)));
 	}
 
+	/**
+	 * Get the currency for a blacksmith operation
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
 	public static String getBlacksmithCurrency(Player player, Operation op) {
-		int price = getBlacksmithPrice(player, player.getItemInHand(), op);
-		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
+		ItemStack item = player.getItemInHand();
+		int price = getBlacksmithPrice(player, item, op);
+		int ID = UtilityProperties.getCurrencyID(Operation.getString(
+				op,
+				currencyAddendum
+						+ EconomyHandler.materialAddendums[EconomyHandler
+								.getBlacksmithIndex(item)]));
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
 				ID, price)));
 	}
@@ -232,8 +276,9 @@ public class ItemInterface {
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
 				current = decreaseItemStack(player, currencyID, current, count);
-				if (current <= 0)
+				if (current <= 0) {
 					break;
+				}
 			}
 			count += 1;
 		}
@@ -252,10 +297,15 @@ public class ItemInterface {
 			Operation op) {
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
-		double percentage = ((double) maxDurability - item.getDurability())
-				/ maxDurability;
-		blacksmithPrice = (1.0 - percentage)
-				* UtilityProperties.getPrice(Operation.getString(op, addendum));
+		blacksmithPrice = (maxDurability - (maxDurability - item
+				.getDurability()))
+				* UtilityProperties
+						.getPrice(Operation
+								.getString(
+										op,
+										addendum
+												+ EconomyHandler.materialAddendums[EconomyHandler
+														.getBlacksmithIndex(item)]));
 		if (blacksmithPrice < 1.0) {
 			blacksmithPrice += 1;
 		}

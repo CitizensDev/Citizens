@@ -79,13 +79,29 @@ public class Defaults {
 		nodes.put("prices.blacksmith.creation.item-currency-id", "37");
 		nodes.put("prices.blacksmith.creation.econplugin", "100");
 
-		nodes.put("prices.blacksmith.armorrepair.item", "10");
 		nodes.put("prices.blacksmith.armorrepair.item-currency-id", "37");
-		nodes.put("prices.blacksmith.armorrepair.econplugin", "100");
+		nodes.put("prices.blacksmith.armorrepair.econplugin.leather", "0.25");
+		nodes.put("prices.blacksmith.armorrepair.econplugin.gold", "0.50");
+		nodes.put("prices.blacksmith.armorrepair.econplugin.chainmail", "0.75");
+		nodes.put("prices.blacksmith.armorrepair.econplugin.iron", "1");
+		nodes.put("prices.blacksmith.armorrepair.econplugin.diamond", "1.25");
+		nodes.put("prices.blacksmith.armorrepair.item.leather", "1");
+		nodes.put("prices.blacksmith.armorrepair.item.gold", "2");
+		nodes.put("prices.blacksmith.armorrepair.item.chainmail", "3");
+		nodes.put("prices.blacksmith.armorrepair.item.iron", "4");
+		nodes.put("prices.blacksmith.armorrepair.item.diamond", "5");
 
-		nodes.put("prices.blacksmith.toolrepair.item", "10");
 		nodes.put("prices.blacksmith.toolrepair.item-currency-id", "37");
-		nodes.put("prices.blacksmith.toolrepair.econplugin", "100");
+		nodes.put("prices.blacksmith.toolrepair.econplugin.wood", "0.25");
+		nodes.put("prices.blacksmith.toolrepair.econplugin.gold", "0.50");
+		nodes.put("prices.blacksmith.toolrepair.econplugin.stone", "0.75");
+		nodes.put("prices.blacksmith.toolrepair.econplugin.iron", "1");
+		nodes.put("prices.blacksmith.toolrepair.econplugin.diamond", "1.25");
+		nodes.put("prices.blacksmith.toolrepair.item.wood", "1");
+		nodes.put("prices.blacksmith.toolrepair.item.gold", "2");
+		nodes.put("prices.blacksmith.toolrepair.item.stone", "3");
+		nodes.put("prices.blacksmith.toolrepair.item.iron", "4");
+		nodes.put("prices.blacksmith.toolrepair.item.diamond", "5");
 
 		nodes.put("prices.guard.creation.item", "10");
 		nodes.put("prices.guard.creation.item-currency-id", "37");
@@ -136,14 +152,20 @@ public class Defaults {
 	private static HashMap<String, String> writeMobSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		nodes.put("evil.spawn.spawn", "false");
+		nodes.put("pirates.spawn.spawn", "false");
 		nodes.put("evil.spawn.delay", "200");
+		nodes.put("pirates.spawn.delay", "200");
 		nodes.put("evil.spawn.max", "2");
-		nodes.put("evil.look-range", "25");
-		nodes.put("evil.names", "Herobrine,aPunch,fullwall,Notch,EvilSeph,");
+		nodes.put("pirates.spawn.max", "2");
+		nodes.put("evil.misc.names",
+				"Herobrine,aPunch,fullwall,Notch,EvilSeph,");
+		nodes.put("pirates.misc.names", "Pirate_Pete,Piratebay,Jack_Sparrow,");
 		nodes.put("evil.misc.tame-chance", "5");
 		nodes.put("evil.items.tame-item", "354");
 		nodes.put("evil.misc.failed-tame-messages",
 				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;");
+		nodes.put("pirates.misc.steal-messages",
+				"I stole yer booty.;Aaargh.;I am Captain Jack Sparrow!;");
 		nodes.put("evil.items.drops", "260,357,2256,");
 		return nodes;
 	}

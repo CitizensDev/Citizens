@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -11,6 +12,8 @@ public class EconomyHandler {
 	private static boolean useServerEconomy = false;
 
 	private static String prefix = "prices.";
+	public static String[] materialAddendums = { ".misc", ".wood", ".gold",
+			".stone", ".iron", ".diamond", ".leather", ".chainmail" };
 
 	public enum Operation {
 		/**
@@ -144,9 +147,19 @@ public class EconomyHandler {
 			} else {
 				return ItemInterface.hasEnough(player, op);
 			}
-		} else {
-			return true;
 		}
+		return true;
+	}
+
+	public static boolean canBuyBlacksmith(Player player, Operation op) {
+		if (useEconomy) {
+			if (useIconomy()) {
+				return ServerEconomyInterface.hasEnoughBlacksmith(player, op);
+			} else {
+				return ItemInterface.hasEnoughBlacksmith(player, op);
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -275,15 +288,14 @@ public class EconomyHandler {
 	public static double payBlacksmith(Operation op, Player player) {
 		if (useEconomy) {
 			if (useIconomy()) {
-				return ServerEconomyInterface.payBlacksmithPrice(player,
+				return ServerEconomyInterface.payBlacksmith(player,
 						player.getItemInHand(), op);
 			} else {
 				return ItemInterface.payBlacksmith(player,
 						player.getItemInHand(), op);
 			}
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**
@@ -340,5 +352,36 @@ public class EconomyHandler {
 		} else {
 			return "0";
 		}
+	}
+
+	/**
+	 * Get the index of the material addendums array based on an item ID
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static int getBlacksmithIndex(ItemStack item) {
+		int id = item.getTypeId();
+		if (id == 259 || id == 346) {
+			return 0;
+		} else if ((id >= 268 && id <= 271) || id == 290) {
+			return 1;
+		} else if ((id >= 283 && id <= 286) || id == 294
+				|| (id >= 314 && id <= 317)) {
+			return 2;
+		} else if ((id >= 272 && id <= 275) || id == 291) {
+			return 3;
+		} else if ((id >= 256 && id <= 258) || id == 267 || id == 292
+				|| (id >= 306 && id <= 309)) {
+			return 4;
+		} else if ((id >= 276 && id <= 279) || id == 293
+				|| (id >= 310 && id <= 313)) {
+			return 5;
+		} else if ((id >= 298 && id <= 301)) {
+			return 6;
+		} else if ((id >= 302 && id <= 305)) {
+			return 7;
+		}
+		return 0;
 	}
 }

@@ -88,22 +88,6 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	}
 
 	/**
-	 * Get type of tool
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public String getToolType(ItemStack item) {
-		String type = "";
-		if (validateTool(item)) {
-			type = "tool";
-		} else if (validateArmor(item)) {
-			type = "armor";
-		}
-		return type;
-	}
-
-	/**
 	 * Purchase an item repair
 	 * 
 	 * @param player
@@ -112,7 +96,8 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	 */
 	private void buyItemRepair(Player player, HumanNPC npc, ItemStack item,
 			Operation op) {
-		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
+		if (!EconomyHandler.useEconomy()
+				|| EconomyHandler.canBuyBlacksmith(player, op)) {
 			if (item.getDurability() > 0) {
 				double paid = EconomyHandler.payBlacksmith(op, player);
 				if (paid > 0) {
@@ -135,7 +120,8 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 						+ "Your item is already fully repaired.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			player.sendMessage(ChatColor.RED
+					+ "You do not have enough to repair that.");
 			return;
 		}
 	}
@@ -148,11 +134,9 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			Operation op = null;
-			if (npc.getBlacksmith().getToolType(player.getItemInHand())
-					.equals("tool")) {
+			if (validateTool(player.getItemInHand())) {
 				op = Operation.BLACKSMITH_TOOLREPAIR;
-			} else if (npc.getBlacksmith().getToolType(player.getItemInHand())
-					.equals("armor")) {
+			} else if (validateArmor(player.getItemInHand())) {
 				op = Operation.BLACKSMITH_ARMORREPAIR;
 			}
 			if (op != null) {

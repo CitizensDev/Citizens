@@ -19,8 +19,6 @@ public class EvilCreatureNPC extends CreatureNPC {
 		super(minecraftserver, world, s, iteminworldmanager);
 	}
 
-	private final Integer[] weapons = { 267, 268, 272, 276, 283 };
-
 	@Override
 	public void onSpawn() {
 		npc.getInventory().setItemInHand(

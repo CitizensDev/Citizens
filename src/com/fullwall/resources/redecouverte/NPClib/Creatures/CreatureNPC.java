@@ -12,6 +12,7 @@ import com.fullwall.resources.redecouverte.NPClib.CraftNPC;
 
 public abstract class CreatureNPC extends CraftNPC {
 	protected final double range = 25;
+	protected final Integer[] weapons = { 267, 268, 272, 276, 283 };
 
 	public CreatureNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {

@@ -1,4 +1,4 @@
-package com.fullwall.Citizens.NPCTypes.Evil;
+package com.fullwall.Citizens.NPCTypes.Evils;
 
 import java.util.Random;
 

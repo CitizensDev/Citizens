@@ -37,7 +37,8 @@ public class CreatureTask implements Runnable {
 			Player player = online[new Random().nextInt(online.length)];
 			// TODO - work out best method of getting creature type to spawn
 			// (perhaps randomly?).
-			CreatureNPCType type = CreatureNPCType.EVIL;
+			CreatureNPCType type = CreatureNPCType.values()[new Random()
+					.nextInt(CreatureNPCType.values().length)];
 			if (spawned.get(type) == null) {
 				spawned.put(type, 0);
 			} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
@@ -105,10 +106,15 @@ public class CreatureTask implements Runnable {
 									world.getBlockTypeIdAt(x, y + 1, z))) {
 						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
 							if (spaceEntityFree(world.getChunkAt(x, z), x, y, z)) {
-								return NPCSpawner.spawnBasicHumanNpc(0,
+								HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(0,
 										UtilityProperties.getRandomName(type),
 										loc.getWorld(), x, y, z,
 										random.nextInt(360), 0, type);
+								if (type == CreatureNPCType.PIRATE) {
+									world.spawnBoat(loc).setPassenger(
+											npc.getHandle().getBukkitEntity());
+								}
+								return npc;
 							}
 						}
 					}

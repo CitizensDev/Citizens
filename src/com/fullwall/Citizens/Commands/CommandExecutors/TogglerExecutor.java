@@ -122,18 +122,6 @@ public class TogglerExecutor implements CommandExecutor {
 					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
-			} else if (args[0].equalsIgnoreCase("bandit")) {
-				if (Permission.canCreate(player, "bandit")) {
-					if (!PropertyManager.get("bandit").exists(npc)) {
-						buyState(player, npc.getBandit(),
-								Operation.BANDIT_CREATION);
-					} else {
-						toggleState(player, npc.getBandit());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("all")) {
 				if (args[1].equals("on")) {
 					toggleAll(npc, player, true);
@@ -217,9 +205,6 @@ public class TogglerExecutor implements CommandExecutor {
 			if (!npc.isBlacksmith()) {
 				toggleState(player, npc.getBlacksmith());
 			}
-			if (!npc.isBandit()) {
-				toggleState(player, npc.getBandit());
-			}
 			if (!npc.isGuard()) {
 				toggleState(player, npc.getGuard());
 			}
@@ -238,9 +223,6 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 			if (npc.isBlacksmith()) {
 				toggleState(player, npc.getBlacksmith());
-			}
-			if (npc.isBandit()) {
-				toggleState(player, npc.getBandit());
 			}
 			if (npc.isGuard()) {
 				toggleState(player, npc.getGuard());

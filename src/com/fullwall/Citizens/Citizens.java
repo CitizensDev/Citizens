@@ -15,7 +15,6 @@ import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PlayerListen;
 import com.fullwall.Citizens.Listeners.PluginListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
-import com.fullwall.Citizens.NPCTypes.Bandits.BanditTask;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
@@ -86,10 +85,10 @@ public class Citizens extends JavaPlugin {
 		// Load settings.
 		Constants.setupVariables();
 
-		if (Constants.spawnEvil) {
+		if (Constants.spawnEvils) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new CreatureTask(), Constants.spawnEvilDelay,
-					Constants.spawnEvilDelay);
+					new CreatureTask(), Constants.spawnEvilsDelay,
+					Constants.spawnEvilsDelay);
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new CreatureTask.CreatureTick(), 0, 1);
 		}
@@ -115,8 +114,6 @@ public class Citizens extends JavaPlugin {
 				Constants.tickDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new GuardTask(this), Constants.tickDelay, Constants.tickDelay);
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new BanditTask(this), Constants.tickDelay, Constants.tickDelay);
 		if (Constants.useSaveTask) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {

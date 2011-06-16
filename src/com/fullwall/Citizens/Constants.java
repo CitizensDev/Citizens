@@ -5,20 +5,20 @@ import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
-	public static int banditStealRadius = 5;
 	public static int evilNPCTameItem = 354;
 	public static int evilNPCTameChance = 5;
-	public static int evilLookRange = 25;
 	public static int healerGiveHealthItem = 35;
 	public static int healerHealthRegenIncrement = 12000;
 	public static int healerTakeHealthItem = 276;
-	public static int maxEvilNPCs = 2;
+	public static int maxEvils = 2;
+	public static int maxPirates = 2;
 	public static int maxNPCsPerPlayer = 10;
 	public static int maxStationaryTicks = -1;
 	public static int maxPathingTicks = -1;
 	public static int maxWizardMana = 100;
 	public static int saveDelay = 72000;
-	public static int spawnEvilDelay = 200;
+	public static int spawnEvilsDelay = 200;
+	public static int spawnPiratesDelay = 200;
 	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
@@ -39,8 +39,10 @@ public class Constants {
 	public static String npcColour = "�f";
 	public static String talkItems = "340,";
 	public static String selectItems = "*";
-	public static String defaultEvilNames = "Herobrine,aPunch,fullwall,Notch,EvilSeph,";
+	public static String evilNames = "Herobrine,aPunch,fullwall,Notch,EvilSeph,";
+	public static String pirateNames = "Pirate_Pete,Piratebay,Jack_Sparrow,";
 	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;";
+	public static String pirateStealMessages = "I stole yer booty.;Aaargh.;I am Captain Jack Sparrow!;";
 	public static String evilDrops = "260,357,2256,";
 
 	public static boolean defaultFollowingEnabled = true;
@@ -55,7 +57,8 @@ public class Constants {
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultTalkWhenClose = false;
-	public static boolean spawnEvil = false;
+	public static boolean spawnEvils = false;
+	public static boolean spawnPirates = false;
 	public static boolean useEconplugin = false;
 
 	/**
@@ -94,7 +97,6 @@ public class Constants {
 				.getDouble("range.guards.pathfinding");
 
 		// int defaults
-		banditStealRadius = settings.getInt("range.bandits.steal-radius");
 		healerGiveHealthItem = settings
 				.getInt("items.healers.give-health-item");
 		healerTakeHealthItem = settings
@@ -124,17 +126,21 @@ public class Constants {
 		Storage mobs = UtilityProperties.getMobSettings();
 
 		// Load evils.
-		defaultEvilNames = mobs.getString("evil.names");
+		evilNames = mobs.getString("evil.misc.names");
+		pirateNames = mobs.getString("pirates.misc.names");
 
-		spawnEvil = mobs.getBoolean("evil.spawn.spawn");
+		spawnEvils = mobs.getBoolean("evil.spawn.spawn");
+		spawnPirates = mobs.getBoolean("pirates.spawn.spawn");
 
-		maxEvilNPCs = mobs.getInt("evil.spawn.max");
-		spawnEvilDelay = mobs.getInt("evil.spawn.delay");
-		evilLookRange = mobs.getInt("evil.misc.look-range");
+		maxEvils = mobs.getInt("evil.spawn.max");
+		maxPirates = mobs.getInt("pirates.spawn.max");
+		spawnEvilsDelay = mobs.getInt("evil.spawn.delay");
+		spawnPiratesDelay = mobs.getInt("pirates.spawn.delay");
 		evilNPCTameItem = mobs.getInt("evil.items.tame-item");
 		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");
 		failureToTameMessages = mobs
 				.getString("evil.misc.failed-tame-messages");
+		pirateStealMessages = mobs.getString("pirates.misc.steal-messages");
 		evilDrops = mobs.getString("evil.items.drops");
 	}
 }

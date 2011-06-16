@@ -119,6 +119,22 @@ public class ServerEconomyInterface {
 	}
 
 	/**
+	 * Checks whether a player has enough for a blacksmith operation
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
+	public static boolean hasEnoughBlacksmith(Player player, Operation op) {
+		double price = UtilityProperties.getPrice(Operation.getString(
+				op,
+				addendum
+						+ EconomyHandler.materialAddendums[EconomyHandler
+								.getBlacksmithIndex(player.getItemInHand())]));
+		return playerHasEnough(player.getName(), price);
+	}
+
+	/**
 	 * Pays for an operation using the player's money.
 	 * 
 	 * @param player
@@ -205,14 +221,18 @@ public class ServerEconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmithPrice(Player player, ItemStack item,
+	public static double payBlacksmith(Player player, ItemStack item,
 			Operation op) {
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
-		double percentage = ((double) maxDurability - item.getDurability())
-				/ (double) maxDurability;
-		double price = (1.0 - percentage)
-				* UtilityProperties.getPrice(Operation.getString(op, addendum));
+		double price = (maxDurability - (maxDurability - item.getDurability()))
+				* UtilityProperties
+						.getPrice(Operation
+								.getString(
+										op,
+										addendum
+												+ EconomyHandler.materialAddendums[EconomyHandler
+														.getBlacksmithIndex(item)]));
 		subtract(player.getName(), price);
 		return price;
 	}

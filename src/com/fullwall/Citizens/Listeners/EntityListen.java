@@ -126,9 +126,6 @@ public class EntityListen extends EntityListener implements Listener {
 				if (npc.isBlacksmith()) {
 					npc.getBlacksmith().onRightClick(player, npc);
 				}
-				if (npc.isBandit()) {
-					npc.getBandit().onRightClick(player, npc);
-				}
 				if (npc.isQuester()) {
 					npc.getQuester().onRightClick(player, npc);
 				}

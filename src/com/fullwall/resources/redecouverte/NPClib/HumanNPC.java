@@ -7,11 +7,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.fullwall.Citizens.NPCTypes.Bandits.BanditNPC;
 import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
-import com.fullwall.Citizens.NPCTypes.Evil.EvilNPC;
+import com.fullwall.Citizens.NPCTypes.Evils.EvilNPC;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerNPC;
+import com.fullwall.Citizens.NPCTypes.Pirates.PirateNPC;
 import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
@@ -28,18 +28,18 @@ public class HumanNPC extends NPC {
 	private boolean isWizard = false;
 	private boolean isBlacksmith = false;
 	private boolean isQuester = false;
-	private boolean isBandit = false;
 	private boolean isGuard = false;
 	private boolean isEvil = true;
+	private boolean isPirate = true;
 
 	private final TraderNPC traderNPC = new TraderNPC(this);
 	private final HealerNPC healerNPC = new HealerNPC(this);
 	private final WizardNPC wizardNPC = new WizardNPC(this);
 	private final BlacksmithNPC blacksmithNPC = new BlacksmithNPC(this);
 	private final QuesterNPC questerNPC = new QuesterNPC(this);
-	private final BanditNPC banditNPC = new BanditNPC(this);
 	private final GuardNPC guardNPC = new GuardNPC(this);
 	private final EvilNPC evilNPC = new EvilNPC(this);
+	private final PirateNPC pirateNPC = new PirateNPC(this);
 	private NPCData npcdata;
 
 	@SuppressWarnings("unused")
@@ -83,16 +83,16 @@ public class HumanNPC extends NPC {
 		return this.questerNPC;
 	}
 
-	public BanditNPC getBandit() {
-		return this.banditNPC;
-	}
-
 	public GuardNPC getGuard() {
 		return this.guardNPC;
 	}
 
 	public EvilNPC getEvil() {
 		return this.evilNPC;
+	}
+
+	public PirateNPC getPirate() {
+		return this.pirateNPC;
 	}
 
 	protected CraftNPC getMCEntity() {
@@ -139,14 +139,6 @@ public class HumanNPC extends NPC {
 		return this.isQuester;
 	}
 
-	public void setBandit(boolean enable) {
-		this.isBandit = enable;
-	}
-
-	public boolean isBandit() {
-		return this.isBandit;
-	}
-
 	public void setGuard(boolean enable) {
 		this.isGuard = enable;
 	}
@@ -161,6 +153,14 @@ public class HumanNPC extends NPC {
 
 	public boolean isEvil() {
 		return this.isEvil;
+	}
+
+	public void setPirate(boolean enable) {
+		this.isPirate = enable;
+	}
+
+	public boolean isPirate() {
+		return this.isPirate;
 	}
 
 	public void teleport(double x, double y, double z, float yaw, float pitch) {
