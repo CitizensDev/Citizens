@@ -186,10 +186,9 @@ public class BasicExecutor implements CommandExecutor {
 
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("tp")) {
 			if (npc != null) {
-				if (Permission.canUse(player, npc, "basic")) {
+				if (Permission.isAdmin(player)) {
 					player.teleport(npc.getNPCData().getLocation());
-					sender.sendMessage(ChatColor.GREEN
-							+ "Teleported you to the NPC named "
+					sender.sendMessage(ChatColor.GREEN + "Teleported you to "
 							+ StringUtils.wrap(npc.getStrippedName())
 							+ ". Enjoy!");
 				} else {

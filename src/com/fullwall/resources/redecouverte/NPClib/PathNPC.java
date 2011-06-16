@@ -2,7 +2,6 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
@@ -55,15 +54,16 @@ public class PathNPC extends EntityPlayer {
 		updateTarget();
 		updatePathingState();
 		if (this.pathEntity != null) {
-			Vec3D vector = getVector();
+			Vec3D vector = getPathVector();
 			if (vector != null) {
 				handleMove(vector);
 			}
+			this.Q(); // Update entity
 		} else {
+			this.Q(); // Update entity
 			super.c_();
 			this.pathEntity = null;
 		}
-		this.Q(); // Update entity
 	}
 
 	private void handleMove(Vec3D vector) {
@@ -81,7 +81,7 @@ public class PathNPC extends EntityPlayer {
 				jumping = true;
 			}
 			// Walk.
-			move();
+			moveOnCurrentHeading();
 		}
 		if (this.positionChanged && !this.pathFinished()) {
 			jumping = true;
@@ -112,7 +112,7 @@ public class PathNPC extends EntityPlayer {
 		return diffYaw;
 	}
 
-	private Vec3D getVector() {
+	private Vec3D getPathVector() {
 		Vec3D vec3d = pathEntity.a(this);
 		double length = (this.length * 1.9F);
 		// 2.0 -> 1.9 - closer to destination before stopping.
@@ -148,9 +148,9 @@ public class PathNPC extends EntityPlayer {
 				// If a direct line of sight exists.
 				if (this.e(this.target)) {
 					// In range?
-					if (withinAttackRange(this.target, distanceToEntity)) {
+					if (isWithinAttackRange(this.target, distanceToEntity)) {
 						// Attack.
-						this.damageEntity(this.target);
+						this.attackEntity(this.target);
 					}
 				}
 			}
@@ -175,7 +175,7 @@ public class PathNPC extends EntityPlayer {
 		prevZ = loc.getBlockZ();
 	}
 
-	private void move() {
+	private void moveOnCurrentHeading() {
 		this.a(this.az, this.aA);
 	}
 
@@ -220,15 +220,15 @@ public class PathNPC extends EntityPlayer {
 		reset();
 	}
 
-	private boolean holdingBow() {
+	private boolean isHoldingBow() {
 		return this.inventory.items[this.inventory.itemInHandIndex] != null
 				&& this.inventory.items[this.inventory.itemInHandIndex].id == 261;
 	}
 
-	private boolean withinAttackRange(Entity entity, float distance) {
+	private boolean isWithinAttackRange(Entity entity, float distance) {
 		// Bow distance from EntitySkeleton.
 		// Other from EntityCreature.
-		if ((holdingBow() && distance < 10)
+		if ((isHoldingBow() && distance < 10)
 				|| (this.attackTicks <= 0 && distance < 1.5F
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)) {
 			return true;
@@ -236,8 +236,9 @@ public class PathNPC extends EntityPlayer {
 		return false;
 	}
 
-	private void attackEntity(EntityLiving entity) {
-		if (holdingBow()) {
+	private void attackEntity(Entity entity) {
+		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
+		if (isHoldingBow()) {
 			// Code from EntitySkeleton.
 			double distX = entity.locX - this.locX;
 			double distZ = entity.locZ - this.locZ;
@@ -255,11 +256,6 @@ public class PathNPC extends EntityPlayer {
 		}
 		hasAttacked = true;
 		incrementAttackTimes();
-	}
-
-	private void damageEntity(Entity entity) {
-		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
-		this.attackEntity((EntityLiving) entity);
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
@@ -302,13 +298,13 @@ public class PathNPC extends EntityPlayer {
 		}
 	}
 
-	public EntityHuman findClosestPlayer(double range) {
+	public EntityHuman getClosestPlayer(double range) {
 		EntityHuman entityhuman = this.world.a(this, range);
 		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
 	}
 
 	public void targetClosestPlayer(boolean aggro, double range) {
-		this.target = this.findClosestPlayer(range);
+		this.target = this.getClosestPlayer(range);
 		this.targetAggro = aggro;
 	}
 

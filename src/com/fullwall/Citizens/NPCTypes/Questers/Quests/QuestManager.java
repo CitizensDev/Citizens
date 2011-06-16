@@ -54,7 +54,7 @@ public class QuestManager {
 
 		public static QuestType getType(String string) {
 			QuestType result = null;
-			String filtered = string.toUpperCase();
+			String filtered = string.trim().toUpperCase();
 			filtered = filtered.replaceAll("\\s+", "_").replaceAll("\\W", "");
 			result = lookupNames.get(filtered);
 			return result;

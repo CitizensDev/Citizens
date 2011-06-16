@@ -28,13 +28,14 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onSpawn() {
+		// perhaps it should create a boat for itself then get in.
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
 	}
-	
+
 	@Override
 	public void doTick() {
-		//findShore();
+		// findShore();
 	}
 
 	@Override
@@ -47,7 +48,6 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onDamage(EntityDamageEvent event) {
-
 	}
 
 	@Override

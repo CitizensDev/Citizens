@@ -147,7 +147,7 @@ public class NPCManager {
 	 * @return
 	 */
 	public static HumanNPC get(Entity entity) {
-		return list.getBasicHumanNpc(entity);
+		return list.getNPC(entity);
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean isNPC(Entity entity) {
-		return list.getBasicHumanNpc(entity) != null;
+		return list.getNPC(entity) != null;
 	}
 
 	/**

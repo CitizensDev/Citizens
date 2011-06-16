@@ -29,7 +29,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void doTick() {
 		if (!this.npc.getEvil().isTame()) {
-			if (!hasTarget() && findClosestPlayer(this.range) != null) {
+			if (!hasTarget() && getClosestPlayer(this.range) != null) {
 				targetClosestPlayer(true, this.range);
 			}
 			super.doTick();

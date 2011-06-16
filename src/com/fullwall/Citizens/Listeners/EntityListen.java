@@ -101,11 +101,10 @@ public class EntityListen extends EntityListener implements Listener {
 					if (!NPCManager.validateSelected(player, npc.getUID())) {
 						NPCManager.selectedNPCs.put(player.getName(),
 								npc.getUID());
-						player.sendMessage(ChatColor.GREEN
-								+ "You selected NPC "
+						player.sendMessage(ChatColor.GREEN + "You selected "
 								+ StringUtils.wrap(npc.getStrippedName())
-								+ ", ID " + StringUtils.wrap("" + npc.getUID())
-								+ ".");
+								+ " (ID " + StringUtils.wrap(npc.getUID())
+								+ ").");
 						return;
 					}
 				}

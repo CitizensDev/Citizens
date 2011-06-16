@@ -10,10 +10,10 @@ import com.fullwall.Citizens.Utils.Messaging;
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 
 	public boolean containsBukkitEntity(Entity entity) {
-		return getBasicHumanNpc(entity) != null;
+		return getNPC(entity) != null;
 	}
 
-	public HumanNPC getBasicHumanNpc(Entity entity) {
+	public HumanNPC getNPC(Entity entity) {
 		if (entity == null) {
 			return null;
 		}
