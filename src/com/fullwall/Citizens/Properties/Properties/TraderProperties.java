@@ -9,36 +9,41 @@ import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCTypes.Traders.Check;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
-import com.fullwall.Citizens.Properties.PropertyHandler;
-import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class TraderProperties extends Saveable {
-	private final PropertyHandler traders = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.traders");
-	private final PropertyHandler stocking = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.stocking");
-	private final PropertyHandler unlimiteds = new PropertyHandler(
-			"plugins/Citizens/Traders/Citizens.unlimited");
+public class TraderProperties extends PropertyManager implements Saveable {
+	private final String isTrader = ".trader.toggle";
+	private final String stock = ".trader.stock";
+	private final String unlimited = ".trader.unlimited";
+	private final String balance = ".trader.balance";
 
-	private void saveUnlimited(int UID, boolean unlimited) {
-		unlimiteds.setBoolean(UID, unlimited);
+	private void saveBalance(int UID, double traderBalance) {
+		profiles.setDouble(UID + balance, traderBalance);
+	}
+
+	private double getBalance(int UID) {
+		return profiles.getDouble(UID + balance);
+	}
+
+	private void saveUnlimited(int UID, boolean value) {
+		profiles.setBoolean(UID + unlimited, value);
 	}
 
 	private boolean getUnlimited(int UID) {
-		return unlimiteds.getBoolean(UID);
+		return profiles.getBoolean(UID + unlimited);
 	}
 
 	private void setStockables(int UID, String set) {
-		stocking.setString(UID, set);
+		profiles.setString(UID + stock, set);
 	}
 
 	@SuppressWarnings("unused")
 	private void removeStockable(int UID, Stockable s) {
 		String write = "";
 		write += s.toString() + ";";
-		String read = stocking.getString(UID).replace(write, "");
-		stocking.setString(UID, read);
+		String read = profiles.getString(UID + stock).replace(write, "");
+		profiles.setString(UID + stock, read);
 	}
 
 	private void saveStockables(int UID,
@@ -57,7 +62,7 @@ public class TraderProperties extends Saveable {
 	private ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
 		ConcurrentHashMap<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
 		int i = 0;
-		for (String s : stocking.getString(UID).split(";")) {
+		for (String s : profiles.getString(UID + stock).split(";")) {
 			if (s.isEmpty()) {
 				continue;
 			}
@@ -109,34 +114,22 @@ public class TraderProperties extends Saveable {
 	}
 
 	@Override
-	public void saveFiles() {
-		traders.save();
-		stocking.save();
-		unlimiteds.save();
-	}
-
-	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isTrader());
 			saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
 			saveStockables(npc.getUID(), npc.getTrader().getStocking());
+			saveBalance(npc.getUID(), npc.getBalance());
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
+		npc.setBalance(getBalance(npc.getUID()));
 		npc.setTrader(getEnabled(npc));
 		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
 		npc.getTrader().setStocking(getStockables(npc.getUID()));
 		saveState(npc);
-	}
-
-	@Override
-	public void removeFromFiles(HumanNPC npc) {
-		traders.removeKey(npc.getUID());
-		stocking.removeKey(npc.getUID());
-		unlimiteds.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -146,17 +139,12 @@ public class TraderProperties extends Saveable {
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		traders.setBoolean(npc.getUID(), value);
+		profiles.setBoolean(npc.getUID() + isTrader, value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return traders.getBoolean(npc.getUID());
-	}
-
-	@Override
-	public boolean exists(HumanNPC npc) {
-		return traders.keyExists(npc.getUID());
+		return profiles.getBoolean(npc.getUID() + isTrader);
 	}
 
 	@Override
@@ -166,14 +154,19 @@ public class TraderProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (traders.keyExists(UID)) {
-			traders.setString(nextUID, traders.getString(UID));
+		if (profiles.pathExists(UID + isTrader)) {
+			profiles.setString(nextUID + isTrader,
+					profiles.getString(UID + isTrader));
 		}
-		if (stocking.keyExists(UID)) {
-			stocking.setString(nextUID, stocking.getString(UID));
+		if (profiles.pathExists(UID + stock)) {
+			profiles.setString(nextUID + stock, profiles.getString(UID + stock));
 		}
-		if (unlimiteds.keyExists(UID)) {
-			unlimiteds.setString(nextUID, unlimiteds.getString(UID));
+		if (profiles.pathExists(UID + unlimited)) {
+			profiles.setString(nextUID + unlimited,
+					profiles.getString(UID + unlimited));
+		}
+		if (profiles.pathExists(UID + balance)) {
+			profiles.setString(nextUID + balance, UID + balance);
 		}
 	}
 }

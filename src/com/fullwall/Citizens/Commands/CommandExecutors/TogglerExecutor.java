@@ -52,7 +52,7 @@ public class TogglerExecutor implements CommandExecutor {
 		} else {
 			if (args[0].equalsIgnoreCase("trader")) {
 				if (Permission.canCreate(player, "trader")) {
-					if (!PropertyManager.get("trader").exists(npc)) {
+					if (!PropertyManager.typeExists(npc, "trader")) {
 						buyState(player, npc.getTrader(),
 								Operation.TRADER_CREATION);
 					} else {
@@ -64,7 +64,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("quester")) {
 				if (Permission.canCreate(player, "quester")) {
-					if (!PropertyManager.get("quester").exists(npc)) {
+					if (!PropertyManager.typeExists(npc, "quester")) {
 						buyState(player, npc.getQuester(),
 								Operation.QUESTER_CREATION);
 					} else {
@@ -76,7 +76,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("healer")) {
 				if (Permission.canCreate(player, "healer")) {
-					if (!PropertyManager.get("healer").exists(npc)) {
+					if (!PropertyManager.typeExists(npc, "healer")) {
 						buyState(player, npc.getHealer(),
 								Operation.HEALER_CREATION);
 					} else {
@@ -88,7 +88,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("guard")) {
 				if (Permission.canCreate(player, "guard")) {
-					if (!PropertyManager.get("guard").exists(npc)) {
+					if (!PropertyManager.typeExists(npc, "guard")) {
 						buyState(player, npc.getGuard(),
 								Operation.GUARD_CREATION);
 					} else {
@@ -100,7 +100,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("wizard")) {
 				if (Permission.canCreate(player, "wizard")) {
-					if (!PropertyManager.get("wizard").exists(npc)) {
+					if (!PropertyManager.typeExists(npc, "wizard")) {
 						buyState(player, npc.getWizard(),
 								Operation.WIZARD_CREATION);
 					} else {
@@ -112,7 +112,7 @@ public class TogglerExecutor implements CommandExecutor {
 				returnval = true;
 			} else if (args[0].equalsIgnoreCase("blacksmith")) {
 				if (Permission.canCreate(player, "blacksmith")) {
-					if (!PropertyManager.get("blacksmith").exists(npc)) {
+					if (!PropertyManager.typeExists(npc, "blacksmith")) {
 						buyState(player, npc.getBlacksmith(),
 								Operation.BLACKSMITH_CREATION);
 					} else {

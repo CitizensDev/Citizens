@@ -29,4 +29,23 @@ public class HealerTask implements Runnable {
 			}
 		}
 	}
+
+	/**
+	 * Get the health regeneration rate for a healer based on its level
+	 * 
+	 * @return
+	 */
+	public static int getHealthRegenRate() {
+		int delay = 0;
+		if (!NPCManager.getList().isEmpty()) {
+			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
+					.entrySet()) {
+				delay = Constants.healerHealthRegenIncrement
+						* (11 - (entry.getValue().getHealer().getLevel()));
+			}
+		} else {
+			delay = 12000;
+		}
+		return delay;
+	}
 }

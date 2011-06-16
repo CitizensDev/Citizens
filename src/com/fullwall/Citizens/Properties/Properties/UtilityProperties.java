@@ -32,6 +32,10 @@ public class UtilityProperties {
 		return economy;
 	}
 
+	public static Storage getMobSettings() {
+		return mobs;
+	}
+
 	public static double getPrice(String operation) {
 		return economy.getDouble(operation);
 	}
@@ -56,9 +60,5 @@ public class UtilityProperties {
 			}
 		}
 		return null;
-	}
-
-	public static Storage getMobSettings() {
-		return mobs;
 	}
 }

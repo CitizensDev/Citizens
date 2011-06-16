@@ -2,7 +2,6 @@ package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.ChatColor;
@@ -36,13 +35,11 @@ public class NPCManager {
 	/**
 	 * Spawns a new npc and registers it.
 	 * 
-	 * @param name
 	 * @param UID
 	 * @param owner
 	 */
 	public static void register(int UID, String owner) {
 		Location loc = PropertyManager.getBasic().getLocation(UID);
-		// String uniqueID = generateID(NPCType.BASIC);
 
 		int colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
@@ -70,6 +67,7 @@ public class NPCManager {
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, NPCTexts
 				.get(UID), PropertyManager.getBasic().getLookWhenClose(UID),
 				PropertyManager.getBasic().getTalkWhenClose(UID), owner));
+		PropertyManager.getBasic().setOwner(UID, owner);
 		PropertyManager.load(npc);
 
 		registerUID(UID, name);
@@ -90,11 +88,12 @@ public class NPCManager {
 	 */
 	public static int register(String name, Location loc, String owner) {
 		int UID = PropertyManager.getBasic().getNewNpcID();
-		PropertyManager.getBasic().saveLocation(name, loc, UID);
+		PropertyManager.getBasic().saveLocation(loc, UID);
 		PropertyManager.getBasic().saveLookWhenClose(UID,
 				Constants.defaultFollowingEnabled);
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
 				Constants.defaultTalkWhenClose);
+		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner);
 		return UID;
 	}
@@ -233,21 +232,6 @@ public class NPCManager {
 	 */
 	private static void registerUID(int UID, String name) {
 		GlobalUIDs.put(UID, name);
-	}
-
-	@SuppressWarnings("unused")
-	private int generateUID() {
-		boolean found = false;
-		// Change this to an integer return?
-		int UID = 0;
-		while (!found) {
-			UID = new Random().nextInt();
-			if (!GlobalUIDs.containsKey(UID)) {
-				found = true;
-				break;
-			}
-		}
-		return UID;
 	}
 
 	/**

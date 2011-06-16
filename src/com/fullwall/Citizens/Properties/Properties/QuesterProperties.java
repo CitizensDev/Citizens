@@ -1,20 +1,12 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
-import com.fullwall.Citizens.Properties.PropertyHandler;
-import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class QuesterProperties extends Saveable {
-	private final PropertyHandler questers = new PropertyHandler(
-			"plugins/Citizens/Questers/questers.citizens");
-	private final PropertyHandler quests = new PropertyHandler(
-			"plugins/Citizens/Questers/quests.citizens");
-
-	@Override
-	public void saveFiles() {
-		questers.save();
-	}
+public class QuesterProperties extends PropertyManager implements Saveable {
+	private static final String isQuester = ".quester.toggle";
+	private static final String quests = ".quester.quests";
 
 	@Override
 	public void saveState(HumanNPC npc) {
@@ -29,25 +21,25 @@ public class QuesterProperties extends Saveable {
 		for (String quest : npc.getQuester().getQuests()) {
 			write = write + quest + ";";
 		}
-		quests.setString(npc.getUID(), write);
+		profiles.setString(npc.getUID() + quests, write);
 	}
 
-	private void loadQuests(HumanNPC npc) {
-		for (String quest : quests.getString(npc.getUID()).split(";")) {
-			npc.getQuester().addQuest(quest);
+	private String getQuests(HumanNPC npc) {
+		if (profiles.pathExists(npc.getUID() + quests)) {
+			for (String quest : profiles.getString(npc.getUID() + quests)
+					.split(";")) {
+				npc.getQuester().addQuest(quest);
+			}
+			return profiles.getString(npc.getUID() + quests);
 		}
+		return "";
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setQuester(getEnabled(npc));
-		loadQuests(npc);
+		getQuests(npc);
 		saveState(npc);
-	}
-
-	@Override
-	public void removeFromFiles(HumanNPC npc) {
-		questers.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -57,17 +49,12 @@ public class QuesterProperties extends Saveable {
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		questers.setBoolean(npc.getUID(), value);
+		profiles.setBoolean(npc.getUID() + isQuester, value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return questers.getBoolean(npc.getUID());
-	}
-
-	@Override
-	public boolean exists(HumanNPC npc) {
-		return questers.keyExists(npc.getUID());
+		return profiles.getBoolean(npc.getUID() + isQuester);
 	}
 
 	@Override
@@ -77,8 +64,13 @@ public class QuesterProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (questers.keyExists(UID)) {
-			questers.setString(nextUID, questers.getString(UID));
+		if (profiles.pathExists(UID + isQuester)) {
+			profiles.setString(nextUID + isQuester,
+					profiles.getString(UID + isQuester));
+		}
+		if (profiles.pathExists(UID + quests)) {
+			profiles.setString(nextUID + quests,
+					profiles.getString(UID + quests));
 		}
 	}
 }

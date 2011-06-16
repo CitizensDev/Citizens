@@ -6,50 +6,44 @@ import java.util.List;
 import com.fullwall.Citizens.Enums.GuardType;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Saveable;
-import com.fullwall.Citizens.Properties.PropertyHandler;
-import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class GuardProperties extends Saveable {
-	private final PropertyHandler guards = new PropertyHandler(
-			"plugins/Citizens/Guards/guards.citizens");
-	private final PropertyHandler guardTypes = new PropertyHandler(
-			"plugins/Citizens/Guards/guardtypes.citizens");
-	private final PropertyHandler radius = new PropertyHandler(
-			"plugins/Citizens/Guards/Bouncers/radius.citizens");
-	private final PropertyHandler blacklist = new PropertyHandler(
-			"plugins/Citizens/Guards/blacklist.citizens");
-	private final PropertyHandler whitelist = new PropertyHandler(
-			"plugins/Citizens/Guards/whitelist.citizens");
-	private final PropertyHandler aggressive = new PropertyHandler(
-			"plugins/Citizens/Guards/Bodyguards/aggressive.citizens");
+public class GuardProperties extends PropertyManager implements Saveable {
+	private static final String isGuard = ".guard.toggle";
+	private static final String type = ".guard.type";
+	private static final String radius = ".guard.radius";
+	private static final String blacklist = ".guard.blacklist";
+	private static final String whitelist = ".guard.whitelist";
+	private static final String aggressive = ".guard.aggressive";
+
+	private void saveProtectionRadius(int UID, double rad) {
+		profiles.setDouble(UID + radius, rad);
+	}
 
 	private double getProtectionRadius(int UID) {
-		return radius.getDouble(UID, Constants.defaultBouncerProtectionRadius);
+		return profiles.getDouble(UID + radius,
+				Constants.defaultBouncerProtectionRadius);
 	}
 
 	private void saveAggressive(int UID, boolean aggro) {
-		aggressive.setBoolean(UID, aggro);
+		profiles.setBoolean(UID + aggressive, aggro);
 	}
 
 	private boolean getAggressive(int UID) {
-		return aggressive.getBoolean(UID);
-	}
-
-	private void saveProtectionRadius(int UID, double rad) {
-		radius.setDouble(UID, rad);
+		return profiles.getBoolean(UID + aggressive);
 	}
 
 	private GuardType getGuardType(int UID) {
-		return GuardType.parse(guardTypes.getString(UID));
+		return GuardType.parse(profiles.getString(UID + type));
 	}
 
 	private void saveGuardType(int UID, GuardType guardType) {
-		guardTypes.setString(UID, guardType.toString().toLowerCase());
+		profiles.setString(UID + type, guardType.toString().toLowerCase());
 	}
 
 	private List<String> getBlacklist(int UID) {
-		String save = blacklist.getString(UID);
+		String save = profiles.getString(UID + blacklist);
 		List<String> mobs = new ArrayList<String>();
 		for (String s : save.split(",")) {
 			mobs.add(s);
@@ -62,11 +56,11 @@ public class GuardProperties extends Saveable {
 		for (int x = 0; x < mobs.size(); x++) {
 			save += mobs.get(x) + ",";
 		}
-		blacklist.setString(UID, save);
+		profiles.setString(UID + blacklist, save);
 	}
 
 	private List<String> getWhitelist(int UID) {
-		String save = whitelist.getString(UID);
+		String save = profiles.getString(UID + whitelist);
 		List<String> players = new ArrayList<String>();
 		for (String s : save.split(",")) {
 			players.add(s);
@@ -79,17 +73,7 @@ public class GuardProperties extends Saveable {
 		for (int x = 0; x < players.size(); x++) {
 			save += players.get(x) + ",";
 		}
-		whitelist.setString(UID, save);
-	}
-
-	@Override
-	public void saveFiles() {
-		guards.save();
-		guardTypes.save();
-		blacklist.save();
-		whitelist.save();
-		radius.save();
-		aggressive.save();
+		profiles.setString(UID + whitelist, save);
 	}
 
 	@Override
@@ -117,33 +101,18 @@ public class GuardProperties extends Saveable {
 	}
 
 	@Override
-	public void removeFromFiles(HumanNPC npc) {
-		guards.removeKey(npc.getUID());
-		guardTypes.removeKey(npc.getUID());
-		blacklist.removeKey(npc.getUID());
-		whitelist.removeKey(npc.getUID());
-		radius.removeKey(npc.getUID());
-		aggressive.removeKey(npc.getUID());
-	}
-
-	@Override
 	public void register(HumanNPC npc) {
 		setEnabled(npc, true);
 	}
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		guards.setBoolean(npc.getUID(), value);
+		profiles.setBoolean(npc.getUID() + isGuard, value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return guards.getBoolean(npc.getUID());
-	}
-
-	@Override
-	public boolean exists(HumanNPC npc) {
-		return guards.keyExists(npc.getUID());
+		return profiles.getBoolean(npc.getUID() + isGuard);
 	}
 
 	@Override
@@ -153,23 +122,28 @@ public class GuardProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (guards.keyExists(UID)) {
-			guards.setString(nextUID, guards.getString(UID));
+		if (profiles.pathExists(UID + isGuard)) {
+			profiles.setString(nextUID + isGuard,
+					profiles.getString(UID + isGuard));
 		}
-		if (guardTypes.keyExists(UID)) {
-			guards.setString(nextUID, guards.getString(UID));
+		if (profiles.pathExists(UID + type)) {
+			profiles.setString(nextUID + type, profiles.getString(UID + type));
 		}
-		if (blacklist.keyExists(UID)) {
-			blacklist.setString(nextUID, blacklist.getString(UID));
+		if (profiles.pathExists(UID + blacklist)) {
+			profiles.setString(nextUID + blacklist,
+					profiles.getString(UID + blacklist));
 		}
-		if (whitelist.keyExists(UID)) {
-			whitelist.setString(nextUID, whitelist.getString(UID));
+		if (profiles.pathExists(UID + whitelist)) {
+			profiles.setString(nextUID + whitelist,
+					profiles.getString(UID + whitelist));
 		}
-		if (radius.keyExists(UID)) {
-			radius.setString(nextUID, radius.getString(UID));
+		if (profiles.pathExists(UID + radius)) {
+			profiles.setString(nextUID + radius,
+					profiles.getString(UID + radius));
 		}
-		if (aggressive.keyExists(UID)) {
-			aggressive.setString(nextUID, aggressive.getString(UID));
+		if (profiles.pathExists(UID + aggressive)) {
+			profiles.setString(nextUID + aggressive,
+					profiles.getString(UID + aggressive));
 		}
 	}
 }

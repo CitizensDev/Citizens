@@ -2,83 +2,77 @@ package com.fullwall.Citizens.Properties.Properties;
 
 import org.bukkit.entity.CreatureType;
 
-import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
 import com.fullwall.Citizens.Interfaces.Saveable;
-import com.fullwall.Citizens.Properties.PropertyHandler;
-import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class WizardProperties extends Saveable {
-	private final PropertyHandler wizards = new PropertyHandler(
-			"plugins/Citizens/Wizards/Citizens.wizards");
-	private final PropertyHandler locations = new PropertyHandler(
-			"plugins/Citizens/Wizards/Citizens.locations");
-	private final PropertyHandler mana = new PropertyHandler(
-			"plugins/Citizens/Wizards/mana.citizens");
-	private final PropertyHandler mode = new PropertyHandler(
-			"plugins/Citizens/Wizards/mode.citizens");
-	private final PropertyHandler time = new PropertyHandler(
-			"plugins/Citizens/Wizards/time.citizens");
-	private final PropertyHandler mob = new PropertyHandler(
-			"plugins/Citizens/Wizards/mob.citizens");
+public class WizardProperties extends PropertyManager implements Saveable {
+	private static final String isWizard = ".wizard.toggle";
+	private static final String locations = ".wizard.locations";
+	private static final String mana = ".wizard.mana";
+	private static final String mode = ".wizard.mode";
+	private static final String time = ".wizard.time";
+	private static final String mob = ".wizard.mob";
 
-	private void saveLocations(int UID, String locationString) {
-		locations.setString(UID, locationString.replace(")(", "):("));
+	public static void setEnabled(int UID, boolean enabled) {
+		profiles.setBoolean(UID + isWizard, enabled);
 	}
 
-	private String getLocations(int UID) {
-		return locations.getString(UID).replace(")(", "):(");
+	public static boolean getEnabled(int UID) {
+		return profiles.getBoolean(UID + isWizard);
 	}
 
-	private void saveMana(int UID, int manaLevel) {
-		mana.setInt(UID, manaLevel);
+	public static void saveLocations(int UID, String locationString) {
+		profiles.setString(UID + locations, locationString.replace(")(", "):("));
 	}
 
-	private int getMana(int UID) {
-		return mana.getInt(UID);
+	public static String getLocations(int UID) {
+		return profiles.getString(UID + locations).replace(")(", "):(");
 	}
 
-	private void saveMode(int UID, WizardMode wizardMode) {
-		mode.setString(UID, wizardMode.toString());
+	public static void saveMana(int UID, int manaLevel) {
+		profiles.setInt(UID + mana, manaLevel);
 	}
 
-	private WizardMode getMode(int UID) {
-		return WizardMode.parse(mode.getString(UID));
+	public static int getMana(int UID) {
+		return profiles.getInt(UID + mana, 10);
 	}
 
-	private void saveTime(int UID, String worldTime) {
-		time.setString(UID, worldTime);
+	public static void saveMode(int UID, WizardMode wizardMode) {
+		profiles.setString(UID + mode, wizardMode.toString());
 	}
 
-	private String getTime(int UID) {
-		return time.getString(UID);
+	public static WizardMode getMode(int UID) {
+		if (profiles.pathExists(UID + mode)) {
+			return WizardMode.parse(profiles.getString(UID + mode));
+		}
+		return WizardMode.TELEPORT;
 	}
 
-	private void saveMob(int UID, CreatureType type) {
-		mob.setString(UID, type.getName());
+	public static void saveTime(int UID, String worldTime) {
+		profiles.setString(UID + time, worldTime);
 	}
 
-	private CreatureType getMob(int UID) {
-		if (CreatureType.fromName(mob.getString(UID)) != null) {
-			return CreatureType.fromName(mob.getString(UID));
+	public static String getTime(int UID) {
+		return profiles.getString(UID + time, "morning");
+	}
+
+	public static void saveMob(int UID, CreatureType type) {
+		profiles.setString(UID + mob, type.getName());
+	}
+
+	public static CreatureType getMob(int UID) {
+		if (CreatureType.fromName(profiles.getString(UID + mob)) != null) {
+			return CreatureType.fromName(profiles.getString(UID + mob));
 		}
 		return CreatureType.CREEPER;
 	}
 
 	@Override
-	public void saveFiles() {
-		wizards.save();
-		locations.save();
-		mana.save();
-		mode.save();
-		time.save();
-		mob.save();
-	}
-
-	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isWizard());
+			setEnabled(npc.getUID(), npc.isWizard());
 			saveLocations(npc.getUID(), npc.getWizard().getLocations());
 			saveMana(npc.getUID(), npc.getWizard().getMana());
 			saveMode(npc.getUID(), npc.getWizard().getMode());
@@ -99,33 +93,18 @@ public class WizardProperties extends Saveable {
 	}
 
 	@Override
-	public void removeFromFiles(HumanNPC npc) {
-		wizards.removeKey(npc.getUID());
-		locations.removeKey(npc.getUID());
-		mana.removeKey(npc.getUID());
-		mode.removeKey(npc.getUID());
-		time.removeKey(npc.getUID());
-		mob.removeKey(npc.getUID());
-	}
-
-	@Override
 	public void register(HumanNPC npc) {
 		setEnabled(npc, true);
 	}
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		wizards.setBoolean(npc.getUID(), value);
+		profiles.setBoolean(npc.getUID(), value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return wizards.getBoolean(npc.getUID());
-	}
-
-	@Override
-	public boolean exists(HumanNPC npc) {
-		return wizards.keyExists(npc.getUID());
+		return profiles.getBoolean(npc.getUID() + isWizard);
 	}
 
 	@Override
@@ -135,23 +114,25 @@ public class WizardProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (wizards.keyExists(UID)) {
-			wizards.setString(nextUID, wizards.getString(UID));
+		if (profiles.pathExists(UID + isWizard)) {
+			profiles.setString(nextUID + isWizard,
+					profiles.getString(UID + isWizard));
 		}
-		if (locations.keyExists(UID)) {
-			locations.setString(nextUID, locations.getString(UID));
+		if (profiles.pathExists(UID + locations)) {
+			profiles.setString(nextUID + locations,
+					profiles.getString(UID + locations));
 		}
-		if (mana.keyExists(UID)) {
-			mana.setString(nextUID, mana.getString(UID));
+		if (profiles.pathExists(UID + mana)) {
+			profiles.setString(nextUID + mana, profiles.getString(UID + mana));
 		}
-		if (mode.keyExists(UID)) {
-			mode.setString(nextUID, mode.getString(UID));
+		if (profiles.pathExists(UID + mode)) {
+			profiles.setString(nextUID + mode, profiles.getString(UID + mode));
 		}
-		if (time.keyExists(UID)) {
-			time.setString(nextUID, time.getString(UID));
+		if (profiles.pathExists(UID + time)) {
+			profiles.setString(nextUID + time, profiles.getString(UID + time));
 		}
-		if (mob.keyExists(UID)) {
-			mob.setString(nextUID, mob.getString(UID));
+		if (profiles.pathExists(UID + mob)) {
+			profiles.setString(nextUID + mob, profiles.getString(UID + mob));
 		}
 	}
 }

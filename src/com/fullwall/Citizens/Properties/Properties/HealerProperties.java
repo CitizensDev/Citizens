@@ -1,32 +1,28 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
-import com.fullwall.Citizens.Properties.PropertyHandler;
-import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
+import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class HealerProperties extends Saveable {
-	private final PropertyHandler healers = new PropertyHandler(
-			"plugins/Citizens/Healers/Citizens.healers");
-	private final PropertyHandler strength = new PropertyHandler(
-			"plugins/Citizens/Healers/Citizens.strength");
-	private final PropertyHandler levels = new PropertyHandler(
-			"plugins/Citizens/Healers/Citizens.levels");
+public class HealerProperties extends PropertyManager implements Saveable {
+	private final String isHealer = ".healer.toggle";
+	private final String health = ".healer.health";
+	private final String level = ".healer.level";
 
 	private void saveHealth(int UID, int healPower) {
-		strength.setInt(UID, healPower);
+		profiles.setInt(UID + health, healPower);
 	}
 
 	private int getHealth(int UID) {
-		return strength.getInt(UID);
+		return profiles.getInt(UID + health, 10);
 	}
 
-	private void saveLevel(int UID, int level) {
-		levels.setInt(UID, level);
+	private void saveLevel(int UID, int currentLevel) {
+		profiles.setInt(UID + level, currentLevel);
 	}
 
 	private int getLevel(int UID) {
-		return levels.getInt(UID);
+		return profiles.getInt(UID + level, 1);
 	}
 
 	@Override
@@ -39,25 +35,11 @@ public class HealerProperties extends Saveable {
 	}
 
 	@Override
-	public void saveFiles() {
-		healers.save();
-		strength.save();
-		levels.save();
-	}
-
-	@Override
 	public void loadState(HumanNPC npc) {
 		npc.setHealer(getEnabled(npc));
 		npc.getHealer().setHealth(getHealth(npc.getUID()));
 		npc.getHealer().setLevel(getLevel(npc.getUID()));
 		saveState(npc);
-	}
-
-	@Override
-	public void removeFromFiles(HumanNPC npc) {
-		healers.removeKey(npc.getUID());
-		strength.removeKey(npc.getUID());
-		levels.removeKey(npc.getUID());
 	}
 
 	@Override
@@ -67,17 +49,12 @@ public class HealerProperties extends Saveable {
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		healers.setBoolean(npc.getUID(), value);
+		profiles.setBoolean(npc.getUID() + isHealer, value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return healers.getBoolean(npc.getUID());
-	}
-
-	@Override
-	public boolean exists(HumanNPC npc) {
-		return healers.keyExists(npc.getUID());
+		return profiles.getBoolean(npc.getUID() + isHealer);
 	}
 
 	@Override
@@ -87,14 +64,16 @@ public class HealerProperties extends Saveable {
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (healers.keyExists(UID)) {
-			healers.setString(nextUID, healers.getString(UID));
+		if (profiles.pathExists(UID + isHealer)) {
+			profiles.setString(nextUID + isHealer,
+					profiles.getString(UID + isHealer));
 		}
-		if (strength.keyExists(UID)) {
-			strength.setString(nextUID, strength.getString(UID));
+		if (profiles.pathExists(UID + health)) {
+			profiles.setString(nextUID + health,
+					profiles.getString(UID + health));
 		}
-		if (levels.keyExists(UID)) {
-			levels.setString(nextUID, levels.getString(UID));
+		if (profiles.pathExists(UID + level)) {
+			profiles.setString(nextUID + level, profiles.getString(UID + level));
 		}
 	}
 }

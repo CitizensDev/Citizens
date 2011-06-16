@@ -3,7 +3,6 @@ package com.fullwall.Citizens;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,7 +23,6 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.Messaging;
-import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.register.payment.Method;
 
 /**
@@ -49,7 +47,7 @@ public class Citizens extends JavaPlugin {
 	private static final String codename = "Realist";
 	private static final String letter = "h";
 	private static String version = "1.0.8" + letter;
-	public static boolean initialised = false;
+	public static boolean initialized = false;
 
 	@Override
 	public void onDisable() {
@@ -66,8 +64,7 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		// Register our commands.
-		CommandHandler commandHandler = new CommandHandler(this);
-		commandHandler.registerCommands();
+		new CommandHandler(this).registerCommands();
 
 		// Register our events.
 		entityListener.registerEvents();
@@ -85,13 +82,12 @@ public class Citizens extends JavaPlugin {
 		// Load settings.
 		Constants.setupVariables();
 
-		if (Constants.spawnEvils) {
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new CreatureTask(), Constants.spawnEvilsDelay,
-					Constants.spawnEvilsDelay);
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new CreatureTask.CreatureTick(), 0, 1);
-		}
+		// schedule Creature tasks
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new CreatureTask(), Constants.spawnEvilsDelay,
+				Constants.spawnEvilsDelay);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new CreatureTask.CreatureTick(), 0, 1);
 		plugin = this;
 
 		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
@@ -136,11 +132,16 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupNPCs() {
-		String[] list = PropertyManager.getBasic().locations.getString("list")
-				.split(",");
-		if (list.length > 0 && !list[0].isEmpty()) {
-			for (String name : list) {
-				int UID = Integer.parseInt(name.split("_")[0]);
+		int count = 0;
+		String UIDList = "";
+		while (PropertyManager.getProfiles().pathExists(count)) {
+			UIDList += count + ",";
+			count++;
+		}
+		String[] values = UIDList.split(",");
+		if (values.length > 0 && !values[0].isEmpty()) {
+			for (String value : values) {
+				int UID = Integer.parseInt(value);
 				Location loc = PropertyManager.getBasic().getLocation(UID);
 				if (loc != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
@@ -150,37 +151,17 @@ public class Citizens extends JavaPlugin {
 					if (text != null) {
 						NPCManager.setText(UID, text);
 					}
-				} else {
-					PropertyManager.getBasic().deleteNameFromList(name);
 				}
 			}
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new HealerTask(), getHealthRegenRate(), getHealthRegenRate());
+				new HealerTask(), HealerTask.getHealthRegenRate(),
+				HealerTask.getHealthRegenRate());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new WizardTask(), Constants.wizardManaRegenRate,
 				Constants.wizardManaRegenRate);
-		initialised = true;
-	}
-
-	/**
-	 * Get the health regeneration rate for a healer based on its level
-	 * 
-	 * @return
-	 */
-	private int getHealthRegenRate() {
-		int delay = 0;
-		if (!NPCManager.getList().isEmpty()) {
-			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
-					.entrySet()) {
-				delay = Constants.healerHealthRegenIncrement
-						* (11 - (entry.getValue().getHealer().getLevel()));
-			}
-		} else {
-			delay = 12000;
-		}
-		return delay;
+		initialized = true;
 	}
 
 	/**

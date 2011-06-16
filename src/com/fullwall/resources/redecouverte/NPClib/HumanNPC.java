@@ -3,6 +3,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,10 +20,9 @@ import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
 
 public class HumanNPC extends NPC {
-
 	private CraftNPC mcEntity;
-
 	private double balance;
+
 	private boolean isTrader = false;
 	private boolean isHealer = false;
 	private boolean isWizard = false;
@@ -207,6 +207,10 @@ public class HumanNPC extends NPC {
 
 	public PlayerInventory getInventory() {
 		return getPlayer().getInventory();
+	}
+
+	public World getWorld() {
+		return getPlayer().getWorld();
 	}
 
 	public double getBalance() {

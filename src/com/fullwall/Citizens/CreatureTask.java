@@ -106,15 +106,13 @@ public class CreatureTask implements Runnable {
 									world.getBlockTypeIdAt(x, y + 1, z))) {
 						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
 							if (spaceEntityFree(world.getChunkAt(x, z), x, y, z)) {
-								HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(0,
-										UtilityProperties.getRandomName(type),
-										loc.getWorld(), x, y, z,
-										random.nextInt(360), 0, type);
-								if (type == CreatureNPCType.PIRATE) {
-									world.spawnBoat(loc).setPassenger(
-											npc.getHandle().getBukkitEntity());
+								if (canSpawn(type)) {
+									return NPCSpawner.spawnBasicHumanNpc(0,
+											UtilityProperties
+													.getRandomName(type), loc
+													.getWorld(), x, y, z,
+											random.nextInt(360), 0, type);
 								}
-								return npc;
 							}
 						}
 					}
@@ -122,6 +120,17 @@ public class CreatureTask implements Runnable {
 			}
 		}
 		return null;
+	}
+
+	private boolean canSpawn(CreatureNPCType type) {
+		boolean spawn = false;
+		switch (type) {
+		case EVIL:
+			spawn = Constants.spawnEvils;
+		case PIRATE:
+			spawn = Constants.spawnPirates;
+		}
+		return spawn;
 	}
 
 	private boolean spaceEntityFree(Chunk chunk, int x, int y, int z) {

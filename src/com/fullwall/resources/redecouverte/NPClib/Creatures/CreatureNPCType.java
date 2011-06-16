@@ -11,7 +11,7 @@ public enum CreatureNPCType {
 			new SpawnValidator(Range.DEFAULT, false)),
 	PIRATE(PirateCreatureNPC.class, Constants.maxPirates,
 			Constants.pirateNames,
-			new SpawnValidator(Type.INCLUDING, 8, 9 /* water */),
+			new SpawnValidator(Type.INCLUDING, 8, 9),
 			new SpawnValidator(Range.DEFAULT, false));
 	private int max;
 	private String possible;

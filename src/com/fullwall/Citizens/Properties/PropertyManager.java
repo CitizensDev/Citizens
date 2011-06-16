@@ -17,6 +17,8 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
 	private static HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
+	protected static final ConfigurationHandler profiles = new ConfigurationHandler(
+			"plugins/Citizens/profiles.yml");
 
 	public enum PropertyType {
 		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, GUARD;
@@ -34,13 +36,25 @@ public class PropertyManager {
 		QuestProperties.initialize();
 	}
 
+	public static ConfigurationHandler getProfiles() {
+		return profiles;
+	}
+
+	public static boolean typeExists(HumanNPC npc, String type) {
+		return profiles.pathExists(npc.getUID() + "." + type);
+	}
+
+	public static boolean exists(HumanNPC npc) {
+		return profiles.pathExists(npc.getUID());
+	}
+
 	public static BasicProperties getBasic() {
 		return (BasicProperties) get("basic");
 	}
 
 	public static void load(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			if (saveable.exists(npc)) {
+			if (exists(npc)) {
 				saveable.loadState(npc);
 			}
 		}
@@ -52,24 +66,15 @@ public class PropertyManager {
 		}
 	}
 
-	public static void saveFiles() {
-		for (Saveable saveable : properties.values()) {
-			saveable.saveFiles();
-		}
-		QuestProperties.save();
-	}
-
 	public static void remove(HumanNPC npc) {
-		for (Saveable saveable : properties.values()) {
-			saveable.removeFromFiles(npc);
-		}
+		profiles.removeKey(npc.getUID());
 	}
 
 	public static Saveable get(String string) {
 		return properties.get(string);
 	}
 
-	public static void copy(int UID, int newUID) {
+	public static void copyNPCs(int UID, int newUID) {
 		for (Saveable saveable : properties.values()) {
 			saveable.copy(UID, newUID);
 		}
@@ -83,6 +88,5 @@ public class PropertyManager {
 
 	public static void stateSave() {
 		saveAllNPCs();
-		saveFiles();
 	}
 }

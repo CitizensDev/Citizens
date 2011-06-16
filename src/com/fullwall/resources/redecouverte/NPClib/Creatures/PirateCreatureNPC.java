@@ -28,7 +28,8 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onSpawn() {
-		// perhaps it should create a boat for itself then get in.
+		this.npc.getWorld().spawnBoat(this.npc.getLocation())
+				.setPassenger(npc.getHandle().getBukkitEntity());
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
 	}

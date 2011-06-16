@@ -423,7 +423,7 @@ public class BasicExecutor implements CommandExecutor {
 		HumanNPC newNPC = NPCManager.get(newUID);
 		newNPC.teleport(player.getLocation());
 		newNPC.getNPCData().setLocation(player.getLocation());
-		PropertyManager.copy(UID, newUID);
+		PropertyManager.copyNPCs(UID, newUID);
 		NPCManager.removeForRespawn(newUID);
 		NPCManager.register(newUID, newNPC.getOwner());
 	}
@@ -444,8 +444,6 @@ public class BasicExecutor implements CommandExecutor {
 				&& args[1].equalsIgnoreCase("all")) {
 			plugin.basicNPCHandler.removeAll();
 			player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
-			PropertyManager.getBasic().locations.setInt("currentID", 0);
-			PropertyManager.getBasic().locations.removeKey("list");
 		} else {
 			plugin.basicNPCHandler.remove(npc.getUID());
 			player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
