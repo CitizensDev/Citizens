@@ -26,6 +26,10 @@ public class Check {
 		this.itemID = itemID;
 	}
 
+	public void setDataValue(short dataValue) {
+		this.dataValue = dataValue;
+	}
+
 	public void setSelling(boolean selling) {
 		this.selling = selling;
 	}
@@ -40,11 +44,11 @@ public class Check {
 		return result;
 	}
 
-	/* Alternate hashCode() suggested by <kuraiou> in #citizens
-	public int hashCode() {
-		return (itemId * 1000) + (dataValue * 10) + (selling ? 1 : 2);
-	}
-	*/
+	/*
+	 * Alternate hashCode() suggested by <kuraiou> in #citizens public int
+	 * hashCode() { return (itemId * 1000) + (dataValue * 10) + (selling ? 1 :
+	 * 2); }
+	 */
 
 	@Override
 	public boolean equals(Object obj) {
