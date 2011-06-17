@@ -218,15 +218,15 @@ public class TraderExecutor implements CommandExecutor {
 			if (!selling) {
 				keyword = "selling";
 			}
-			if (npc.getTrader().getStockable(stack.getTypeId(), selling,
-					stack.getData()) == null) {
+			if (npc.getTrader().getStockable(stack.getTypeId(), stack.getDurability(),
+					selling) == null) {
 				player.sendMessage(ChatColor.RED
 						+ "The trader is not currently " + keyword
 						+ " that item.");
 				return;
 			} else {
-				npc.getTrader().removeStockable(stack.getTypeId(), selling,
-						stack.getData());
+				npc.getTrader().removeStockable(stack.getTypeId(),
+						stack.getDurability(), selling);
 				player.sendMessage(ChatColor.GREEN + "Removed "
 						+ StringUtils.wrap(stack.getType().name())
 						+ " from the trader's " + keyword + " list.");
@@ -299,21 +299,21 @@ public class TraderExecutor implements CommandExecutor {
 	private ItemStack parseItemStack(String[] split) {
 		try {
 			int amount = 1;
-			byte data = 0;
+			short data = 0;
 			Material mat = StringUtils.parseMaterial(split[0]);
 			if (mat == null) {
 				return null;
 			}
 			switch (split.length) {
 			case 3:
-				data = Byte.parseByte(split[2]);
+				data = Short.parseShort(split[2]);
 			case 2:
 				amount = Integer.parseInt(split[1]);
 			default:
 				break;
 			}
 			ItemStack stack = new ItemStack(mat, amount);
-			stack.setData(new MaterialData(mat, data));
+			stack.setDurability(data);
 			return stack;
 		} catch (NumberFormatException ex) {
 			return null;

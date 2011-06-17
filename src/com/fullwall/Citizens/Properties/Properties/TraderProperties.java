@@ -76,11 +76,8 @@ public class TraderProperties extends PropertyManager implements Saveable {
 					String[] split = main.split("/");
 					stack = new ItemStack(Integer.parseInt(split[0]),
 							Integer.parseInt(split[1]));
-					MaterialData data = new MaterialData(stack.getType(),
-							Byte.parseByte(split[2]));
-					if (data != null) {
-						stack.setData(data);
-					}
+					short data = Short.parseShort(split[2]);
+					stack.setDurability(data);
 					break;
 				case 1:
 					String[] parts = main.split("/");
@@ -109,7 +106,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 
 	private ItemStack createItemStack(int amount, int itemID, int data) {
 		ItemStack item = new ItemStack(itemID, amount);
-		item.setData(new MaterialData(itemID, (byte) data));
+		item.setDurability((short) data);
 		return item;
 	}
 

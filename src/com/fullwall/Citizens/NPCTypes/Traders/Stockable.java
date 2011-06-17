@@ -25,7 +25,7 @@ public class Stockable {
 	}
 
 	public Check createCheck() {
-		return new Check(getStockingId(), isSelling());
+		return new Check(getStockingId(), getStockingDataValue(), isSelling());
 	}
 
 	public ItemStack getStocking() {
@@ -34,6 +34,10 @@ public class Stockable {
 
 	public Integer getStockingId() {
 		return this.stocking.getTypeId();
+	}
+
+	public short getStockingDataValue() {
+		return this.stocking.getDurability();
 	}
 
 	public ItemPrice getPrice() {

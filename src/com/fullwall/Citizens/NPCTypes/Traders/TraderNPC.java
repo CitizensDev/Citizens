@@ -46,28 +46,24 @@ public class TraderNPC implements Toggleable, Clickable {
 	}
 
 	public void addStockable(Stockable s) {
-		stocking.put(new Check(s.getStockingId(), s.isSelling()), s);
+		stocking.put(new Check(s.getStockingId(), s.getStockingDataValue(),
+				s.isSelling()), s);
 	}
 
-	public Stockable fetchStockable(int itemID, boolean selling) {
-		return stocking.get(new Check(itemID, selling));
+	public Stockable fetchStockable(int itemID, short dataValue, boolean selling) {
+		return stocking.get(new Check(itemID, dataValue, selling));
 	}
 
-	public Stockable getStockable(int itemID, boolean selling, MaterialData data) {
+	public Stockable getStockable(int itemID, short dataValue, boolean selling) {
 		if (checkStockingIntegrity()) {
-			if (fetchStockable(itemID, selling) != null) {
-				Stockable stockable = fetchStockable(itemID, selling);
-				if (checkData(stockable, data)) {
-					return stockable;
-				}
-			}
+			return fetchStockable(itemID, dataValue, selling);
 		}
 		return null;
 	}
 
 	public Stockable getStockable(Stockable s) {
-		return getStockable(s.getStocking().getTypeId(), s.isSelling(), s
-				.getStocking().getData());
+		return getStockable(s.getStockingId(), s.getStockingDataValue(),
+				s.isSelling());
 	}
 
 	public ArrayList<Stockable> getStockables(int itemID, boolean selling) {
@@ -92,33 +88,25 @@ public class TraderNPC implements Toggleable, Clickable {
 		return stockables;
 	}
 
-	public void removeStockable(int ID, boolean selling, MaterialData data) {
+	public void removeStockable(int ID, short dataValue, boolean selling) {
 		if (checkStockingIntegrity()) {
-			if (fetchStockable(ID, selling) != null) {
-				if (checkData(fetchStockable(ID, selling), data)) {
-					stocking.remove(new Check(ID, selling));
-				}
-			}
+			stocking.remove(new Check(ID, dataValue, selling));
 		}
-
 	}
 
-	public boolean isStocked(int itemID, boolean selling, MaterialData data) {
+	public boolean isStocked(int itemID, short dataValue, boolean selling) {
 		if (checkStockingIntegrity()) {
-			if (fetchStockable(itemID, selling) != null) {
-				if (checkData(fetchStockable(itemID, selling), data)) {
-					return true;
-				}
+			if (fetchStockable(itemID, dataValue, selling) != null) {
+				return true;
 			}
 		}
 		return false;
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.isSelling(), s.getStocking()
-				.getData());
+		return isStocked(s.getStockingId(), s.getStockingDataValue(), s.isSelling());
 	}
-
+/*
 	private boolean checkData(Stockable stockable, MaterialData second) {
 		MaterialData first = stockable.getStocking().getData();
 		int data = 0;
@@ -131,7 +119,7 @@ public class TraderNPC implements Toggleable, Clickable {
 		}
         return data == data2;
     }
-
+*/
 	public boolean checkStockingIntegrity() {
         return !(this.stocking == null || this.stocking.isEmpty());
     }
