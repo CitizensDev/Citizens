@@ -22,11 +22,15 @@ public class Check {
 		this.itemID = itemID;
 	}
 
+	public void setDataValue(short dataValue) {
+		this.dataValue = dataValue;
+	}
+
 	public void setSelling(boolean selling) {
 		this.selling = selling;
 	}
 
-    @Override
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -36,11 +40,11 @@ public class Check {
 		return result;
 	}
 
-	/* Alternate hashCode() suggested by <kuraiou> in #citizens
-	public int hashCode() {
-		return (itemId * 1000) + (dataValue * 10) + (selling ? 1 : 2);
-	}
-	*/
+	/*
+	 * Alternate hashCode() suggested by <kuraiou> in #citizens public int
+	 * hashCode() { return (itemId * 1000) + (dataValue * 10) + (selling ? 1 :
+	 * 2); }
+	 */
 
 	@Override
 	public boolean equals(Object obj) {
@@ -54,7 +58,7 @@ public class Check {
 			return false;
 		}
 		Check other = (Check) obj;
-		return itemID == other.itemID && dataValue == other.dataValue &&
-				selling == other.selling;
-   }
+		return itemID == other.itemID && dataValue == other.dataValue
+				&& selling == other.selling;
+	}
 }

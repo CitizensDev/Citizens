@@ -9,7 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
@@ -218,8 +217,8 @@ public class TraderExecutor implements CommandExecutor {
 			if (!selling) {
 				keyword = "selling";
 			}
-			if (npc.getTrader().getStockable(stack.getTypeId(), stack.getDurability(),
-					selling) == null) {
+			if (npc.getTrader().getStockable(stack.getTypeId(),
+					stack.getDurability(), selling) == null) {
 				player.sendMessage(ChatColor.RED
 						+ "The trader is not currently " + keyword
 						+ " that item.");
