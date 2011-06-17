@@ -19,19 +19,11 @@ public class Check {
 		this.itemID = itemID;
 	}
 
-	public int getItemID() {
-		return itemID;
-	}
-
-	public void setSelling(boolean selling) {
+    public void setSelling(boolean selling) {
 		this.selling = selling;
 	}
 
-	public boolean isSelling() {
-		return selling;
-	}
-
-	@Override
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -52,12 +44,6 @@ public class Check {
 			return false;
 		}
 		Check other = (Check) obj;
-		if (itemID != other.itemID) {
-			return false;
-		}
-		if (selling != other.selling) {
-			return false;
-		}
-		return true;
-	}
+        return itemID == other.itemID && selling == other.selling;
+    }
 }

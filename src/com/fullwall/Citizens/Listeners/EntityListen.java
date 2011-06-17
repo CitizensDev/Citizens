@@ -28,21 +28,20 @@ import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTarget
  */
 public class EntityListen extends EntityListener implements Listener {
 	private final Citizens plugin;
-	private PluginManager pm;
 
-	public EntityListen(final Citizens plugin) {
+    public EntityListen(final Citizens plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void registerEvents() {
-		pm = plugin.getServer().getPluginManager();
+        PluginManager pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this, Event.Priority.Normal,
-				plugin);
+                plugin);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this, Event.Priority.Normal,
-				plugin);
+                plugin);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this, Event.Priority.Normal,
-				plugin);
+                plugin);
 	}
 
 	@Override
@@ -97,7 +96,7 @@ public class EntityListen extends EntityListener implements Listener {
 			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED) {
 				Player player = (Player) event.getTarget();
 				if (plugin.validateTool("items.basic.select-items", player
-						.getItemInHand().getTypeId(), player.isSneaking()) == true) {
+						.getItemInHand().getTypeId(), player.isSneaking())) {
 					if (!NPCManager.validateSelected(player, npc.getUID())) {
 						NPCManager.selectedNPCs.put(player.getName(),
 								npc.getUID());
@@ -110,7 +109,7 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 				// Dispatch text event / select NPC.
 				if (plugin.validateTool("items.basic.talk-items", player
-						.getItemInHand().getTypeId(), player.isSneaking()) == true) {
+						.getItemInHand().getTypeId(), player.isSneaking())) {
 					CitizensBasicNPCEvent ev = new CitizensBasicNPCEvent(npc,
 							(Player) e.getTarget(), MessageUtils.getText(npc,
 									(Player) e.getTarget()));

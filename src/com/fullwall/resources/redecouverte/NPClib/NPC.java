@@ -19,7 +19,7 @@ public class NPC {
 	}
 
 	public String getName() {
-		if (Constants.convertSlashes == true) {
+		if (Constants.convertSlashes) {
 			String returnName = "";
 			String[] brokenName = this.name.split(" ");
 			for (int i = 0; i < brokenName.length; i++) {

@@ -338,7 +338,7 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void create(String[] args, Player player) {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
-		StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 		if (args.length >= 3) {
 			int i = 0;
 			for (String s : args) {
@@ -346,7 +346,7 @@ public class BasicExecutor implements CommandExecutor {
 					buf.append(s);
 				}
 				if (i > 2 && !s.isEmpty() && !s.equals(";")) {
-					buf.append(" " + s);
+                    buf.append(" ").append(s);
 				}
 				i += 1;
 			}
@@ -506,7 +506,7 @@ public class BasicExecutor implements CommandExecutor {
 			plugin.basicNPCHandler.setColour(npc.getUID(), npc.getOwner());
 			player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
 					+ "}'s name " + args[0] + " is now "
-					+ args[1].replace("&", "§") + "this}."));
+					+ args[1].replace("&", "ï¿½") + "this}."));
 		}
 	}
 

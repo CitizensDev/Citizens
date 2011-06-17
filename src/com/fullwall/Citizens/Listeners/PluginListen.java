@@ -14,8 +14,7 @@ import com.nijikokun.register.payment.Methods;
 
 public class PluginListen extends ServerListener implements Listener {
 	private final Citizens plugin;
-	private PluginManager pm;
-	private final Methods methods;
+    private final Methods methods;
 
 	public PluginListen(Citizens plugin) {
 		this.plugin = plugin;
@@ -24,11 +23,11 @@ public class PluginListen extends ServerListener implements Listener {
 
 	@Override
 	public void registerEvents() {
-		pm = plugin.getServer().getPluginManager();
+        PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, this,
-				Event.Priority.Monitor, plugin);
+                Event.Priority.Monitor, plugin);
 		pm.registerEvent(Event.Type.PLUGIN_DISABLE, this,
-				Event.Priority.Monitor, plugin);
+                Event.Priority.Monitor, plugin);
 	}
 
 	@Override

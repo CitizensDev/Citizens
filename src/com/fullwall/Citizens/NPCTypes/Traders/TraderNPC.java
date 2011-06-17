@@ -129,18 +129,12 @@ public class TraderNPC implements Toggleable, Clickable {
 		if (second != null) {
 			data2 = second.getData();
 		}
-		if (data == data2) {
-			return true;
-		}
-		return false;
-	}
+        return data == data2;
+    }
 
 	public boolean checkStockingIntegrity() {
-		if (this.stocking == null || this.stocking.isEmpty()) {
-			return false;
-		}
-		return true;
-	}
+        return !(this.stocking == null || this.stocking.isEmpty());
+    }
 
 	public void setFree(boolean free) {
 		this.free = free;

@@ -20,18 +20,18 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
-	public static String noPermissionsMessage = ChatColor.RED
+	public static final String noPermissionsMessage = ChatColor.RED
 			+ "You don't have permission to use that command.";
 	public static String notEnoughMoneyMessage = ChatColor.GRAY
 			+ "You don't have enough money to do that.";
-	public static String mustBeIngameMessage = "You must use this command ingame";
-	public static String mustHaveNPCSelectedMessage = ChatColor.GRAY
+	public static final String mustBeIngameMessage = "You must use this command ingame";
+	public static final String mustHaveNPCSelectedMessage = ChatColor.GRAY
 			+ "You must have an NPC selected (right click).";
-	public static String notOwnerMessage = ChatColor.RED
+	public static final String notOwnerMessage = ChatColor.RED
 			+ "You are not the owner of this NPC.";
 	public static String invalidItemIDMessage = ChatColor.RED
 			+ "That is not a valid item ID.";
-	public static String noEconomyMessage = ChatColor.GRAY
+	public static final String noEconomyMessage = ChatColor.GRAY
 			+ "This server is not using an economy plugin.";
 
 	/**
@@ -69,13 +69,13 @@ public class MessageUtils {
 		}
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
-				text = Constants.chatFormat.replace("&", "§").replace("%name%",
+				text = Constants.chatFormat.replace("&", "ï¿½").replace("%name%",
 						npc.getStrippedName())
 						+ text;
 			} else {
 				text = Constants.chatFormat.replace("%name%",
 						Constants.npcColour + name + ChatColor.WHITE).replace(
-						"&", "§")
+						"&", "ï¿½")
 						+ text;
 			}
 			return text;
@@ -91,7 +91,7 @@ public class MessageUtils {
 	 * @return
 	 */
 	public static String getNoMoneyMessage(Operation op, Player player) {
-		String message = "";
+		String message;
 		message = ChatColor.RED
 				+ "You need "
 				+ StringUtils.wrap(
@@ -113,7 +113,7 @@ public class MessageUtils {
 	 */
 	public static String getPaidMessage(Operation op, double paid,
 			String npcName, String type, boolean useType) {
-		String message = "";
+		String message;
 		message = ChatColor.GREEN
 				+ "Paid "
 				+ StringUtils
@@ -205,7 +205,7 @@ public class MessageUtils {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
 		if (text.equals(Constants.defaultText)) {
-			return text.replace('&', '§');
+			return text.replace('&', 'ï¿½');
 		}
 		return text;
 	}

@@ -16,7 +16,7 @@ import com.fullwall.Citizens.Properties.Properties.WizardProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
-	private static HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
+	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
 	protected static final ConfigurationHandler profiles = new ConfigurationHandler(
 			"plugins/Citizens/profiles.yml");
 
@@ -44,7 +44,7 @@ public class PropertyManager {
 		return profiles.pathExists(npc.getUID() + "." + type);
 	}
 
-	public static boolean exists(HumanNPC npc) {
+	protected static boolean exists(HumanNPC npc) {
 		return profiles.pathExists(npc.getUID());
 	}
 
@@ -80,7 +80,7 @@ public class PropertyManager {
 		}
 	}
 
-	public static void saveAllNPCs() {
+	private static void saveAllNPCs() {
 		for (HumanNPC npc : NPCManager.getList().values()) {
 			save(npc);
 		}

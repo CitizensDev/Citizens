@@ -292,11 +292,8 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public boolean getBoolean(String path) {
-		if (pathExists(path)) {
-			return Boolean.parseBoolean(this.config.getString(path));
-		}
-		return false;
-	}
+        return pathExists(path) && Boolean.parseBoolean(this.config.getString(path));
+    }
 
 	@Override
 	public boolean getBoolean(int path) {

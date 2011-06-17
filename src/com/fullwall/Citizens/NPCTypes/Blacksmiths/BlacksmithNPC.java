@@ -65,13 +65,10 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	 */
 	public boolean validateTool(ItemStack item) {
 		int id = item.getTypeId();
-		if ((id >= 256 && id <= 259) || (id >= 267 && id <= 279)
-				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
-				|| id == 346) {
-			return true;
-		}
-		return false;
-	}
+        return (id >= 256 && id <= 259) || (id >= 267 && id <= 279)
+                || (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
+                || id == 346;
+    }
 
 	/**
 	 * Validate that the item to repair is armor
@@ -81,11 +78,8 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 	 */
 	public boolean validateArmor(ItemStack armor) {
 		int id = armor.getTypeId();
-		if (id >= 298 && id <= 317) {
-			return true;
-		}
-		return false;
-	}
+        return id >= 298 && id <= 317;
+    }
 
 	/**
 	 * Purchase an item repair
@@ -122,8 +116,7 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(ChatColor.RED
 					+ "You do not have enough to repair that.");
-			return;
-		}
+        }
 	}
 
 	@Override

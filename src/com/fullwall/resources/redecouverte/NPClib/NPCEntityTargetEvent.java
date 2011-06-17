@@ -10,7 +10,7 @@ public class NPCEntityTargetEvent extends EntityTargetEvent {
 		CLOSEST_PLAYER, NPC_RIGHTCLICKED, NPC_BOUNCED
 	}
 
-	private NpcTargetReason reason;
+	private final NpcTargetReason reason;
 
 	public NPCEntityTargetEvent(Entity entity, Entity target,
 			NpcTargetReason reason) {

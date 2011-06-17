@@ -71,7 +71,7 @@ public class BOSE implements Method {
 		}
 
 		public double balance() {
-			return Double.valueOf(this.BOSEconomy.getPlayerMoney(this.name));
+			return (double) this.BOSEconomy.getPlayerMoney(this.name);
 		}
 
 		public boolean set(double amount) {
@@ -146,7 +146,7 @@ public class BOSE implements Method {
 		}
 
 		public double balance() {
-			return Double.valueOf(this.BOSEconomy.getBankMoney(name));
+			return (double) this.BOSEconomy.getBankMoney(name);
 		}
 
 		public boolean set(double amount) {

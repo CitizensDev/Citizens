@@ -334,11 +334,8 @@ public final class PropertyHandler implements Storage {
 
 	@Override
 	public boolean getBoolean(String key) {
-		if (this.properties.containsKey(key)) {
-			return Boolean.parseBoolean(this.properties.getProperty(key));
-		}
-		return false;
-	}
+        return this.properties.containsKey(key) && Boolean.parseBoolean(this.properties.getProperty(key));
+    }
 
 	@Override
 	public boolean getBoolean(int key) {

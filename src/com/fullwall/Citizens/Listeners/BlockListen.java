@@ -12,19 +12,18 @@ import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class BlockListen extends BlockListener implements Listener {
 	private final Citizens plugin;
-	private PluginManager pm;
 
-	public BlockListen(Citizens plugin) {
+    public BlockListen(Citizens plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void registerEvents() {
-		pm = plugin.getServer().getPluginManager();
+        PluginManager pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.BLOCK_BREAK, this, Event.Priority.Normal,
-				plugin);
+                plugin);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, this, Event.Priority.Normal,
-				plugin);
+                plugin);
 	}
 
 	@Override

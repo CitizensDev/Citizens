@@ -18,9 +18,9 @@ public class Methods {
 	private boolean self = false;
 	private Method Method = null;
 	private String preferred = "";
-	private Set<Method> Methods = new HashSet<Method>();
-	private Set<String> Dependencies = new HashSet<String>();
-	private Set<Method> Attachables = new HashSet<Method>();
+	private final Set<Method> Methods = new HashSet<Method>();
+	private final Set<String> Dependencies = new HashSet<String>();
+	private final Set<Method> Attachables = new HashSet<Method>();
 
 	public Methods() {
 		this._init();

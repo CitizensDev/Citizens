@@ -88,9 +88,9 @@ public class SpawnValidator {
 		index %= 4;
 		byte previous = flags[get];
 		if (flag)
-			flags[get] = Byte.valueOf((byte) (previous | 1 << index));
+			flags[get] = (byte) (previous | 1 << index);
 		else
-			flags[get] = Byte.valueOf((byte) (previous & ~(1 << index)));
+			flags[get] = (byte) (previous & ~(1 << index));
 	}
 
 	private void set(int[] banned, boolean flag) {

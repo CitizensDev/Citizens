@@ -7,7 +7,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PirateNPC implements Clickable {
 	@SuppressWarnings("unused")
-	private HumanNPC npc;
+	private final HumanNPC npc;
 	private boolean boating = true;
 
 	/**

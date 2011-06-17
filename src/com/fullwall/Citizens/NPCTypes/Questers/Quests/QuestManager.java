@@ -70,8 +70,8 @@ public class QuestManager {
 		RANK;
 	}
 
-	private static HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
-	private static HashMap<String, Quest> quests = new HashMap<String, Quest>();
+	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
+	private static final HashMap<String, Quest> quests = new HashMap<String, Quest>();
 
 	public static void load(Player player) {
 		PlayerProfile profile = new PlayerProfile(player.getName());

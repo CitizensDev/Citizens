@@ -42,11 +42,11 @@ public class Citizens extends JavaPlugin {
 
 	public static Method economy;
 
-	public static String separatorChar = "/";
+	public static final String separatorChar = "/";
 
 	private static final String codename = "Realist";
 	private static final String letter = "h";
-	private static String version = "1.0.8" + letter;
+	private static final String version = "1.0.8" + letter;
 	public static boolean initialized = false;
 
 	@Override
@@ -206,7 +206,7 @@ public class Citizens extends JavaPlugin {
 			if (item.contains("*")) {
 				return true;
 			}
-			boolean isShift = false;
+			boolean isShift;
 			for (String s : item) {
 				isShift = false;
 				if (s.contains("SHIFT-")) {
@@ -222,17 +222,4 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	/**
-	 * Checks if UID is being used by an NPC.
-	 * 
-	 * @param UID
-	 *            to check.
-	 * @return Whether it is used.
-	 */
-	public boolean validateUID(int UID) {
-		if (NPCManager.GlobalUIDs.containsKey(UID)) {
-			return true;
-		}
-		return false;
-	}
 }

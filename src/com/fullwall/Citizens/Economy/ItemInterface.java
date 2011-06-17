@@ -10,8 +10,8 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.MessageUtils;
 
 public class ItemInterface {
-	private static String addendum = ".item";
-	private static String currencyAddendum = ".item-currency-id";
+	private static final String addendum = ".item";
+	private static final String currencyAddendum = ".item-currency-id";
 	private static double blacksmithPrice;
 
 	/**

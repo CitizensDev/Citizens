@@ -3,7 +3,7 @@ package com.fullwall.Citizens.Misc;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionManager {
-	public static ConcurrentHashMap<Integer, ConcurrentHashMap<String, CachedAction>> actions = new ConcurrentHashMap<Integer, ConcurrentHashMap<String, CachedAction>>();
+	private static final ConcurrentHashMap<Integer, ConcurrentHashMap<String, CachedAction>> actions = new ConcurrentHashMap<Integer, ConcurrentHashMap<String, CachedAction>>();
 
 	public static void putAction(int entityID, String name, CachedAction cached) {
 		validateAction(entityID);
@@ -22,7 +22,7 @@ public class ActionManager {
 		}
 	}
 
-	public static void validateAction(int entityID) {
+	private static void validateAction(int entityID) {
 		if (actions.get(entityID) == null) {
 			actions.put(entityID, new ConcurrentHashMap<String, CachedAction>());
 		}

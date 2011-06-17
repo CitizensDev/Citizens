@@ -17,7 +17,7 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerNPC implements Toggleable, Clickable {
-	private HumanNPC npc;
+	private final HumanNPC npc;
 	private int health = 10;
 	private int level = 1;
 
@@ -130,8 +130,7 @@ public class HealerNPC implements Toggleable, Clickable {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
 					Operation.HEALER_HEAL, player));
-			return;
-		}
+        }
 	}
 
 	// TODO Make this less ugly to look at

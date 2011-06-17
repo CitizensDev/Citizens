@@ -7,8 +7,8 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Utils.StringUtils;
 
 public class Stockable {
-	private ItemStack stocking;
-	private ItemPrice price;
+	private final ItemStack stocking;
+	private final ItemPrice price;
 	private boolean selling;
 
 	/**

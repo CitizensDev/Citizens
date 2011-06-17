@@ -10,7 +10,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public abstract class QuestIncrementer {
 	private final HumanNPC quester;
-	protected Objective objective;
+	protected final Objective objective;
 	protected final Player player;
 	protected final String questName;
 

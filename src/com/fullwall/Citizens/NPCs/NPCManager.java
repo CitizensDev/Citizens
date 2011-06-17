@@ -22,10 +22,10 @@ public class NPCManager {
 
 	@SuppressWarnings("unused")
 	private final Citizens plugin;
-	public static ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
-	public static ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
-	public static ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
-	private static NPCList list;
+	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
+	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
+	public static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
+	private static final NPCList list;
 
 	public NPCManager(Citizens plugin) {
 		this.plugin = plugin;
@@ -48,7 +48,7 @@ public class NPCManager {
 		if (colour != 0xf) {
 			npcName = ChatColor.getByCode(colour) + name;
 		}
-		if (Constants.convertSlashes == true) {
+		if (Constants.convertSlashes) {
 			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0) {
@@ -251,12 +251,9 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p) {
-		if (selectedNPCs.get(p.getName()) != null
-				&& !selectedNPCs.get(p.getName()).toString().isEmpty()) {
-			return true;
-		}
-		return false;
-	}
+        return selectedNPCs.get(p.getName()) != null
+                && !selectedNPCs.get(p.getName()).toString().isEmpty();
+    }
 
 	/**
 	 * Checks if the player has selected the given npc.
@@ -286,15 +283,8 @@ public class NPCManager {
 	 */
 	public static boolean validateOwnership(Player player, int UID,
 			String permission) {
-		if (Permission.generic(player,
-				permission.replace("citizens.", "citizens.admin."))) {
-			return true;
-		}
-		if (validateOwnership(player, UID)) {
-			return true;
-		}
-		return false;
-	}
+        return Permission.generic(player, permission.replace("citizens.", "citizens.admin.")) || validateOwnership(player, UID);
+    }
 
 	/**
 	 * Checks if a player owns a given npc.
@@ -304,9 +294,6 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateOwnership(Player player, int UID) {
-		if (get(UID).getOwner().equals(player.getName())) {
-			return true;
-		}
-		return false;
-	}
+        return get(UID).getOwner().equals(player.getName());
+    }
 }

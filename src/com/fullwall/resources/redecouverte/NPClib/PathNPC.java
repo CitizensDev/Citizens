@@ -23,7 +23,7 @@ public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity pathEntity;
 	protected Entity target;
-	protected NPCAnimator animations = new NPCAnimator(this);
+	protected final NPCAnimator animations = new NPCAnimator(this);
 
 	protected boolean targetAggro = false;
 	private boolean hasAttacked = false;
@@ -228,13 +228,10 @@ public class PathNPC extends EntityPlayer {
 	private boolean isWithinAttackRange(Entity entity, float distance) {
 		// Bow distance from EntitySkeleton.
 		// Other from EntityCreature.
-		if ((isHoldingBow() && distance < 10)
-				|| (this.attackTicks <= 0 && distance < 1.5F
-						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)) {
-			return true;
-		}
-		return false;
-	}
+        return (isHoldingBow() && distance < 10)
+                || (this.attackTicks <= 0 && distance < 1.5F
+                && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e);
+    }
 
 	private void attackEntity(Entity entity) {
 		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).

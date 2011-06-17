@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 
 public class Messaging {
-	private static Logger log = Logger.getLogger("Minecraft");
+	private static final Logger log = Logger.getLogger("Minecraft");
 	private final static boolean debug = false;
 
 	public static void send(Player player, String message) {

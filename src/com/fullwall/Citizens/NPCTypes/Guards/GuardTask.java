@@ -214,11 +214,8 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-		if (npc.getGuard().getBlacklist().contains(name)) {
-			return true;
-		}
-		return false;
-	}
+        return npc.getGuard().getBlacklist().contains(name);
+    }
 
 	/**
 	 * Attack a player/mob if they enter a bouncer's protection zone

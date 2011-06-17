@@ -33,7 +33,7 @@ public class HealerExecutor implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		HumanNPC npc = null;
+		HumanNPC npc;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
@@ -139,7 +139,7 @@ public class HealerExecutor implements CommandExecutor {
 
 	private String getLevelUpPaidMessage(Operation op, HumanNPC npc,
 			double paid, int level, int multiple) {
-		String message = ChatColor.GREEN
+		return ChatColor.GREEN
 				+ "You have leveled up the healer "
 				+ StringUtils.wrap(npc.getStrippedName())
 				+ " to "
@@ -148,6 +148,5 @@ public class HealerExecutor implements CommandExecutor {
 				+ StringUtils.wrap(EconomyHandler.getPaymentType(op, "" + paid
 						* multiple)
 						+ ".");
-		return message;
 	}
 }

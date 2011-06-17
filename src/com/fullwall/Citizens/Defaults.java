@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 public class Defaults {
-	public static Map<String, String> settingsDefaults = writeDefaultSettings();
-	public static Map<String, String> lookupsDefaults = writeLookupsSettings();
-	public static Map<String, String> mobDefaults = writeMobSettings();
-	public static Map<String, String> economyDefaults = writeEconomySettings();
+	public static final Map<String, String> settingsDefaults = writeDefaultSettings();
+	public static final Map<String, String> lookupsDefaults = writeLookupsSettings();
+	public static final Map<String, String> mobDefaults = writeMobSettings();
+	public static final Map<String, String> economyDefaults = writeEconomySettings();
 
-	public static Map<String, String> settingsRenames = writeSettingsRenames();
-	public static Map<String, String> economyRenames = writeEconomyRenames();
-	public static Map<String, String> mobRenames = writeMobRenames();
+	public static final Map<String, String> settingsRenames = writeSettingsRenames();
+	public static final Map<String, String> economyRenames = writeEconomyRenames();
+	public static final Map<String, String> mobRenames = writeMobRenames();
 
-	public static List<String> settingsDeletes = writeSettingsDeletes();
-	public static List<String> economyDeletes = writeEconomyDeletes();
-	public static List<String> mobDeletes = writeMobDeletes();
+	public static final List<String> settingsDeletes = writeSettingsDeletes();
+	public static final List<String> economyDeletes = writeEconomyDeletes();
+	public static final List<String> mobDeletes = writeMobDeletes();
 
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
@@ -26,7 +26,7 @@ public class Defaults {
 		nodes.put("general.defaults.enable-following", "true");
 		nodes.put("general.defaults.talk-when-close", "false");
 		nodes.put("general.colors.use-npc-colours", "true");
-		nodes.put("general.colors.npc-colour", "§f");
+		nodes.put("general.colors.npc-colour", "ï¿½f");
 		nodes.put("general.chat.format", "[%name%]: ");
 		nodes.put("general.chat.slashes-to-spaces", "true");
 		nodes.put(

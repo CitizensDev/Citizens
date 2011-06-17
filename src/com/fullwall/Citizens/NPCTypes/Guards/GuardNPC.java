@@ -13,7 +13,7 @@ import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardNPC implements Toggleable, Clickable {
-	private HumanNPC npc;
+	private final HumanNPC npc;
 	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
 	private boolean isAggressive = false;

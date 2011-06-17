@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fullwall.Citizens.Enums.GuardType;
@@ -45,34 +46,30 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	private List<String> getBlacklist(int UID) {
 		String save = profiles.getString(UID + blacklist);
 		List<String> mobs = new ArrayList<String>();
-		for (String s : save.split(",")) {
-			mobs.add(s);
-		}
+        Collections.addAll(mobs, save.split(","));
 		return mobs;
 	}
 
 	private void saveBlacklist(int UID, List<String> mobs) {
 		String save = "";
-		for (int x = 0; x < mobs.size(); x++) {
-			save += mobs.get(x) + ",";
-		}
+        for (String mob : mobs) {
+            save += mob + ",";
+        }
 		profiles.setString(UID + blacklist, save);
 	}
 
 	private List<String> getWhitelist(int UID) {
 		String save = profiles.getString(UID + whitelist);
 		List<String> players = new ArrayList<String>();
-		for (String s : save.split(",")) {
-			players.add(s);
-		}
+        Collections.addAll(players, save.split(","));
 		return players;
 	}
 
 	private void saveWhitelist(int UID, List<String> players) {
 		String save = "";
-		for (int x = 0; x < players.size(); x++) {
-			save += players.get(x) + ",";
-		}
+        for (String player : players) {
+            save += player + ",";
+        }
 		profiles.setString(UID + whitelist, save);
 	}
 

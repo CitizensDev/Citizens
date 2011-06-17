@@ -13,7 +13,7 @@ import com.nijikokun.register.payment.Method.MethodAccount;
 
 public class ServerEconomyInterface {
 
-	public static String addendum = ".econplugin";
+	public static final String addendum = ".econplugin";
 
 	/**
 	 * Uses the iConomy methods to check whether a player has enough in their
@@ -24,11 +24,7 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static boolean playerHasEnough(String name, double amount) {
-		if (Citizens.economy.hasAccount(name)) {
-			return Citizens.economy.getAccount(name).hasEnough(amount);
-		} else {
-			return false;
-		}
+        return Citizens.economy.hasAccount(name) && Citizens.economy.getAccount(name).hasEnough(amount);
 	}
 
 	/**

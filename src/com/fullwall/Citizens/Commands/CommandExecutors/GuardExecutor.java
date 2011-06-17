@@ -34,7 +34,7 @@ public class GuardExecutor implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		HumanNPC npc = null;
+		HumanNPC npc;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
@@ -224,9 +224,9 @@ public class GuardExecutor implements CommandExecutor {
 		if (list.isEmpty()) {
 			player.sendMessage(ChatColor.RED + "No mobs blacklisted");
 		} else {
-			for (int x = 0; x < list.size(); x++) {
-				player.sendMessage(ChatColor.RED + list.get(x));
-			}
+            for (String aList : list) {
+                player.sendMessage(ChatColor.RED + aList);
+            }
 		}
 	}
 
@@ -245,9 +245,9 @@ public class GuardExecutor implements CommandExecutor {
 		if (list.isEmpty()) {
 			player.sendMessage(ChatColor.RED + "No players whitelisted.");
 		} else {
-			for (int x = 0; x < list.size(); x++) {
-				player.sendMessage(ChatColor.GREEN + list.get(x));
-			}
+            for (String aList : list) {
+                player.sendMessage(ChatColor.GREEN + aList);
+            }
 		}
 	}
 

@@ -78,8 +78,7 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 	 */
 	public void setText(String text) {
 		this.text = text;
-		return;
-	}
+    }
 
 	/**
 	 * 

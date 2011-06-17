@@ -33,7 +33,7 @@ public class ChatManager {
 		if (!hasEditMode.contains(name)) {
 			return false;
 		}
-		int option = 0;
+		int option;
 		if (StringUtils.isNumber(answer)) {
 			option = Integer.parseInt(answer);
 			if (option <= maxOptions) {

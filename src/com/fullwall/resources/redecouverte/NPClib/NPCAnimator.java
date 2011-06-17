@@ -37,8 +37,7 @@ public class NPCAnimator {
 			uncrouch();
 			break;
 		default:
-			return;
-		}
+        }
 	}
 
 	private DataWatcher getWatcher() {

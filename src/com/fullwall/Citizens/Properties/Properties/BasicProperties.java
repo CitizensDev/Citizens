@@ -24,7 +24,7 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicProperties extends PropertyManager implements Saveable {
-	public static Logger log = Logger.getLogger("Minecraft");
+	public static final Logger log = Logger.getLogger("Minecraft");
 	private final String name = ".basic.name";
 	private final String color = ".basic.color";
 	private final String items = ".basic.items";
@@ -60,12 +60,11 @@ public class BasicProperties extends PropertyManager implements Saveable {
 					+ values.length);
 			return null;
 		} else {
-			Location loc = new Location(Bukkit.getServer().getWorld(values[0]),
+			return new Location(Bukkit.getServer().getWorld(values[0]),
 					Double.parseDouble(values[1]),
 					Double.parseDouble(values[2]),
 					Double.parseDouble(values[3]), Float.parseFloat(values[4]),
 					Float.parseFloat(values[5]));
-			return loc;
 		}
 	}
 
@@ -77,14 +76,12 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveInventory(int UID, PlayerInventory inv) {
-		StringBuffer save = new StringBuffer();
+        StringBuilder save = new StringBuilder();
 		for (ItemStack i : inv.getContents()) {
 			if (i == null || i.getType() == Material.AIR) {
 				save.append("AIR,");
 			} else {
-				save.append(i.getTypeId() + "/" + i.getAmount() + "/"
-						+ ((i.getData() == null) ? 0 : i.getData().getData())
-						+ ",");
+                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/").append((i.getData() == null) ? 0 : i.getData().getData()).append(",");
 			}
 		}
 		profiles.setString(UID + inventory, save.toString());
@@ -127,9 +124,9 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveItems(int UID, ArrayList<Integer> items2) {
-		StringBuffer toSave = new StringBuffer();
+        StringBuilder toSave = new StringBuilder();
 		for (Integer i : items2) {
-			toSave.append(i + ",");
+            toSave.append(i).append(",");
 		}
 		profiles.setString(UID + items, toSave.toString());
 	}
@@ -182,22 +179,11 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		return null;
 	}
 
-	public void getSetText(int UID) {
-		String current = profiles.getString(UID + text);
-		if (!current.isEmpty()) {
-			ArrayDeque<String> texts = new ArrayDeque<String>();
-			for (String string : current.split(";")) {
-				texts.push(string);
-			}
-			NPCManager.setText(UID, texts);
-		}
-	}
-
-	private void saveText(int UID, ArrayDeque<String> texts) {
-		StringBuffer buf = new StringBuffer();
+    private void saveText(int UID, ArrayDeque<String> texts) {
+        StringBuilder buf = new StringBuilder();
 		if (texts != null) {
 			for (String string : texts) {
-				buf.append(string + ";");
+                buf.append(string).append(";");
 			}
 		}
 		profiles.setString(UID + text, buf.toString());

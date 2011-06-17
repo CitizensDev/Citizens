@@ -11,10 +11,10 @@ public class StringUtils {
 	public static String parseColour(String s) {
 		if (s.startsWith("&")) {
 			String colour = "";
-			colour = s.replace("&", "§").substring(0, 1);
+			colour = s.replace("&", "ï¿½").substring(0, 1);
 			return colour;
 		}
-		return "§f";
+		return "ï¿½f";
 	}
 
 	public static String stripColour(String toStrip) {
@@ -24,13 +24,13 @@ public class StringUtils {
 	public static ArrayDeque<String> colourise(ArrayDeque<String> text) {
 		ArrayDeque<String> newText = new ArrayDeque<String>();
 		for (String string : text) {
-			newText.add(string.replace("&", "§"));
+			newText.add(string.replace("&", "ï¿½"));
 		}
 		return newText;
 	}
 
 	public static String colourise(String string) {
-		return string.replace("&", "§");
+		return string.replace("&", "ï¿½");
 	}
 
 	public static Material parseMaterial(String material) {
@@ -49,11 +49,8 @@ public class StringUtils {
 	}
 
 	public static boolean isNumber(String material) {
-		if (material.matches("^[0-9]+$")) {
-			return true;
-		}
-		return false;
-	}
+        return material.matches("^[0-9]+$");
+    }
 
 	/**
 	 * Makes a string yellow, with a trailing green colour.

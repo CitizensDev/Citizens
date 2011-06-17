@@ -87,12 +87,7 @@ public class NPCNetHandler extends NetServerHandler {
 	public void a(Packet255KickDisconnect packet255kickdisconnect) {
 	}
 
-	@Override
-	public int b() {
-		return super.b();
-	}
-
-	@Override
+    @Override
 	public void a(Packet130UpdateSign packet130updatesign) {
 	}
 }

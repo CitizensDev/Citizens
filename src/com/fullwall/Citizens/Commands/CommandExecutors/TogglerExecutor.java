@@ -180,8 +180,7 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
-			return;
-		}
+        }
 	}
 
 	/**

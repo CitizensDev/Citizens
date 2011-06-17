@@ -13,9 +13,9 @@ public enum CreatureNPCType {
 			Constants.pirateNames,
 			new SpawnValidator(Type.INCLUDING, 8, 9),
 			new SpawnValidator(Range.DEFAULT, false));
-	private int max;
-	private String possible;
-	private Class<? extends CreatureNPC> instance;
+	private final int max;
+	private final String possible;
+	private final Class<? extends CreatureNPC> instance;
 	private final SpawnValidator spawnIn;
 	private final SpawnValidator spawnOn;
 

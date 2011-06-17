@@ -204,7 +204,6 @@ public class WizardManager {
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
-			return;
-		}
+        }
 	}
 }

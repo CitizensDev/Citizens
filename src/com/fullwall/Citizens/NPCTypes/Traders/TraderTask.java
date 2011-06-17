@@ -348,10 +348,9 @@ public class TraderTask implements Runnable {
 		if (source == null) {// sanity check
 			return null;
 		}
-		ItemStack clone = new ItemStack(source.getType(), source.getAmount(),
+		return new ItemStack(source.getType(), source.getAmount(),
 				source.getDurability(), (source.getData() != null ? source
 						.getData().getData() : null));
-		return clone;
 	}
 
 	/**

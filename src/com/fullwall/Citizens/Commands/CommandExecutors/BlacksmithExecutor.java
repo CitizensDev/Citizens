@@ -37,7 +37,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		HumanNPC npc = null;
+		HumanNPC npc;
 		boolean returnval = false;
 		if (NPCManager.validateSelected((Player) sender)) {
 			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
@@ -127,7 +127,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 	 */
 	private void buyArmorRepair(Player player, HumanNPC npc, ItemStack armor,
 			String armorName, boolean plural) {
-		String msg = "";
+		String msg;
 		if (!EconomyHandler.useEconomy()
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMORREPAIR,
 						player)) {
@@ -169,8 +169,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
 					Operation.BLACKSMITH_ARMORREPAIR, player));
-			return;
-		}
+        }
 	}
 
 	/**

@@ -20,7 +20,7 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class WizardNPC implements Toggleable, Clickable {
-	private HumanNPC npc;
+	private final HumanNPC npc;
 	private String locations = "";
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;

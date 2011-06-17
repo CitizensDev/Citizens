@@ -1,14 +1,13 @@
 package com.fullwall.Citizens.NPCTypes.Questers.Objectives;
 
 import java.util.ArrayDeque;
+import java.util.Collections;
 
 public class Objectives {
 	private final ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();
 
 	public Objectives(Objective... objectives) {
-		for (Objective obj : objectives) {
-			this.objectives.add(obj);
-		}
+        Collections.addAll(this.objectives, objectives);
 	}
 
 	public void add(Objective objective) {
