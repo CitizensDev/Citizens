@@ -62,12 +62,7 @@ public class QuestManager {
 	}
 
 	public enum RewardType {
-		HEALTH,
-		ITEM,
-		MONEY,
-		PERMISSION,
-		QUEST,
-		RANK;
+		HEALTH, ITEM, MONEY, PERMISSION, QUEST, RANK;
 	}
 
 	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
@@ -95,9 +90,10 @@ public class QuestManager {
 		}
 	}
 
-	public static void initialise() {
-		for (Player player : Bukkit.getServer().getOnlinePlayers())
+	public static void initialize() {
+		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 			load(player);
+		}
 	}
 
 	public static boolean hasQuest(Player player) {

@@ -63,7 +63,7 @@ public class Citizens extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 		// Register our commands.
-		new CommandHandler().registerCommands();
+		CommandHandler.registerCommands();
 
 		// Register our events.
 		entityListener.registerEvents();
@@ -75,7 +75,7 @@ public class Citizens extends JavaPlugin {
 		// Register files.
 		PropertyManager.registerProperties();
 
-		// Initialise Permissions.
+		// Initialize Permissions.
 		Permission.initialize(Bukkit.getServer());
 
 		// Load settings.
@@ -88,7 +88,7 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
 
-		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
+		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
 		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
 				new Runnable() {
@@ -120,7 +120,7 @@ public class Citizens extends JavaPlugin {
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
 
-		QuestManager.initialise();
+		QuestManager.initialize();
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") loaded");
 	}

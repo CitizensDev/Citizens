@@ -18,10 +18,6 @@ public class Check {
 		this.setSelling(selling);
 	}
 
-	private void setDataValue(short dataValue) {
-		this.dataValue = dataValue;
-	}
-
 	public void setItemID(int itemID) {
 		this.itemID = itemID;
 	}

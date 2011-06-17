@@ -17,15 +17,17 @@ public class CommandHandler {
 	 * 
 	 * @return
 	 */
-	public void registerCommands() {
+	public static void registerCommands() {
 		Citizens.plugin.getCommand("npc").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("citizens").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("basic").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("healer").setExecutor(new HealerExecutor());
 		Citizens.plugin.getCommand("trader").setExecutor(new TraderExecutor());
 		Citizens.plugin.getCommand("wizard").setExecutor(new WizardExecutor());
-		Citizens.plugin.getCommand("blacksmith").setExecutor(new BlacksmithExecutor());
-		Citizens.plugin.getCommand("quester").setExecutor(new QuesterExecutor());
+		Citizens.plugin.getCommand("blacksmith").setExecutor(
+				new BlacksmithExecutor());
+		Citizens.plugin.getCommand("quester")
+				.setExecutor(new QuesterExecutor());
 		Citizens.plugin.getCommand("guard").setExecutor(new GuardExecutor());
 		Citizens.plugin.getCommand("tog").setExecutor(new TogglerExecutor());
 		Citizens.plugin.getCommand("quests").setExecutor(new QuestsExecutor());
