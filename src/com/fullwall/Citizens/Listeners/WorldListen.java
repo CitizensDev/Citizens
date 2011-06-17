@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Listeners;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -20,17 +21,17 @@ public class WorldListen extends WorldListener implements Listener {
 	private final Citizens plugin;
 	private final ConcurrentHashMap<NPCLocation, Integer> toRespawn = new ConcurrentHashMap<NPCLocation, Integer>();
 
-    public WorldListen(Citizens plugin) {
+	public WorldListen(Citizens plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void registerEvents() {
-        PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.CHUNK_UNLOAD, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 		pm.registerEvent(Event.Type.CHUNK_LOAD, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 	}
 
 	@Override

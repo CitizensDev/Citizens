@@ -102,9 +102,6 @@ public class Methods {
 				manager.enablePlugin(plugin);
 			}
 
-			if (plugin == null)
-				continue;
-
 			Method current = this.createMethod(plugin);
 			if (current == null)
 				continue;

@@ -69,8 +69,8 @@ public class MessageUtils {
 		}
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
-				text = Constants.chatFormat.replace("&", "ï¿½").replace("%name%",
-						npc.getStrippedName())
+				text = Constants.chatFormat.replace("&", "ï¿½").replace(
+						"%name%", npc.getStrippedName())
 						+ text;
 			} else {
 				text = Constants.chatFormat.replace("%name%",
@@ -205,7 +205,7 @@ public class MessageUtils {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
 		if (text.equals(Constants.defaultText)) {
-			return text.replace('&', 'ï¿½');
+			return text.replace('&', '§');
 		}
 		return text;
 	}

@@ -25,11 +25,10 @@ public class NPCManager {
 	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
 	public static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
-	private static final NPCList list;
+	private static NPCList list = new NPCList();
 
 	public NPCManager(Citizens plugin) {
 		this.plugin = plugin;
-		list = new NPCList();
 	}
 
 	/**
@@ -251,9 +250,9 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p) {
-        return selectedNPCs.get(p.getName()) != null
-                && !selectedNPCs.get(p.getName()).toString().isEmpty();
-    }
+		return selectedNPCs.get(p.getName()) != null
+				&& !selectedNPCs.get(p.getName()).toString().isEmpty();
+	}
 
 	/**
 	 * Checks if the player has selected the given npc.
@@ -283,8 +282,10 @@ public class NPCManager {
 	 */
 	public static boolean validateOwnership(Player player, int UID,
 			String permission) {
-        return Permission.generic(player, permission.replace("citizens.", "citizens.admin.")) || validateOwnership(player, UID);
-    }
+		return Permission.generic(player,
+				permission.replace("citizens.", "citizens.admin."))
+				|| validateOwnership(player, UID);
+	}
 
 	/**
 	 * Checks if a player owns a given npc.
@@ -294,6 +295,6 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateOwnership(Player player, int UID) {
-        return get(UID).getOwner().equals(player.getName());
-    }
+		return get(UID).getOwner().equals(player.getName());
+	}
 }

@@ -17,7 +17,6 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCDataManager;
-import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -76,12 +75,17 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveInventory(int UID, PlayerInventory inv) {
-        StringBuilder save = new StringBuilder();
+		StringBuilder save = new StringBuilder();
 		for (ItemStack i : inv.getContents()) {
 			if (i == null || i.getType() == Material.AIR) {
 				save.append("AIR,");
 			} else {
-                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/").append((i.getData() == null) ? 0 : i.getData().getData()).append(",");
+				save.append(i.getTypeId())
+						.append("/")
+						.append(i.getAmount())
+						.append("/")
+						.append((i.getData() == null) ? 0 : i.getData()
+								.getData()).append(",");
 			}
 		}
 		profiles.setString(UID + inventory, save.toString());
@@ -124,9 +128,9 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveItems(int UID, ArrayList<Integer> items2) {
-        StringBuilder toSave = new StringBuilder();
+		StringBuilder toSave = new StringBuilder();
 		for (Integer i : items2) {
-            toSave.append(i).append(",");
+			toSave.append(i).append(",");
 		}
 		profiles.setString(UID + items, toSave.toString());
 	}
@@ -179,11 +183,11 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		return null;
 	}
 
-    private void saveText(int UID, ArrayDeque<String> texts) {
-        StringBuilder buf = new StringBuilder();
+	private void saveText(int UID, ArrayDeque<String> texts) {
+		StringBuilder buf = new StringBuilder();
 		if (texts != null) {
 			for (String string : texts) {
-                buf.append(string).append(";");
+				buf.append(string).append(";");
 			}
 		}
 		profiles.setString(UID + text, buf.toString());

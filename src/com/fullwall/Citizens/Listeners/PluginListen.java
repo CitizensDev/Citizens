@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -14,7 +15,7 @@ import com.nijikokun.register.payment.Methods;
 
 public class PluginListen extends ServerListener implements Listener {
 	private final Citizens plugin;
-    private final Methods methods;
+	private final Methods methods;
 
 	public PluginListen(Citizens plugin) {
 		this.plugin = plugin;
@@ -23,11 +24,11 @@ public class PluginListen extends ServerListener implements Listener {
 
 	@Override
 	public void registerEvents() {
-        PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLUGIN_ENABLE, this,
-                Event.Priority.Monitor, plugin);
+				Event.Priority.Monitor, plugin);
 		pm.registerEvent(Event.Type.PLUGIN_DISABLE, this,
-                Event.Priority.Monitor, plugin);
+				Event.Priority.Monitor, plugin);
 	}
 
 	@Override

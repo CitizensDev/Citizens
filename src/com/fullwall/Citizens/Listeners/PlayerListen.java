@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,23 +20,23 @@ import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 public class PlayerListen extends PlayerListener implements Listener {
 	private final Citizens plugin;
 
-    public PlayerListen(Citizens plugin) {
+	public PlayerListen(Citizens plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void registerEvents() {
-        PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
-                Event.Priority.Normal, plugin);
+				Event.Priority.Normal, plugin);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 	}
 
 	@Override
@@ -68,7 +69,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 			return;
 		}
 		String msg = event.getMessage();
-		if (ChatManager.isValidAnswer(name, msg, ChatManager.getMaxOptions(ChatManager.currentQuestion))) {
+		if (ChatManager.isValidAnswer(name, msg,
+				ChatManager.getMaxOptions(ChatManager.currentQuestion))) {
 			event.setCancelled(true);
 		}
 	}
