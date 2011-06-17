@@ -96,7 +96,7 @@ public class CraftNPC extends PathNPC {
 	}
 
 	public void applyGravity() {
-		if (Citizens.initialised
+		if (Citizens.initialized
 				&& chunkLoaded()
 				&& (!this.onGround || ((Player) this.getBukkitEntity())
 						.getEyeLocation().getY() % 1 <= 0.62)) {

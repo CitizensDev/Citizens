@@ -24,8 +24,8 @@ public class CreatureTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new ConcurrentHashMap<Integer, CreatureNPC>();
 	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
 			CreatureNPCType.class);
-	public static boolean dirty = true;
 	private Player[] online;
+	private static boolean dirty = true;
 
 	@Override
 	public void run() {
@@ -37,8 +37,9 @@ public class CreatureTask implements Runnable {
 			Player player = online[new Random().nextInt(online.length)];
 			// TODO - work out best method of getting creature type to spawn
 			// (perhaps randomly?).
-			CreatureNPCType type = CreatureNPCType.values()[new Random()
-					.nextInt(CreatureNPCType.values().length)];
+			CreatureNPCType type = CreatureNPCType.values()[new Random(
+					System.currentTimeMillis()).nextInt(CreatureNPCType
+					.values().length)];
 			if (spawned.get(type) == null) {
 				spawned.put(type, 0);
 			} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
@@ -57,55 +58,34 @@ public class CreatureTask implements Runnable {
 		creatureNPC.onSpawn();
 	}
 
+	private int getRandomInt(Random random, int max) {
+		int ran = random.nextInt(max);
+		return random.nextBoolean() ? -ran : ran;
+	}
+
 	private HumanNPC spawnCreature(CreatureNPCType type, Location loc) {
 		Random random = new Random(System.currentTimeMillis());
-		int offsetX = 0, offsetZ = 0;
-		int offset = 25;
-		switch (random.nextInt(7)) {
-		case 0:
-			offsetX = offset;
-			break;
-		case 1:
-			offsetZ = offset;
-			break;
-		case 2:
-			offsetX = -offset;
-			break;
-		case 3:
-			offsetZ = -offset;
-			break;
-		case 4:
-			offsetX = offset;
-			offsetZ = offset;
-			break;
-		case 5:
-			offsetX = -offset;
-			offsetZ = offset;
-			break;
-		case 6:
-			offsetX = offset;
-			offsetZ = -offset;
-			break;
-		case 7:
-			offsetX = -offset;
-			offsetZ = -offset;
-			break;
-		}
+		int offsetX = 0, offsetZ = 0, offset = 25;
+		offsetX += offset * getRandomInt(random, 2);
+		offsetZ += offset * getRandomInt(random, 2);
+
 		int startX = loc.getBlockX() + offsetX;
 		int startZ = loc.getBlockZ() + offsetZ;
 		int searchY = 3, searchXZ = 4;
+
 		World world = loc.getWorld();
 		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
 			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					if (type.spawnOn().valid(
+					if (type.spawnOn().isValid(
 							world.getBlockTypeIdAt(x, y - 1, z))
-							& type.spawnIn().valid(
+							& type.spawnIn().isValid(
 									world.getBlockTypeIdAt(x, y, z))
-							&& type.spawnIn().valid(
+							&& type.spawnIn().isValid(
 									world.getBlockTypeIdAt(x, y + 1, z))) {
 						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
-							if (spaceEntityFree(world.getChunkAt(x, z), x, y, z)) {
+							if (areEntitiesOnBlock(world.getChunkAt(x, z), x,
+									y, z)) {
 								if (canSpawn(type)) {
 									return NPCSpawner.spawnBasicHumanNpc(0,
 											UtilityProperties
@@ -133,7 +113,7 @@ public class CreatureTask implements Runnable {
 		return spawn;
 	}
 
-	private boolean spaceEntityFree(Chunk chunk, int x, int y, int z) {
+	private boolean areEntitiesOnBlock(Chunk chunk, int x, int y, int z) {
 		for (Entity entity : chunk.getEntities()) {
 			if (entity instanceof LivingEntity) {
 				Location loc = entity.getLocation();

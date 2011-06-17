@@ -84,8 +84,8 @@ public class Citizens extends JavaPlugin {
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new CreatureTask(), Constants.spawnEvilsDelay,
-				Constants.spawnEvilsDelay);
+				new CreatureTask(), Constants.spawnTaskDelay,
+				Constants.spawnTaskDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
 		plugin = this;

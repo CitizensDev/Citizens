@@ -17,7 +17,7 @@ public class Constants {
 	public static int maxPathingTicks = -1;
 	public static int maxWizardMana = 100;
 	public static int saveDelay = 72000;
-	public static int spawnEvilsDelay = 200;
+	public static int spawnTaskDelay = 200;
 	public static int spawnPiratesDelay = 200;
 	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;
@@ -134,8 +134,7 @@ public class Constants {
 
 		maxEvils = mobs.getInt("evil.spawn.max");
 		maxPirates = mobs.getInt("pirates.spawn.max");
-		spawnEvilsDelay = mobs.getInt("evil.spawn.delay");
-		spawnPiratesDelay = mobs.getInt("pirates.spawn.delay");
+		spawnTaskDelay = mobs.getInt("general.spawn.delay");
 		evilNPCTameItem = mobs.getInt("evil.items.tame-item");
 		evilNPCTameChance = mobs.getInt("evil.misc.tame-chance");
 		failureToTameMessages = mobs

@@ -71,7 +71,7 @@ public class SpawnValidator {
 		return this.change(Type.ALL_EXCEPT, ids);
 	}
 
-	public boolean valid(int id) {
+	public boolean isValid(int id) {
 		return get(id);
 	}
 

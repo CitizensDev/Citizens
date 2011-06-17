@@ -106,6 +106,12 @@ public class QuestFactory {
 					QuestType type = QuestType.getType(quests
 							.getString(path + ".type").toUpperCase()
 							.replace(" ", "_"));
+					if (type == null) {
+						Messaging.log("Invalid quest objective (quest "
+								+ (questCount + 1)
+								+ ") - incorrect type specified.");
+						continue;
+					}
 					Objective obj = new Objective(type);
 					if (quests.pathExists(path + ".amount"))
 						obj.setAmount(quests.getInt(path + ".amount"));
@@ -148,7 +154,7 @@ public class QuestFactory {
 				}
 				if (objectives.all().size() == 0) {
 					quest = null;
-					Messaging.log("Quest number " + questCount
+					Messaging.log("Quest number " + (questCount + 1)
 							+ " is invalid - no objectives set.");
 					continue;
 				}

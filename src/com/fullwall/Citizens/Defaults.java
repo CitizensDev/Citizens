@@ -153,8 +153,7 @@ public class Defaults {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		nodes.put("evil.spawn.spawn", "false");
 		nodes.put("pirates.spawn.spawn", "false");
-		nodes.put("evil.spawn.delay", "200");
-		nodes.put("pirates.spawn.delay", "200");
+		nodes.put("general.spawn.delay", "200");
 		nodes.put("evil.spawn.max", "2");
 		nodes.put("pirates.spawn.max", "2");
 		nodes.put("evil.misc.names",

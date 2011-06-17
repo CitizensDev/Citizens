@@ -25,6 +25,10 @@ public class Messaging {
 		log.log(level, "[Citizens]: " + message);
 	}
 
+	public static void log(boolean message) {
+		log("" + message);
+	}
+
 	public static void log(int message) {
 		log("" + message);
 	}
