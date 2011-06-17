@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -17,12 +16,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuesterExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
-
-	public QuesterExecutor(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

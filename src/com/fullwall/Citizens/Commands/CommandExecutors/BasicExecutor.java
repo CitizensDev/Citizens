@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Commands.CommandExecutors;
 
 import java.util.ArrayDeque;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -14,6 +15,7 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.NPCs.NPCDataManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
@@ -25,11 +27,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicExecutor implements CommandExecutor {
-	private final Citizens plugin;
-
-	public BasicExecutor(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
@@ -338,7 +335,7 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void create(String[] args, Player player) {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
-        StringBuilder buf = new StringBuilder();
+		StringBuilder buf = new StringBuilder();
 		if (args.length >= 3) {
 			int i = 0;
 			for (String s : args) {
@@ -346,7 +343,7 @@ public class BasicExecutor implements CommandExecutor {
 					buf.append(s);
 				}
 				if (i > 2 && !s.isEmpty() && !s.equals(";")) {
-                    buf.append(" ").append(s);
+					buf.append(" ").append(s);
 				}
 				i += 1;
 			}
@@ -442,10 +439,10 @@ public class BasicExecutor implements CommandExecutor {
 		}
 		if (Permission.isAdmin(player) && args.length == 2
 				&& args[1].equalsIgnoreCase("all")) {
-			plugin.basicNPCHandler.removeAll();
+			NPCManager.removeAll();
 			player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 		} else {
-			plugin.basicNPCHandler.remove(npc.getUID());
+			NPCManager.remove(npc.getUID());
 			player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 		}
 		NPCManager.selectedNPCs.remove(player.getName());
@@ -465,7 +462,7 @@ public class BasicExecutor implements CommandExecutor {
 						+ "Max name length is 16 - NPC name length will be truncated.");
 				name = name.substring(0, 16);
 			}
-			plugin.basicNPCHandler.rename(npc.getUID(), name, npc.getOwner());
+			NPCManager.rename(npc.getUID(), name, npc.getOwner());
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.wrap(npc.getName()) + "'s name was set to "
 					+ StringUtils.wrap(name) + ".");
@@ -503,7 +500,7 @@ public class BasicExecutor implements CommandExecutor {
 				}
 			}
 			npc.getNPCData().setColour(colour);
-			plugin.basicNPCHandler.setColour(npc.getUID(), npc.getOwner());
+			NPCManager.setColour(npc.getUID(), npc.getOwner());
 			player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
 					+ "}'s name " + args[0] + " is now "
 					+ args[1].replace("&", "�") + "this}."));
@@ -566,7 +563,7 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			i += 1;
 		}
-		plugin.basicNPCHandler.addText(npc.getUID(), text);
+		NPCManager.addText(npc.getUID(), text);
 		player.sendMessage(StringUtils.wrap(text) + " was added to "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
 	}
@@ -608,7 +605,7 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void setItemInHand(Player player, HumanNPC npc, String name) {
 		if (npc != null) {
-			plugin.basicNPCHandler.setItemInHand(player, npc, name);
+			NPCDataManager.setItemInHand(player, npc, name);
 		} else {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 		}
@@ -623,7 +620,7 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void setArmor(Player player, HumanNPC npc, String[] args) {
 		if (npc != null) {
-			plugin.basicNPCHandler.setItemInSlot(args, player, npc);
+			NPCDataManager.setItemInSlot(args, player, npc);
 		} else {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 		}
@@ -720,8 +717,8 @@ public class BasicExecutor implements CommandExecutor {
 	 */
 	private void reload(Player player) {
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
-		plugin.getServer().getPluginManager().disablePlugin(plugin);
-		plugin.getServer().getPluginManager().enablePlugin(plugin);
+		Bukkit.getServer().getPluginManager().disablePlugin(Citizens.plugin);
+		Bukkit.getServer().getPluginManager().enablePlugin(Citizens.plugin);
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
 	}
 

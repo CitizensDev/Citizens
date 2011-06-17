@@ -14,13 +14,10 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
 public class TickTask implements Runnable {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
 	// How far an NPC can 'see'
 	private final double range;
 
-	public TickTask(Citizens plugin, double range) {
-		this.plugin = plugin;
+	public TickTask(double range) {
 		// range is checked in both directions, so we halve the passed range.
 		this.range = range / 2;
 	}

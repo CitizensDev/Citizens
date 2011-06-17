@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
@@ -21,7 +22,7 @@ public class CustomListen extends CustomEventListener implements Listener {
 
 	@Override
 	public void registerEvents() {
-		pm = plugin.getServer().getPluginManager();
+		pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, this, Event.Priority.Normal,
 				plugin);
 	}

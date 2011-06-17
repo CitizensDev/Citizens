@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.bukkit.Location;
 
 public class NPCData {
-
 	private String name;
 	private int UID;
 	private Location location;

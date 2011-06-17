@@ -1,8 +1,8 @@
 package com.fullwall.Citizens.Economy;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -12,7 +12,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.register.payment.Method.MethodAccount;
 
 public class ServerEconomyInterface {
-
 	public static final String addendum = ".econplugin";
 
 	/**
@@ -24,7 +23,8 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static boolean playerHasEnough(String name, double amount) {
-        return Citizens.economy.hasAccount(name) && Citizens.economy.getAccount(name).hasEnough(amount);
+		return Citizens.economy.hasAccount(name)
+				&& Citizens.economy.getAccount(name).hasEnough(amount);
 	}
 
 	/**

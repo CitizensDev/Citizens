@@ -3,7 +3,6 @@ package com.fullwall.Citizens.Properties.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCTypes.Traders.Check;

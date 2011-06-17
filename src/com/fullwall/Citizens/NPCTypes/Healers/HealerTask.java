@@ -7,7 +7,6 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerTask implements Runnable {
-
 	@Override
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {

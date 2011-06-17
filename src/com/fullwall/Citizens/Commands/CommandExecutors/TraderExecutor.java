@@ -9,9 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.Payment;
@@ -28,13 +26,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
-
-	public TraderExecutor(Citizens plugin) {
-		this.plugin = plugin;
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String commandLabel, String[] args) {
@@ -218,8 +209,8 @@ public class TraderExecutor implements CommandExecutor {
 			if (!selling) {
 				keyword = "selling";
 			}
-			if (npc.getTrader().getStockable(stack.getTypeId(), stack.getDurability(),
-					selling) == null) {
+			if (npc.getTrader().getStockable(stack.getTypeId(),
+					stack.getDurability(), selling) == null) {
 				player.sendMessage(ChatColor.RED
 						+ "The trader is not currently " + keyword
 						+ " that item.");

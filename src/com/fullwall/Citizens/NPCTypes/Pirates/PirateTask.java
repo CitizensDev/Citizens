@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Misc.ActionManager;
 import com.fullwall.Citizens.Misc.CachedAction;
@@ -19,13 +18,6 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class PirateTask implements Runnable {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
-
-	public PirateTask(Citizens plugin) {
-		this.plugin = plugin;
-	}
-
 	@Override
 	public void run() {
 		HumanNPC npc;

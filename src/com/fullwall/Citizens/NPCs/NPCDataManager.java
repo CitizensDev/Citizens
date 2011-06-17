@@ -2,13 +2,15 @@ package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class NPCDataManager {
-
 	/**
 	 * Adds items to an npc so that they are visible.
 	 * 
@@ -45,5 +47,117 @@ public class NPCDataManager {
 			}
 			npc.getNPCData().setItems(items);
 		}
+	}
+
+	/**
+	 * Sets the in-hand item of an npc.
+	 * 
+	 * @param p
+	 * @param npc
+	 * @param material
+	 */
+	// Perhaps merge this with setItemInSlot.
+	public static void setItemInHand(Player p, HumanNPC npc, String material) {
+		Material mat = StringUtils.parseMaterial(material);
+		if (mat == null) {
+			p.sendMessage(ChatColor.RED + "Incorrect item name.");
+			return;
+		}
+		if (!p.getInventory().contains(mat)) {
+			p.sendMessage(ChatColor.RED
+					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
+			return;
+		}
+		if (npc.isTrader()) {
+			p.sendMessage(ChatColor.GRAY
+					+ "That NPC is a trader. Please put the item manually in the first slot of the trader's inventory instead.");
+			return;
+		}
+		int slot = p.getInventory().first(mat);
+		ItemStack item = decreaseItemStack(p.getInventory().getItem(slot));
+		p.getInventory().setItem(slot, item);
+
+		ArrayList<Integer> items = npc.getNPCData().getItems();
+
+		int olditem = items.get(0);
+		items.set(0, mat.getId());
+
+		npc.getNPCData().setItems(items);
+
+		if (mat != null && mat != Material.AIR) {
+			npc.getInventory().setItem(0, new ItemStack(mat, 1));
+		} else {
+			npc.getInventory().setItem(0, null);
+		}
+
+		NPCDataManager.addItems(npc, items);
+
+		if ((olditem != 0 && items.get(0) == 0)) {
+			NPCManager.removeForRespawn(npc.getUID());
+			NPCManager.register(npc.getUID(), npc.getOwner());
+		}
+		p.sendMessage(StringUtils.wrap(npc.getName())
+				+ "'s in-hand item was set to " + StringUtils.wrap(mat.name())
+				+ ".");
+	}
+
+	/**
+	 * Sets a given armour type to a material.
+	 * 
+	 * @param args
+	 * @param p
+	 * @param npc
+	 */
+	public static void setItemInSlot(String[] args, Player p, HumanNPC npc) {
+		Material mat = StringUtils.parseMaterial(args[1]);
+		if (mat == null) {
+			p.sendMessage(ChatColor.RED + "Incorrect item name.");
+			return;
+		}
+		if (!p.getInventory().contains(mat)) {
+			p.sendMessage(ChatColor.RED
+					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
+			return;
+		}
+		if (mat.getId() < 298 || mat.getId() > 317) {
+			p.sendMessage(ChatColor.GRAY
+					+ "That can't be used as an armour material.");
+			return;
+		}
+		int slot = p.getInventory().first(mat);
+		ItemStack item = decreaseItemStack(p.getInventory().getItem(slot));
+		p.getInventory().setItem(slot, item);
+		ArrayList<Integer> items = npc.getNPCData().getItems();
+		int oldhelmet = items.get(1);
+
+		if (args[0].contains("helm")) {
+			items.set(1, mat.getId());
+		} else if (args[0].equalsIgnoreCase("torso")) {
+			items.set(2, mat.getId());
+		} else if (args[0].contains("leg")) {
+			items.set(3, mat.getId());
+		} else if (args[0].contains("boot")) {
+			items.set(4, mat.getId());
+		}
+		npc.getNPCData().setItems(items);
+		NPCDataManager.addItems(npc, items);
+
+		if ((oldhelmet != 0 && items.get(1) == 0)) {
+			// Despawn the old NPC, register our new one.
+			NPCManager.removeForRespawn(npc.getUID());
+			NPCManager.register(npc.getUID(), npc.getOwner());
+		}
+		p.sendMessage(StringUtils.wrap(npc.getName()) + "'s " + args[0]
+				+ " was set to " + StringUtils.wrap(mat.name()) + ".");
+	}
+
+	public static ItemStack decreaseItemStack(ItemStack stack) {
+		int amount = stack.getAmount() - 1;
+		if (amount == 0) {
+			stack = null;
+		} else {
+			stack.setAmount(amount);
+		}
+		return stack;
 	}
 }

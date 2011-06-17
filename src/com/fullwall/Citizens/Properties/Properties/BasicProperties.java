@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Properties.Properties;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 import net.minecraft.server.InventoryPlayer;
@@ -174,10 +175,8 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	public ArrayDeque<String> getText(int UID) {
 		String current = profiles.getString(UID + text);
 		if (!current.isEmpty()) {
-			ArrayDeque<String> texts = new ArrayDeque<String>();
-			for (String string : current.split(";")) {
-				texts.push(string);
-			}
+			ArrayDeque<String> texts = new ArrayDeque<String>(
+					Arrays.asList(current.split(";")));
 			return texts;
 		}
 		return null;
@@ -222,7 +221,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	public int getNewNpcID() {
 		int count = 0;
 		while (profiles.pathExists(count)) {
-			count++;
+			++count;
 		}
 		return count;
 	}

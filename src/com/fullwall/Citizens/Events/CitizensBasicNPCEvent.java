@@ -8,7 +8,6 @@ import org.bukkit.event.Event;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class CitizensBasicNPCEvent extends Event implements Cancellable {
-
 	/**
 	 * The serial ID of this event.
 	 */
@@ -78,7 +77,7 @@ public class CitizensBasicNPCEvent extends Event implements Cancellable {
 	 */
 	public void setText(String text) {
 		this.text = text;
-    }
+	}
 
 	/**
 	 * 

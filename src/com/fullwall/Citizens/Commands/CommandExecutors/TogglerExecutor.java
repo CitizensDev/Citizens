@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -18,12 +17,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TogglerExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
-
-	public TogglerExecutor(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
@@ -180,7 +173,7 @@ public class TogglerExecutor implements CommandExecutor {
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
-        }
+		}
 	}
 
 	/**

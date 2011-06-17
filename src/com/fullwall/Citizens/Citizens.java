@@ -18,7 +18,6 @@ import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
-import com.fullwall.Citizens.NPCs.BasicNPCHandler;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
@@ -36,7 +35,6 @@ public class Citizens extends JavaPlugin {
 	private final WorldListen worldListener = new WorldListen(this);
 	private final PluginListen serverListener = new PluginListen(this);
 	private final PlayerListen playerListener = new PlayerListen(this);
-	public final BasicNPCHandler basicNPCHandler = new BasicNPCHandler(this);
 
 	public static Citizens plugin;
 
@@ -54,7 +52,7 @@ public class Citizens extends JavaPlugin {
 		// Save the local copy of our files to disk.
 		PropertyManager.stateSave();
 
-		basicNPCHandler.despawnAll();
+		NPCManager.despawnAll();
 		CreatureTask.despawnAll();
 
 		Messaging.log("version [" + getVersion() + "] (" + codename
@@ -63,8 +61,9 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		plugin = this;
 		// Register our commands.
-		new CommandHandler(this).registerCommands();
+		new CommandHandler().registerCommands();
 
 		// Register our events.
 		entityListener.registerEvents();
@@ -88,7 +87,6 @@ public class Citizens extends JavaPlugin {
 				Constants.spawnTaskDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
-		plugin = this;
 
 		// Reinitialise existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
@@ -106,10 +104,10 @@ public class Citizens extends JavaPlugin {
 
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(this, Constants.npcRange), Constants.tickDelay,
+				new TickTask(Constants.npcRange), Constants.tickDelay,
 				Constants.tickDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new GuardTask(this), Constants.tickDelay, Constants.tickDelay);
+				new GuardTask(), Constants.tickDelay, Constants.tickDelay);
 		if (Constants.useSaveTask) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
@@ -221,5 +219,4 @@ public class Citizens extends JavaPlugin {
 		}
 		return true;
 	}
-
 }

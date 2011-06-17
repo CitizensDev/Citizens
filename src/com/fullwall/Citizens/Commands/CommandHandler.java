@@ -12,29 +12,22 @@ import com.fullwall.Citizens.Commands.CommandExecutors.TraderExecutor;
 import com.fullwall.Citizens.Commands.CommandExecutors.WizardExecutor;
 
 public class CommandHandler {
-	private final Citizens plugin;
-
-	public CommandHandler(Citizens plugin) {
-		this.plugin = plugin;
-	}
-
 	/**
 	 * Register our commands
 	 * 
 	 * @return
 	 */
 	public void registerCommands() {
-		plugin.getCommand("npc").setExecutor(new BasicExecutor(plugin));
-		plugin.getCommand("citizens").setExecutor(new BasicExecutor(plugin));
-		plugin.getCommand("basic").setExecutor(new BasicExecutor(plugin));
-		plugin.getCommand("healer").setExecutor(new HealerExecutor(plugin));
-		plugin.getCommand("trader").setExecutor(new TraderExecutor(plugin));
-		plugin.getCommand("wizard").setExecutor(new WizardExecutor(plugin));
-		plugin.getCommand("blacksmith").setExecutor(
-				new BlacksmithExecutor(plugin));
-		plugin.getCommand("quester").setExecutor(new QuesterExecutor(plugin));
-		plugin.getCommand("guard").setExecutor(new GuardExecutor(plugin));
-		plugin.getCommand("tog").setExecutor(new TogglerExecutor(plugin));
-		plugin.getCommand("quests").setExecutor(new QuestsExecutor(plugin));
+		Citizens.plugin.getCommand("npc").setExecutor(new BasicExecutor());
+		Citizens.plugin.getCommand("citizens").setExecutor(new BasicExecutor());
+		Citizens.plugin.getCommand("basic").setExecutor(new BasicExecutor());
+		Citizens.plugin.getCommand("healer").setExecutor(new HealerExecutor());
+		Citizens.plugin.getCommand("trader").setExecutor(new TraderExecutor());
+		Citizens.plugin.getCommand("wizard").setExecutor(new WizardExecutor());
+		Citizens.plugin.getCommand("blacksmith").setExecutor(new BlacksmithExecutor());
+		Citizens.plugin.getCommand("quester").setExecutor(new QuesterExecutor());
+		Citizens.plugin.getCommand("guard").setExecutor(new GuardExecutor());
+		Citizens.plugin.getCommand("tog").setExecutor(new TogglerExecutor());
+		Citizens.plugin.getCommand("quests").setExecutor(new QuestsExecutor());
 	}
 }

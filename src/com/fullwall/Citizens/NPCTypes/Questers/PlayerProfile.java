@@ -44,7 +44,8 @@ public class PlayerProfile {
 
 	public void setProgress(QuestProgress progress) {
 		this.progress = progress;
-		this.profile.removeKey("quests.current");
+		if (this.profile.pathExists("quests.current"))
+			this.profile.removeKey("quests.current");
 	}
 
 	public void setRank(int rank) {

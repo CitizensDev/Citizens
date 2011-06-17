@@ -21,6 +21,11 @@ public class StringUtils {
 		return ChatColor.stripColor(toStrip);
 	}
 
+	public static String capitalise(String toCapitalise) {
+		return toCapitalise.replaceFirst("" + toCapitalise.charAt(0), ""
+				+ Character.toUpperCase(toCapitalise.charAt(0)));
+	}
+
 	public static ArrayDeque<String> colourise(ArrayDeque<String> text) {
 		ArrayDeque<String> newText = new ArrayDeque<String>();
 		for (String string : text) {
@@ -49,8 +54,8 @@ public class StringUtils {
 	}
 
 	public static boolean isNumber(String material) {
-        return material.matches("^[0-9]+$");
-    }
+		return material.matches("^[0-9]+$");
+	}
 
 	/**
 	 * Makes a string yellow, with a trailing green colour.

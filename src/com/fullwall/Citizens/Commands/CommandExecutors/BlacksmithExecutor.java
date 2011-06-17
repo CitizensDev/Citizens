@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -22,12 +21,6 @@ import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
-
-	public BlacksmithExecutor(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
@@ -169,7 +162,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
 					Operation.BLACKSMITH_ARMORREPAIR, player));
-        }
+		}
 	}
 
 	/**

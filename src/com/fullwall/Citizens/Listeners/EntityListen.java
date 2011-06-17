@@ -1,5 +1,6 @@
 package com.fullwall.Citizens.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -29,19 +30,19 @@ import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTarget
 public class EntityListen extends EntityListener implements Listener {
 	private final Citizens plugin;
 
-    public EntityListen(final Citizens plugin) {
+	public EntityListen(final Citizens plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void registerEvents() {
-        PluginManager pm = plugin.getServer().getPluginManager();
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 		pm.registerEvent(Event.Type.ENTITY_TARGET, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this, Event.Priority.Normal,
-                plugin);
+				plugin);
 	}
 
 	@Override

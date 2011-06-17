@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 
 import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Permission;
@@ -46,8 +45,9 @@ public class TraderNPC implements Toggleable, Clickable {
 	}
 
 	public void addStockable(Stockable s) {
-		stocking.put(new Check(s.getStockingId(), s.getStockingDataValue(),
-				s.isSelling()), s);
+		stocking.put(
+				new Check(s.getStockingId(), s.getStockingDataValue(), s
+						.isSelling()), s);
 	}
 
 	public Stockable fetchStockable(int itemID, short dataValue, boolean selling) {
@@ -104,25 +104,27 @@ public class TraderNPC implements Toggleable, Clickable {
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.getStockingDataValue(), s.isSelling());
+		return isStocked(s.getStockingId(), s.getStockingDataValue(),
+				s.isSelling());
 	}
-/*
-	private boolean checkData(Stockable stockable, MaterialData second) {
-		MaterialData first = stockable.getStocking().getData();
-		int data = 0;
-		int data2 = 0;
-		if (first != null) {
-			data = first.getData();
-		}
-		if (second != null) {
-			data2 = second.getData();
-		}
-        return data == data2;
-    }
-*/
+
+	/*
+		private boolean checkData(Stockable stockable, MaterialData second) {
+			MaterialData first = stockable.getStocking().getData();
+			int data = 0;
+			int data2 = 0;
+			if (first != null) {
+				data = first.getData();
+			}
+			if (second != null) {
+				data2 = second.getData();
+			}
+	        return data == data2;
+	    }
+	*/
 	public boolean checkStockingIntegrity() {
-        return !(this.stocking == null || this.stocking.isEmpty());
-    }
+		return !(this.stocking == null || this.stocking.isEmpty());
+	}
 
 	public void setFree(boolean free) {
 		this.free = free;

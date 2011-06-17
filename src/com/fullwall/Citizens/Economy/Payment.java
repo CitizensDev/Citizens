@@ -5,7 +5,6 @@ import org.bukkit.inventory.ItemStack;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 
 public class Payment {
-
 	private double price;
 	private ItemStack item;
 	private boolean iConomy;

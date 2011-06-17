@@ -1,7 +1,6 @@
 package com.fullwall.Citizens.Interfaces;
 
 public interface Storage {
-
 	public void load();
 
 	public void save();

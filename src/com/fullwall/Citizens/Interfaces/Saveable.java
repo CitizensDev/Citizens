@@ -4,7 +4,6 @@ import com.fullwall.Citizens.Properties.PropertyManager.PropertyType;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public interface Saveable {
-
 	/**
 	 * Save the state of an NPC
 	 * 

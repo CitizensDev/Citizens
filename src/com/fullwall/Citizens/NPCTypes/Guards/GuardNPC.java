@@ -14,7 +14,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardNPC implements Toggleable, Clickable {
 	private final HumanNPC npc;
-	private boolean isBodyguard = true;
+	private boolean isBodyguard = false;
 	private boolean isBouncer = false;
 	private boolean isAggressive = false;
 	private GuardType guardType = GuardType.NULL;

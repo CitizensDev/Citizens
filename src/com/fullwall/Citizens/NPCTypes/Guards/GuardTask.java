@@ -25,24 +25,18 @@ import org.bukkit.entity.Squid;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Misc.ActionManager;
 import com.fullwall.Citizens.Misc.CachedAction;
 import com.fullwall.Citizens.Misc.NPCLocation;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.PathUtils;
+import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardTask implements Runnable {
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
 	private LivingEntity entity;
 	private final static Map<String, NPCLocation> toRespawn = new HashMap<String, NPCLocation>();
-
-	public GuardTask(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public void run() {
@@ -169,32 +163,29 @@ public class GuardTask implements Runnable {
 
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
-		if (npc.getGuard().isBouncer()) {
+		GuardNPC guard = npc.getGuard();
+		if (guard.isBouncer()) {
 			CachedAction cached = ActionManager.getAction(entityID, name);
 			if (!cached.has("attemptedEntry")) {
 				if (isBlacklisted(npc, name)
-						|| (entity instanceof Player && !((Player) entity)
-								.getName().equals(npc.getOwner()))) {
+						|| (entity instanceof Player && !name.equals(npc
+								.getOwner()))) {
 					attack(entity, npc);
 				}
 				cached.set("attemptedEntry");
 			}
 			ActionManager.putAction(entityID, name, cached);
-		} else if (npc.getGuard().isBodyguard()) {
-			String mob = getTypeFromEntity(entity);
-			if (npc.getGuard().isAggressive()) {
+		} else if (guard.isBodyguard()) {
+			if (guard.isAggressive()) {
 				if (entity instanceof Player) {
-					if (!npc.getGuard().getWhitelist().contains(name)
-							&& !npc.getGuard().getWhitelist().contains("all")) {
+					if (!guard.getWhitelist().contains(name)
+							&& !guard.getWhitelist().contains("all")) {
 						attack(entity, npc);
 					}
 				} else if (!(entity instanceof Player)
-						&& CreatureType.fromName(mob.replaceFirst(
-								"" + mob.charAt(0),
-								"" + Character.toUpperCase(mob.charAt(0)))) != null) {
-					if (npc.getGuard().getBlacklist()
-							.contains(getTypeFromEntity(entity))
-							|| npc.getGuard().getBlacklist().contains("all")) {
+						&& CreatureType.fromName(StringUtils.capitalise(name)) != null) {
+					if (guard.getBlacklist().contains(name)
+							|| guard.getBlacklist().contains("all")) {
 						attack(entity, npc);
 					}
 				}
@@ -214,8 +205,8 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-        return npc.getGuard().getBlacklist().contains(name);
-    }
+		return npc.getGuard().getBlacklist().contains(name);
+	}
 
 	/**
 	 * Attack a player/mob if they enter a bouncer's protection zone

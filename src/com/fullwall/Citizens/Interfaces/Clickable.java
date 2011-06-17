@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public interface Clickable {
-
 	/**
 	 * Left-clicking an NPC
 	 * 

@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Properties.PropertyManager;
@@ -19,17 +18,10 @@ import com.fullwall.resources.redecouverte.NPClib.NPCList;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 
 public class NPCManager {
-
-	@SuppressWarnings("unused")
-	private final Citizens plugin;
 	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
 	public static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	private static NPCList list = new NPCList();
-
-	public NPCManager(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	/**
 	 * Spawns a new npc and registers it.
@@ -197,11 +189,17 @@ public class NPCManager {
 	 * 
 	 * @param UID
 	 */
-	public void remove(int UID) {
+	public static void remove(int UID) {
 		PropertyManager.remove(get(UID));
 		GlobalUIDs.remove(UID);
 		NPCSpawner.removeBasicHumanNpc(list.get(UID));
 		list.remove(UID);
+	}
+
+	public static void removeAll() {
+		for (Integer i : GlobalUIDs.keySet()) {
+			remove(i);
+		}
 	}
 
 	/**
@@ -296,5 +294,56 @@ public class NPCManager {
 	 */
 	public static boolean validateOwnership(Player player, int UID) {
 		return get(UID).getOwner().equals(player.getName());
+	}
+
+	/**
+	 * Renames an npc.
+	 * 
+	 * @param UID
+	 * @param changeTo
+	 * @param owner
+	 */
+	public static void rename(int UID, String changeTo, String owner) {
+		HumanNPC n = get(UID);
+		PropertyManager.getBasic().saveName(UID, changeTo);
+		n.getNPCData().setName(changeTo);
+		removeForRespawn(UID);
+		register(UID, owner);
+	}
+
+	/**
+	 * Sets the colour of an npc's name.
+	 * 
+	 * @param UID
+	 * @param colourChange
+	 * @param owner
+	 */
+	public static void setColour(int UID, String owner) {
+		removeForRespawn(UID);
+		register(UID, owner);
+	}
+
+	/**
+	 * Adds to an npc's text.
+	 * 
+	 * @param UID
+	 * @param text
+	 */
+	public static void addText(int UID, String text) {
+		ArrayDeque<String> texts = getText(UID);
+		if (texts == null) {
+			texts = new ArrayDeque<String>();
+		}
+		texts.add(text);
+		setText(UID, texts);
+	}
+
+	/**
+	 * Despawns all npcs.
+	 */
+	public static void despawnAll() {
+		for (Integer i : GlobalUIDs.keySet()) {
+			despawn(i);
+		}
 	}
 }

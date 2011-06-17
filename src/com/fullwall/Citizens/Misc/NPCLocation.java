@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class NPCLocation {
-
 	private final int x;
 	private final int y;
 	private final int z;

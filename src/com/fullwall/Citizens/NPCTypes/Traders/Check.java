@@ -18,6 +18,10 @@ public class Check {
 		this.setSelling(selling);
 	}
 
+	private void setDataValue(short dataValue) {
+		this.dataValue = dataValue;
+	}
+
 	public void setItemID(int itemID) {
 		this.itemID = itemID;
 	}
@@ -26,7 +30,7 @@ public class Check {
 		this.selling = selling;
 	}
 
-    @Override
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -54,7 +58,7 @@ public class Check {
 			return false;
 		}
 		Check other = (Check) obj;
-		return itemID == other.itemID && dataValue == other.dataValue &&
-				selling == other.selling;
-   }
+		return itemID == other.itemID && dataValue == other.dataValue
+				&& selling == other.selling;
+	}
 }
