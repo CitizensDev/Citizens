@@ -123,7 +123,6 @@ public class Constants {
 		// ####Mob settings####
 		Storage mobs = UtilityProperties.getMobSettings();
 
-		// Load evils.
 		evilNames = mobs.getString("evil.misc.names");
 		pirateNames = mobs.getString("pirates.misc.names");
 

@@ -13,18 +13,12 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.Messaging;
 
 public class CustomListen extends CustomEventListener implements Listener {
-	private final Citizens plugin;
-	private PluginManager pm;
-
-	public CustomListen(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public void registerEvents() {
-		pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.CUSTOM_EVENT, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 	}
 
 	@Override

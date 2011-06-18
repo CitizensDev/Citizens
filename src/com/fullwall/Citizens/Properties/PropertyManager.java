@@ -18,7 +18,7 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 public class PropertyManager {
 	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
 	protected static final ConfigurationHandler profiles = new ConfigurationHandler(
-			"plugins/Citizens/profiles.yml");
+			"plugins/Citizens/npc-profiles.yml");
 
 	public enum PropertyType {
 		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, GUARD;

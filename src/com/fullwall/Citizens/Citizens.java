@@ -12,7 +12,7 @@ import com.fullwall.Citizens.Commands.CommandHandler;
 import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PlayerListen;
-import com.fullwall.Citizens.Listeners.PluginListen;
+import com.fullwall.Citizens.Listeners.ServerListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
@@ -26,25 +26,17 @@ import com.nijikokun.register.payment.Method;
 
 /**
  * Citizens for Bukkit
- * 
- * @author fullwall
  */
 public class Citizens extends JavaPlugin {
-	private final EntityListen entityListener = new EntityListen(this);
-	private final CustomListen customListener = new CustomListen(this);
-	private final WorldListen worldListener = new WorldListen(this);
-	private final PluginListen serverListener = new PluginListen(this);
-	private final PlayerListen playerListener = new PlayerListen(this);
-
 	public static Citizens plugin;
 
 	public static Method economy;
 
 	public static final String separatorChar = "/";
 
-	private static final String codename = "Realist";
-	private static final String letter = "h";
-	private static final String version = "1.0.8" + letter;
+	private static final String codename = "Riot";
+	private static final String letter = "";
+	private static final String version = "1.0.9" + letter;
 	public static boolean initialized = false;
 
 	@Override
@@ -66,11 +58,11 @@ public class Citizens extends JavaPlugin {
 		CommandHandler.registerCommands();
 
 		// Register our events.
-		entityListener.registerEvents();
-		customListener.registerEvents();
-		worldListener.registerEvents();
-		serverListener.registerEvents();
-		playerListener.registerEvents();
+		new EntityListen().registerEvents();
+		new CustomListen().registerEvents();
+		new WorldListen().registerEvents();
+		new ServerListen().registerEvents();
+		new PlayerListen().registerEvents();
 
 		// Register files.
 		PropertyManager.registerProperties();

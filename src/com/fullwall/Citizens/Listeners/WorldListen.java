@@ -18,20 +18,15 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 
 public class WorldListen extends WorldListener implements Listener {
-	private final Citizens plugin;
 	private final ConcurrentHashMap<NPCLocation, Integer> toRespawn = new ConcurrentHashMap<NPCLocation, Integer>();
-
-	public WorldListen(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.CHUNK_UNLOAD, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 		pm.registerEvent(Event.Type.CHUNK_LOAD, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 	}
 
 	@Override

@@ -18,25 +18,20 @@ import com.fullwall.Citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
-	private final Citizens plugin;
-
-	public PlayerListen(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_JOIN, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
-				Event.Priority.Normal, plugin);
+				Event.Priority.Normal, Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 	}
 
 	@Override

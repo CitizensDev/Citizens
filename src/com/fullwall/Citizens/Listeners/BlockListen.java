@@ -12,19 +12,14 @@ import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 
 public class BlockListen extends BlockListener implements Listener {
-	private final Citizens plugin;
-
-	public BlockListen(Citizens plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.BLOCK_BREAK, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, this, Event.Priority.Normal,
-				plugin);
+				Citizens.plugin);
 	}
 
 	@Override
