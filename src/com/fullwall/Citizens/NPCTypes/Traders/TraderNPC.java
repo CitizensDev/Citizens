@@ -109,19 +109,11 @@ public class TraderNPC implements Toggleable, Clickable {
 	}
 
 	/*
-		private boolean checkData(Stockable stockable, MaterialData second) {
-			MaterialData first = stockable.getStocking().getData();
-			int data = 0;
-			int data2 = 0;
-			if (first != null) {
-				data = first.getData();
-			}
-			if (second != null) {
-				data2 = second.getData();
-			}
-	        return data == data2;
-	    }
-	*/
+	 * private boolean checkData(Stockable stockable, MaterialData second) {
+	 * MaterialData first = stockable.getStocking().getData(); int data = 0; int
+	 * data2 = 0; if (first != null) { data = first.getData(); } if (second !=
+	 * null) { data2 = second.getData(); } return data == data2; }
+	 */
 	public boolean checkStockingIntegrity() {
 		return !(this.stocking == null || this.stocking.isEmpty());
 	}

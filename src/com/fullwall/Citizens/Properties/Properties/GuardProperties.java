@@ -46,30 +46,30 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	private List<String> getBlacklist(int UID) {
 		String save = profiles.getString(UID + blacklist);
 		List<String> mobs = new ArrayList<String>();
-        Collections.addAll(mobs, save.split(","));
+		Collections.addAll(mobs, save.split(","));
 		return mobs;
 	}
 
 	private void saveBlacklist(int UID, List<String> mobs) {
 		String save = "";
-        for (String mob : mobs) {
-            save += mob + ",";
-        }
+		for (String mob : mobs) {
+			save += mob + ",";
+		}
 		profiles.setString(UID + blacklist, save);
 	}
 
 	private List<String> getWhitelist(int UID) {
 		String save = profiles.getString(UID + whitelist);
 		List<String> players = new ArrayList<String>();
-        Collections.addAll(players, save.split(","));
+		Collections.addAll(players, save.split(","));
 		return players;
 	}
 
 	private void saveWhitelist(int UID, List<String> players) {
 		String save = "";
-        for (String player : players) {
-            save += player + ",";
-        }
+		for (String player : players) {
+			save += player + ",";
+		}
 		profiles.setString(UID + whitelist, save);
 	}
 

@@ -19,8 +19,8 @@ public class LocationUtils {
 		}
 		double pX = pLoc.getX(), pY = pLoc.getY(), pZ = pLoc.getZ();
 		double lX = loc.getX(), lY = loc.getY(), lZ = loc.getZ();
-        return (pX <= lX + range && pX >= lX - range)
-                && (pY >= lY - range && pY <= lY + range)
-                && (pZ >= lZ - range && pZ <= lZ + range);
-    }
+		return (pX <= lX + range && pX >= lX - range)
+				&& (pY >= lY - range && pY <= lY + range)
+				&& (pZ >= lZ - range && pZ <= lZ + range);
+	}
 }

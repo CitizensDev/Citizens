@@ -118,18 +118,11 @@ public class SpawnValidator {
 
 	public static class Spawn {
 		public enum Range {
-			ALL,
-			DEFAULT,
-			LIQUIDS;
+			ALL, DEFAULT, LIQUIDS;
 		}
 
 		public enum Type {
-			ALL_EXCEPT,
-			BETWEEN,
-			INCLUDING,
-			JUST,
-			NOT,
-			NOT_BETWEEN;
+			ALL_EXCEPT, BETWEEN, INCLUDING, JUST, NOT, NOT_BETWEEN;
 		}
 	}
 }

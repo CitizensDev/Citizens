@@ -12,10 +12,7 @@ public class NPCAnimator {
 	private final PathNPC npc;
 
 	public enum Action {
-		ACT_HURT,
-		CROUCH,
-		SWING_ARM,
-		UNCROUCH;
+		ACT_HURT, CROUCH, SWING_ARM, UNCROUCH;
 	}
 
 	public NPCAnimator(PathNPC pathNPC) {
@@ -37,7 +34,7 @@ public class NPCAnimator {
 			uncrouch();
 			break;
 		default:
-        }
+		}
 	}
 
 	private DataWatcher getWatcher() {

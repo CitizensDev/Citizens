@@ -41,22 +41,29 @@ public class Permission {
 
 	public static boolean canCreate(Player player, String type) {
 		if (permissionsEnabled) {
-            return isAdmin(player) || permission(player, "citizens.create." + type);
-        }
+			return isAdmin(player)
+					|| permission(player, "citizens.create." + type);
+		}
 		return player.isOp();
 	}
 
 	public static boolean canModify(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
-            return (isAdmin(player)) || (npc != null && NPCManager.validateOwnership(player, npc.getUID())) || permission(player, "citizens.modify." + type);
-        }
+			return (isAdmin(player))
+					|| (npc != null && NPCManager.validateOwnership(player,
+							npc.getUID()))
+					|| permission(player, "citizens.modify." + type);
+		}
 		return player.isOp();
 	}
 
 	public static boolean canUse(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
-            return (isAdmin(player)) || (npc != null && NPCManager.validateOwnership(player, npc.getUID())) || permission(player, "citizens.use." + type);
-        }
+			return (isAdmin(player))
+					|| (npc != null && NPCManager.validateOwnership(player,
+							npc.getUID()))
+					|| permission(player, "citizens.use." + type);
+		}
 		return player.isOp();
 	}
 

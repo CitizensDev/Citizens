@@ -7,7 +7,7 @@ public class Objectives {
 	private final ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();
 
 	public Objectives(Objective... objectives) {
-        Collections.addAll(this.objectives, objectives);
+		Collections.addAll(this.objectives, objectives);
 	}
 
 	public void add(Objective objective) {

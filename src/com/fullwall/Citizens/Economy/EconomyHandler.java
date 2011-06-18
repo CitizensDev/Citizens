@@ -12,8 +12,8 @@ public class EconomyHandler {
 	private static boolean useServerEconomy = false;
 
 	private static final String prefix = "prices.";
-	public static final String[] materialAddendums = { ".misc", ".wood", ".gold",
-			".stone", ".iron", ".diamond", ".leather", ".chainmail" };
+	public static final String[] materialAddendums = { ".misc", ".wood",
+			".gold", ".stone", ".iron", ".diamond", ".leather", ".chainmail" };
 
 	public enum Operation {
 		/**

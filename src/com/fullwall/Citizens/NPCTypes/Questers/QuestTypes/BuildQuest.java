@@ -17,7 +17,8 @@ public class BuildQuest extends QuestIncrementer {
 	@Override
 	public void updateProgress(Event event) {
 		if (event instanceof BlockPlaceEvent) {
-			if (((BlockPlaceEvent) event).getBlockPlaced().getType() == this.objective.getMaterial()) {
+			if (((BlockPlaceEvent) event).getBlockPlaced().getType() == this.objective
+					.getMaterial()) {
 				this.getProgress().incrementCompleted(1);
 			}
 		}

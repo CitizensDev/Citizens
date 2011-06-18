@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class PacketUtils {
-	public static void sendPacketToPlayer(final Player ply,
-			final Packet packet) {
+	public static void sendPacketToPlayer(final Player ply, final Packet packet) {
 		((CraftPlayer) ply).getHandle().netServerHandler.sendPacket(packet);
 	}
 
@@ -20,8 +19,8 @@ public class PacketUtils {
 		sendPacketNearby(location, radius, packet, null);
 	}
 
-	public static void sendPacketNearby(final Location location,
-			double radius, final Packet packet, final Player except) {
+	public static void sendPacketNearby(final Location location, double radius,
+			final Packet packet, final Player except) {
 		radius *= radius;
 		final Vector locationVector = location.toVector();
 		final World world = location.getWorld();

@@ -8,10 +8,9 @@ public enum CreatureNPCType {
 	// TODO - might be a little longwinded on constructing validators.
 	EVIL(EvilCreatureNPC.class, Constants.maxEvils, Constants.evilNames,
 			new SpawnValidator(Type.ALL_EXCEPT, 0).set(Range.LIQUIDS, false),
-			new SpawnValidator(Range.DEFAULT, false)),
-	PIRATE(PirateCreatureNPC.class, Constants.maxPirates,
-			Constants.pirateNames,
-			new SpawnValidator(Type.INCLUDING, 8, 9),
+			new SpawnValidator(Range.DEFAULT, false)), PIRATE(
+			PirateCreatureNPC.class, Constants.maxPirates,
+			Constants.pirateNames, new SpawnValidator(Type.INCLUDING, 8, 9),
 			new SpawnValidator(Range.DEFAULT, false));
 	private final int max;
 	private final String possible;

@@ -12,7 +12,7 @@ public class CachedAction {
 		return actions.get(string);
 	}
 
-    public void reset(String string) {
+	public void reset(String string) {
 		actions.put(string, false);
 	}
 

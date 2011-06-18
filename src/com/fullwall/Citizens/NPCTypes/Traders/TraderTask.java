@@ -181,7 +181,8 @@ public class TraderTask implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void handlePlayerClick(int slot, PlayerInventory playerInv) {
 		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
-		Stockable stockable = getStockable(playerInv.getItem(slot), "bought", true);
+		Stockable stockable = getStockable(playerInv.getItem(slot), "bought",
+				true);
 		if (stockable == null) {
 			return;
 		}
@@ -289,7 +290,7 @@ public class TraderTask implements Runnable {
 			boolean selling) {
 		// durability needs to be reset to 0 for tools / weapons / armor
 		short durability = item.getDurability();
-		if(isTool(item.getTypeId())) {
+		if (isTool(item.getTypeId())) {
 			durability = 0;
 		}
 		if (!npc.getTrader().isStocked(item.getTypeId(), durability, selling)) {
@@ -298,7 +299,8 @@ public class TraderTask implements Runnable {
 					+ " isn't being " + keyword + " here.");
 			return null;
 		}
-		return npc.getTrader().getStockable(item.getTypeId(), durability, selling);
+		return npc.getTrader().getStockable(item.getTypeId(), durability,
+				selling);
 	}
 
 	public void addID(int ID) {
@@ -375,19 +377,14 @@ public class TraderTask implements Runnable {
 	}
 
 	/**
-	 * Determines if the passed itemId is a tool, weapon, or armor.
-	 * (ie. has durability)
-	 *
+	 * Determines if the passed itemId is a tool, weapon, or armor. (ie. has
+	 * durability)
+	 * 
 	 * @param itemId
 	 */
 	private boolean isTool(int id) {
-		return (
-			(id >= 256 && id <= 259) ||
-			(id >= 267 && id <= 279) ||
-			(id >= 283 && id <= 286) ||
-			(id >= 290 && id <= 294) ||
-			(id >= 298 && id <= 317) ||
-			id == 346
-		);
+		return ((id >= 256 && id <= 259) || (id >= 267 && id <= 279)
+				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
+				|| (id >= 298 && id <= 317) || id == 346);
 	}
 }

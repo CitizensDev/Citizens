@@ -130,7 +130,7 @@ public class HealerNPC implements Toggleable, Clickable {
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(
 					Operation.HEALER_HEAL, player));
-        }
+		}
 	}
 
 	// TODO Make this less ugly to look at
