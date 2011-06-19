@@ -8,12 +8,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.Defaults;
 import com.fullwall.Citizens.Interfaces.Storage;
 import com.fullwall.Citizens.Utils.Messaging;
 
@@ -52,12 +50,8 @@ public final class PropertyHandler implements Storage {
 		// TODO - remove the inventories part
 		if (file.exists()) {
 			load();
-		} else if (!fileName.contains("/Traders/Citizens.inventories")) {
+		} else {
 			createFile(file);
-			save();
-		}
-		if (fileName.contains("Citizens.itemlookups")) {
-			loadLookups(Defaults.lookupsDefaults);
 		}
 	}
 
@@ -69,20 +63,6 @@ public final class PropertyHandler implements Storage {
 		} catch (IOException ex) {
 			Messaging.log("Unable to create " + file.getPath() + ".",
 					Level.SEVERE);
-		}
-	}
-
-	private void loadLookups(Map<String, String> nodes) {
-		boolean told = false;
-		for (Entry<String, String> entry : nodes.entrySet()) {
-			if (!keyExists(entry.getKey())) {
-				if (!told) {
-					Messaging
-							.log("Missing entry in itemlookups - restoring settings.");
-				}
-				told = true;
-				setString(entry.getKey(), entry.getValue());
-			}
 		}
 	}
 

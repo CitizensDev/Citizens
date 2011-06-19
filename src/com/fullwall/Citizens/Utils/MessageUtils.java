@@ -165,8 +165,8 @@ public class MessageUtils {
 	}
 
 	public static String getItemName(int itemID) {
-		return UtilityProperties.itemlookups.getString(itemID).isEmpty() ? getMaterialName(itemID)
-				: UtilityProperties.itemlookups.getString(itemID);
+		return UtilityProperties.getItemOverride(itemID).isEmpty() ? getMaterialName(itemID)
+				: UtilityProperties.getItemOverride(itemID);
 	}
 
 	private static String getMaterialName(int itemID) {

@@ -18,12 +18,9 @@ import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC implements Toggleable, Clickable {
-
 	private final HumanNPC npc;
-
 	private boolean unlimited = false;
 	private boolean free = true;
-
 	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
 
 	/**

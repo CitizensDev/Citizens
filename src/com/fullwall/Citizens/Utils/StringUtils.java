@@ -41,13 +41,12 @@ public class StringUtils {
 	public static Material parseMaterial(String material) {
 		Material mat = Material.matchMaterial(material);
 		if (mat == null) {
-			if (!UtilityProperties.itemlookups.getString(material).isEmpty()) {
-				mat = parseMaterial(UtilityProperties.itemlookups
-						.getString(material));
+			if (!UtilityProperties.getItemOverride(
+					Material.getMaterial(material).getId()).isEmpty()) {
+				mat = parseMaterial(UtilityProperties.getItemOverride(Material
+						.getMaterial(material).getId()));
 			} else if (isNumber(material)) {
 				mat = Material.getMaterial(Integer.parseInt(material));
-			} else {
-				return mat;
 			}
 		}
 		return mat;
