@@ -33,6 +33,9 @@ public class MessageUtils {
 			+ "That is not a valid item ID.";
 	public static final String noEconomyMessage = ChatColor.GRAY
 			+ "This server is not using an economy plugin.";
+	public static final String reachedNPCLimitMessage = ChatColor.RED
+			+ "You have reached the NPC-creation limit of "
+			+ Constants.maxNPCsPerPlayer + ".";
 
 	/**
 	 * Parses a basic npc's text for sending.

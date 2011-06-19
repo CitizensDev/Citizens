@@ -1,7 +1,5 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityTypes;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldServer;
@@ -10,8 +8,6 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.entity.CreatureType;
-import org.bukkit.entity.LivingEntity;
 
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
@@ -70,21 +66,6 @@ public class NPCSpawner {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static LivingEntity spawnMob(CreatureType type, World world,
-			double x, double y, double z) {
-		try {
-			WorldServer ws = getWorldServer(world);
-			Entity eh = EntityTypes.a(type.getName(), ws);
-			eh.setPositionRotation(x, y, z, 0, 0);
-			ws.addEntity(eh);
-			return (LivingEntity) eh.getBukkitEntity();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public static void removeNPCFromPlayerList(HumanNPC npc) {

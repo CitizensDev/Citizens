@@ -36,7 +36,7 @@ public class PropertyManager {
 		QuestProperties.initialize();
 	}
 
-	public static ConfigurationHandler getProfiles() {
+	public static ConfigurationHandler getNPCProfiles() {
 		return profiles;
 	}
 
@@ -54,7 +54,7 @@ public class PropertyManager {
 
 	public static void load(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			if (exists(npc)) {
+			if (exists(npc) && saveable.getEnabled(npc)) {
 				saveable.loadState(npc);
 			}
 		}
@@ -62,7 +62,9 @@ public class PropertyManager {
 
 	public static void save(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			saveable.saveState(npc);
+			if (saveable.getEnabled(npc)) {
+				saveable.saveState(npc);
+			}
 		}
 	}
 

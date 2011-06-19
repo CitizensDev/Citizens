@@ -154,7 +154,6 @@ public class WizardNPC implements Toggleable, Clickable {
 			npc.getWizard().setTime(newTime);
 			break;
 		}
-
 	}
 
 	/**
@@ -354,28 +353,21 @@ public class WizardNPC implements Toggleable, Clickable {
 			} else if (player.getItemInHand().getTypeId() == Constants.wizardManaRegenItem) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
-				boolean canChangeMana = false;
 				if (npc.getWizard().getMana() + 10 < Constants.maxWizardMana) {
 					mana = npc.getWizard().getMana() + 10;
-					canChangeMana = true;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
 				} else if (npc.getWizard().getMana() + 10 == Constants.maxWizardMana) {
 					mana = Constants.maxWizardMana;
-					canChangeMana = true;
 					msg += " mana has been fully replenished.";
 				} else {
 					msg += " mana cannot be regenerated with that item any further.";
+					return;
 				}
+				InventoryUtils.decreaseItemInHand(player,
+						Material.getMaterial(Constants.wizardManaRegenItem));
 				player.sendMessage(msg);
-				if (canChangeMana) {
-					npc.getWizard().setMana(mana);
-					InventoryUtils
-							.decreaseItemInHand(
-									player,
-									Material.getMaterial(Constants.wizardManaRegenItem),
-									player.getItemInHand().getAmount());
-				}
+				npc.getWizard().setMana(mana);
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);

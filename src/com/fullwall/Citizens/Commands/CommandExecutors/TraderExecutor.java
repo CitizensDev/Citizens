@@ -63,7 +63,7 @@ public class TraderExecutor implements CommandExecutor {
 			returnval = true;
 		} else if (args.length == 1 && args[0].contains("mon")) {
 			if (Permission.canUse(player, npc, "trader")) {
-				if (!EconomyHandler.useIconomy())
+				if (!EconomyHandler.useEcoPlugin())
 					player.sendMessage(MessageUtils.noEconomyMessage);
 				else
 					displayMoney(player, npc);
@@ -79,7 +79,7 @@ public class TraderExecutor implements CommandExecutor {
 		} else {
 			if (args.length == 3 && args[0].contains("mon")) {
 				if (Permission.canModify(player, npc, "trader")) {
-					if (!EconomyHandler.useIconomy())
+					if (!EconomyHandler.useEcoPlugin())
 						player.sendMessage(MessageUtils.noEconomyMessage);
 					else
 						changeBalance(player, npc, args);
@@ -242,7 +242,7 @@ public class TraderExecutor implements CommandExecutor {
 				return;
 			}
 		}
-		if (cost == null && !EconomyHandler.useIconomy()) {
+		if (cost == null && !EconomyHandler.useEcoPlugin()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "This server is not using an economy plugin, so the price cannot be "
 					+ "that kind of value. If you meant to use an item as currency, "

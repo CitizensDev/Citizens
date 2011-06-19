@@ -14,10 +14,10 @@ import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardNPC implements Toggleable, Clickable {
 	private final HumanNPC npc;
-	private boolean isBodyguard = false;
+	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
 	private boolean isAggressive = false;
-	private GuardType guardType = GuardType.NULL;
+	private GuardType guardType = GuardType.BODYGUARD;
 	private List<String> blacklist = new ArrayList<String>();
 	private List<String> whitelist = new ArrayList<String>();
 	private double radius = 10;
@@ -130,7 +130,7 @@ public class GuardNPC implements Toggleable, Clickable {
 			for (CreatureType type : CreatureType.values()) {
 				if (!blacklist.contains(type.toString().toLowerCase())) {
 					blacklist.add(type.toString().toLowerCase()
-							.replace("_", " "));
+							.replace("_", ""));
 				}
 			}
 		} else {
@@ -228,13 +228,9 @@ public class GuardNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO Auto-generated method stub
-
 	}
 }

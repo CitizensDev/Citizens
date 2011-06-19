@@ -12,7 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
-import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
+import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
@@ -70,10 +70,8 @@ public class BlacksmithExecutor implements CommandExecutor {
 			returnval = true;
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("uses")) {
 			if (Permission.canUse(player, npc, "blacksmith")) {
-				showUsesRemaining(
-						player,
-						npc.getBlacksmith(),
-						Material.getMaterial(player.getItemInHand().getTypeId()));
+				showUsesRemaining(player, Material.getMaterial(player
+						.getItemInHand().getTypeId()));
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
@@ -125,7 +123,7 @@ public class BlacksmithExecutor implements CommandExecutor {
 				|| EconomyHandler.canBuy(Operation.BLACKSMITH_ARMORREPAIR,
 						player)) {
 			if (EconomyHandler.useEconomy()) {
-				if (npc.getBlacksmith().validateArmor(armor)) {
+				if (BlacksmithManager.validateArmor(armor)) {
 					if (armor.getDurability() > 0) {
 						double paid = EconomyHandler.pay(
 								Operation.BLACKSMITH_ARMORREPAIR, player);
@@ -183,11 +181,11 @@ public class BlacksmithExecutor implements CommandExecutor {
 				+ "boots, shoes");
 	}
 
-	private void showUsesRemaining(Player player, BlacksmithNPC blacksmith,
-			Material material) {
+	private void showUsesRemaining(Player player, Material material) {
 		ItemStack item = player.getItemInHand();
 		String itemName = item.getType().name().toLowerCase().replace("_", " ");
-		if (blacksmith.validateTool(item) || blacksmith.validateArmor(item)) {
+		if (BlacksmithManager.validateTool(item)
+				|| BlacksmithManager.validateArmor(item)) {
 			player.sendMessage(ChatColor.GREEN
 					+ "Your "
 					+ StringUtils.wrap(itemName)

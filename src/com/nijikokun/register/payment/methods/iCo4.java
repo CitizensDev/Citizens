@@ -8,10 +8,10 @@ import com.nijikokun.register.payment.Method;
 import org.bukkit.plugin.Plugin;
 
 public class iCo4 implements Method {
-	private iConomy iConomy;
+	private iConomy iCoPlugin;
 
 	public iConomy getPlugin() {
-		return this.iConomy;
+		return this.iCoPlugin;
 	}
 
 	public String getName() {
@@ -23,7 +23,7 @@ public class iCo4 implements Method {
 	}
 
 	public String format(double amount) {
-		return this.iConomy.getBank().format(amount);
+		return iConomy.getBank().format(amount);
 	}
 
 	public boolean hasBanks() {
@@ -35,7 +35,7 @@ public class iCo4 implements Method {
 	}
 
 	public boolean hasAccount(String name) {
-		return this.iConomy.getBank().hasAccount(name);
+		return iConomy.getBank().hasAccount(name);
 	}
 
 	public boolean hasBankAccount(String bank, String name) {
@@ -43,7 +43,7 @@ public class iCo4 implements Method {
 	}
 
 	public MethodAccount getAccount(String name) {
-		return new iCoAccount(this.iConomy.getBank().getAccount(name));
+		return new iCoAccount(iConomy.getBank().getAccount(name));
 	}
 
 	public MethodBankAccount getBankAccount(String bank, String name) {
@@ -57,7 +57,7 @@ public class iCo4 implements Method {
 	}
 
 	public void setPlugin(Plugin plugin) {
-		iConomy = (iConomy) plugin;
+		iCoPlugin = (iConomy) plugin;
 	}
 
 	public class iCoAccount implements MethodAccount {

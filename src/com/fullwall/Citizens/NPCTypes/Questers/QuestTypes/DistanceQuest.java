@@ -9,6 +9,8 @@ import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class DistanceQuest extends QuestIncrementer {
+	private double traveled = 0;
+
 	public DistanceQuest(HumanNPC npc, Player player, String questName,
 			ObjectiveCycler objectives) {
 		super(npc, player, questName, objectives);
@@ -20,13 +22,14 @@ public class DistanceQuest extends QuestIncrementer {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			// Considering doing this a different way.
 			// Object for distance type? DistanceType?
-			/*
-			 * double x = ev.getTo().getX() - ev.getFrom().getX(); double z =
-			 * ev.getTo().getZ() - ev.getFrom().getZ(); traveled =
-			 * Math.round(Math.sqrt(x * x + z * z) * 100); double m = traveled /
-			 * 100D; double km = m / 1000D; if (km > 0.5D) ; // Kilometres if (m
-			 * > 0.5D) ; // Metres else ; // Centimetres
-			 */
+			double x = ev.getTo().getX() - ev.getFrom().getX();
+			double z = ev.getTo().getZ() - ev.getFrom().getZ();
+			traveled = Math.round(Math.sqrt(x * x + z * z) * 100);
+			double m = traveled / 100D;
+			double km = m / 1000D;
+			if (km > 0.5D) {
+
+			}// Kilometres if (m> 0.5D) ; // Metres else ; // Centimetres
 		}
 	}
 

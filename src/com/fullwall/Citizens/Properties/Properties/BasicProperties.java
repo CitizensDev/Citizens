@@ -18,7 +18,6 @@ import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCs.NPCData;
 import com.fullwall.Citizens.NPCs.NPCDataManager;
-import com.fullwall.Citizens.Properties.PropertyHandler;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -34,8 +33,6 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	private final String talkWhenClose = ".basic.talk-when-close";
 	private final String owner = ".basic.owner";
 	private final String text = ".basic.text";
-	public final PropertyHandler counts = new PropertyHandler(
-			"plugins/Citizens/Basic NPCs/Citizens.counts");
 
 	public void saveName(int UID, String npcName) {
 		profiles.setString(UID + name, npcName);
@@ -43,14 +40,6 @@ public class BasicProperties extends PropertyManager implements Saveable {
 
 	public String getName(int UID) {
 		return profiles.getString(UID + name);
-	}
-
-	public int getNPCAmountPerPlayer(String name) {
-		return counts.getInt(name);
-	}
-
-	public void saveNPCAmountPerPlayer(String name, int totalNPCs) {
-		counts.setInt(name, totalNPCs);
 	}
 
 	public Location getLocation(int UID) {

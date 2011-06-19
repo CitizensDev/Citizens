@@ -40,7 +40,7 @@ public class Constants {
 	public static String evilNames = "Herobrine,aPunch,fullwall,Notch,EvilSeph,";
 	public static String pirateNames = "Pirate_Pete,Piratebay,Jack_Sparrow,";
 	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;";
-	public static String pirateStealMessages = "I stole yer booty.;Aaargh.;I am Captain Jack Sparrow!;";
+	public static String pirateStealMessages = "I stole yer booty.;Aaargh.;";
 	public static String evilDrops = "260,357,2256,";
 
 	public static boolean defaultFollowingEnabled = true;

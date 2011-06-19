@@ -6,24 +6,10 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cow;
 import org.bukkit.entity.CreatureType;
-import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Ghast;
-import org.bukkit.entity.Giant;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Squid;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 
 import com.fullwall.Citizens.Misc.ActionManager;
 import com.fullwall.Citizens.Misc.CachedAction;
@@ -62,7 +48,7 @@ public class GuardTask implements Runnable {
 								name = player.getName();
 							}
 						} else {
-							name = getTypeFromEntity(entity);
+							name = entity.getClass().getName().toLowerCase();
 						}
 						if (LocationUtils.checkLocation(loc, entity
 								.getLocation(), npc.getGuard()
@@ -95,7 +81,8 @@ public class GuardTask implements Runnable {
 									name = player.getName();
 								}
 							} else {
-								name = getTypeFromEntity(entity);
+								name = entity.getClass().getName()
+										.toLowerCase();
 							}
 							if (LocationUtils.checkLocation(ownerloc,
 									entity.getLocation(), 25)) {
@@ -127,40 +114,6 @@ public class GuardTask implements Runnable {
 		}
 	}
 
-	private String getTypeFromEntity(Entity entity) {
-		String name = "";
-		if (entity instanceof Chicken) {
-			name = "chicken";
-		} else if (entity instanceof Cow) {
-			name = "cow";
-		} else if (entity instanceof Creeper) {
-			name = "creeper";
-		} else if (entity instanceof Ghast) {
-			name = "ghast";
-		} else if (entity instanceof Giant) {
-			name = "giant";
-		} else if (entity instanceof Pig) {
-			name = "pig";
-		} else if (entity instanceof PigZombie) {
-			name = "pigzombie";
-		} else if (entity instanceof Sheep) {
-			name = "sheep";
-		} else if (entity instanceof Skeleton) {
-			name = "skeleton";
-		} else if (entity instanceof Slime) {
-			name = "slime";
-		} else if (entity instanceof Spider) {
-			name = "spider";
-		} else if (entity instanceof Squid) {
-			name = "squid";
-		} else if (entity instanceof Wolf) {
-			name = "wolf";
-		} else if (entity instanceof Zombie) {
-			name = "zombie";
-		}
-		return name;
-	}
-
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
 		GuardNPC guard = npc.getGuard();
@@ -184,14 +137,12 @@ public class GuardTask implements Runnable {
 					}
 				} else if (!(entity instanceof Player)
 						&& CreatureType.fromName(StringUtils.capitalise(name)) != null) {
-					if (guard.getBlacklist().contains(name)
+					if (isBlacklisted(npc, name)
 							|| guard.getBlacklist().contains("all")) {
 						attack(entity, npc);
 					}
 				}
 			}
-		} else {
-			// TODO Dostuffherelater
 		}
 	}
 

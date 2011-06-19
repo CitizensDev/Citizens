@@ -190,8 +190,7 @@ public class HealerNPC implements Toggleable, Clickable {
 							+ StringUtils.wrap(npc.getStrippedName())
 							+ "'s health with a magical block of diamond.");
 					InventoryUtils.decreaseItemInHand(player,
-							Material.DIAMOND_BLOCK, player.getItemInHand()
-									.getAmount());
+							Material.DIAMOND_BLOCK);
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " is fully healed.");

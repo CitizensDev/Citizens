@@ -7,55 +7,55 @@ import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 public class Payment {
 	private double price;
 	private ItemStack item;
-	private boolean iConomy;
+	private boolean econPlugin;
 
 	/**
-	 * Defines a payment, which can be either iConomy or an item payment. This
-	 * constructor defines an item payment.
+	 * Defines a payment, which can be either an economy-plugin or an item
+	 * payment. This constructor defines an item payment.
 	 * 
 	 * @param price
 	 * @param item
-	 * @param iConomy
+	 * @param econPlugin
 	 */
-	public Payment(double price, ItemStack item, boolean iConomy) {
+	public Payment(double price, ItemStack item, boolean econPlugin) {
 		this.setPrice(price);
 		this.setItem(item);
-		this.setiConomy(iConomy);
+		this.setEconomyPlugin(econPlugin);
 	}
 
 	/**
-	 * Defines a payment, which can be either iConomy or an item payment. This
-	 * constructor defines an iConomy payment.
+	 * Defines a payment, which can be either an economy-plugin or an item
+	 * payment. This constructor defines an iConomy payment.
 	 * 
 	 * @param price
 	 * @param item
-	 * @param iConomy
+	 * @param econPlugin
 	 */
-	public Payment(double price, boolean iConomy) {
+	public Payment(double price, boolean econPlugin) {
 		this.setPrice(price);
 		this.setItem(null);
-		this.setiConomy(iConomy);
+		this.setEconomyPlugin(econPlugin);
 	}
 
 	public Payment(ItemPrice price2) {
 		this.setPrice(price2.isiConomy() ? price2.getPrice() : price2
 				.getItemStack().getAmount());
 		this.setItem(price2.getItemStack());
-		this.setiConomy(price2.isiConomy());
+		this.setEconomyPlugin(price2.isiConomy());
 	}
 
 	public Payment(ItemStack stocking) {
-		this.setiConomy(false);
+		this.setEconomyPlugin(false);
 		this.setItem(stocking);
 		this.setPrice(stocking.getAmount());
 	}
 
-	public void setiConomy(boolean iConomy) {
-		this.iConomy = iConomy;
+	public void setEconomyPlugin(boolean econPlugin) {
+		this.econPlugin = econPlugin;
 	}
 
-	public boolean isiConomy() {
-		return iConomy;
+	public boolean isEconomyPlugin() {
+		return econPlugin;
 	}
 
 	public ItemStack getItem() {

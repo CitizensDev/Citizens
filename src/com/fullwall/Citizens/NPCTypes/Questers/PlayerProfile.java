@@ -23,8 +23,8 @@ public class PlayerProfile {
 	private final String name;
 
 	public PlayerProfile(String name) {
-		profile = new ConfigurationHandler("plugins/Citizens/Profiles/" + name
-				+ ".yml");
+		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
+				+ name + ".yml");
 		this.name = name;
 		this.load();
 		rank = 1;

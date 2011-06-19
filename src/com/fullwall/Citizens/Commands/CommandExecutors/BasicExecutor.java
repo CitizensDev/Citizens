@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
@@ -354,38 +353,25 @@ public class BasicExecutor implements CommandExecutor {
 					+ "The name of this NPC will be truncated - max name length is 16.");
 			args[1] = args[1].substring(0, 16);
 		}
-		if ((PropertyManager.getBasic().getNPCAmountPerPlayer(player.getName()) < Constants.maxNPCsPerPlayer)
-				|| (Constants.maxNPCsPerPlayer == 0)
-				|| (Permission.isAdmin(player))) {
-			int UID = NPCManager.register(args[1], player.getLocation(),
-					player.getName());
-			PropertyManager.getBasic().saveNPCAmountPerPlayer(
-					player.getName(),
-					PropertyManager.getBasic().getNPCAmountPerPlayer(
-							player.getName()) + 1);
-			NPCManager.setText(UID, texts);
+		int UID = NPCManager.register(args[1], player.getLocation(),
+				player.getName());
+		NPCManager.setText(UID, texts);
 
-			NPCManager.get(UID).getNPCData().setOwner(player.getName());
+		NPCManager.get(UID).getNPCData().setOwner(player.getName());
 
-			player.sendMessage(ChatColor.GREEN + "The NPC "
-					+ StringUtils.wrap(args[1]) + " was born!");
-			if (EconomyHandler.useEconomy()) {
-				double paid = EconomyHandler.pay(Operation.BASIC_CREATION,
-						player);
-				if (paid > 0) {
-					player.sendMessage(MessageUtils.getPaidMessage(
-							Operation.BASIC_CREATION, paid, args[1], "", false));
-				}
+		player.sendMessage(ChatColor.GREEN + "The NPC "
+				+ StringUtils.wrap(args[1]) + " was born!");
+		if (EconomyHandler.useEconomy()) {
+			double paid = EconomyHandler.pay(Operation.BASIC_CREATION, player);
+			if (paid > 0) {
+				player.sendMessage(MessageUtils.getPaidMessage(
+						Operation.BASIC_CREATION, paid, args[1], "", false));
 			}
-			NPCManager.selectedNPCs.put(player.getName(), UID);
-			player.sendMessage(ChatColor.GREEN + "You selected NPC "
-					+ StringUtils.wrap(args[1]) + ", ID "
-					+ StringUtils.wrap(UID) + ".");
-		} else {
-			player.sendMessage(ChatColor.GREEN
-					+ "You have reached the NPC-creation limit of "
-					+ StringUtils.wrap("" + Constants.maxNPCsPerPlayer) + ".");
 		}
+		NPCManager.selectedNPCs.put(player.getName(), UID);
+		player.sendMessage(ChatColor.GREEN + "You selected NPC "
+				+ StringUtils.wrap(args[1]) + ", ID " + StringUtils.wrap(UID)
+				+ ".");
 	}
 
 	/**

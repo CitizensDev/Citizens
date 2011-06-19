@@ -14,8 +14,7 @@ public class PirateCreatureNPC extends CreatureNPC {
 	// 1. player inventories
 	// 2. chests/dispensers/furnaces (they place a sign that marks that they
 	// stole from there)
-	// 3. trader's stock
-	// 4. player's economy money
+	// 3. player's economy money
 	// once their inventory is full (or a certain amount of on-shore ticks have
 	// passed), they return
 	// to their boat to escape; if they die, they drop all of the items that
@@ -23,7 +22,6 @@ public class PirateCreatureNPC extends CreatureNPC {
 	public PirateCreatureNPC(MinecraftServer minecraftserver, World world,
 			String s, ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -36,7 +34,11 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void doTick() {
-		// findShore();
+		if (this.npc.getPirate().isBoating()) {
+			// findShore();
+		} else {
+
+		}
 	}
 
 	@Override

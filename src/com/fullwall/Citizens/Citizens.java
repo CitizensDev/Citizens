@@ -124,7 +124,7 @@ public class Citizens extends JavaPlugin {
 	private void setupNPCs() {
 		int count = 0;
 		String UIDList = "";
-		while (PropertyManager.getProfiles().pathExists(count)) {
+		while (PropertyManager.getNPCProfiles().pathExists(count)) {
 			UIDList += count + ",";
 			count++;
 		}

@@ -45,23 +45,24 @@ public class PirateTask implements Runnable {
 		ActionManager.resetAction(entityID, name, "takenItem", npc.isPirate());
 	}
 
-	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
+	private void cacheActions(Player player, HumanNPC npc, int entityID,
+			String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
 		if (!cached.has("takenItem") && npc.isPirate()) {
-			stealItem(p, npc);
+			steal(player, npc);
 			cached.set("takenItem");
 		}
 		ActionManager.putAction(entityID, name, cached);
 	}
 
 	/**
-	 * Steal an item from a player's inventory and put it in a pirate's
-	 * inventory
+	 * Steal something from a player's inventory, economy-plugin account, or
+	 * chest
 	 * 
 	 * @param player
 	 * @param npc
 	 */
-	private void stealItem(Player player, HumanNPC npc) {
+	private void steal(Player player, HumanNPC npc) {
 		Random random = new Random();
 		int randomSlot;
 		int count = 0;

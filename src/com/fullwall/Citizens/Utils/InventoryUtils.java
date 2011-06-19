@@ -19,13 +19,18 @@ public class InventoryUtils {
 		((CraftPlayer) player).getHandle().a(npc.getHandle().inventory);
 	}
 
-	public static void decreaseItemInHand(Player player, Material material,
-			int amount) {
-		if (amount == 1) {
-			ItemStack emptyStack = null;
-			player.setItemInHand(emptyStack);
-		} else {
-			player.setItemInHand(new ItemStack(material, amount - 1));
+	/**
+	 * Remove items from a player's current held slot
+	 * 
+	 * @param player
+	 * @param material
+	 */
+	public static void decreaseItemInHand(Player player, Material material) {
+		ItemStack item = null;
+		if (player.getItemInHand().getAmount() > 1) {
+			item = new ItemStack(material,
+					player.getItemInHand().getAmount() - 1);
 		}
+		player.setItemInHand(item);
 	}
 }

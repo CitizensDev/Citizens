@@ -1,5 +1,8 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -116,10 +119,14 @@ public class TogglerExecutor implements CommandExecutor {
 				}
 				returnval = true;
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("all")) {
-				if (args[1].equals("on")) {
-					toggleAll(npc, player, true);
-				} else if (args[1].equalsIgnoreCase("off")) {
-					toggleAll(npc, player, false);
+				if (Permission.isAdmin(player)) {
+					if (args[1].equals("on")) {
+						toggleAll(npc, player, true);
+					} else if (args[1].equalsIgnoreCase("off")) {
+						toggleAll(npc, player, false);
+					}
+				} else {
+					sender.sendMessage(MessageUtils.noPermissionsMessage);
 				}
 				returnval = true;
 			} else {
@@ -184,43 +191,24 @@ public class TogglerExecutor implements CommandExecutor {
 	 * @param on
 	 */
 	private void toggleAll(HumanNPC npc, Player player, boolean on) {
+		Map<String, Toggleable> toggle = new HashMap<String, Toggleable>();
+		toggle.put("blacksmith", npc.getBlacksmith());
+		toggle.put("guard", npc.getGuard());
+		toggle.put("healer", npc.getHealer());
+		toggle.put("quester", npc.getQuester());
+		toggle.put("trader", npc.getTrader());
+		toggle.put("wizard", npc.getWizard());
 		if (on) {
-			if (!npc.isTrader()) {
-				toggleState(player, npc.getTrader());
-			}
-			if (!npc.isHealer()) {
-				toggleState(player, npc.getHealer());
-			}
-			if (!npc.isWizard()) {
-				toggleState(player, npc.getWizard());
-			}
-			if (!npc.isBlacksmith()) {
-				toggleState(player, npc.getBlacksmith());
-			}
-			if (!npc.isGuard()) {
-				toggleState(player, npc.getGuard());
-			}
-			if (!npc.isQuester()) {
-				toggleState(player, npc.getQuester());
+			for (Toggleable t : toggle.values()) {
+				if (!t.getToggle()) {
+					toggleState(player, toggle.get(t.getType()));
+				}
 			}
 		} else {
-			if (npc.isTrader()) {
-				toggleState(player, npc.getTrader());
-			}
-			if (npc.isHealer()) {
-				toggleState(player, npc.getHealer());
-			}
-			if (npc.isWizard()) {
-				toggleState(player, npc.getWizard());
-			}
-			if (npc.isBlacksmith()) {
-				toggleState(player, npc.getBlacksmith());
-			}
-			if (npc.isGuard()) {
-				toggleState(player, npc.getGuard());
-			}
-			if (npc.isQuester()) {
-				toggleState(player, npc.getQuester());
+			for (Toggleable t : toggle.values()) {
+				if (t.getToggle()) {
+					toggleState(player, toggle.get(t.getType()));
+				}
 			}
 		}
 	}

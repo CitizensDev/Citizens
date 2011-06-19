@@ -163,8 +163,7 @@ public class Defaults {
 		nodes.put("evil.items.tame-item", "354");
 		nodes.put("evil.misc.failed-tame-messages",
 				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;");
-		nodes.put("pirates.misc.steal-messages",
-				"I stole yer booty.;Aaargh.;I am Captain Jack Sparrow!;");
+		nodes.put("pirates.misc.steal-messages", "I stole yer booty.;Aaargh.;");
 		nodes.put("evil.items.drops", "260,357,2256,");
 		return nodes;
 	}

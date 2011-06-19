@@ -11,10 +11,10 @@ import com.nijikokun.register.payment.Method;
 import org.bukkit.plugin.Plugin;
 
 public class iCo5 implements Method {
-	private iConomy iConomy;
+	private iConomy iCoPlugin;
 
 	public iConomy getPlugin() {
-		return this.iConomy;
+		return this.iCoPlugin;
 	}
 
 	public String getName() {
@@ -26,7 +26,7 @@ public class iCo5 implements Method {
 	}
 
 	public String format(double amount) {
-		return this.iConomy.format(amount);
+		return iConomy.format(amount);
 	}
 
 	public boolean hasBanks() {
@@ -34,23 +34,23 @@ public class iCo5 implements Method {
 	}
 
 	public boolean hasBank(String bank) {
-		return (hasBanks()) && this.iConomy.Banks.exists(bank);
+		return (hasBanks()) && iConomy.Banks.exists(bank);
 	}
 
 	public boolean hasAccount(String name) {
-		return this.iConomy.hasAccount(name);
+		return iConomy.hasAccount(name);
 	}
 
 	public boolean hasBankAccount(String bank, String name) {
-		return (hasBank(bank)) && this.iConomy.getBank(bank).hasAccount(name);
+		return (hasBank(bank)) && iConomy.getBank(bank).hasAccount(name);
 	}
 
 	public MethodAccount getAccount(String name) {
-		return new iCoAccount(this.iConomy.getAccount(name));
+		return new iCoAccount(iConomy.getAccount(name));
 	}
 
 	public MethodBankAccount getBankAccount(String bank, String name) {
-		return new iCoBankAccount(this.iConomy.getBank(bank).getAccount(name));
+		return new iCoBankAccount(iConomy.getBank(bank).getAccount(name));
 	}
 
 	public boolean isCompatible(Plugin plugin) {
@@ -60,7 +60,7 @@ public class iCo5 implements Method {
 	}
 
 	public void setPlugin(Plugin plugin) {
-		iConomy = (iConomy) plugin;
+		iCoPlugin = (iConomy) plugin;
 	}
 
 	public class iCoAccount implements MethodAccount {

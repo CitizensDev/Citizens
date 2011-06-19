@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
 import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
@@ -92,9 +93,17 @@ public class CreatureTask implements Runnable {
 													.getRandomName(type), loc
 													.getWorld(), x, y, z,
 											random.nextInt(360), 0, type);
+								} else {
+									Messaging.debug(type + " cannot spawn.");
 								}
+							} else {
+								Messaging.debug(type + " is not on a block.");
 							}
+						} else {
+							Messaging.debug("Chunk not loaded.");
 						}
+					} else {
+						Messaging.debug("Invalid spawn location.");
 					}
 				}
 			}
@@ -107,8 +116,10 @@ public class CreatureTask implements Runnable {
 		switch (type) {
 		case EVIL:
 			spawn = Constants.spawnEvils;
+			break;
 		case PIRATE:
 			spawn = Constants.spawnPirates;
+			break;
 		}
 		return spawn;
 	}
