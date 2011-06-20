@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fullwall.Citizens.Commands.CommandHandler;
@@ -20,8 +23,16 @@ import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.Messaging;
+import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.nijikokun.register.payment.Method;
+import com.sk89q.minecraft.util.commands.CitizensCommandsManager;
+import com.sk89q.minecraft.util.commands.CommandPermissionsException;
+import com.sk89q.minecraft.util.commands.CommandUsageException;
+import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
+import com.sk89q.minecraft.util.commands.UnhandledCommandException;
+import com.sk89q.minecraft.util.commands.WrappedCommandException;
 
 /**
  * Citizens for Bukkit
@@ -36,6 +47,9 @@ public class Citizens extends JavaPlugin {
 	private static final String codename = "Riot";
 	private static final String letter = "";
 	private static final String version = "1.0.9" + letter;
+
+	public static CitizensCommandsManager<Player> commands;
+
 	public static boolean initialized = false;
 
 	@Override
@@ -124,7 +138,7 @@ public class Citizens extends JavaPlugin {
 		String UIDList = "";
 		while (PropertyManager.getNPCProfiles().pathExists(count)) {
 			UIDList += count + ",";
-			count++;
+			++count;
 		}
 		String[] values = UIDList.split(",");
 		if (values.length > 0 && !values[0].isEmpty()) {
@@ -207,6 +221,69 @@ public class Citizens extends JavaPlugin {
 			}
 			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param player
+	 * @param split
+	 * @return whether the command was processed
+	 */
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+			String label, String[] args) {
+		if (!(sender instanceof Player)) {
+			Messaging.log("Commands must be performed ingame.");
+			return true;
+		}
+		Player player = (Player) sender;
+		try {
+			// must put command into split.
+			String[] split = new String[args.length + 1];
+			System.arraycopy(args, 0, split, 1, args.length);
+			split[0] = command.getName().toLowerCase();
+
+			// No command found!
+			if (!commands.hasCommand(split[0], args[0])) {
+				return false;
+			}
+
+			HumanNPC npc = null;
+			if (NPCManager.validateSelected(player))
+				npc = NPCManager.get(NPCManager.selectedNPCs.get(player
+						.getName()));
+
+			try {
+				commands.execute(split, player, player, npc, args);
+				// check all exceptions that may be thrown.
+			} catch (CommandPermissionsException e) {
+				Messaging.send(player, MessageUtils.noPermissionsMessage);
+			} catch (MissingNestedCommandException e) {
+				Messaging.sendError(player, e.getUsage());
+			} catch (CommandUsageException e) {
+				Messaging.sendError(player, e.getMessage());
+				Messaging.sendError(player, e.getUsage());
+			} catch (WrappedCommandException e) {
+				throw e.getCause();
+			} catch (UnhandledCommandException e) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			// Messaging.sendError(player, "Number expected; string given.");
+		} /* provided as an example - we can create our own classes extending exception,
+			throw them in the command and handle the generic case here.
+			catch (InvalidItemException e) {
+			Messaging.sendError(player, e.getMessage());
+			} */
+		catch (Throwable excp) {
+			Messaging.sendError(player,
+					"Please report this error: [See console]");
+			Messaging.sendError(player,
+					excp.getClass().getName() + ": " + excp.getMessage());
+			excp.printStackTrace();
+		}
+
 		return true;
 	}
 }

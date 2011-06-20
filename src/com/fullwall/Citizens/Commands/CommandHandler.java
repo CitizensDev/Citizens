@@ -18,6 +18,11 @@ public class CommandHandler {
 	 * @return
 	 */
 	public static void registerCommands() {
+		// Example register of new command system.
+		// Citizens.commands.register(BasicExecutor.class);
+		// Note this also handles all command names that are registered in the
+		// class (npc, citizens, and basic don't all need to be registered
+		// separately).
 		Citizens.plugin.getCommand("npc").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("citizens").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("basic").setExecutor(new BasicExecutor());

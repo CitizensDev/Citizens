@@ -333,6 +333,32 @@ public class BasicExecutor implements CommandExecutor {
 		return false;
 	}
 
+	/* Example of new command system. Note that these arguments must be used
+	 * for *all* commands, although they can be null etc. In this case, args
+	 * is unused. Also note that the full package declaration must be used,
+	 * but only for the moment (it's conflicting with bukkit's Command class).
+	@com.sk89q.minecraft.util.commands.Command(
+			aliases = { "move", "mo" }, - the first is the 'main' command, others are aliases.
+			usage = "", - what is displayed when the command throws an exception (error etc.)
+			flags = "", - optional flags that can be accessed separately (eg -a can specify a free command).
+			desc = "Move the npc.", - description of command.
+			modifier = "", - allows discrimination of same commands based on the first argument.
+			min = 0, - minimum number of arguments.
+			max = 0) - max number of arguments.
+	@CommandPermissions({ "modify.basic" }) - permission required. 'admin' for admin.
+	Automatically fetches the selected npc for permissions operations.
+	private void move(Player player, HumanNPC npc, String[] args) {
+		if (npc != null) {
+			Location loc = npc.getNPCData().getLocation();
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " is enroute to your location!");
+			npc.getNPCData().setLocation(loc);
+			npc.teleport(player.getLocation());
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+		}
+	}
+	 */
 	/**
 	 * Creates an NPC given a string array, containing the name of the NPC and
 	 * optional text to be added to it.

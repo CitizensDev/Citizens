@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Messaging {
@@ -37,5 +38,9 @@ public class Messaging {
 		if (debug) {
 			log(message);
 		}
+	}
+
+	public static void sendError(Player player, String error) {
+		send(player, ChatColor.RED + error);
 	}
 }
