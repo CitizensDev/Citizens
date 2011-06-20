@@ -23,8 +23,8 @@ import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
-import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NPCTargetReason;
+import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent;
+import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent.NPCTargetReason;
 
 /**
  * Entity Listener
@@ -76,10 +76,10 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityTarget(EntityTargetEvent event) {
-		if (!(event instanceof NPCEntityTargetEvent)) {
+		if (!(event instanceof NPCTargetEvent)) {
 			return;
 		}
-		NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
+		NPCTargetEvent e = (NPCTargetEvent) event;
 		if (CreatureTask.getCreature(event.getEntity()) != null) {
 			if (e.getNPCTargetReason() == NPCTargetReason.NPC_RIGHTCLICKED)
 				CreatureTask.getCreature(event.getEntity()).onRightClick(

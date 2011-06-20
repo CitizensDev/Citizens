@@ -6,8 +6,8 @@ import org.bukkit.event.Event;
 import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
-import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NPCTargetReason;
+import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent;
+import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent.NPCTargetReason;
 
 public class DeliveryQuest extends QuestIncrementer {
 	public DeliveryQuest(HumanNPC npc, Player player, String questName,
@@ -17,8 +17,8 @@ public class DeliveryQuest extends QuestIncrementer {
 
 	@Override
 	public void updateProgress(Event event) {
-		if (event instanceof NPCEntityTargetEvent) {
-			NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
+		if (event instanceof NPCTargetEvent) {
+			NPCTargetEvent e = (NPCTargetEvent) event;
 			if (e.getNPCTargetReason() == NPCTargetReason.NPC_RIGHTCLICKED
 					&& e.getTarget().getEntityId() == this.player.getEntityId()) {
 				if (((HumanNPC) e.getEntity()).getUID() == this.objective
