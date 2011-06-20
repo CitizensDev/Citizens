@@ -100,6 +100,15 @@ public class GuardExecutor implements CommandExecutor {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
 			returnval = true;
+		} else if (npc.getGuard().isBouncer()
+				&& args[0].equalsIgnoreCase("path")) {
+			if (Permission.canModify(player, npc, "guard")) {
+				modifyPath(player, npc, args);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			returnval = true;
+
 		} else if (!npc.getGuard().isBouncer() && args.length == 2
 				&& args[0].equalsIgnoreCase("radius")) {
 			sender.sendMessage(ChatColor.RED
@@ -110,6 +119,11 @@ public class GuardExecutor implements CommandExecutor {
 		}
 		PropertyManager.save(npc);
 		return returnval;
+	}
+
+	private void modifyPath(Player player, HumanNPC npc, String[] args) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**

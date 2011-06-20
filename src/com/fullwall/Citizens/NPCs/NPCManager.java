@@ -36,7 +36,7 @@ public class NPCManager {
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
-		if (colour != 0xf) {
+		if (colour != 0xF) {
 			npcName = ChatColor.getByCode(colour) + name;
 		}
 		if (Constants.convertSlashes) {
@@ -305,7 +305,7 @@ public class NPCManager {
 	 */
 	public static void rename(int UID, String changeTo, String owner) {
 		HumanNPC n = get(UID);
-		PropertyManager.getBasic().saveName(UID, changeTo);
+		PropertyManager.remove(n);
 		n.getNPCData().setName(changeTo);
 		removeForRespawn(UID);
 		register(UID, owner);

@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Misc;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public class NPCLocation {
@@ -51,5 +52,17 @@ public class NPCLocation {
 
 	public String getOwner() {
 		return this.owner;
+	}
+
+	private Chunk getChunk() {
+		return this.getLocation().getBlock().getChunk();
+	}
+
+	public int getChunkX() {
+		return this.getChunk().getX();
+	}
+
+	public int getChunkZ() {
+		return this.getChunk().getZ();
 	}
 }

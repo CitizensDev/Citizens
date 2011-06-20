@@ -34,9 +34,9 @@ public class WorldListen extends WorldListener implements Listener {
 		// Stores NPC location/name for later respawn.
 		for (Integer entry : NPCManager.GlobalUIDs.keySet()) {
 			HumanNPC npc = NPCManager.get(entry);
-			if (npc != null
-					&& npc.getLocation().getBlock().getChunk()
-							.equals(event.getChunk())) {
+
+			if (npc != null && npc.getChunk().getX() == event.getChunk().getX()
+					&& npc.getChunk().getZ() == event.getChunk().getZ()) {
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, npc.getUID());
@@ -55,9 +55,8 @@ public class WorldListen extends WorldListener implements Listener {
 	public void onChunkLoad(ChunkLoadEvent event) {
 		// Respawns any existing NPCs in the loaded chunk
 		for (NPCLocation tempLoc : toRespawn.keySet()) {
-			if (event.getChunk().getWorld()
-					.getChunkAt(tempLoc.getX(), tempLoc.getZ())
-					.equals(event.getChunk())) {
+			if (tempLoc.getChunkX() == event.getChunk().getX()
+					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
 				NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
 				toRespawn.remove(tempLoc);
 			}

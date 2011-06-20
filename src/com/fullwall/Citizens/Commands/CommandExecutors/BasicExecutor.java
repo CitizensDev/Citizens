@@ -100,9 +100,17 @@ public class BasicExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 1 && (args[0].equalsIgnoreCase("move"))) {
+		} else if (args.length == 1 && args[0].equalsIgnoreCase("move")) {
 			if (Permission.canModify(player, npc, "basic")) {
-				move(player, npc, npc.getName());
+				move(player, npc);
+			} else {
+				sender.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return true;
+
+		} else if (args[0].equalsIgnoreCase("moveto")) {
+			if (Permission.canModify(player, npc, "basic")) {
+				moveTo(player, npc, args);
 			} else {
 				sender.sendMessage(MessageUtils.noPermissionsMessage);
 			}
@@ -381,16 +389,54 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param npc
 	 * @param name
 	 */
-	private void move(Player player, HumanNPC npc, String name) {
+	private void move(Player player, HumanNPC npc) {
 		if (npc != null) {
 			Location loc = npc.getNPCData().getLocation();
-			player.sendMessage(StringUtils.wrap(name)
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is enroute to your location!");
 			npc.getNPCData().setLocation(loc);
 			npc.teleport(player.getLocation());
 		} else {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 		}
+	}
+
+	private void moveTo(Player player, HumanNPC npc, String[] args) {
+		int index = args.length - 1;
+		if (index < 4) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Must at least specify x, y and z.");
+			return;
+		}
+		double x = 0, y = 0, z = 0;
+		float yaw = npc.getLocation().getYaw(), pitch = npc.getLocation()
+				.getPitch();
+		String world = "";
+		switch (args.length - 1) {
+		case 6:
+			pitch = Float.parseFloat(args[index]);
+			--index;
+		case 5:
+			yaw = Float.parseFloat(args[index]);
+			--index;
+		case 4:
+			world = args[index];
+			--index;
+		case 3:
+			z = Double.parseDouble(args[index]);
+			--index;
+		case 2:
+			y = Double.parseDouble(args[index]);
+			--index;
+		case 1:
+			x = Double.parseDouble(args[index]);
+		}
+		if (Bukkit.getServer().getWorld(world) == null) {
+			player.sendMessage("Invalid world.");
+			return;
+		}
+		npc.teleport(new Location(Bukkit.getServer().getWorld(world), x, y, z,
+				yaw, pitch));
 	}
 
 	/**
@@ -407,8 +453,6 @@ public class BasicExecutor implements CommandExecutor {
 		newNPC.teleport(player.getLocation());
 		newNPC.getNPCData().setLocation(player.getLocation());
 		PropertyManager.copyNPCs(UID, newUID);
-		NPCManager.removeForRespawn(newUID);
-		NPCManager.register(newUID, newNPC.getOwner());
 	}
 
 	/**
@@ -483,6 +527,8 @@ public class BasicExecutor implements CommandExecutor {
 				try {
 					colour = Integer.parseInt(args[1].substring(1, 2), 16);
 				} catch (NumberFormatException e) {
+					player.sendMessage(ChatColor.RED + "Invalid colour code.");
+					return;
 				}
 			}
 			npc.getNPCData().setColour(colour);

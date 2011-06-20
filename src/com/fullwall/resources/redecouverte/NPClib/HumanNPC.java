@@ -2,6 +2,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -57,6 +58,10 @@ public class HumanNPC extends NPC {
 
 	public CraftNPC getHandle() {
 		return this.mcEntity;
+	}
+
+	public Chunk getChunk() {
+		return this.getLocation().getBlock().getChunk();
 	}
 
 	public void setHandle(CraftNPC handle) {
