@@ -1,5 +1,7 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetServerHandler;
@@ -16,8 +18,6 @@ import net.minecraft.server.Packet255KickDisconnect;
 import net.minecraft.server.Packet3Chat;
 import net.minecraft.server.Packet9Respawn;
 
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-
 public class NPCNetHandler extends NetServerHandler {
 
 	public NPCNetHandler(MinecraftServer minecraftserver,
@@ -25,7 +25,7 @@ public class NPCNetHandler extends NetServerHandler {
 		super(minecraftserver, netMgr, entityplayer);
 		netMgr.a(this);
 	}
-
+	
 	@Override
 	public CraftPlayer getPlayer() {
 		return null;

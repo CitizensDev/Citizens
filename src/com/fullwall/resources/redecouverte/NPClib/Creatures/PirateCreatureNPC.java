@@ -26,8 +26,10 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onSpawn() {
-		this.npc.getWorld().spawnBoat(this.npc.getLocation())
-				.setPassenger(npc.getHandle().getBukkitEntity());
+		if (this.npc != null) {
+			this.mount((net.minecraft.server.Entity) this.npc.getWorld()
+					.spawnBoat(this.npc.getLocation()));
+		}
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
 	}
@@ -37,7 +39,9 @@ public class PirateCreatureNPC extends CreatureNPC {
 		if (this.npc.getPirate().isBoating()) {
 			// findShore();
 		} else {
-
+			// lootInventory();
+			// lootChests();
+			// stealEconomyPluginMoney();
 		}
 	}
 

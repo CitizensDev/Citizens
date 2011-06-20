@@ -6,19 +6,19 @@ import org.bukkit.event.entity.EntityTargetEvent;
 @SuppressWarnings("serial")
 public class NPCEntityTargetEvent extends EntityTargetEvent {
 
-	public static enum NpcTargetReason {
+	public static enum NPCTargetReason {
 		CLOSEST_PLAYER, NPC_RIGHTCLICKED, NPC_BOUNCED
 	}
 
-	private final NpcTargetReason reason;
+	private final NPCTargetReason reason;
 
 	public NPCEntityTargetEvent(Entity entity, Entity target,
-			NpcTargetReason reason) {
+			NPCTargetReason reason) {
 		super(entity, target, TargetReason.CUSTOM);
 		this.reason = reason;
 	}
 
-	public NpcTargetReason getNpcReason() {
+	public NPCTargetReason getNPCTargetReason() {
 		return this.reason;
 	}
 }

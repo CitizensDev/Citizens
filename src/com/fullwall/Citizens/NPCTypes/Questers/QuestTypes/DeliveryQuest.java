@@ -7,7 +7,7 @@ import com.fullwall.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCy
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent;
-import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NpcTargetReason;
+import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NPCTargetReason;
 
 public class DeliveryQuest extends QuestIncrementer {
 	public DeliveryQuest(HumanNPC npc, Player player, String questName,
@@ -19,7 +19,7 @@ public class DeliveryQuest extends QuestIncrementer {
 	public void updateProgress(Event event) {
 		if (event instanceof NPCEntityTargetEvent) {
 			NPCEntityTargetEvent e = (NPCEntityTargetEvent) event;
-			if (e.getNpcReason() == NpcTargetReason.NPC_RIGHTCLICKED
+			if (e.getNPCTargetReason() == NPCTargetReason.NPC_RIGHTCLICKED
 					&& e.getTarget().getEntityId() == this.player.getEntityId()) {
 				if (((HumanNPC) e.getEntity()).getUID() == this.objective
 						.getDestinationNPCID()) {

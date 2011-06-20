@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.resources.redecouverte.NPClib.NPCEntityTargetEvent.NPCTargetReason;
 
 public class CraftNPC extends PathNPC {
 
@@ -48,8 +49,7 @@ public class CraftNPC extends PathNPC {
 	@Override
 	public boolean a(EntityHuman entity) {
 		EntityTargetEvent event = new NPCEntityTargetEvent(getBukkitEntity(),
-				entity.getBukkitEntity(),
-				NPCEntityTargetEvent.NpcTargetReason.NPC_RIGHTCLICKED);
+				entity.getBukkitEntity(), NPCTargetReason.NPC_RIGHTCLICKED);
 		CraftServer server = ((WorldServer) this.world).getServer();
 		server.getPluginManager().callEvent(event);
 		return super.a(entity);
@@ -60,7 +60,7 @@ public class CraftNPC extends PathNPC {
 		if (lastTargetId != entity.id) {
 			EntityTargetEvent event = new NPCEntityTargetEvent(
 					getBukkitEntity(), entity.getBukkitEntity(),
-					NPCEntityTargetEvent.NpcTargetReason.CLOSEST_PLAYER);
+					NPCTargetReason.CLOSEST_PLAYER);
 			CraftServer server = ((WorldServer) this.world).getServer();
 			server.getPluginManager().callEvent(event);
 		}
@@ -74,7 +74,7 @@ public class CraftNPC extends PathNPC {
 				|| System.currentTimeMillis() - lastBounceTick > 1000) {
 			EntityTargetEvent event = new NPCEntityTargetEvent(
 					getBukkitEntity(), entity.getBukkitEntity(),
-					NPCEntityTargetEvent.NpcTargetReason.NPC_BOUNCED);
+					NPCTargetReason.NPC_BOUNCED);
 			CraftServer server = ((WorldServer) this.world).getServer();
 			server.getPluginManager().callEvent(event);
 			lastBounceTick = System.currentTimeMillis();

@@ -315,7 +315,6 @@ public class NPCManager {
 	 * Sets the colour of an npc's name.
 	 * 
 	 * @param UID
-	 * @param colourChange
 	 * @param owner
 	 */
 	public static void setColour(int UID, String owner) {

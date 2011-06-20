@@ -5,6 +5,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.fullwall.Citizens.Events.NPCInventoryOpenEvent;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class InventoryUtils {
@@ -16,6 +17,11 @@ public class InventoryUtils {
 	 * @param player
 	 */
 	public static void showInventory(HumanNPC npc, Player player) {
+		NPCInventoryOpenEvent inventoryOpenEvent = new NPCInventoryOpenEvent(
+				npc, player);
+		if (inventoryOpenEvent.isCancelled()) {
+			return;
+		}
 		((CraftPlayer) player).getHandle().a(npc.getHandle().inventory);
 	}
 

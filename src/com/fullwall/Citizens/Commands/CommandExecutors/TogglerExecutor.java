@@ -146,6 +146,10 @@ public class TogglerExecutor implements CommandExecutor {
 	 * @param toggleable
 	 */
 	private void toggleState(Player player, Toggleable toggleable) {
+		if (toggleable == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
 		toggleable.toggle();
 		toggleable.saveState();
 		if (toggleable.getToggle()) {
@@ -165,6 +169,10 @@ public class TogglerExecutor implements CommandExecutor {
 	 * @param op
 	 */
 	private void buyState(Player player, Toggleable toggleable, Operation op) {
+		if (toggleable == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);

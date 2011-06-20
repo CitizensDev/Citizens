@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.fullwall.Citizens.Enums.GuardType;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.Misc.Enums.GuardType;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 

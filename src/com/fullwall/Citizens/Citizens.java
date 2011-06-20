@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fullwall.Citizens.Commands.CommandHandler;
-import com.fullwall.Citizens.Listeners.CustomListen;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PlayerListen;
 import com.fullwall.Citizens.Listeners.ServerListen;
@@ -59,7 +58,6 @@ public class Citizens extends JavaPlugin {
 
 		// Register our events.
 		new EntityListen().registerEvents();
-		new CustomListen().registerEvents();
 		new WorldListen().registerEvents();
 		new ServerListen().registerEvents();
 		new PlayerListen().registerEvents();

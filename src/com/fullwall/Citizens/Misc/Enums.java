@@ -1,4 +1,4 @@
-package com.fullwall.Citizens;
+package com.fullwall.Citizens.Misc;
 
 public class Enums {
 	/**

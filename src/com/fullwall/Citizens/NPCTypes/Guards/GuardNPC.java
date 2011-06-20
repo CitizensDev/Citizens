@@ -6,9 +6,9 @@ import java.util.List;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Enums.GuardType;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
+import com.fullwall.Citizens.Misc.Enums.GuardType;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
