@@ -48,7 +48,7 @@ public class Citizens extends JavaPlugin {
 	private static final String letter = "";
 	private static final String version = "1.0.9" + letter;
 
-	public static CitizensCommandsManager<Player> commands;
+	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
 
 	public static boolean initialized = false;
 
@@ -224,12 +224,6 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param player
-	 * @param split
-	 * @return whether the command was processed
-	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {

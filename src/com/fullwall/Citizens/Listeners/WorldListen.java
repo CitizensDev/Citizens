@@ -40,7 +40,7 @@ public class WorldListen extends WorldListener implements Listener {
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, npc.getUID());
-				NPCManager.despawn(entry);
+				NPCManager.removeForRespawn(entry);
 			}
 		}
 		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {

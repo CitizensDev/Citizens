@@ -4,6 +4,7 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,11 +28,9 @@ public class PirateCreatureNPC extends CreatureNPC {
 	@Override
 	public void onSpawn() {
 		if (this.npc != null) {
-			this.mount((net.minecraft.server.Entity) this.npc.getWorld()
-					.spawn(this.npc.getLocation(), null /*
-														 * a Class<Entity> goes
-														 * here?
-														 */));
+			this.mount((net.minecraft.server.Entity) this.npc.getWorld().spawn(
+					this.npc.getLocation(), Boat.class));
+			this.getEntity().teleport(this.vehicle.getBukkitEntity());
 		}
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));

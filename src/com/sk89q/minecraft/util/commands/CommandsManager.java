@@ -163,7 +163,6 @@ public abstract class CommandsManager<T extends Player> {
 			if (!method.isAnnotationPresent(Command.class)) {
 				continue;
 			}
-
 			boolean isStatic = Modifier.isStatic(method.getModifiers());
 
 			Command cmd = method.getAnnotation(Command.class);

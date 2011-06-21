@@ -359,6 +359,7 @@ public class BasicExecutor implements CommandExecutor {
 		}
 	}
 	 */
+
 	/**
 	 * Creates an NPC given a string array, containing the name of the NPC and
 	 * optional text to be added to it.
@@ -416,7 +417,7 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param name
 	 */
 	private void move(Player player, HumanNPC npc) {
-		if (npc != null) {
+		/*if (npc != null) {
 			Location loc = npc.getNPCData().getLocation();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is enroute to your location!");
@@ -424,7 +425,7 @@ public class BasicExecutor implements CommandExecutor {
 			npc.teleport(player.getLocation());
 		} else {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-		}
+		}*/
 	}
 
 	private void moveTo(Player player, HumanNPC npc, String[] args) {
