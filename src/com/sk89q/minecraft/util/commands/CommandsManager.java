@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.NPCs.NPCManager;
+import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -421,6 +422,48 @@ public abstract class CommandsManager<T extends Player> {
 				executeMethod(method, args, player, methodArgs, level + 1);
 			}
 		} else {
+			if (method.getClass()
+					.isAnnotationPresent(CommandRequirements.class)) {
+				CommandRequirements requirements = method.getClass()
+						.getAnnotation(CommandRequirements.class);
+				if (requirements.requireSelected() && npc == null) {
+					throw new RequirementMissingException(
+							MessageUtils.mustHaveNPCSelectedMessage);
+				}
+				if (requirements.requireOwnership() && npc != null
+						&& !NPCManager.validateOwnership(player, npc.getUID())) {
+					throw new RequirementMissingException(
+							MessageUtils.notOwnerMessage);
+				}
+				if (npc != null && !requirements.requiredType().isEmpty()) {
+					String required = requirements.requiredType();
+					// TODO : simplify this.
+					boolean found = false;
+					if (required.equals("trader") && !npc.isTrader())
+						found = true;
+					if (required.equals("guard") && !npc.isGuard())
+						found = true;
+					if (required.equals("quester") && !npc.isQuester())
+						found = true;
+					if (required.equals("healer") && !npc.isHealer())
+						found = true;
+					if (required.equals("blacksmith") && !npc.isBlacksmith())
+						found = true;
+					if (required.equals("wizard") && !npc.isWizard())
+						found = true;
+
+					if (found)
+						throw new RequirementMissingException(
+								"Your NPC isn't a " + required + " yet.");
+				}
+			} else if (method.isAnnotationPresent(CommandRequirements.class)) {
+				CommandRequirements requirements = method
+						.getAnnotation(CommandRequirements.class);
+				if (requirements.requireSelected() && npc == null) {
+					throw new RequirementMissingException(
+							MessageUtils.mustHaveNPCSelectedMessage);
+				}
+			}
 			Command cmd = method.getAnnotation(Command.class);
 
 			String[] newArgs = new String[args.length - level];

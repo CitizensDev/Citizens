@@ -1,52 +1,28 @@
 package com.fullwall.Citizens.Commands.CommandExecutors;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.ChatManager;
-import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.sk89q.minecraft.util.commands.Command;
+import com.sk89q.minecraft.util.commands.CommandPermissions;
+import com.sk89q.minecraft.util.commands.CommandRequirements;
 
-public class QuestsExecutor implements CommandExecutor {
-	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String commandLabel, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage(MessageUtils.mustBeIngameMessage);
-			return true;
-		}
-		Player player = (Player) sender;
-		HumanNPC npc = null;
-		boolean returnval = false;
-		if (NPCManager.validateSelected((Player) sender)) {
-			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
-		} else {
-			sender.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			return true;
-		}
-		if (!NPCManager.validateOwnership(player, npc.getUID())) {
-			sender.sendMessage(MessageUtils.notOwnerMessage);
-			return true;
-		}
-		if (!npc.isQuester()) {
-			sender.sendMessage(ChatColor.RED + "Your NPC isn't a quester yet.");
-			return true;
-		}
-		if (args.length == 1 && commandLabel.equalsIgnoreCase("quests")) {
-			if (Permission.canModify(player, npc, "quester")) {
-				if (args[0].equalsIgnoreCase("edit")) {
-					ChatManager.enterEditMode(player.getName());
-				}
-			} else {
-				sender.sendMessage(MessageUtils.noPermissionsMessage);
-			}
-			returnval = true;
-		}
-		return returnval;
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true,
+		requiredType = "quester")
+public class QuestsExecutor {
+
+	@Command(
+			aliases = "quests",
+			usage = "/quests [edit]",
+			desc = "modify a quester's quests",
+			modifier = "edit",
+			min = 1,
+			max = 1)
+	@CommandPermissions("modify.quester")
+	public void editQuests(Player player, HumanNPC npc, String[] args) {
+		ChatManager.enterEditMode(player.getName());
 	}
 }

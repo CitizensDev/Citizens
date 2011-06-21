@@ -180,7 +180,7 @@ public class NPCManager {
 	 */
 	public static void despawn(int UID) {
 		GlobalUIDs.remove(UID);
-		NPCSpawner.removeBasicHumanNpc(list.get(UID));
+		NPCSpawner.removeBasicHumanNPC(list.get(UID));
 		list.remove(UID);
 	}
 
@@ -192,7 +192,7 @@ public class NPCManager {
 	public static void remove(int UID) {
 		PropertyManager.remove(get(UID));
 		GlobalUIDs.remove(UID);
-		NPCSpawner.removeBasicHumanNpc(list.get(UID));
+		NPCSpawner.removeBasicHumanNPC(list.get(UID));
 		list.remove(UID);
 	}
 
@@ -209,7 +209,7 @@ public class NPCManager {
 	 */
 	public static void removeForRespawn(int UID) {
 		PropertyManager.save(list.get(UID));
-		NPCSpawner.removeBasicHumanNpc(list.get(UID));
+		NPCSpawner.removeBasicHumanNPC(list.get(UID));
 	}
 
 	/**

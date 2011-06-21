@@ -60,9 +60,13 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static void removeBasicHumanNpc(HumanNPC npc) {
+	public static void removeBasicHumanNPC(HumanNPC npc) {
+		removeBasicHumanNPC(npc.getHandle());
+	}
+
+	public static void removeBasicHumanNPC(CraftNPC npc) {
 		try {
-			npc.getHandle().world.removeEntity(npc.getHandle());
+			npc.world.removeEntity(npc);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

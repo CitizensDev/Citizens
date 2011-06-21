@@ -23,6 +23,8 @@ public class CommandHandler {
 		// Note this also handles all command names that are registered in the
 		// class (npc, citizens, and basic don't all need to be registered
 		// separately).
+
+		Citizens.commands.register(QuestsExecutor.class);
 		Citizens.plugin.getCommand("npc").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("citizens").setExecutor(new BasicExecutor());
 		Citizens.plugin.getCommand("basic").setExecutor(new BasicExecutor());
@@ -35,6 +37,5 @@ public class CommandHandler {
 				.setExecutor(new QuesterExecutor());
 		Citizens.plugin.getCommand("guard").setExecutor(new GuardExecutor());
 		Citizens.plugin.getCommand("tog").setExecutor(new TogglerExecutor());
-		Citizens.plugin.getCommand("quests").setExecutor(new QuestsExecutor());
 	}
 }

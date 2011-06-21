@@ -31,6 +31,7 @@ import com.sk89q.minecraft.util.commands.CitizensCommandsManager;
 import com.sk89q.minecraft.util.commands.CommandPermissionsException;
 import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
+import com.sk89q.minecraft.util.commands.RequirementMissingException;
 import com.sk89q.minecraft.util.commands.UnhandledCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
 
@@ -258,6 +259,8 @@ public class Citizens extends JavaPlugin {
 			} catch (CommandUsageException e) {
 				Messaging.sendError(player, e.getMessage());
 				Messaging.sendError(player, e.getUsage());
+			} catch (RequirementMissingException e) {
+				Messaging.sendError(player, e.getMessage());
 			} catch (WrappedCommandException e) {
 				throw e.getCause();
 			} catch (UnhandledCommandException e) {

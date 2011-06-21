@@ -156,13 +156,13 @@ public class CreatureTask implements Runnable {
 
 	public static void despawnAll() {
 		for (CreatureNPC creature : creatureNPCs.values()) {
-			NPCSpawner.removeBasicHumanNpc(creature.npc);
+			NPCSpawner.removeBasicHumanNPC(creature);
 		}
 	}
 
 	public static void despawn(CreatureNPC npc) {
 		removeFromMaps(npc);
-		NPCSpawner.removeBasicHumanNpc(npc.npc);
+		NPCSpawner.removeBasicHumanNPC(npc);
 	}
 
 	public static void removeFromMaps(CreatureNPC npc) {
@@ -181,7 +181,7 @@ public class CreatureTask implements Runnable {
 			CreatureNPC creatureNPC = creatureNPCs.get(entity.getEntityId());
 			creatureNPC.onDeath();
 			removeFromMaps(creatureNPC);
-			NPCSpawner.removeBasicHumanNpc(creatureNPC.npc);
+			NPCSpawner.removeBasicHumanNPC(creatureNPC);
 		}
 	}
 
