@@ -28,7 +28,10 @@ public class PirateCreatureNPC extends CreatureNPC {
 	public void onSpawn() {
 		if (this.npc != null) {
 			this.mount((net.minecraft.server.Entity) this.npc.getWorld()
-					.spawnBoat(this.npc.getLocation()));
+					.spawn(this.npc.getLocation(), null /*
+														 * a Class<Entity> goes
+														 * here?
+														 */));
 		}
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));

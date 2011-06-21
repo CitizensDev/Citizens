@@ -15,8 +15,8 @@ public class ServerEconomyInterface {
 	public static final String addendum = ".econplugin";
 
 	/**
-	 * Uses the iConomy methods to check whether a player has enough in their
-	 * account to pay.
+	 * Uses the economy-plugin methods to check whether a player has enough in
+	 * their account to pay.
 	 * 
 	 * @param name
 	 * @param amount
@@ -28,7 +28,7 @@ public class ServerEconomyInterface {
 	}
 
 	/**
-	 * Gets an iConomy balance.
+	 * Gets an economy-plugin balance.
 	 * 
 	 * @param name
 	 * @return
@@ -36,9 +36,8 @@ public class ServerEconomyInterface {
 	public static double getBalance(String name) {
 		if (Citizens.economy.hasAccount(name)) {
 			return Citizens.economy.getAccount(name).balance();
-		} else {
-			return -1;
 		}
+		return -1;
 	}
 
 	public static String getFormattedBalance(String name) {
@@ -56,7 +55,7 @@ public class ServerEconomyInterface {
 	}
 
 	/**
-	 * Gets the iConomy currency.
+	 * Gets the economy-plugin currency.
 	 * 
 	 * @param price
 	 * @return

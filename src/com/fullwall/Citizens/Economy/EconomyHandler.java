@@ -176,9 +176,8 @@ public class EconomyHandler {
 			} else {
 				return ItemInterface.hasEnough(payment, player);
 			}
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
@@ -196,9 +195,8 @@ public class EconomyHandler {
 			} else {
 				return ItemInterface.hasEnough(payment, npc.getPlayer());
 			}
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
@@ -251,9 +249,8 @@ public class EconomyHandler {
 			} else {
 				return ItemInterface.pay(npc.getPlayer(), payment, slot);
 			}
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**

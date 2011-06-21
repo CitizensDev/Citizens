@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.fullwall.Citizens.Events.NPCCreatureSpawnEvent;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -88,11 +89,23 @@ public class CreatureTask implements Runnable {
 							if (areEntitiesOnBlock(world.getChunkAt(x, z), x,
 									y, z)) {
 								if (canSpawn(type)) {
-									return NPCSpawner.spawnBasicHumanNpc(0,
-											UtilityProperties
-													.getRandomName(type), loc
-													.getWorld(), x, y, z,
-											random.nextInt(360), 0, type);
+									HumanNPC npc = NPCSpawner
+											.spawnBasicHumanNpc(
+													0,
+													UtilityProperties
+															.getRandomName(type),
+													loc.getWorld(), x, y, z,
+													random.nextInt(360), 0,
+													type);
+									// call NPC creature-spawning event
+									NPCCreatureSpawnEvent spawnEvent = new NPCCreatureSpawnEvent(
+											npc, loc);
+									Bukkit.getServer().getPluginManager()
+											.callEvent(spawnEvent);
+									if (spawnEvent.isCancelled()) {
+										return null;
+									}
+									return npc;
 								} else {
 									Messaging.debug(type + " cannot spawn.");
 								}

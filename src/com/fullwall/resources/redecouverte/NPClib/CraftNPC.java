@@ -17,12 +17,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent.NPCTargetReason;
+import com.fullwall.Citizens.Events.NPCTargetEvent;
 
 public class CraftNPC extends PathNPC {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
+	@SuppressWarnings("unused")
 	private int lastTargetId;
 	private long lastBounceTick;
 	private int lastBounceId;
@@ -48,22 +49,15 @@ public class CraftNPC extends PathNPC {
 
 	@Override
 	public boolean a(EntityHuman entity) {
-		EntityTargetEvent event = new NPCTargetEvent(getBukkitEntity(),
-				entity.getBukkitEntity(), NPCTargetReason.NPC_RIGHTCLICKED);
+		EntityTargetEvent rightClickEvent = new NPCTargetEvent(
+				getBukkitEntity(), entity.getBukkitEntity());
 		CraftServer server = ((WorldServer) this.world).getServer();
-		server.getPluginManager().callEvent(event);
+		server.getPluginManager().callEvent(rightClickEvent);
 		return super.a(entity);
 	}
 
 	@Override
 	public void b(EntityHuman entity) {
-		if (lastTargetId != entity.id) {
-			EntityTargetEvent event = new NPCTargetEvent(
-					getBukkitEntity(), entity.getBukkitEntity(),
-					NPCTargetReason.CLOSEST_PLAYER);
-			CraftServer server = ((WorldServer) this.world).getServer();
-			server.getPluginManager().callEvent(event);
-		}
 		lastTargetId = entity.id;
 		super.b(entity);
 	}
@@ -72,11 +66,6 @@ public class CraftNPC extends PathNPC {
 	public void c(Entity entity) {
 		if (lastBounceId != entity.id
 				|| System.currentTimeMillis() - lastBounceTick > 1000) {
-			EntityTargetEvent event = new NPCTargetEvent(
-					getBukkitEntity(), entity.getBukkitEntity(),
-					NPCTargetReason.NPC_BOUNCED);
-			CraftServer server = ((WorldServer) this.world).getServer();
-			server.getPluginManager().callEvent(event);
 			lastBounceTick = System.currentTimeMillis();
 		}
 		lastBounceId = entity.id;

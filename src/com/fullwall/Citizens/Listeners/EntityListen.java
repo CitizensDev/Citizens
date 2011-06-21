@@ -16,6 +16,7 @@ import com.fullwall.Citizens.Citizens;
 import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Events.NPCDisplayTextEvent;
 import com.fullwall.Citizens.Events.NPCRightClickEvent;
+import com.fullwall.Citizens.Events.NPCTargetEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
@@ -23,8 +24,6 @@ import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent;
-import com.fullwall.resources.redecouverte.NPClib.NPCTargetEvent.NPCTargetReason;
 
 /**
  * Entity Listener
@@ -79,73 +78,65 @@ public class EntityListen extends EntityListener implements Listener {
 		if (!(event instanceof NPCTargetEvent)) {
 			return;
 		}
-		NPCTargetEvent e = (NPCTargetEvent) event;
 		if (CreatureTask.getCreature(event.getEntity()) != null) {
-			if (e.getNPCTargetReason() == NPCTargetReason.NPC_RIGHTCLICKED)
-				CreatureTask.getCreature(event.getEntity()).onRightClick(
-						(Player) event.getTarget());
+			CreatureTask.getCreature(event.getEntity()).onRightClick(
+					(Player) event.getTarget());
 		}
 		if (NPCManager.isNPC(event.getTarget())) {
 			event.setCancelled(true);
 		}
+		NPCTargetEvent e = (NPCTargetEvent) event;
 		HumanNPC npc = NPCManager.get(e.getEntity());
 		if (npc != null && event.getTarget() instanceof Player) {
-			// The NPC lib handily provides a right click event.
-			if (e.getNPCTargetReason() == NPCTargetReason.NPC_RIGHTCLICKED) {
-				Player player = (Player) event.getTarget();
-				if (Citizens.plugin
-						.validateTool("items.basic.select-items", player
-								.getItemInHand().getTypeId(), player
-								.isSneaking())) {
-					if (!NPCManager.validateSelected(player, npc.getUID())) {
-						NPCManager.selectedNPCs.put(player.getName(),
-								npc.getUID());
-						player.sendMessage(ChatColor.GREEN + "You selected "
-								+ StringUtils.wrap(npc.getStrippedName())
-								+ " (ID " + StringUtils.wrap(npc.getUID())
-								+ ").");
-						return;
-					}
-				}
-				// Call text-display event
-				if (Citizens.plugin
-						.validateTool("items.basic.talk-items", player
-								.getItemInHand().getTypeId(), player
-								.isSneaking())) {
-					Player target = (Player) e.getTarget();
-					NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(
-							npc, target, MessageUtils.getText(npc, target));
-					Bukkit.getServer().getPluginManager().callEvent(textEvent);
-					if (textEvent.isCancelled()) {
-						return;
-					}
-					if (!textEvent.getNPC().getNPCData().isLookClose()) {
-						NPCManager.facePlayer(npc, target);
-					}
-					if (!textEvent.getText().isEmpty()) {
-						Messaging.send(target, textEvent.getText());
-					}
-				}
-				// Call right-click event
-				NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(
-						npc, player);
-				Bukkit.getServer().getPluginManager()
-						.callEvent(rightClickEvent);
-				if (rightClickEvent.isCancelled()) {
+			Player player = (Player) event.getTarget();
+			if (Citizens.plugin.validateTool("items.basic.select-items", player
+					.getItemInHand().getTypeId(), player.isSneaking())) {
+				if (!NPCManager.validateSelected(player, npc.getUID())) {
+					NPCManager.selectedNPCs.put(player.getName(), npc.getUID());
+					player.sendMessage(ChatColor.GREEN + "You selected "
+							+ StringUtils.wrap(npc.getStrippedName()) + " (ID "
+							+ StringUtils.wrap(npc.getUID()) + ").");
 					return;
 				}
-				if (npc.isTrader()) {
-					npc.getTrader().onRightClick(player, npc);
+			}
+			// Call text-display event
+			if (Citizens.plugin.validateTool("items.basic.talk-items", player
+					.getItemInHand().getTypeId(), player.isSneaking())) {
+				Player target = (Player) e.getTarget();
+				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
+						target, MessageUtils.getText(npc, target));
+				Bukkit.getServer().getPluginManager().callEvent(textEvent);
+				if (textEvent.isCancelled()) {
+					return;
 				}
-				if (npc.isWizard()) {
-					npc.getWizard().onRightClick(player, npc);
+				if (!textEvent.getNPC().getNPCData().isLookClose()) {
+					NPCManager.facePlayer(npc, target);
 				}
-				if (npc.isBlacksmith()) {
-					npc.getBlacksmith().onRightClick(player, npc);
+				if (!textEvent.getText().isEmpty()) {
+					Messaging.send(target, textEvent.getText());
 				}
-				if (npc.isQuester()) {
-					npc.getQuester().onRightClick(player, npc);
-				}
+			}
+			NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(npc,
+					player);
+			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
+			if (rightClickEvent.isCancelled()) {
+				return;
+			}
+			if (npc.isTrader()) {
+				npc.getTrader().onRightClick(rightClickEvent.getPlayer(),
+						rightClickEvent.getNPC());
+			}
+			if (npc.isWizard()) {
+				npc.getWizard().onRightClick(rightClickEvent.getPlayer(),
+						rightClickEvent.getNPC());
+			}
+			if (npc.isBlacksmith()) {
+				npc.getBlacksmith().onRightClick(rightClickEvent.getPlayer(),
+						rightClickEvent.getNPC());
+			}
+			if (npc.isQuester()) {
+				npc.getQuester().onRightClick(rightClickEvent.getPlayer(),
+						rightClickEvent.getNPC());
 			}
 		}
 	}
