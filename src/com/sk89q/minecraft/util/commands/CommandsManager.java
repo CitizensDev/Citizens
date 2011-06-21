@@ -97,7 +97,7 @@ public abstract class CommandsManager<T extends Player> {
 	 * Mapping of commands (not including aliases) with a description. This is
 	 * only for top level commands.
 	 */
-	protected Map<String, String> descs = new HashMap<String, String>();
+	protected Map<CommandIdentifier, String> descs = new HashMap<CommandIdentifier, String>();
 
 	/**
 	 * Stores the injector used to getInstance.
@@ -188,9 +188,13 @@ public abstract class CommandsManager<T extends Player> {
 			// root level commands
 			if (parent == null) {
 				if (cmd.usage().length() == 0) {
-					descs.put(cmd.aliases()[0], cmd.desc());
+					descs.put(
+							new CommandIdentifier(cmd.aliases()[0], cmd
+									.modifier()), cmd.desc());
 				} else {
-					descs.put(cmd.aliases()[0],
+					descs.put(
+							new CommandIdentifier(cmd.aliases()[0], cmd
+									.modifier()),
 							cmd.usage() + " - " + cmd.desc());
 				}
 			}
@@ -227,7 +231,7 @@ public abstract class CommandsManager<T extends Player> {
 	 * 
 	 * @return
 	 */
-	public Map<String, String> getCommands() {
+	public Map<CommandIdentifier, String> getCommands() {
 		return descs;
 	}
 
