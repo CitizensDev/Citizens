@@ -417,15 +417,14 @@ public class BasicExecutor implements CommandExecutor {
 	 * @param name
 	 */
 	private void move(Player player, HumanNPC npc) {
-		/*if (npc != null) {
-			Location loc = npc.getNPCData().getLocation();
+		if (npc != null) {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is enroute to your location!");
-			npc.getNPCData().setLocation(loc);
 			npc.teleport(player.getLocation());
+			npc.getNPCData().setLocation(player.getLocation());
 		} else {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-		}*/
+		}
 	}
 
 	private void moveTo(Player player, HumanNPC npc, String[] args) {
