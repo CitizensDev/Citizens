@@ -250,7 +250,7 @@ public class Citizens extends JavaPlugin {
 						.getName()));
 
 			try {
-				commands.execute(split, player, player, npc, args);
+				commands.execute(split, player, player, npc);
 				// check all exceptions that may be thrown.
 			} catch (CommandPermissionsException e) {
 				Messaging.send(player, MessageUtils.noPermissionsMessage);

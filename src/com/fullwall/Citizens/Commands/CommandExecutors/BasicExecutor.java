@@ -333,10 +333,12 @@ public class BasicExecutor implements CommandExecutor {
 		return false;
 	}
 
-	/* Example of new command system. Note that these arguments must be used
+	/* Example of new command system. Note that these arguments must be used in this order
 	 * for *all* commands, although they can be null etc. In this case, args
 	 * is unused. Also note that the full package declaration must be used,
 	 * but only for the moment (it's conflicting with bukkit's Command class).
+	 * CommandContext should be used as the first argument. All methods *must*
+	 * be static.
 	@com.sk89q.minecraft.util.commands.Command(
 			aliases = { "move", "mo" }, - the first is the 'main' command, others are aliases.
 			usage = "", - what is displayed when the command throws an exception (error etc.)
@@ -347,7 +349,7 @@ public class BasicExecutor implements CommandExecutor {
 			max = 0) - max number of arguments.
 	@CommandPermissions({ "modify.basic" }) - permission required. 'admin' for admin.
 	Automatically fetches the selected npc for permissions operations.
-	private void move(Player player, HumanNPC npc, String[] args) {
+	private static void move(CommandContext args, Player player, HumanNPC npc) {
 		if (npc != null) {
 			Location loc = npc.getNPCData().getLocation();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())

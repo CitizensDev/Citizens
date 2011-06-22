@@ -1,10 +1,8 @@
 package com.fullwall.Citizens.NPCTypes.Guards;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
@@ -22,7 +20,6 @@ public class GuardNPC implements Toggleable, Clickable {
 	private GuardType guardType = GuardType.BODYGUARD;
 	private List<String> blacklist = new ArrayList<String>();
 	private List<String> whitelist = new ArrayList<String>();
-	private final ArrayDeque<Location> paths = new ArrayDeque<Location>();
 	private double radius = 10;
 
 	/**

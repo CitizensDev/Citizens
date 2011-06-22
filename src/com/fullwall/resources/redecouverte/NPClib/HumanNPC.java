@@ -1,6 +1,6 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
-import java.util.logging.Logger;
+import java.util.ArrayDeque;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -41,15 +41,23 @@ public class HumanNPC extends NPC {
 	private final GuardNPC guardNPC = new GuardNPC(this);
 	private final EvilNPC evilNPC = new EvilNPC(this);
 	private final PirateNPC pirateNPC = new PirateNPC(this);
-	private NPCData npcdata;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger("Minecraft");
+	private final ArrayDeque<Location> paths = new ArrayDeque<Location>();
+
+	private NPCData npcdata;
 
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
 		this.mcEntity = entity;
 		this.mcEntity.npc = this;
+	}
+
+	public void addPathLocation(Location location) {
+		this.paths.push(location);
+	}
+
+	public void removeLastPathLocation() {
+		this.paths.pop();
 	}
 
 	public Player getPlayer() {

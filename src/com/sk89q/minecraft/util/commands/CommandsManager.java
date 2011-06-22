@@ -34,6 +34,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
+import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -182,6 +183,7 @@ public abstract class CommandsManager<T extends Player> {
 				}
 
 				instances.put(method, obj);
+				Messaging.log("Put instance.");
 			}
 
 			// Build a list of commands and their usage details, at least for
@@ -388,7 +390,6 @@ public abstract class CommandsManager<T extends Player> {
 	 */
 	public void executeMethod(Method parent, String[] args, T player,
 			Object[] methodArgs, int level) throws CommandException {
-
 		String cmdName = args[level];
 		String modifier = args[level + 1];
 
@@ -422,21 +423,39 @@ public abstract class CommandsManager<T extends Player> {
 				executeMethod(method, args, player, methodArgs, level + 1);
 			}
 		} else {
+			boolean hasAnnotation = false;
+			String requiredType = "";
+			boolean requireOwnership = false, requireSelected = false;
 			if (method.getClass()
 					.isAnnotationPresent(CommandRequirements.class)) {
 				CommandRequirements requirements = method.getClass()
 						.getAnnotation(CommandRequirements.class);
-				if (requirements.requireSelected() && npc == null) {
+				requiredType = requirements.requiredType();
+				requireOwnership = requirements.requireOwnership();
+				requireSelected = requirements.requireSelected();
+				hasAnnotation = true;
+			}
+			if (method.isAnnotationPresent(CommandRequirements.class)) {
+				// Method annotations override class annotations.
+				CommandRequirements requirements = method
+						.getAnnotation(CommandRequirements.class);
+				requiredType = requirements.requiredType();
+				requireOwnership = requirements.requireOwnership();
+				requireSelected = requirements.requireSelected();
+				hasAnnotation = true;
+			}
+			if (hasAnnotation) {
+				if (requireSelected && npc == null) {
 					throw new RequirementMissingException(
 							MessageUtils.mustHaveNPCSelectedMessage);
 				}
-				if (requirements.requireOwnership() && npc != null
+				if (requireOwnership && npc != null
 						&& !NPCManager.validateOwnership(player, npc.getUID())) {
 					throw new RequirementMissingException(
 							MessageUtils.notOwnerMessage);
 				}
-				if (npc != null && !requirements.requiredType().isEmpty()) {
-					String required = requirements.requiredType();
+				if (npc != null && !requiredType.isEmpty()) {
+					String required = requiredType;
 					// TODO : simplify this.
 					boolean found = false;
 					if (required.equals("trader") && !npc.isTrader())
@@ -451,60 +470,50 @@ public abstract class CommandsManager<T extends Player> {
 						found = true;
 					if (required.equals("wizard") && !npc.isWizard())
 						found = true;
-
 					if (found)
 						throw new RequirementMissingException(
 								"Your NPC isn't a " + required + " yet.");
 				}
-			} else if (method.isAnnotationPresent(CommandRequirements.class)) {
-				CommandRequirements requirements = method
-						.getAnnotation(CommandRequirements.class);
-				if (requirements.requireSelected() && npc == null) {
-					throw new RequirementMissingException(
-							MessageUtils.mustHaveNPCSelectedMessage);
-				}
 			}
-			Command cmd = method.getAnnotation(Command.class);
+		}
+		Command cmd = method.getAnnotation(Command.class);
 
-			String[] newArgs = new String[args.length - level];
-			System.arraycopy(args, level, newArgs, 0, args.length - level);
+		String[] newArgs = new String[args.length - level];
+		System.arraycopy(args, level, newArgs, 0, args.length - level);
 
-			CommandContext context = new CommandContext(newArgs);
+		CommandContext context = new CommandContext(newArgs);
 
-			if (context.argsLength() < cmd.min()) {
-				throw new CommandUsageException("Too few arguments.", getUsage(
-						args, level, cmd));
-			}
+		if (context.argsLength() < cmd.min()) {
+			throw new CommandUsageException("Too few arguments.", getUsage(
+					args, level, cmd));
+		}
 
-			if (cmd.max() != -1 && context.argsLength() > cmd.max()) {
-				throw new CommandUsageException("Too many arguments.",
+		if (cmd.max() != -1 && context.argsLength() > cmd.max()) {
+			throw new CommandUsageException("Too many arguments.", getUsage(
+					args, level, cmd));
+		}
+
+		for (char flag : context.getFlags()) {
+			if (cmd.flags().indexOf(String.valueOf(flag)) == -1) {
+				throw new CommandUsageException("Unknown flag: " + flag,
 						getUsage(args, level, cmd));
 			}
+		}
 
-			for (char flag : context.getFlags()) {
-				if (cmd.flags().indexOf(String.valueOf(flag)) == -1) {
-					throw new CommandUsageException("Unknown flag: " + flag,
-							getUsage(args, level, cmd));
-				}
+		methodArgs[0] = context;
+		Object instance = instances.get(method);
+		try {
+			method.invoke(instance, methodArgs);
+		} catch (IllegalArgumentException e) {
+			logger.log(Level.SEVERE, "Failed to execute command", e);
+		} catch (IllegalAccessException e) {
+			logger.log(Level.SEVERE, "Failed to execute command", e);
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof CommandException) {
+				throw (CommandException) e.getCause();
 			}
 
-			methodArgs[0] = context;
-
-			Object instance = instances.get(method);
-
-			try {
-				method.invoke(instance, methodArgs);
-			} catch (IllegalArgumentException e) {
-				logger.log(Level.SEVERE, "Failed to execute command", e);
-			} catch (IllegalAccessException e) {
-				logger.log(Level.SEVERE, "Failed to execute command", e);
-			} catch (InvocationTargetException e) {
-				if (e.getCause() instanceof CommandException) {
-					throw (CommandException) e.getCause();
-				}
-
-				throw new WrappedCommandException(e.getCause());
-			}
+			throw new WrappedCommandException(e.getCause());
 		}
 	}
 
