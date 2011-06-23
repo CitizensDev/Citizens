@@ -17,6 +17,7 @@ import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
@@ -211,5 +212,35 @@ public class MessageUtils {
 			return text.replace('&', '§');
 		}
 		return text;
+	}
+
+	/**
+	 * Display a list of NPCs owned by a player
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	public static void displayNPCList(Player sender, Player toDisplay,
+			HumanNPC npc, String passed) {
+		PageInstance paginate = PageUtils.newInstance(sender);
+		for (HumanNPC hnpc : NPCManager.getList().values()) {
+			if (hnpc.getOwner().equals(toDisplay.getName())) {
+				paginate.push(ChatColor.GRAY + "" + hnpc.getUID()
+						+ ChatColor.YELLOW + " " + hnpc.getStrippedName());
+			}
+		}
+		int page = Integer.parseInt(passed);
+		if (page == 0) {
+			page = 1;
+		}
+		if (page <= paginate.maxPages()) {
+			paginate.header(ChatColor.GREEN + "========== NPC List for "
+					+ StringUtils.wrap(toDisplay.getName())
+					+ " (%x/%y) ==========");
+			paginate.process(page);
+		} else {
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page,
+					paginate.maxPages()));
+		}
 	}
 }

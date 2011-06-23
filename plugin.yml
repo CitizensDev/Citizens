@@ -1,7 +1,7 @@
 name: Citizens
 main: com.fullwall.Citizens.Citizens
 version: 1.0.9
-authors: [fullwall, NeonMaster, aPunch, TheMPC]
+authors: [fullwall, aPunch]
 softdepend: [Permissions]
 commands:
     npc:

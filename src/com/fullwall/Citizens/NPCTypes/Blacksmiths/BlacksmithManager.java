@@ -43,10 +43,10 @@ public class BlacksmithManager {
 	 * @param npc
 	 * @param op
 	 */
-	public static void buyItemRepair(Player player, HumanNPC npc,
-			ItemStack item, Operation op) {
+	public static void buyItemRepair(Player player, HumanNPC npc, Operation op) {
 		if (!EconomyHandler.useEconomy()
 				|| EconomyHandler.canBuyBlacksmith(player, op)) {
+			ItemStack item = player.getItemInHand();
 			if (item.getDurability() > 0) {
 				double paid = EconomyHandler.payBlacksmith(op, player);
 				if (paid > 0) {

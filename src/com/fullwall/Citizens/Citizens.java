@@ -11,6 +11,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
+import com.fullwall.Citizens.CreatureTask;
+import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.TickTask;
 import com.fullwall.Citizens.Commands.CommandHandler;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PlayerListen;
@@ -228,8 +233,12 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
+		// Note: the package names for the command interfaces caused conflicts
+		// with sk89q's other plugins
+		// (WorldEdit, CommandBook), should we just change package names or is
+		// there another solution?
 		if (!(sender instanceof Player)) {
-			Messaging.log("Commands must be performed ingame.");
+			sender.sendMessage(MessageUtils.mustBeIngameMessage);
 			return true;
 		}
 		Player player = (Player) sender;
@@ -245,13 +254,12 @@ public class Citizens extends JavaPlugin {
 			}
 
 			HumanNPC npc = null;
-			if (NPCManager.validateSelected(player))
+			if (NPCManager.validateSelected(player)) {
 				npc = NPCManager.get(NPCManager.selectedNPCs.get(player
 						.getName()));
-
+			}
 			try {
 				commands.execute(split, player, player, npc);
-				// check all exceptions that may be thrown.
 			} catch (CommandPermissionsException e) {
 				Messaging.send(player, MessageUtils.noPermissionsMessage);
 			} catch (MissingNestedCommandException e) {
@@ -267,20 +275,14 @@ public class Citizens extends JavaPlugin {
 				return false;
 			}
 		} catch (NumberFormatException e) {
-			// Messaging.sendError(player, "Number expected; string given.");
-		} /* provided as an example - we can create our own classes extending exception,
-			throw them in the command and handle the generic case here.
-			catch (InvalidItemException e) {
-			Messaging.sendError(player, e.getMessage());
-			} */
-		catch (Throwable excp) {
+			Messaging.sendError(player, "That is not a valid number.");
+		} catch (Throwable excp) {
 			Messaging.sendError(player,
 					"Please report this error: [See console]");
 			Messaging.sendError(player,
 					excp.getClass().getName() + ": " + excp.getMessage());
 			excp.printStackTrace();
 		}
-
 		return true;
 	}
 }

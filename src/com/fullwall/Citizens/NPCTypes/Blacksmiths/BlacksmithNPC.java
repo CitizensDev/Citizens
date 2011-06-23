@@ -66,8 +66,7 @@ public class BlacksmithNPC implements Toggleable, Clickable {
 				op = Operation.BLACKSMITH_ARMORREPAIR;
 			}
 			if (op != null) {
-				BlacksmithManager.buyItemRepair(player, npc,
-						player.getItemInHand(), op);
+				BlacksmithManager.buyItemRepair(player, npc, op);
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);

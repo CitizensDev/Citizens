@@ -6,6 +6,8 @@ import java.util.Set;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import com.nijikokun.register.payment.Method;
+
 /**
  * Methods.java Controls the getting / setting of methods & the method of
  * payment used.

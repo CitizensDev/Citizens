@@ -56,7 +56,6 @@ public class NPCDataManager {
 	 * @param npc
 	 * @param material
 	 */
-	// Perhaps merge this with setItemInSlot.
 	public static void setItemInHand(Player p, HumanNPC npc, String material) {
 		Material mat = StringUtils.parseMaterial(material);
 		if (mat == null) {
@@ -99,56 +98,6 @@ public class NPCDataManager {
 		p.sendMessage(StringUtils.wrap(npc.getName())
 				+ "'s in-hand item was set to " + StringUtils.wrap(mat.name())
 				+ ".");
-	}
-
-	/**
-	 * Sets a given armour type to a material.
-	 * 
-	 * @param args
-	 * @param p
-	 * @param npc
-	 */
-	public static void setItemInSlot(String[] args, Player p, HumanNPC npc) {
-		Material mat = StringUtils.parseMaterial(args[1]);
-		if (mat == null) {
-			p.sendMessage(ChatColor.RED + "Incorrect item name.");
-			return;
-		}
-		if (!p.getInventory().contains(mat)) {
-			p.sendMessage(ChatColor.RED
-					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
-			return;
-		}
-		if (mat.getId() < 298 || mat.getId() > 317) {
-			p.sendMessage(ChatColor.GRAY
-					+ "That can't be used as an armour material.");
-			return;
-		}
-		int slot = p.getInventory().first(mat);
-		ItemStack item = decreaseItemStack(p.getInventory().getItem(slot));
-		p.getInventory().setItem(slot, item);
-		ArrayList<Integer> items = npc.getNPCData().getItems();
-		int oldhelmet = items.get(1);
-
-		if (args[0].contains("helm")) {
-			items.set(1, mat.getId());
-		} else if (args[0].equalsIgnoreCase("torso")) {
-			items.set(2, mat.getId());
-		} else if (args[0].contains("leg")) {
-			items.set(3, mat.getId());
-		} else if (args[0].contains("boot")) {
-			items.set(4, mat.getId());
-		}
-		npc.getNPCData().setItems(items);
-		NPCDataManager.addItems(npc, items);
-
-		if ((oldhelmet != 0 && items.get(1) == 0)) {
-			// Despawn the old NPC, register our new one.
-			NPCManager.removeForRespawn(npc.getUID());
-			NPCManager.register(npc.getUID(), npc.getOwner());
-		}
-		p.sendMessage(StringUtils.wrap(npc.getName()) + "'s " + args[0]
-				+ " was set to " + StringUtils.wrap(mat.name()) + ".");
 	}
 
 	public static ItemStack decreaseItemStack(ItemStack stack) {
