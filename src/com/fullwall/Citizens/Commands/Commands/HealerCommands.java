@@ -13,10 +13,13 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.CommandRequirements;
 
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true,
+		requiredType = "healer")
 public class HealerCommands {
 
-	@CommandRequirements(
-			requiredType = "healer")
+	@CommandRequirements(requiredType = "healer")
 	@Command(
 			aliases = "healer",
 			usage = "help",
@@ -25,14 +28,11 @@ public class HealerCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.healer")
-	public static void sendHealerHelp(CommandContext args, Player player, HumanNPC npc) {
+	public static void sendHealerHelp(CommandContext args, Player player,
+			HumanNPC npc) {
 		HelpUtils.sendHealerHelp(player);
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "healer")
 	@Command(
 			aliases = "healer",
 			usage = "status",
@@ -41,7 +41,8 @@ public class HealerCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.healer")
-	public static void displayStatus(CommandContext args, Player player, HumanNPC npc) {
+	public static void displayStatus(CommandContext args, Player player,
+			HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "========== "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s Healer Status")
 				+ " ==========");
@@ -52,10 +53,6 @@ public class HealerCommands {
 				+ npc.getHealer().getLevel() + ChatColor.RED + "/10");
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "healer")
 	@Command(
 			aliases = "healer",
 			usage = "level-up (levels)",

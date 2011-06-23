@@ -26,8 +26,10 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.CommandRequirements;
 
+@CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
 
+	@CommandRequirements()
 	@Command(
 			aliases = "citizens",
 			usage = "",
@@ -45,6 +47,7 @@ public class BasicCommands {
 		player.sendMessage(ChatColor.YELLOW + "      - aPunch");
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = { "citizens", "npc" },
 			usage = "help (page)",
@@ -62,6 +65,7 @@ public class BasicCommands {
 		HelpUtils.sendHelpPage(player, page);
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "citizens",
 			usage = "reload",
@@ -77,6 +81,7 @@ public class BasicCommands {
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "basic",
 			usage = "help (page)",
@@ -94,6 +99,7 @@ public class BasicCommands {
 		HelpUtils.sendBasicHelpPage(player, page);
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "npc",
 			usage = "create [name] (text)",
@@ -104,7 +110,7 @@ public class BasicCommands {
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
-		//StringBuilder buf = new StringBuilder();
+		// StringBuilder buf = new StringBuilder();
 		String firstArg = args.getString(1);
 		if (args.argsLength() >= 3) {
 			/*int i = 0;
@@ -145,10 +151,6 @@ public class BasicCommands {
 				+ ".");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "move",
@@ -164,10 +166,6 @@ public class BasicCommands {
 		npc.getNPCData().setLocation(player.getLocation());
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "moveTo [x y z]",
@@ -210,10 +208,6 @@ public class BasicCommands {
 				yaw, pitch));
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "copy",
@@ -246,10 +240,6 @@ public class BasicCommands {
 		player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "remove",
@@ -265,10 +255,6 @@ public class BasicCommands {
 		player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "rename [name]",
@@ -290,10 +276,6 @@ public class BasicCommands {
 				+ "'s name was set to " + StringUtils.wrap(name) + ".");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "color [color-code]",
@@ -330,10 +312,6 @@ public class BasicCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "set [text]",
@@ -363,10 +341,6 @@ public class BasicCommands {
 				+ "}'s text was set to {" + text + "}."));
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "add [text]",
@@ -392,10 +366,6 @@ public class BasicCommands {
 				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "reset",
@@ -411,10 +381,6 @@ public class BasicCommands {
 				+ " text was reset!");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "item [item]",
@@ -428,10 +394,6 @@ public class BasicCommands {
 		NPCDataManager.setItemInHand(player, npc, args.getString(1));
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "armor [armor] [item]",
@@ -485,8 +447,7 @@ public class BasicCommands {
 				+ "'s armor was set to " + StringUtils.wrap(mat.name()) + ".");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic")
+	@CommandRequirements(requiredType = "basic")
 	@Command(
 			aliases = "npc",
 			usage = "tp",
@@ -502,10 +463,6 @@ public class BasicCommands {
 				+ StringUtils.wrap(npc.getStrippedName()) + ". Enjoy!");
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "talkwhenclose [true|false]",
@@ -530,10 +487,6 @@ public class BasicCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requiredType = "basic",
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "lookatplayers [true|false]",
@@ -558,8 +511,7 @@ public class BasicCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true)
+	@CommandRequirements(requireSelected = true)
 	@Command(
 			aliases = "npc",
 			usage = "id",
@@ -596,8 +548,7 @@ public class BasicCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true)
+	@CommandRequirements(requireSelected = true)
 	@Command(
 			aliases = "npc",
 			usage = "owner",
@@ -612,9 +563,6 @@ public class BasicCommands {
 				+ StringUtils.wrap(npc.getOwner()) + ".");
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "setowner [name]",
@@ -631,6 +579,7 @@ public class BasicCommands {
 		npc.getNPCData().setOwner(args.getString(1));
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "npc",
 			usage = "list (name) (page)",

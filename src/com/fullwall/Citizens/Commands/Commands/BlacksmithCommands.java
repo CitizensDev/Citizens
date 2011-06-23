@@ -14,10 +14,9 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.CommandRequirements;
 
+@CommandRequirements(requiredType = "blacksmith")
 public class BlacksmithCommands {
-	
-	@CommandRequirements(
-			requiredType = "blacksmith")
+
 	@Command(
 			aliases = "blacksmith",
 			usage = "help",
@@ -26,12 +25,11 @@ public class BlacksmithCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.blacksmith")
-	public static void sendBlacksmithHelp(CommandContext args, Player player, HumanNPC npc) {
+	public static void sendBlacksmithHelp(CommandContext args, Player player,
+			HumanNPC npc) {
 		HelpUtils.sendBlacksmithHelp(player);
 	}
-	
-	@CommandRequirements(
-			requiredType = "blacksmith")
+
 	@Command(
 			aliases = "blacksmith",
 			usage = "uses",

@@ -12,10 +12,13 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.CommandRequirements;
 
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true,
+		requiredType = "wizard")
 public class WizardCommands {
-	
-	@CommandRequirements(
-			requiredType = "wizard")
+
+	@CommandRequirements(requiredType = "wizard")
 	@Command(
 			aliases = "wizard",
 			usage = "help",
@@ -24,14 +27,11 @@ public class WizardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.wizard")
-	public static void sendWizardHelp(CommandContext args, Player player, HumanNPC npc) {
+	public static void sendWizardHelp(CommandContext args, Player player,
+			HumanNPC npc) {
 		HelpUtils.sendWizardHelp(player);
 	}
-	
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "wizard")
+
 	@Command(
 			aliases = "wizard",
 			usage = "mode [mode]",
@@ -40,7 +40,8 @@ public class WizardCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.wizard")
-	public static void changeMode(CommandContext args, Player player, HumanNPC npc) {
+	public static void changeMode(CommandContext args, Player player,
+			HumanNPC npc) {
 		WizardMode wizardMode;
 		if (WizardMode.parse(args.getString(1)) != null) {
 			wizardMode = WizardMode.parse(args.getString(1));
@@ -59,11 +60,7 @@ public class WizardCommands {
 					+ "That is not a valid wizard mode.");
 		}
 	}
-	
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "wizard")
+
 	@Command(
 			aliases = "wizard",
 			usage = "status",
@@ -72,7 +69,8 @@ public class WizardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.wizard")
-	public static void displayStatus(CommandContext args, Player player, HumanNPC npc) {
+	public static void displayStatus(CommandContext args, Player player,
+			HumanNPC npc) {
 		player.sendMessage(ChatColor.BLUE + "========== " + ChatColor.GOLD
 				+ npc.getStrippedName() + "'s Wizard Status" + ChatColor.BLUE
 				+ " ==========");
@@ -81,11 +79,7 @@ public class WizardCommands {
 		player.sendMessage(ChatColor.BLUE + "Mana: " + ChatColor.GOLD
 				+ npc.getWizard().getMana());
 	}
-	
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "wizard")
+
 	@Command(
 			aliases = "wizard",
 			usage = "addloc [location]",
@@ -94,22 +88,20 @@ public class WizardCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.wizard")
-	public static void addLocation(CommandContext args, Player player, HumanNPC npc) {
+	public static void addLocation(CommandContext args, Player player,
+			HumanNPC npc) {
 		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN + "Added current location to "
 					+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
 					+ " as " + StringUtils.wrap(args.getString(1)) + ".");
-			npc.getWizard().addLocation(player.getLocation(), args.getString(1));
+			npc.getWizard()
+					.addLocation(player.getLocation(), args.getString(1));
 		} else {
 			player.sendMessage(ChatColor.RED + npc.getStrippedName()
 					+ " cannot perform that action in this mode.");
 		}
 	}
-	
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "wizard")
+
 	@Command(
 			aliases = "wizard",
 			usage = "removeloc [location]",
@@ -118,7 +110,8 @@ public class WizardCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.wizard")
-	public static void removeLocation(CommandContext args, Player player, HumanNPC npc) {
+	public static void removeLocation(CommandContext args, Player player,
+			HumanNPC npc) {
 		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
 			String locations[] = npc.getWizard().getLocations().split(":");
 			String newLoc = "";
@@ -140,11 +133,7 @@ public class WizardCommands {
 					+ " cannot perform that action in this mode.");
 		}
 	}
-	
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "wizard")
+
 	@Command(
 			aliases = "wizard",
 			usage = "locations",
@@ -153,7 +142,8 @@ public class WizardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.wizard")
-	public static void displayLocations(CommandContext args, Player player, HumanNPC npc) {
+	public static void displayLocations(CommandContext args, Player player,
+			HumanNPC npc) {
 		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN
 					+ "========== "

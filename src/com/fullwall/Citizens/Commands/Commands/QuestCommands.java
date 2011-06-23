@@ -9,12 +9,12 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.CommandRequirements;
 
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true,
+		requiredType = "quester")
 public class QuestCommands {
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "quester")
 	@Command(
 			aliases = "quests",
 			usage = "edit",
