@@ -7,14 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-//import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCDataManager;
@@ -22,9 +18,6 @@ import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
-import com.fullwall.Citizens.Utils.Messaging;
-import com.fullwall.Citizens.Utils.PageUtils;
-import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
 import com.fullwall.Citizens.Utils.ServerUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -37,7 +30,7 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "citizens",
-			usage = "/citizens",
+			usage = "",
 			desc = "view Citizens info",
 			modifier = "",
 			max = 0)
@@ -111,11 +104,11 @@ public class BasicCommands {
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
-		StringBuilder buf = new StringBuilder();
+		//StringBuilder buf = new StringBuilder();
 		String firstArg = args.getString(1);
 		if (args.argsLength() >= 3) {
-			int i = 0;
-			for (String s : args) {
+			/*int i = 0;
+			for (String s : args.getSlice(2)) {
 				if (i == 2 && !s.isEmpty() && !s.equals(";")) {
 					buf.append(s);
 				}
@@ -123,8 +116,8 @@ public class BasicCommands {
 					buf.append(" ").append(s);
 				}
 				i += 1;
-			}
-			texts.add(buf.toString());
+			}*/
+			texts.add(args.getJoinedStrings(2));
 		}
 		if (firstArg.length() > 16) {
 			player.sendMessage(ChatColor.RED
@@ -350,8 +343,8 @@ public class BasicCommands {
 	@CommandPermissions("modify.basic")
 	public static void setNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
-		String text = "";
-		if (args.argsLength() >= 2) {
+		String text = args.getJoinedStrings(1);
+		/*if (args.argsLength() >= 2) {
 			int i = 0;
 			for (String s : args) {
 				if (i == 1 && !s.isEmpty() && !s.equals(";")) {
@@ -362,7 +355,7 @@ public class BasicCommands {
 				}
 				i += 1;
 			}
-		}
+		}*/
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
 		NPCManager.setText(npc.getUID(), texts);
@@ -383,8 +376,8 @@ public class BasicCommands {
 	@CommandPermissions("modify.basic")
 	public static void addNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
-		String text = "";
-		int i = 0;
+		String text = args.getJoinedStrings(1);
+		/*int i = 0;
 		for (String s : args) {
 			if (i == 1 && !s.isEmpty() && !s.equals(";")) {
 				text += s;
@@ -393,7 +386,7 @@ public class BasicCommands {
 				text += " " + s;
 			}
 			i += 1;
-		}
+		}*/
 		NPCManager.addText(npc.getUID(), text);
 		player.sendMessage(StringUtils.wrap(text) + " was added to "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
