@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -168,11 +168,13 @@ public abstract class CommandsManager<T extends Player> {
 			boolean isStatic = Modifier.isStatic(method.getModifiers());
 
 			Command cmd = method.getAnnotation(Command.class);
-			String modifier = cmd.modifier();
+			String[] modifiers = cmd.modifiers();
 
 			// Cache the aliases too
 			for (String alias : cmd.aliases()) {
-				map.put(new CommandIdentifier(alias, modifier), method);
+				for (String modifier : modifiers) {
+					map.put(new CommandIdentifier(alias, modifier), method);
+				}
 			}
 
 			// We want to be able invoke with an instance
@@ -192,11 +194,11 @@ public abstract class CommandsManager<T extends Player> {
 				if (cmd.usage().length() == 0) {
 					descs.put(
 							new CommandIdentifier(cmd.aliases()[0], cmd
-									.modifier()), cmd.desc());
+									.modifiers()[0]), cmd.desc());
 				} else {
 					descs.put(
 							new CommandIdentifier(cmd.aliases()[0], cmd
-									.modifier()),
+									.modifiers()[0]),
 							cmd.usage() + " - " + cmd.desc());
 				}
 			}

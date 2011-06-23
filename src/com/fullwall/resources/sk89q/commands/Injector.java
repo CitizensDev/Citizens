@@ -4,7 +4,7 @@
  * All rights reserved.
 */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
 import java.lang.reflect.InvocationTargetException;
 

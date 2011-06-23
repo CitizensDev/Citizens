@@ -21,10 +21,10 @@ import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.ServerUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.CommandRequirements;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
@@ -34,7 +34,7 @@ public class BasicCommands {
 			aliases = "citizens",
 			usage = "",
 			desc = "view Citizens info",
-			modifier = "",
+			modifiers = "",
 			max = 0)
 	@CommandPermissions("admin")
 	public static void viewInfo(CommandContext args, Player player, HumanNPC npc) {
@@ -52,7 +52,7 @@ public class BasicCommands {
 			aliases = { "citizens", "npc" },
 			usage = "help (page)",
 			desc = "view the Citizens help page",
-			modifier = "help",
+			modifiers = "help",
 			min = 1,
 			max = 2)
 	@CommandPermissions("use.basic")
@@ -70,7 +70,7 @@ public class BasicCommands {
 			aliases = "citizens",
 			usage = "reload",
 			desc = "reload Citizens",
-			modifier = "reload",
+			modifiers = "reload",
 			min = 1,
 			max = 1)
 	@CommandPermissions("admin")
@@ -86,7 +86,7 @@ public class BasicCommands {
 			aliases = "basic",
 			usage = "help (page)",
 			desc = "view the Basic NPC help page",
-			modifier = "help",
+			modifiers = "help",
 			min = 1,
 			max = 2)
 	@CommandPermissions("use.basic")
@@ -104,7 +104,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "create [name] (text)",
 			desc = "create an NPC",
-			modifier = "create",
+			modifiers = "create",
 			min = 2)
 	@CommandPermissions("create.basic")
 	public static void createNPC(CommandContext args, Player player,
@@ -155,7 +155,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "move",
 			desc = "move an NPC",
-			modifier = "move",
+			modifiers = "move",
 			min = 1,
 			max = 1)
 	@CommandPermissions("modify.basic")
@@ -170,7 +170,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "moveTo [x y z]",
 			desc = "move an NPC to a location",
-			modifier = "moveTo",
+			modifiers = "moveTo",
 			min = 4,
 			max = 4)
 	@CommandPermissions("modify.basic")
@@ -212,7 +212,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "copy",
 			desc = "copy an NPC",
-			modifier = "copy",
+			modifiers = "copy",
 			min = 1,
 			max = 1)
 	@CommandPermissions("create.basic")
@@ -229,7 +229,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "/npc remove all",
 			desc = "remove all NPCs",
-			modifier = "remove",
+			modifiers = "remove",
 			min = 2,
 			max = 2)
 	@CommandPermissions("admin")
@@ -244,7 +244,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "remove",
 			desc = "remove an NPC",
-			modifier = "remove",
+			modifiers = "remove",
 			min = 1,
 			max = 1)
 	@CommandPermissions("modify.basic")
@@ -259,7 +259,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "rename [name]",
 			desc = "rename an NPC",
-			modifier = "rename",
+			modifiers = "rename",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -280,7 +280,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "color [color-code]",
 			desc = "set the name color of an NPC",
-			modifier = "color",
+			modifiers = "color",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -316,7 +316,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "set [text]",
 			desc = "set the text of an NPC",
-			modifier = "set",
+			modifiers = "set",
 			min = 2)
 	@CommandPermissions("modify.basic")
 	public static void setNPCText(CommandContext args, Player player,
@@ -345,7 +345,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "add [text]",
 			desc = "add text to an NPC",
-			modifier = "add",
+			modifiers = "add",
 			min = 2)
 	@CommandPermissions("modify.basic")
 	public static void addNPCText(CommandContext args, Player player,
@@ -370,7 +370,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "reset",
 			desc = "reset the text of an NPC",
-			modifier = "reset",
+			modifiers = "reset",
 			min = 1,
 			max = 1)
 	@CommandPermissions("modify.basic")
@@ -385,7 +385,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "item [item]",
 			desc = "set the item in an NPC's hand",
-			modifier = "item",
+			modifiers = "item",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -398,7 +398,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "armor [armor] [item]",
 			desc = "set the armor of an NPC",
-			modifier = "armor",
+			modifiers = "armor",
 			min = 3,
 			max = 3)
 	@CommandPermissions("modify.basic")
@@ -452,7 +452,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "tp",
 			desc = "teleport to an NPC",
-			modifier = "tp",
+			modifiers = "tp",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.basic")
@@ -467,7 +467,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "talkwhenclose [true|false]",
 			desc = "set an NPC's talk-when-close setting",
-			modifier = "talkwhenclose",
+			modifiers = "talkwhenclose",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -491,7 +491,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "lookatplayers [true|false]",
 			desc = "set an NPC's look-when-close setting",
-			modifier = "lookatplayers",
+			modifiers = "lookatplayers",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -516,7 +516,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "id",
 			desc = "display an NPC's ID",
-			modifier = "id",
+			modifiers = "id",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.basic")
@@ -530,7 +530,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "select [id]",
 			desc = "select an NPC by its ID",
-			modifier = "select",
+			modifiers = "select",
 			min = 2,
 			max = 2)
 	@CommandPermissions("use.basic")
@@ -553,7 +553,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "owner",
 			desc = "get the owner of an NPC",
-			modifier = "owner",
+			modifiers = "owner",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.basic")
@@ -567,7 +567,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "setowner [name]",
 			desc = "set the owner of an NPC",
-			modifier = "setowner",
+			modifiers = "setowner",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -584,7 +584,7 @@ public class BasicCommands {
 			aliases = "npc",
 			usage = "list (name) (page)",
 			desc = "view a list of NPCs for a player",
-			modifier = "list",
+			modifiers = "list",
 			min = 1,
 			max = 3)
 	@CommandPermissions("use.basic")

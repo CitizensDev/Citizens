@@ -8,10 +8,10 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.CommandRequirements;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -24,7 +24,7 @@ public class HealerCommands {
 			aliases = "healer",
 			usage = "help",
 			desc = "view the healer help page",
-			modifier = "help",
+			modifiers = "help",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.healer")
@@ -37,7 +37,7 @@ public class HealerCommands {
 			aliases = "healer",
 			usage = "status",
 			desc = "view the status of a healer",
-			modifier = "status",
+			modifiers = "status",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.healer")
@@ -57,7 +57,7 @@ public class HealerCommands {
 			aliases = "healer",
 			usage = "level-up (levels)",
 			desc = "level-up a healer",
-			modifier = "level-up",
+			modifiers = "level-up",
 			min = 1,
 			max = 2)
 	@CommandPermissions("modify.healer")

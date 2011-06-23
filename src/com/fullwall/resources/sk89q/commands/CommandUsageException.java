@@ -17,25 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-/**
- * Indicates a nested command. Mark methods with this annotation to tell
- * {@link CommandsManager} that a method is merely a shell for child
- * commands. Note that the body of a method marked with this annotation
- * will never called. Additionally, not all fields of {@link Command} apply
- * when it is used in conjunction with this annotation, although both
- * are still required.
- *
- * @author sk89q
- */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface NestedCommand {
-    /**
-     * A list of classes with the child commands.
-     */
-    Class<?>[] value();
+public class CommandUsageException extends CommandException {
+    private static final long serialVersionUID = -6761418114414516542L;
+    
+    protected String usage;
+    
+    public CommandUsageException(String message, String usage) {
+        super(message);
+        this.usage = usage;
+    }
+    
+    public String getUsage() {
+        return usage;
+    }
 }

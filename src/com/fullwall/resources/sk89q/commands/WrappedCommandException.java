@@ -17,13 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
-/**
- * Thrown when not enough permissions are satisfied.
- *
- * @author sk89q
- */
-public class CommandPermissionsException extends CommandException {
-    private static final long serialVersionUID = -602374621030168291L;
+public class WrappedCommandException extends CommandException {
+    private static final long serialVersionUID = -4075721444847778918L;
+    
+    public WrappedCommandException(Throwable t) {
+        super(t);
+    }
 }

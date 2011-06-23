@@ -7,10 +7,10 @@ import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.CommandRequirements;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -23,7 +23,7 @@ public class QuesterCommands {
 			aliases = "quester",
 			usage = "help",
 			desc = "view the quester help page",
-			modifier = "help",
+			modifiers = "help",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.quester")
@@ -36,7 +36,7 @@ public class QuesterCommands {
 			aliases = "quester",
 			usage = "assign [quest]",
 			desc = "assign a quest to an NPC",
-			modifier = "assign",
+			modifiers = "assign",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.quester")
@@ -60,7 +60,7 @@ public class QuesterCommands {
 			aliases = "quester",
 			usage = "remove [quest]",
 			desc = "remove a quest from an NPC",
-			modifier = "remove",
+			modifiers = "remove",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.quester")

@@ -31,14 +31,14 @@ import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.fullwall.resources.sk89q.commands.CitizensCommandsManager;
+import com.fullwall.resources.sk89q.commands.CommandPermissionsException;
+import com.fullwall.resources.sk89q.commands.CommandUsageException;
+import com.fullwall.resources.sk89q.commands.MissingNestedCommandException;
+import com.fullwall.resources.sk89q.commands.RequirementMissingException;
+import com.fullwall.resources.sk89q.commands.UnhandledCommandException;
+import com.fullwall.resources.sk89q.commands.WrappedCommandException;
 import com.nijikokun.register.payment.Method;
-import com.sk89q.minecraft.util.commands.CitizensCommandsManager;
-import com.sk89q.minecraft.util.commands.CommandPermissionsException;
-import com.sk89q.minecraft.util.commands.CommandUsageException;
-import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
-import com.sk89q.minecraft.util.commands.RequirementMissingException;
-import com.sk89q.minecraft.util.commands.UnhandledCommandException;
-import com.sk89q.minecraft.util.commands.WrappedCommandException;
 
 /**
  * Citizens for Bukkit

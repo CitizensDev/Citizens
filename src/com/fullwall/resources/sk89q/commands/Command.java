@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -53,7 +53,7 @@ public @interface Command {
 	 * same command label. The modifier determines which command to use based on
 	 * the first command argument.
 	 */
-	String modifier();
+	String[] modifiers();
 
 	/**
 	 * The minimum number of arguments. This should be 0 or above.

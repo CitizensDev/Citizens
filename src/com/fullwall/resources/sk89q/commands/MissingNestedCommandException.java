@@ -17,21 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
-public class CommandException extends Exception {
-    private static final long serialVersionUID = 870638193072101739L;
+public class MissingNestedCommandException extends CommandUsageException {
+    private static final long serialVersionUID = -4382896182979285355L;
 
-    public CommandException() {
-        super();
-    }
-
-    public CommandException(String message) {
-        super(message);
-    }
-
-    public CommandException(Throwable t) {
-        super(t);
+    public MissingNestedCommandException(String message, String usage) {
+        super(message, usage);
     }
 
 }

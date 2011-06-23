@@ -7,10 +7,10 @@ import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.CommandRequirements;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -23,7 +23,7 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "help",
 			desc = "view the wizard help page",
-			modifier = "help",
+			modifiers = "help",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.wizard")
@@ -36,7 +36,7 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "mode [mode]",
 			desc = "change the mode of a wizard",
-			modifier = "mode",
+			modifiers = "mode",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.wizard")
@@ -65,7 +65,7 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "status",
 			desc = "display the status of a wizard",
-			modifier = "status",
+			modifiers = "status",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.wizard")
@@ -84,7 +84,7 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "addloc [location]",
 			desc = "add a location to a wizard",
-			modifier = "addloc",
+			modifiers = "addloc",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.wizard")
@@ -106,7 +106,7 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "removeloc [location]",
 			desc = "remove a location from a wizard",
-			modifier = "removeloc",
+			modifiers = "removeloc",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.wizard")
@@ -138,7 +138,7 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "locations",
 			desc = "view the locations of a wizard",
-			modifier = "locations",
+			modifiers = "locations",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.wizard")

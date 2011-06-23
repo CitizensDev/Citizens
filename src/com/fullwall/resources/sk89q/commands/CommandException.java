@@ -17,12 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
-public class WrappedCommandException extends CommandException {
-    private static final long serialVersionUID = -4075721444847778918L;
-    
-    public WrappedCommandException(Throwable t) {
+public class CommandException extends Exception {
+    private static final long serialVersionUID = 870638193072101739L;
+
+    public CommandException() {
+        super();
+    }
+
+    public CommandException(String message) {
+        super(message);
+    }
+
+    public CommandException(Throwable t) {
         super(t);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.sk89q.minecraft.util.commands;
+package com.fullwall.resources.sk89q.commands;
 
 public class RequirementMissingException extends CommandException {
 

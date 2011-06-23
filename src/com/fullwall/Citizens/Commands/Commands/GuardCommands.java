@@ -10,20 +10,19 @@ import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.CommandRequirements;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 public class GuardCommands {
 
-	@CommandRequirements(
-			requiredType = "guard")
+	@CommandRequirements(requiredType = "guard")
 	@Command(
 			aliases = "guard",
 			usage = "help",
 			desc = "view the guard help page",
-			modifier = "help",
+			modifiers = "help",
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.guard")
@@ -40,7 +39,7 @@ public class GuardCommands {
 			aliases = "guard",
 			usage = "type [type]",
 			desc = "change a guard's type",
-			modifier = "type",
+			modifiers = "type",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.guard")
@@ -83,7 +82,7 @@ public class GuardCommands {
 			aliases = "guard",
 			usage = "blacklist (mob)",
 			desc = "add mobs to a guard's blacklist",
-			modifier = "blacklist",
+			modifiers = "blacklist",
 			min = 1,
 			max = 2)
 	@CommandPermissions("modify.guard")
@@ -132,7 +131,7 @@ public class GuardCommands {
 			aliases = "guard",
 			usage = "whitelist (player)",
 			desc = "add players to a guard's whitelist",
-			modifier = "whitelist",
+			modifiers = "whitelist",
 			min = 1,
 			max = 2)
 	@CommandPermissions("modify.guard")
@@ -170,10 +169,11 @@ public class GuardCommands {
 			requireSelected = true,
 			requireOwnership = true,
 			requiredType = "guard")
-	@Command(aliases = "guard",
+	@Command(
+			aliases = "guard",
 			usage = "radius [radius]",
 			desc = "change the protection radius of a bouncer",
-			modifier = "radius",
+			modifiers = "radius",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.guard")

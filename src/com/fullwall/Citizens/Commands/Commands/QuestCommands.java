@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.CommandRequirements;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -19,7 +19,7 @@ public class QuestCommands {
 			aliases = "quests",
 			usage = "edit",
 			desc = "modify server quests",
-			modifier = "edit",
+			modifiers = "edit",
 			min = 1,
 			max = 1)
 	@CommandPermissions("modify.quester")
