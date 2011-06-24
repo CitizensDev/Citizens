@@ -17,7 +17,6 @@ import org.bukkit.util.Vector;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
-import com.fullwall.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
@@ -204,9 +203,6 @@ public class PathNPC extends EntityPlayer {
 		this.pathTicks = 0;
 		this.stationaryTicks = 0;
 		this.pathEntity = null;
-		if (!(this instanceof CreatureNPC)) {
-			this.npc.getNPCData().setLocation(npc.getPlayer().getLocation());
-		}
 		this.pathTickLimit = -1;
 		this.stationaryTickLimit = -1;
 		this.pathingRange = 16;

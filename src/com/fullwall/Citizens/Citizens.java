@@ -11,11 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.fullwall.Citizens.Citizens;
-import com.fullwall.Citizens.Constants;
-import com.fullwall.Citizens.CreatureTask;
-import com.fullwall.Citizens.Permission;
-import com.fullwall.Citizens.TickTask;
 import com.fullwall.Citizens.Commands.CommandHandler;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PlayerListen;
@@ -244,8 +239,12 @@ public class Citizens extends JavaPlugin {
 			System.arraycopy(args, 0, split, 1, args.length);
 			split[0] = command.getName().toLowerCase();
 
+			String modifier = "";
+			if (args.length > 0)
+				modifier = args[0];
+
 			// No command found!
-			if (!commands.hasCommand(split[0], args[0])) {
+			if (!commands.hasCommand(split[0], modifier)) {
 				return false;
 			}
 

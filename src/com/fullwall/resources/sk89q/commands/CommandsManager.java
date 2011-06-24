@@ -393,7 +393,9 @@ public abstract class CommandsManager<T extends Player> {
 	public void executeMethod(Method parent, String[] args, T player,
 			Object[] methodArgs, int level) throws CommandException {
 		String cmdName = args[level];
-		String modifier = args[level + 1];
+		String modifier = "";
+		if (args.length > level + 1)
+			modifier = args[level + 1];
 
 		Map<CommandIdentifier, Method> map = commands.get(parent);
 		Method method = map.get(new CommandIdentifier(cmdName.toLowerCase(),

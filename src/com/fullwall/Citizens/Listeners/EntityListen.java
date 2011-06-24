@@ -102,41 +102,40 @@ public class EntityListen extends EntityListener implements Listener {
 			// Call text-display event
 			if (Citizens.plugin.validateTool("items.basic.talk-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
+
 				Player target = (Player) e.getTarget();
 				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
 						target, MessageUtils.getText(npc, target));
 				Bukkit.getServer().getPluginManager().callEvent(textEvent);
-				if (textEvent.isCancelled()) {
-					return;
-				}
-				if (!textEvent.getNPC().getNPCData().isLookClose()) {
+				if (npc.isQuester() && npc.getQuester().hasQuests()) {
+				} else if (textEvent.isCancelled()) {
+				} else if (!textEvent.getNPC().getNPCData().isLookClose()) {
 					NPCManager.facePlayer(npc, target);
-				}
-				if (!textEvent.getText().isEmpty()) {
+				} else if (!textEvent.getText().isEmpty()) {
 					Messaging.send(target, textEvent.getText());
 				}
 			}
 			NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(npc,
 					player);
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
-			if (rightClickEvent.isCancelled()) {
-				return;
-			}
-			if (npc.isTrader()) {
-				npc.getTrader().onRightClick(rightClickEvent.getPlayer(),
-						rightClickEvent.getNPC());
-			}
-			if (npc.isWizard()) {
-				npc.getWizard().onRightClick(rightClickEvent.getPlayer(),
-						rightClickEvent.getNPC());
-			}
-			if (npc.isBlacksmith()) {
-				npc.getBlacksmith().onRightClick(rightClickEvent.getPlayer(),
-						rightClickEvent.getNPC());
-			}
-			if (npc.isQuester()) {
-				npc.getQuester().onRightClick(rightClickEvent.getPlayer(),
-						rightClickEvent.getNPC());
+			if (!rightClickEvent.isCancelled()) {
+				if (npc.isTrader()) {
+					npc.getTrader().onRightClick(rightClickEvent.getPlayer(),
+							rightClickEvent.getNPC());
+				}
+				if (npc.isWizard()) {
+					npc.getWizard().onRightClick(rightClickEvent.getPlayer(),
+							rightClickEvent.getNPC());
+				}
+				if (npc.isBlacksmith()) {
+					npc.getBlacksmith().onRightClick(
+							rightClickEvent.getPlayer(),
+							rightClickEvent.getNPC());
+				}
+				if (npc.isQuester()) {
+					npc.getQuester().onRightClick(rightClickEvent.getPlayer(),
+							rightClickEvent.getNPC());
+				}
 			}
 		}
 	}

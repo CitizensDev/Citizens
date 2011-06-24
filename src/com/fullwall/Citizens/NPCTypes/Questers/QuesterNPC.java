@@ -151,4 +151,8 @@ public class QuesterNPC implements Toggleable, Clickable {
 			}
 		}
 	}
+
+	public boolean hasQuests() {
+		return this.quests == null ? false : this.quests.size() > 0;
+	}
 }

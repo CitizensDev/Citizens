@@ -27,19 +27,17 @@ import com.fullwall.resources.sk89q.commands.CommandContext;
 import com.fullwall.resources.sk89q.commands.CommandPermissions;
 import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
-@CommandRequirements(
-		requireSelected = true,
-		requireOwnership = true)
+@CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
-	
+
 	@CommandRequirements()
 	@Command(
 			aliases = "citizens",
-			usage = "info",
+			usage = "",
 			desc = "view Citizens info",
-			modifiers = "info",
-			min = 1,
-			max = 1)
+			modifiers = "",
+			min = 0,
+			max = 0)
 	@CommandPermissions("admin")
 	public static void viewInfo(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "==========[ "
@@ -548,6 +546,46 @@ public class BasicCommands {
 				+ StringUtils.wrap(npc.getStrippedName()) + " is now "
 				+ StringUtils.wrap(args.getString(1)) + ".");
 		npc.getNPCData().setOwner(args.getString(1));
+	}
+
+	@Command(
+			aliases = "npc",
+			usage = "/npc [path/waypoints] (reset)",
+			desc = "toggle waypoint editing",
+			modifiers = { "path", "waypoints" },
+			min = 1,
+			max = 2)
+	@CommandPermissions("modify.basic")
+	public static void editWaypoints(CommandContext args, Player player,
+			HumanNPC npc) {
+		if (args.length() == 2) {
+			Integer editing = NPCManager.pathEditors.get(player.getName());
+			int UID = npc.getUID();
+			if (editing == null) {
+				player.sendMessage(ChatColor.AQUA
+						+ "=========[ Waypoint Editing Controls ]=========");
+				player.sendMessage(StringUtils.wrap("Left")
+						+ " click adds a waypoint, while "
+						+ StringUtils.wrap("right") + " click acts as an undo.");
+				player.sendMessage(StringUtils.wrap("Repeat")
+						+ " this command to finish.");
+				editing = UID;
+			} else if (editing == UID) {
+				player.sendMessage(StringUtils.wrap("Finished")
+						+ " editing waypoints.");
+				editing = null;
+			} else if (editing != UID) {
+				player.sendMessage(ChatColor.GRAY + "Now editing "
+						+ StringUtils.wrap(npc.getStrippedName())
+						+ "'s waypoints.");
+				editing = UID;
+			}
+			NPCManager.pathEditors.put(player.getName(), editing);
+		} else if (args.length() >= 3 && args.getString(1).equals("reset")) {
+			npc.resetWaypoints();
+			player.sendMessage(ChatColor.GREEN + "Waypoints "
+					+ StringUtils.wrap("reset") + ".");
+		}
 	}
 
 	@CommandRequirements()

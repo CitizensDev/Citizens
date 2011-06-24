@@ -1,6 +1,7 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -43,7 +44,9 @@ public class HumanNPC extends NPC {
 	private final EvilNPC evilNPC = new EvilNPC(this);
 	private final PirateNPC pirateNPC = new PirateNPC(this);
 
-	private final ArrayDeque<Location> paths = new ArrayDeque<Location>();
+	private List<Location> waypoints = new ArrayList<Location>();
+	private boolean waypointStarted = false;
+	private int waypointIndex = 0;
 
 	private NPCData npcdata;
 
@@ -53,12 +56,25 @@ public class HumanNPC extends NPC {
 		this.mcEntity.npc = this;
 	}
 
-	public void addPathLocation(Location location) {
-		this.paths.push(location);
+	public Location getWaypoint(int index) {
+		return this.getWaypoints().get(index);
 	}
 
-	public void removeLastPathLocation() {
-		this.paths.pop();
+	public void resetWaypoints() {
+		setWaypoints(new ArrayList<Location>());
+		this.waypointIndex = 0;
+	}
+
+	public void addWaypoint(Location location) {
+		this.getWaypoints().add(location);
+	}
+
+	public void removeLastWaypoint() {
+		this.getWaypoints().remove(this.getWaypoints().size() - 1);
+	}
+
+	public int getWaypointSize() {
+		return getWaypoints().size();
 	}
 
 	public Player getPlayer() {
@@ -265,5 +281,29 @@ public class HumanNPC extends NPC {
 
 	public void setAttackTimes(int times) {
 		this.mcEntity.setAttackTimes(times);
+	}
+
+	public void setWaypointIndex(int waypointIndex) {
+		this.waypointIndex = waypointIndex;
+	}
+
+	public int getWaypointIndex() {
+		return waypointIndex;
+	}
+
+	public void setWaypointStarted(boolean waypointStarted) {
+		this.waypointStarted = waypointStarted;
+	}
+
+	public boolean isWaypointStarted() {
+		return waypointStarted;
+	}
+
+	public List<Location> getWaypoints() {
+		return this.waypoints;
+	}
+
+	public void setWaypoints(List<Location> waypoints) {
+		this.waypoints = waypoints;
 	}
 }

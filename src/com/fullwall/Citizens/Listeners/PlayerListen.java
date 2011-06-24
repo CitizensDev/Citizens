@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -16,6 +17,7 @@ import com.fullwall.Citizens.Interfaces.Listener;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.fullwall.Citizens.NPCs.NPCManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
 
@@ -32,6 +34,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 				Event.Priority.Normal, Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
 				Citizens.plugin);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, this,
+				Event.Priority.Normal, Citizens.plugin);
 	}
 
 	@Override
@@ -43,6 +47,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
+		NPCManager.pathEditors.remove(event.getPlayer().getName());
 		QuestManager.unload(event.getPlayer());
 		CreatureTask.setDirty();
 	}
@@ -64,5 +69,10 @@ public class PlayerListen extends PlayerListener implements Listener {
 			return;
 		}
 		// TODO do stuff
+	}
+
+	@Override
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		NPCManager.handlePathEditor(event);
 	}
 }

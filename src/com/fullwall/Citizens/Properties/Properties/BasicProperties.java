@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Properties.Properties;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import net.minecraft.server.InventoryPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.server.InventoryPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -31,6 +33,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	private final String location = ".basic.location";
 	private final String lookWhenClose = ".basic.look-when-close";
 	private final String talkWhenClose = ".basic.talk-when-close";
+	private final String waypoints = ".basic.waypoints";
 	private final String owner = ".basic.owner";
 	private final String text = ".basic.text";
 
@@ -215,6 +218,30 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		return count;
 	}
 
+	private void saveWaypoints(int UID, List<Location> waypoints) {
+		String write = "", temp = "";
+		for (Location loc : waypoints) {
+			temp = loc.getBlockX() + "," + loc.getBlockY() + ","
+					+ loc.getBlockZ() + ";";
+			write += temp;
+		}
+		profiles.setString(UID + this.waypoints, write);
+	}
+
+	private List<Location> getWaypoints(int UID, World world) {
+		String read = profiles.getString(UID + waypoints);
+		List<Location> temp = new ArrayList<Location>();
+		if (!read.isEmpty()) {
+			for (String str : read.split(";")) {
+				String[] split = str.split(",");
+				temp.add(new Location(world, Double.parseDouble(split[0]),
+						Double.parseDouble(split[1]), Double
+								.parseDouble(split[2])));
+			}
+		}
+		return temp;
+	}
+
 	@Override
 	public void saveState(HumanNPC npc) {
 		int UID = npc.getUID();
@@ -228,6 +255,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		saveText(UID, npcdata.getTexts());
 		saveLookWhenClose(UID, npcdata.isLookClose());
 		saveTalkWhenClose(UID, npcdata.isTalkClose());
+		saveWaypoints(UID, npc.getWaypoints());
 		setOwner(UID, npcdata.getOwner());
 	}
 
@@ -244,6 +272,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		npcdata.setLookClose(getLookWhenClose(UID));
 		npcdata.setTalkClose(getTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
+		npc.setWaypoints(getWaypoints(UID, npc.getWorld()));
 		if (getInventory(npc.getUID()) != null) {
 			npc.getInventory().setContents(
 					getInventory(npc.getUID()).getContents());

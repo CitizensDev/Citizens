@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import com.fullwall.Citizens.NPCTypes.Questers.PlayerProfile;
@@ -62,7 +63,12 @@ public class QuestManager {
 	}
 
 	public enum RewardType {
-		HEALTH, ITEM, MONEY, PERMISSION, QUEST, RANK;
+		HEALTH,
+		ITEM,
+		MONEY,
+		PERMISSION,
+		QUEST,
+		RANK;
 	}
 
 	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
@@ -79,6 +85,8 @@ public class QuestManager {
 	}
 
 	public static void incrementQuest(Player player, Event event) {
+		if (event instanceof Cancellable && ((Cancellable) event).isCancelled())
+			return;
 		if (hasQuest(player)) {
 			boolean completed = getProfile(player.getName()).getProgress()
 					.updateProgress(event);

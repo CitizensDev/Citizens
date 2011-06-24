@@ -2,12 +2,14 @@ package com.fullwall.Citizens.NPCs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
@@ -21,6 +23,7 @@ public class NPCManager {
 	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
 	public static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
+	public static final HashMap<String, Integer> pathEditors = new HashMap<String, Integer>();
 	private static NPCList list = new NPCList();
 
 	/**
@@ -169,8 +172,12 @@ public class NPCManager {
 		}
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
 				(float) pitch);
-		if (npc.getOwner().equals(player.getName()))
-			npc.getNPCData().setLocation(npc.getLocation());
+		if (npc.getOwner().equals(player.getName())) {
+			loc = npc.getNPCData().getLocation();
+			loc.setPitch(npc.getLocation().getPitch());
+			loc.setYaw(npc.getLocation().getYaw());
+			npc.getNPCData().setLocation(loc);
+		}
 	}
 
 	/**
@@ -344,5 +351,42 @@ public class NPCManager {
 		for (Integer i : GlobalUIDs.keySet()) {
 			despawn(i);
 		}
+	}
+
+	public static void handlePathEditor(PlayerInteractEvent event) {
+		String name = event.getPlayer().getName();
+		if (pathEditors.get(name) != null) {
+			HumanNPC npc = get(pathEditors.get(name));
+			switch (event.getAction()) {
+			case LEFT_CLICK_BLOCK:
+				Location loc = event.getClickedBlock().getLocation();
+				npc.addWaypoint(loc);
+				event.getPlayer().sendMessage(
+						StringUtils.wrap("Added") + " waypoint at ("
+								+ StringUtils.wrap(loc.getBlockX()) + ", "
+								+ StringUtils.wrap(loc.getBlockY()) + ", "
+								+ StringUtils.wrap(loc.getBlockZ()) + ") ("
+								+ StringUtils.wrap(npc.getWaypointSize())
+								+ " waypoints)");
+				break;
+			case RIGHT_CLICK_BLOCK:
+			case RIGHT_CLICK_AIR:
+				if (npc.getWaypointSize() > 0) {
+					npc.removeLastWaypoint();
+					event.getPlayer().sendMessage(
+							StringUtils.wrap("Undid") + " the last waypoint ("
+									+ StringUtils.wrap(npc.getWaypointSize())
+									+ " remaining)");
+
+				} else
+					event.getPlayer().sendMessage(
+							ChatColor.GRAY + "No more waypoints.");
+				break;
+			}
+		}
+	}
+
+	public static int getSelected(String name) {
+		return selectedNPCs.get(name);
 	}
 }

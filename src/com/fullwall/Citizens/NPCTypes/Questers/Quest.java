@@ -11,6 +11,7 @@ public class Quest {
 	private String completionText = "";
 	private String description = "";
 	private final List<Reward> rewards = new ArrayList<Reward>();
+	private final List<Reward> requirements = new ArrayList<Reward>();
 	private Objectives objectives;
 
 	public Quest(String name) {
@@ -84,5 +85,13 @@ public class Quest {
 
 	public void setObjectives(Objectives objectives) {
 		this.objectives = objectives;
+	}
+
+	public List<Reward> getRequirements() {
+		return requirements;
+	}
+
+	public void addRequirement(Reward reward) {
+		this.requirements.add(reward);
 	}
 }

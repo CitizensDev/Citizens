@@ -30,6 +30,7 @@ public class TickTask implements Runnable {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			{
 				npc = entry.getValue();
+				updateWaypoints(npc);
 				npc.updateMovement();
 				NPCSpawner.removeNPCFromPlayerList(npc);
 				UID = entry.getKey();
@@ -48,6 +49,52 @@ public class TickTask implements Runnable {
 							resetActions(UID, name, npc);
 						}
 					}
+				}
+			}
+		}
+	}
+
+	private void updateWaypoints(HumanNPC npc) {
+		if (NPCManager.pathEditors.get(npc.getOwner()) == null) {
+			switch (npc.getWaypointSize()) {
+			case 0:
+				break;
+			case 1:
+				// TODO: merge the default and this case.
+				if (npc.getWaypointIndex() >= 1) {
+					if (!npc.isWaypointStarted()) {
+						npc.createPath(npc.getWaypoint(0), -1, -1,
+								Constants.pathFindingRange);
+						npc.setWaypointStarted(true);
+					}
+					if (npc.getHandle().pathFinished()) {
+						npc.setWaypointIndex(0);
+						npc.setWaypointStarted(false);
+					}
+				} else {
+					if (!npc.isWaypointStarted()) {
+						npc.createPath(npc.getNPCData().getLocation(), -1, -1,
+								Constants.pathFindingRange);
+						npc.setWaypointStarted(true);
+					}
+					if (npc.getHandle().pathFinished()) {
+						npc.setWaypointIndex(1);
+						npc.setWaypointStarted(false);
+					}
+				}
+				break;
+			default:
+				if (!npc.isWaypointStarted()) {
+					if (npc.getWaypointIndex() + 1 > npc.getWaypointSize()) {
+						npc.setWaypointIndex(0);
+					}
+					npc.createPath(npc.getWaypoint(npc.getWaypointIndex()), -1,
+							-1, Constants.pathFindingRange);
+					npc.setWaypointStarted(true);
+				}
+				if (npc.getHandle().pathFinished()) {
+					npc.setWaypointIndex(npc.getWaypointIndex() + 1);
+					npc.setWaypointStarted(false);
 				}
 			}
 		}
