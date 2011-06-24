@@ -20,7 +20,7 @@ import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
 import com.fullwall.Citizens.NPCs.NPCData;
-import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
+import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;
@@ -49,6 +49,7 @@ public class HumanNPC extends NPC {
 	private int waypointIndex = 0;
 
 	private NPCData npcdata;
+	private boolean paused;
 
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
@@ -207,7 +208,7 @@ public class HumanNPC extends NPC {
 		this.mcEntity.applyGravity();
 	}
 
-	public void performAction(Action action) {
+	public void performAction(Animation action) {
 		this.mcEntity.performAction(action);
 	}
 
@@ -305,5 +306,13 @@ public class HumanNPC extends NPC {
 
 	public void setWaypoints(List<Location> waypoints) {
 		this.waypoints = waypoints;
+	}
+
+	public boolean paused() {
+		return this.paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 }

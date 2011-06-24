@@ -19,6 +19,7 @@ public class Constants {
 	public static int saveDelay = 72000;
 	public static int spawnTaskDelay = 200;
 	public static int spawnPiratesDelay = 200;
+	public static int rightClickPause = 70;
 	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;
 	public static int wizardInteractItem = 288;
@@ -107,6 +108,7 @@ public class Constants {
 		maxStationaryTicks = settings.getInt("ticks.pathing.max-stationary");
 		saveDelay = settings.getInt("ticks.saving.delay");
 		tickDelay = settings.getInt("ticks.general.delay");
+		rightClickPause = settings.getInt("ticks.waypoints.right-click-pause");
 		wizardMaxLocations = settings
 				.getInt("general.wizards.wizard-max-locations");
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");

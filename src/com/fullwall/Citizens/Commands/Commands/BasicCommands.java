@@ -608,10 +608,10 @@ public class BasicCommands {
 				MessageUtils.displayNPCList(player, player, npc,
 						args.getString(1));
 			} else {
-				if (ServerUtils.matchPlayer(player, args.getString(1)) != null) {
+				if (ServerUtils.matchPlayer(args.getString(1)) != null) {
 					MessageUtils.displayNPCList(player,
-							ServerUtils.matchPlayer(player, args.getString(1)),
-							npc, "1");
+							ServerUtils.matchPlayer(args.getString(1)), npc,
+							"1");
 				} else {
 					player.sendMessage(ChatColor.RED
 							+ "Could not match player.");
@@ -619,10 +619,10 @@ public class BasicCommands {
 			}
 			break;
 		case 3:
-			if (ServerUtils.matchPlayer(player, args.getString(1)) != null) {
+			if (ServerUtils.matchPlayer(args.getString(1)) != null) {
 				MessageUtils.displayNPCList(player,
-						ServerUtils.matchPlayer(player, args.getString(1)),
-						npc, args.getString(2));
+						ServerUtils.matchPlayer(args.getString(1)), npc,
+						args.getString(2));
 			} else {
 				player.sendMessage(ChatColor.RED + "Could not match player.");
 			}

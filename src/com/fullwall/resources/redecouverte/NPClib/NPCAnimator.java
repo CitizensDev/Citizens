@@ -1,9 +1,11 @@
 package com.fullwall.resources.redecouverte.NPClib;
 
 import net.minecraft.server.DataWatcher;
+import net.minecraft.server.Packet17;
 import net.minecraft.server.Packet18ArmAnimation;
 import net.minecraft.server.Packet40EntityMetadata;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Utils.PacketUtils;
@@ -11,30 +13,58 @@ import com.fullwall.Citizens.Utils.PacketUtils;
 public class NPCAnimator {
 	private final PathNPC npc;
 
-	public enum Action {
-		ACT_HURT, CROUCH, SWING_ARM, UNCROUCH;
+	public enum Animation {
+		ACT_HURT,
+		CROUCH,
+		SLEEP,
+		SWING_ARM,
+		UNSLEEP,
+		UNCROUCH;
 	}
 
 	public NPCAnimator(PathNPC pathNPC) {
 		this.npc = pathNPC;
 	}
 
-	public void performAction(Action action) {
-		switch (action) {
+	public void performAnimation(Animation animation) {
+		switch (animation) {
 		case ACT_HURT:
 			actHurt();
 			break;
 		case CROUCH:
 			crouch();
 			break;
+		case SLEEP:
+			sleep();
+			break;
 		case SWING_ARM:
 			swingArm();
+			break;
+		case UNSLEEP:
+			unsleep();
 			break;
 		case UNCROUCH:
 			uncrouch();
 			break;
 		default:
 		}
+	}
+
+	private void sleep() {
+		Location loc = getPlayer().getLocation();
+		int x = loc.getBlockX();
+		int y = loc.getBlockY();
+		int z = loc.getBlockZ();
+		Packet17 packet17 = new Packet17(npc, 0, x, y, z);
+
+		// getPlayer().teleport(loc);
+		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64, packet17,
+				getPlayer());
+	}
+
+	private void unsleep() {
+		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
+				new Packet18ArmAnimation(this.npc, 3), getPlayer());
 	}
 
 	private DataWatcher getWatcher() {

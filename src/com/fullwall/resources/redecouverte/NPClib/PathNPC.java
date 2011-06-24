@@ -16,7 +16,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import com.fullwall.Citizens.Constants;
-import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Action;
+import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
@@ -93,42 +93,6 @@ public class PathNPC extends EntityPlayer {
 		}
 	}
 
-	private float getYawDifference(double diffZ, double diffX) {
-		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
-		float diffYaw = vectorYaw - this.yaw;
-
-		for (this.aA = this.aE; diffYaw < -180.0F; diffYaw += 360.0F) {
-		}
-		while (diffYaw >= 180.0F) {
-			diffYaw -= 360.0F;
-		}
-		if (diffYaw > 30.0F) {
-			diffYaw = 30.0F;
-		}
-		if (diffYaw < -30.0F) {
-			diffYaw = -30.0F;
-		}
-		return diffYaw;
-	}
-
-	private Vec3D getPathVector() {
-		Vec3D vec3d = pathEntity.a(this);
-		double length = (this.length * 1.9F);
-		// 2.0 -> 1.9 - closer to destination before stopping.
-		while (vec3d != null
-				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
-			this.pathEntity.a(); // Increment path index.
-			// Is path finished?
-			if (this.pathEntity.b()) {
-				vec3d = null;
-				reset();
-			} else {
-				vec3d = this.pathEntity.a(this);
-			}
-		}
-		return vec3d;
-	}
-
 	private void updateTarget() {
 		if (!this.hasAttacked && this.target != null) {
 			this.pathEntity = this.world.findPath(this, this.target,
@@ -172,6 +136,42 @@ public class PathNPC extends EntityPlayer {
 		prevX = loc.getBlockX();
 		prevY = loc.getBlockY();
 		prevZ = loc.getBlockZ();
+	}
+
+	private Vec3D getPathVector() {
+		Vec3D vec3d = pathEntity.a(this);
+		double length = (this.length * 1.9F);
+		// 2.0 -> 1.9 - closer to destination before stopping.
+		while (vec3d != null
+				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
+			this.pathEntity.a(); // Increment path index.
+			// Is path finished?
+			if (this.pathEntity.b()) {
+				vec3d = null;
+				reset();
+			} else {
+				vec3d = this.pathEntity.a(this);
+			}
+		}
+		return vec3d;
+	}
+
+	private float getYawDifference(double diffZ, double diffX) {
+		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
+		float diffYaw = vectorYaw - this.yaw;
+
+		for (this.aA = this.aE; diffYaw < -180.0F; diffYaw += 360.0F) {
+		}
+		while (diffYaw >= 180.0F) {
+			diffYaw -= 360.0F;
+		}
+		if (diffYaw > 30.0F) {
+			diffYaw = 30.0F;
+		}
+		if (diffYaw < -30.0F) {
+			diffYaw = -30.0F;
+		}
+		return diffYaw;
 	}
 
 	private void moveOnCurrentHeading() {
@@ -243,7 +243,7 @@ public class PathNPC extends EntityPlayer {
 			this.bukkitEntity.getWorld().spawnArrow(
 					this.getBukkitEntity().getLocation(), velocity, 0.6F, 12F);
 		} else {
-			this.performAction(Action.SWING_ARM);
+			this.performAction(Animation.SWING_ARM);
 			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
 			e.damage(this.inventory.a(entity));
 		}
@@ -351,7 +351,7 @@ public class PathNPC extends EntityPlayer {
 		return this.target == null;
 	}
 
-	public void performAction(Action action) {
-		this.animations.performAction(action);
+	public void performAction(Animation action) {
+		this.animations.performAnimation(action);
 	}
 }

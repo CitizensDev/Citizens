@@ -2,6 +2,7 @@ package com.fullwall.Citizens.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.CreatureTask;
 import com.fullwall.Citizens.Events.NPCDisplayTextEvent;
 import com.fullwall.Citizens.Events.NPCRightClickEvent;
@@ -119,6 +121,18 @@ public class EntityListen extends EntityListener implements Listener {
 					player);
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
 			if (!rightClickEvent.isCancelled()) {
+				if (npc.isWaypointStarted()) {
+					Bukkit.getServer()
+							.getScheduler()
+							.scheduleSyncDelayedTask(
+									Citizens.plugin,
+									new RestartPathTask(npc,
+											npc.getWaypoint(npc
+													.getWaypointIndex())),
+									Constants.rightClickPause);
+					npc.getHandle().cancelPath();
+					npc.setPaused(true);
+				}
 				if (npc.isTrader()) {
 					npc.getTrader().onRightClick(rightClickEvent.getPlayer(),
 							rightClickEvent.getNPC());
@@ -143,5 +157,21 @@ public class EntityListen extends EntityListener implements Listener {
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
 		CreatureTask.onEntityDeath(event.getEntity());
+	}
+
+	private class RestartPathTask implements Runnable {
+		private final Location point;
+		private final HumanNPC npc;
+
+		public RestartPathTask(HumanNPC npc, Location point) {
+			this.npc = npc;
+			this.point = point;
+		}
+
+		@Override
+		public void run() {
+			this.npc.createPath(point, -1, -1, Constants.pathFindingRange);
+			npc.setPaused(false);
+		}
 	}
 }

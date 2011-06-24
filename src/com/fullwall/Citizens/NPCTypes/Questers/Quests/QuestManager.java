@@ -105,7 +105,8 @@ public class QuestManager {
 	}
 
 	public static boolean hasQuest(Player player) {
-		return getProfile(player.getName()).hasQuest();
+		return getProfile(player.getName()) == null ? false : getProfile(
+				player.getName()).hasQuest();
 	}
 
 	public static PlayerProfile getProfile(String name) {

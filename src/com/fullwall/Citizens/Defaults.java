@@ -51,6 +51,7 @@ public class Defaults {
 		nodes.put("ticks.saving.use-task", "true");
 		nodes.put("ticks.saving.save-often", "true");
 		nodes.put("ticks.saving.delay", "72000");
+		nodes.put("ticks.waypoints.right-click-pause", "70");
 		nodes.put("ticks.pathing.max-stationary", "25");
 		nodes.put("ticks.pathing.max-pathing", "-1");
 		nodes.put("ticks.healers.health-regen-increment", "12000");

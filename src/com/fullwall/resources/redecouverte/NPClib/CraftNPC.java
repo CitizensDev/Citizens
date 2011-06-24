@@ -2,9 +2,7 @@ package com.fullwall.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
-import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
@@ -58,30 +56,12 @@ public class CraftNPC extends PathNPC {
 
 	@Override
 	public void b(EntityHuman entity) {
-		lastTargetId = entity.id;
-		super.b(entity);
-	}
-
-	@Override
-	public void c(Entity entity) {
 		if (lastBounceId != entity.id
 				|| System.currentTimeMillis() - lastBounceTick > 1000) {
 			lastBounceTick = System.currentTimeMillis();
 		}
 		lastBounceId = entity.id;
-		super.c(entity);
-	}
-
-	@Override
-	public void a(Entity entity) {
-		// System.out.println(entity);
-		super.a(entity);
-	}
-
-	@Override
-	public void a(EntityLiving entityliving) {
-		// System.out.println(entityliving);
-		super.a(entityliving);
+		super.b(entity);
 	}
 
 	public void applyGravity() {
@@ -89,12 +69,11 @@ public class CraftNPC extends PathNPC {
 				&& chunkLoaded()
 				&& (!this.onGround || ((Player) this.getBukkitEntity())
 						.getEyeLocation().getY() % 1 <= 0.62)) {
-			// onGround doesn't check if the player is actually standing on a
-			// block, just that they're at least below above 0.62 -> need to
-			// check 0.62.
+			// onGround only checks if they're at least below 0.62 above it ->
+			// need to check if they actually are standing on the block.
 			float yaw = this.yaw;
 			float pitch = this.pitch;
-			this.a(0, 0);
+			this.a(0, 0); // cheap hack - move with motion of 0.
 			this.yaw = yaw;
 			this.pitch = pitch;
 		}

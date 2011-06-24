@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class PacketUtils {
 	public static void sendPacketToPlayer(final Player ply, final Packet packet) {
@@ -22,7 +21,6 @@ public class PacketUtils {
 	public static void sendPacketNearby(final Location location, double radius,
 			final Packet packet, final Player except) {
 		radius *= radius;
-		final Vector locationVector = location.toVector();
 		final World world = location.getWorld();
 		for (Player ply : Bukkit.getServer().getOnlinePlayers()) {
 			if (ply.equals(except)) {
@@ -31,7 +29,7 @@ public class PacketUtils {
 			if (world != ply.getWorld()) {
 				continue;
 			}
-			if (locationVector.distanceSquared(ply.getLocation().toVector()) > radius) {
+			if (location.distanceSquared(ply.getLocation()) > radius) {
 				continue;
 			}
 			sendPacketToPlayer(ply, packet);

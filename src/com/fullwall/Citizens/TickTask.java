@@ -67,7 +67,7 @@ public class TickTask implements Runnable {
 								Constants.pathFindingRange);
 						npc.setWaypointStarted(true);
 					}
-					if (npc.getHandle().pathFinished()) {
+					if (!npc.paused() && npc.getHandle().pathFinished()) {
 						npc.setWaypointIndex(0);
 						npc.setWaypointStarted(false);
 					}
@@ -77,7 +77,7 @@ public class TickTask implements Runnable {
 								Constants.pathFindingRange);
 						npc.setWaypointStarted(true);
 					}
-					if (npc.getHandle().pathFinished()) {
+					if (!npc.paused() && npc.getHandle().pathFinished()) {
 						npc.setWaypointIndex(1);
 						npc.setWaypointStarted(false);
 					}
@@ -92,7 +92,7 @@ public class TickTask implements Runnable {
 							-1, Constants.pathFindingRange);
 					npc.setWaypointStarted(true);
 				}
-				if (npc.getHandle().pathFinished()) {
+				if (!npc.paused() && npc.getHandle().pathFinished()) {
 					npc.setWaypointIndex(npc.getWaypointIndex() + 1);
 					npc.setWaypointStarted(false);
 				}
