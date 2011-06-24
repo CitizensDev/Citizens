@@ -18,7 +18,7 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 		requiredType = "quester")
 public class QuesterCommands {
 
-	@CommandRequirements(requiredType = "quester")
+	@CommandRequirements()
 	@Command(
 			aliases = "quester",
 			usage = "help",

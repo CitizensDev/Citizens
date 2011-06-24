@@ -18,7 +18,7 @@ public class HelpUtils {
 			player.sendMessage(ChatColor.GREEN + "  []"
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
-			format(player, "citizens", "", "display Citizens information");
+			format(player, "citizens", "info", "display Citizens information");
 			format(player, "citizens", "reload", "toggle all types for an NPC");
 			format(player, "toggle", "[type]", "toggle an NPC type");
 			format(player, "toggle", "all [on/off]",
@@ -82,7 +82,7 @@ public class HelpUtils {
 		case 3:
 			header(player, "Basic NPC", 3, 3);
 			format(player, "npc", "lookatplayers [true|false]",
-			"make an NPC look at players");
+					"make an NPC look at players");
 			format(player, "npc", "list (name) (page)", "show a list of NPCs");
 			footer(player);
 			break;

@@ -4,139 +4,64 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fullwall.Citizens.Permission;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Toggleable;
-import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
+import com.fullwall.resources.sk89q.commands.Command;
+import com.fullwall.resources.sk89q.commands.CommandContext;
+import com.fullwall.resources.sk89q.commands.CommandPermissions;
+import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 public class ToggleCommands {
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String commandLabel, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage(MessageUtils.mustBeIngameMessage);
-			return true;
-		}
-		Player player = (Player) sender;
-		HumanNPC npc = null;
-		boolean returnval = false;
-		if (NPCManager.validateSelected((Player) sender))
-			npc = NPCManager.get(NPCManager.selectedNPCs.get(player.getName()));
-		else {
-			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			return true;
-		}
-		if (!NPCManager.validateOwnership(player, npc.getUID())) {
-			player.sendMessage(MessageUtils.notOwnerMessage);
-			return true;
-		}
-		if (args.length == 0) {
-			sender.sendMessage(ChatColor.RED
-					+ "You didn't specify an NPC type to toggle.");
-			return true;
+	// Note: Having a class annotation for these commands still gives an NPE, 
+	// so I had to use the requirements for each method
+	@CommandRequirements(
+			requireSelected = true,
+			requireOwnership = true)
+	@Command(
+			aliases = { "toggle", "tog", "t" },
+			usage = "[type]",
+			desc = "toggle an NPC type",
+			modifiers = { "blacksmith", "guard", "healer", "quester", "trader", "wizard" },
+			min = 1,
+			max = 1)
+	@CommandPermissions("create.")
+	public static void toggleNPC(CommandContext args, Player player,
+			HumanNPC npc) {
+		String type = args.getString(0).toLowerCase();
+		if (!PropertyManager.typeExists(npc, type)) {
+			buyState(player, npc.getType(type),
+					Operation.valueOf(type.toUpperCase() + "_CREATION"));
 		} else {
-			if (args[0].equalsIgnoreCase("trader")) {
-				if (Permission.canCreate(player, "trader")) {
-					if (!PropertyManager.typeExists(npc, "trader")) {
-						buyState(player, npc.getTrader(),
-								Operation.TRADER_CREATION);
-					} else {
-						toggleState(player, npc.getTrader());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args[0].equalsIgnoreCase("quester")) {
-				if (Permission.canCreate(player, "quester")) {
-					if (!PropertyManager.typeExists(npc, "quester")) {
-						buyState(player, npc.getQuester(),
-								Operation.QUESTER_CREATION);
-					} else {
-						toggleState(player, npc.getQuester());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args[0].equalsIgnoreCase("healer")) {
-				if (Permission.canCreate(player, "healer")) {
-					if (!PropertyManager.typeExists(npc, "healer")) {
-						buyState(player, npc.getHealer(),
-								Operation.HEALER_CREATION);
-					} else {
-						toggleState(player, npc.getHealer());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args[0].equalsIgnoreCase("guard")) {
-				if (Permission.canCreate(player, "guard")) {
-					if (!PropertyManager.typeExists(npc, "guard")) {
-						buyState(player, npc.getGuard(),
-								Operation.GUARD_CREATION);
-					} else {
-						toggleState(player, npc.getGuard());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args[0].equalsIgnoreCase("wizard")) {
-				if (Permission.canCreate(player, "wizard")) {
-					if (!PropertyManager.typeExists(npc, "wizard")) {
-						buyState(player, npc.getWizard(),
-								Operation.WIZARD_CREATION);
-					} else {
-						toggleState(player, npc.getWizard());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args[0].equalsIgnoreCase("blacksmith")) {
-				if (Permission.canCreate(player, "blacksmith")) {
-					if (!PropertyManager.typeExists(npc, "blacksmith")) {
-						buyState(player, npc.getBlacksmith(),
-								Operation.BLACKSMITH_CREATION);
-					} else {
-						toggleState(player, npc.getBlacksmith());
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("all")) {
-				if (Permission.isAdmin(player)) {
-					if (args[1].equals("on")) {
-						toggleAll(npc, player, true);
-					} else if (args[1].equalsIgnoreCase("off")) {
-						toggleAll(npc, player, false);
-					}
-				} else {
-					sender.sendMessage(MessageUtils.noPermissionsMessage);
-				}
-				returnval = true;
-			} else {
-				player.sendMessage(ChatColor.RED
-						+ "Entered NPC type was not recognized.");
-				returnval = true;
-			}
+			toggleState(player, npc.getType(type));
 		}
-		PropertyManager.save(npc);
-		return returnval;
+	}
+
+	@CommandRequirements(
+			requireSelected = true,
+			requireOwnership = true)
+	@Command(
+			aliases = { "toggle", "tog", "t" },
+			usage = "all [on|off]",
+			desc = "toggle all NPC types",
+			modifiers = "all",
+			min = 2,
+			max = 2)
+	@CommandPermissions("admin")
+	public static void toggleAllNPCTypes(CommandContext args, Player player,
+			HumanNPC npc) {
+		if (args.getString(1).equalsIgnoreCase("on")) {
+			toggleAll(player, npc, true);
+		} else if (args.getString(1).equalsIgnoreCase("off")) {
+			toggleAll(player, npc, false);
+		}
 	}
 
 	/**
@@ -145,11 +70,7 @@ public class ToggleCommands {
 	 * @param player
 	 * @param toggleable
 	 */
-	private void toggleState(Player player, Toggleable toggleable) {
-		if (toggleable == null) {
-			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			return;
-		}
+	private static void toggleState(Player player, Toggleable toggleable) {
 		toggleable.toggle();
 		toggleable.saveState();
 		if (toggleable.getToggle()) {
@@ -168,11 +89,8 @@ public class ToggleCommands {
 	 * @param toggleable
 	 * @param op
 	 */
-	private void buyState(Player player, Toggleable toggleable, Operation op) {
-		if (toggleable == null) {
-			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			return;
-		}
+	private static void buyState(Player player, Toggleable toggleable,
+			Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
@@ -194,11 +112,11 @@ public class ToggleCommands {
 	/**
 	 * Toggles all types of NPCs
 	 * 
-	 * @param npc
 	 * @param player
+	 * @param npc
 	 * @param on
 	 */
-	private void toggleAll(HumanNPC npc, Player player, boolean on) {
+	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		Map<String, Toggleable> toggle = new HashMap<String, Toggleable>();
 		toggle.put("blacksmith", npc.getBlacksmith());
 		toggle.put("guard", npc.getGuard());

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.fullwall.Citizens.Citizens;
+import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.NPCs.NPCDataManager;
@@ -26,16 +27,19 @@ import com.fullwall.resources.sk89q.commands.CommandContext;
 import com.fullwall.resources.sk89q.commands.CommandPermissions;
 import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
-@CommandRequirements(requireSelected = true, requireOwnership = true)
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true)
 public class BasicCommands {
-
+	
 	@CommandRequirements()
 	@Command(
 			aliases = "citizens",
-			usage = "",
+			usage = "info",
 			desc = "view Citizens info",
-			modifiers = "",
-			max = 0)
+			modifiers = "info",
+			min = 1,
+			max = 1)
 	@CommandPermissions("admin")
 	public static void viewInfo(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "==========[ "
@@ -49,12 +53,12 @@ public class BasicCommands {
 
 	@CommandRequirements()
 	@Command(
-			aliases = { "citizens", "npc" },
+			aliases = "citizens",
 			usage = "help (page)",
 			desc = "view the Citizens help page",
 			modifiers = "help",
 			min = 1,
-			max = 2)
+			max = 1)
 	@CommandPermissions("use.basic")
 	public static void sendCitizensHelp(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -76,8 +80,8 @@ public class BasicCommands {
 	@CommandPermissions("admin")
 	public static void reload(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
-		Bukkit.getServer().getPluginManager().disablePlugin(Citizens.plugin);
-		Bukkit.getServer().getPluginManager().enablePlugin(Citizens.plugin);
+		Constants.setupVariables();
+		PropertyManager.registerProperties();
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
 	}
 
@@ -110,19 +114,8 @@ public class BasicCommands {
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
-		// StringBuilder buf = new StringBuilder();
 		String firstArg = args.getString(1);
 		if (args.argsLength() >= 3) {
-			/*int i = 0;
-			for (String s : args.getSlice(2)) {
-				if (i == 2 && !s.isEmpty() && !s.equals(";")) {
-					buf.append(s);
-				}
-				if (i > 2 && !s.isEmpty() && !s.equals(";")) {
-					buf.append(" ").append(s);
-				}
-				i += 1;
-			}*/
 			texts.add(args.getJoinedStrings(2));
 		}
 		if (firstArg.length() > 16) {
@@ -322,18 +315,6 @@ public class BasicCommands {
 	public static void setNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
 		String text = args.getJoinedStrings(1);
-		/*if (args.argsLength() >= 2) {
-			int i = 0;
-			for (String s : args) {
-				if (i == 1 && !s.isEmpty() && !s.equals(";")) {
-					text += s;
-				}
-				if (i > 1 && !s.isEmpty() && !s.equals(";")) {
-					text += " " + s;
-				}
-				i += 1;
-			}
-		}*/
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
 		NPCManager.setText(npc.getUID(), texts);
@@ -351,16 +332,6 @@ public class BasicCommands {
 	public static void addNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
 		String text = args.getJoinedStrings(1);
-		/*int i = 0;
-		for (String s : args) {
-			if (i == 1 && !s.isEmpty() && !s.equals(";")) {
-				text += s;
-			}
-			if (i > 1 && !s.isEmpty() && !s.equals(";")) {
-				text += " " + s;
-			}
-			i += 1;
-		}*/
 		NPCManager.addText(npc.getUID(), text);
 		player.sendMessage(StringUtils.wrap(text) + " was added to "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");

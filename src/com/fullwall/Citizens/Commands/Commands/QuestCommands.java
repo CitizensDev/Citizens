@@ -25,6 +25,6 @@ public class QuestCommands {
 	@CommandPermissions("modify.quester")
 	public static void editQuests(CommandContext args, Player player,
 			HumanNPC npc) {
-		ChatManager.enterEditMode(player.getName());
+		ChatManager.setEditMode(player.getName(), true);
 	}
 }

@@ -18,7 +18,7 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 		requiredType = "wizard")
 public class WizardCommands {
 
-	@CommandRequirements(requiredType = "wizard")
+	@CommandRequirements()
 	@Command(
 			aliases = "wizard",
 			usage = "help",

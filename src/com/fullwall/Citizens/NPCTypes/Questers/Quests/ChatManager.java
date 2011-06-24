@@ -1,12 +1,10 @@
 package com.fullwall.Citizens.NPCTypes.Questers.Quests;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import com.fullwall.Citizens.Utils.StringUtils;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatManager {
 	public enum QuestOperation {
@@ -14,40 +12,42 @@ public class ChatManager {
 	}
 
 	private static final List<String> hasEditMode = new ArrayList<String>();
-	// Map<currentQuestion, Entry<optionNumber, optionName>>
-	private static final Map<Integer, Entry<Integer, String>> answers = new HashMap<Integer, Entry<Integer, String>>();
 	public static int currentQuestion = 0;
 
 	public static boolean hasEditMode(String name) {
 		return hasEditMode.contains(name);
 	}
 
-	public static void enterEditMode(String name) {
-		if (!hasEditMode.contains(name)) {
+	public static void setEditMode(String name, boolean edit) {
+		if (!hasEditMode(name) && edit) {
 			hasEditMode.add(name);
+		} else if (hasEditMode(name) && !edit) {
+			hasEditMode.remove(name);
 		}
 	}
 
-	public static boolean isValidAnswer(String name, String answer,
-			int maxOptions) {
-		if (!hasEditMode.contains(name)) {
-			return false;
+	public static void startSession(PlayerChatEvent event, Player player,
+			QuestOperation questOp) {
+		switch (questOp) {
+		case CREATE:
+			create(event);
+		case EDIT:
+			edit(event);
+		case REMOVE:
+			remove(event);
 		}
-		int option;
-		if (StringUtils.isNumber(answer)) {
-			option = Integer.parseInt(answer);
-			if (option <= maxOptions) {
-				currentQuestion++;
-				return true;
-			}
-		} else if (answers.get(currentQuestion).getValue()
-				.equalsIgnoreCase(answer)) {
-			return true;
-		}
-		return false;
 	}
 
-	public static int getMaxOptions(int currentQuestion) {
-		return answers.get(currentQuestion).getKey();
+	private static void create(PlayerChatEvent event) {
+		// TODO take a player through the creation process here.
+	}
+
+	private static void edit(PlayerChatEvent event) {
+		// TODO allow a player to edit settings that they ask to
+		// change..."What setting would you like to edit?"
+	}
+
+	private static void remove(PlayerChatEvent event) {
+		// TODO remove a quest
 	}
 }

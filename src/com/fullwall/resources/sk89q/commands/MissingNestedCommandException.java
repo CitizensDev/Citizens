@@ -15,15 +15,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.fullwall.resources.sk89q.commands;
 
 public class MissingNestedCommandException extends CommandUsageException {
-    private static final long serialVersionUID = -4382896182979285355L;
+	private static final long serialVersionUID = -4382896182979285355L;
 
-    public MissingNestedCommandException(String message, String usage) {
-        super(message, usage);
-    }
-
+	public MissingNestedCommandException(String message, String usage) {
+		super(message, usage);
+	}
 }

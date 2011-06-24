@@ -460,21 +460,28 @@ public abstract class CommandsManager<T extends Player> {
 					String required = requiredType;
 					// TODO : simplify this.
 					boolean found = false;
-					if (required.equals("trader") && !npc.isTrader())
+					if (required.equals("trader") && !npc.isTrader()) {
 						found = true;
-					if (required.equals("guard") && !npc.isGuard())
+					}
+					if (required.equals("guard") && !npc.isGuard()) {
 						found = true;
-					if (required.equals("quester") && !npc.isQuester())
+					}
+					if (required.equals("quester") && !npc.isQuester()) {
 						found = true;
-					if (required.equals("healer") && !npc.isHealer())
+					}
+					if (required.equals("healer") && !npc.isHealer()) {
 						found = true;
-					if (required.equals("blacksmith") && !npc.isBlacksmith())
+					}
+					if (required.equals("blacksmith") && !npc.isBlacksmith()) {
 						found = true;
-					if (required.equals("wizard") && !npc.isWizard())
+					}
+					if (required.equals("wizard") && !npc.isWizard()) {
 						found = true;
-					if (found)
+					}
+					if (found) {
 						throw new RequirementMissingException(
 								"Your NPC isn't a " + required + " yet.");
+					}
 				}
 			}
 		}
@@ -520,9 +527,10 @@ public abstract class CommandsManager<T extends Player> {
 	}
 
 	private HumanNPC getSelectedNPC(T player) {
-		if (NPCManager.validateSelected(player))
+		if (NPCManager.validateSelected(player)) {
 			return NPCManager
 					.get(NPCManager.selectedNPCs.get(player.getName()));
+		}
 		return null;
 	}
 

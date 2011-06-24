@@ -21,6 +21,10 @@ public class StringUtils {
 		return ChatColor.stripColor(toStrip);
 	}
 
+	public static String bracketize(String string) {
+		return "[" + string + "]";
+	}
+
 	public static String capitalise(String toCapitalise) {
 		return toCapitalise.replaceFirst("" + toCapitalise.charAt(0), ""
 				+ Character.toUpperCase(toCapitalise.charAt(0)));

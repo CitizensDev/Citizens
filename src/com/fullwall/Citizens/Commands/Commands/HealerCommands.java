@@ -19,7 +19,7 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 		requiredType = "healer")
 public class HealerCommands {
 
-	@CommandRequirements(requiredType = "healer")
+	@CommandRequirements()
 	@Command(
 			aliases = "healer",
 			usage = "help",

@@ -29,7 +29,7 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 		requiredType = "trader")
 public class TraderCommands {
 
-	@CommandRequirements(requiredType = "trader")
+	@CommandRequirements()
 	@Command(
 			aliases = "trader",
 			usage = "help",
@@ -49,7 +49,9 @@ public class TraderCommands {
 	 * @param player
 	 * @param npc
 	 */
-	@CommandRequirements(requiredType = "trader", requireSelected = true)
+	@CommandRequirements(
+			requiredType = "trader",
+			requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "money",
@@ -77,7 +79,9 @@ public class TraderCommands {
 	 * @param args
 	 * @param selling
 	 */
-	@CommandRequirements(requiredType = "trader", requireSelected = true)
+	@CommandRequirements(
+			requiredType = "trader",
+			requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "list [buy/sell]",

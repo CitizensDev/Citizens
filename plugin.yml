@@ -56,7 +56,7 @@ commands:
                         /<command>
     toggle:
         description: Toggles between various NPC states.
-        aliases: [t, tog, togg]
+        aliases: [t, tog]
         usage: |
                         The command was not recognised. The correct syntax is
                         /<command> [type]

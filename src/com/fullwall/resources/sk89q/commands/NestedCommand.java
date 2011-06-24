@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.fullwall.resources.sk89q.commands;
 
@@ -24,18 +24,17 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Indicates a nested command. Mark methods with this annotation to tell
- * {@link CommandsManager} that a method is merely a shell for child
- * commands. Note that the body of a method marked with this annotation
- * will never called. Additionally, not all fields of {@link Command} apply
- * when it is used in conjunction with this annotation, although both
- * are still required.
- *
+ * {@link CommandsManager} that a method is merely a shell for child commands.
+ * Note that the body of a method marked with this annotation will never called.
+ * Additionally, not all fields of {@link Command} apply when it is used in
+ * conjunction with this annotation, although both are still required.
+ * 
  * @author sk89q
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NestedCommand {
-    /**
-     * A list of classes with the child commands.
-     */
-    Class<?>[] value();
+	/**
+	 * A list of classes with the child commands.
+	 */
+	Class<?>[] value();
 }

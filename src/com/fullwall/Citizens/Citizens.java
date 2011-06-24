@@ -233,10 +233,6 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		// Note: the package names for the command interfaces caused conflicts
-		// with sk89q's other plugins
-		// (WorldEdit, CommandBook), should we just change package names or is
-		// there another solution?
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(MessageUtils.mustBeIngameMessage);
 			return true;

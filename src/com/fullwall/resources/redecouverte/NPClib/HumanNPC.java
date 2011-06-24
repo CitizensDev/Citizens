@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
 import com.fullwall.Citizens.NPCTypes.Evils.EvilNPC;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
@@ -232,6 +233,23 @@ public class HumanNPC extends NPC {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public Toggleable getType(String type) {
+		if (type.equals("blacksmith")) {
+			return this.getBlacksmith();
+		} else if (type.equals("guard")) {
+			return this.getGuard();
+		} else if (type.equals("healer")) {
+			return this.getHealer();
+		} else if (type.equals("quester")) {
+			return this.getQuester();
+		} else if (type.equals("trader")) {
+			return this.getTrader();
+		} else if (type.equals("wizard")) {
+			return this.getWizard();
+		}
+		return null;
 	}
 
 	public boolean createPath(Location loc, int pathTicks, int stationaryTicks,

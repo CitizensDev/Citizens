@@ -17,6 +17,7 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 @CommandRequirements(requiredType = "blacksmith")
 public class BlacksmithCommands {
 
+	@CommandRequirements()
 	@Command(
 			aliases = "blacksmith",
 			usage = "help",

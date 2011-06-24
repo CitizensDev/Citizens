@@ -17,7 +17,7 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 public class GuardCommands {
 
-	@CommandRequirements(requiredType = "guard")
+	@CommandRequirements()
 	@Command(
 			aliases = "guard",
 			usage = "help",

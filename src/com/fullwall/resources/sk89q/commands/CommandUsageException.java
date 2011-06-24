@@ -15,21 +15,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.fullwall.resources.sk89q.commands;
 
 public class CommandUsageException extends CommandException {
-    private static final long serialVersionUID = -6761418114414516542L;
-    
-    protected String usage;
-    
-    public CommandUsageException(String message, String usage) {
-        super(message);
-        this.usage = usage;
-    }
-    
-    public String getUsage() {
-        return usage;
-    }
+	private static final long serialVersionUID = -6761418114414516542L;
+
+	protected String usage;
+
+	public CommandUsageException(String message, String usage) {
+		super(message);
+		this.usage = usage;
+	}
+
+	public String getUsage() {
+		return usage;
+	}
 }

@@ -63,10 +63,6 @@ public class PlayerListen extends PlayerListener implements Listener {
 		if (!ChatManager.hasEditMode(name)) {
 			return;
 		}
-		String msg = event.getMessage();
-		if (ChatManager.isValidAnswer(name, msg,
-				ChatManager.getMaxOptions(ChatManager.currentQuestion))) {
-			event.setCancelled(true);
-		}
+		// TODO do stuff
 	}
 }
