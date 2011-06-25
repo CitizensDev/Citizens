@@ -36,17 +36,16 @@ public class HealerTask implements Runnable {
 	 * @return
 	 */
 	public static int getHealthRegenRate() {
-		int delay = 0;
+		int delay = Constants.healerHealthRegenIncrement;
 		if (!NPCManager.getList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 					.entrySet()) {
-				if (entry.getValue().isType("healer"))
+				if (entry.getValue().isType("healer")) {
 					delay = Constants.healerHealthRegenIncrement
 							* (11 - ((HealerNPC) (entry.getValue()
 									.getToggleable("healer"))).getLevel());
+				}
 			}
-		} else {
-			delay = 12000;
 		}
 		return delay;
 	}

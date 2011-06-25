@@ -20,8 +20,8 @@ import com.fullwall.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
-	private PathEntity pathEntity;
-	protected Entity target;
+	private PathEntity path;
+	protected Entity targetEntity;
 	protected final NPCAnimator animations = new NPCAnimator(this);
 
 	protected boolean targetAggro = false;
@@ -52,16 +52,15 @@ public class PathNPC extends EntityPlayer {
 		}
 		updateTarget();
 		updatePathingState();
-		if (this.pathEntity != null) {
+		if (this.path != null) {
 			Vec3D vector = getPathVector();
 			if (vector != null) {
 				handleMove(vector);
 			}
-			this.Q(); // Update entity
+			this.o_(); // Update entity
 		} else {
-			this.Q(); // Update entity
-			super.c_();
-			this.pathEntity = null;
+			this.o_(); // Update entity
+			this.path = null;
 		}
 	}
 
@@ -94,26 +93,23 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void updateTarget() {
-		if (!this.hasAttacked && this.target != null) {
-			this.pathEntity = this.world.findPath(this, this.target,
+		if (!this.hasAttacked && this.targetEntity != null) {
+			this.path = this.world.findPath(this, this.targetEntity,
 					pathingRange);
 		}
-		if (target != null) {
+		if (targetEntity != null) {
 			// Has target died?
-			if (!this.target.S()) {
+			if (!this.targetEntity.S()) {
 				resetTarget();
 			}
-			if (target != null && targetAggro) {
-				if (this.attackTicks != 0) {
-					--this.attackTicks;
-				}
-				float distanceToEntity = this.target.f(this);
+			if (targetEntity != null && targetAggro) {
+				float distanceToEntity = this.targetEntity.f(this);
 				// If a direct line of sight exists.
-				if (this.e(this.target)) {
+				if (this.e(this.targetEntity)) {
 					// In range?
-					if (isWithinAttackRange(this.target, distanceToEntity)) {
+					if (isWithinAttackRange(this.targetEntity, distanceToEntity)) {
 						// Attack.
-						this.attackEntity(this.target);
+						this.attackEntity(this.targetEntity);
 					}
 				}
 			}
@@ -139,18 +135,18 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private Vec3D getPathVector() {
-		Vec3D vec3d = pathEntity.a(this);
+		Vec3D vec3d = path.a(this);
 		double length = (this.length * 1.9F);
 		// 2.0 -> 1.9 - closer to destination before stopping.
 		while (vec3d != null
 				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
-			this.pathEntity.a(); // Increment path index.
+			this.path.a(); // Increment path index.
 			// Is path finished?
-			if (this.pathEntity.b()) {
+			if (this.path.b()) {
 				vec3d = null;
 				reset();
 			} else {
-				vec3d = this.pathEntity.a(this);
+				vec3d = this.path.a(this);
 			}
 		}
 		return vec3d;
@@ -202,14 +198,14 @@ public class PathNPC extends EntityPlayer {
 	private void reset() {
 		this.pathTicks = 0;
 		this.stationaryTicks = 0;
-		this.pathEntity = null;
+		this.path = null;
 		this.pathTickLimit = -1;
 		this.stationaryTickLimit = -1;
 		this.pathingRange = 16;
 	}
 
 	private void resetTarget() {
-		this.target = null;
+		this.targetEntity = null;
 		this.targetAggro = false;
 		this.attackTimes = 0;
 		this.attackTimesLimit = -1;
@@ -256,12 +252,12 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void takeRandomPath() {
-		if (!hasAttacked && this.target != null
-				&& (this.pathEntity == null || this.random.nextInt(20) == 0)) {
-			this.pathEntity = this.world.findPath(this, this.target,
+		if (!hasAttacked && this.targetEntity != null
+				&& (this.path == null || this.random.nextInt(20) == 0)) {
+			this.path = this.world.findPath(this, this.targetEntity,
 					pathingRange);
 		} else if (!hasAttacked
-				&& (this.pathEntity == null && this.random.nextInt(70) == 0 || this.random
+				&& (this.path == null && this.random.nextInt(70) == 0 || this.random
 						.nextInt(70) == 0)) { // 80 -> 70 - path faster.
 			boolean flag = false;
 			int x = -1;
@@ -297,7 +293,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void targetClosestPlayer(boolean aggro, double range) {
-		this.target = this.getClosestPlayer(range);
+		this.targetEntity = this.getClosestPlayer(range);
 		this.targetAggro = aggro;
 	}
 
@@ -319,12 +315,12 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void createPathEntity(int x, int y, int z) {
-		this.pathEntity = this.world.a(this, x, y, z, pathingRange);
+		this.path = this.world.a(this, x, y, z, pathingRange);
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
 			int maxStationaryTicks, float pathingRange) {
-		this.target = ((CraftLivingEntity) entity).getHandle();
+		this.targetEntity = ((CraftLivingEntity) entity).getHandle();
 		this.targetAggro = aggro;
 		this.pathTickLimit = maxTicks;
 		this.pathingRange = pathingRange;
@@ -336,7 +332,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public boolean pathFinished() {
-		return pathEntity == null;
+		return path == null;
 	}
 
 	public void cancelPath() {
@@ -348,7 +344,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public boolean hasTarget() {
-		return this.target == null;
+		return this.targetEntity == null;
 	}
 
 	public void performAction(Animation action) {

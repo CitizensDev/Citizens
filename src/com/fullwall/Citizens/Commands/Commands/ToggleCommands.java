@@ -77,7 +77,6 @@ public class ToggleCommands {
 			type.factory().create(npc).register();
 		if (!npc.isType(type.getType())) {
 			npc.addType(type.getType(), type.factory());
-
 			player.sendMessage(StringUtils.wrap(npc.getName()) + " is now a "
 					+ type.getType() + "!");
 		} else {

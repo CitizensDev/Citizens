@@ -22,7 +22,7 @@ public class HumanNPC extends NPC {
 	private double balance;
 	private NPCData npcdata;
 	private boolean paused;
-	private final WaypointPath waypoints = new WaypointPath();
+	private WaypointPath waypoints = new WaypointPath();
 
 	private final ConcurrentHashMap<String, Toggleable> types = new ConcurrentHashMap<String, Toggleable>();
 
@@ -38,8 +38,8 @@ public class HumanNPC extends NPC {
 	}
 
 	public void removeType(String type) {
-		PropertyManager.save(type, this);
 		this.types.remove(type);
+		PropertyManager.save(type, this);
 	}
 
 	public boolean isType(String type) {
@@ -179,5 +179,9 @@ public class HumanNPC extends NPC {
 
 	public Collection<Toggleable> types() {
 		return this.types.values();
+	}
+
+	public void setWaypoints(WaypointPath waypoints) {
+		this.waypoints = waypoints;
 	}
 }

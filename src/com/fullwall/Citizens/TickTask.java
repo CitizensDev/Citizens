@@ -56,49 +56,48 @@ public class TickTask implements Runnable {
 	}
 
 	private void updateWaypoints(HumanNPC npc) {
-		if (NPCManager.pathEditors.get(npc.getOwner()) == null) {
-			WaypointPath waypoints = npc.getWaypoints();
-			switch (waypoints.size()) {
-			case 0:
-				break;
-			case 1:
-				// TODO: merge the default and this case.
-				if (waypoints.getIndex() >= 1) {
-					if (!waypoints.isStarted()) {
-						npc.createPath(waypoints.get(0), -1, -1,
-								Constants.pathFindingRange);
-						waypoints.setStarted(true);
-					}
-					if (!npc.paused() && npc.getHandle().pathFinished()) {
-						waypoints.setIndex(0);
-						waypoints.setStarted(false);
-					}
-				} else {
-					if (!npc.getWaypoints().isStarted()) {
-						npc.createPath(npc.getNPCData().getLocation(), -1, -1,
-								Constants.pathFindingRange);
-						waypoints.setStarted(true);
-					}
-					if (!npc.paused() && npc.getHandle().pathFinished()) {
-						waypoints.setIndex(1);
-						waypoints.setStarted(false);
-					}
-				}
-				break;
-			default:
+		WaypointPath waypoints = npc.getWaypoints();
+		switch (waypoints.size()) {
+		case 0:
+			break;
+		case 1:
+			// TODO: merge the default and this case.
+			if (waypoints.getIndex() >= 1) {
 				if (!waypoints.isStarted()) {
-					if (waypoints.getIndex() + 1 > waypoints.size()) {
-						waypoints.setIndex(0);
-					}
-					npc.createPath(waypoints.get(waypoints.getIndex()), -1, -1,
+					npc.createPath(waypoints.get(0), -1, -1,
 							Constants.pathFindingRange);
 					waypoints.setStarted(true);
 				}
 				if (!npc.paused() && npc.getHandle().pathFinished()) {
-					waypoints.setIndex(waypoints.getIndex() + 1);
+					waypoints.setIndex(0);
+					waypoints.setStarted(false);
+				}
+			} else {
+				if (!npc.getWaypoints().isStarted()) {
+					npc.createPath(npc.getNPCData().getLocation(), -1, -1,
+							Constants.pathFindingRange);
+					waypoints.setStarted(true);
+				}
+				if (!npc.paused() && npc.getHandle().pathFinished()) {
+					waypoints.setIndex(1);
 					waypoints.setStarted(false);
 				}
 			}
+			break;
+		default:
+			if (!waypoints.isStarted()) {
+				if (waypoints.getIndex() + 1 > waypoints.size()) {
+					waypoints.setIndex(0);
+				}
+				npc.createPath(waypoints.get(waypoints.getIndex()), -1, -1,
+						Constants.pathFindingRange);
+				waypoints.setStarted(true);
+			}
+			if (!npc.paused() && npc.getHandle().pathFinished()) {
+				waypoints.setIndex(waypoints.getIndex() + 1);
+				waypoints.setStarted(false);
+			}
+			npc.setWaypoints(waypoints);
 		}
 	}
 

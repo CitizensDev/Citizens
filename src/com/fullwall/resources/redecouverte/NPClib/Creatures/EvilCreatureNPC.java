@@ -65,7 +65,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 			Entity entity = e.getDamager();
 			if (entity != null) {
 				this.targetAggro = true;
-				this.target = ((CraftEntity) entity).getHandle();
+				this.targetEntity = ((CraftEntity) entity).getHandle();
 			}
 		}
 	}
