@@ -13,12 +13,10 @@ import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCTypes.Traders.TraderManager.Mode;
 import com.fullwall.Citizens.NPCs.NPCManager;
-import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class TraderNPC implements Toggleable, Clickable {
-	private final HumanNPC npc;
+public class TraderNPC extends Toggleable implements Clickable {
 	private boolean unlimited = false;
 	private boolean free = true;
 	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
@@ -30,7 +28,7 @@ public class TraderNPC implements Toggleable, Clickable {
 	 * @param npc
 	 */
 	public TraderNPC(HumanNPC npc) {
-		this.npc = npc;
+		super(npc);
 	}
 
 	public ConcurrentHashMap<Check, Stockable> getStocking() {
@@ -132,33 +130,8 @@ public class TraderNPC implements Toggleable, Clickable {
 	}
 
 	@Override
-	public void toggle() {
-		npc.setTrader(!npc.isTrader());
-	}
-
-	@Override
-	public boolean getToggle() {
-		return npc.isTrader();
-	}
-
-	@Override
-	public String getName() {
-		return npc.getStrippedName();
-	}
-
-	@Override
 	public String getType() {
 		return "trader";
-	}
-
-	@Override
-	public void saveState() {
-		PropertyManager.get(getType()).saveState(npc);
-	}
-
-	@Override
-	public void register() {
-		PropertyManager.get(getType()).register(npc);
 	}
 
 	@Override
@@ -167,14 +140,15 @@ public class TraderNPC implements Toggleable, Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (npc.getTrader().isFree()) {
+		TraderNPC trader = npc.getToggleable("trader");
+		if (trader.isFree()) {
 			Mode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID())) {
 				if (!Permission.canModify(player, npc, "trader")) {
 					return;
 				}
 				mode = Mode.STOCK;
-			} else if (npc.getTrader().isUnlimited()) {
+			} else if (trader.isUnlimited()) {
 				mode = Mode.INFINITE;
 				if (!Permission.canUse(player, npc, "trader")) {
 					return;
@@ -190,7 +164,7 @@ public class TraderNPC implements Toggleable, Clickable {
 					.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 1);
 			TraderManager.tasks.add(id);
 			task.addID(id);
-			npc.getTrader().setFree(false);
+			trader.setFree(false);
 			InventoryUtils.showInventory(npc, player);
 		} else {
 			player.sendMessage(ChatColor.RED

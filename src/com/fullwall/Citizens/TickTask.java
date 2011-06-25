@@ -12,6 +12,7 @@ import com.fullwall.Citizens.Utils.LocationUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.fullwall.resources.redecouverte.NPClib.NPCSpawner;
+import com.fullwall.resources.redecouverte.NPClib.WaypointPath;
 
 public class TickTask implements Runnable {
 	// How far an NPC can 'see'
@@ -56,45 +57,46 @@ public class TickTask implements Runnable {
 
 	private void updateWaypoints(HumanNPC npc) {
 		if (NPCManager.pathEditors.get(npc.getOwner()) == null) {
-			switch (npc.getWaypointSize()) {
+			WaypointPath waypoints = npc.getWaypoints();
+			switch (waypoints.size()) {
 			case 0:
 				break;
 			case 1:
 				// TODO: merge the default and this case.
-				if (npc.getWaypointIndex() >= 1) {
-					if (!npc.isWaypointStarted()) {
-						npc.createPath(npc.getWaypoint(0), -1, -1,
+				if (waypoints.getIndex() >= 1) {
+					if (!waypoints.isStarted()) {
+						npc.createPath(waypoints.get(0), -1, -1,
 								Constants.pathFindingRange);
-						npc.setWaypointStarted(true);
+						waypoints.setStarted(true);
 					}
 					if (!npc.paused() && npc.getHandle().pathFinished()) {
-						npc.setWaypointIndex(0);
-						npc.setWaypointStarted(false);
+						waypoints.setIndex(0);
+						waypoints.setStarted(false);
 					}
 				} else {
-					if (!npc.isWaypointStarted()) {
+					if (!npc.getWaypoints().isStarted()) {
 						npc.createPath(npc.getNPCData().getLocation(), -1, -1,
 								Constants.pathFindingRange);
-						npc.setWaypointStarted(true);
+						waypoints.setStarted(true);
 					}
 					if (!npc.paused() && npc.getHandle().pathFinished()) {
-						npc.setWaypointIndex(1);
-						npc.setWaypointStarted(false);
+						waypoints.setIndex(1);
+						waypoints.setStarted(false);
 					}
 				}
 				break;
 			default:
-				if (!npc.isWaypointStarted()) {
-					if (npc.getWaypointIndex() + 1 > npc.getWaypointSize()) {
-						npc.setWaypointIndex(0);
+				if (!waypoints.isStarted()) {
+					if (waypoints.getIndex() + 1 > waypoints.size()) {
+						waypoints.setIndex(0);
 					}
-					npc.createPath(npc.getWaypoint(npc.getWaypointIndex()), -1,
-							-1, Constants.pathFindingRange);
-					npc.setWaypointStarted(true);
+					npc.createPath(waypoints.get(waypoints.getIndex()), -1, -1,
+							Constants.pathFindingRange);
+					waypoints.setStarted(true);
 				}
 				if (!npc.paused() && npc.getHandle().pathFinished()) {
-					npc.setWaypointIndex(npc.getWaypointIndex() + 1);
-					npc.setWaypointStarted(false);
+					waypoints.setIndex(waypoints.getIndex() + 1);
+					waypoints.setStarted(false);
 				}
 			}
 		}

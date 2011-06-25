@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -45,8 +46,9 @@ public class WizardCommands {
 		WizardMode wizardMode;
 		if (WizardMode.parse(args.getString(1)) != null) {
 			wizardMode = WizardMode.parse(args.getString(1));
-			if (wizardMode != npc.getWizard().getMode()) {
-				npc.getWizard().setMode(wizardMode);
+			WizardNPC wizard = npc.getToggleable("wizard");
+			if (wizardMode != wizard.getMode()) {
+				wizard.setMode(wizardMode);
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName()
 						+ "'s")
 						+ " mode was set to "
@@ -74,10 +76,11 @@ public class WizardCommands {
 		player.sendMessage(ChatColor.BLUE + "========== " + ChatColor.GOLD
 				+ npc.getStrippedName() + "'s Wizard Status" + ChatColor.BLUE
 				+ " ==========");
+		WizardNPC wizard = npc.getToggleable("wizard");
 		player.sendMessage(ChatColor.BLUE + "Mode: " + ChatColor.GOLD
-				+ npc.getWizard().getMode());
+				+ wizard.getMode());
 		player.sendMessage(ChatColor.BLUE + "Mana: " + ChatColor.GOLD
-				+ npc.getWizard().getMana());
+				+ wizard.getMana());
 	}
 
 	@Command(
@@ -90,12 +93,12 @@ public class WizardCommands {
 	@CommandPermissions("modify.wizard")
 	public static void addLocation(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN + "Added current location to "
 					+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
 					+ " as " + StringUtils.wrap(args.getString(1)) + ".");
-			npc.getWizard()
-					.addLocation(player.getLocation(), args.getString(1));
+			wizard.addLocation(player.getLocation(), args.getString(1));
 		} else {
 			player.sendMessage(ChatColor.RED + npc.getStrippedName()
 					+ " cannot perform that action in this mode.");
@@ -112,8 +115,9 @@ public class WizardCommands {
 	@CommandPermissions("modify.wizard")
 	public static void removeLocation(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
-			String locations[] = npc.getWizard().getLocations().split(":");
+		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.getMode() == WizardMode.TELEPORT) {
+			String locations[] = wizard.getLocations().split(":");
 			String newLoc = "";
 			String removedName = "";
 			for (int i = 0; i < locations.length; i++) {
@@ -123,8 +127,8 @@ public class WizardCommands {
 					removedName = locations[i].split(",")[0].replace("(", "");
 				}
 			}
-			npc.getWizard().cycle(npc, WizardMode.TELEPORT);
-			npc.getWizard().setLocations(newLoc);
+			wizard.cycle(npc, WizardMode.TELEPORT);
+			wizard.setLocations(newLoc);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " has amnesia and forgot about "
 					+ StringUtils.wrap(removedName) + ".");
@@ -144,12 +148,13 @@ public class WizardCommands {
 	@CommandPermissions("use.wizard")
 	public static void displayLocations(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (npc.getWizard().getMode() == WizardMode.TELEPORT) {
+		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN
 					+ "========== "
 					+ StringUtils.wrap(npc.getStrippedName()
 							+ "'s Wizard Locations") + " ==========");
-			String locations[] = npc.getWizard().getLocations().split(":");
+			String locations[] = wizard.getLocations().split(":");
 			for (int i = 0; i < locations.length; i++) {
 				player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
 						+ ChatColor.GREEN + ": "

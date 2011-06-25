@@ -42,13 +42,14 @@ public class PirateTask implements Runnable {
 	}
 
 	private void resetActions(int entityID, String name, HumanNPC npc) {
-		ActionManager.resetAction(entityID, name, "takenItem", npc.isPirate());
+		ActionManager
+				.resetAction(entityID, name, "takenItem", npc.isType("pirate"));
 	}
 
 	private void cacheActions(Player player, HumanNPC npc, int entityID,
 			String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
-		if (!cached.has("takenItem") && npc.isPirate()) {
+		if (!cached.has("takenItem") && npc.isType("pirate")) {
 			steal(player, npc);
 			cached.set("takenItem");
 		}
@@ -67,7 +68,7 @@ public class PirateTask implements Runnable {
 		int randomSlot;
 		int count = 0;
 		ItemStack item = null;
-		if (npc.isPirate()) {
+		if (npc.isType("pirate")) {
 			int limit = player.getInventory().getSize();
 			while (true) {
 				randomSlot = random.nextInt(limit);

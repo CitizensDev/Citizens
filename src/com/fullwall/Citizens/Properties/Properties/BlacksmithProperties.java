@@ -1,6 +1,7 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -10,13 +11,14 @@ public class BlacksmithProperties extends PropertyManager implements Saveable {
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isBlacksmith());
+			setEnabled(npc, npc.isType("blacksmith"));
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setBlacksmith(getEnabled(npc));
+		if (getEnabled(npc))
+			npc.registerType("blacksmith", NPCManager.getFactory("blacksmith"));
 		saveState(npc);
 	}
 

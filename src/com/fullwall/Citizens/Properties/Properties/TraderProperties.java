@@ -8,6 +8,8 @@ import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCTypes.Traders.Check;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
+import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -112,19 +114,26 @@ public class TraderProperties extends PropertyManager implements Saveable {
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isTrader());
-			saveUnlimited(npc.getUID(), npc.getTrader().isUnlimited());
-			saveStockables(npc.getUID(), npc.getTrader().getStocking());
-			saveBalance(npc.getUID(), npc.getBalance());
+			boolean is = npc.isType("trader");
+			setEnabled(npc, is);
+			if (is) {
+				TraderNPC trader = npc.getToggleable("trader");
+				saveUnlimited(npc.getUID(), trader.isUnlimited());
+				saveStockables(npc.getUID(), trader.getStocking());
+				saveBalance(npc.getUID(), npc.getBalance());
+			}
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setBalance(getBalance(npc.getUID()));
-		npc.setTrader(getEnabled(npc));
-		npc.getTrader().setUnlimited(getUnlimited(npc.getUID()));
-		npc.getTrader().setStocking(getStockables(npc.getUID()));
+		if (getEnabled(npc)) {
+			npc.registerType("trader", NPCManager.getFactory("trader"));
+			TraderNPC trader = npc.getToggleable("trader");
+			npc.setBalance(getBalance(npc.getUID()));
+			trader.setUnlimited(getUnlimited(npc.getUID()));
+			trader.setStocking(getStockables(npc.getUID()));
+		}
 		saveState(npc);
 	}
 

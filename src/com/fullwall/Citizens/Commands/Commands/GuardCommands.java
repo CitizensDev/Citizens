@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -15,6 +16,10 @@ import com.fullwall.resources.sk89q.commands.CommandContext;
 import com.fullwall.resources.sk89q.commands.CommandPermissions;
 import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true,
+		requiredType = "guard")
 public class GuardCommands {
 
 	@CommandRequirements()
@@ -31,10 +36,6 @@ public class GuardCommands {
 		HelpUtils.sendGuardHelp(player);
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "guard")
 	@Command(
 			aliases = "guard",
 			usage = "type [type]",
@@ -45,25 +46,26 @@ public class GuardCommands {
 	@CommandPermissions("modify.guard")
 	public static void changeType(CommandContext args, Player player,
 			HumanNPC npc) {
+		GuardNPC guard = npc.getToggleable("guard");
 		if (args.getString(1).equalsIgnoreCase("bodyguard")) {
-			if (!npc.getGuard().isBodyguard()) {
-				npc.getGuard().setBodyguard(true);
+			if (!guard.isBodyguard()) {
+				guard.setBodyguard(true);
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " is now a bodyguard.");
-				if (npc.getGuard().isBouncer()) {
-					npc.getGuard().setBouncer(false);
+				if (guard.isBouncer()) {
+					guard.setBouncer(false);
 				}
 			} else {
 				Messaging.sendError(player, npc.getStrippedName()
 						+ " is already a bodyguard.");
 			}
 		} else if (args.getString(1).equalsIgnoreCase("bouncer")) {
-			if (!npc.getGuard().isBouncer()) {
-				npc.getGuard().setBouncer(true);
+			if (!guard.isBouncer()) {
+				guard.setBouncer(true);
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " is now a bouncer.");
-				if (npc.getGuard().isBodyguard()) {
-					npc.getGuard().setBodyguard(false);
+				if (guard.isBodyguard()) {
+					guard.setBodyguard(false);
 				}
 			} else {
 				Messaging.sendError(player, npc.getStrippedName()
@@ -74,10 +76,6 @@ public class GuardCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "guard")
 	@Command(
 			aliases = "guard",
 			usage = "blacklist (mob)",
@@ -88,12 +86,13 @@ public class GuardCommands {
 	@CommandPermissions("modify.guard")
 	public static void blacklist(CommandContext args, Player player,
 			HumanNPC npc) {
+		GuardNPC guard = npc.getToggleable("guard");
 		if (args.argsLength() == 1) {
 			player.sendMessage(ChatColor.GREEN
 					+ "========== "
 					+ StringUtils.wrap(npc.getStrippedName()
 							+ "'s Blacklisted Mobs") + " ==========");
-			List<String> list = npc.getGuard().getBlacklist();
+			List<String> list = guard.getBlacklist();
 			if (list.isEmpty()) {
 				player.sendMessage(ChatColor.RED + "No mobs blacklisted.");
 			} else {
@@ -103,17 +102,17 @@ public class GuardCommands {
 			}
 		} else if (args.argsLength() == 2) {
 			String mob = args.getString(1).toLowerCase();
-			if (npc.getGuard().getBlacklist().contains(mob)) {
+			if (guard.getBlacklist().contains(mob)) {
 				player.sendMessage(ChatColor.RED
 						+ "That mob is already blacklisted.");
 			} else if (CreatureType.fromName(StringUtils.capitalise(mob)) != null) {
-				npc.getGuard().addToBlacklist(mob);
+				guard.addToBlacklist(mob);
 				player.sendMessage(ChatColor.GREEN + "You added the mob type "
 						+ StringUtils.wrap(mob) + " to "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
 			} else if (mob.equalsIgnoreCase("all")) {
-				npc.getGuard().addToBlacklist(mob);
+				guard.addToBlacklist(mob);
 				player.sendMessage(ChatColor.GREEN + "You added all mobs to "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
@@ -123,10 +122,6 @@ public class GuardCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "guard")
 	@Command(
 			aliases = "guard",
 			usage = "whitelist (player)",
@@ -137,12 +132,13 @@ public class GuardCommands {
 	@CommandPermissions("modify.guard")
 	public static void whitelist(CommandContext args, Player player,
 			HumanNPC npc) {
+		GuardNPC guard = npc.getToggleable("guard");
 		if (args.argsLength() == 1) {
 			player.sendMessage(ChatColor.GREEN
 					+ "========== "
 					+ StringUtils.wrap(npc.getStrippedName()
 							+ "'s Whitelisted Players") + " ==========");
-			List<String> list = npc.getGuard().getWhitelist();
+			List<String> list = guard.getWhitelist();
 			if (list.isEmpty()) {
 				player.sendMessage(ChatColor.RED + "No players whitelisted.");
 			} else {
@@ -152,11 +148,11 @@ public class GuardCommands {
 			}
 		} else if (args.argsLength() == 2) {
 			String allowed = args.getString(1).toLowerCase();
-			if (npc.getGuard().getWhitelist().contains(allowed)) {
+			if (guard.getWhitelist().contains(allowed)) {
 				player.sendMessage(ChatColor.RED
 						+ "That player is already whitelisted.");
 			} else {
-				npc.getGuard().addToWhitelist(allowed);
+				guard.addToWhitelist(allowed);
 				player.sendMessage(ChatColor.GREEN + "You added "
 						+ StringUtils.wrap(allowed) + " to "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
@@ -165,10 +161,6 @@ public class GuardCommands {
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true,
-			requiredType = "guard")
 	@Command(
 			aliases = "guard",
 			usage = "radius [radius]",
@@ -179,9 +171,9 @@ public class GuardCommands {
 	@CommandPermissions("modify.guard")
 	public static void changeRadius(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (npc.getGuard().isBouncer()) {
-			npc.getGuard().setProtectionRadius(
-					Double.parseDouble(args.getString(1)));
+		GuardNPC guard = npc.getToggleable("guard");
+		if (guard.isBouncer()) {
+			guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
 					+ " protection radius has been set to "
 					+ StringUtils.wrap(args.getString(1)) + ".");

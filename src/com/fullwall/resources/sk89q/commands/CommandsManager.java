@@ -459,30 +459,9 @@ public abstract class CommandsManager<T extends Player> {
 							MessageUtils.notOwnerMessage);
 				}
 				if (npc != null && !requiredType.isEmpty()) {
-					String required = requiredType;
-					// TODO : simplify this.
-					boolean found = false;
-					if (required.equals("trader") && !npc.isTrader()) {
-						found = true;
-					}
-					if (required.equals("guard") && !npc.isGuard()) {
-						found = true;
-					}
-					if (required.equals("quester") && !npc.isQuester()) {
-						found = true;
-					}
-					if (required.equals("healer") && !npc.isHealer()) {
-						found = true;
-					}
-					if (required.equals("blacksmith") && !npc.isBlacksmith()) {
-						found = true;
-					}
-					if (required.equals("wizard") && !npc.isWizard()) {
-						found = true;
-					}
-					if (found) {
+					if (!npc.isType(requiredType)) {
 						throw new RequirementMissingException(
-								"Your NPC isn't a " + required + " yet.");
+								"Your NPC isn't a " + requiredType + " yet.");
 					}
 				}
 			}

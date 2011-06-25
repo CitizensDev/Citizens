@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -13,6 +14,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Permission;
+import com.fullwall.Citizens.Events.NPCSpawnEvent;
+import com.fullwall.Citizens.Interfaces.NPCFactory;
+import com.fullwall.Citizens.Interfaces.NPCType;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -24,6 +28,7 @@ public class NPCManager {
 	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
 	public static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	public static final HashMap<String, Integer> pathEditors = new HashMap<String, Integer>();
+	public static final HashMap<String, NPCType> types = new HashMap<String, NPCType>();
 	private static NPCList list = new NPCList();
 
 	/**
@@ -52,10 +57,15 @@ public class NPCManager {
 				}
 			}
 		}
-		HumanNPC npc = NPCSpawner.spawnBasicHumanNpc(UID, npcName,
-				loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
-				loc.getYaw(), 0F);
+		HumanNPC npc = NPCSpawner.spawnNPC(UID, npcName, loc.getWorld(),
+				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
+		NPCSpawnEvent event = new NPCSpawnEvent(npc);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		if (event.isCancelled()) {
+			NPCSpawner.despawnNPC(npc);
+			return;
+		}
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
 		npc.setNPCData(new NPCData(name, UID, loc, colour, items, NPCTexts
@@ -187,7 +197,7 @@ public class NPCManager {
 	 */
 	public static void despawn(int UID) {
 		GlobalUIDs.remove(UID);
-		NPCSpawner.removeBasicHumanNPC(list.get(UID));
+		NPCSpawner.despawnNPC(list.get(UID));
 		list.remove(UID);
 	}
 
@@ -199,7 +209,7 @@ public class NPCManager {
 	public static void remove(int UID) {
 		PropertyManager.remove(get(UID));
 		GlobalUIDs.remove(UID);
-		NPCSpawner.removeBasicHumanNPC(list.get(UID));
+		NPCSpawner.despawnNPC(list.get(UID));
 		list.remove(UID);
 	}
 
@@ -216,7 +226,7 @@ public class NPCManager {
 	 */
 	public static void removeForRespawn(int UID) {
 		PropertyManager.save(list.get(UID));
-		NPCSpawner.removeBasicHumanNPC(list.get(UID));
+		NPCSpawner.despawnNPC(list.get(UID));
 	}
 
 	/**
@@ -360,23 +370,24 @@ public class NPCManager {
 			switch (event.getAction()) {
 			case LEFT_CLICK_BLOCK:
 				Location loc = event.getClickedBlock().getLocation();
-				npc.addWaypoint(loc);
+				npc.getWaypoints().add(loc);
 				event.getPlayer().sendMessage(
 						StringUtils.wrap("Added") + " waypoint at ("
 								+ StringUtils.wrap(loc.getBlockX()) + ", "
 								+ StringUtils.wrap(loc.getBlockY()) + ", "
 								+ StringUtils.wrap(loc.getBlockZ()) + ") ("
-								+ StringUtils.wrap(npc.getWaypointSize())
+								+ StringUtils.wrap(npc.getWaypoints().size())
 								+ " waypoints)");
 				break;
 			case RIGHT_CLICK_BLOCK:
 			case RIGHT_CLICK_AIR:
-				if (npc.getWaypointSize() > 0) {
-					npc.removeLastWaypoint();
+				if (npc.getWaypoints().size() > 0) {
+					npc.getWaypoints().removeLast();
 					event.getPlayer().sendMessage(
-							StringUtils.wrap("Undid") + " the last waypoint ("
-									+ StringUtils.wrap(npc.getWaypointSize())
-									+ " remaining)");
+							StringUtils.wrap("Undid")
+									+ " the last waypoint ("
+									+ StringUtils.wrap(npc.getWaypoints()
+											.size()) + " remaining)");
 
 				} else
 					event.getPlayer().sendMessage(
@@ -388,5 +399,21 @@ public class NPCManager {
 
 	public static int getSelected(String name) {
 		return selectedNPCs.get(name);
+	}
+
+	public static NPCFactory getFactory(String string) {
+		return types.get(string).factory();
+	}
+
+	public static void registerType(NPCType type) {
+		types.put(type.getType(), type);
+	}
+
+	public static boolean validType(String type) {
+		return types.get(type) != null;
+	}
+
+	public static NPCType getType(String type) {
+		return types.get(type);
 	}
 }

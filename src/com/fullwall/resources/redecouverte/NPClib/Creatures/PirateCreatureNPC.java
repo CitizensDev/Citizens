@@ -38,13 +38,17 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void doTick() {
-		if (this.npc.getPirate().isBoating()) {
+		if (isBoating()) {
 			// findShore();
 		} else {
 			// lootInventory();
 			// lootChests();
 			// stealEconomyPluginMoney();
 		}
+	}
+
+	private boolean isBoating() {
+		return false;
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class BasicCommands {
 			desc = "view the Citizens help page",
 			modifiers = "help",
 			min = 1,
-			max = 1)
+			max = 2)
 	@CommandPermissions("use.basic")
 	public static void sendCitizensHelp(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -208,6 +208,7 @@ public class BasicCommands {
 			max = 1)
 	@CommandPermissions("create.basic")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
+		PropertyManager.save(npc);
 		int newUID = NPCManager.register(npc.getName(), player.getLocation(),
 				player.getName());
 		HumanNPC newNPC = NPCManager.get(newUID);
@@ -299,7 +300,7 @@ public class BasicCommands {
 			NPCManager.setColour(npc.getUID(), npc.getOwner());
 			player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
 					+ "}'s name color is now "
-					+ args.getString(1).replace("&", "�") + "this}."));
+					+ args.getString(1).replace("&", "\u00A7") + "this}."));
 		}
 	}
 
@@ -416,7 +417,7 @@ public class BasicCommands {
 				+ "'s armor was set to " + StringUtils.wrap(mat.name()) + ".");
 	}
 
-	@CommandRequirements(requiredType = "basic")
+	@CommandRequirements()
 	@Command(
 			aliases = "npc",
 			usage = "tp",
@@ -582,7 +583,7 @@ public class BasicCommands {
 			}
 			NPCManager.pathEditors.put(player.getName(), editing);
 		} else if (args.length() >= 3 && args.getString(1).equals("reset")) {
-			npc.resetWaypoints();
+			npc.getWaypoints().resetWaypoints();
 			player.sendMessage(ChatColor.GREEN + "Waypoints "
 					+ StringUtils.wrap("reset") + ".");
 		}

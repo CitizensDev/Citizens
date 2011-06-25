@@ -13,14 +13,12 @@ import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
-import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.InventoryUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class WizardNPC implements Toggleable, Clickable {
-	private final HumanNPC npc;
+public class WizardNPC extends Toggleable implements Clickable {
 	private String locations = "";
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
@@ -36,7 +34,7 @@ public class WizardNPC implements Toggleable, Clickable {
 	 * @param npc
 	 */
 	public WizardNPC(HumanNPC npc) {
-		this.npc = npc;
+		super(npc);
 	}
 
 	/**
@@ -86,6 +84,7 @@ public class WizardNPC implements Toggleable, Clickable {
 	 * @return
 	 */
 	public void cycle(HumanNPC npc, WizardMode mode) {
+		WizardNPC wizard = npc.getToggleable("wizard");
 		switch (mode) {
 		case TELEPORT:
 			currentLocation++;
@@ -94,7 +93,7 @@ public class WizardNPC implements Toggleable, Clickable {
 			}
 			break;
 		case SPAWN:
-			CreatureType type = npc.getWizard().getMob();
+			CreatureType type = wizard.getMob();
 			CreatureType newType = null;
 			switch (type) {
 			case PIG:
@@ -137,10 +136,10 @@ public class WizardNPC implements Toggleable, Clickable {
 				newType = CreatureType.PIG;
 				break;
 			}
-			npc.getWizard().setMob(newType);
+			wizard.setMob(newType);
 			break;
 		case TIME:
-			String time = npc.getWizard().getTime();
+			String time = wizard.getTime();
 			String newTime = "";
 			if (time.equals("day")) {
 				newTime = "afternoon";
@@ -151,7 +150,7 @@ public class WizardNPC implements Toggleable, Clickable {
 			} else if (time.equals("afternoon")) {
 				newTime = "night";
 			}
-			npc.getWizard().setTime(newTime);
+			wizard.setTime(newTime);
 			break;
 		}
 	}
@@ -252,47 +251,23 @@ public class WizardNPC implements Toggleable, Clickable {
 	}
 
 	@Override
-	public void toggle() {
-		npc.setWizard(!npc.isWizard());
-	}
-
-	@Override
-	public boolean getToggle() {
-		return npc.isWizard();
-	}
-
-	@Override
-	public String getName() {
-		return npc.getStrippedName();
-	}
-
-	@Override
 	public String getType() {
 		return "wizard";
-	}
-
-	@Override
-	public void saveState() {
-		PropertyManager.get(getType()).saveState(npc);
-	}
-
-	@Override
-	public void register() {
-		PropertyManager.get(getType()).register(npc);
 	}
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-				WizardMode mode = npc.getWizard().getMode();
+				WizardNPC wizard = npc.getToggleable("wizard");
+				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
 				switch (mode) {
 				case TELEPORT:
-					if (npc.getWizard().getNumberOfLocations() > 0) {
-						npc.getWizard().cycle(npc, WizardMode.TELEPORT);
+					if (wizard.getNumberOfLocations() > 0) {
+						wizard.cycle(npc, WizardMode.TELEPORT);
 						msg += "Location set to "
-								+ StringUtils.wrap(npc.getWizard()
+								+ StringUtils.wrap(wizard
 										.getCurrentLocationName());
 					} else {
 						msg += ChatColor.RED + npc.getStrippedName()
@@ -300,15 +275,15 @@ public class WizardNPC implements Toggleable, Clickable {
 					}
 					break;
 				case SPAWN:
-					npc.getWizard().cycle(npc, WizardMode.SPAWN);
+					wizard.cycle(npc, WizardMode.SPAWN);
 					msg += "Mob to spawn set to "
-							+ StringUtils.wrap(npc.getWizard().getMob().name()
+							+ StringUtils.wrap(wizard.getMob().name()
 									.toLowerCase().replace("_", " "));
 					break;
 				case TIME:
-					npc.getWizard().cycle(npc, WizardMode.TIME);
+					wizard.cycle(npc, WizardMode.TIME);
 					msg += "Time setting set to "
-							+ StringUtils.wrap(npc.getWizard().getTime());
+							+ StringUtils.wrap(wizard.getTime());
 					break;
 				case WEATHER:
 					return;
@@ -326,11 +301,12 @@ public class WizardNPC implements Toggleable, Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
+			WizardNPC wizard = npc.getToggleable("wizard");
 			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
-				WizardMode mode = npc.getWizard().getMode();
+				WizardMode mode = wizard.getMode();
 				switch (mode) {
 				case TELEPORT:
-					if (npc.getWizard().getNumberOfLocations() > 0) {
+					if (wizard.getNumberOfLocations() > 0) {
 						WizardManager.buy(player, npc,
 								Operation.WIZARD_TELEPORT);
 					}
@@ -353,11 +329,11 @@ public class WizardNPC implements Toggleable, Clickable {
 			} else if (player.getItemInHand().getTypeId() == Constants.wizardManaRegenItem) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
-				if (npc.getWizard().getMana() + 10 < Constants.maxWizardMana) {
-					mana = npc.getWizard().getMana() + 10;
+				if (wizard.getMana() + 10 < Constants.maxWizardMana) {
+					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
-				} else if (npc.getWizard().getMana() + 10 == Constants.maxWizardMana) {
+				} else if (wizard.getMana() + 10 == Constants.maxWizardMana) {
 					mana = Constants.maxWizardMana;
 					msg += " mana has been fully replenished.";
 				} else {
@@ -367,7 +343,7 @@ public class WizardNPC implements Toggleable, Clickable {
 				InventoryUtils.decreaseItemInHand(player,
 						Material.getMaterial(Constants.wizardManaRegenItem));
 				player.sendMessage(msg);
-				npc.getWizard().setMana(mana);
+				wizard.setMana(mana);
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);

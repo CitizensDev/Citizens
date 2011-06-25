@@ -67,7 +67,7 @@ public class NPCDataManager {
 					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
 			return;
 		}
-		if (npc.isTrader()) {
+		if (npc.isType("trader")) {
 			p.sendMessage(ChatColor.GRAY
 					+ "That NPC is a trader. Please put the item manually in the first slot of the trader's inventory instead.");
 			return;

@@ -12,6 +12,7 @@ import com.fullwall.Citizens.Economy.Payment;
 import com.fullwall.Citizens.Economy.ServerEconomyInterface;
 import com.fullwall.Citizens.NPCTypes.Traders.ItemPrice;
 import com.fullwall.Citizens.NPCTypes.Traders.Stockable;
+import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.PageUtils;
@@ -49,9 +50,7 @@ public class TraderCommands {
 	 * @param player
 	 * @param npc
 	 */
-	@CommandRequirements(
-			requiredType = "trader",
-			requireSelected = true)
+	@CommandRequirements(requiredType = "trader", requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "money",
@@ -79,9 +78,7 @@ public class TraderCommands {
 	 * @param args
 	 * @param selling
 	 */
-	@CommandRequirements(
-			requiredType = "trader",
-			requireSelected = true)
+	@CommandRequirements(requiredType = "trader", requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "list [buy/sell]",
@@ -98,7 +95,8 @@ public class TraderCommands {
 			return;
 		}
 		boolean selling = args.getString(1).contains("s");
-		ArrayList<Stockable> stock = npc.getTrader().getStockables(!selling);
+		TraderNPC trader = npc.getToggleable("trader");
+		ArrayList<Stockable> stock = trader.getStockables(!selling);
 		int page = 1;
 		String keyword = "Buying ";
 		if (selling)
@@ -146,14 +144,15 @@ public class TraderCommands {
 	public static void changeUnlimited(CommandContext args, Player player,
 			HumanNPC npc) {
 		String unlimited = args.getString(1);
+		TraderNPC trader = npc.getToggleable("trader");
 		if (unlimited.equalsIgnoreCase("true")
 				|| unlimited.equalsIgnoreCase("on")) {
-			npc.getTrader().setUnlimited(true);
+			trader.setUnlimited(true);
 			player.sendMessage(ChatColor.GREEN
 					+ "The trader will now have unlimited stock!");
 		} else if (unlimited.equalsIgnoreCase("false")
 				|| unlimited.equalsIgnoreCase("off")) {
-			npc.getTrader().setUnlimited(false);
+			trader.setUnlimited(false);
 			player.sendMessage(ChatColor.GREEN
 					+ "The trader has stopped having unlimited stock.");
 		} else {
@@ -265,6 +264,7 @@ public class TraderCommands {
 		String item = args.getString(1);
 		String price = args.getString(2);
 		boolean selling = args.getString(0).contains("bu");
+		TraderNPC trader = npc.getToggleable("trader");
 		if (item.contains("rem")) {
 			ItemStack stack = parseItemStack(price.split(":"));
 			if (stack == null) {
@@ -276,14 +276,14 @@ public class TraderCommands {
 			if (!selling) {
 				keyword = "selling";
 			}
-			if (npc.getTrader().getStockable(stack.getTypeId(),
-					stack.getDurability(), selling) == null) {
+			if (trader.getStockable(stack.getTypeId(), stack.getDurability(),
+					selling) == null) {
 				player.sendMessage(ChatColor.RED
 						+ "The trader is not currently " + keyword
 						+ " that item.");
 				return;
 			} else {
-				npc.getTrader().removeStockable(stack.getTypeId(),
+				trader.removeStockable(stack.getTypeId(),
 						stack.getDurability(), selling);
 				player.sendMessage(ChatColor.GREEN + "Removed "
 						+ StringUtils.wrap(stack.getType().name())
@@ -333,16 +333,16 @@ public class TraderCommands {
 			keyword = "selling";
 			s.setSelling(false);
 		}
-		if (npc.getTrader().isStocked(s)) {
+		if (trader.isStocked(s)) {
 			player.sendMessage(ChatColor.RED
 					+ "Already "
 					+ keyword
 					+ " that at "
-					+ MessageUtils.getStockableMessage(npc.getTrader()
-							.getStockable(s), ChatColor.RED) + ".");
+					+ MessageUtils.getStockableMessage(trader.getStockable(s),
+							ChatColor.RED) + ".");
 			return;
 		}
-		npc.getTrader().addStockable(s);
+		trader.addStockable(s);
 		player.sendMessage(ChatColor.GREEN + "The trader is now " + keyword
 				+ " " + MessageUtils.getStockableMessage(s, ChatColor.GREEN)
 				+ ".");

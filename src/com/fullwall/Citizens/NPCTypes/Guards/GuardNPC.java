@@ -9,11 +9,9 @@ import org.bukkit.entity.Player;
 import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.Misc.Enums.GuardType;
-import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
-public class GuardNPC implements Toggleable, Clickable {
-	private final HumanNPC npc;
+public class GuardNPC extends Toggleable implements Clickable {
 	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
 	private boolean isAggressive = false;
@@ -28,7 +26,7 @@ public class GuardNPC implements Toggleable, Clickable {
 	 * @param npc
 	 */
 	public GuardNPC(HumanNPC npc) {
-		this.npc = npc;
+		super(npc);
 	}
 
 	/**
@@ -193,33 +191,8 @@ public class GuardNPC implements Toggleable, Clickable {
 	}
 
 	@Override
-	public void toggle() {
-		npc.setGuard(!npc.isGuard());
-	}
-
-	@Override
-	public boolean getToggle() {
-		return npc.isGuard();
-	}
-
-	@Override
-	public String getName() {
-		return npc.getStrippedName();
-	}
-
-	@Override
 	public String getType() {
 		return "guard";
-	}
-
-	@Override
-	public void saveState() {
-		PropertyManager.get(getType()).saveState(npc);
-	}
-
-	@Override
-	public void register() {
-		PropertyManager.get(getType()).register(npc);
 	}
 
 	public double getHalvedRadius() {

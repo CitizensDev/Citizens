@@ -1,14 +1,13 @@
 package com.fullwall.Citizens.Commands.Commands;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.Interfaces.NPCType;
 import com.fullwall.Citizens.Interfaces.Toggleable;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -20,33 +19,34 @@ import com.fullwall.resources.sk89q.commands.CommandRequirements;
 
 public class ToggleCommands {
 
-	// Note: Having a class annotation for these commands still gives an NPE, 
+	// Note: Having a class annotation for these commands still gives an NPE,
 	// so I had to use the requirements for each method
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true)
+	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = { "toggle", "tog", "t" },
 			usage = "[type]",
 			desc = "toggle an NPC type",
-			modifiers = { "blacksmith", "guard", "healer", "quester", "trader", "wizard" },
+			modifiers = { "blacksmith", "guard", "healer", "quester", "trader",
+					"wizard" },
 			min = 1,
 			max = 1)
 	@CommandPermissions("create.")
 	public static void toggleNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
-		if (!PropertyManager.typeExists(npc, type)) {
-			buyState(player, npc.getType(type),
+		if (!NPCManager.validType(type)) {
+			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
+			return;
+		}
+		if (!PropertyManager.npcHasType(npc, type)) {
+			buyState(player, npc, NPCManager.getType(type),
 					Operation.valueOf(type.toUpperCase() + "_CREATION"));
 		} else {
-			toggleState(player, npc.getType(type));
+			toggleState(player, npc, NPCManager.getType(type), false);
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true)
+	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = { "toggle", "tog", "t" },
 			usage = "all [on|off]",
@@ -68,17 +68,22 @@ public class ToggleCommands {
 	 * Toggles an NPC state.
 	 * 
 	 * @param player
+	 * @param register
 	 * @param toggleable
 	 */
-	private static void toggleState(Player player, Toggleable toggleable) {
-		toggleable.toggle();
-		toggleable.saveState();
-		if (toggleable.getToggle()) {
-			player.sendMessage(StringUtils.wrap(toggleable.getName())
-					+ " is now a " + toggleable.getType() + "!");
+	private static void toggleState(Player player, HumanNPC npc, NPCType type,
+			boolean register) {
+		if (register)
+			type.factory().create(npc).register();
+		if (!npc.isType(type.getType())) {
+			npc.addType(type.getType(), type.factory());
+
+			player.sendMessage(StringUtils.wrap(npc.getName()) + " is now a "
+					+ type.getType() + "!");
 		} else {
-			player.sendMessage(StringUtils.wrap(toggleable.getName())
-					+ " has stopped being a " + toggleable.getType() + ".");
+			npc.removeType(type.getType());
+			player.sendMessage(StringUtils.wrap(npc.getName())
+					+ " has stopped being a " + type.getType() + ".");
 		}
 	}
 
@@ -89,17 +94,16 @@ public class ToggleCommands {
 	 * @param toggleable
 	 * @param op
 	 */
-	private static void buyState(Player player, Toggleable toggleable,
+	private static void buyState(Player player, HumanNPC npc, NPCType type,
 			Operation op) {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0) {
 					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
-							toggleable.getName(), toggleable.getType(), true));
+							npc.getName(), type.getType(), true));
 				}
-				toggleable.register();
-				toggleState(player, toggleable);
+				toggleState(player, npc, type, true);
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "Your server has not turned economy on for Citizens.");
@@ -117,24 +121,15 @@ public class ToggleCommands {
 	 * @param on
 	 */
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
-		Map<String, Toggleable> toggle = new HashMap<String, Toggleable>();
-		toggle.put("blacksmith", npc.getBlacksmith());
-		toggle.put("guard", npc.getGuard());
-		toggle.put("healer", npc.getHealer());
-		toggle.put("quester", npc.getQuester());
-		toggle.put("trader", npc.getTrader());
-		toggle.put("wizard", npc.getWizard());
 		if (on) {
-			for (Toggleable t : toggle.values()) {
-				if (!t.getToggle()) {
-					toggleState(player, toggle.get(t.getType()));
+			for (NPCType t : NPCManager.types.values()) {
+				if (!npc.isType(t.getType())) {
+					toggleState(player, npc, t, false);
 				}
 			}
 		} else {
-			for (Toggleable t : toggle.values()) {
-				if (t.getToggle()) {
-					toggleState(player, toggle.get(t.getType()));
-				}
+			for (Toggleable t : npc.types()) {
+				toggleState(player, npc, NPCManager.getType(t.getType()), false);
 			}
 		}
 	}

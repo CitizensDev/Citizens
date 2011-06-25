@@ -22,9 +22,10 @@ public class HealerTask implements Runnable {
 	 * @param npc
 	 */
 	private void regenerateHealth(HumanNPC npc) {
-		if (npc.isHealer()) {
-			if (npc.getHealer().getHealth() < npc.getHealer().getMaxHealth()) {
-				npc.getHealer().setHealth(npc.getHealer().getHealth() + 1);
+		if (npc.isType("healer")) {
+			HealerNPC healer = npc.getToggleable("healer");
+			if (healer.getHealth() < healer.getMaxHealth()) {
+				healer.setHealth(healer.getHealth() + 1);
 			}
 		}
 	}
@@ -39,8 +40,10 @@ public class HealerTask implements Runnable {
 		if (!NPCManager.getList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 					.entrySet()) {
-				delay = Constants.healerHealthRegenIncrement
-						* (11 - (entry.getValue().getHealer().getLevel()));
+				if (entry.getValue().isType("healer"))
+					delay = Constants.healerHealthRegenIncrement
+							* (11 - ((HealerNPC) (entry.getValue()
+									.getToggleable("healer"))).getLevel());
 			}
 		} else {
 			delay = 12000;

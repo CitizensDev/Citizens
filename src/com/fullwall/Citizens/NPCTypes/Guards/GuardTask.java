@@ -28,8 +28,8 @@ public class GuardTask implements Runnable {
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			HumanNPC npc = entry.getValue();
-			if (npc.isGuard()) {
-				GuardNPC guard = npc.getGuard();
+			if (npc.isType("guard")) {
+				GuardNPC guard = npc.getToggleable("guard");
 				if (guard.isBouncer()) {
 					Location loc = npc.getLocation();
 					for (Entity temp : npc.getPlayer().getNearbyEntities(
@@ -48,11 +48,12 @@ public class GuardTask implements Runnable {
 								name = player.getName();
 							}
 						} else {
-							name = entity.getClass().getName().toLowerCase();
+							name = entity.getClass().getName().toLowerCase()
+									.replace("entity", "");
 						}
-						if (LocationUtils.checkLocation(loc, entity
-								.getLocation(), npc.getGuard()
-								.getProtectionRadius())) {
+						if (LocationUtils.checkLocation(loc,
+								entity.getLocation(),
+								guard.getProtectionRadius())) {
 							cacheActions(npc, entity, entity.getEntityId(),
 									name);
 						} else {
@@ -116,7 +117,7 @@ public class GuardTask implements Runnable {
 
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
-		GuardNPC guard = npc.getGuard();
+		GuardNPC guard = npc.getToggleable("guard");
 		if (guard.isBouncer()) {
 			CachedAction cached = ActionManager.getAction(entityID, name);
 			if (!cached.has("attemptedEntry")) {
@@ -156,7 +157,8 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-		return npc.getGuard().getBlacklist().contains(name);
+		return ((GuardNPC) npc.getToggleable("guard")).getBlacklist().contains(
+				name);
 	}
 
 	/**

@@ -7,6 +7,8 @@ import java.util.List;
 import com.fullwall.Citizens.Constants;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.Misc.Enums.GuardType;
+import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -76,24 +78,30 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isGuard());
-			saveGuardType(npc.getUID(), npc.getGuard().getGuardType());
-			saveBlacklist(npc.getUID(), npc.getGuard().getBlacklist());
-			saveWhitelist(npc.getUID(), npc.getGuard().getWhitelist());
-			saveProtectionRadius(npc.getUID(), npc.getGuard()
-					.getProtectionRadius());
-			saveAggressive(npc.getUID(), npc.getGuard().isAggressive());
+			boolean is = npc.isType("guard");
+			setEnabled(npc, is);
+			if (is) {
+				GuardNPC guard = npc.getToggleable("guard");
+				saveGuardType(npc.getUID(), guard.getGuardType());
+				saveBlacklist(npc.getUID(), guard.getBlacklist());
+				saveWhitelist(npc.getUID(), guard.getWhitelist());
+				saveProtectionRadius(npc.getUID(), guard.getProtectionRadius());
+				saveAggressive(npc.getUID(), guard.isAggressive());
+			}
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setGuard(getEnabled(npc));
-		npc.getGuard().setGuardType(getGuardType(npc.getUID()));
-		npc.getGuard().setBlacklist(getBlacklist(npc.getUID()));
-		npc.getGuard().setWhitelist(getWhitelist(npc.getUID()));
-		npc.getGuard().setProtectionRadius(getProtectionRadius(npc.getUID()));
-		npc.getGuard().setAggressive(getAggressive(npc.getUID()));
+		if (getEnabled(npc)) {
+			npc.registerType("guard", NPCManager.getFactory("guard"));
+			GuardNPC guard = npc.getToggleable("guard");
+			guard.setGuardType(getGuardType(npc.getUID()));
+			guard.setBlacklist(getBlacklist(npc.getUID()));
+			guard.setWhitelist(getWhitelist(npc.getUID()));
+			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));
+			guard.setAggressive(getAggressive(npc.getUID()));
+		}
 		saveState(npc);
 	}
 

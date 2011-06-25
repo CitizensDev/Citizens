@@ -49,7 +49,8 @@ public class WizardManager {
 	 */
 	public static boolean teleportPlayer(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
-			player.teleport(npc.getWizard().getCurrentLocation());
+			player.teleport(((WizardNPC) npc.getToggleable("wizard"))
+					.getCurrentLocation());
 			return true;
 		}
 		return false;
@@ -63,13 +64,14 @@ public class WizardManager {
 	 */
 	public static boolean changeTime(Player player, HumanNPC npc) {
 		long time = 0;
-		if (npc.getWizard().getTime().equals("day")) {
+		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.getTime().equals("day")) {
 			time = 5000;
-		} else if (npc.getWizard().getTime().equals("night")) {
+		} else if (wizard.getTime().equals("night")) {
 			time = 13000;
-		} else if (npc.getWizard().getTime().equals("morning")) {
+		} else if (wizard.getTime().equals("morning")) {
 			time = 0;
-		} else if (npc.getWizard().getTime().equals("afternoon")) {
+		} else if (wizard.getTime().equals("afternoon")) {
 			time = 10000;
 		}
 		if (decreaseMana(player, npc, 5)) {
@@ -87,8 +89,9 @@ public class WizardManager {
 	 */
 	public static boolean spawnMob(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
+			WizardNPC wizard = npc.getToggleable("wizard");
 			player.getWorld().spawnCreature(player.getLocation(),
-					npc.getWizard().getMob());
+					wizard.getMob());
 			return true;
 		}
 		return false;
@@ -114,8 +117,9 @@ public class WizardManager {
 	 * @param mana
 	 */
 	public static void increaseMana(HumanNPC npc, int mana) {
-		if (npc.getWizard().getMana() + mana < Constants.maxWizardMana) {
-			npc.getWizard().setMana(npc.getWizard().getMana() + mana);
+		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.getMana() + mana < Constants.maxWizardMana) {
+			wizard.setMana(wizard.getMana() + mana);
 		}
 	}
 
@@ -125,8 +129,9 @@ public class WizardManager {
 	 * @param mana
 	 */
 	public static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
-		if (npc.getWizard().getMana() - mana >= 0) {
-			npc.getWizard().setMana(npc.getWizard().getMana() - mana);
+		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.getMana() - mana >= 0) {
+			wizard.setMana(wizard.getMana() - mana);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " has lost 5 mana.");
 			return true;
@@ -148,6 +153,7 @@ public class WizardManager {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				boolean canSend = false;
+				WizardNPC wizard = npc.getToggleable("wizard");
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0) {
 					String msg = ChatColor.GREEN
@@ -157,7 +163,7 @@ public class WizardManager {
 					switch (op) {
 					case WIZARD_TELEPORT:
 						msg += " for a teleport to "
-								+ StringUtils.wrap(npc.getWizard()
+								+ StringUtils.wrap(wizard
 										.getCurrentLocationName()) + ".";
 						if (teleportPlayer(player, npc)) {
 							canSend = true;
@@ -165,18 +171,15 @@ public class WizardManager {
 						break;
 					case WIZARD_SPAWNMOB:
 						msg += " to spawn a "
-								+ StringUtils
-										.wrap(npc.getWizard().getMob().name()
-												.toLowerCase()
-												.replace("_", " ")) + ".";
+								+ StringUtils.wrap(wizard.getMob().name()
+										.toLowerCase().replace("_", " ")) + ".";
 						if (spawnMob(player, npc)) {
 							canSend = true;
 						}
 						break;
 					case WIZARD_CHANGETIME:
 						msg += " to change the time to "
-								+ StringUtils.wrap(npc.getWizard().getTime())
-								+ ".";
+								+ StringUtils.wrap(wizard.getTime()) + ".";
 						if (changeTime(player, npc)) {
 							canSend = true;
 						}

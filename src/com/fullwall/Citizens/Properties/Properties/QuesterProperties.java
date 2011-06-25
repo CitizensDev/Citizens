@@ -1,6 +1,8 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -11,14 +13,15 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isQuester());
+			setEnabled(npc, npc.isType("quester"));
 			setQuests(npc);
 		}
 	}
 
 	private void setQuests(HumanNPC npc) {
 		String write = "";
-		for (String quest : npc.getQuester().getQuests()) {
+		QuesterNPC quester = npc.getToggleable("quester");
+		for (String quest : quester.getQuests()) {
 			write = write + quest + ";";
 		}
 		profiles.setString(npc.getUID() + quests, write);
@@ -26,9 +29,10 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 
 	private String getQuests(HumanNPC npc) {
 		if (profiles.pathExists(npc.getUID() + quests)) {
+			QuesterNPC quester = npc.getToggleable("quester");
 			for (String quest : profiles.getString(npc.getUID() + quests)
 					.split(";")) {
-				npc.getQuester().addQuest(quest);
+				quester.addQuest(quest);
 			}
 			return profiles.getString(npc.getUID() + quests);
 		}
@@ -37,8 +41,10 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setQuester(getEnabled(npc));
-		getQuests(npc);
+		if (getEnabled(npc)) {
+			npc.registerType("quester", NPCManager.getFactory("quester"));
+			getQuests(npc);
+		}
 		saveState(npc);
 	}
 

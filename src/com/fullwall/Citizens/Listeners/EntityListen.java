@@ -20,6 +20,7 @@ import com.fullwall.Citizens.Events.NPCDisplayTextEvent;
 import com.fullwall.Citizens.Events.NPCRightClickEvent;
 import com.fullwall.Citizens.Events.NPCTargetEvent;
 import com.fullwall.Citizens.Interfaces.Listener;
+import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Utils.MessageUtils;
@@ -47,7 +48,7 @@ public class EntityListen extends EntityListener implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		CreatureTask.onDamage(event.getEntity(), event);
 		HumanNPC npc = NPCManager.get(event.getEntity());
-		if (npc != null && !npc.isGuard()) {
+		if (npc != null && !npc.isType("guard")) {
 			event.setCancelled(true);
 		}
 		if (event instanceof EntityDamageByEntityEvent) {
@@ -58,12 +59,7 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 				if (e.getDamager() instanceof Player) {
 					Player player = (Player) e.getDamager();
-					if (npc.isHealer()) {
-						npc.getHealer().onLeftClick(player, npc);
-					}
-					if (npc.isWizard()) {
-						npc.getWizard().onLeftClick(player, npc);
-					}
+					npc.callLeftClick(player, npc);
 				}
 			} else if (e.getDamager() instanceof Player) {
 				if (((LivingEntity) e.getEntity()).getHealth() - e.getDamage() <= 0) {
@@ -109,7 +105,8 @@ public class EntityListen extends EntityListener implements Listener {
 				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
 						target, MessageUtils.getText(npc, target));
 				Bukkit.getServer().getPluginManager().callEvent(textEvent);
-				if (npc.isQuester() && npc.getQuester().hasQuests()) {
+				QuesterNPC quester = npc.getToggleable("quester");
+				if (quester != null && quester.hasQuests()) {
 				} else if (textEvent.isCancelled()) {
 				} else if (!textEvent.getNPC().getNPCData().isLookClose()) {
 					NPCManager.facePlayer(npc, target);
@@ -121,35 +118,18 @@ public class EntityListen extends EntityListener implements Listener {
 					player);
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
 			if (!rightClickEvent.isCancelled()) {
-				if (npc.isWaypointStarted()) {
+				if (npc.getWaypoints().isStarted()) {
 					Bukkit.getServer()
 							.getScheduler()
 							.scheduleSyncDelayedTask(
 									Citizens.plugin,
-									new RestartPathTask(npc,
-											npc.getWaypoint(npc
-													.getWaypointIndex())),
+									new RestartPathTask(npc, npc.getWaypoints()
+											.get(npc.getWaypoints().getIndex())),
 									Constants.rightClickPause);
 					npc.getHandle().cancelPath();
 					npc.setPaused(true);
 				}
-				if (npc.isTrader()) {
-					npc.getTrader().onRightClick(rightClickEvent.getPlayer(),
-							rightClickEvent.getNPC());
-				}
-				if (npc.isWizard()) {
-					npc.getWizard().onRightClick(rightClickEvent.getPlayer(),
-							rightClickEvent.getNPC());
-				}
-				if (npc.isBlacksmith()) {
-					npc.getBlacksmith().onRightClick(
-							rightClickEvent.getPlayer(),
-							rightClickEvent.getNPC());
-				}
-				if (npc.isQuester()) {
-					npc.getQuester().onRightClick(rightClickEvent.getPlayer(),
-							rightClickEvent.getNPC());
-				}
+				npc.callRightClick(player, rightClickEvent.getNPC());
 			}
 		}
 	}

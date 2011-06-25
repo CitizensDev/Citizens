@@ -4,6 +4,8 @@ import org.bukkit.entity.CreatureType;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardManager.WizardMode;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -72,23 +74,30 @@ public class WizardProperties extends PropertyManager implements Saveable {
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc.getUID(), npc.isWizard());
-			saveLocations(npc.getUID(), npc.getWizard().getLocations());
-			saveMana(npc.getUID(), npc.getWizard().getMana());
-			saveMode(npc.getUID(), npc.getWizard().getMode());
-			saveTime(npc.getUID(), npc.getWizard().getTime());
-			saveMob(npc.getUID(), npc.getWizard().getMob());
+			boolean is = npc.isType("wizard");
+			setEnabled(npc, is);
+			if (is) {
+				WizardNPC wizard = npc.getToggleable("wizard");
+				saveLocations(npc.getUID(), wizard.getLocations());
+				saveMana(npc.getUID(), wizard.getMana());
+				saveMode(npc.getUID(), wizard.getMode());
+				saveTime(npc.getUID(), wizard.getTime());
+				saveMob(npc.getUID(), wizard.getMob());
+			}
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setWizard(getEnabled(npc));
-		npc.getWizard().setLocations(getLocations(npc.getUID()));
-		npc.getWizard().setMana(getMana(npc.getUID()));
-		npc.getWizard().setMode(getMode(npc.getUID()));
-		npc.getWizard().setTime(getTime(npc.getUID()));
-		npc.getWizard().setMob(getMob(npc.getUID()));
+		if (getEnabled(npc)) {
+			npc.registerType("wizard", NPCManager.getFactory("wizard"));
+			WizardNPC wizard = npc.getToggleable("wizard");
+			wizard.setLocations(getLocations(npc.getUID()));
+			wizard.setMana(getMana(npc.getUID()));
+			wizard.setMode(getMode(npc.getUID()));
+			wizard.setTime(getTime(npc.getUID()));
+			wizard.setMob(getMob(npc.getUID()));
+		}
 		saveState(npc);
 	}
 

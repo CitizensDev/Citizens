@@ -33,6 +33,7 @@ public class TraderTask implements Runnable {
 	private final Mode mode;
 	private final EntityPlayer mcPlayer;
 	private boolean stop;
+	private boolean said;
 
 	/**
 	 * Gets run every tick, checks the inventory for changes.
@@ -64,8 +65,9 @@ public class TraderTask implements Runnable {
 		if (stop) {
 			return;
 		}
-		if (npc == null || player == null || checkContainer(player.getHandle())
-				|| !player.isOnline()) {
+		if ((npc == null || player == null
+				|| checkContainer(player.getHandle()) || !player.isOnline())
+				&& !said) {
 			kill();
 			return;
 		}
@@ -118,6 +120,25 @@ public class TraderTask implements Runnable {
 		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
 		mcPlayer.netServerHandler.sendPacket(packet);
 		stop = false;
+	}
+
+	public void addID(int ID) {
+		this.taskID = ID;
+	}
+
+	public void kill() {
+		TraderNPC trader = npc.getToggleable("trader");
+		trader.setFree(true);
+		if (!said) {
+			sendLeaveMessage();
+			said = true;
+		}
+		int index = TraderManager.tasks.indexOf(taskID);
+		if (index != -1) {
+			TraderManager.tasks.remove(TraderManager.tasks.indexOf(taskID));
+		}
+		run();
+		Bukkit.getServer().getScheduler().cancelTask(taskID);
 	}
 
 	private boolean checkContainer(EntityPlayer handle) {
@@ -293,29 +314,14 @@ public class TraderTask implements Runnable {
 		if (isTool(item.getTypeId())) {
 			durability = 0;
 		}
-		if (!npc.getTrader().isStocked(item.getTypeId(), durability, selling)) {
+		TraderNPC trader = npc.getToggleable("trader");
+		if (!trader.isStocked(item.getTypeId(), durability, selling)) {
 			player.sendMessage(StringUtils.wrap(
 					MessageUtils.getItemName(item.getTypeId()), ChatColor.RED)
 					+ " isn't being " + keyword + " here.");
 			return null;
 		}
-		return npc.getTrader().getStockable(item.getTypeId(), durability,
-				selling);
-	}
-
-	public void addID(int ID) {
-		this.taskID = ID;
-	}
-
-	public void kill() {
-		stop = true;
-		this.npc.getTrader().setFree(true);
-		sendLeaveMessage();
-		int index = TraderManager.tasks.indexOf(taskID);
-		if (index != -1) {
-			TraderManager.tasks.remove(TraderManager.tasks.indexOf(taskID));
-		}
-		Bukkit.getServer().getScheduler().cancelTask(taskID);
+		return trader.getStockable(item.getTypeId(), durability, selling);
 	}
 
 	private void sendJoinMessage() {

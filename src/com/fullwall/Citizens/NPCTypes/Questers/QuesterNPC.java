@@ -9,15 +9,13 @@ import com.fullwall.Citizens.Interfaces.Clickable;
 import com.fullwall.Citizens.Interfaces.Toggleable;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.NPCTypes.Questers.Rewards.QuestReward;
-import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.Citizens.Utils.PageUtils;
 import com.fullwall.Citizens.Utils.PageUtils.PageInstance;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
-public class QuesterNPC implements Toggleable, Clickable {
-	private final HumanNPC npc;
+public class QuesterNPC extends Toggleable implements Clickable {
 	private PageInstance display;
 	private Player previous;
 	private final ArrayDeque<String> quests = new ArrayDeque<String>();
@@ -28,7 +26,7 @@ public class QuesterNPC implements Toggleable, Clickable {
 	 * @param npc
 	 */
 	public QuesterNPC(HumanNPC npc) {
-		this.npc = npc;
+		super(npc);
 	}
 
 	/**
@@ -49,33 +47,8 @@ public class QuesterNPC implements Toggleable, Clickable {
 	}
 
 	@Override
-	public void toggle() {
-		npc.setQuester(!npc.isQuester());
-	}
-
-	@Override
-	public boolean getToggle() {
-		return npc.isQuester();
-	}
-
-	@Override
-	public String getName() {
-		return npc.getStrippedName();
-	}
-
-	@Override
 	public String getType() {
 		return "quester";
-	}
-
-	@Override
-	public void saveState() {
-		PropertyManager.get(getType()).saveState(npc);
-	}
-
-	@Override
-	public void register() {
-		PropertyManager.get(getType()).register(npc);
 	}
 
 	@Override

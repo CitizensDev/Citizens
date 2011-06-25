@@ -3,6 +3,7 @@ package com.fullwall.Citizens.Commands.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
@@ -42,18 +43,18 @@ public class QuesterCommands {
 	@CommandPermissions("modify.quester")
 	public static void assignQuest(CommandContext args, Player player,
 			HumanNPC npc) {
+		QuesterNPC quester = npc.getToggleable("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
 			return;
 		}
-		npc.getQuester().addQuest(args.getString(1));
+		quester.addQuest(args.getString(1));
 		player.sendMessage(ChatColor.GREEN + "Quest "
 				+ StringUtils.wrap(args.getString(1)) + " added to "
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
-				+ StringUtils.wrap(npc.getQuester().getQuests().size())
-				+ " quests.");
+				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 
 	@Command(
@@ -66,17 +67,17 @@ public class QuesterCommands {
 	@CommandPermissions("modify.quester")
 	public static void removeQuest(CommandContext args, Player player,
 			HumanNPC npc) {
+		QuesterNPC quester = npc.getToggleable("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
 			return;
 		}
-		npc.getQuester().removeQuest(args.getString(1));
+		quester.removeQuest(args.getString(1));
 		player.sendMessage(ChatColor.GREEN + "Quest "
 				+ StringUtils.wrap(args.getString(1)) + " removed from "
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
-				+ StringUtils.wrap(npc.getQuester().getQuests().size())
-				+ " quests.");
+				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 }

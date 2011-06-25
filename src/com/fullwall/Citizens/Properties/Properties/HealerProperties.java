@@ -1,6 +1,8 @@
 package com.fullwall.Citizens.Properties.Properties;
 
 import com.fullwall.Citizens.Interfaces.Saveable;
+import com.fullwall.Citizens.NPCTypes.Healers.HealerNPC;
+import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
@@ -28,17 +30,24 @@ public class HealerProperties extends PropertyManager implements Saveable {
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isHealer());
-			saveHealth(npc.getUID(), npc.getHealer().getHealth());
-			saveLevel(npc.getUID(), npc.getHealer().getLevel());
+			boolean is = npc.isType("healer");
+			setEnabled(npc, is);
+			if (is) {
+				HealerNPC healer = npc.getToggleable("healer");
+				saveHealth(npc.getUID(), healer.getHealth());
+				saveLevel(npc.getUID(), healer.getLevel());
+			}
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.setHealer(getEnabled(npc));
-		npc.getHealer().setHealth(getHealth(npc.getUID()));
-		npc.getHealer().setLevel(getLevel(npc.getUID()));
+		if (getEnabled(npc)) {
+			npc.registerType("healer", NPCManager.getFactory("healer"));
+			HealerNPC healer = npc.getToggleable("healer");
+			healer.setHealth(getHealth(npc.getUID()));
+			healer.setLevel(getLevel(npc.getUID()));
+		}
 		saveState(npc);
 	}
 

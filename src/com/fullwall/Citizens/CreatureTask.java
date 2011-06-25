@@ -91,7 +91,7 @@ public class CreatureTask implements Runnable {
 									y, z)) {
 								if (canSpawn(type)) {
 									HumanNPC npc = NPCSpawner
-											.spawnBasicHumanNpc(
+											.spawnNPC(
 													0,
 													UtilityProperties
 															.getRandomName(type),
@@ -157,13 +157,13 @@ public class CreatureTask implements Runnable {
 
 	public static void despawnAll() {
 		for (CreatureNPC creature : creatureNPCs.values()) {
-			NPCSpawner.removeBasicHumanNPC(creature);
+			NPCSpawner.despawnNPC(creature);
 		}
 	}
 
 	public static void despawn(CreatureNPC npc) {
 		removeFromMaps(npc);
-		NPCSpawner.removeBasicHumanNPC(npc);
+		NPCSpawner.despawnNPC(npc);
 	}
 
 	public static void removeFromMaps(CreatureNPC npc) {
@@ -182,7 +182,7 @@ public class CreatureTask implements Runnable {
 			CreatureNPC creatureNPC = creatureNPCs.get(entity.getEntityId());
 			creatureNPC.onDeath();
 			removeFromMaps(creatureNPC);
-			NPCSpawner.removeBasicHumanNPC(creatureNPC);
+			NPCSpawner.despawnNPC(creatureNPC);
 		}
 	}
 

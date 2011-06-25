@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.fullwall.Citizens.Economy.EconomyHandler;
 import com.fullwall.Citizens.Economy.EconomyHandler.Operation;
+import com.fullwall.Citizens.NPCTypes.Healers.HealerNPC;
 import com.fullwall.Citizens.Utils.HelpUtils;
 import com.fullwall.Citizens.Utils.StringUtils;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -43,14 +44,15 @@ public class HealerCommands {
 	@CommandPermissions("use.healer")
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
+		HealerNPC healer = npc.getToggleable("healer");
 		player.sendMessage(ChatColor.GREEN + "========== "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s Healer Status")
 				+ " ==========");
 		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
-				+ npc.getHealer().getHealth() + ChatColor.RED + "/"
-				+ npc.getHealer().getMaxHealth());
+				+ healer.getHealth() + ChatColor.RED + "/"
+				+ healer.getMaxHealth());
 		player.sendMessage(ChatColor.YELLOW + "Level: " + ChatColor.GREEN
-				+ npc.getHealer().getLevel() + ChatColor.RED + "/10");
+				+ healer.getLevel() + ChatColor.RED + "/10");
 	}
 
 	@Command(
@@ -63,7 +65,8 @@ public class HealerCommands {
 	@CommandPermissions("modify.healer")
 	public static void levelUp(CommandContext args, Player player, HumanNPC npc) {
 		if (EconomyHandler.useEconomy()) {
-			int level = npc.getHealer().getLevel();
+			HealerNPC healer = npc.getToggleable("healer");
+			int level = healer.getLevel();
 			int levelsUp = 1;
 			if (args.argsLength() == 2) {
 				if (StringUtils.isNumber(args.getString(1))) {
@@ -75,7 +78,7 @@ public class HealerCommands {
 			if (paid > 0) {
 				if (level < 10) {
 					int newLevel = level + levelsUp;
-					npc.getHealer().setLevel(newLevel);
+					healer.setLevel(newLevel);
 					player.sendMessage(ChatColor.GREEN
 							+ "You have leveled up the healer "
 							+ StringUtils.wrap(npc.getStrippedName())

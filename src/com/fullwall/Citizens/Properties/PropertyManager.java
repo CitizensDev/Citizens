@@ -5,14 +5,8 @@ import java.util.HashMap;
 import com.fullwall.Citizens.Interfaces.Saveable;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.Properties.BasicProperties;
-import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
-import com.fullwall.Citizens.Properties.Properties.GuardProperties;
-import com.fullwall.Citizens.Properties.Properties.HealerProperties;
 import com.fullwall.Citizens.Properties.Properties.QuestProperties;
-import com.fullwall.Citizens.Properties.Properties.QuesterProperties;
-import com.fullwall.Citizens.Properties.Properties.TraderProperties;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
-import com.fullwall.Citizens.Properties.Properties.WizardProperties;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
@@ -21,26 +15,30 @@ public class PropertyManager {
 			"plugins/Citizens/npc-profiles.yml");
 
 	public enum PropertyType {
-		BASIC, TRADER, HEALER, WIZARD, QUESTER, BLACKSMITH, GUARD;
+		BASIC,
+		TRADER,
+		HEALER,
+		WIZARD,
+		QUESTER,
+		BLACKSMITH,
+		GUARD;
 	}
 
 	public static void registerProperties() {
-		properties.put("basic", new BasicProperties());
-		properties.put("blacksmith", new BlacksmithProperties());
-		properties.put("guard", new GuardProperties());
-		properties.put("healer", new HealerProperties());
-		properties.put("quester", new QuesterProperties());
-		properties.put("trader", new TraderProperties());
-		properties.put("wizard", new WizardProperties());
+		add("basic", new BasicProperties());
 		UtilityProperties.initialize();
 		QuestProperties.initialize();
+	}
+
+	public static void add(String type, Saveable saveable) {
+		properties.put(type, saveable);
 	}
 
 	public static ConfigurationHandler getNPCProfiles() {
 		return profiles;
 	}
 
-	public static boolean typeExists(HumanNPC npc, String type) {
+	public static boolean npcHasType(HumanNPC npc, String type) {
 		return profiles.pathExists(npc.getUID() + "." + type);
 	}
 
@@ -60,12 +58,22 @@ public class PropertyManager {
 		}
 	}
 
+	public static void load(String type, HumanNPC npc) {
+		if (exists(npc) && get(type).getEnabled(npc))
+			get(type).loadState(npc);
+	}
+
 	public static void save(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
 			if (saveable.getEnabled(npc)) {
 				saveable.saveState(npc);
 			}
 		}
+	}
+
+	public static void save(String type, HumanNPC npc) {
+		if (exists(npc) && get(type).getEnabled(npc))
+			get(type).saveState(npc);
 	}
 
 	public static void remove(HumanNPC npc) {

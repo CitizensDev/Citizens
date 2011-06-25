@@ -26,7 +26,7 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static HumanNPC spawnBasicHumanNpc(int UID, String name,
+	public static HumanNPC spawnNPC(int UID, String name,
 			World world, double x, double y, double z, float yaw, float pitch) {
 		try {
 			WorldServer ws = getWorldServer(world);
@@ -42,7 +42,7 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static HumanNPC spawnBasicHumanNpc(int UID, String name,
+	public static HumanNPC spawnNPC(int UID, String name,
 			World world, double x, double y, double z, float yaw, float pitch,
 			CreatureNPCType type) {
 		try {
@@ -60,11 +60,11 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static void removeBasicHumanNPC(HumanNPC npc) {
-		removeBasicHumanNPC(npc.getHandle());
+	public static void despawnNPC(HumanNPC npc) {
+		despawnNPC(npc.getHandle());
 	}
 
-	public static void removeBasicHumanNPC(CraftNPC npc) {
+	public static void despawnNPC(CraftNPC npc) {
 		try {
 			npc.world.removeEntity(npc);
 		} catch (Exception e) {

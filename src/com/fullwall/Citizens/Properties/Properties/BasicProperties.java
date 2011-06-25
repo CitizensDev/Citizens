@@ -255,7 +255,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		saveText(UID, npcdata.getTexts());
 		saveLookWhenClose(UID, npcdata.isLookClose());
 		saveTalkWhenClose(UID, npcdata.isTalkClose());
-		saveWaypoints(UID, npc.getWaypoints());
+		saveWaypoints(UID, npc.getWaypoints().getWaypoints());
 		setOwner(UID, npcdata.getOwner());
 	}
 
@@ -272,7 +272,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		npcdata.setLookClose(getLookWhenClose(UID));
 		npcdata.setTalkClose(getTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
-		npc.setWaypoints(getWaypoints(UID, npc.getWorld()));
+		npc.getWaypoints().setPoints(getWaypoints(UID, npc.getWorld()));
 		if (getInventory(npc.getUID()) != null) {
 			npc.getInventory().setContents(
 					getInventory(npc.getUID()).getContents());

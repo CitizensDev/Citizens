@@ -12,17 +12,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fullwall.Citizens.Commands.CommandHandler;
+import com.fullwall.Citizens.Interfaces.NPCFactory;
+import com.fullwall.Citizens.Interfaces.NPCType;
 import com.fullwall.Citizens.Listeners.EntityListen;
 import com.fullwall.Citizens.Listeners.PlayerListen;
 import com.fullwall.Citizens.Listeners.ServerListen;
 import com.fullwall.Citizens.Listeners.WorldListen;
+import com.fullwall.Citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
+import com.fullwall.Citizens.NPCTypes.Guards.GuardNPC;
 import com.fullwall.Citizens.NPCTypes.Guards.GuardTask;
+import com.fullwall.Citizens.NPCTypes.Healers.HealerNPC;
 import com.fullwall.Citizens.NPCTypes.Healers.HealerTask;
+import com.fullwall.Citizens.NPCTypes.Questers.QuesterNPC;
 import com.fullwall.Citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.fullwall.Citizens.NPCTypes.Traders.TraderNPC;
+import com.fullwall.Citizens.NPCTypes.Wizards.WizardNPC;
 import com.fullwall.Citizens.NPCTypes.Wizards.WizardTask;
 import com.fullwall.Citizens.NPCs.NPCManager;
 import com.fullwall.Citizens.Properties.PropertyManager;
+import com.fullwall.Citizens.Properties.Properties.BlacksmithProperties;
+import com.fullwall.Citizens.Properties.Properties.GuardProperties;
+import com.fullwall.Citizens.Properties.Properties.HealerProperties;
+import com.fullwall.Citizens.Properties.Properties.QuesterProperties;
+import com.fullwall.Citizens.Properties.Properties.TraderProperties;
 import com.fullwall.Citizens.Properties.Properties.UtilityProperties;
+import com.fullwall.Citizens.Properties.Properties.WizardProperties;
 import com.fullwall.Citizens.Utils.MessageUtils;
 import com.fullwall.Citizens.Utils.Messaging;
 import com.fullwall.resources.redecouverte.NPClib.HumanNPC;
@@ -68,6 +82,10 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
+
+		// Register NPC types.
+		registerTypes();
+
 		// Register our commands.
 		CommandHandler.registerCommands();
 
@@ -128,6 +146,23 @@ public class Citizens extends JavaPlugin {
 		QuestManager.initialize();
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") loaded");
+	}
+
+	private void registerTypes() {
+		NPCManager
+				.registerType(new NPCType("blacksmith",
+						new BlacksmithProperties(), new NPCFactory(
+								BlacksmithNPC.class)));
+		NPCManager.registerType(new NPCType("guard", new GuardProperties(),
+				new NPCFactory(GuardNPC.class)));
+		NPCManager.registerType(new NPCType("healer", new HealerProperties(),
+				new NPCFactory(HealerNPC.class)));
+		NPCManager.registerType(new NPCType("quester", new QuesterProperties(),
+				new NPCFactory(QuesterNPC.class)));
+		NPCManager.registerType(new NPCType("trader", new TraderProperties(),
+				new NPCFactory(TraderNPC.class)));
+		NPCManager.registerType(new NPCType("wizard", new WizardProperties(),
+				new NPCFactory(WizardNPC.class)));
 	}
 
 	@Override
