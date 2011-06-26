@@ -1,5 +1,5 @@
 name: Citizens
-main: com.fullwall.Citizens.Citizens
+main: com.Citizens.Citizens
 version: 1.0.9
 authors: [fullwall, aPunch]
 softdepend: [Permissions]
