@@ -10,12 +10,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.Citizens.Interfaces.NPCFactory;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
 import com.Citizens.Interfaces.Clickable;
+import com.Citizens.Interfaces.NPCFactory;
 import com.Citizens.Interfaces.Toggleable;
 import com.Citizens.NPCs.NPCData;
+import com.Citizens.Properties.PropertyManager;
+import com.Citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;
@@ -163,7 +163,7 @@ public class HumanNPC extends NPC {
 
 	public void callLeftClick(Player player, HumanNPC npc) {
 		for (Toggleable t : types.values()) {
-			if (Clickable.class.isAssignableFrom(t.getClass())) {
+			if (t instanceof Clickable) {
 				((Clickable) t).onLeftClick(player, npc);
 			}
 		}
@@ -171,7 +171,7 @@ public class HumanNPC extends NPC {
 
 	public void callRightClick(Player player, HumanNPC npc) {
 		for (Toggleable t : types.values()) {
-			if (Clickable.class.isAssignableFrom(t.getClass())) {
+			if (t instanceof Clickable) {
 				((Clickable) t).onRightClick(player, npc);
 			}
 		}
