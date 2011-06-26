@@ -1,4 +1,4 @@
-package com.Citizens.Commands.Commands;
+package com.citizens.Commands.Commands;
 
 import java.util.ArrayList;
 
@@ -7,22 +7,22 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Economy.ServerEconomyInterface;
-import com.Citizens.NPCTypes.Traders.TraderNPC;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.sk89q.commands.Command;
-import com.Citizens.resources.sk89q.commands.CommandContext;
-import com.Citizens.resources.sk89q.commands.CommandPermissions;
-import com.Citizens.resources.sk89q.commands.CommandRequirements;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.Payment;
-import com.Citizens.NPCTypes.Traders.ItemPrice;
-import com.Citizens.NPCTypes.Traders.Stockable;
-import com.Citizens.Utils.HelpUtils;
-import com.Citizens.Utils.PageUtils;
-import com.Citizens.Utils.PageUtils.PageInstance;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.Payment;
+import com.citizens.Economy.ServerEconomyInterface;
+import com.citizens.NPCTypes.Traders.ItemPrice;
+import com.citizens.NPCTypes.Traders.Stockable;
+import com.citizens.NPCTypes.Traders.TraderNPC;
+import com.citizens.Utils.HelpUtils;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.PageUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.Utils.PageUtils.PageInstance;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.sk89q.commands.Command;
+import com.citizens.resources.sk89q.commands.CommandContext;
+import com.citizens.resources.sk89q.commands.CommandPermissions;
+import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,

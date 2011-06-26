@@ -1,4 +1,4 @@
-package com.Citizens.resources.sk89q.commands;
+package com.citizens.resources.sk89q.commands;
 
 public class CommandIdentifier {
 	private final String modifier;

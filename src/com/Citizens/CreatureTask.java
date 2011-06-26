@@ -1,4 +1,4 @@
-package com.Citizens;
+package com.citizens;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -14,14 +14,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.Citizens.Constants;
-import com.Citizens.Events.NPCCreatureSpawnEvent;
-import com.Citizens.Properties.Properties.UtilityProperties;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.redecouverte.NPClib.NPCSpawner;
-import com.Citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
-import com.Citizens.Utils.Messaging;
-import com.Citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
+import com.citizens.Constants;
+import com.citizens.Events.NPCCreatureSpawnEvent;
+import com.citizens.Properties.Properties.UtilityProperties;
+import com.citizens.Utils.Messaging;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
+import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
+import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
 public class CreatureTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new ConcurrentHashMap<Integer, CreatureNPC>();

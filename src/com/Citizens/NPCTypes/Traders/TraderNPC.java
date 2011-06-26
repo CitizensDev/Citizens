@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Traders;
+package com.citizens.NPCTypes.Traders;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,14 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.Citizens.Citizens;
-import com.Citizens.Permission;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Clickable;
-import com.Citizens.Interfaces.Toggleable;
-import com.Citizens.NPCTypes.Traders.TraderManager.Mode;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.InventoryUtils;
+import com.citizens.Citizens;
+import com.citizens.Permission;
+import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.Toggleable;
+import com.citizens.NPCTypes.Traders.TraderManager.Mode;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.InventoryUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC extends Toggleable implements Clickable {
 	private boolean unlimited = false;

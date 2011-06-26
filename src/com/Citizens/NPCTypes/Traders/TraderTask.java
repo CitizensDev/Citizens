@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Traders;
+package com.citizens.NPCTypes.Traders;
 
 import java.util.HashMap;
 
@@ -14,16 +14,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.Citizens.Economy.ServerEconomyInterface;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.Payment;
-import com.Citizens.NPCTypes.Traders.Stockable;
-import com.Citizens.NPCTypes.Traders.TraderManager;
-import com.Citizens.NPCTypes.Traders.TraderNPC;
-import com.Citizens.NPCTypes.Traders.TraderManager.Mode;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.Payment;
+import com.citizens.Economy.ServerEconomyInterface;
+import com.citizens.NPCTypes.Traders.Stockable;
+import com.citizens.NPCTypes.Traders.TraderManager;
+import com.citizens.NPCTypes.Traders.TraderNPC;
+import com.citizens.NPCTypes.Traders.TraderManager.Mode;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderTask implements Runnable {
 	private final HumanNPC npc;

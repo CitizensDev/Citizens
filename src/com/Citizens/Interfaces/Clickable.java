@@ -1,8 +1,8 @@
-package com.Citizens.Interfaces;
+package com.citizens.Interfaces;
 
 import org.bukkit.entity.Player;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public interface Clickable {
 	/**

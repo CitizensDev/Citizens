@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
@@ -15,8 +15,8 @@ import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import com.Citizens.Constants;
-import com.Citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
+import com.citizens.Constants;
+import com.citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;

@@ -1,9 +1,9 @@
-package com.Citizens.Events;
+package com.citizens.Events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class NPCDisplayTextEvent extends NPCEvent implements Cancellable {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.Citizens.Properties;
+package com.citizens.Properties;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import com.Citizens.Constants;
-import com.Citizens.Interfaces.Storage;
-import com.Citizens.Utils.Messaging;
+import com.citizens.Constants;
+import com.citizens.Interfaces.Storage;
+import com.citizens.Utils.Messaging;
 
 /**
  * iConomy v1.x

@@ -1,4 +1,4 @@
-package com.Citizens.Listeners;
+package com.citizens.Listeners;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,13 +9,13 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.PluginManager;
 
-import com.Citizens.Citizens;
-import com.Citizens.CreatureTask;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Listener;
-import com.Citizens.Misc.NPCLocation;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
+import com.citizens.Citizens;
+import com.citizens.CreatureTask;
+import com.citizens.Interfaces.Listener;
+import com.citizens.Misc.NPCLocation;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
 
 public class WorldListen extends WorldListener implements Listener {
 	private final ConcurrentHashMap<NPCLocation, Integer> toRespawn = new ConcurrentHashMap<NPCLocation, Integer>();

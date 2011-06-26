@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Guards;
+package com.citizens.NPCTypes.Guards;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,15 +11,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Misc.ActionManager;
-import com.Citizens.Misc.CachedAction;
-import com.Citizens.Misc.NPCLocation;
-import com.Citizens.NPCTypes.Guards.GuardNPC;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.LocationUtils;
-import com.Citizens.Utils.PathUtils;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Misc.ActionManager;
+import com.citizens.Misc.CachedAction;
+import com.citizens.Misc.NPCLocation;
+import com.citizens.NPCTypes.Guards.GuardNPC;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.LocationUtils;
+import com.citizens.Utils.PathUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardTask implements Runnable {
 	private LivingEntity entity;

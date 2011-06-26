@@ -1,4 +1,4 @@
-package com.Citizens.Utils;
+package com.citizens.Utils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

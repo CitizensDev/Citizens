@@ -1,14 +1,14 @@
-package com.Citizens.NPCTypes.Questers.Quests;
+package com.citizens.NPCTypes.Questers.Quests;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Questers.Objectives.Objectives;
-import com.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.Citizens.NPCTypes.Questers.Quests.QuestFactory;
-import com.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.NPCTypes.Questers.Objectives.Objectives;
+import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
+import com.citizens.NPCTypes.Questers.Quests.QuestFactory;
+import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class QuestProgress {

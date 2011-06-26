@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

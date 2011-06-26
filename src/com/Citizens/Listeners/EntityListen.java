@@ -1,4 +1,4 @@
-package com.Citizens.Listeners;
+package com.citizens.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,20 +13,20 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.plugin.PluginManager;
 
-import com.Citizens.Citizens;
-import com.Citizens.Constants;
-import com.Citizens.CreatureTask;
-import com.Citizens.Events.NPCDisplayTextEvent;
-import com.Citizens.Events.NPCRightClickEvent;
-import com.Citizens.Events.NPCTargetEvent;
-import com.Citizens.NPCTypes.Questers.QuesterNPC;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Listener;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.Messaging;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Citizens;
+import com.citizens.Constants;
+import com.citizens.CreatureTask;
+import com.citizens.Events.NPCDisplayTextEvent;
+import com.citizens.Events.NPCRightClickEvent;
+import com.citizens.Events.NPCTargetEvent;
+import com.citizens.Interfaces.Listener;
+import com.citizens.NPCTypes.Questers.QuesterNPC;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.Messaging;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 /**
  * Entity Listener

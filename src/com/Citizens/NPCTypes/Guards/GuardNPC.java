@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Guards;
+package com.citizens.NPCTypes.Guards;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.List;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
-import com.Citizens.Misc.Enums.GuardType;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Clickable;
-import com.Citizens.Interfaces.Toggleable;
+import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.Toggleable;
+import com.citizens.Misc.Enums.GuardType;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardNPC extends Toggleable implements Clickable {
 	private boolean isBodyguard = true;

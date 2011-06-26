@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Questers.QuestTypes;
+package com.citizens.NPCTypes.Questers.QuestTypes;
 
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Monster;
@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
+import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
+import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class HuntQuest extends QuestIncrementer {
 	public HuntQuest(HumanNPC npc, Player player, String questName,

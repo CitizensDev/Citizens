@@ -1,6 +1,6 @@
-package com.Citizens.NPCTypes.Questers;
+package com.citizens.NPCTypes.Questers;
 
-import com.Citizens.NPCTypes.Questers.Quest;
+import com.citizens.NPCTypes.Questers.Quest;
 
 public class CompletedQuest {
 	private final String npcName;

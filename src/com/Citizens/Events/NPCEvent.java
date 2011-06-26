@@ -1,8 +1,8 @@
-package com.Citizens.Events;
+package com.citizens.Events;
 
 import org.bukkit.event.Event;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class NPCEvent extends Event {
 	private static final long serialVersionUID = 1L;

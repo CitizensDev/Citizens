@@ -1,4 +1,4 @@
-package com.Citizens.Utils;
+package com.citizens.Utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package com.Citizens;
+package com.citizens;
 
 import java.util.ArrayList;
 import java.util.HashMap;

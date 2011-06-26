@@ -1,4 +1,4 @@
-package com.Citizens.NPCs;
+package com.citizens.NPCs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -12,17 +12,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.Citizens.Constants;
-import com.Citizens.Permission;
-import com.Citizens.Events.NPCSpawnEvent;
-import com.Citizens.Interfaces.NPCFactory;
-import com.Citizens.Interfaces.NPCType;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.redecouverte.NPClib.NPCSpawner;
-import com.Citizens.NPCs.NPCData;
-import com.Citizens.Utils.StringUtils;
-import com.Citizens.resources.redecouverte.NPClib.NPCList;
+import com.citizens.Constants;
+import com.citizens.Permission;
+import com.citizens.Events.NPCSpawnEvent;
+import com.citizens.Interfaces.NPCFactory;
+import com.citizens.Interfaces.NPCType;
+import com.citizens.NPCs.NPCData;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.NPCList;
+import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
 
 public class NPCManager {
 	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();

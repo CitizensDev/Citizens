@@ -1,10 +1,10 @@
-package com.Citizens.Properties.Properties;
+package com.citizens.Properties.Properties;
 
-import com.Citizens.NPCTypes.Questers.QuesterNPC;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Saveable;
-import com.Citizens.NPCs.NPCManager;
+import com.citizens.Interfaces.Saveable;
+import com.citizens.NPCTypes.Questers.QuesterNPC;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuesterProperties extends PropertyManager implements Saveable {
 	private static final String isQuester = ".quester.toggle";

@@ -1,8 +1,8 @@
-package com.Citizens.resources.redecouverte.NPClib.Creatures;
+package com.citizens.resources.redecouverte.NPClib.Creatures;
 
-import com.Citizens.Constants;
-import com.Citizens.resources.redecouverte.NPClib.Creatures.SpawnValidator.Spawn.Range;
-import com.Citizens.resources.redecouverte.NPClib.Creatures.SpawnValidator.Spawn.Type;
+import com.citizens.Constants;
+import com.citizens.resources.redecouverte.NPClib.Creatures.SpawnValidator.Spawn.Range;
+import com.citizens.resources.redecouverte.NPClib.Creatures.SpawnValidator.Spawn.Type;
 
 public enum CreatureNPCType {
 	// TODO - might be a little longwinded on constructing validators.

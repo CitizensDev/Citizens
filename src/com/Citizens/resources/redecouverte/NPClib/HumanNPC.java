@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,12 +10,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.Citizens.Interfaces.Clickable;
-import com.Citizens.Interfaces.NPCFactory;
-import com.Citizens.Interfaces.Toggleable;
-import com.Citizens.NPCs.NPCData;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
+import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.NPCFactory;
+import com.citizens.Interfaces.Toggleable;
+import com.citizens.NPCs.NPCData;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;

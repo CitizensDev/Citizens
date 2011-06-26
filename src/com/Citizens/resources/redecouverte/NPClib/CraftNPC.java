@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import java.util.logging.Logger;
 
@@ -14,8 +14,8 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import com.Citizens.Citizens;
-import com.Citizens.Events.NPCTargetEvent;
+import com.citizens.Citizens;
+import com.citizens.Events.NPCTargetEvent;
 
 public class CraftNPC extends PathNPC {
 

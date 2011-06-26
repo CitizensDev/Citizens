@@ -1,21 +1,21 @@
-package com.Citizens.Commands.Commands;
+package com.citizens.Commands.Commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.Citizens.Interfaces.NPCType;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.sk89q.commands.Command;
-import com.Citizens.resources.sk89q.commands.CommandContext;
-import com.Citizens.resources.sk89q.commands.CommandPermissions;
-import com.Citizens.resources.sk89q.commands.CommandRequirements;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.EconomyHandler.Operation;
-import com.Citizens.Interfaces.Toggleable;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.Interfaces.NPCType;
+import com.citizens.Interfaces.Toggleable;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.sk89q.commands.Command;
+import com.citizens.resources.sk89q.commands.CommandContext;
+import com.citizens.resources.sk89q.commands.CommandPermissions;
+import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 public class ToggleCommands {
 

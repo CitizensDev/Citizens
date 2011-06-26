@@ -1,10 +1,10 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Entity;
 
-import com.Citizens.Utils.Messaging;
+import com.citizens.Utils.Messaging;
 
 @SuppressWarnings("serial")
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {

@@ -1,14 +1,14 @@
-package com.Citizens.Properties.Properties;
+package com.citizens.Properties.Properties;
 
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.NPCTypes.Questers.Quest;
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.NPCTypes.Questers.Quests.QuestFactory;
-import com.Citizens.NPCTypes.Questers.Objectives.Objective;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
-import com.Citizens.Properties.ConfigurationHandler;
+import com.citizens.NPCTypes.Questers.Quest;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Objectives.Objective;
+import com.citizens.NPCTypes.Questers.Quests.QuestFactory;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.Properties.ConfigurationHandler;
 
 public class QuestProperties {
 	private static ConfigurationHandler quests;

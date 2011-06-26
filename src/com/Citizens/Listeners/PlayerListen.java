@@ -1,4 +1,4 @@
-package com.Citizens.Listeners;
+package com.citizens.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -11,13 +11,13 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
-import com.Citizens.Citizens;
-import com.Citizens.CreatureTask;
-import com.Citizens.NPCTypes.Questers.Quests.ChatManager;
-import com.Citizens.Interfaces.Listener;
-import com.Citizens.NPCTypes.Guards.GuardTask;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.Citizens.NPCs.NPCManager;
+import com.citizens.Citizens;
+import com.citizens.CreatureTask;
+import com.citizens.Interfaces.Listener;
+import com.citizens.NPCTypes.Guards.GuardTask;
+import com.citizens.NPCTypes.Questers.Quests.ChatManager;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.NPCs.NPCManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
 

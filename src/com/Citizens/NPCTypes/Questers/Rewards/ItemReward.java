@@ -1,12 +1,12 @@
-package com.Citizens.NPCTypes.Questers.Rewards;
+package com.citizens.NPCTypes.Questers.Rewards;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.Payment;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.Payment;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 
 public class ItemReward implements Reward {
 	private final ItemStack reward;

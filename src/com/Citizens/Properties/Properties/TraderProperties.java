@@ -1,17 +1,17 @@
-package com.Citizens.Properties.Properties;
+package com.citizens.Properties.Properties;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.NPCTypes.Traders.TraderNPC;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Saveable;
-import com.Citizens.NPCTypes.Traders.Check;
-import com.Citizens.NPCTypes.Traders.ItemPrice;
-import com.Citizens.NPCTypes.Traders.Stockable;
-import com.Citizens.NPCs.NPCManager;
+import com.citizens.Interfaces.Saveable;
+import com.citizens.NPCTypes.Traders.Check;
+import com.citizens.NPCTypes.Traders.ItemPrice;
+import com.citizens.NPCTypes.Traders.Stockable;
+import com.citizens.NPCTypes.Traders.TraderNPC;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderProperties extends PropertyManager implements Saveable {
 	private final String isTrader = ".trader.toggle";

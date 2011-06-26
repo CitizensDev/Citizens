@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib.Creatures;
+package com.citizens.resources.redecouverte.NPClib.Creatures;
 
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -8,7 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.Citizens.resources.redecouverte.NPClib.CraftNPC;
+import com.citizens.resources.redecouverte.NPClib.CraftNPC;
 
 public abstract class CreatureNPC extends CraftNPC {
 	protected final double range = 25;

@@ -1,10 +1,10 @@
-package com.Citizens.NPCTypes.Questers.Objectives;
+package com.citizens.NPCTypes.Questers.Objectives;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
 
 public class Objective {
 	private int amount = -1;

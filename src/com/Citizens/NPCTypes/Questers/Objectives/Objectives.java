@@ -1,9 +1,9 @@
-package com.Citizens.NPCTypes.Questers.Objectives;
+package com.citizens.NPCTypes.Questers.Objectives;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
 
-import com.Citizens.NPCTypes.Questers.Objectives.Objective;
+import com.citizens.NPCTypes.Questers.Objectives.Objective;
 
 public class Objectives {
 	private final ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();

@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import java.lang.reflect.Field;
 import java.net.Socket;

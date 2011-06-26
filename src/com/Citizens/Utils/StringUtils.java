@@ -1,11 +1,11 @@
-package com.Citizens.Utils;
+package com.citizens.Utils;
 
 import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import com.Citizens.Properties.Properties.UtilityProperties;
+import com.citizens.Properties.Properties.UtilityProperties;
 
 public class StringUtils {
 	public static String parseColour(String s) {

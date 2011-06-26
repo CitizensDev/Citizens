@@ -1,6 +1,6 @@
-package com.Citizens.NPCTypes.Traders;
+package com.citizens.NPCTypes.Traders;
 
-import com.Citizens.NPCTypes.Traders.Check;
+import com.citizens.NPCTypes.Traders.Check;
 
 public class Check {
 	private int itemID;

@@ -1,8 +1,8 @@
-package com.Citizens;
+package com.citizens;
 
-import com.Citizens.Properties.Properties.UtilityProperties;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Interfaces.Storage;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Interfaces.Storage;
+import com.citizens.Properties.Properties.UtilityProperties;
 
 public class Constants {
 	public static int evilNPCTameItem = 354;

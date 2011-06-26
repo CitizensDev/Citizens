@@ -1,22 +1,22 @@
-package com.Citizens.NPCTypes.Questers;
+package com.citizens.NPCTypes.Questers;
 
 import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Clickable;
-import com.Citizens.Interfaces.Toggleable;
-import com.Citizens.NPCTypes.Questers.CompletedQuest;
-import com.Citizens.NPCTypes.Questers.PlayerProfile;
-import com.Citizens.NPCTypes.Questers.Quest;
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.Citizens.NPCTypes.Questers.Rewards.QuestReward;
-import com.Citizens.Utils.PageUtils;
-import com.Citizens.Utils.PageUtils.PageInstance;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.Toggleable;
+import com.citizens.NPCTypes.Questers.CompletedQuest;
+import com.citizens.NPCTypes.Questers.PlayerProfile;
+import com.citizens.NPCTypes.Questers.Quest;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.NPCTypes.Questers.Rewards.QuestReward;
+import com.citizens.Utils.PageUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.Utils.PageUtils.PageInstance;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class QuesterNPC extends Toggleable implements Clickable {

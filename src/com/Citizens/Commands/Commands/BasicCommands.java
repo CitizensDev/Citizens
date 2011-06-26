@@ -1,4 +1,4 @@
-package com.Citizens.Commands.Commands;
+package com.citizens.Commands.Commands;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -10,22 +10,22 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Citizens;
-import com.Citizens.Constants;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.sk89q.commands.Command;
-import com.Citizens.resources.sk89q.commands.CommandContext;
-import com.Citizens.resources.sk89q.commands.CommandPermissions;
-import com.Citizens.resources.sk89q.commands.CommandRequirements;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.EconomyHandler.Operation;
-import com.Citizens.NPCs.NPCDataManager;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.HelpUtils;
-import com.Citizens.Utils.ServerUtils;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Citizens;
+import com.citizens.Constants;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.NPCs.NPCDataManager;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.Utils.HelpUtils;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.ServerUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.sk89q.commands.Command;
+import com.citizens.resources.sk89q.commands.CommandContext;
+import com.citizens.resources.sk89q.commands.CommandPermissions;
+import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {

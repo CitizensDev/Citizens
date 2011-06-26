@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib.Creatures;
+package com.citizens.resources.redecouverte.NPClib.Creatures;
 
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;

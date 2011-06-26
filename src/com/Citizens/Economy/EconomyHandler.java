@@ -1,13 +1,13 @@
-package com.Citizens.Economy;
+package com.citizens.Economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Economy.ItemInterface;
-import com.Citizens.Economy.Payment;
-import com.Citizens.Economy.ServerEconomyInterface;
+import com.citizens.Economy.ItemInterface;
+import com.citizens.Economy.Payment;
+import com.citizens.Economy.ServerEconomyInterface;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class EconomyHandler {
 	private static boolean useEconomy = true;

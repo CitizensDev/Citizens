@@ -1,12 +1,12 @@
-package com.Citizens.NPCTypes.Traders;
+package com.citizens.NPCTypes.Traders;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Citizens;
-import com.Citizens.NPCTypes.Traders.Check;
-import com.Citizens.NPCTypes.Traders.ItemPrice;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Citizens;
+import com.citizens.NPCTypes.Traders.Check;
+import com.citizens.NPCTypes.Traders.ItemPrice;
+import com.citizens.Utils.StringUtils;
 
 public class Stockable {
 	private final ItemStack stocking;

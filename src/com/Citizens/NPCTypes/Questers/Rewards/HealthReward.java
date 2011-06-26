@@ -1,9 +1,9 @@
-package com.Citizens.NPCTypes.Questers.Rewards;
+package com.citizens.NPCTypes.Questers.Rewards;
 
 import org.bukkit.entity.Player;
 
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 
 public class HealthReward implements Reward {
 	private final int reward;

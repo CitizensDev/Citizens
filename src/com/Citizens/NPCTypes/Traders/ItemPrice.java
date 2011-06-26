@@ -1,9 +1,9 @@
-package com.Citizens.NPCTypes.Traders;
+package com.citizens.NPCTypes.Traders;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-import com.Citizens.Citizens;
+import com.citizens.Citizens;
 
 public class ItemPrice {
 	private boolean iConomy = false;

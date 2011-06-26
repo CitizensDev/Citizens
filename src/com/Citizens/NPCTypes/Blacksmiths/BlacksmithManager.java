@@ -1,14 +1,14 @@
-package com.Citizens.NPCTypes.Blacksmiths;
+package com.citizens.NPCTypes.Blacksmiths;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Economy.ItemInterface;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.EconomyHandler.Operation;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.ItemInterface;
+import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithManager {
 

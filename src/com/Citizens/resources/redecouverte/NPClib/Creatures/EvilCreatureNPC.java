@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib.Creatures;
+package com.citizens.resources.redecouverte.NPClib.Creatures;
 
 import java.util.Random;
 
@@ -15,14 +15,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Constants;
-import com.Citizens.CreatureTask;
-import com.Citizens.Properties.Properties.UtilityProperties;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.InventoryUtils;
-import com.Citizens.Utils.Messaging;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Constants;
+import com.citizens.CreatureTask;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Properties.Properties.UtilityProperties;
+import com.citizens.Utils.InventoryUtils;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.Messaging;
+import com.citizens.Utils.StringUtils;
 
 public class EvilCreatureNPC extends CreatureNPC {
 	private boolean isTame = false;

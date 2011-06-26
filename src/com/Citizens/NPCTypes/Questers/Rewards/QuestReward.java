@@ -1,11 +1,11 @@
-package com.Citizens.NPCTypes.Questers.Rewards;
+package com.citizens.NPCTypes.Questers.Rewards;
 
 import org.bukkit.entity.Player;
 
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestReward implements Reward {
 	private final String reward;

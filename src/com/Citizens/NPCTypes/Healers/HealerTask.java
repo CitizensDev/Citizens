@@ -1,11 +1,11 @@
-package com.Citizens.NPCTypes.Healers;
+package com.citizens.NPCTypes.Healers;
 
 import java.util.Map.Entry;
 
-import com.Citizens.Constants;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Healers.HealerNPC;
-import com.Citizens.NPCs.NPCManager;
+import com.citizens.Constants;
+import com.citizens.NPCTypes.Healers.HealerNPC;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerTask implements Runnable {
 	@Override

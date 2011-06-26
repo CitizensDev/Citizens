@@ -1,10 +1,10 @@
-package com.Citizens.NPCTypes.Questers.Rewards;
+package com.citizens.NPCTypes.Questers.Rewards;
 
 import org.bukkit.entity.Player;
 
-import com.Citizens.Permission;
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.Permission;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 
 public class PermissionReward implements Reward {
 	private final String reward;

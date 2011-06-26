@@ -1,12 +1,12 @@
-package com.Citizens.NPCTypes.Questers.QuestTypes;
+package com.citizens.NPCTypes.Questers.QuestTypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.Citizens.NPCTypes.Questers.Quests.QuestIncrementer;
+import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
+import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class DistanceQuest extends QuestIncrementer {
 	private double traveled = 0;

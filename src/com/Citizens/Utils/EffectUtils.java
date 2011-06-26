@@ -1,10 +1,10 @@
-package com.Citizens.Utils;
+package com.citizens.Utils;
 
 import net.minecraft.server.Packet61;
 
 import org.bukkit.Location;
 
-import com.Citizens.Utils.EffectUtils.Effects.IEffect;
+import com.citizens.Utils.EffectUtils.Effects.IEffect;
 
 public class EffectUtils {
 	public static class Effects {

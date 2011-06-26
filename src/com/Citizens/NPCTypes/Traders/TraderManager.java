@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Traders;
+package com.citizens.NPCTypes.Traders;
 
 import java.util.ArrayList;
 

@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.Citizens.resources.sk89q.commands;
+package com.citizens.resources.sk89q.commands;
 
 public class CommandException extends Exception {
     private static final long serialVersionUID = 870638193072101739L;

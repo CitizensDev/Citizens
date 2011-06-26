@@ -1,12 +1,12 @@
-package com.Citizens.Utils;
+package com.citizens.Utils;
 
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Events.NPCInventoryOpenEvent;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Events.NPCInventoryOpenEvent;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class InventoryUtils {
 

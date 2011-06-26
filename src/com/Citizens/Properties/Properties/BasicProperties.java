@@ -1,4 +1,4 @@
-package com.Citizens.Properties.Properties;
+package com.citizens.Properties.Properties;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,13 +16,13 @@ import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.Citizens.Constants;
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Interfaces.Saveable;
-import com.Citizens.NPCs.NPCData;
-import com.Citizens.NPCs.NPCDataManager;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Constants;
+import com.citizens.Interfaces.Saveable;
+import com.citizens.NPCs.NPCData;
+import com.citizens.NPCs.NPCDataManager;
+import com.citizens.Properties.PropertyManager;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicProperties extends PropertyManager implements Saveable {
 	public static final Logger log = Logger.getLogger("Minecraft");

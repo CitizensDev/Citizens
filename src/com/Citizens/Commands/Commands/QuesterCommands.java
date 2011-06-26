@@ -1,17 +1,17 @@
-package com.Citizens.Commands.Commands;
+package com.citizens.Commands.Commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.Citizens.NPCTypes.Questers.QuesterNPC;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.sk89q.commands.Command;
-import com.Citizens.resources.sk89q.commands.CommandContext;
-import com.Citizens.resources.sk89q.commands.CommandPermissions;
-import com.Citizens.resources.sk89q.commands.CommandRequirements;
-import com.Citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.Citizens.Utils.HelpUtils;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.NPCTypes.Questers.QuesterNPC;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.Utils.HelpUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.sk89q.commands.Command;
+import com.citizens.resources.sk89q.commands.CommandContext;
+import com.citizens.resources.sk89q.commands.CommandPermissions;
+import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,

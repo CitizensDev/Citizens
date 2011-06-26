@@ -1,4 +1,4 @@
-package com.Citizens.NPCTypes.Questers.Quests;
+package com.citizens.NPCTypes.Questers.Quests;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Questers.PlayerProfile;
-import com.Citizens.NPCTypes.Questers.Quest;
-import com.Citizens.NPCTypes.Questers.Quests.QuestProgress;
+import com.citizens.NPCTypes.Questers.PlayerProfile;
+import com.citizens.NPCTypes.Questers.Quest;
+import com.citizens.NPCTypes.Questers.Quests.QuestProgress;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestManager {
 	public enum QuestType {

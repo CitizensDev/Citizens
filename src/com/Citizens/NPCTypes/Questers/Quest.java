@@ -1,11 +1,11 @@
-package com.Citizens.NPCTypes.Questers;
+package com.citizens.NPCTypes.Questers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.Citizens.NPCTypes.Questers.Reward;
-import com.Citizens.NPCTypes.Questers.Objectives.Objective;
-import com.Citizens.NPCTypes.Questers.Objectives.Objectives;
+import com.citizens.NPCTypes.Questers.Reward;
+import com.citizens.NPCTypes.Questers.Objectives.Objective;
+import com.citizens.NPCTypes.Questers.Objectives.Objectives;
 
 public class Quest {
 	private String questName = "";

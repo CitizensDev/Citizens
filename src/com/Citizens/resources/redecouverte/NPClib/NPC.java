@@ -1,8 +1,8 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import org.bukkit.ChatColor;
 
-import com.Citizens.Constants;
+import com.citizens.Constants;
 
 public class NPC {
 

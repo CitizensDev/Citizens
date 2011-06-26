@@ -1,11 +1,11 @@
-package com.Citizens.NPCTypes.Wizards;
+package com.citizens.NPCTypes.Wizards;
 
 import java.util.Map.Entry;
 
-import com.Citizens.Constants;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCTypes.Wizards.WizardManager;
-import com.Citizens.NPCs.NPCManager;
+import com.citizens.Constants;
+import com.citizens.NPCTypes.Wizards.WizardManager;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class WizardTask implements Runnable {
 

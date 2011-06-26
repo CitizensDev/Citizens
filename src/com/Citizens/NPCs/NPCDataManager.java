@@ -1,4 +1,4 @@
-package com.Citizens.NPCs;
+package com.citizens.NPCs;
 
 import java.util.ArrayList;
 
@@ -7,10 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCs.NPCDataManager;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.NPCs.NPCDataManager;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class NPCDataManager {
 	/**

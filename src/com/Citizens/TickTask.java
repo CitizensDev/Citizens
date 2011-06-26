@@ -1,19 +1,19 @@
-package com.Citizens;
+package com.citizens;
 
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.redecouverte.NPClib.NPCSpawner;
-import com.Citizens.resources.redecouverte.NPClib.WaypointPath;
-import com.Citizens.Constants;
-import com.Citizens.Misc.ActionManager;
-import com.Citizens.Misc.CachedAction;
-import com.Citizens.NPCs.NPCManager;
-import com.Citizens.Utils.LocationUtils;
+import com.citizens.Constants;
+import com.citizens.Misc.ActionManager;
+import com.citizens.Misc.CachedAction;
+import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.LocationUtils;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
+import com.citizens.resources.redecouverte.NPClib.WaypointPath;
 
 public class TickTask implements Runnable {
 	// How far an NPC can 'see'

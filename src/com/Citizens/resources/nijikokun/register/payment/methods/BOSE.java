@@ -1,6 +1,6 @@
-package com.Citizens.resources.nijikokun.register.payment.methods;
+package com.citizens.resources.nijikokun.register.payment.methods;
 
-import com.Citizens.resources.nijikokun.register.payment.Method;
+import com.citizens.resources.nijikokun.register.payment.Method;
 
 import cosine.boseconomy.BOSEconomy;
 import org.bukkit.plugin.Plugin;

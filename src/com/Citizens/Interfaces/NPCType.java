@@ -1,7 +1,7 @@
-package com.Citizens.Interfaces;
+package com.citizens.Interfaces;
 
-import com.Citizens.Properties.PropertyManager;
-import com.Citizens.Interfaces.Saveable;
+import com.citizens.Interfaces.Saveable;
+import com.citizens.Properties.PropertyManager;
 
 public class NPCType {
 	private final NPCFactory factory;

@@ -1,4 +1,4 @@
-package com.Citizens.Events;
+package com.citizens.Events;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityTargetEvent;

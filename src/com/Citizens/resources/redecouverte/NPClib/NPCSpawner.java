@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 
-import com.Citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
+import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
 public class NPCSpawner {
 	protected static WorldServer getWorldServer(World world) {

@@ -1,8 +1,8 @@
-package com.Citizens.Economy;
+package com.citizens.Economy;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.NPCTypes.Traders.ItemPrice;
+import com.citizens.NPCTypes.Traders.ItemPrice;
 
 public class Payment {
 	private double price;

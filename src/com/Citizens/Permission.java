@@ -1,4 +1,4 @@
-package com.Citizens;
+package com.citizens;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,9 +7,9 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.NPCs.NPCManager;
 
+import com.citizens.NPCs.NPCManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.nijiko.permissions.Group;
 import com.nijiko.permissions.User;
 import com.nijikokun.bukkit.Permissions.Permissions;

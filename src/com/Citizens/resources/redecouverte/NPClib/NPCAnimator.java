@@ -1,4 +1,4 @@
-package com.Citizens.resources.redecouverte.NPClib;
+package com.citizens.resources.redecouverte.NPClib;
 
 import net.minecraft.server.DataWatcher;
 import net.minecraft.server.Packet17;
@@ -8,7 +8,7 @@ import net.minecraft.server.Packet40EntityMetadata;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.Citizens.Utils.PacketUtils;
+import com.citizens.Utils.PacketUtils;
 
 public class NPCAnimator {
 	private final PathNPC npc;

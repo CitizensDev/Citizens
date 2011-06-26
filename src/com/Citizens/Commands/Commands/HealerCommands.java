@@ -1,18 +1,18 @@
-package com.Citizens.Commands.Commands;
+package com.citizens.Commands.Commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.resources.sk89q.commands.Command;
-import com.Citizens.resources.sk89q.commands.CommandContext;
-import com.Citizens.resources.sk89q.commands.CommandPermissions;
-import com.Citizens.resources.sk89q.commands.CommandRequirements;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.EconomyHandler.Operation;
-import com.Citizens.NPCTypes.Healers.HealerNPC;
-import com.Citizens.Utils.HelpUtils;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.NPCTypes.Healers.HealerNPC;
+import com.citizens.Utils.HelpUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.resources.sk89q.commands.Command;
+import com.citizens.resources.sk89q.commands.CommandContext;
+import com.citizens.resources.sk89q.commands.CommandPermissions;
+import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,

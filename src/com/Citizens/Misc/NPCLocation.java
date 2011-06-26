@@ -1,4 +1,4 @@
-package com.Citizens.Misc;
+package com.citizens.Misc;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;

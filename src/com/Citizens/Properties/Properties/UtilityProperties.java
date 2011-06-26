@@ -1,14 +1,14 @@
-package com.Citizens.Properties.Properties;
+package com.citizens.Properties.Properties;
 
 import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.Citizens.Constants;
-import com.Citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
-import com.Citizens.Interfaces.Storage;
-import com.Citizens.Properties.ConfigurationHandler;
+import com.citizens.Constants;
+import com.citizens.Interfaces.Storage;
+import com.citizens.Properties.ConfigurationHandler;
+import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
 public class UtilityProperties {
 	private static ConfigurationHandler economy;

@@ -1,20 +1,20 @@
-package com.Citizens.NPCTypes.Healers;
+package com.citizens.NPCTypes.Healers;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.Citizens.Constants;
-import com.Citizens.Permission;
-import com.Citizens.Utils.MessageUtils;
-import com.Citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.Citizens.Economy.EconomyHandler;
-import com.Citizens.Economy.EconomyHandler.Operation;
-import com.Citizens.Interfaces.Clickable;
-import com.Citizens.Interfaces.Toggleable;
-import com.Citizens.NPCTypes.Healers.HealerNPC;
-import com.Citizens.Utils.InventoryUtils;
-import com.Citizens.Utils.StringUtils;
+import com.citizens.Constants;
+import com.citizens.Permission;
+import com.citizens.Economy.EconomyHandler;
+import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.Toggleable;
+import com.citizens.NPCTypes.Healers.HealerNPC;
+import com.citizens.Utils.InventoryUtils;
+import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.StringUtils;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerNPC extends Toggleable implements Clickable {
 	private int health = 10;
