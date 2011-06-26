@@ -19,6 +19,7 @@ import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.Messaging;
 import com.citizens.Utils.ServerUtils;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
@@ -77,9 +78,13 @@ public class BasicCommands {
 			max = 1)
 	@CommandPermissions("admin")
 	public static void reload(CommandContext args, Player player, HumanNPC npc) {
+		Messaging.log("Reloading configuration settings....");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
+		
 		Constants.setupVariables();
 		PropertyManager.registerProperties();
+		
+		Messaging.log("Reloaded.");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
 	}
 
@@ -551,7 +556,7 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "/npc [path/waypoints] (reset)",
+			usage = "/npc [path|waypoints] (reset)",
 			desc = "toggle waypoint editing",
 			modifiers = { "path", "waypoints" },
 			min = 1,

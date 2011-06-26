@@ -84,6 +84,8 @@ public class HelpUtils {
 			format(player, "npc", "lookatplayers [true|false]",
 					"make an NPC look at players");
 			format(player, "npc", "list (name) (page)", "show a list of NPCs");
+			format(player, "npc", "[path|waypoints] (reset)",
+					"control an NPC's waypoints");
 			footer(player);
 			break;
 		default:
@@ -103,14 +105,13 @@ public class HelpUtils {
 				"list a trader's buy/sell list");
 		format(player, "trader",
 				"[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]",
-				"start an NPC stocking an item");
+				"add an item to a trader's stock");
 		format(player, "trader", "[buy|sell] remove [itemID]",
-				"stop the item from being stocked");
-		format(player, "trader", "balance [give|take]",
-				"set a trader's balance if using iConomy");
+				"remove item from a trader's stock");
 		format(player, "trader", "unlimited [true|false]",
 				"set whether a trader has unlimited stock");
-		format(player, "trader", "money", "check how much money a trader has");
+		format(player, "trader", "money (give|take) (amount)",
+				"control a trader's money");
 		footer(player);
 	}
 
