@@ -1,5 +1,7 @@
 package com.citizens;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
@@ -85,6 +87,25 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		// TODO REMOVE AFTER 1.0.9 IS RELEASED
+		// CrapBukkit start
+		File file = new File("plugins/Citizens/npc-profiles.yml");
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				Messaging.log("Could not create npc-profiles.yml");
+			}
+		}
+		Messaging
+				.log("Converting old nodes to new save system.....");
+		for (HumanNPC npc : NPCManager.getList().values()) {
+			Conversion.convertOldNodesToNewSaveSystem(npc);
+		}
+		Messaging
+				.log("Finished conversion. You must delete all old files manually.");
+		// CrapBukkit end
+
 		plugin = this;
 
 		// Register NPC types.

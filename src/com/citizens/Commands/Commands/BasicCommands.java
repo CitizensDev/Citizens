@@ -28,7 +28,9 @@ import com.citizens.resources.sk89q.commands.CommandContext;
 import com.citizens.resources.sk89q.commands.CommandPermissions;
 import com.citizens.resources.sk89q.commands.CommandRequirements;
 
-@CommandRequirements(requireSelected = true, requireOwnership = true)
+@CommandRequirements(
+		requireSelected = true,
+		requireOwnership = true)
 public class BasicCommands {
 
 	@CommandRequirements()
@@ -52,7 +54,7 @@ public class BasicCommands {
 
 	@CommandRequirements()
 	@Command(
-			aliases = "citizens",
+			aliases = { "citizens", "npc" },
 			usage = "help (page)",
 			desc = "view the Citizens help page",
 			modifiers = "help",
