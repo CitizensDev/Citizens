@@ -18,6 +18,22 @@ public class Messaging {
 		player.sendMessage(message);
 	}
 
+	public static void log(String... message) {
+		StringBuilder builder = new StringBuilder();
+		for (String string : message) {
+			builder.append(string + " ");
+		}
+		log(builder.toString(), Level.INFO);
+	}
+
+	public static void log(int... messages) {
+		StringBuilder builder = new StringBuilder();
+		for (int string : messages) {
+			builder.append(string + " ");
+		}
+		log(builder.toString(), Level.INFO);
+	}
+
 	public static void log(String message) {
 		log(message, Level.INFO);
 	}

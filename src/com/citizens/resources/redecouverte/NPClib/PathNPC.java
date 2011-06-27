@@ -16,6 +16,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import com.citizens.Constants;
+import com.citizens.Pathfinding.Citizens.CitizensPathFinder;
+import com.citizens.Pathfinding.Citizens.CitizensPathHeuristic;
+import com.citizens.Pathfinding.Citizens.MinecraftPathWorld;
+import com.citizens.Pathfinding.Citizens.NPCPathPlayer;
 import com.citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
@@ -38,10 +42,14 @@ public class PathNPC extends EntityPlayer {
 	private int prevY;
 	private int prevZ;
 	protected float pathingRange = 16;
+	private final CitizensPathFinder pather;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
+		this.pather = new CitizensPathFinder(null, null,
+				new CitizensPathHeuristic(), new NPCPathPlayer(this.npc),
+				new MinecraftPathWorld(this.getBukkitEntity().getWorld()));
 	}
 
 	public void updateMove() {
@@ -316,6 +324,16 @@ public class PathNPC extends EntityPlayer {
 
 	private void createPathEntity(int x, int y, int z) {
 		this.path = this.world.a(this, x, y, z, pathingRange);
+		/* Test our own pathfinder :).
+		Messaging.log("MC Pather: " + path.c().a + " " + path.c().b + " "
+				+ path.c().c);
+		Location loc = this.bukkitEntity.getLocation();
+		pather.recalculate(
+				new Point(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()),
+				new Point(x, y, z));
+		Messaging.log("Found? " + pather.find());
+		Point last = pather.path().last();
+		Messaging.log("Our Pather: " + last.x + " " + last.y + " " + last.z);*/
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
