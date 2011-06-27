@@ -26,7 +26,7 @@ public abstract class PathFinder {
 
 	public interface PathHeuristic {
 		public int calculate(Point first, Point second, PathWorld pathWorld,
-				PathPlayer player);
+				PathPlayer player, boolean endPoint);
 	}
 
 	public interface PathPlayer {

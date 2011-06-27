@@ -1,13 +1,15 @@
 package com.citizens.Interfaces;
 
-import com.citizens.Interfaces.Saveable;
 import com.citizens.Properties.PropertyManager;
 
 public class NPCType {
 	private final NPCFactory factory;
 	private final String type;
+	private final NPCPurchaser purchaser;
 
-	public NPCType(String type, Saveable saveable, NPCFactory factory) {
+	public NPCType(String type, Saveable saveable, NPCPurchaser purchaser,
+			NPCFactory factory) {
+		this.purchaser = purchaser;
 		this.factory = factory;
 		this.type = type;
 		PropertyManager.add(type, saveable);
@@ -19,5 +21,9 @@ public class NPCType {
 
 	public String getType() {
 		return this.type;
+	}
+
+	public NPCPurchaser getPurchaser() {
+		return purchaser;
 	}
 }

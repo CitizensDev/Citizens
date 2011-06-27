@@ -13,11 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.citizens.Constants;
-import com.citizens.CreatureTask;
-import com.citizens.Permission;
-import com.citizens.TickTask;
 import com.citizens.Commands.CommandHandler;
+import com.citizens.Implementations.OperationPurchaser;
 import com.citizens.Interfaces.NPCFactory;
 import com.citizens.Interfaces.NPCType;
 import com.citizens.Listeners.EntityListen;
@@ -97,8 +94,7 @@ public class Citizens extends JavaPlugin {
 				Messaging.log("Could not create npc-profiles.yml");
 			}
 		}
-		Messaging
-				.log("Converting old nodes to new save system.....");
+		Messaging.log("Converting old nodes to new save system.....");
 		for (HumanNPC npc : NPCManager.getList().values()) {
 			Conversion.convertOldNodesToNewSaveSystem(npc);
 		}
@@ -174,20 +170,19 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void registerTypes() {
-		NPCManager
-				.registerType(new NPCType("blacksmith",
-						new BlacksmithProperties(), new NPCFactory(
-								BlacksmithNPC.class)));
+		NPCManager.registerType(new NPCType("blacksmith",
+				new BlacksmithProperties(), new OperationPurchaser(),
+				new NPCFactory(BlacksmithNPC.class)));
 		NPCManager.registerType(new NPCType("guard", new GuardProperties(),
-				new NPCFactory(GuardNPC.class)));
+				new OperationPurchaser(), new NPCFactory(GuardNPC.class)));
 		NPCManager.registerType(new NPCType("healer", new HealerProperties(),
-				new NPCFactory(HealerNPC.class)));
+				new OperationPurchaser(), new NPCFactory(HealerNPC.class)));
 		NPCManager.registerType(new NPCType("quester", new QuesterProperties(),
-				new NPCFactory(QuesterNPC.class)));
+				new OperationPurchaser(), new NPCFactory(QuesterNPC.class)));
 		NPCManager.registerType(new NPCType("trader", new TraderProperties(),
-				new NPCFactory(TraderNPC.class)));
+				new OperationPurchaser(), new NPCFactory(TraderNPC.class)));
 		NPCManager.registerType(new NPCType("wizard", new WizardProperties(),
-				new NPCFactory(WizardNPC.class)));
+				new OperationPurchaser(), new NPCFactory(WizardNPC.class)));
 	}
 
 	@Override

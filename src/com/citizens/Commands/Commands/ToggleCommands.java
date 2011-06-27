@@ -3,25 +3,22 @@ package com.citizens.Commands.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.Interfaces.NPCPurchaser;
 import com.citizens.Interfaces.NPCType;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.citizens.resources.sk89q.commands.Command;
 import com.citizens.resources.sk89q.commands.CommandContext;
 import com.citizens.resources.sk89q.commands.CommandPermissions;
 import com.citizens.resources.sk89q.commands.CommandRequirements;
+import com.iConomy.util.Messaging;
 
 public class ToggleCommands {
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true)
+	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = { "toggle", "tog", "t" },
 			usage = "[type]",
@@ -39,16 +36,13 @@ public class ToggleCommands {
 			return;
 		}
 		if (!PropertyManager.npcHasType(npc, type)) {
-			buyState(player, npc, NPCManager.getType(type),
-					Operation.valueOf(type.toUpperCase() + "_CREATION"));
+			buyState(player, npc, NPCManager.getType(type));
 		} else {
 			toggleState(player, npc, NPCManager.getType(type), false);
 		}
 	}
 
-	@CommandRequirements(
-			requireSelected = true,
-			requireOwnership = true)
+	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = { "toggle", "tog", "t" },
 			usage = "all [on|off]",
@@ -93,24 +87,21 @@ public class ToggleCommands {
 	 * 
 	 * @param player
 	 * @param toggleable
-	 * @param op
 	 */
-	private static void buyState(Player player, HumanNPC npc, NPCType type,
-			Operation op) {
-		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
-			if (EconomyHandler.useEconomy()) {
-				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0) {
-					player.sendMessage(MessageUtils.getPaidMessage(op, paid,
-							npc.getName(), type.getType(), true));
-				}
-				toggleState(player, npc, type, true);
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "Your server has not turned economy on for Citizens.");
+	private static void buyState(Player player, HumanNPC npc, NPCType type) {
+		NPCPurchaser purchaser = type.getPurchaser();
+		String toggle = type.getType();
+		if (purchaser.canBuy(player, toggle)) {
+			double paid = purchaser.pay(player, toggle);
+			if (paid > 0) {
+				String message = purchaser.getPaidMessage(player, npc, paid,
+						toggle);
+				Messaging.send(player, message);
 			}
-		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
+			toggleState(player, npc, type, true);
+		} else {
+			String message = purchaser.getNoMoneyMessage(player, npc, toggle);
+			Messaging.send(player, message);
 		}
 	}
 

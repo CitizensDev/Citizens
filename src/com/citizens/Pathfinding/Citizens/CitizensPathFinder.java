@@ -32,7 +32,7 @@ public class CitizensPathFinder extends PathFinder {
 		try {
 			PathNode root = new PathNode();
 			root.point = start; /* Needed if the initial point has a cost.  */
-			f(root, start, start);
+			f(root, start, start, false);
 			expand(root);
 			while (true) {
 				PathNode p = paths.poll();
@@ -95,14 +95,15 @@ public class CitizensPathFinder extends PathFinder {
 		for (Point t : successors) {
 			PathNode newPath = new PathNode(path);
 			newPath.point = t;
-			f(newPath, path.point, t);
+			f(newPath, path.point, t, false);
 			paths.offer(newPath);
 		}
 		expandedCounter++;
 	}
 
-	private int calculate(Point start, Point end) {
-		return this.heuristic.calculate(start, end, this.world, this.player);
+	private int calculate(Point start, Point end, boolean endPoint) {
+		return this.heuristic.calculate(start, end, this.world, this.player,
+				endPoint);
 	}
 
 	private List<Point> generateSuccessors(Point point) {
@@ -127,9 +128,10 @@ public class CitizensPathFinder extends PathFinder {
 	 * * @param from The node we are leaving. * @param to The node we are
 	 * reaching. * @return The total cost.
 	 */
-	private int f(PathNode p, Point from, Point to) {
-		int g = (calculate(from, to) + ((p.parent != null) ? p.parent.cost : 0));
-		int h = calculate(from, to);
+	private int f(PathNode p, Point from, Point to, boolean endPoint) {
+		int g = (calculate(from, to, endPoint) + ((p.parent != null) ? p.parent.cost
+				: 0));
+		int h = calculate(from, to, endPoint);
 		p.cost = g;
 		p.totalCost = (g + h);
 		return p.totalCost;
