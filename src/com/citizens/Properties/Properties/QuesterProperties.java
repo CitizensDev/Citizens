@@ -64,11 +64,6 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public PropertyType type() {
-		return PropertyType.QUESTER;
-	}
-
-	@Override
 	public void copy(int UID, int nextUID) {
 		if (profiles.pathExists(UID + isQuester)) {
 			profiles.setString(nextUID + isQuester,

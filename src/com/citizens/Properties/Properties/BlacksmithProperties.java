@@ -38,11 +38,6 @@ public class BlacksmithProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public PropertyType type() {
-		return PropertyType.BLACKSMITH;
-	}
-
-	@Override
 	public void copy(int UID, int nextUID) {
 		if (profiles.pathExists(UID + isBlacksmith)) {
 			profiles.setString(nextUID + isBlacksmith,

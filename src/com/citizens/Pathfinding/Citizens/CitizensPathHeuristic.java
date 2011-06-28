@@ -10,12 +10,6 @@ import com.citizens.Pathfinding.PathFinder.PathWorld;
 import com.citizens.Pathfinding.Point;
 
 public class CitizensPathHeuristic implements PathHeuristic {
-	private int distanceSquared(Point first, Point second,
-			boolean endCalculation) {
-		if (endCalculation)
-			return first.distanceSquared(second) * 2;
-		return first.distanceSquared(second);
-	}
 
 	@Override
 	public int calculate(Point first, Point second, PathWorld pathWorld,
@@ -26,7 +20,7 @@ public class CitizensPathHeuristic implements PathHeuristic {
 		Block one = world.getBlockAt(first.x, first.y, first.z);
 		Block two = world.getBlockAt(second.x, second.y, second.z);
 		int ret = 1;
-		ret += distanceSquared(first, second, endPoint);
+		ret += first.distanceSquared(second);
 
 		// dark spaces are more likely to be dangerous.
 		ret += (two.getLightLevel() - one.getLightLevel());

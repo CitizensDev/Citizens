@@ -296,11 +296,6 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public PropertyType type() {
-		return PropertyType.BASIC;
-	}
-
-	@Override
 	public void copy(int UID, int nextUID) {
 		if (profiles.pathExists(UID + name)) {
 			profiles.setString(nextUID + name, profiles.getString(UID + name));

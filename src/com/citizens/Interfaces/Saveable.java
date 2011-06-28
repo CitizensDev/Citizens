@@ -1,6 +1,5 @@
 package com.citizens.Interfaces;
 
-import com.citizens.Properties.PropertyManager.PropertyType;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public interface Saveable {
@@ -40,13 +39,6 @@ public interface Saveable {
 	 * @return
 	 */
 	public abstract boolean getEnabled(HumanNPC npc);
-
-	/**
-	 * Get an NPC's PropertyType
-	 * 
-	 * @return
-	 */
-	public abstract PropertyType type();
 
 	/**
 	 * Copy an NPC

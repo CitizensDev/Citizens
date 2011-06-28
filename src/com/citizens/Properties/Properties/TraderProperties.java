@@ -153,11 +153,6 @@ public class TraderProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public PropertyType type() {
-		return PropertyType.TRADER;
-	}
-
-	@Override
 	public void copy(int UID, int nextUID) {
 		if (profiles.pathExists(UID + isTrader)) {
 			profiles.setString(nextUID + isTrader,

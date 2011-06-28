@@ -67,11 +67,6 @@ public class HealerProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public PropertyType type() {
-		return PropertyType.HEALER;
-	}
-
-	@Override
 	public void copy(int UID, int nextUID) {
 		if (profiles.pathExists(UID + isHealer)) {
 			profiles.setString(nextUID + isHealer,

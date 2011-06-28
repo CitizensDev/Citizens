@@ -3,7 +3,6 @@ package com.citizens.NPCTypes.Questers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.citizens.NPCTypes.Questers.Reward;
 import com.citizens.NPCTypes.Questers.Objectives.Objective;
 import com.citizens.NPCTypes.Questers.Objectives.Objectives;
 
@@ -11,6 +10,8 @@ public class Quest {
 	private String questName = "";
 	private String completionText = "";
 	private String description = "";
+	private String acceptanceText = "";
+	private boolean repeatable = false;
 	private final List<Reward> rewards = new ArrayList<Reward>();
 	private final List<Reward> requirements = new ArrayList<Reward>();
 	private Objectives objectives;
@@ -94,5 +95,21 @@ public class Quest {
 
 	public void addRequirement(Reward reward) {
 		this.requirements.add(reward);
+	}
+
+	public String getAcceptanceText() {
+		return acceptanceText;
+	}
+
+	public void setAcceptanceText(String text) {
+		this.acceptanceText = text;
+	}
+
+	public void setRepeatable(boolean repeatable) {
+		this.repeatable = repeatable;
+	}
+
+	public boolean isRepeatable() {
+		return repeatable;
 	}
 }

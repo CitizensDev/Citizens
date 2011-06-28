@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -24,7 +24,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_JOIN, this, Event.Priority.Normal,
+		pm.registerEvent(Event.Type.PLAYER_LOGIN, this, Event.Priority.Normal,
 				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
 				Citizens.plugin);
@@ -39,7 +39,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 	}
 
 	@Override
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	public void onPlayerLogin(PlayerLoginEvent event) {
 		QuestManager.load(event.getPlayer());
 		GuardTask.checkRespawn(event.getPlayer());
 		CreatureTask.setDirty();

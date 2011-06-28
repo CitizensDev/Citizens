@@ -19,8 +19,6 @@ import com.citizens.NPCTypes.Questers.QuestTypes.DestroyQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.DistanceQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.HuntQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.LocationQuest;
-import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
 import com.citizens.NPCTypes.Questers.Rewards.EconpluginReward;
 import com.citizens.NPCTypes.Questers.Rewards.HealthReward;
@@ -66,6 +64,8 @@ public class QuestFactory {
 			Quest quest = new Quest(questName);
 			quest.setDescription(quests.getString(path + "texts.description"));
 			quest.setCompletedText(quests.getString(path + "texts.completion"));
+			quest.setAcceptanceText(quests.getString(path + "texts.acceptance"));
+			quest.setRepeatable(quests.getBoolean(path + ".repeatable"));
 			String tempPath = path;
 			if (quests.pathExists(path + "rewards")) {
 				for (String reward : quests.getKeys(path + "rewards")) {
@@ -105,9 +105,8 @@ public class QuestFactory {
 			if (quests.pathExists(path)) {
 				for (Object objective : quests.getKeys(path)) {
 					path = tempPath + objective;
-					QuestType type = QuestType.getType(quests
-							.getString(path + ".type").toUpperCase()
-							.replace(" ", "_"));
+					QuestType type = QuestType.getType(quests.getString(path
+							+ ".type"));
 					if (type == null) {
 						Messaging.log("Invalid quest objective (quest "
 								+ (questCount + 1)

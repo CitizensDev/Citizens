@@ -121,11 +121,6 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public PropertyType type() {
-		return PropertyType.GUARD;
-	}
-
-	@Override
 	public void copy(int UID, int nextUID) {
 		if (profiles.pathExists(UID + isGuard)) {
 			profiles.setString(nextUID + isGuard,

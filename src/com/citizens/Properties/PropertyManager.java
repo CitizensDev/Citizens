@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.citizens.Interfaces.Saveable;
 import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.ConfigurationHandler;
 import com.citizens.Properties.Properties.BasicProperties;
 import com.citizens.Properties.Properties.QuestProperties;
 import com.citizens.Properties.Properties.UtilityProperties;
@@ -14,16 +13,6 @@ public class PropertyManager {
 	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
 	protected static final ConfigurationHandler profiles = new ConfigurationHandler(
 			"plugins/Citizens/npc-profiles.yml");
-
-	public enum PropertyType {
-		BASIC,
-		TRADER,
-		HEALER,
-		WIZARD,
-		QUESTER,
-		BLACKSMITH,
-		GUARD;
-	}
 
 	public static void registerProperties() {
 		add("basic", new BasicProperties());

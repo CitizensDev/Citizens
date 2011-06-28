@@ -3,8 +3,8 @@ package com.citizens.Properties.Properties;
 import org.bukkit.entity.CreatureType;
 
 import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCTypes.Wizards.WizardNPC;
 import com.citizens.NPCTypes.Wizards.WizardManager.WizardMode;
+import com.citizens.NPCTypes.Wizards.WizardNPC;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
@@ -114,11 +114,6 @@ public class WizardProperties extends PropertyManager implements Saveable {
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isWizard);
-	}
-
-	@Override
-	public PropertyType type() {
-		return PropertyType.WIZARD;
 	}
 
 	@Override
