@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
 import com.citizens.CreatureTask;
+import com.citizens.Permission;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.Properties.UtilityProperties;
 import com.citizens.Utils.InventoryUtils;
@@ -77,6 +78,14 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onRightClick(Player player) {
+		if (UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
+				&& !Permission.isAdmin(player)) {
+			Messaging
+					.sendError(
+							player,
+							"You cannot tame this Evil NPC because you have reached the maximum NPC creation limit.");
+			return;
+		}
 		if (npc.getHandle() instanceof CreatureNPC
 				&& player.getItemInHand().getTypeId() == Constants.evilNPCTameItem) {
 			if (new Random().nextInt(100) <= Constants.evilNPCTameChance) {

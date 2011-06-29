@@ -65,9 +65,9 @@ public class PathNPC extends EntityPlayer {
 			if (vector != null) {
 				handleMove(vector);
 			}
-			this.o_(); // Update entity
+			this.Q(); // Update entity
 		} else {
-			this.o_(); // Update entity
+			this.Q(); // Update entity
 			this.path = null;
 		}
 	}
@@ -325,21 +325,18 @@ public class PathNPC extends EntityPlayer {
 	private void createPathEntity(int x, int y, int z) {
 		// long mc = System.nanoTime();
 		this.path = this.world.a(this, x, y, z, pathingRange);
-		/*mc = System.nanoTime() - mc;
-		// Test our own pathfinder :).
-		Messaging.log("MC Pather: " + path.c().a + " " + path.c().b + " "
-				+ path.c().c);
-		Location loc = this.bukkitEntity.getLocation();
-		pather.recalculate(
-				new Point(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()),
-				new Point(x, y, z));
-		long ours = System.nanoTime();
-		pather.find();
-		ours = System.nanoTime() - ours;
-		Point last = pather.path().last();
-		Messaging.log("Our Pather: " + last.x + " " + last.y + " " + last.z);
-		Messaging.log("Time comparison (neg is good): "
-				+ ((ours - mc) / 1000000));*/
+		/*
+		 * mc = System.nanoTime() - mc; // Test our own pathfinder :).
+		 * Messaging.log("MC Pather: " + path.c().a + " " + path.c().b + " " +
+		 * path.c().c); Location loc = this.bukkitEntity.getLocation();
+		 * pather.recalculate( new Point(loc.getBlockX(), loc.getBlockY(),
+		 * loc.getBlockZ()), new Point(x, y, z)); long ours = System.nanoTime();
+		 * pather.find(); ours = System.nanoTime() - ours; Point last =
+		 * pather.path().last(); Messaging.log("Our Pather: " + last.x + " " +
+		 * last.y + " " + last.z);
+		 * Messaging.log("Time comparison (neg is good): " + ((ours - mc) /
+		 * 1000000));
+		 */
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,

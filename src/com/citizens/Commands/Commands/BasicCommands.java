@@ -12,11 +12,13 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
 import com.citizens.Constants;
+import com.citizens.Permission;
 import com.citizens.Economy.EconomyHandler;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.NPCs.NPCDataManager;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
+import com.citizens.Properties.Properties.UtilityProperties;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
@@ -54,7 +56,7 @@ public class BasicCommands {
 
 	@CommandRequirements()
 	@Command(
-			aliases = { "citizens", "npc" },
+			aliases = { "citizens" },
 			usage = "help (page)",
 			desc = "view the Citizens help page",
 			modifiers = "help",
@@ -92,7 +94,7 @@ public class BasicCommands {
 
 	@CommandRequirements()
 	@Command(
-			aliases = "basic",
+			aliases = { "basic", "npc" },
 			usage = "help (page)",
 			desc = "view the Basic NPC help page",
 			modifiers = "help",
@@ -118,6 +120,11 @@ public class BasicCommands {
 	@CommandPermissions("create.basic")
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
+		if(UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
+				&& !Permission.isAdmin(player)) {
+			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
+			return;
+		}
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		String firstArg = args.getString(1);
 		if (args.argsLength() >= 3) {
@@ -176,8 +183,8 @@ public class BasicCommands {
 			HumanNPC npc) {
 		int index = args.argsLength() - 1;
 		double x = 0, y = 0, z = 0;
-		float yaw = npc.getLocation().getYaw(), pitch = npc.getLocation()
-				.getPitch();
+		float yaw = npc.getLocation().getYaw();
+		float pitch = npc.getLocation().getPitch();
 		String world = "";
 		switch (args.argsLength() - 1) {
 		case 6:
@@ -215,6 +222,11 @@ public class BasicCommands {
 			max = 1)
 	@CommandPermissions("create.basic")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
+		if(UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
+				&& !Permission.isAdmin(player)) {
+			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
+			return;
+		}
 		PropertyManager.save(npc);
 		int newUID = NPCManager.register(npc.getName(), player.getLocation(),
 				player.getName());
@@ -226,32 +238,32 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "/npc remove all",
-			desc = "remove all NPCs",
-			modifiers = "remove",
-			min = 2,
-			max = 2)
-	@CommandPermissions("admin")
-	public static void removeAllNPCs(CommandContext args, Player player,
-			HumanNPC npc) {
-		NPCManager.removeAll();
-		NPCManager.selectedNPCs.remove(player.getName());
-		player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
-	}
-
-	@Command(
-			aliases = "npc",
-			usage = "remove",
-			desc = "remove an NPC",
+			usage = "remove (all)",
+			desc = "remove NPCs",
 			modifiers = "remove",
 			min = 1,
-			max = 1)
+			max = 2)
 	@CommandPermissions("modify.basic")
-	public static void removeNPC(CommandContext args, Player player,
+	public static void removeNPCs(CommandContext args, Player player,
 			HumanNPC npc) {
-		NPCManager.remove(npc.getUID());
-		NPCManager.selectedNPCs.remove(player.getName());
-		player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
+		if(args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
+			if (Permission.isAdmin(player)) {
+				NPCManager.removeAll();
+				NPCManager.selectedNPCs.remove(player.getName());
+				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
+			} else {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			return;
+		}
+		if (npc != null) {
+			NPCManager.remove(npc.getUID());
+			NPCManager.selectedNPCs.remove(player.getName());
+			player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
+		} else {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
+			return;
+		}
 	}
 
 	@Command(
@@ -381,7 +393,7 @@ public class BasicCommands {
 	@CommandPermissions("modify.basic")
 	public static void setNPCArmor(CommandContext args, Player player,
 			HumanNPC npc) {
-		Material mat = StringUtils.parseMaterial(args.getString(3));
+		Material mat = StringUtils.parseMaterial(args.getString(2));
 		if (mat == null) {
 			player.sendMessage(ChatColor.RED + "Invalid item.");
 			return;
@@ -403,13 +415,13 @@ public class BasicCommands {
 		ArrayList<Integer> items = npc.getNPCData().getItems();
 		int oldhelmet = items.get(1);
 
-		if (args.getString(2).contains("helm")) {
+		if (args.getString(1).contains("helm")) {
 			items.set(1, mat.getId());
-		} else if (args.getString(2).equalsIgnoreCase("torso")) {
+		} else if (args.getString(1).equalsIgnoreCase("torso")) {
 			items.set(2, mat.getId());
-		} else if (args.getString(2).contains("leg")) {
+		} else if (args.getString(1).contains("leg")) {
 			items.set(3, mat.getId());
-		} else if (args.getString(2).contains("boot")) {
+		} else if (args.getString(1).contains("boot")) {
 			items.set(4, mat.getId());
 		}
 		npc.getNPCData().setItems(items);

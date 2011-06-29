@@ -7,7 +7,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
 import com.citizens.Interfaces.Storage;
+import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.ConfigurationHandler;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
 
 public class UtilityProperties {
@@ -61,5 +63,15 @@ public class UtilityProperties {
 			}
 		}
 		return null;
+	}
+	
+	public static int getNPCCount(String name) {
+		int count = 0;
+		for(HumanNPC npc : NPCManager.getList().values()) {
+			if(npc.getOwner().equals(name)) {
+				count++;
+			}
+		}
+		return count;
 	}
 }

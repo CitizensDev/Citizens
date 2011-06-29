@@ -51,69 +51,69 @@ public class Conversion extends PropertyManager {
 
 	public static void convertOldNodesToNewSaveSystem(HumanNPC npc) {
 		int UID = npc.getUID();
-		if (inventories.keyExists(npc.getUID())) {
+		if (inventories.keyExists(UID)) {
 			profiles.setString(UID + ".inventory", inventories.getString(UID));
 		}
-		if (texts.keyExists(npc.getUID())) {
+		if (texts.keyExists(UID)) {
 			profiles.setString(UID + ".text", texts.getString(UID));
 		}
-		if (colors.keyExists(npc.getUID())) {
+		if (colors.keyExists(UID)) {
 			profiles.setInt(UID + ".color", colors.getInt(UID));
 		}
-		if (items.keyExists(npc.getUID())) {
+		if (items.keyExists(UID)) {
 			profiles.setString(UID + ".items", items.getString(UID));
 		}
-		if (locations.keyExists(npc.getUID())) {
+		if (locations.keyExists(UID)) {
 			profiles.setString(UID + ".location", locations.getString(UID));
 		}
-		if (lookat.keyExists(npc.getUID())) {
+		if (lookat.keyExists(UID)) {
 			profiles.setBoolean(UID + ".look-when-close",
 					lookat.getBoolean(UID));
 		}
-		if (owners.keyExists(npc.getUID())) {
+		if (owners.keyExists(UID)) {
 			profiles.setString(UID + ".owner", owners.getString(UID));
 		}
-		if (talkWhenClose.keyExists(npc.getUID())) {
+		if (talkWhenClose.keyExists(UID)) {
 			profiles.setBoolean(UID + ".talk-when-close",
 					talkWhenClose.getBoolean(UID));
 		}
-		if (blacksmiths.keyExists(npc.getUID())) {
+		if (blacksmiths.keyExists(UID)) {
 			profiles.setBoolean(UID + ".blacksmith.toggle",
 					blacksmiths.getBoolean(UID));
 		}
-		if (healers.keyExists(npc.getUID())) {
+		if (healers.keyExists(UID)) {
 			profiles.setBoolean(UID + ".healer.toggle", healers.getBoolean(UID));
 		}
-		if (strength.keyExists(npc.getUID())) {
+		if (strength.keyExists(UID)) {
 			profiles.setInt(UID + ".healer.health", strength.getInt(UID));
 		}
-		if (level.keyExists(npc.getUID())) {
+		if (level.keyExists(UID)) {
 			profiles.setInt(UID + ".healer.level", level.getInt(UID));
 		}
-		if (balances.keyExists(npc.getUID())) {
+		if (balances.keyExists(UID)) {
 			profiles.setDouble(UID + ".trader.balance", balances.getDouble(UID));
 		}
-		if (stocking.keyExists(npc.getUID())) {
+		if (stocking.keyExists(UID)) {
 			profiles.setString(UID + ".trader.stock", stocking.getString(UID));
 		}
-		if (traders.keyExists(npc.getUID())) {
+		if (traders.keyExists(UID)) {
 			profiles.setBoolean(UID + ".trader.toggle", traders.getBoolean(UID));
 		}
-		if (unlimited.keyExists(npc.getUID())) {
+		if (unlimited.keyExists(UID)) {
 			profiles.setBoolean(UID + ".trader.unlimited",
 					unlimited.getBoolean(UID));
 		}
-		if (wizLocs.keyExists(npc.getUID())) {
+		if (wizLocs.keyExists(UID)) {
 			profiles.setString(UID + ".wizard.locations",
 					wizLocs.getString(UID));
 		}
-		if (wizards.keyExists(npc.getUID())) {
+		if (wizards.keyExists(UID)) {
 			profiles.setBoolean(UID + ".wizard.toggle", wizards.getBoolean(UID));
 		}
-		if (mana.keyExists(npc.getUID())) {
+		if (mana.keyExists(UID)) {
 			profiles.setInt(UID + ".wizard.mana", mana.getInt(UID));
 		}
-		if (mode.keyExists(npc.getUID())) {
+		if (mode.keyExists(UID)) {
 			profiles.setString(UID + ".wizard.mode", mode.getString(UID));
 		}
 	}
