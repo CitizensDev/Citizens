@@ -39,5 +39,4 @@ public class OperationPurchaser implements NPCPurchaser {
 	public String getNoMoneyMessage(Player player, HumanNPC npc, String type) {
 		return MessageUtils.getNoMoneyMessage(getOperation(type), player);
 	}
-
 }

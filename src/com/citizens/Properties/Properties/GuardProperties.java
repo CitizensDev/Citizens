@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.citizens.Constants;
 import com.citizens.Interfaces.Saveable;
-import com.citizens.Misc.Enums.GuardType;
+import com.citizens.NPCTypes.Guards.GuardManager.GuardType;
 import com.citizens.NPCTypes.Guards.GuardNPC;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;

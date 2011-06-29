@@ -1,9 +1,6 @@
-package com.citizens.Misc;
+package com.citizens.NPCTypes.Guards;
 
-public class Enums {
-	/**
-	 * Guard types
-	 */
+public class GuardManager {
 	public enum GuardType {
 		/**
 		 * Protects land

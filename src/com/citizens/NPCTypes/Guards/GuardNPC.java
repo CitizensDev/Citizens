@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Interfaces.Clickable;
 import com.citizens.Interfaces.Toggleable;
-import com.citizens.Misc.Enums.GuardType;
+import com.citizens.NPCTypes.Guards.GuardManager.GuardType;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardNPC extends Toggleable implements Clickable {

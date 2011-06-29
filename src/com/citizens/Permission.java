@@ -1,35 +1,27 @@
 package com.citizens;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.Messaging;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.nijiko.permissions.Group;
 import com.nijiko.permissions.User;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Permission {
-	@SuppressWarnings("unused")
-	private static Permissions permissionsPlugin;
 	private static boolean permissionsEnabled = false;
 
 	public static void initialize(Server server) {
 		Plugin test = server.getPluginManager().getPlugin("Permissions");
 		if (test != null) {
-			Logger log = Logger.getLogger("Minecraft");
-			permissionsPlugin = (Permissions) test;
 			permissionsEnabled = true;
-			log.log(Level.INFO, "[Citizens]: Permissions enabled.");
+			Messaging.log("Permissions enabled.");
 		} else {
-			Logger log = Logger.getLogger("Minecraft");
-			log.log(Level.SEVERE,
-					"[Citizens]: A Permissions plugin isn't loaded, commands can only be used by ops.");
+			Messaging
+					.log("A Permissions plugin isn't loaded, commands can only be used by ops.");
 		}
 	}
 

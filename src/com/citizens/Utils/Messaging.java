@@ -39,7 +39,7 @@ public class Messaging {
 	}
 
 	public static void log(String message, Level level) {
-		log.log(level, "[Citizens]: " + message);
+		log.log(level, "[Citizens] " + message);
 	}
 
 	public static void log(boolean message) {
