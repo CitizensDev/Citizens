@@ -118,7 +118,7 @@ public class WizardManager {
 	 */
 	public static void increaseMana(HumanNPC npc, int mana) {
 		WizardNPC wizard = npc.getToggleable("wizard");
-		if (wizard.getMana() + mana < Constants.maxWizardMana) {
+		if (wizard != null && wizard.getMana() + mana < Constants.maxWizardMana) {
 			wizard.setMana(wizard.getMana() + mana);
 		}
 	}
