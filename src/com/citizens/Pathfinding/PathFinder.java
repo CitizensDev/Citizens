@@ -7,10 +7,8 @@ public abstract class PathFinder {
 	protected final PathWorld world;
 	protected final PathPlayer player;
 
-	public PathFinder(Point start, Point end, PathHeuristic heuristic,
-			PathPlayer player, PathWorld pathWorld) {
-		this.start = start;
-		this.end = end;
+	public PathFinder(PathHeuristic heuristic, PathPlayer player,
+			PathWorld pathWorld) {
 		this.heuristic = heuristic;
 		this.player = player;
 		this.world = pathWorld;

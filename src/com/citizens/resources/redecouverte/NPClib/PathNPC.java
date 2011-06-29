@@ -16,10 +16,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import com.citizens.Constants;
-import com.citizens.Pathfinding.Citizens.CitizensPathFinder;
+import com.citizens.Pathfinding.Point;
+import com.citizens.Pathfinding.Citizens.BinaryPathFinder;
 import com.citizens.Pathfinding.Citizens.CitizensPathHeuristic;
 import com.citizens.Pathfinding.Citizens.MinecraftPathWorld;
 import com.citizens.Pathfinding.Citizens.NPCPathPlayer;
+import com.citizens.Utils.Messaging;
 import com.citizens.resources.redecouverte.NPClib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
@@ -42,14 +44,14 @@ public class PathNPC extends EntityPlayer {
 	private int prevY;
 	private int prevZ;
 	protected float pathingRange = 16;
-	private final CitizensPathFinder pather;
+	private final BinaryPathFinder pather;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
-		this.pather = new CitizensPathFinder(null, null,
-				new CitizensPathHeuristic(), new NPCPathPlayer(this.npc),
-				new MinecraftPathWorld(this.getBukkitEntity().getWorld()));
+		this.pather = new BinaryPathFinder(new CitizensPathHeuristic(),
+				new NPCPathPlayer(this.npc), new MinecraftPathWorld(this
+						.getBukkitEntity().getWorld()));
 	}
 
 	public void updateMove() {
@@ -323,20 +325,18 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void createPathEntity(int x, int y, int z) {
-		// long mc = System.nanoTime();
+		long mc = System.nanoTime();
 		this.path = this.world.a(this, x, y, z, pathingRange);
-		/*
-		 * mc = System.nanoTime() - mc; // Test our own pathfinder :).
-		 * Messaging.log("MC Pather: " + path.c().a + " " + path.c().b + " " +
-		 * path.c().c); Location loc = this.bukkitEntity.getLocation();
-		 * pather.recalculate( new Point(loc.getBlockX(), loc.getBlockY(),
-		 * loc.getBlockZ()), new Point(x, y, z)); long ours = System.nanoTime();
-		 * pather.find(); ours = System.nanoTime() - ours; Point last =
-		 * pather.path().last(); Messaging.log("Our Pather: " + last.x + " " +
-		 * last.y + " " + last.z);
-		 * Messaging.log("Time comparison (neg is good): " + ((ours - mc) /
-		 * 1000000));
-		 */
+		mc = System.nanoTime() - mc; // Test our own pathfinder :).
+		Location loc = this.bukkitEntity.getLocation();
+		pather.recalculate(
+				new Point(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()),
+				new Point(x, y, z));
+		long ours = System.nanoTime();
+		pather.find();
+		ours = System.nanoTime() - ours;
+		Messaging.log("Time difference: " + ((ours - mc) / 1000000) + "ms");
+
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,

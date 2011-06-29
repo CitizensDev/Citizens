@@ -11,7 +11,6 @@ public class PathNode implements Comparable<PathNode> {
 		this.parent = parent;
 		this.cost = cost;
 		this.totalCost = totalCost;
-
 	}
 
 	public PathNode() {
@@ -28,7 +27,7 @@ public class PathNode implements Comparable<PathNode> {
 
 	@Override
 	public int compareTo(PathNode node) {
-		short result = (short) (node.totalCost - node.cost);
+		int result = node.totalCost - node.cost;
 		if (result > node.totalCost)
 			return 1;
 		else if (result == 0)

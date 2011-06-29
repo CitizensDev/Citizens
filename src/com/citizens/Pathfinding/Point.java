@@ -34,8 +34,8 @@ public final class Point {
 	}
 
 	@Override
-	public Point clone() {
-		return new Point(x, y, z);
+	public String toString() {
+		return "Point [x=" + x + ", y=" + y + ", z=" + z + "]";
 	}
 
 	public int distanceSquared(Point second) {
@@ -43,10 +43,5 @@ public final class Point {
 		int diffY = second.y - this.y;
 		int diffZ = second.z - this.z;
 		return diffX * diffX + diffY * diffY + diffZ * diffZ;
-	}
-
-	@Override
-	public String toString() {
-		return "Point [x=" + x + ", y=" + y + ", z=" + z + "]";
 	}
 }

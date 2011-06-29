@@ -14,9 +14,9 @@ public class CitizensPathHeuristic implements PathHeuristic {
 	@Override
 	public int calculate(Point first, Point second, PathWorld pathWorld,
 			PathPlayer player, boolean endPoint) {
-		World world = getWorld(pathWorld);
 		if (first.equals(second))
 			return 1;
+		World world = getWorld(pathWorld);
 		Block one = world.getBlockAt(first.x, first.y, first.z);
 		Block two = world.getBlockAt(second.x, second.y, second.z);
 		int ret = 1;
@@ -31,15 +31,13 @@ public class CitizensPathHeuristic implements PathHeuristic {
 			if (two.getFace(BlockFace.UP).getTypeId() == 0)
 				ret -= 5; // we want to favour open spaces.
 			break;
+		case WATER:
+		case STATIONARY_WATER:
 		case LAVA:
 		case STATIONARY_LAVA:
 		case FIRE:
 		case TNT:
-			ret += 15; // all can kill us.
-			break;
-		case WATER:
-		case STATIONARY_WATER:
-			ret += 10; // still bad, but not immediately life-threatening.
+			ret += 15; // all are dangerous.
 			break;
 		}
 		return ret;

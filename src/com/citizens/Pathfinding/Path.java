@@ -1,6 +1,6 @@
 package com.citizens.Pathfinding;
 
-import java.util.LinkedList;
+import java.util.Collection;
 
 public class Path {
 	private Point[] points;
@@ -10,7 +10,7 @@ public class Path {
 		this.points = points;
 	}
 
-	public Path(LinkedList<Point> path) {
+	public Path(Collection<Point> path) {
 		points = new Point[path.size()];
 		this.points = path.toArray(points);
 	}
