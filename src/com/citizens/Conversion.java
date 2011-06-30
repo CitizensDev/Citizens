@@ -8,45 +8,45 @@ public class Conversion extends PropertyManager {
 
 	private static final String dir = "plugins/Citizens/";
 	private static final PropertyHandler inventories = new PropertyHandler(dir
-			+ "Basic NPCs/inventories.citizens");
+			+ "Basic NPCs/inventories.citizens", false);
 	private static final PropertyHandler texts = new PropertyHandler(dir
-			+ "Basic NPCs/Citizens.texts");
+			+ "Basic NPCs/Citizens.texts", false);
 	private static final PropertyHandler colors = new PropertyHandler(dir
-			+ "Basic NPCs/Citizens.colours");
+			+ "Basic NPCs/Citizens.colours", false);
 	private static final PropertyHandler items = new PropertyHandler(dir
-			+ "Basic NPCs/Citizens.items");
+			+ "Basic NPCs/Citizens.items", false);
 	private static final PropertyHandler locations = new PropertyHandler(dir
-			+ "Basic NPCs/Citizens.locations");
+			+ "Basic NPCs/Citizens.locations", false);
 	private static final PropertyHandler lookat = new PropertyHandler(dir
-			+ "Basic NPCs/Citizens.lookat");
+			+ "Basic NPCs/Citizens.lookat", false);
 	private static final PropertyHandler owners = new PropertyHandler(dir
-			+ "Basic NPCs/Citizens.owners");
+			+ "Basic NPCs/Citizens.owners", false);
 	private static final PropertyHandler talkWhenClose = new PropertyHandler(
-			dir + "Basic NPCs/Citizens.talkWhenClose");
+			dir + "Basic NPCs/Citizens.talkWhenClose", false);
 	private static final PropertyHandler blacksmiths = new PropertyHandler(dir
-			+ "Blacksmiths/Citizens.blacksmiths");
+			+ "Blacksmiths/Citizens.blacksmiths", false);
 	private static final PropertyHandler healers = new PropertyHandler(dir
-			+ "Healers/Citizens.healers");
+			+ "Healers/Citizens.healers", false);
 	private static final PropertyHandler strength = new PropertyHandler(dir
-			+ "Healers/Citizens.strength");
+			+ "Healers/Citizens.strength", false);
 	private static final PropertyHandler level = new PropertyHandler(dir
-			+ "Healers/Citizens.levels");
+			+ "Healers/Citizens.levels", false);
 	private static final PropertyHandler balances = new PropertyHandler(dir
-			+ "Traders/Citizens.balances");
+			+ "Traders/Citizens.balances", false);
 	private static final PropertyHandler stocking = new PropertyHandler(dir
-			+ "Traders/Citizens.stocking");
+			+ "Traders/Citizens.stocking", false);
 	private static final PropertyHandler traders = new PropertyHandler(dir
-			+ "Traders/Citizens.traders");
+			+ "Traders/Citizens.traders", false);
 	private static final PropertyHandler unlimited = new PropertyHandler(dir
-			+ "Traders/Citizens.unlimited");
+			+ "Traders/Citizens.unlimited", false);
 	private static final PropertyHandler wizLocs = new PropertyHandler(dir
-			+ "Wizards/Citizens.balances");
+			+ "Wizards/Citizens.balances", false);
 	private static final PropertyHandler wizards = new PropertyHandler(dir
-			+ "Wizards/Citizens.wizards");
+			+ "Wizards/Citizens.wizards", false);
 	private static final PropertyHandler mana = new PropertyHandler(dir
-			+ "Wizards/mana.citizens");
+			+ "Wizards/mana.citizens", false);
 	private static final PropertyHandler mode = new PropertyHandler(dir
-			+ "Wizards/mode.citizens");
+			+ "Wizards/mode.citizens", false);
 
 	public static void convert(int UID) {
 		if (inventories.keyExists(UID)) {

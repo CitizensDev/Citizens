@@ -43,16 +43,20 @@ public final class PropertyHandler implements Storage {
 	private final Properties properties;
 	private final String fileName;
 
-	public PropertyHandler(String fileName) {
+	public PropertyHandler(String fileName, boolean create) {
 		this.fileName = fileName;
 		this.properties = new Properties();
 		File file = new File(fileName);
 		// TODO - remove the inventories part
 		if (file.exists()) {
 			load();
-		} else {
+		} else if (create) {
 			createFile(file);
 		}
+	}
+
+	public PropertyHandler(String fileName) {
+		this(fileName, true);
 	}
 
 	private void createFile(File file) {
