@@ -179,8 +179,8 @@ public class Citizens extends JavaPlugin {
 		String[] values = UIDList.split(",");
 		boolean convert = false;
 
-		if (Conversion.getNPCProfiles().getKeys("") == null
-				|| Conversion.getNPCProfiles().getKeys("").size() == 0) {
+		if (Conversion.getNPCProfiles().getKeys(null) == null
+				|| Conversion.getNPCProfiles().getKeys(null).size() == 0) {
 			Messaging.log("Converting old nodes to new save system...");
 			convert = true;
 		}
