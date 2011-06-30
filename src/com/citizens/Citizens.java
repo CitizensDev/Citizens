@@ -311,7 +311,7 @@ public class Citizens extends JavaPlugin {
 			try {
 				commands.execute(split, player, player, npc);
 			} catch (CommandPermissionsException e) {
-				Messaging.send(player, MessageUtils.noPermissionsMessage);
+				Messaging.sendError(player, MessageUtils.noPermissionsMessage);
 			} catch (MissingNestedCommandException e) {
 				Messaging.sendError(player, e.getUsage());
 			} catch (CommandUsageException e) {

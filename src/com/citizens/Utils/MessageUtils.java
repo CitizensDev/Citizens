@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
 import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.Payment;
 import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.Economy.Payment;
 import com.citizens.NPCTypes.Traders.ItemPrice;
 import com.citizens.NPCTypes.Traders.Stockable;
 import com.citizens.NPCs.NPCManager;
@@ -47,9 +47,8 @@ public class MessageUtils {
 	 */
 	public static void sendText(HumanNPC npc, Player player) {
 		String text = getText(npc, player);
-		if (!text.isEmpty()) {
-			Messaging.send(player, text);
-		}
+		if (!text.isEmpty())
+			Messaging.send(player, npc, text);
 	}
 
 	/**
@@ -73,13 +72,12 @@ public class MessageUtils {
 		}
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
-				text = Constants.chatFormat.replace("&", "�").replace(
-						"%name%", npc.getStrippedName())
-						+ text;
+				text = StringUtils.colourise(Constants.chatFormat.replace(
+						"%name%", npc.getName())) + text;
 			} else {
-				text = Constants.chatFormat.replace("%name%",
-						Constants.npcColour + name + ChatColor.WHITE).replace(
-						"&", "�")
+				text = StringUtils.colourise(Constants.chatFormat.replace(
+						"%name%", "&" + Constants.npcColour + name
+								+ ChatColor.WHITE))
 						+ text;
 			}
 			return text;

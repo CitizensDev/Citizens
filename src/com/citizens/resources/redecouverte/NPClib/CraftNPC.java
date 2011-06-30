@@ -8,14 +8,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.World;
-import net.minecraft.server.WorldServer;
 
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.citizens.Citizens;
-import com.citizens.Events.NPCTargetEvent;
 
 public class CraftNPC extends PathNPC {
 
@@ -43,15 +39,6 @@ public class CraftNPC extends PathNPC {
 		this.lastTargetId = -1;
 		this.lastBounceId = -1;
 		this.lastBounceTick = 0;
-	}
-
-	@Override
-	public boolean a(EntityHuman entity) {
-		EntityTargetEvent rightClickEvent = new NPCTargetEvent(
-				getBukkitEntity(), entity.getBukkitEntity());
-		CraftServer server = ((WorldServer) this.world).getServer();
-		server.getPluginManager().callEvent(rightClickEvent);
-		return super.a(entity);
 	}
 
 	@Override

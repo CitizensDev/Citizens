@@ -1,7 +1,6 @@
 package com.citizens.Listeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,7 +24,6 @@ import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
-import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 /**
@@ -91,9 +89,7 @@ public class EntityListen extends EntityListener implements Listener {
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCManager.selectedNPCs.put(player.getName(), npc.getUID());
-					player.sendMessage(ChatColor.GREEN + "You selected "
-							+ StringUtils.wrap(npc.getStrippedName()) + " (ID "
-							+ StringUtils.wrap(npc.getUID()) + ").");
+					Messaging.send(player, npc, Constants.selectionMessage);
 					return;
 				}
 			}
@@ -111,7 +107,7 @@ public class EntityListen extends EntityListener implements Listener {
 				} else if (!textEvent.getNPC().getNPCData().isLookClose()) {
 					NPCManager.facePlayer(npc, target);
 				} else if (!textEvent.getText().isEmpty()) {
-					Messaging.send(target, textEvent.getText());
+					Messaging.send(target, npc, textEvent.getText());
 				}
 			}
 			NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(npc,

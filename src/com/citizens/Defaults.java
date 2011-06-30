@@ -25,9 +25,11 @@ public class Defaults {
 		nodes.put("general.defaults.enable-following", "true");
 		nodes.put("general.defaults.talk-when-close", "false");
 		nodes.put("general.colors.use-npc-colours", "true");
-		nodes.put("general.colors.npc-colour", "�f");
+		nodes.put("general.colors.npc-colour", "f");
 		nodes.put("general.chat.format", "[%name%]: ");
 		nodes.put("general.chat.slashes-to-spaces", "true");
+		nodes.put("general.chat.selection-message",
+				"<g>You selected <y><npc><g> (ID <y><id><g>).");
 		nodes.put(
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");

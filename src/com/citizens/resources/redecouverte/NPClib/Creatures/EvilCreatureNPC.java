@@ -101,6 +101,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 			} else {
 				Messaging
 						.send(player,
+								this.npc,
 								ChatColor.RED
 										+ "["
 										+ npc.getStrippedName()

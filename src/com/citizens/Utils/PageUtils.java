@@ -74,7 +74,7 @@ public class PageUtils {
 		}
 
 		private void send(String line) {
-			Messaging.send(player, line);
+			Messaging.send(player, null, line);
 		}
 
 		private String colour(String line) {

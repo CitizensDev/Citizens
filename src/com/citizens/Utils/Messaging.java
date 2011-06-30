@@ -6,16 +6,37 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+
 public class Messaging {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private final static boolean debug = false;
+	private final static String[] colours = { "black", "dblue", "dgreen",
+			"dteal", "dred", "purple", "gold", "gray", "dgray", "blue",
+			"bgreen", "teal", "red", "pink", "yellow", "white" };
 
-	public static void send(Player player, String message) {
-		message = StringUtils.colourise(message);
+	public static void send(Player player, HumanNPC npc, String message) {
+		message = colourise(StringUtils.colourise(message));
 		message = message.replace("<h>", "" + player.getHealth());
 		message = message.replace("<name>", player.getName());
 		message = message.replace("<world>", player.getWorld().getName());
+		if (npc != null) {
+			message = message.replace("<npc>", npc.getStrippedName());
+			message = message.replace("<npcid>", "" + npc.getUID());
+		}
 		player.sendMessage(message);
+	}
+
+	private static String colourise(String message) {
+		byte index = 0;
+		for (String colour : colours) {
+			message = message.replaceAll("<" + colour + ">",
+					"" + ChatColor.getByCode(index));
+			++index;
+		}
+		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
+		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
+		return message;
 	}
 
 	public static void log(String... message) {
@@ -57,6 +78,6 @@ public class Messaging {
 	}
 
 	public static void sendError(Player player, String error) {
-		send(player, ChatColor.RED + error);
+		send(player, null, ChatColor.RED + error);
 	}
 }

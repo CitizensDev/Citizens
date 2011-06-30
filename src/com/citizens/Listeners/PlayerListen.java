@@ -2,7 +2,9 @@ package com.citizens.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -13,11 +15,13 @@ import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
 import com.citizens.CreatureTask;
+import com.citizens.Events.NPCTargetEvent;
 import com.citizens.Interfaces.Listener;
 import com.citizens.NPCTypes.Guards.GuardTask;
 import com.citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class PlayerListen extends PlayerListener implements Listener {
 
@@ -35,6 +39,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
 				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this,
+				Event.Priority.Normal, Citizens.plugin);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, this,
 				Event.Priority.Normal, Citizens.plugin);
 	}
 
@@ -74,5 +80,15 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		NPCManager.handlePathEditor(event);
+	}
+
+	@Override
+	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+		HumanNPC npc = NPCManager.get(event.getRightClicked());
+		if (npc != null) {
+			EntityTargetEvent rightClickEvent = new NPCTargetEvent(
+					npc.getPlayer(), event.getPlayer());
+			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
+		}
 	}
 }

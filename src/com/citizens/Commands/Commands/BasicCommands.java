@@ -30,9 +30,7 @@ import com.citizens.resources.sk89q.commands.CommandContext;
 import com.citizens.resources.sk89q.commands.CommandPermissions;
 import com.citizens.resources.sk89q.commands.CommandRequirements;
 
-@CommandRequirements(
-		requireSelected = true,
-		requireOwnership = true)
+@CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
 
 	@CommandRequirements()
@@ -84,10 +82,10 @@ public class BasicCommands {
 	public static void reload(CommandContext args, Player player, HumanNPC npc) {
 		Messaging.log("Reloading configuration settings....");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
-		
+
 		Constants.setupVariables();
 		PropertyManager.registerProperties();
-		
+
 		Messaging.log("Reloaded.");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
 	}
@@ -120,7 +118,7 @@ public class BasicCommands {
 	@CommandPermissions("create.basic")
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
-		if(UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
+		if (UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
 				&& !Permission.isAdmin(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
@@ -222,7 +220,7 @@ public class BasicCommands {
 			max = 1)
 	@CommandPermissions("create.basic")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
-		if(UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
+		if (UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
 				&& !Permission.isAdmin(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
@@ -246,7 +244,7 @@ public class BasicCommands {
 	@CommandPermissions("modify.basic")
 	public static void removeNPCs(CommandContext args, Player player,
 			HumanNPC npc) {
-		if(args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
+		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
 			if (Permission.isAdmin(player)) {
 				NPCManager.removeAll();
 				NPCManager.selectedNPCs.remove(player.getName());
@@ -531,9 +529,7 @@ public class BasicCommands {
 					+ args.getString(1) + ".");
 		} else {
 			NPCManager.selectedNPCs.put(player.getName(), npc.getUID());
-			player.sendMessage(ChatColor.GREEN + "Selected NPC with ID "
-					+ StringUtils.wrap("" + npc.getUID()) + ", name "
-					+ StringUtils.wrap(npc.getStrippedName()) + ".");
+			Messaging.send(player, npc, Constants.selectionMessage);
 		}
 	}
 

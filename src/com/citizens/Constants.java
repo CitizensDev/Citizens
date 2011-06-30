@@ -35,7 +35,7 @@ public class Constants {
 	public static String chatFormat = "[%name%]: ";
 	public static final String convertToSpaceChar = "/";
 	public static String defaultText = "Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;";
-	public static String npcColour = "�f";
+	public static String npcColour = "f";
 	public static String talkItems = "340,";
 	public static String selectItems = "*";
 	public static String evilNames = "Herobrine,aPunch,fullwall,Notch,EvilSeph,";
@@ -43,6 +43,7 @@ public class Constants {
 	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;";
 	public static String pirateStealMessages = "I stole yer booty.;Aaargh.;";
 	public static String evilDrops = "260,357,2256,";
+	public static String selectionMessage = "<g>You selected <y><npc><g> (ID <y><id><g>).";
 
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean payForHealerHeal = true;
@@ -84,6 +85,7 @@ public class Constants {
 		// String defaults
 		chatFormat = settings.getString("general.chat.format");
 		defaultText = settings.getString("general.chat.default-text");
+		selectionMessage = settings.getString("general.chat.selection-message");
 		npcColour = settings.getString("general.colors.npc-colour");
 		talkItems = settings.getString("items.basic.talk-items");
 		selectItems = settings.getString("items.basic.select-items");

@@ -13,6 +13,7 @@ import net.minecraft.server.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.citizens.Constants;
@@ -67,17 +68,16 @@ public class PathNPC extends EntityPlayer {
 			if (vector != null) {
 				handleMove(vector);
 			}
-			this.Q(); // Update entity
 		} else {
-			this.Q(); // Update entity
 			this.path = null;
 		}
+		this.R(); // Update entity
 	}
 
 	private void handleMove(Vec3D vector) {
 		int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
-		boolean inWater = this.ac();
-		boolean inLava = this.ad();
+		boolean inWater = this.getPlayer().getRemainingAir() < 20;
+		boolean inLava = this.getPlayer().getFireTicks() > 0;
 		if (vector != null) {
 			double diffX = vector.a - this.locX;
 			double diffZ = vector.c - this.locZ;
@@ -98,7 +98,7 @@ public class PathNPC extends EntityPlayer {
 			jumping = true;
 		}
 		if (jumping) {
-			jump();
+			jump(inWater, inLava);
 		}
 	}
 
@@ -108,22 +108,26 @@ public class PathNPC extends EntityPlayer {
 					pathingRange);
 		}
 		if (targetEntity != null) {
-			// Has target died?
-			if (!this.targetEntity.S()) {
+			if (this.targetEntity.dead) {
 				resetTarget();
 			}
 			if (targetEntity != null && targetAggro) {
-				float distanceToEntity = this.targetEntity.f(this);
+				double distanceToEntity = distance(this, this.targetEntity);
 				// If a direct line of sight exists.
 				if (this.e(this.targetEntity)) {
-					// In range?
 					if (isWithinAttackRange(this.targetEntity, distanceToEntity)) {
-						// Attack.
 						this.attackEntity(this.targetEntity);
 					}
 				}
 			}
 		}
+	}
+
+	private double distance(Entity first, Entity second) {
+		double diffX = first.locX - second.locX;
+		double diffY = first.locY - second.locY;
+		double diffZ = first.locZ - second.locZ;
+		return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
 	}
 
 	private void updatePathingState() {
@@ -184,15 +188,17 @@ public class PathNPC extends EntityPlayer {
 		this.a(this.az, this.aA);
 	}
 
-	private void jump() {
-		boolean inWater = this.ac();
-		boolean inLava = this.ad();
-		// Both values taken from minecraft source.
+	private Player getPlayer() {
+		return (Player) this.bukkitEntity;
+	}
+
+	private void jump(boolean inWater, boolean inLava) {
+		// Both magic values taken from minecraft source.
 		if (inWater || inLava) {
 			this.motY += 0.03999999910593033D;
 		} else if (this.onGround) {
 			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
-			// Default (0.42) not enough to get over a block (bug?).
+			// Augment defaults to actually get over a block.
 		}
 	}
 
@@ -223,15 +229,15 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private boolean isHoldingBow() {
-		return this.inventory.items[this.inventory.itemInHandIndex] != null
-				&& this.inventory.items[this.inventory.itemInHandIndex].id == 261;
+		return this.getPlayer().getItemInHand() != null
+				&& this.getPlayer().getItemInHand().getTypeId() == 261;
 	}
 
-	private boolean isWithinAttackRange(Entity entity, float distance) {
+	private boolean isWithinAttackRange(Entity entity, double distanceToEntity) {
 		// Bow distance from EntitySkeleton.
 		// Other from EntityCreature.
-		return (isHoldingBow() && distance < 10)
-				|| (this.attackTicks <= 0 && distance < 1.5F
+		return (isHoldingBow() && distanceToEntity < 10)
+				|| (this.attackTicks <= 0 && distanceToEntity < 1.5F
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e);
 	}
 
@@ -246,8 +252,10 @@ public class PathNPC extends EntityPlayer {
 			float distance = (float) (Math.sqrt(distX * distX + distZ * distZ) * 0.2F);
 			Vector velocity = new Vector(distX, arrowDistY + distance, distZ);
 
-			this.bukkitEntity.getWorld().spawnArrow(
-					this.getBukkitEntity().getLocation(), velocity, 0.6F, 12F);
+			this.getPlayer()
+					.getWorld()
+					.spawnArrow(this.getPlayer().getLocation(), velocity, 0.6F,
+							12F);
 		} else {
 			this.performAction(Animation.SWING_ARM);
 			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
@@ -258,7 +266,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
-		return 0.5F - this.world.m(i, j, k);
+		return 0.5F - this.world.n(i, j, k);
 	}
 
 	private void takeRandomPath() {
@@ -298,7 +306,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public EntityHuman getClosestPlayer(double range) {
-		EntityHuman entityhuman = this.world.a(this, range);
+		EntityHuman entityhuman = this.world.findNearbyPlayer(this, range);
 		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
 	}
 
