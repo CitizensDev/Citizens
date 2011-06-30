@@ -2,16 +2,14 @@ package com.citizens.Pathfinding;
 
 public abstract class PathFinder {
 	protected final PathHeuristic heuristic;
-	protected Point start;
-	protected Point end;
-	protected final PathWorld world;
 	protected final PathPlayer player;
+	protected final PathWorld pathWorld;
 
 	public PathFinder(PathHeuristic heuristic, PathPlayer player,
 			PathWorld pathWorld) {
 		this.heuristic = heuristic;
 		this.player = player;
-		this.world = pathWorld;
+		this.pathWorld = pathWorld;
 	}
 
 	public abstract boolean find();

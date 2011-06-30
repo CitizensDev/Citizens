@@ -303,7 +303,7 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 	 */
 	public E remove() {
 		final E result = get();
-		elements[1] = elements[--size];
+		elements[1] = elements[size--];
 
 		// set the unused element to 'null' so that the garbage collector
 		// can free the object if not used anywhere else.(remove reference)
@@ -352,7 +352,7 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 			// up then move onto other child
 			if (child != size
 					&& compare(elements[child + 1], elements[child]) < 0) {
-				++child;
+				child++;
 			}
 
 			// if we found resting place of bubble then terminate search
@@ -520,7 +520,7 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 					throw new NoSuchElementException();
 				}
 				lastReturnedIndex = index;
-				++index;
+				index++;
 				return elements[lastReturnedIndex];
 			}
 
@@ -531,7 +531,7 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 				}
 				elements[lastReturnedIndex] = elements[size];
 				elements[size] = null;
-				--size;
+				size--;
 				if (size != 0 && lastReturnedIndex <= size) {
 					int compareToParent = 0;
 					if (lastReturnedIndex > 1) {
@@ -552,7 +552,7 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 						}
 					}
 				}
-				++index;
+				index--;
 				lastReturnedIndex = -1;
 			}
 
@@ -582,4 +582,5 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 
 		return sb.toString();
 	}
+
 }

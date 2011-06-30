@@ -1,8 +1,6 @@
 package com.citizens.Pathfinding.Citizens;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,28 +15,34 @@ public class BinaryPathFinder extends PathFinder {
 	private final HashMap<Point, Integer> mindists = new HashMap<Point, Integer>();
 	private final ComparableComparator<PathNode> comparator = new ComparableComparator<PathNode>();
 	private Path lastPath;
+	private Point start, end;
 	private final byte SIZE_INCREMENT = 20;
+	private final World world;
 
 	public BinaryPathFinder(CitizensPathHeuristic heuristic,
 			NPCPathPlayer player, MinecraftPathWorld pathWorld) {
 		super(heuristic, player, pathWorld);
-		paths = new PriorityBuffer<PathNode>(2000, comparator);
+		this.world = pathWorld.getWorld();
+		paths = new PriorityBuffer<PathNode>(8000, comparator);
 	}
 
 	@Override
 	public boolean find() {
 		try {
 			PathNode root = new PathNode();
-			root.point = start; /* Needed if the initial point has a cost.  */
+			root.point = start;
 			calculateTotalCost(root, start, start, false);
 			expand(root);
 			while (true) {
 				PathNode p = paths.remove();
-				if (p == null)
+				if (p == null) {
+					clear();
 					return false;
+				}
 				Point last = p.point;
 				if (isGoal(last)) {
 					calculatePath(p); // Iterate back.
+					clear();
 					return true;
 				}
 				expand(p);
@@ -46,6 +50,7 @@ public class BinaryPathFinder extends PathFinder {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		clear();
 		return false;
 	}
 
@@ -56,8 +61,7 @@ public class BinaryPathFinder extends PathFinder {
 
 	@Override
 	public boolean valid(Point point) {
-		// TODO
-		return true;
+		return !isSolid(world.getBlockTypeIdAt(point.x, point.y, point.z));
 	}
 
 	@Override
@@ -65,6 +69,9 @@ public class BinaryPathFinder extends PathFinder {
 		this.start = start;
 		this.end = end;
 		this.lastPath = null;
+	}
+
+	private void clear() {
 		this.mindists.clear();
 		this.paths.clear();
 	}
@@ -76,8 +83,10 @@ public class BinaryPathFinder extends PathFinder {
 			mindists.put(p, path.totalCost);
 		else
 			return;
-		List<Point> successors = generateSuccessors(p);
+		Point[] successors = generateSuccessors(p);
 		for (Point t : successors) {
+			if (t == null)
+				continue;
 			PathNode newPath = new PathNode(path);
 			newPath.point = t;
 			calculateTotalCost(newPath, p, t, false);
@@ -95,15 +104,14 @@ public class BinaryPathFinder extends PathFinder {
 				System.arraycopy(retPath, 0, copy, 0, retPath.length);
 				retPath = copy;
 			}
-			retPath[added] = i.point;
-			++added;
+			retPath[added++] = i.point;
 		}
 		this.lastPath = new Path(retPath);
 	}
 
 	private int calculateHeuristic(Point start, Point end, boolean endPoint) {
-		return this.heuristic.calculate(start, end, this.world, this.player,
-				endPoint);
+		return this.heuristic.calculate(start, end, this.pathWorld,
+				this.player, endPoint);
 	}
 
 	private int calculateTotalCost(PathNode p, Point from, Point to,
@@ -116,16 +124,19 @@ public class BinaryPathFinder extends PathFinder {
 		return p.totalCost;
 	}
 
-	private List<Point> generateSuccessors(Point point) {
-		List<Point> points = new ArrayList<Point>();
+	private Point[] generateSuccessors(Point point) {
+		Point[] points = new Point[27];
 		Point temp = null;
+		byte counter = -1;
 		for (int x = point.x - 1; x <= point.x + 1; ++x) {
 			for (int y = point.y + 1; y >= point.y - 1; --y) {
 				for (int z = point.z - 1; z <= point.z + 1; ++z) {
+					++counter;
+					if (x == 0 && y == 0 && z == 0)
+						continue;
 					temp = new Point(x, y, z);
-					if (valid(temp)) {
-						points.add(temp);
-					}
+					if (valid(temp))
+						points[counter] = temp;
 				}
 			}
 		}
@@ -145,9 +156,5 @@ public class BinaryPathFinder extends PathFinder {
 
 	private boolean isGoal(Point last) {
 		return last.equals(this.end);
-	}
-
-	private World getWorld() {
-		return ((MinecraftPathWorld) this.world).getWorld();
 	}
 }

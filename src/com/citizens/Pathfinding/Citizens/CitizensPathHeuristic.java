@@ -19,8 +19,9 @@ public class CitizensPathHeuristic implements PathHeuristic {
 		World world = getWorld(pathWorld);
 		Block one = world.getBlockAt(first.x, first.y, first.z);
 		Block two = world.getBlockAt(second.x, second.y, second.z);
-		int ret = 1;
-		ret += first.distanceSquared(second);
+		int ret = 1 + first.distanceSquared(second);
+		if (endPoint)
+			ret *= 2;
 
 		// dark spaces are more likely to be dangerous.
 		ret += (two.getLightLevel() - one.getLightLevel());
