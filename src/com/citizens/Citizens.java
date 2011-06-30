@@ -1,7 +1,5 @@
 package com.citizens;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
@@ -84,24 +82,6 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		// TODO REMOVE AFTER 1.0.9 IS RELEASED
-		// CrapBukkit start
-		File file = new File("plugins/Citizens/npc-profiles.yml");
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				Messaging.log("Could not create npc-profiles.yml");
-			}
-		}
-		Messaging.log("Converting old nodes to new save system.....");
-		for (HumanNPC npc : NPCManager.getList().values()) {
-			Conversion.convertOldNodesToNewSaveSystem(npc);
-		}
-		Messaging
-				.log("Finished conversion. You must delete all old files manually.");
-		// CrapBukkit end
-
 		plugin = this;
 
 		// Register NPC types.
@@ -197,9 +177,22 @@ public class Citizens extends JavaPlugin {
 			++count;
 		}
 		String[] values = UIDList.split(",");
+		boolean convert = false;
+
+		if (Conversion.getNPCProfiles().getKeys("") == null
+				|| Conversion.getNPCProfiles().getKeys("").size() == 0) {
+			Messaging.log("Converting old nodes to new save system...");
+			convert = true;
+		}
 		if (values.length > 0 && !values[0].isEmpty()) {
 			for (String value : values) {
 				int UID = Integer.parseInt(value);
+				// TODO REMOVE AFTER 1.0.9 IS RELEASED
+				// CrapBukkit start
+				if (convert) {
+					Conversion.convert(UID);
+				}
+				// CrapBukkit end
 				Location loc = PropertyManager.getBasic().getLocation(UID);
 				if (loc != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
@@ -212,6 +205,9 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
+		if (convert)
+			Messaging
+					.log("Finished conversion. You must delete all old files manually.");
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new HealerTask(), HealerTask.getHealthRegenRate(),

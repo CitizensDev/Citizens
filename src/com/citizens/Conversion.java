@@ -2,7 +2,6 @@ package com.citizens;
 
 import com.citizens.Properties.PropertyHandler;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 // TODO REMOVE AFTER 1.0.9 IS RELEASED
 public class Conversion extends PropertyManager {
@@ -49,8 +48,7 @@ public class Conversion extends PropertyManager {
 	private static final PropertyHandler mode = new PropertyHandler(dir
 			+ "Wizards/mode.citizens");
 
-	public static void convertOldNodesToNewSaveSystem(HumanNPC npc) {
-		int UID = npc.getUID();
+	public static void convert(int UID) {
 		if (inventories.keyExists(UID)) {
 			profiles.setString(UID + ".inventory", inventories.getString(UID));
 		}
