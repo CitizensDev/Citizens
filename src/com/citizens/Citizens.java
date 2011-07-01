@@ -60,9 +60,9 @@ public class Citizens extends JavaPlugin {
 
 	public static final String separatorChar = "/";
 
-	private static final String codename = "Riot";
-	private static final String letter = "";
-	private static final String version = "1.0.9" + letter;
+	private static final String codename = "Realist";
+	private static final String letter = "i";
+	private static final String version = "1.0.8" + letter;
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
 
@@ -205,9 +205,10 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
-		if (convert)
+		if (convert) {
 			Messaging
 					.log("Finished conversion. You must delete all old files manually.");
+		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new HealerTask(), HealerTask.getHealthRegenRate(),
@@ -237,10 +238,9 @@ public class Citizens extends JavaPlugin {
 	public static boolean setMethod(Method method) {
 		if (economy == null) {
 			economy = method;
-		} else {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**

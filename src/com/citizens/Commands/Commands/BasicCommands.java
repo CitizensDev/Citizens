@@ -54,7 +54,7 @@ public class BasicCommands {
 
 	@CommandRequirements()
 	@Command(
-			aliases = { "citizens" },
+			aliases = "citizens",
 			usage = "help (page)",
 			desc = "view the Citizens help page",
 			modifiers = "help",

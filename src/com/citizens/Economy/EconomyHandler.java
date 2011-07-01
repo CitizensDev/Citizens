@@ -9,6 +9,7 @@ import com.citizens.Economy.Payment;
 import com.citizens.Economy.ServerEconomyInterface;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
+// TODO merge blacksmith methods with regular methods (also in ItemInterface and ServerEcoInterface)
 public class EconomyHandler {
 	private static boolean useEconomy = true;
 	private static boolean serverEconomyEnabled = false;
@@ -315,6 +316,27 @@ public class EconomyHandler {
 	}
 
 	/**
+	 * Gets what item ID or economy-plugin currency is being used for a
+	 * blacksmith operation
+	 * 
+	 * @param player
+	 * @param op
+	 * @param amount
+	 * @return
+	 */
+	public static String getBlacksmithPaymentType(Player player, Operation op,
+			String amount) {
+		if (useEconomy) {
+			if (useEcoPlugin()) {
+				return ServerEconomyInterface.format(amount);
+			} else {
+				return ItemInterface.getBlacksmithCurrency(player, op);
+			}
+		}
+		return "None";
+	}
+
+	/**
 	 * Gets what is necessary to complete an operation.
 	 * 
 	 * @param op
@@ -357,7 +379,7 @@ public class EconomyHandler {
 	 */
 	public static int getBlacksmithIndex(ItemStack item) {
 		int id = item.getTypeId();
-		if (id == 259 || id == 346) {
+		if (id == 259 || id == 346 || id == 359) {
 			return 0;
 		} else if ((id >= 268 && id <= 271) || id == 290) {
 			return 1;

@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.NPCs.NPCDataManager;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
@@ -98,7 +99,8 @@ public class NPCDataManager {
 			NPCManager.register(npc.getUID(), npc.getOwner());
 		}
 		p.sendMessage(StringUtils.wrap(npc.getName())
-				+ "'s in-hand item was set to " + StringUtils.wrap(mat.name())
+				+ "'s in-hand item was set to "
+				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))
 				+ ".");
 	}
 

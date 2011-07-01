@@ -101,11 +101,13 @@ public class Defaults {
 		nodes.put("prices.blacksmith.toolrepair.econplugin.stone", "0.75");
 		nodes.put("prices.blacksmith.toolrepair.econplugin.iron", "1");
 		nodes.put("prices.blacksmith.toolrepair.econplugin.diamond", "1.25");
+		nodes.put("prices.blacksmith.toolrepair.econplugin.misc", "0.50");
 		nodes.put("prices.blacksmith.toolrepair.item.wood", "1");
 		nodes.put("prices.blacksmith.toolrepair.item.gold", "2");
 		nodes.put("prices.blacksmith.toolrepair.item.stone", "3");
 		nodes.put("prices.blacksmith.toolrepair.item.iron", "4");
 		nodes.put("prices.blacksmith.toolrepair.item.diamond", "5");
+		nodes.put("prices.blacksmith.toolrepair.item.misc", "2");
 
 		nodes.put("prices.guard.creation.item", "10");
 		nodes.put("prices.guard.creation.item-currency-id", "37");

@@ -168,7 +168,7 @@ public class MessageUtils {
 				: UtilityProperties.getItemOverride(itemID);
 	}
 
-	private static String getMaterialName(int itemID) {
+	public static String getMaterialName(int itemID) {
 		String[] parts = Material.getMaterial(itemID).name().toLowerCase()
 				.split("_");
 		int count = 0;

@@ -77,10 +77,11 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String wrap(double string) {
-		if (string % 1 == 0)
+		if (string % 1 == 0) {
 			return ChatColor.YELLOW + "" + (int) string + ChatColor.GREEN;
-		else
+		} else {
 			return ChatColor.YELLOW + "" + string + ChatColor.GREEN;
+		}
 	}
 
 	/**

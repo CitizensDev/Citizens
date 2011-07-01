@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.ItemInterface;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
@@ -22,7 +21,7 @@ public class BlacksmithManager {
 		int id = item.getTypeId();
 		return (id >= 256 && id <= 259) || (id >= 267 && id <= 279)
 				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
-				|| id == 346;
+				|| id == 346 || id == 359;
 	}
 
 	/**
@@ -43,7 +42,7 @@ public class BlacksmithManager {
 	 * @param npc
 	 * @param op
 	 */
-	public static void buyItemRepair(Player player, HumanNPC npc, Operation op) {
+	public static void buyRepair(Player player, HumanNPC npc, Operation op) {
 		if (!EconomyHandler.useEconomy()
 				|| EconomyHandler.canBuyBlacksmith(player, op)) {
 			ItemStack item = player.getItemInHand();
@@ -52,17 +51,11 @@ public class BlacksmithManager {
 				if (paid > 0) {
 					item.setDurability((short) 0);
 					player.setItemInHand(item);
-					String msg = StringUtils.wrap(npc.getStrippedName())
-							+ " has repaired your item for ";
-					if (EconomyHandler.useEcoPlugin()) {
-						msg += StringUtils.wrap(EconomyHandler.getPaymentType(
-								op, "" + paid));
-					} else {
-						msg += StringUtils.wrap(ItemInterface
-								.getBlacksmithCurrency(player, op));
-					}
-					msg += ChatColor.GREEN + ".";
-					player.sendMessage(msg);
+					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+							+ " has repaired your item for "
+							+ StringUtils.wrap(EconomyHandler
+									.getBlacksmithPaymentType(player, op, ""
+											+ paid)));
 				}
 			} else {
 				player.sendMessage(ChatColor.RED

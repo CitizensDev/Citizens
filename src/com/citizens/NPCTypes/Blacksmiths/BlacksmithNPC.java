@@ -39,7 +39,7 @@ public class BlacksmithNPC extends Toggleable implements Clickable {
 				op = Operation.BLACKSMITH_ARMORREPAIR;
 			}
 			if (op != null) {
-				BlacksmithManager.buyItemRepair(player, npc, op);
+				BlacksmithManager.buyRepair(player, npc, op);
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
