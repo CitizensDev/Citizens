@@ -1,6 +1,7 @@
 package com.citizens.Pathfinding.Citizens;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,7 +13,7 @@ import com.citizens.Pathfinding.Point;
 
 public class BinaryPathFinder extends PathFinder {
 	private final PriorityBuffer<PathNode> paths;
-	private final HashMap<Point, Integer> mindists = new HashMap<Point, Integer>();
+	private final Map<Point, Integer> mindists = new HashMap<Point, Integer>();
 	private final ComparableComparator<PathNode> comparator = new ComparableComparator<PathNode>();
 	private Path lastPath;
 	private Point start, end;
@@ -83,7 +84,7 @@ public class BinaryPathFinder extends PathFinder {
 			mindists.put(p, path.totalCost);
 		else
 			return;
-		Point[] successors = generateSuccessors(p);
+		Point[] successors = generateSuccessors(path);
 		for (Point t : successors) {
 			if (t == null)
 				continue;
@@ -124,19 +125,21 @@ public class BinaryPathFinder extends PathFinder {
 		return p.totalCost;
 	}
 
-	private Point[] generateSuccessors(Point point) {
+	private Point[] generateSuccessors(PathNode path) {
 		Point[] points = new Point[27];
-		Point temp = null;
+		Point point = path.point, temp = null;
+		boolean notNull = path.parent != null;
 		byte counter = -1;
 		for (int x = point.x - 1; x <= point.x + 1; ++x) {
 			for (int y = point.y + 1; y >= point.y - 1; --y) {
 				for (int z = point.z - 1; z <= point.z + 1; ++z) {
 					++counter;
-					if (x == 0 && y == 0 && z == 0)
-						continue;
 					temp = new Point(x, y, z);
-					if (valid(temp))
+					if (notNull && path.parent.point.equals(temp))
+						continue;
+					if (valid(temp)) {
 						points[counter] = temp;
+					}
 				}
 			}
 		}

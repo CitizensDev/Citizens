@@ -83,11 +83,31 @@ public class BasicCommands {
 		Messaging.log("Reloading configuration settings....");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
 
+		PropertyManager.loadAll();
 		Constants.setupVariables();
-		PropertyManager.registerProperties();
 
 		Messaging.log("Reloaded.");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "citizens",
+			usage = "save",
+			desc = "save Citizens files",
+			modifiers = "save",
+			min = 1,
+			max = 1)
+	@CommandPermissions("admin")
+	public static void forceSsave(CommandContext args, Player player,
+			HumanNPC npc) {
+		Messaging.log("Saving...");
+		player.sendMessage(ChatColor.GREEN + "[Citizens] Saving...");
+
+		PropertyManager.saveState();
+
+		Messaging.log("Saved.");
+		player.sendMessage(ChatColor.GREEN + "[Citizens] Saved.");
 	}
 
 	@CommandRequirements()
@@ -136,11 +156,11 @@ public class BasicCommands {
 		int UID = NPCManager.register(firstArg, player.getLocation(),
 				player.getName());
 		NPCManager.setText(UID, texts);
-		
+
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
 		Messaging.send(player, created, Constants.creationMessage);
-		
+
 		if (EconomyHandler.useEconomy()) {
 			double paid = EconomyHandler.pay(Operation.BASIC_CREATION, player);
 			if (paid > 0) {
@@ -148,7 +168,7 @@ public class BasicCommands {
 						Operation.BASIC_CREATION, paid, firstArg, "", false));
 			}
 		}
-		
+
 		NPCManager.selectedNPCs.put(player.getName(), UID);
 		Messaging.send(player, created, Constants.selectionMessage);
 	}

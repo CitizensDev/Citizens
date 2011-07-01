@@ -11,7 +11,7 @@ import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class PropertyManager {
 	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
-	protected static final ConfigurationHandler profiles = new ConfigurationHandler(
+	protected static final CachedYAMLHandler profiles = new CachedYAMLHandler(
 			"plugins/Citizens/npc-profiles.yml");
 
 	public static void registerProperties() {
@@ -24,7 +24,7 @@ public class PropertyManager {
 		properties.put(type, saveable);
 	}
 
-	public static ConfigurationHandler getNPCProfiles() {
+	public static CachedYAMLHandler getNPCProfiles() {
 		return profiles;
 	}
 
@@ -86,7 +86,14 @@ public class PropertyManager {
 		}
 	}
 
-	public static void stateSave() {
+	public static void saveState() {
 		saveAllNPCs();
+	}
+
+	public static void loadAll() {
+		for (HumanNPC npc : NPCManager.getList().values()) {
+			load(npc);
+		}
+
 	}
 }

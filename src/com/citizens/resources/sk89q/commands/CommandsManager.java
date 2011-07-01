@@ -106,6 +106,8 @@ public abstract class CommandsManager<T extends Player> {
 	 */
 	protected Injector injector;
 
+	protected Map<Method, CommandRequirements> requirements = new HashMap<Method, CommandRequirements>();
+
 	/**
 	 * Register an class that contains commands (denoted by {@link Command}. If
 	 * no dependency injector is specified, then the methods of the class will
@@ -176,6 +178,18 @@ public abstract class CommandsManager<T extends Player> {
 					map.put(new CommandIdentifier(alias, modifier), method);
 				}
 			}
+
+			CommandRequirements requirements = null;
+			if (method.getDeclaringClass().isAnnotationPresent(
+					CommandRequirements.class)) {
+				requirements = method.getDeclaringClass().getAnnotation(
+						CommandRequirements.class);
+			}
+			if (method.isAnnotationPresent(CommandRequirements.class)) {
+				requirements = method.getAnnotation(CommandRequirements.class);
+			}
+			if (requirements != null)
+				this.requirements.put(method, requirements);
 
 			// We want to be able invoke with an instance
 			if (!isStatic) {
@@ -428,41 +442,23 @@ public abstract class CommandsManager<T extends Player> {
 				executeMethod(method, args, player, methodArgs, level + 1);
 			}
 		} else {
-			boolean hasAnnotation = false;
-			String requiredType = "";
-			boolean requireOwnership = false;
-			boolean requireSelected = false;
-			if (method.getClass()
-					.isAnnotationPresent(CommandRequirements.class)) {
-				CommandRequirements requirements = method.getClass()
-						.getAnnotation(CommandRequirements.class);
-				requiredType = requirements.requiredType();
-				requireOwnership = requirements.requireOwnership();
-				requireSelected = requirements.requireSelected();
-				hasAnnotation = true;
-			}
-			if (method.isAnnotationPresent(CommandRequirements.class)) {
-				CommandRequirements requirements = method
-						.getAnnotation(CommandRequirements.class);
-				requiredType = requirements.requiredType();
-				requireOwnership = requirements.requireOwnership();
-				requireSelected = requirements.requireSelected();
-				hasAnnotation = true;
-			}
-			if (hasAnnotation) {
-				if (requireSelected && npc == null) {
+			CommandRequirements requirements = this.requirements.get(method);
+
+			if (requirements != null) {
+				if (requirements.requireSelected() && npc == null) {
 					throw new RequirementMissingException(
 							MessageUtils.mustHaveNPCSelectedMessage);
 				}
-				if (requireOwnership && npc != null
+				if (requirements.requireOwnership() && npc != null
 						&& !NPCManager.validateOwnership(player, npc.getUID())) {
 					throw new RequirementMissingException(
 							MessageUtils.notOwnerMessage);
 				}
-				if (npc != null && !requiredType.isEmpty()) {
-					if (!npc.isType(requiredType)) {
+				if (npc != null && !requirements.requiredType().isEmpty()) {
+					if (!npc.isType(requirements.requiredType())) {
 						throw new RequirementMissingException(
-								"Your NPC isn't a " + requiredType + " yet.");
+								"Your NPC isn't a "
+										+ requirements.requiredType() + " yet.");
 					}
 				}
 			} else {

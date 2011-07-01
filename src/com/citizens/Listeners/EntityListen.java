@@ -46,15 +46,12 @@ public class EntityListen extends EntityListener implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		CreatureTask.onDamage(event.getEntity(), event);
 		HumanNPC npc = NPCManager.get(event.getEntity());
-		if (npc != null && !npc.isType("guard")) {
+		if (npc != null && !npc.callDamageEvent(event)) {
 			event.setCancelled(true);
 		}
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			if (npc != null) {
-				if (e.getEntity() instanceof Player) {
-					e.setCancelled(true);
-				}
 				if (e.getDamager() instanceof Player) {
 					Player player = (Player) e.getDamager();
 					npc.callLeftClick(player, npc);
@@ -79,7 +76,8 @@ public class EntityListen extends EntityListener implements Listener {
 					(Player) event.getTarget());
 		}
 		if (NPCManager.isNPC(event.getTarget())) {
-			event.setCancelled(true);
+			if (!NPCManager.get(event.getTarget()).callTargetEvent(event))
+				event.setCancelled(true);
 		}
 		NPCTargetEvent e = (NPCTargetEvent) event;
 		HumanNPC npc = NPCManager.get(e.getEntity());
@@ -96,7 +94,6 @@ public class EntityListen extends EntityListener implements Listener {
 			// Call text-display event
 			if (Citizens.plugin.validateTool("items.basic.talk-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
-
 				Player target = (Player) e.getTarget();
 				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
 						target, MessageUtils.getText(npc, target));

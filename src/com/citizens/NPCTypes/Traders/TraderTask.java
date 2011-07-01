@@ -17,9 +17,6 @@ import org.bukkit.inventory.PlayerInventory;
 import com.citizens.Economy.EconomyHandler;
 import com.citizens.Economy.Payment;
 import com.citizens.Economy.ServerEconomyInterface;
-import com.citizens.NPCTypes.Traders.Stockable;
-import com.citizens.NPCTypes.Traders.TraderManager;
-import com.citizens.NPCTypes.Traders.TraderNPC;
 import com.citizens.NPCTypes.Traders.TraderManager.Mode;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
@@ -34,7 +31,6 @@ public class TraderTask implements Runnable {
 	private final PlayerInventory previousTraderInv;
 	private final PlayerInventory previousPlayerInv;
 	private final Mode mode;
-	private final EntityPlayer mcPlayer;
 	private boolean stop;
 	private boolean said;
 
@@ -49,7 +45,6 @@ public class TraderTask implements Runnable {
 	public TraderTask(HumanNPC npc, Player player, Mode mode) {
 		this.npc = npc;
 		this.player = (CraftPlayer) player;
-		this.mcPlayer = this.player.getHandle();
 		// Create the inventory objects
 		this.previousTraderInv = new CraftInventoryPlayer(new InventoryPlayer(
 				null));
@@ -80,15 +75,15 @@ public class TraderTask implements Runnable {
 		stop = true;
 		int count = 0;
 		boolean found = false;
+		net.minecraft.server.ItemStack inhand = player.getHandle().inventory
+				.j();
 		for (ItemStack i : npc.getInventory().getContents()) {
-			if (!previousTraderInv.getItem(count).equals(i)
-					&& player.getHandle().inventory.j() == null) {
+			if (!previousTraderInv.getItem(count).equals(i) && inhand == null) {
 				rewind();
 				break;
 			}
 			if (!previousTraderInv.getItem(count).equals(i)
-					&& previousTraderInv.getItem(count).getTypeId() == mcPlayer.inventory
-							.j().id) {
+					&& previousTraderInv.getItem(count).getTypeId() == inhand.id) {
 				found = true;
 				handleTraderClick(count, npc.getInventory());
 				break;
@@ -100,13 +95,12 @@ public class TraderTask implements Runnable {
 		if (!found) {
 			for (ItemStack i : player.getInventory().getContents()) {
 				if (!previousPlayerInv.getItem(count).equals(i)
-						&& player.getHandle().inventory.j() == null) {
+						&& inhand == null) {
 					rewind();
 					break;
 				}
 				if (!previousPlayerInv.getItem(count).equals(i)
-						&& previousPlayerInv.getItem(count).getTypeId() == mcPlayer.inventory
-								.j().id) {
+						&& previousPlayerInv.getItem(count).getTypeId() == inhand.id) {
 					handlePlayerClick(count, player.getInventory());
 					break;
 				}
@@ -118,10 +112,10 @@ public class TraderTask implements Runnable {
 		clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
 
 		// Set the itemstack in the player's cursor to null.
-		mcPlayer.inventory.b((net.minecraft.server.ItemStack) null);
+		player.getHandle().inventory.b((net.minecraft.server.ItemStack) null);
 		// Get rid of the picture on the cursor.
 		Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
-		mcPlayer.netServerHandler.sendPacket(packet);
+		player.getHandle().netServerHandler.sendPacket(packet);
 		stop = false;
 	}
 

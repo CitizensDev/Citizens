@@ -8,10 +8,14 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.Damageable;
 import com.citizens.Interfaces.NPCFactory;
+import com.citizens.Interfaces.Targetable;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCs.NPCData;
 import com.citizens.Properties.PropertyManager;
@@ -183,5 +187,29 @@ public class HumanNPC extends NPC {
 
 	public void setWaypoints(WaypointPath waypoints) {
 		this.waypoints = waypoints;
+	}
+
+	public boolean callDamageEvent(EntityDamageEvent event) {
+		boolean found = false;
+		for (Toggleable t : types.values()) {
+			if (t instanceof Damageable) {
+				((Damageable) t).onDamage(event);
+				if (!found)
+					found = true;
+			}
+		}
+		return found;
+	}
+
+	public boolean callTargetEvent(EntityTargetEvent event) {
+		boolean found = false;
+		for (Toggleable t : types.values()) {
+			if (t instanceof Targetable) {
+				((Targetable) t).onTarget(event);
+				if (!found)
+					found = true;
+			}
+		}
+		return found;
 	}
 }

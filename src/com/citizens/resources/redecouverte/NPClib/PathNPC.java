@@ -339,7 +339,6 @@ public class PathNPC extends EntityPlayer {
 		pather.find();
 		ours = System.nanoTime() - ours;
 		Messaging.log("Time difference: " + ((ours - mc) / 1000000) + "ms");*/
-
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
