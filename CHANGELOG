@@ -1,0 +1,23 @@
+===== Citizens - NPCs for Bukkit =====
+By fullwall and aPunch
+
+Supports:
+-Minecraft Beta 1.7_01
+-CraftBukkit 950
+-Permissions 2.7.x and 3.x
+-iConomy 4 & 5
+-BOSEconomy 0.6.2
+-EssentialsEco 2.3.x
+
+Changelog:
+--- v1.0.9 ---
+-updated to Minecraft Beta 1.7_01
+-new save system, all NPCs will now save in npc-profiles.yml instead of in multiple files
+-fixed many bugs with commands (using sk89q's command interfaces - thanks sk89q!)
+-added API events for plugin authors - documentation to come later
+-added Evil NPCs, see mobs.yml for configurable settings
+-added ability to have custom NPC creation and selection messages in citizens.yml
+-blacksmith pricing changed - you can now specify the base price for each material (diamond, gold, wood, etc.)
+-added waypoints for NPCs - type /npc path in-game to edit an NPC's waypoints
+-moved item overrides to citizens.yml
+-data values now work for traders

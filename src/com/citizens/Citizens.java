@@ -60,9 +60,9 @@ public class Citizens extends JavaPlugin {
 
 	public static final String separatorChar = "/";
 
-	private static final String codename = "Realist";
-	private static final String letter = "i";
-	private static final String version = "1.0.8" + letter;
+	private static final String codename = "Odyssey";
+	private static final String letter = "";
+	private static final String version = "1.0.9" + letter;
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
 

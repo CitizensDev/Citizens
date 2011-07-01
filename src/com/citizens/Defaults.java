@@ -29,7 +29,9 @@ public class Defaults {
 		nodes.put("general.chat.format", "[%name%]: ");
 		nodes.put("general.chat.slashes-to-spaces", "true");
 		nodes.put("general.chat.selection-message",
-				"<g>You selected <y><npc><g> (ID <y><id><g>).");
+				"<g>You selected <y><npc><g> (ID <y><npcid><g>).");
+		nodes.put("general.chat.creation-message",
+				"<g>The NPC <y><npc><g> was born!");
 		nodes.put(
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;");

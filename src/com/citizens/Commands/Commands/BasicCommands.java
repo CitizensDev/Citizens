@@ -136,11 +136,11 @@ public class BasicCommands {
 		int UID = NPCManager.register(firstArg, player.getLocation(),
 				player.getName());
 		NPCManager.setText(UID, texts);
-
-		NPCManager.get(UID).getNPCData().setOwner(player.getName());
-
-		player.sendMessage(ChatColor.GREEN + "The NPC "
-				+ StringUtils.wrap(firstArg) + " was born!");
+		
+		HumanNPC created = NPCManager.get(UID);
+		created.getNPCData().setOwner(player.getName());
+		Messaging.send(player, created, Constants.creationMessage);
+		
 		if (EconomyHandler.useEconomy()) {
 			double paid = EconomyHandler.pay(Operation.BASIC_CREATION, player);
 			if (paid > 0) {
@@ -148,10 +148,9 @@ public class BasicCommands {
 						Operation.BASIC_CREATION, paid, firstArg, "", false));
 			}
 		}
+		
 		NPCManager.selectedNPCs.put(player.getName(), UID);
-		player.sendMessage(ChatColor.GREEN + "You selected NPC "
-				+ StringUtils.wrap(firstArg) + ", ID " + StringUtils.wrap(UID)
-				+ ".");
+		Messaging.send(player, created, Constants.selectionMessage);
 	}
 
 	@Command(
@@ -254,14 +253,9 @@ public class BasicCommands {
 			}
 			return;
 		}
-		if (npc != null) {
-			NPCManager.remove(npc.getUID());
-			NPCManager.selectedNPCs.remove(player.getName());
-			player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
-		} else {
-			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
-			return;
-		}
+		NPCManager.remove(npc.getUID());
+		NPCManager.selectedNPCs.remove(player.getName());
+		player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 	}
 
 	@Command(

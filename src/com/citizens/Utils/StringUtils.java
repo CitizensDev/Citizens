@@ -45,12 +45,15 @@ public class StringUtils {
 	public static Material parseMaterial(String material) {
 		Material mat = Material.matchMaterial(material);
 		if (mat == null) {
-			if (!UtilityProperties.getItemOverride(
-					Material.getMaterial(material).getId()).isEmpty()) {
-				mat = parseMaterial(UtilityProperties.getItemOverride(Material
-						.getMaterial(material).getId()));
-			} else if (isNumber(material)) {
-				mat = Material.getMaterial(Integer.parseInt(material));
+			Material newMat = Material.getMaterial(material);
+			if (newMat != null) {
+				if (!UtilityProperties.getItemOverride(newMat.getId())
+						.isEmpty()) {
+					mat = parseMaterial(UtilityProperties
+							.getItemOverride(newMat.getId()));
+				} else if (isNumber(material)) {
+					mat = Material.getMaterial(Integer.parseInt(material));
+				}
 			}
 		}
 		return mat;

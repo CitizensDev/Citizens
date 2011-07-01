@@ -43,7 +43,8 @@ public class Constants {
 	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;";
 	public static String pirateStealMessages = "I stole yer booty.;Aaargh.;";
 	public static String evilDrops = "260,357,2256,";
-	public static String selectionMessage = "<g>You selected <y><npc><g> (ID <y><id><g>).";
+	public static String selectionMessage = "<g>You selected <y><npc><g> (ID <y><npcid><g>).";
+	public static String creationMessage = "<g>The NPC <y><npc><g> was born!";
 
 	public static boolean defaultFollowingEnabled = true;
 	public static boolean payForHealerHeal = true;

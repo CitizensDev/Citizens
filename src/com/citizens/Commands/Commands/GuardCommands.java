@@ -1,5 +1,6 @@
 package com.citizens.Commands.Commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -152,11 +153,22 @@ public class GuardCommands {
 				player.sendMessage(ChatColor.RED
 						+ "That player is already whitelisted.");
 			} else {
-				guard.addToWhitelist(allowed);
-				player.sendMessage(ChatColor.GREEN + "You added "
-						+ StringUtils.wrap(allowed) + " to "
-						+ StringUtils.wrap(npc.getStrippedName() + "'s")
-						+ " whitelist.");
+				String msg = ChatColor.GREEN + "You added ";
+				if(args.getString(1).equalsIgnoreCase("all")) {
+					List<String> emptyList = new ArrayList<String>();
+					guard.setWhitelist(emptyList);
+					emptyList.add("all");
+					msg += "all players";
+				} else {
+					guard.addToWhitelist(allowed);
+					msg += StringUtils.wrap(allowed);
+					player.sendMessage(ChatColor.GREEN + "You added "
+							+ StringUtils.wrap(allowed) + " to "
+							+ StringUtils.wrap(npc.getStrippedName() + "'s")
+							+ " whitelist.");
+				}
+				msg += " to " + StringUtils.wrap(npc.getStrippedName() + "'s") + " whitelist";
+				player.sendMessage(msg);
 			}
 		}
 	}

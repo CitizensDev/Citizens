@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.citizens.Constants;
 import com.citizens.Events.NPCCreatureSpawnEvent;
 import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Utils.Messaging;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
 import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
@@ -90,14 +89,11 @@ public class CreatureTask implements Runnable {
 							if (areEntitiesOnBlock(world.getChunkAt(x, z), x,
 									y, z)) {
 								if (canSpawn(type)) {
-									HumanNPC npc = NPCSpawner
-											.spawnNPC(
-													0,
-													UtilityProperties
-															.getRandomName(type),
-													loc.getWorld(), x, y, z,
-													random.nextInt(360), 0,
-													type);
+									HumanNPC npc = NPCSpawner.spawnNPC(0,
+											UtilityProperties
+													.getRandomName(type), loc
+													.getWorld(), x, y, z,
+											random.nextInt(360), 0, type);
 									// call NPC creature-spawning event
 									NPCCreatureSpawnEvent spawnEvent = new NPCCreatureSpawnEvent(
 											npc, loc);
@@ -107,17 +103,9 @@ public class CreatureTask implements Runnable {
 										return null;
 									}
 									return npc;
-								} else {
-									Messaging.debug(type + " cannot spawn.");
 								}
-							} else {
-								Messaging.debug(type + " is not on a block.");
 							}
-						} else {
-							Messaging.debug("Chunk not loaded.");
 						}
-					} else {
-						Messaging.debug("Invalid spawn location.");
 					}
 				}
 			}

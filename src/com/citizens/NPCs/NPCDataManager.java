@@ -55,29 +55,30 @@ public class NPCDataManager {
 	/**
 	 * Sets the in-hand item of an npc.
 	 * 
-	 * @param p
+	 * @param player
 	 * @param npc
 	 * @param material
 	 */
-	public static void setItemInHand(Player p, HumanNPC npc, String material) {
+	public static void setItemInHand(Player player, HumanNPC npc,
+			String material) {
 		Material mat = StringUtils.parseMaterial(material);
 		if (mat == null) {
-			p.sendMessage(ChatColor.RED + "Incorrect item name.");
+			player.sendMessage(ChatColor.RED + "Incorrect item name.");
 			return;
 		}
-		if (!p.getInventory().contains(mat)) {
-			p.sendMessage(ChatColor.RED
+		if (!player.getInventory().contains(mat)) {
+			player.sendMessage(ChatColor.RED
 					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
 			return;
 		}
 		if (npc.isType("trader")) {
-			p.sendMessage(ChatColor.GRAY
+			player.sendMessage(ChatColor.GRAY
 					+ "That NPC is a trader. Please put the item manually in the first slot of the trader's inventory instead.");
 			return;
 		}
-		int slot = p.getInventory().first(mat);
-		ItemStack item = decreaseItemStack(p.getInventory().getItem(slot));
-		p.getInventory().setItem(slot, item);
+		int slot = player.getInventory().first(mat);
+		ItemStack item = decreaseItemStack(player.getInventory().getItem(slot));
+		player.getInventory().setItem(slot, item);
 
 		ArrayList<Integer> items = npc.getNPCData().getItems();
 
@@ -98,7 +99,7 @@ public class NPCDataManager {
 			NPCManager.removeForRespawn(npc.getUID());
 			NPCManager.register(npc.getUID(), npc.getOwner());
 		}
-		p.sendMessage(StringUtils.wrap(npc.getName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ "'s in-hand item was set to "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))
 				+ ".");

@@ -34,9 +34,9 @@ public class GuardTask implements Runnable {
 				if (guard.isBouncer()) {
 					Location loc = npc.getLocation();
 					for (Entity temp : npc.getPlayer().getNearbyEntities(
-							guard.getHalvedRadius(),
+							guard.getHalvedProtectionRadius(),
 							guard.getProtectionRadius(),
-							guard.getHalvedRadius())) {
+							guard.getHalvedProtectionRadius())) {
 						if (!(temp instanceof LivingEntity)) {
 							continue;
 						}
@@ -84,7 +84,7 @@ public class GuardTask implements Runnable {
 								}
 							} else {
 								name = entity.getClass().getName()
-										.toLowerCase();
+										.toLowerCase().replace("entity", "");
 							}
 							if (LocationUtils.checkLocation(ownerloc,
 									entity.getLocation(), 25)) {
@@ -139,8 +139,7 @@ public class GuardTask implements Runnable {
 					}
 				} else if (!(entity instanceof Player)
 						&& CreatureType.fromName(StringUtils.capitalise(name)) != null) {
-					if (isBlacklisted(npc, name)
-							|| guard.getBlacklist().contains("all")) {
+					if (isBlacklisted(npc, name)) {
 						attack(entity, npc);
 					}
 				}

@@ -394,8 +394,9 @@ public abstract class CommandsManager<T extends Player> {
 			Object[] methodArgs, int level) throws CommandException {
 		String cmdName = args[level];
 		String modifier = "";
-		if (args.length > level + 1)
+		if (args.length > level + 1) {
 			modifier = args[level + 1];
+		}
 
 		Map<CommandIdentifier, Method> map = commands.get(parent);
 		Method method = map.get(new CommandIdentifier(cmdName.toLowerCase(),
@@ -429,7 +430,8 @@ public abstract class CommandsManager<T extends Player> {
 		} else {
 			boolean hasAnnotation = false;
 			String requiredType = "";
-			boolean requireOwnership = false, requireSelected = false;
+			boolean requireOwnership = false;
+			boolean requireSelected = false;
 			if (method.getClass()
 					.isAnnotationPresent(CommandRequirements.class)) {
 				CommandRequirements requirements = method.getClass()
@@ -440,7 +442,6 @@ public abstract class CommandsManager<T extends Player> {
 				hasAnnotation = true;
 			}
 			if (method.isAnnotationPresent(CommandRequirements.class)) {
-				// Method annotations override class annotations.
 				CommandRequirements requirements = method
 						.getAnnotation(CommandRequirements.class);
 				requiredType = requirements.requiredType();
@@ -464,6 +465,8 @@ public abstract class CommandsManager<T extends Player> {
 								"Your NPC isn't a " + requiredType + " yet.");
 					}
 				}
+			} else {
+				Messaging.debug("No annotation present.");
 			}
 		}
 		Command cmd = method.getAnnotation(Command.class);

@@ -182,6 +182,15 @@ public class GuardNPC extends Toggleable implements Clickable {
 	}
 
 	/**
+	 * Get the halved protection radius for a bouncer
+	 * 
+	 * @return
+	 */
+	public double getHalvedProtectionRadius() {
+		return this.radius / 2;
+	}
+
+	/**
 	 * Set the protection radius for a bouncer
 	 * 
 	 * @param radius
@@ -193,10 +202,6 @@ public class GuardNPC extends Toggleable implements Clickable {
 	@Override
 	public String getType() {
 		return "guard";
-	}
-
-	public double getHalvedRadius() {
-		return this.radius / 2;
 	}
 
 	@Override
