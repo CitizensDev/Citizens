@@ -63,10 +63,16 @@ public class EvilCreatureNPC extends CreatureNPC {
 	public void onDamage(EntityDamageEvent event) {
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
-			Entity entity = e.getDamager();
-			if (entity != null) {
+			Entity damager = e.getDamager();
+			if (damager != null) {
 				this.targetAggro = true;
-				this.targetEntity = ((CraftEntity) entity).getHandle();
+				this.targetEntity = ((CraftEntity) damager).getHandle();
+				// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
+				/*
+				 * if (e.getEntity().isDead() && damager instanceof Player) {
+				 * ServerUtils.sendAchievement((Player) damager,
+				 * "Removed Herobrine.", Material.DIAMOND_SWORD); }
+				 */
 			}
 		}
 	}
@@ -98,6 +104,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 				player.sendMessage(ChatColor.GREEN + "You have tamed "
 						+ StringUtils.wrap(npc.getStrippedName())
 						+ "! You can now toggle it to be any type.");
+				// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
+				// ServerUtils.sendAchievement(player, "Misunderstood.",
+				// Material.CAKE);
 			} else {
 				Messaging
 						.send(player,

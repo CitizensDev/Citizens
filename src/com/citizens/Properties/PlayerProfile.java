@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Questers;
+package com.citizens.Properties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import com.citizens.NPCTypes.Questers.Objectives.Objective.Progress;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCTypes.Questers.Quests.QuestProgress;
 import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.ConfigurationHandler;
 
 public class PlayerProfile {
 	private final ConfigurationHandler profile;
@@ -22,6 +21,7 @@ public class PlayerProfile {
 	private final List<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
 	private QuestProgress progress;
 	private final String name;
+	private List<String> achievements;
 
 	public PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
@@ -29,6 +29,15 @@ public class PlayerProfile {
 		this.name = name;
 		this.load();
 		rank = 1;
+		achievements = profile.getKeys("achievements");
+	}
+
+	public List<String> getAchievements() {
+		return achievements;
+	}
+
+	public void addAchievement(String achievement) {
+		achievements.add(achievement);
 	}
 
 	public List<CompletedQuest> getCompletedQuests() {

@@ -28,6 +28,10 @@ public class PropertyManager {
 		return profiles;
 	}
 
+	public static PlayerProfile getPlayerProfile(String name) {
+		return new PlayerProfile(name);
+	}
+
 	public static boolean npcHasType(HumanNPC npc, String type) {
 		return profiles.pathExists(npc.getUID() + "." + type);
 	}

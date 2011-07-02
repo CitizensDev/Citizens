@@ -25,8 +25,8 @@ import com.citizens.Utils.StringUtils;
 public class NPCManager {
 	public static final Map<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
-	private static final Map<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	public static final Map<String, Integer> pathEditors = new HashMap<String, Integer>();
+	private static final Map<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	private static NPCList list = new NPCList();
 
 	/**
@@ -401,15 +401,9 @@ public class NPCManager {
 
 	public static void selectNPC(Player player, HumanNPC npc) {
 		selectedNPCs.put(player.getName(), npc.getUID());
-		// send an "Achievement Get!" notification to the client using
-		// BukkitContrib
-		// ContribPlayer cPlayer = (ContribPlayer) player;
-		// cPlayer.sendNotification("Citizens Achievement", "NPC select!",
-		// Material.BOOK);
 	}
 
 	public static void deselectNPC(Player player) {
 		selectedNPCs.remove(player.getName());
 	}
-
 }
