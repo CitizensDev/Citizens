@@ -3,15 +3,15 @@ package com.citizens.Commands.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.NPCTypes.Wizards.WizardNPC;
 import com.citizens.NPCTypes.Wizards.WizardManager.WizardMode;
+import com.citizens.NPCTypes.Wizards.WizardNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.sk89q.Command;
+import com.citizens.Resources.sk89q.CommandContext;
+import com.citizens.Resources.sk89q.CommandPermissions;
+import com.citizens.Resources.sk89q.CommandRequirements;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.sk89q.commands.Command;
-import com.citizens.resources.sk89q.commands.CommandContext;
-import com.citizens.resources.sk89q.commands.CommandPermissions;
-import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,

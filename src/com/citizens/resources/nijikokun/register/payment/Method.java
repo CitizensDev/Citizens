@@ -1,4 +1,4 @@
-package com.citizens.resources.nijikokun.register.payment;
+package com.citizens.Resources.nijikokun.register.payment;
 
 import org.bukkit.plugin.Plugin;
 

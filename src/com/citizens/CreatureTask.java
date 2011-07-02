@@ -17,10 +17,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.citizens.Constants;
 import com.citizens.Events.NPCCreatureSpawnEvent;
 import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
-import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
-import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.NPCSpawner;
+import com.citizens.Resources.NPClib.Creatures.CreatureNPC;
+import com.citizens.Resources.NPClib.Creatures.CreatureNPCType;
 
 public class CreatureTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new ConcurrentHashMap<Integer, CreatureNPC>();

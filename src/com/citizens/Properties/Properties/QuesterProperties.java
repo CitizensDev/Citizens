@@ -2,9 +2,9 @@ package com.citizens.Properties.Properties;
 
 import com.citizens.Interfaces.Saveable;
 import com.citizens.NPCTypes.Questers.QuesterNPC;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class QuesterProperties extends PropertyManager implements Saveable {
 	private static final String isQuester = ".quester.toggle";
@@ -42,7 +42,7 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("quester", NPCManager.getFactory("quester"));
+			npc.registerType("quester", NPCTypeManager.getFactory("quester"));
 			getQuests(npc);
 		}
 		saveState(npc);

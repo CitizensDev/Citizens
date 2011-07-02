@@ -13,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.citizens.Commands.CommandHandler;
 import com.citizens.Implementations.OperationPurchaser;
-import com.citizens.Interfaces.NPCFactory;
 import com.citizens.Interfaces.NPCType;
 import com.citizens.Listeners.EntityListen;
 import com.citizens.Listeners.PlayerListen;
@@ -30,6 +29,7 @@ import com.citizens.NPCTypes.Traders.TraderNPC;
 import com.citizens.NPCTypes.Wizards.WizardNPC;
 import com.citizens.NPCTypes.Wizards.WizardTask;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Properties.Properties.BlacksmithProperties;
 import com.citizens.Properties.Properties.GuardProperties;
@@ -38,17 +38,17 @@ import com.citizens.Properties.Properties.QuesterProperties;
 import com.citizens.Properties.Properties.TraderProperties;
 import com.citizens.Properties.Properties.UtilityProperties;
 import com.citizens.Properties.Properties.WizardProperties;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.nijikokun.register.payment.Method;
+import com.citizens.Resources.sk89q.CitizensCommandsManager;
+import com.citizens.Resources.sk89q.CommandPermissionsException;
+import com.citizens.Resources.sk89q.CommandUsageException;
+import com.citizens.Resources.sk89q.MissingNestedCommandException;
+import com.citizens.Resources.sk89q.RequirementMissingException;
+import com.citizens.Resources.sk89q.UnhandledCommandException;
+import com.citizens.Resources.sk89q.WrappedCommandException;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
-import com.citizens.resources.nijikokun.register.payment.Method;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.sk89q.commands.CitizensCommandsManager;
-import com.citizens.resources.sk89q.commands.CommandPermissionsException;
-import com.citizens.resources.sk89q.commands.CommandUsageException;
-import com.citizens.resources.sk89q.commands.MissingNestedCommandException;
-import com.citizens.resources.sk89q.commands.RequirementMissingException;
-import com.citizens.resources.sk89q.commands.UnhandledCommandException;
-import com.citizens.resources.sk89q.commands.WrappedCommandException;
 
 /**
  * Citizens for Bukkit
@@ -150,25 +150,20 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void registerTypes() {
-		NPCManager.registerType(new NPCType("blacksmith",
-				new BlacksmithProperties(), new OperationPurchaser(),
-				new NPCFactory(BlacksmithNPC.class)), true);
-		NPCManager
-				.registerType(new NPCType("guard", new GuardProperties(),
-						new OperationPurchaser(),
-						new NPCFactory(GuardNPC.class)), true);
-		NPCManager.registerType(new NPCType("healer", new HealerProperties(),
-				new OperationPurchaser(), new NPCFactory(HealerNPC.class)),
+		OperationPurchaser purchaser = new OperationPurchaser();
+		NPCTypeManager.registerType(new NPCType("blacksmith",
+				new BlacksmithProperties(), purchaser, BlacksmithNPC.class),
 				true);
-		NPCManager.registerType(new NPCType("quester", new QuesterProperties(),
-				new OperationPurchaser(), new NPCFactory(QuesterNPC.class)),
-				true);
-		NPCManager.registerType(new NPCType("trader", new TraderProperties(),
-				new OperationPurchaser(), new NPCFactory(TraderNPC.class)),
-				true);
-		NPCManager.registerType(new NPCType("wizard", new WizardProperties(),
-				new OperationPurchaser(), new NPCFactory(WizardNPC.class)),
-				true);
+		NPCTypeManager.registerType(new NPCType("guard", new GuardProperties(),
+				purchaser, GuardNPC.class), true);
+		NPCTypeManager.registerType(new NPCType("healer",
+				new HealerProperties(), purchaser, HealerNPC.class), true);
+		NPCTypeManager.registerType(new NPCType("quester",
+				new QuesterProperties(), purchaser, QuesterNPC.class), true);
+		NPCTypeManager.registerType(new NPCType("trader",
+				new TraderProperties(), purchaser, TraderNPC.class), true);
+		NPCTypeManager.registerType(new NPCType("wizard",
+				new WizardProperties(), purchaser, WizardNPC.class), true);
 	}
 
 	@Override

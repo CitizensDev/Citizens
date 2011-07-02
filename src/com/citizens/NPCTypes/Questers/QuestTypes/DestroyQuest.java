@@ -6,7 +6,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class DestroyQuest extends QuestIncrementer {
 	public DestroyQuest(HumanNPC npc, Player player, String questName,

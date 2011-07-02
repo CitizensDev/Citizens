@@ -2,7 +2,7 @@ package com.citizens.Interfaces;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public interface Clickable {
 	/**

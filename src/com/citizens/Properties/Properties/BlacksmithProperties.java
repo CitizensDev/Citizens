@@ -1,9 +1,9 @@
 package com.citizens.Properties.Properties;
 
 import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class BlacksmithProperties extends PropertyManager implements Saveable {
 	private final String isBlacksmith = ".blacksmith.toggle";
@@ -18,7 +18,8 @@ public class BlacksmithProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc))
-			npc.registerType("blacksmith", NPCManager.getFactory("blacksmith"));
+			npc.registerType("blacksmith",
+					NPCTypeManager.getFactory("blacksmith"));
 		saveState(npc);
 	}
 

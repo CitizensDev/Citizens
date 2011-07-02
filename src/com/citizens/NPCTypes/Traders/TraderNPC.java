@@ -13,8 +13,8 @@ import com.citizens.Interfaces.Clickable;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCTypes.Traders.TraderManager.Mode;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.InventoryUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderNPC extends Toggleable implements Clickable {
 	private boolean unlimited = false;

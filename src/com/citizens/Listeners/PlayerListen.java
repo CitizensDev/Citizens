@@ -21,7 +21,7 @@ import com.citizens.NPCTypes.Guards.GuardTask;
 import com.citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCs.NPCManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class PlayerListen extends PlayerListener implements Listener {
 

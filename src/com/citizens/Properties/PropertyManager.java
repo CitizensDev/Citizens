@@ -7,7 +7,7 @@ import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.Properties.BasicProperties;
 import com.citizens.Properties.Properties.QuestProperties;
 import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class PropertyManager {
 	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();

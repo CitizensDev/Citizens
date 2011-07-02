@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class HuntQuest extends QuestIncrementer {
 	public HuntQuest(HumanNPC npc, Player player, String questName,

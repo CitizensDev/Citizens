@@ -9,11 +9,11 @@ import com.citizens.Constants;
 import com.citizens.Misc.ActionManager;
 import com.citizens.Misc.CachedAction;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.NPCSpawner;
+import com.citizens.Resources.NPClib.WaypointPath;
 import com.citizens.Utils.LocationUtils;
 import com.citizens.Utils.MessageUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
-import com.citizens.resources.redecouverte.NPClib.WaypointPath;
 
 public class TickTask implements Runnable {
 	// How far an NPC can 'see'

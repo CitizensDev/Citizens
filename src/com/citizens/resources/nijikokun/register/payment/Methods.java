@@ -1,4 +1,4 @@
-package com.citizens.resources.nijikokun.register.payment;
+package com.citizens.Resources.nijikokun.register.payment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,11 +6,10 @@ import java.util.Set;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import com.citizens.resources.nijikokun.register.payment.Method;
-import com.citizens.resources.nijikokun.register.payment.methods.BOSE;
-import com.citizens.resources.nijikokun.register.payment.methods.EE17;
-import com.citizens.resources.nijikokun.register.payment.methods.iCo4;
-import com.citizens.resources.nijikokun.register.payment.methods.iCo5;
+import com.citizens.Resources.nijikokun.register.payment.methods.BOSE;
+import com.citizens.Resources.nijikokun.register.payment.methods.EE17;
+import com.citizens.Resources.nijikokun.register.payment.methods.iCo4;
+import com.citizens.Resources.nijikokun.register.payment.methods.iCo5;
 
 /**
  * Methods.java Controls the getting / setting of methods & the method of

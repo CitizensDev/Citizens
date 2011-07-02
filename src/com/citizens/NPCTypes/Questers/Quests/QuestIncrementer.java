@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import com.citizens.NPCTypes.Questers.Objectives.Objective;
 import com.citizens.NPCTypes.Questers.Objectives.Objective.Progress;
 import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public abstract class QuestIncrementer {
 	private final HumanNPC quester;

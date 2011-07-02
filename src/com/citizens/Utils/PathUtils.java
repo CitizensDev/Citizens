@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
 import com.citizens.Constants;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class PathUtils {
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,

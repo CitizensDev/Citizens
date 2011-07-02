@@ -1,6 +1,6 @@
 package com.citizens.Interfaces;
 
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public interface Saveable {
 	/**

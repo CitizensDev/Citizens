@@ -11,7 +11,7 @@ import org.bukkit.event.Event;
 import com.citizens.NPCTypes.Questers.PlayerProfile;
 import com.citizens.NPCTypes.Questers.Quest;
 import com.citizens.NPCTypes.Questers.Quests.QuestProgress;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class QuestManager {
 	public enum QuestType {

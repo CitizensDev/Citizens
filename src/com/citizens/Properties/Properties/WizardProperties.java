@@ -5,9 +5,9 @@ import org.bukkit.entity.CreatureType;
 import com.citizens.Interfaces.Saveable;
 import com.citizens.NPCTypes.Wizards.WizardManager.WizardMode;
 import com.citizens.NPCTypes.Wizards.WizardNPC;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class WizardProperties extends PropertyManager implements Saveable {
 	private static final String isWizard = ".wizard.toggle";
@@ -90,7 +90,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("wizard", NPCManager.getFactory("wizard"));
+			npc.registerType("wizard", NPCTypeManager.getFactory("wizard"));
 			WizardNPC wizard = npc.getToggleable("wizard");
 			wizard.setLocations(getLocations(npc.getUID()));
 			wizard.setMana(getMana(npc.getUID()));

@@ -17,8 +17,8 @@ import com.citizens.NPCTypes.Traders.ItemPrice;
 import com.citizens.NPCTypes.Traders.Stockable;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.Properties.UtilityProperties;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.PageUtils.PageInstance;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class MessageUtils {
 	public static final String noPermissionsMessage = ChatColor.RED

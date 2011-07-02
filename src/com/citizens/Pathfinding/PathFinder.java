@@ -20,6 +20,8 @@ public abstract class PathFinder {
 
 	public abstract void recalculate(Point start, Point finish);
 
+	public abstract void recalculate(PathWorld world, Point start, Point end);
+
 	public interface PathHeuristic {
 		public int calculate(Point first, Point second, PathWorld pathWorld,
 				PathPlayer player, boolean endPoint);
@@ -30,4 +32,5 @@ public abstract class PathFinder {
 
 	public interface PathWorld {
 	}
+
 }

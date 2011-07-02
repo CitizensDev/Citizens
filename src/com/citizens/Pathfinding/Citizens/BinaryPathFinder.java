@@ -3,28 +3,26 @@ package com.citizens.Pathfinding.Citizens;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Material;
-import org.bukkit.World;
-
 import com.citizens.Pathfinding.Path;
 import com.citizens.Pathfinding.PathFinder;
 import com.citizens.Pathfinding.PathNode;
 import com.citizens.Pathfinding.Point;
+import com.citizens.Resources.sk89q.BlockType;
+import com.citizens.Utils.Messaging;
 
 public class BinaryPathFinder extends PathFinder {
 	private final PriorityBuffer<PathNode> paths;
 	private final Map<Point, Integer> mindists = new HashMap<Point, Integer>();
-	private final ComparableComparator<PathNode> comparator = new ComparableComparator<PathNode>();
 	private Path lastPath;
 	private Point start, end;
 	private final byte SIZE_INCREMENT = 20;
-	private final World world;
+	private ChunkCache cache;
 
 	public BinaryPathFinder(CitizensPathHeuristic heuristic,
-			NPCPathPlayer player, MinecraftPathWorld pathWorld) {
+			NPCPathPlayer player, CachedMinecraftPathWorld pathWorld) {
 		super(heuristic, player, pathWorld);
-		this.world = pathWorld.getWorld();
-		paths = new PriorityBuffer<PathNode>(8000, comparator);
+		this.cache = pathWorld.getCache();
+		paths = new PriorityBuffer<PathNode>(8000);
 	}
 
 	@Override
@@ -34,6 +32,7 @@ public class BinaryPathFinder extends PathFinder {
 			root.point = start;
 			calculateTotalCost(root, start, start, false);
 			expand(root);
+			int iterations = 0;
 			while (true) {
 				PathNode p = paths.remove();
 				if (p == null) {
@@ -47,6 +46,11 @@ public class BinaryPathFinder extends PathFinder {
 					return true;
 				}
 				expand(p);
+				++iterations;
+				if (iterations > 20000) {
+					Messaging.log("took too long");
+					return false;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,11 +66,19 @@ public class BinaryPathFinder extends PathFinder {
 
 	@Override
 	public boolean valid(Point point) {
-		return !isSolid(world.getBlockTypeIdAt(point.x, point.y, point.z));
+		return !isSolid(cache.getBlockId(point.x, point.y, point.z));
 	}
 
 	@Override
 	public void recalculate(Point start, Point end) {
+		this.start = start;
+		this.end = end;
+		this.lastPath = null;
+	}
+
+	@Override
+	public void recalculate(PathWorld world, Point start, Point end) {
+		this.cache = ((CachedMinecraftPathWorld) world).getCache();
 		this.start = start;
 		this.end = end;
 		this.lastPath = null;
@@ -128,15 +140,15 @@ public class BinaryPathFinder extends PathFinder {
 	private Point[] generateSuccessors(PathNode path) {
 		Point[] points = new Point[27];
 		Point point = path.point, temp = null;
-		boolean notNull = path.parent != null;
+		// boolean notNull = path.parent != null;
 		byte counter = -1;
 		for (int x = point.x - 1; x <= point.x + 1; ++x) {
 			for (int y = point.y + 1; y >= point.y - 1; --y) {
 				for (int z = point.z - 1; z <= point.z + 1; ++z) {
 					++counter;
 					temp = new Point(x, y, z);
-					if (notNull && path.parent.point.equals(temp))
-						continue;
+					// if (notNull && path.parent.point.equals(temp))
+					// continue;
 					if (valid(temp)) {
 						points[counter] = temp;
 					}
@@ -147,14 +159,7 @@ public class BinaryPathFinder extends PathFinder {
 	}
 
 	private boolean isSolid(int id) {
-		if (id < 1) {
-			return false;
-		}
-		if ((Material.getMaterial(id) != null)
-				&& (net.minecraft.server.Block.byId[id].a())) {
-			return true;
-		}
-		return id == Material.GLASS.getId() || id == Material.LEAVES.getId();
+		return !BlockType.canPassThrough(id);
 	}
 
 	private boolean isGoal(Point last) {

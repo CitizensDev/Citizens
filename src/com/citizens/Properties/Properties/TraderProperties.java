@@ -9,9 +9,9 @@ import com.citizens.NPCTypes.Traders.Check;
 import com.citizens.NPCTypes.Traders.ItemPrice;
 import com.citizens.NPCTypes.Traders.Stockable;
 import com.citizens.NPCTypes.Traders.TraderNPC;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class TraderProperties extends PropertyManager implements Saveable {
 	private final String isTrader = ".trader.toggle";
@@ -128,7 +128,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("trader", NPCManager.getFactory("trader"));
+			npc.registerType("trader", NPCTypeManager.getFactory("trader"));
 			TraderNPC trader = npc.getToggleable("trader");
 			npc.setBalance(getBalance(npc.getUID()));
 			trader.setUnlimited(getUnlimited(npc.getUID()));

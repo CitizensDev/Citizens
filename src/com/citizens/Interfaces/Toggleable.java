@@ -1,7 +1,7 @@
 package com.citizens.Interfaces;
 
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public abstract class Toggleable {
 	protected final HumanNPC npc;

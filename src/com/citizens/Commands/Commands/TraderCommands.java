@@ -13,17 +13,17 @@ import com.citizens.Economy.ServerEconomyInterface;
 import com.citizens.NPCTypes.Traders.ItemPrice;
 import com.citizens.NPCTypes.Traders.Stockable;
 import com.citizens.NPCTypes.Traders.TraderNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.sk89q.Command;
+import com.citizens.Resources.sk89q.CommandContext;
+import com.citizens.Resources.sk89q.CommandPermissions;
+import com.citizens.Resources.sk89q.CommandRequirements;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
 import com.citizens.Utils.PageUtils;
-import com.citizens.Utils.StringUtils;
 import com.citizens.Utils.PageUtils.PageInstance;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.sk89q.commands.Command;
-import com.citizens.resources.sk89q.commands.CommandContext;
-import com.citizens.resources.sk89q.commands.CommandPermissions;
-import com.citizens.resources.sk89q.commands.CommandRequirements;
+import com.citizens.Utils.StringUtils;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -51,9 +51,7 @@ public class TraderCommands {
 	 * @param player
 	 * @param npc
 	 */
-	@CommandRequirements(
-			requiredType = "trader",
-			requireSelected = true)
+	@CommandRequirements(requiredType = "trader", requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "money (give|take) (amount)",
@@ -68,7 +66,7 @@ public class TraderCommands {
 			player.sendMessage(MessageUtils.noEconomyMessage);
 			return;
 		}
-		switch(args.argsLength()) {
+		switch (args.argsLength()) {
 		case 1:
 			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has "
@@ -101,10 +99,11 @@ public class TraderCommands {
 				} else {
 					player.sendMessage(ChatColor.RED
 							+ "You don't have enough money for that! Need "
-							+ StringUtils.wrap(
-									ServerEconomyInterface.format(amount
+							+ StringUtils.wrap(ServerEconomyInterface
+									.format(amount
 											- ServerEconomyInterface
-													.getBalance(player.getName())),
+													.getBalance(player
+															.getName())),
 									ChatColor.RED) + " more.");
 				}
 			} else if (args.getString(1).contains("t")) {
@@ -119,7 +118,8 @@ public class TraderCommands {
 							+ StringUtils.wrap(npc.getStrippedName())
 							+ ". Your balance is now "
 							+ StringUtils.wrap(ServerEconomyInterface
-									.getFormattedBalance(player.getName())) + ".");
+									.getFormattedBalance(player.getName()))
+							+ ".");
 				} else {
 					player.sendMessage(ChatColor.RED
 							+ "The trader doesn't have enough money for that! It needs "
@@ -130,14 +130,15 @@ public class TraderCommands {
 				}
 			} else {
 				player.sendMessage(ChatColor.RED + "Invalid argument type "
-						+ StringUtils.wrap(args.getString(1), ChatColor.RED) + ".");
+						+ StringUtils.wrap(args.getString(1), ChatColor.RED)
+						+ ".");
 			}
 			break;
 		default:
 			Messaging.sendError(player, "Incorrect syntax. See /trader help");
 			break;
 		}
-		
+
 	}
 
 	/**
@@ -148,9 +149,7 @@ public class TraderCommands {
 	 * @param args
 	 * @param selling
 	 */
-	@CommandRequirements(
-			requiredType = "trader",
-			requireSelected = true)
+	@CommandRequirements(requiredType = "trader", requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "list [buy|sell]",

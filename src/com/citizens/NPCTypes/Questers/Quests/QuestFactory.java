@@ -27,8 +27,8 @@ import com.citizens.NPCTypes.Questers.Rewards.PermissionReward;
 import com.citizens.NPCTypes.Questers.Rewards.QuestReward;
 import com.citizens.NPCTypes.Questers.Rewards.RankReward;
 import com.citizens.Properties.ConfigurationHandler;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.Messaging;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class QuestFactory {
 

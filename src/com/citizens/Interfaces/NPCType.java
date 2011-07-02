@@ -9,10 +9,10 @@ public class NPCType {
 	private final Saveable saveable;
 
 	public NPCType(String type, Saveable saveable, NPCPurchaser purchaser,
-			NPCFactory factory) {
+			Class<? extends Toggleable> clazz) {
 		this.saveable = saveable;
 		this.purchaser = purchaser;
-		this.factory = factory;
+		this.factory = new NPCFactory(clazz);
 		this.type = type;
 	}
 

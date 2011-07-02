@@ -22,9 +22,9 @@ import com.citizens.Interfaces.Listener;
 import com.citizens.NPCTypes.Questers.QuesterNPC;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 /**
  * Entity Listener
@@ -76,9 +76,8 @@ public class EntityListen extends EntityListener implements Listener {
 					(Player) event.getTarget());
 		}
 		if (NPCManager.isNPC(event.getTarget())) {
-			if (!NPCManager.get(event.getTarget()).callTargetEvent(event)) {
+			if (!NPCManager.get(event.getTarget()).callTargetEvent(event))
 				event.setCancelled(true);
-			}
 		}
 		NPCTargetEvent e = (NPCTargetEvent) event;
 		HumanNPC npc = NPCManager.get(e.getEntity());
@@ -87,7 +86,6 @@ public class EntityListen extends EntityListener implements Listener {
 			if (Citizens.plugin.validateTool("items.basic.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
-					// NPCManager.selectedNPCs.put(player.getName(), npc.getUID());
 					NPCManager.selectNPC(player, npc);
 					Messaging.send(player, npc, Constants.selectionMessage);
 					return;

@@ -16,10 +16,10 @@ import com.citizens.Misc.CachedAction;
 import com.citizens.Misc.NPCLocation;
 import com.citizens.NPCTypes.Guards.GuardNPC;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.LocationUtils;
 import com.citizens.Utils.PathUtils;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class GuardTask implements Runnable {
 	private LivingEntity entity;

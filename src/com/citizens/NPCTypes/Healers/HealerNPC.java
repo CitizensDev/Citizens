@@ -11,10 +11,10 @@ import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Interfaces.Clickable;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCTypes.Healers.HealerNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.InventoryUtils;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class HealerNPC extends Toggleable implements Clickable {
 	private int health = 10;

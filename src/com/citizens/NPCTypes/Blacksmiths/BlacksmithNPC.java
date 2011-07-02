@@ -6,8 +6,8 @@ import com.citizens.Permission;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Interfaces.Clickable;
 import com.citizens.Interfaces.Toggleable;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithNPC extends Toggleable implements Clickable {
 

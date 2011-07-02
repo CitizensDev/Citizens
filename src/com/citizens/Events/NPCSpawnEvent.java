@@ -2,7 +2,7 @@ package com.citizens.Events;
 
 import org.bukkit.event.Cancellable;
 
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class NPCSpawnEvent extends NPCEvent implements Cancellable {
 	private static final long serialVersionUID = -6321822806485360689L;

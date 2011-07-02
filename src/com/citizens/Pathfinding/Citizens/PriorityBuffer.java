@@ -89,11 +89,6 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 	 */
 	protected boolean ascendingOrder;
 
-	/**
-	 * The comparator used to order the elements
-	 */
-	protected Comparator<? super E> comparator;
-
 	// -----------------------------------------------------------------------
 	/**
 	 * Constructs a new empty buffer that sorts in ascending order by the
@@ -213,8 +208,6 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 
 		// +1 as 0 is noop
 		this.elements = (E[]) new Object[capacity + 1];
-		this.comparator = (Comparator<? super E>) (comparator == null ? ComparableComparator.INSTANCE
-				: comparator);
 	}
 
 	// -----------------------------------------------------------------------
@@ -225,15 +218,6 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 	 */
 	public boolean isAscendingOrder() {
 		return ascendingOrder;
-	}
-
-	/**
-	 * Gets the comparator being used for this buffer, null is natural order.
-	 * 
-	 * @return the comparator in use, null is natural order
-	 */
-	public Comparator<? super E> comparator() {
-		return comparator;
 	}
 
 	// -----------------------------------------------------------------------
@@ -482,8 +466,9 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 	 * @return -ve if a less than b, 0 if they are equal, +ve if a greater than
 	 *         b
 	 */
+	@SuppressWarnings("unchecked")
 	protected int compare(E a, E b) {
-		return comparator.compare(a, b);
+		return ((Comparable<E>) a).compareTo(b);
 	}
 
 	/**

@@ -6,8 +6,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.LocationUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class LocationQuest extends QuestIncrementer {
 	public LocationQuest(HumanNPC npc, Player player, String questName,

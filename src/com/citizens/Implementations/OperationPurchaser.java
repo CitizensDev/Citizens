@@ -6,8 +6,8 @@ import com.citizens.Permission;
 import com.citizens.Economy.EconomyHandler;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Interfaces.NPCPurchaser;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class OperationPurchaser implements NPCPurchaser {
 	private Operation getOperation(String type) {

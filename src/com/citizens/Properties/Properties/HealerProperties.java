@@ -2,9 +2,9 @@ package com.citizens.Properties.Properties;
 
 import com.citizens.Interfaces.Saveable;
 import com.citizens.NPCTypes.Healers.HealerNPC;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class HealerProperties extends PropertyManager implements Saveable {
 	private final String isHealer = ".healer.toggle";
@@ -43,7 +43,7 @@ public class HealerProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("healer", NPCManager.getFactory("healer"));
+			npc.registerType("healer", NPCTypeManager.getFactory("healer"));
 			HealerNPC healer = npc.getToggleable("healer");
 			healer.setHealth(getHealth(npc.getUID()));
 			healer.setLevel(getLevel(npc.getUID()));

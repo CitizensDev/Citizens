@@ -5,13 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.Payment;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Properties.Properties.UtilityProperties;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.nijikokun.register.payment.Method.MethodAccount;
 import com.citizens.Utils.MessageUtils;
-import com.citizens.resources.nijikokun.register.payment.Method.MethodAccount;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class ServerEconomyInterface {
 	public static final String addendum = ".econplugin";

@@ -9,8 +9,8 @@ import com.citizens.Constants;
 import com.citizens.Interfaces.Storage;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.ConfigurationHandler;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPCType;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.Creatures.CreatureNPCType;
 
 public class UtilityProperties {
 	private static ConfigurationHandler economy;

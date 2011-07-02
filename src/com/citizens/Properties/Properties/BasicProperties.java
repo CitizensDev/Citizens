@@ -21,8 +21,8 @@ import com.citizens.Interfaces.Saveable;
 import com.citizens.NPCs.NPCData;
 import com.citizens.NPCs.NPCDataManager;
 import com.citizens.Properties.PropertyManager;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class BasicProperties extends PropertyManager implements Saveable {
 	public static final Logger log = Logger.getLogger("Minecraft");

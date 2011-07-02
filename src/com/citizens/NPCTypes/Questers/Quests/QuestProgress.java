@@ -8,7 +8,7 @@ import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
 import com.citizens.NPCTypes.Questers.Quests.QuestFactory;
 import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class QuestProgress {

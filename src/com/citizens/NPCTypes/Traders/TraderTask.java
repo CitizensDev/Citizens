@@ -18,9 +18,9 @@ import com.citizens.Economy.EconomyHandler;
 import com.citizens.Economy.Payment;
 import com.citizens.Economy.ServerEconomyInterface;
 import com.citizens.NPCTypes.Traders.TraderManager.Mode;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class TraderTask implements Runnable {
 	private final HumanNPC npc;

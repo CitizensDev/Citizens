@@ -12,9 +12,9 @@ import com.citizens.Constants;
 import com.citizens.Misc.ActionManager;
 import com.citizens.Misc.CachedAction;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.LocationUtils;
 import com.citizens.Utils.MessageUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class PirateTask implements Runnable {

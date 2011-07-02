@@ -3,6 +3,7 @@ package com.citizens.NPCs;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -15,20 +16,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.citizens.Constants;
 import com.citizens.Permission;
 import com.citizens.Events.NPCSpawnEvent;
-import com.citizens.Interfaces.NPCFactory;
-import com.citizens.Interfaces.NPCType;
 import com.citizens.Properties.PropertyManager;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.NPCList;
+import com.citizens.Resources.NPClib.NPCSpawner;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.redecouverte.NPClib.NPCList;
-import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
 
 public class NPCManager {
-	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
-	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
-	private static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
-	public static final HashMap<String, Integer> pathEditors = new HashMap<String, Integer>();
-	public static final HashMap<String, NPCType> types = new HashMap<String, NPCType>();
+	public static final Map<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
+	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
+	private static final Map<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
+	public static final Map<String, Integer> pathEditors = new HashMap<String, Integer>();
 	private static NPCList list = new NPCList();
 
 	/**
@@ -234,7 +232,7 @@ public class NPCManager {
 	 * 
 	 * @return
 	 */
-	public ConcurrentHashMap<Integer, String> getUIDs() {
+	public Map<Integer, String> getUIDs() {
 		return GlobalUIDs;
 	}
 
@@ -400,38 +398,18 @@ public class NPCManager {
 	public static int getSelected(Player player) {
 		return selectedNPCs.get(player.getName());
 	}
-	
+
 	public static void selectNPC(Player player, HumanNPC npc) {
 		selectedNPCs.put(player.getName(), npc.getUID());
-		// send an "Achievement Get!" notification to the client using BukkitContrib
+		// send an "Achievement Get!" notification to the client using
+		// BukkitContrib
 		// ContribPlayer cPlayer = (ContribPlayer) player;
 		// cPlayer.sendNotification("Citizens Achievement", "NPC select!",
-		//		Material.BOOK);
+		// Material.BOOK);
 	}
 
 	public static void deselectNPC(Player player) {
 		selectedNPCs.remove(player.getName());
 	}
 
-	public static NPCFactory getFactory(String string) {
-		return types.get(string).factory();
-	}
-
-	public static void registerType(NPCType type) {
-		types.put(type.getType(), type);
-	}
-
-	public static boolean validType(String type) {
-		return types.get(type) != null;
-	}
-
-	public static NPCType getType(String type) {
-		return types.get(type);
-	}
-
-	public static void registerType(NPCType type, boolean autosave) {
-		if (autosave)
-			type.registerAutosave();
-		registerType(type);
-	}
 }

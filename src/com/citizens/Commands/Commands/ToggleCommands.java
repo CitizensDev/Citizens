@@ -6,15 +6,15 @@ import org.bukkit.entity.Player;
 import com.citizens.Interfaces.NPCPurchaser;
 import com.citizens.Interfaces.NPCType;
 import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.sk89q.Command;
+import com.citizens.Resources.sk89q.CommandContext;
+import com.citizens.Resources.sk89q.CommandPermissions;
+import com.citizens.Resources.sk89q.CommandRequirements;
 import com.citizens.Utils.Messaging;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.sk89q.commands.Command;
-import com.citizens.resources.sk89q.commands.CommandContext;
-import com.citizens.resources.sk89q.commands.CommandPermissions;
-import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 public class ToggleCommands {
 
@@ -30,14 +30,14 @@ public class ToggleCommands {
 	public static void toggleNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
-		if (!NPCManager.validType(type)) {
+		if (!NPCTypeManager.validType(type)) {
 			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
 			return;
 		}
 		if (!PropertyManager.npcHasType(npc, type)) {
-			buyState(player, npc, NPCManager.getType(type));
+			buyState(player, npc, NPCTypeManager.getType(type));
 		} else {
-			toggleState(player, npc, NPCManager.getType(type), false);
+			toggleState(player, npc, NPCTypeManager.getType(type), false);
 		}
 	}
 
@@ -118,14 +118,15 @@ public class ToggleCommands {
 	 */
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
-			for (NPCType t : NPCManager.types.values()) {
+			for (NPCType t : NPCTypeManager.getTypes().values()) {
 				if (!npc.isType(t.getType())) {
 					toggleState(player, npc, t, false);
 				}
 			}
 		} else {
 			for (Toggleable t : npc.types()) {
-				toggleState(player, npc, NPCManager.getType(t.getType()), false);
+				toggleState(player, npc, NPCTypeManager.getType(t.getType()),
+						false);
 			}
 		}
 	}

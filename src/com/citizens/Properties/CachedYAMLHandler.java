@@ -142,7 +142,12 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public int getInt(String path, int value) {
-		return Integer.parseInt(get(path));
+		if (valueExists(path)) {
+			return getInt(path);
+		} else {
+			setInt(path, value);
+		}
+		return value;
 	}
 
 	@Override
@@ -175,7 +180,12 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public double getDouble(String path, double value) {
-		return Double.parseDouble(get(path));
+		if (valueExists(path)) {
+			return getDouble(path);
+		} else {
+			setDouble(path, value);
+		}
+		return value;
 	}
 
 	@Override
@@ -208,7 +218,12 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public long getLong(String path, long value) {
-		return Long.parseLong(get(path));
+		if (valueExists(path)) {
+			return getLong(path);
+		} else {
+			setLong(path, value);
+		}
+		return value;
 	}
 
 	@Override
@@ -238,7 +253,12 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public boolean getBoolean(String path, boolean value) {
-		return Boolean.parseBoolean(get(path));
+		if (valueExists(path)) {
+			return getBoolean(path);
+		} else {
+			setBoolean(path, value);
+		}
+		return value;
 	}
 
 	@Override

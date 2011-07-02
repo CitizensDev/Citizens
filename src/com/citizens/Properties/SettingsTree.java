@@ -16,7 +16,7 @@ public class SettingsTree {
 			temp = new Branch(progressive.toString(), previous);
 			previous = temp;
 			if (getTree().get(progressive.toString()) == null)
-				getTree().put(progressive.toString(), temp);
+				getTree().put(progressive.toString(), previous);
 			if (index != branches.length - 1)
 				progressive.append(".");
 			++index;
@@ -37,6 +37,7 @@ public class SettingsTree {
 	}
 
 	public void remove(String path) {
+		get(path).removeUpwards();
 		for (String key : get(path).getTree().keySet()) {
 			tree.remove(key);
 		}
@@ -46,10 +47,25 @@ public class SettingsTree {
 	public class Branch {
 		private final Map<String, Branch> tree = new HashMap<String, Branch>();
 		private String value = "";
+		private final Branch parent;
+		private final String path;
 
 		public Branch(String path, Branch parent) {
+			this.path = path;
+			this.parent = parent;
 			if (parent != null)
 				parent.addBranch(path, this);
+		}
+
+		public void removeUpwards() {
+			if (this.parent != null)
+				this.parent.remove(path);
+		}
+
+		private void remove(String path) {
+			this.tree.remove(path);
+			if (this.parent != null)
+				this.parent.remove(path);
 		}
 
 		public Map<String, Branch> getTree() {
@@ -57,6 +73,8 @@ public class SettingsTree {
 		}
 
 		private void addBranch(String path, Branch branch) {
+			if (parent != null)
+				parent.addBranch(path, branch);
 			this.tree.put(path, branch);
 		}
 

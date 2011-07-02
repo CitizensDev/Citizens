@@ -13,10 +13,10 @@ import com.citizens.NPCTypes.Questers.Quest;
 import com.citizens.NPCTypes.Questers.Reward;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCTypes.Questers.Rewards.QuestReward;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.PageUtils;
 import com.citizens.Utils.StringUtils;
 import com.citizens.Utils.PageUtils.PageInstance;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class QuesterNPC extends Toggleable implements Clickable {

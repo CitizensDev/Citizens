@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class Messaging {
 	private static final Logger log = Logger.getLogger("Minecraft");
@@ -39,18 +39,10 @@ public class Messaging {
 		return message;
 	}
 
-	public static void log(String... message) {
+	public static void log(Object... messages) {
 		StringBuilder builder = new StringBuilder();
-		for (String string : message) {
-			builder.append(string + " ");
-		}
-		log(builder.toString(), Level.INFO);
-	}
-
-	public static void log(int... messages) {
-		StringBuilder builder = new StringBuilder();
-		for (int string : messages) {
-			builder.append(string + " ");
+		for (Object string : messages) {
+			builder.append(string.toString() + " ");
 		}
 		log(builder.toString(), Level.INFO);
 	}

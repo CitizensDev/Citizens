@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import com.citizens.Constants;
 import com.citizens.NPCTypes.Healers.HealerNPC;
 import com.citizens.NPCs.NPCManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class HealerTask implements Runnable {
 	@Override

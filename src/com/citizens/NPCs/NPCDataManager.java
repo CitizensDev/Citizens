@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.NPCs.NPCDataManager;
 import com.citizens.NPCs.NPCManager;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class NPCDataManager {
 	/**

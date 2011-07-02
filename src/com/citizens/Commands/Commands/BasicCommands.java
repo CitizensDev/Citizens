@@ -19,16 +19,16 @@ import com.citizens.NPCs.NPCDataManager;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Properties.Properties.UtilityProperties;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.sk89q.Command;
+import com.citizens.Resources.sk89q.CommandContext;
+import com.citizens.Resources.sk89q.CommandPermissions;
+import com.citizens.Resources.sk89q.CommandRequirements;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
 import com.citizens.Utils.ServerUtils;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.sk89q.commands.Command;
-import com.citizens.resources.sk89q.commands.CommandContext;
-import com.citizens.resources.sk89q.commands.CommandPermissions;
-import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
@@ -168,8 +168,7 @@ public class BasicCommands {
 						Operation.BASIC_CREATION, paid, firstArg, "", false));
 			}
 		}
-
-		NPCManager.selectNPC(player, created);
+		NPCManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created, Constants.selectionMessage);
 	}
 
@@ -415,7 +414,7 @@ public class BasicCommands {
 					+ "You need to have the item in your inventory to add it to the NPC.");
 			return;
 		}
-		if ((mat.getId() < 298 || mat.getId() > 317) 
+		if ((mat.getId() < 298 || mat.getId() > 317)
 				&& (mat.getId() != 86 && mat.getId() != 91)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "That can't be used as an armor material.");
@@ -447,7 +446,8 @@ public class BasicCommands {
 		}
 		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ "'s armor was set to "
-				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId())) + ".");
+				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))
+				+ ".");
 	}
 
 	@CommandRequirements()

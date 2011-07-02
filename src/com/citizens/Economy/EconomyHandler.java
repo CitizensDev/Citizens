@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.Economy.ItemInterface;
 import com.citizens.Economy.Payment;
 import com.citizens.Economy.ServerEconomyInterface;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 // TODO merge blacksmith methods with regular methods (also in ItemInterface and ServerEcoInterface)
 public class EconomyHandler {

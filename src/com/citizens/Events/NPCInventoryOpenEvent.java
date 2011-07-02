@@ -3,7 +3,7 @@ package com.citizens.Events;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class NPCInventoryOpenEvent extends NPCEvent implements Cancellable {
 	private static final long serialVersionUID = 1L;

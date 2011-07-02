@@ -2,7 +2,7 @@ package com.citizens.Interfaces;
 
 import java.lang.reflect.Constructor;
 
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
 
 public class NPCFactory {
 	private Constructor<? extends Toggleable> constructor = null;

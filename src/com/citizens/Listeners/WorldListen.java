@@ -14,8 +14,8 @@ import com.citizens.CreatureTask;
 import com.citizens.Interfaces.Listener;
 import com.citizens.Misc.NPCLocation;
 import com.citizens.NPCs.NPCManager;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.redecouverte.NPClib.Creatures.CreatureNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.NPClib.Creatures.CreatureNPC;
 
 public class WorldListen extends WorldListener implements Listener {
 	private final ConcurrentHashMap<NPCLocation, Integer> toRespawn = new ConcurrentHashMap<NPCLocation, Integer>();

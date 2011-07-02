@@ -8,14 +8,14 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.citizens.NPCTypes.Guards.GuardNPC;
+import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Resources.sk89q.Command;
+import com.citizens.Resources.sk89q.CommandContext;
+import com.citizens.Resources.sk89q.CommandPermissions;
+import com.citizens.Resources.sk89q.CommandRequirements;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.Messaging;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
-import com.citizens.resources.sk89q.commands.Command;
-import com.citizens.resources.sk89q.commands.CommandContext;
-import com.citizens.resources.sk89q.commands.CommandPermissions;
-import com.citizens.resources.sk89q.commands.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -154,7 +154,7 @@ public class GuardCommands {
 						+ "That player is already whitelisted.");
 			} else {
 				String msg = ChatColor.GREEN + "You added ";
-				if(args.getString(1).equalsIgnoreCase("all")) {
+				if (args.getString(1).equalsIgnoreCase("all")) {
 					List<String> emptyList = new ArrayList<String>();
 					guard.setWhitelist(emptyList);
 					emptyList.add("all");
@@ -167,7 +167,8 @@ public class GuardCommands {
 							+ StringUtils.wrap(npc.getStrippedName() + "'s")
 							+ " whitelist.");
 				}
-				msg += " to " + StringUtils.wrap(npc.getStrippedName() + "'s") + " whitelist";
+				msg += " to " + StringUtils.wrap(npc.getStrippedName() + "'s")
+						+ " whitelist";
 				player.sendMessage(msg);
 			}
 		}

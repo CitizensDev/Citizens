@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Economy.EconomyHandler;
 import com.citizens.Economy.EconomyHandler.Operation;
+import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.StringUtils;
-import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 
 public class BlacksmithManager {
 
