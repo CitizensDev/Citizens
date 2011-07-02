@@ -77,8 +77,9 @@ public class CachedYAMLHandler implements Storage {
 
 	public boolean pathExists(String path) {
 		if (this.topLevel.get(path) != null) {
-			if (this.topLevel.get(path).startsWith(path))
+			if (this.topLevel.get(path).startsWith(path)) {
 				return true;
+			}
 		}
 		return this.properties.get(path) != null
 				|| this.topLevel.get(path) != null;

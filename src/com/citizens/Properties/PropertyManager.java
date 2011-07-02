@@ -94,6 +94,5 @@ public class PropertyManager {
 		for (HumanNPC npc : NPCManager.getList().values()) {
 			load(npc);
 		}
-
 	}
 }

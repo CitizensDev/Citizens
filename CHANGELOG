@@ -2,8 +2,8 @@
 By fullwall and aPunch
 
 Supports:
--Minecraft Beta 1.7_01
--CraftBukkit 950
+-Minecraft Beta 1.7.2
+-CraftBukkit 953
 -Permissions 2.7.x and 3.x
 -iConomy 4 & 5
 -BOSEconomy 0.6.2
@@ -11,7 +11,8 @@ Supports:
 
 Changelog:
 --- v1.0.9 ---
--updated to Minecraft Beta 1.7_01
+-updated to Minecraft Beta 1.7.2
+-updated to CraftBukkit Recommended Build 953
 -new save system, all NPCs will now save in npc-profiles.yml instead of in multiple files
 -fixed many bugs with commands (using sk89q's command interfaces - thanks sk89q!)
 -added API events for plugin authors - documentation to come later
@@ -21,3 +22,7 @@ Changelog:
 -added waypoints for NPCs - type /npc path in-game to edit an NPC's waypoints
 -moved item overrides to citizens.yml
 -data values now work for traders
+-added '/citizens' command to view version and authors
+-added '/citizens reload' command to reload Citizens settings
+-added '/citizens save' to force a save of Citizens files
+-pumpkins and jack-o-lanterns can now be used an helmets for NPCs

@@ -8,13 +8,15 @@ import com.citizens.Interfaces.NPCType;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
+import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.citizens.resources.sk89q.commands.Command;
 import com.citizens.resources.sk89q.commands.CommandContext;
 import com.citizens.resources.sk89q.commands.CommandPermissions;
 import com.citizens.resources.sk89q.commands.CommandRequirements;
-import com.iConomy.util.Messaging;
+import com.citizens.Utils.Messaging;
+import com.fullwall.Citizens.Permission;
 
 public class ToggleCommands {
 
@@ -23,11 +25,10 @@ public class ToggleCommands {
 			aliases = { "toggle", "tog", "t" },
 			usage = "[type]",
 			desc = "toggle an NPC type",
-			modifiers = { "blacksmith", "guard", "healer", "quester", "trader",
-					"wizard" },
-			min = 1,
-			max = 1)
-	@CommandPermissions("create.")
+			modifiers = { "blacksmith", "guard", "healer",
+					"quester", "trader", "wizard" },
+					min = 1,
+					max = 1)
 	public static void toggleNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
@@ -35,18 +36,21 @@ public class ToggleCommands {
 			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
 			return;
 		}
-		if (!PropertyManager.npcHasType(npc, type)) {
-			buyState(player, npc, NPCManager.getType(type));
+		if (Permission.canCreate(player, type)) {
+			if (!PropertyManager.npcHasType(npc, type)) {
+				buyState(player, npc, NPCManager.getType(type));
+			} else {
+				toggleState(player, npc, NPCManager.getType(type), false);
+			}
 		} else {
-			toggleState(player, npc, NPCManager.getType(type), false);
+			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}
 	}
 
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = { "toggle", "tog", "t" },
-			usage = "all [on|off]",
-			desc = "toggle all NPC types",
+			usage = "all [on|off]", desc = "toggle all NPC types",
 			modifiers = "all",
 			min = 2,
 			max = 2)
@@ -96,12 +100,12 @@ public class ToggleCommands {
 			if (paid > 0) {
 				String message = purchaser.getPaidMessage(player, npc, paid,
 						toggle);
-				Messaging.send(player, message);
+				Messaging.send(player, npc, message);
 			}
 			toggleState(player, npc, type, true);
 		} else {
 			String message = purchaser.getNoMoneyMessage(player, npc, toggle);
-			Messaging.send(player, message);
+			Messaging.send(player, npc, message);
 		}
 	}
 

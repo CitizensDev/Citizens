@@ -49,11 +49,6 @@ commands:
         usage: |
                         The command was not recognised. Was it typed in correctly?
                         See /quester help for a list of commands.
-    questedit:
-        description: Enters quest-edit mode.
-        usage: |
-                        The command was not recognised. The correct syntax is
-                        /<command>
     toggle:
         description: Toggles between various NPC states.
         aliases: [t, tog]

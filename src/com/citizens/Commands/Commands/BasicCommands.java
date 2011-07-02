@@ -94,12 +94,12 @@ public class BasicCommands {
 	@Command(
 			aliases = "citizens",
 			usage = "save",
-			desc = "save Citizens files",
+			desc = "force a save of Citizens files",
 			modifiers = "save",
 			min = 1,
 			max = 1)
 	@CommandPermissions("admin")
-	public static void forceSsave(CommandContext args, Player player,
+	public static void forceSave(CommandContext args, Player player,
 			HumanNPC npc) {
 		Messaging.log("Saving...");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Saving...");
@@ -415,7 +415,8 @@ public class BasicCommands {
 					+ "You need to have the item in your inventory to add it to the NPC.");
 			return;
 		}
-		if (mat.getId() < 298 || mat.getId() > 317) {
+		if ((mat.getId() < 298 || mat.getId() > 317) 
+				&& (mat.getId() != 86 && mat.getId() != 91)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "That can't be used as an armor material.");
 			return;
@@ -445,7 +446,8 @@ public class BasicCommands {
 			NPCManager.register(npc.getUID(), npc.getOwner());
 		}
 		player.sendMessage(StringUtils.wrap(npc.getName())
-				+ "'s armor was set to " + StringUtils.wrap(mat.name()) + ".");
+				+ "'s armor was set to "
+				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId())) + ".");
 	}
 
 	@CommandRequirements()

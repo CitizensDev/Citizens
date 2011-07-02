@@ -18,20 +18,21 @@ public class HelpUtils {
 			player.sendMessage(ChatColor.GREEN + "  []"
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
-			format(player, "citizens", "info", "display Citizens information");
+			format(player, "citizens", "", "display Citizens information");
 			format(player, "citizens", "reload", "toggle all types for an NPC");
+			format(player, "citizens", "save", "force a save of Citizens files");
 			format(player, "toggle", "[type]", "toggle an NPC type");
 			format(player, "toggle", "all [on/off]",
 					"toggle all types for an NPC");
 			format(player, "basic", "help [page]", "basic NPC help pages");
 			format(player, "blacksmith", "help", "blacksmith NPC help page");
-			format(player, "guard", "help", "guard NPC help page");
 			footer(player);
 			break;
 		case 2:
 			header(player, "General", 2, 2);
+			format(player, "guard", "help", "guard NPC help page");
 			format(player, "healer", "help", "healer NPC help page");
-			format(player, "quester", "help", "quester NPC help page");
+			// format(player, "quester", "help", "quester NPC help page");
 			format(player, "trader", "help", "trader NPC help page");
 			format(player, "wizard", "help", "wizard NPC help page");
 			footer(player);

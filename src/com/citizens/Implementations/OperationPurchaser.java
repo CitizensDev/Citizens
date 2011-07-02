@@ -21,17 +21,19 @@ public class OperationPurchaser implements NPCPurchaser {
 
 	@Override
 	public double pay(Player player, String type) {
-		if (EconomyHandler.useEconomy())
+		if (EconomyHandler.useEconomy()) {
 			return EconomyHandler.pay(getOperation(type), player);
+		}
 		return 0;
 	}
 
 	@Override
 	public String getPaidMessage(Player player, HumanNPC npc, double paid,
 			String type) {
-		if (EconomyHandler.useEconomy())
+		if (EconomyHandler.useEconomy()) {
 			return MessageUtils.getPaidMessage(getOperation(type), paid,
 					npc.getName(), type, true);
+		}
 		return "";
 	}
 

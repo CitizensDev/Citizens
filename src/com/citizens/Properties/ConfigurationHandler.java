@@ -46,8 +46,9 @@ public class ConfigurationHandler implements Storage {
 			loadDeletes(Defaults.mobDeletes);
 			found = true;
 		}
-		if (found)
+		if (found) {
 			save();
+		}
 	}
 
 	private void loadDeletes(List<String> nodes) {
