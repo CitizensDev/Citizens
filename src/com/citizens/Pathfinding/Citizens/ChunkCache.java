@@ -40,9 +40,10 @@ public class ChunkCache {
 	}
 
 	public ChunkSnapshot getChunk(int x, int z) {
+		if (isNull())
+			return null;
 		int offsetX = (x >> 4) - this.chunkX;
 		int offsetZ = (z >> 4) - this.chunkZ;
-
 		if (offsetX >= 0 && offsetX < this.chunks.length && offsetZ >= 0
 				&& offsetZ < this.chunks[offsetX].length) {
 			ChunkSnapshot chunk = this.chunks[offsetX][offsetZ];
@@ -52,13 +53,15 @@ public class ChunkCache {
 	}
 
 	public int getBlockId(int x, int y, int z) {
-		return this.getChunk(x, z).getBlockTypeId(toChunkCoord(x),
-				toChunkCoord(y), toChunkCoord(z));
+		return this.getChunk(x, z) == null ? -1 : this.getChunk(x, z)
+				.getBlockTypeId(toChunkCoord(x), toChunkCoord(y),
+						toChunkCoord(z));
 	}
 
 	public int getLightLevel(int x, int y, int z) {
-		return this.getChunk(x, z).getBlockSkyLight(toChunkCoord(x),
-				toChunkCoord(y), toChunkCoord(z));
+		return this.getChunk(x, z) == null ? 0 : this.getChunk(x, z)
+				.getBlockSkyLight(toChunkCoord(x), toChunkCoord(y),
+						toChunkCoord(z));
 	}
 
 	public static int[] getConstructor(net.minecraft.server.Entity entity,
