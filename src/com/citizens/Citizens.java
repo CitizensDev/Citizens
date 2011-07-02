@@ -306,8 +306,7 @@ public class Citizens extends JavaPlugin {
 
 			HumanNPC npc = null;
 			if (NPCManager.validateSelected(player)) {
-				npc = NPCManager.get(NPCManager.selectedNPCs.get(player
-						.getName()));
+				npc = NPCManager.get(NPCManager.getSelected(player));
 			}
 			try {
 				commands.execute(split, player, player, npc);

@@ -26,7 +26,7 @@ import com.citizens.resources.redecouverte.NPClib.NPCSpawner;
 public class NPCManager {
 	public static final ConcurrentHashMap<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static final ConcurrentHashMap<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
-	public static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
+	private static final ConcurrentHashMap<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	public static final HashMap<String, Integer> pathEditors = new HashMap<String, Integer>();
 	public static final HashMap<String, NPCType> types = new HashMap<String, NPCType>();
 	private static NPCList list = new NPCList();
@@ -397,8 +397,20 @@ public class NPCManager {
 		}
 	}
 
-	public static int getSelected(String name) {
-		return selectedNPCs.get(name);
+	public static int getSelected(Player player) {
+		return selectedNPCs.get(player.getName());
+	}
+	
+	public static void selectNPC(Player player, HumanNPC npc) {
+		selectedNPCs.put(player.getName(), npc.getUID());
+		// send an "Achievement Get!" notification to the client using BukkitContrib
+		// ContribPlayer cPlayer = (ContribPlayer) player;
+		// cPlayer.sendNotification("Citizens Achievement", "NPC select!",
+		//		Material.BOOK);
+	}
+
+	public static void deselectNPC(Player player) {
+		selectedNPCs.remove(player.getName());
 	}
 
 	public static NPCFactory getFactory(String string) {
@@ -421,6 +433,5 @@ public class NPCManager {
 		if (autosave)
 			type.registerAutosave();
 		registerType(type);
-
 	}
 }

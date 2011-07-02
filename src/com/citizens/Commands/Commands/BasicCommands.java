@@ -169,7 +169,7 @@ public class BasicCommands {
 			}
 		}
 
-		NPCManager.selectedNPCs.put(player.getName(), UID);
+		NPCManager.selectNPC(player, created);
 		Messaging.send(player, created, Constants.selectionMessage);
 	}
 
@@ -266,7 +266,7 @@ public class BasicCommands {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
 			if (Permission.isAdmin(player)) {
 				NPCManager.removeAll();
-				NPCManager.selectedNPCs.remove(player.getName());
+				NPCManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -274,7 +274,7 @@ public class BasicCommands {
 			return;
 		}
 		NPCManager.remove(npc.getUID());
-		NPCManager.selectedNPCs.remove(player.getName());
+		NPCManager.deselectNPC(player);
 		player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
 	}
 
@@ -544,7 +544,7 @@ public class BasicCommands {
 			player.sendMessage(ChatColor.RED + "No NPC with the ID "
 					+ args.getString(1) + ".");
 		} else {
-			NPCManager.selectedNPCs.put(player.getName(), npc.getUID());
+			NPCManager.selectNPC(player, npc);
 			Messaging.send(player, npc, Constants.selectionMessage);
 		}
 	}

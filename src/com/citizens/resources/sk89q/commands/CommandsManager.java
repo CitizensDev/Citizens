@@ -508,8 +508,7 @@ public abstract class CommandsManager<T extends Player> {
 
 	private HumanNPC getSelectedNPC(T player) {
 		if (NPCManager.validateSelected(player)) {
-			return NPCManager
-					.get(NPCManager.selectedNPCs.get(player.getName()));
+			return NPCManager.get(NPCManager.getSelected(player));
 		}
 		return null;
 	}
