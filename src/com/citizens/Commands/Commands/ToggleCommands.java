@@ -3,20 +3,20 @@ package com.citizens.Commands.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.citizens.Permission;
 import com.citizens.Interfaces.NPCPurchaser;
 import com.citizens.Interfaces.NPCType;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.Messaging;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
 import com.citizens.resources.sk89q.commands.Command;
 import com.citizens.resources.sk89q.commands.CommandContext;
 import com.citizens.resources.sk89q.commands.CommandPermissions;
 import com.citizens.resources.sk89q.commands.CommandRequirements;
-import com.citizens.Utils.Messaging;
-import com.fullwall.Citizens.Permission;
 
 public class ToggleCommands {
 
@@ -25,10 +25,10 @@ public class ToggleCommands {
 			aliases = { "toggle", "tog", "t" },
 			usage = "[type]",
 			desc = "toggle an NPC type",
-			modifiers = { "blacksmith", "guard", "healer",
-					"quester", "trader", "wizard" },
-					min = 1,
-					max = 1)
+			modifiers = { "blacksmith", "guard", "healer", "quester", "trader",
+					"wizard" },
+			min = 1,
+			max = 1)
 	public static void toggleNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
@@ -50,7 +50,8 @@ public class ToggleCommands {
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = { "toggle", "tog", "t" },
-			usage = "all [on|off]", desc = "toggle all NPC types",
+			usage = "all [on|off]",
+			desc = "toggle all NPC types",
 			modifiers = "all",
 			min = 2,
 			max = 2)

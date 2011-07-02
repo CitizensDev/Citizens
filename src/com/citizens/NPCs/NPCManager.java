@@ -17,7 +17,6 @@ import com.citizens.Permission;
 import com.citizens.Events.NPCSpawnEvent;
 import com.citizens.Interfaces.NPCFactory;
 import com.citizens.Interfaces.NPCType;
-import com.citizens.NPCs.NPCData;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
@@ -416,5 +415,12 @@ public class NPCManager {
 
 	public static NPCType getType(String type) {
 		return types.get(type);
+	}
+
+	public static void registerType(NPCType type, boolean autosave) {
+		if (autosave)
+			type.registerAutosave();
+		registerType(type);
+
 	}
 }

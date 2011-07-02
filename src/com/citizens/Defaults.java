@@ -21,6 +21,7 @@ public class Defaults {
 	private static HashMap<String, String> writeDefaultSettings() {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		// General Settings
+		nodes.put("general.convert-old", "true");
 		nodes.put("general.limits.npcs-per-player", "10");
 		nodes.put("general.defaults.enable-following", "true");
 		nodes.put("general.defaults.talk-when-close", "false");

@@ -152,17 +152,23 @@ public class Citizens extends JavaPlugin {
 	private void registerTypes() {
 		NPCManager.registerType(new NPCType("blacksmith",
 				new BlacksmithProperties(), new OperationPurchaser(),
-				new NPCFactory(BlacksmithNPC.class)));
-		NPCManager.registerType(new NPCType("guard", new GuardProperties(),
-				new OperationPurchaser(), new NPCFactory(GuardNPC.class)));
+				new NPCFactory(BlacksmithNPC.class)), true);
+		NPCManager
+				.registerType(new NPCType("guard", new GuardProperties(),
+						new OperationPurchaser(),
+						new NPCFactory(GuardNPC.class)), true);
 		NPCManager.registerType(new NPCType("healer", new HealerProperties(),
-				new OperationPurchaser(), new NPCFactory(HealerNPC.class)));
+				new OperationPurchaser(), new NPCFactory(HealerNPC.class)),
+				true);
 		NPCManager.registerType(new NPCType("quester", new QuesterProperties(),
-				new OperationPurchaser(), new NPCFactory(QuesterNPC.class)));
+				new OperationPurchaser(), new NPCFactory(QuesterNPC.class)),
+				true);
 		NPCManager.registerType(new NPCType("trader", new TraderProperties(),
-				new OperationPurchaser(), new NPCFactory(TraderNPC.class)));
+				new OperationPurchaser(), new NPCFactory(TraderNPC.class)),
+				true);
 		NPCManager.registerType(new NPCType("wizard", new WizardProperties(),
-				new OperationPurchaser(), new NPCFactory(WizardNPC.class)));
+				new OperationPurchaser(), new NPCFactory(WizardNPC.class)),
+				true);
 	}
 
 	@Override
@@ -177,19 +183,16 @@ public class Citizens extends JavaPlugin {
 			++count;
 		}
 		String[] values = UIDList.split(",");
-		boolean convert = false;
 
-		if (Conversion.getNPCProfiles().getKeys() == null
-				|| Conversion.getNPCProfiles().getKeys().size() == 0) {
+		if (Constants.convertOld) {
 			Messaging.log("Converting old nodes to new save system...");
-			convert = true;
 		}
 		if (values.length > 0 && !values[0].isEmpty()) {
 			for (String value : values) {
 				int UID = Integer.parseInt(value);
 				// TODO REMOVE AFTER 1.0.9 IS RELEASED
 				// CrapBukkit start
-				if (convert) {
+				if (Constants.convertOld) {
 					Conversion.convert(UID);
 				}
 				// CrapBukkit end
@@ -205,9 +208,11 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
-		if (convert) {
+		if (Constants.convertOld) {
 			Messaging
 					.log("Finished conversion. You must delete all old files manually.");
+			UtilityProperties.getSettings().setBoolean("general.convert-old",
+					false);
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,

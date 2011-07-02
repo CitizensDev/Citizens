@@ -55,6 +55,7 @@ public class Constants {
 	public static boolean useItemList = true;
 	public static boolean useNPCColours = true;
 	public static boolean useSaveTask = true;
+	public static boolean convertOld = false;
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultTalkWhenClose = false;
@@ -82,6 +83,7 @@ public class Constants {
 		payForHealerHeal = settings.getBoolean("general.healers.pay-for-heal");
 		regenHealerHealth = settings.getBoolean("general.healers.regen-health");
 		regenWizardMana = settings.getBoolean("general.wizards.regen-mana");
+		convertOld = settings.getBoolean("general.convert-old");
 
 		// String defaults
 		chatFormat = settings.getString("general.chat.format");
