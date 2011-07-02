@@ -8,13 +8,17 @@ import org.bukkit.Material;
 import com.citizens.Properties.Properties.UtilityProperties;
 
 public class StringUtils {
+	public static String pluralise(String string, int size) {
+		return size > 0 ? string + "s" : string;
+	}
+
 	public static String parseColour(String s) {
 		if (s.startsWith("&")) {
 			String colour = "";
-			colour = s.replace("&", "�").substring(0, 1);
+			colour = s.replace("&", "\u00A7").substring(0, 1);
 			return colour;
 		}
-		return "�f";
+		return "\u00A7f";
 	}
 
 	public static String stripColour(String toStrip) {

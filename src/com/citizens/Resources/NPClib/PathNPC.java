@@ -40,14 +40,9 @@ public class PathNPC extends EntityPlayer {
 	private int prevZ;
 	protected float pathingRange = 16;
 
-	// private final BinaryPathFinder pather;
-
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
-		/*this.pather = new BinaryPathFinder(new CitizensPathHeuristic(),
-				new NPCPathPlayer(this.npc), new CachedMinecraftPathWorld(
-						new ChunkCache()));*/
 	}
 
 	public void updateMove() {
@@ -327,23 +322,8 @@ public class PathNPC extends EntityPlayer {
 		createPathEntity(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
-	/*private CachedMinecraftPathWorld createCache(int x, int y, int z) {
-		return new CachedMinecraftPathWorld(new ChunkCache(this.getPlayer()
-				.getWorld(), this, x, y, z, this.pathingRange));
-	}*/
-
 	private void createPathEntity(int x, int y, int z) {
-		// long mc = System.nanoTime();
 		this.path = this.world.a(this, x, y, z, pathingRange);
-		/*mc = System.nanoTime() - mc; // Test our own pathfinder :).
-		Location loc = this.bukkitEntity.getLocation();
-		pather.recalculate(createCache(x, y, z),
-				new Point(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()),
-				new Point(x, y, z));
-		long ours = System.nanoTime();
-		pather.find();
-		ours = System.nanoTime() - ours;
-		Messaging.log("Time difference: " + ((ours - mc) / 1000000) + "ms");*/
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,

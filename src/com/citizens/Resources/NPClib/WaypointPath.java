@@ -54,4 +54,8 @@ public class WaypointPath {
 	public int size() {
 		return getWaypoints().size();
 	}
+
+	public Location getLast() {
+		return waypoints.get(waypoints.size() - 1);
+	}
 }

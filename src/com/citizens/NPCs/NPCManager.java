@@ -2,7 +2,6 @@ package com.citizens.NPCs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.citizens.Constants;
 import com.citizens.Permission;
@@ -25,7 +23,6 @@ import com.citizens.Utils.StringUtils;
 public class NPCManager {
 	public static final Map<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
 	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
-	public static final Map<String, Integer> pathEditors = new HashMap<String, Integer>();
 	private static final Map<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
 	private static NPCList list = new NPCList();
 
@@ -358,40 +355,6 @@ public class NPCManager {
 	public static void despawnAll() {
 		for (Integer i : GlobalUIDs.keySet()) {
 			despawn(i);
-		}
-	}
-
-	public static void handlePathEditor(PlayerInteractEvent event) {
-		String name = event.getPlayer().getName();
-		if (pathEditors.get(name) != null) {
-			HumanNPC npc = get(pathEditors.get(name));
-			switch (event.getAction()) {
-			case LEFT_CLICK_BLOCK:
-				Location loc = event.getClickedBlock().getLocation();
-				npc.getWaypoints().add(loc);
-				event.getPlayer().sendMessage(
-						StringUtils.wrap("Added") + " waypoint at ("
-								+ StringUtils.wrap(loc.getBlockX()) + ", "
-								+ StringUtils.wrap(loc.getBlockY()) + ", "
-								+ StringUtils.wrap(loc.getBlockZ()) + ") ("
-								+ StringUtils.wrap(npc.getWaypoints().size())
-								+ " waypoints)");
-				break;
-			case RIGHT_CLICK_BLOCK:
-			case RIGHT_CLICK_AIR:
-				if (npc.getWaypoints().size() > 0) {
-					npc.getWaypoints().removeLast();
-					event.getPlayer().sendMessage(
-							StringUtils.wrap("Undid")
-									+ " the last waypoint ("
-									+ StringUtils.wrap(npc.getWaypoints()
-											.size()) + " remaining)");
-
-				} else
-					event.getPlayer().sendMessage(
-							ChatColor.GRAY + "No more waypoints.");
-				break;
-			}
 		}
 	}
 

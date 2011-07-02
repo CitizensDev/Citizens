@@ -20,6 +20,7 @@ import com.citizens.Interfaces.Listener;
 import com.citizens.NPCTypes.Guards.GuardTask;
 import com.citizens.NPCTypes.Questers.Quests.ChatManager;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.NPCs.NPCDataManager;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 
@@ -53,7 +54,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		NPCManager.pathEditors.remove(event.getPlayer().getName());
+		NPCDataManager.pathEditors.remove(event.getPlayer().getName());
 		QuestManager.unload(event.getPlayer());
 		CreatureTask.setDirty();
 	}
@@ -79,7 +80,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		NPCManager.handlePathEditor(event);
+		NPCDataManager.handlePathEditor(event);
 	}
 
 	@Override

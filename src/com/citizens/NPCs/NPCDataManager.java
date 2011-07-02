@@ -1,19 +1,64 @@
 package com.citizens.NPCs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.NPCs.NPCDataManager;
-import com.citizens.NPCs.NPCManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
 
 public class NPCDataManager {
+	public static final Map<String, Integer> pathEditors = new HashMap<String, Integer>();
+
+	public static void handlePathEditor(PlayerInteractEvent event) {
+		String name = event.getPlayer().getName();
+		if (pathEditors.get(name) != null) {
+			HumanNPC npc = NPCManager.get(pathEditors.get(name));
+			switch (event.getAction()) {
+			case LEFT_CLICK_BLOCK:
+				Location loc = event.getClickedBlock().getLocation();
+				if (npc.getWaypoints().getLast().distance(loc) > 25) {
+					event.getPlayer()
+							.sendMessage(
+									ChatColor.GRAY
+											+ "Points can't be more than 25 blocks away from each other.");
+					break;
+				}
+				npc.getWaypoints().add(loc);
+				event.getPlayer().sendMessage(
+						StringUtils.wrap("Added") + " waypoint at ("
+								+ StringUtils.wrap(loc.getBlockX()) + ", "
+								+ StringUtils.wrap(loc.getBlockY()) + ", "
+								+ StringUtils.wrap(loc.getBlockZ()) + ") ("
+								+ StringUtils.wrap(npc.getWaypoints().size())
+								+ " waypoints)");
+				break;
+			case RIGHT_CLICK_BLOCK:
+			case RIGHT_CLICK_AIR:
+				if (npc.getWaypoints().size() > 0) {
+					npc.getWaypoints().removeLast();
+					event.getPlayer().sendMessage(
+							StringUtils.wrap("Undid")
+									+ " the last waypoint ("
+									+ StringUtils.wrap(npc.getWaypoints()
+											.size()) + " remaining)");
+
+				} else
+					event.getPlayer().sendMessage(
+							ChatColor.GRAY + "No more waypoints.");
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Adds items to an npc so that they are visible.
 	 * 

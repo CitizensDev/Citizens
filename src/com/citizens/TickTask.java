@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.citizens.Constants;
 import com.citizens.Misc.ActionManager;
 import com.citizens.Misc.CachedAction;
 import com.citizens.NPCs.NPCManager;
@@ -43,7 +42,8 @@ public class TickTask implements Runnable {
 						// If the player is within 'seeing' range
 						if (LocationUtils.checkLocation(npc.getLocation(),
 								p.getLocation(), range)) {
-							if (npc.getNPCData().isLookClose()) {
+							if (npc.getHandle().pathFinished()
+									&& npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
 							}
 							cacheActions(p, npc, UID, name);
