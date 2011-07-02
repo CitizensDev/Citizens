@@ -3,13 +3,11 @@ package com.citizens.Commands.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.Permission;
 import com.citizens.Interfaces.NPCPurchaser;
 import com.citizens.Interfaces.NPCType;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Properties.PropertyManager;
-import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
 import com.citizens.Utils.StringUtils;
 import com.citizens.resources.redecouverte.NPClib.HumanNPC;
@@ -36,14 +34,10 @@ public class ToggleCommands {
 			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
 			return;
 		}
-		if (Permission.canCreate(player, type)) {
-			if (!PropertyManager.npcHasType(npc, type)) {
-				buyState(player, npc, NPCManager.getType(type));
-			} else {
-				toggleState(player, npc, NPCManager.getType(type), false);
-			}
+		if (!PropertyManager.npcHasType(npc, type)) {
+			buyState(player, npc, NPCManager.getType(type));
 		} else {
-			player.sendMessage(MessageUtils.noPermissionsMessage);
+			toggleState(player, npc, NPCManager.getType(type), false);
 		}
 	}
 
@@ -96,6 +90,11 @@ public class ToggleCommands {
 	private static void buyState(Player player, HumanNPC npc, NPCType type) {
 		NPCPurchaser purchaser = type.getPurchaser();
 		String toggle = type.getType();
+		if (!purchaser.hasPermission(player, toggle)) {
+			Messaging.send(player, npc,
+					purchaser.getNoPermissionsMessage(player, toggle));
+			return;
+		}
 		if (purchaser.canBuy(player, toggle)) {
 			double paid = purchaser.pay(player, toggle);
 			if (paid > 0) {

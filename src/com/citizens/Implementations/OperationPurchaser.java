@@ -2,6 +2,7 @@ package com.citizens.Implementations;
 
 import org.bukkit.entity.Player;
 
+import com.citizens.Permission;
 import com.citizens.Economy.EconomyHandler;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Interfaces.NPCPurchaser;
@@ -40,5 +41,15 @@ public class OperationPurchaser implements NPCPurchaser {
 	@Override
 	public String getNoMoneyMessage(Player player, HumanNPC npc, String type) {
 		return MessageUtils.getNoMoneyMessage(getOperation(type), player);
+	}
+
+	@Override
+	public boolean hasPermission(Player player, String type) {
+		return Permission.canCreate(player, type);
+	}
+
+	@Override
+	public String getNoPermissionsMessage(Player player, String type) {
+		return MessageUtils.noPermissionsMessage;
 	}
 }

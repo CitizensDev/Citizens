@@ -12,7 +12,7 @@ Supports:
 Changelog:
 --- v1.0.9 ---
 -updated to Minecraft Beta 1.7.2
--updated to CraftBukkit Recommended Build 953
+-updated to latest CraftBukkit Recommended Build
 -new save system, all NPCs will now save in npc-profiles.yml instead of in multiple files
 -fixed many bugs with commands (using sk89q's command interfaces - thanks sk89q!)
 -added API events for plugin authors - documentation to come later
