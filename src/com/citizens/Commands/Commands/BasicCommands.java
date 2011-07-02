@@ -170,7 +170,7 @@ public class BasicCommands {
 		}
 
 		// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
-		// ServerUtils.sendAchievement(player, "Your very own slave.",
+		// Achievements.award(player, Achievement.NPC_CREATE,
 		// Material.SADDLE);
 		NPCManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created, Constants.selectionMessage);
