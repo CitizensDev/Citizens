@@ -7,7 +7,6 @@ import com.citizens.Pathfinding.Path;
 import com.citizens.Pathfinding.PathFinder;
 import com.citizens.Pathfinding.PathNode;
 import com.citizens.Pathfinding.Point;
-import com.citizens.Resources.sk89q.BlockType;
 import com.citizens.Utils.Messaging;
 
 public class BinaryPathFinder extends PathFinder {
@@ -161,7 +160,8 @@ public class BinaryPathFinder extends PathFinder {
 	}
 
 	private boolean isSolid(int id) {
-		return !BlockType.canPassThrough(id);
+		return false;
+		// return !BlockType.canPassThrough(id);
 	}
 
 	private boolean isGoal(Point last) {

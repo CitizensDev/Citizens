@@ -156,7 +156,7 @@ public class TraderCommands {
 			desc = "view a trader's buying/selling list",
 			modifiers = "list",
 			min = 2,
-			max = 2)
+			max = 3)
 	@CommandPermissions("use.trader")
 	public static void displayList(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -169,6 +169,8 @@ public class TraderCommands {
 		TraderNPC trader = npc.getToggleable("trader");
 		ArrayList<Stockable> stock = trader.getStockables(!selling);
 		int page = 1;
+		if (args.length() == 3)
+			page = args.getInteger(2);
 		String keyword = "Buying ";
 		if (selling)
 			keyword = "Selling ";

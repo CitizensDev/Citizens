@@ -197,9 +197,9 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "moveTo [x y z]",
+			usage = "moveTo [x y z](world pitch yaw)",
 			desc = "move an NPC to a location",
-			modifiers = "moveTo",
+			modifiers = "moveto",
 			min = 4,
 			max = 4)
 	@CommandPermissions("modify.basic")
@@ -212,10 +212,10 @@ public class BasicCommands {
 		String world = "";
 		switch (args.argsLength() - 1) {
 		case 6:
-			pitch = Float.parseFloat(args.getString(index));
+			yaw = Float.parseFloat(args.getString(index));
 			--index;
 		case 5:
-			yaw = Float.parseFloat(args.getString(index));
+			pitch = Float.parseFloat(args.getString(index));
 			--index;
 		case 4:
 			world = args.getString(index);
@@ -234,7 +234,7 @@ public class BasicCommands {
 			return;
 		}
 		npc.teleport(new Location(Bukkit.getServer().getWorld(world), x, y, z,
-				yaw, pitch));
+				pitch, yaw));
 	}
 
 	@Command(
@@ -477,9 +477,9 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "talkwhenclose [true|false]",
+			usage = "talkclose [true|false]",
 			desc = "set an NPC's talk-when-close setting",
-			modifiers = "talkwhenclose",
+			modifiers = "talkclose",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")
@@ -501,9 +501,9 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "lookatplayers [true|false]",
+			usage = "lookat [true|false]",
 			desc = "set an NPC's look-when-close setting",
-			modifiers = "lookatplayers",
+			modifiers = "lookat",
 			min = 2,
 			max = 2)
 	@CommandPermissions("modify.basic")

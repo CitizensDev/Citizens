@@ -47,8 +47,6 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	public Location getLocation(int UID) {
 		String[] values = profiles.getString(UID + location).split(",");
 		if (values.length != 6) {
-			Messaging.log(UID + location);
-			Messaging.log(UID);
 			Messaging.log("Invalid location length. Length: " + values.length);
 			return null;
 		} else {

@@ -67,7 +67,8 @@ public class HelpUtils {
 			break;
 		case 2:
 			header(player, "Basic NPC", 2, 3);
-			format(player, "npc", "moveTo [x y z]", "move an NPC to a location");
+			format(player, "npc", "moveto [x y z](world pitch yaw)",
+					"move an NPC to a location");
 			format(player, "npc", "tp", "teleport to the location of an NPC");
 			format(player, "npc", "copy",
 					"make a clone of an NPC at your location");
@@ -76,9 +77,9 @@ public class HelpUtils {
 					"select an NPC with the given ID");
 			format(player, "npc", "owner", "get the owner of an NPC");
 			format(player, "npc", "setowner [name]", "set the owner of an NPC");
-			format(player, "npc", "talkwhenclose [true|false]",
+			format(player, "npc", "talkclose [true|false]",
 					"make an NPC talk to players");
-			format(player, "npc", "lookatplayers [true|false]",
+			format(player, "npc", "lookat [true|false]",
 					"make an NPC look at players");
 			break;
 		case 3:
@@ -106,11 +107,15 @@ public class HelpUtils {
 		format(player, "trader",
 				"[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]",
 				"add an item to a trader's stock");
-		format(player, "trader", "[buy|sell] remove [itemID]",
+		format(player, "trader", "[buy|sell] remove [itemID:data]",
 				"remove item from a trader's stock");
+		format(player,
+				"trader",
+				"[buy|sell] edit [itemID(:amount:data)] [itemID(:amount:data)]",
+				"edit a trader's stock");
 		format(player, "trader", "unlimited [true|false]",
 				"set whether a trader has unlimited stock");
-		format(player, "trader", "money (give|take) (amount)",
+		format(player, "trader", "money [give|take] (amount)",
 				"control a trader's money");
 		footer(player);
 	}
@@ -179,9 +184,9 @@ public class HelpUtils {
 		header(player, "Guard", 1, 1);
 		format(player, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		format(player, "guard", "blacklist (mob)",
+		format(player, "guard", "blacklist [mob]",
 				"add mob to a guard's blacklist");
-		format(player, "guard", "whitelist (player)",
+		format(player, "guard", "whitelist [player]",
 				"add player to a guard's whitelist");
 		format(player, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
@@ -208,10 +213,9 @@ public class HelpUtils {
 	 */
 	private static void header(Player player, String npcType, int page,
 			int maxPages) {
-		player.sendMessage(ChatColor.GREEN + StringUtils.wrap("==========[ ")
+		player.sendMessage(ChatColor.GREEN + StringUtils.wrap("=========[ ")
 				+ "Citizens " + npcType + " Help" + ChatColor.WHITE + " <"
-				+ page + "/" + maxPages + ">"
-				+ StringUtils.wrap(" ]=========="));
+				+ page + "/" + maxPages + ">" + StringUtils.wrap(" ]========="));
 	}
 
 	/**
@@ -241,6 +245,6 @@ public class HelpUtils {
 	 */
 	private static void footer(Player player) {
 		player.sendMessage(ChatColor.DARK_GRAY
-				+ "=====[ Coded by: fullwall and aPunch ]=====");
+				+ "=========[ Coded by: fullwall and aPunch ]=========");
 	}
 }

@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import org.bukkit.util.config.Configuration;
 
 import com.citizens.Interfaces.Storage;
-import com.citizens.Properties.SettingsTree.Branch;
 import com.citizens.Utils.Messaging;
 
 public class CachedYAMLHandler implements Storage {
@@ -35,16 +34,15 @@ public class CachedYAMLHandler implements Storage {
 		config.load();
 		for (Entry<String, Object> entry : this.config.getAll().entrySet()) {
 			tree.populate(entry.getKey());
-			tree.get(entry.getKey()).set(entry.getValue().toString());
+			tree.getTree().put(entry.getKey(), entry.getValue().toString());
 		}
 	}
 
 	@Override
 	public void save() {
-		for (Entry<String, Branch> entry : tree.getTree().entrySet()) {
-			if (!entry.getValue().getValue().isEmpty())
-				this.config.setProperty(entry.getKey(), entry.getValue()
-						.getValue());
+		for (Entry<String, String> entry : tree.getTree().entrySet()) {
+			if (entry.getValue() != null && !entry.getValue().isEmpty())
+				this.config.setProperty(entry.getKey(), entry.getValue());
 		}
 		this.config.save();
 	}
@@ -80,7 +78,7 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	public boolean valueExists(String path) {
-		return pathExists(path) && !this.tree.get(path).getValue().isEmpty();
+		return pathExists(path) && !this.tree.get(path).isEmpty();
 	}
 
 	public boolean pathExists(int path) {
@@ -88,7 +86,7 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	private String get(String path) {
-		return this.tree.get(path).getValue();
+		return this.tree.get(path);
 	}
 
 	@Override
