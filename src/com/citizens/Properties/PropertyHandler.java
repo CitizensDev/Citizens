@@ -47,7 +47,6 @@ public final class PropertyHandler implements Storage {
 		this.fileName = fileName;
 		this.properties = new Properties();
 		File file = new File(fileName);
-		// TODO - remove the inventories part
 		if (file.exists()) {
 			load();
 		} else if (create) {

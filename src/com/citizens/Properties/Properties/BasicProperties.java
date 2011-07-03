@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import net.minecraft.server.InventoryPlayer;
 
@@ -22,10 +21,10 @@ import com.citizens.NPCs.NPCData;
 import com.citizens.NPCs.NPCDataManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Utils.Messaging;
 import com.citizens.Utils.StringUtils;
 
 public class BasicProperties extends PropertyManager implements Saveable {
-	public static final Logger log = Logger.getLogger("Minecraft");
 	private final String name = ".basic.name";
 	private final String color = ".basic.color";
 	private final String items = ".basic.items";
@@ -48,8 +47,9 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	public Location getLocation(int UID) {
 		String[] values = profiles.getString(UID + location).split(",");
 		if (values.length != 6) {
-			log.info("getLocationFromName didn't have 6 values in values variable! Length: "
-					+ values.length);
+			Messaging.log(UID + location);
+			Messaging.log(UID);
+			Messaging.log("Invalid location length. Length: " + values.length);
 			return null;
 		} else {
 			return new Location(Bukkit.getServer().getWorld(values[0]),

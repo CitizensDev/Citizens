@@ -2,6 +2,8 @@ package com.citizens.Properties;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
@@ -274,5 +276,22 @@ public class CachedYAMLHandler implements Storage {
 	@Override
 	public void setBoolean(int path, boolean value) {
 		setBoolean("" + path, value);
+	}
+
+	public List<String> getKeys(String path) {
+		return this.config.getKeys(path);
+	}
+
+	public List<Integer> getIntegerKeys(String path) {
+		load();
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+		for (String str : this.config.getKeys(path)) {
+			try {
+				ret.add(Integer.parseInt(str.replace("'", "")));
+			} catch (NumberFormatException ex) {
+
+			}
+		}
+		return ret;
 	}
 }

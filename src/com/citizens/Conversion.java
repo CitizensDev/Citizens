@@ -50,29 +50,31 @@ public class Conversion extends PropertyManager {
 
 	public static void convert(int UID) {
 		if (inventories.keyExists(UID)) {
-			profiles.setString(UID + ".inventory", inventories.getString(UID));
+			profiles.setString(UID + ".basic.inventory",
+					inventories.getString(UID));
 		}
 		if (texts.keyExists(UID)) {
-			profiles.setString(UID + ".text", texts.getString(UID));
+			profiles.setString(UID + ".basic.text", texts.getString(UID));
 		}
 		if (colors.keyExists(UID)) {
-			profiles.setInt(UID + ".color", colors.getInt(UID));
+			profiles.setInt(UID + ".basic.color", colors.getInt(UID));
 		}
 		if (items.keyExists(UID)) {
-			profiles.setString(UID + ".items", items.getString(UID));
+			profiles.setString(UID + ".basic.items", items.getString(UID));
 		}
 		if (locations.keyExists(UID)) {
-			profiles.setString(UID + ".location", locations.getString(UID));
+			profiles.setString(UID + ".basic.location",
+					locations.getString(UID));
 		}
 		if (lookat.keyExists(UID)) {
-			profiles.setBoolean(UID + ".look-when-close",
+			profiles.setBoolean(UID + ".basic.look-when-close",
 					lookat.getBoolean(UID));
 		}
 		if (owners.keyExists(UID)) {
-			profiles.setString(UID + ".owner", owners.getString(UID));
+			profiles.setString(UID + ".basic.owner", owners.getString(UID));
 		}
 		if (talkWhenClose.keyExists(UID)) {
-			profiles.setBoolean(UID + ".talk-when-close",
+			profiles.setBoolean(UID + ".basic.talk-when-close",
 					talkWhenClose.getBoolean(UID));
 		}
 		if (blacksmiths.keyExists(UID)) {

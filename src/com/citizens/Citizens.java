@@ -2,6 +2,7 @@ package com.citizens;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -172,32 +173,36 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupNPCs() {
+		// TODO REMOVE AFTER 1.0.9 IS RELEASED
 		if (Constants.convertOld) {
 			Messaging.log("Converting old nodes to new save system...");
 			PropertyHandler locations = new PropertyHandler(
-					"/plugins/Basic NPCs/Citizens.locations", false);
+					"plugins/Citizens/Basic NPCs/Citizens.locations", false);
 			String[] list = locations.getString("list").split(",");
 			if (list.length > 0 && !list[0].isEmpty()) {
 				for (String name : list) {
 					int UID = Integer.parseInt(name.split("_")[0]);
-					// TODO REMOVE AFTER 1.0.9 IS RELEASED
-					if (Constants.convertOld) {
-						Conversion.convert(UID);
-					}
+					Conversion.convert(UID);
 				}
 			}
 			Messaging
 					.log("Finished conversion. You must delete all old files manually.");
 			UtilityProperties.getSettings().setBoolean("general.convert-old",
 					false);
+			PropertyManager.loadProfiles();
 		}
-		int count = 0;
-		String UIDList = "";
-		while (PropertyManager.getNPCProfiles().pathExists(count)) {
-			UIDList += count + ",";
+		StringBuilder UIDList = new StringBuilder();
+		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(
+				null);
+		Collections.sort(sorted);
+		int max = sorted.get(sorted.size() - 1), count = 0;
+		while (count != max) {
+			if (PropertyManager.getNPCProfiles().pathExists(count)) {
+				UIDList.append(count + ",");
+			}
 			++count;
 		}
-		String[] values = UIDList.split(",");
+		String[] values = UIDList.toString().split(",");
 
 		if (values.length > 0 && !values[0].isEmpty()) {
 			for (String value : values) {
