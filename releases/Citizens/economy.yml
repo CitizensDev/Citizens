@@ -8,12 +8,34 @@ prices:
             econplugin: '100'
             item-currency-id: '37'
         toolrepair:
-            item: '10'
-            econplugin: '100'
+            item:
+                wood: '1'
+                diamond: '5'
+                stone: '3'
+                gold: '2'
+                iron: '4'
+                misc: '2'
+            econplugin:
+                wood: '0.25'
+                diamond: '1.25'
+                stone: '0.75'
+                gold: '0.50'
+                iron: '1'
+                misc: '0.50'
             item-currency-id: '37'
         armorrepair:
-            item: '10'
-            econplugin: '100'
+            item:
+                diamond: '5'
+                gold: '2'
+                leather: '1'
+                iron: '4'
+                chainmail: '3'
+            econplugin:
+                diamond: '1.25'
+                gold: '0.50'
+                leather: '0.25'
+                iron: '1'
+                chainmail: '0.75'
             item-currency-id: '37'
     basic:
         creation:

@@ -1,11 +1,21 @@
+pirates:
+    spawn:
+        spawn: 'false'
+        max: '2'
+    misc:
+        names: Pirate_Pete,Piratebay,Jack_Sparrow,
+        steal-messages: I stole yer booty.;Aaargh.;
 evil:
     spawn:
-        spawn: 'true'
+        spawn: 'false'
         max: '2'
-        delay: '200'
-    names: Herobrine,aPunch,fullwall,
-    look-range: '25'
-    misc:
-        tame-chance: '5'
+    items:
         tame-item: '354'
-        failed-tame-messages: Ha! You can't tame me!;Better luck next time, fool!;
+        drops: 260,357,2256,
+    misc:
+        failed-tame-messages: Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;
+        tame-chance: '5'
+        names: Herobrine,aPunch,fullwall,Notch,EvilSeph,
+general:
+    spawn:
+        delay: '200'

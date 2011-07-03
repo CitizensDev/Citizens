@@ -60,8 +60,9 @@ public class WaypointPath {
 	}
 
 	public Location getLast() {
-		if (waypoints.size() == 0)
+		if (waypoints.size() == 0) {
 			return null;
+		}
 		return waypoints.get(waypoints.size() - 1);
 	}
 }
