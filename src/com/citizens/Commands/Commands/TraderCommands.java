@@ -247,21 +247,44 @@ public class TraderCommands {
 			desc = "change the stock of a trader",
 			modifiers = { "buy", "sell" },
 			min = 3,
-			max = 3)
+			max = 4)
 	@CommandPermissions("modify.trader")
 	public static void changeTraderStock(CommandContext args, Player player,
 			HumanNPC npc) {
+		// TODO this is horrible, clean it up
 		String item = args.getString(1);
 		String price = args.getString(2);
 		boolean selling = args.getString(0).contains("bu");
 		TraderNPC trader = npc.getToggleable("trader");
-		if (item.contains("rem")) {
-			ItemStack stack = parseItemStack(price.split(":"));
-			if (stack == null) {
-				player.sendMessage(ChatColor.RED
-						+ "Invalid item ID or name specified.");
+
+		if (args.length() == 4 && item.contains("edit")) {
+			ItemStack stack = parseItemStack(player, price, false);
+			if (stack == null)
 				return;
+			String keyword = "buying";
+			if (!selling) {
+				keyword = "selling";
 			}
+			if (trader.getStockable(stack.getTypeId(), stack.getDurability(),
+					selling) == null) {
+				player.sendMessage(ChatColor.RED
+						+ "The trader is not currently " + keyword
+						+ " that item.");
+				return;
+			} else {
+				trader.getStockable(stack.getTypeId(), stack.getDurability(),
+						selling).setPrice(
+						createItemPrice(player, args.getString(3)));
+				player.sendMessage(ChatColor.GREEN + "Edited "
+						+ StringUtils.wrap(stack.getType().name())
+						+ "'s price.");
+			}
+			return;
+		}
+		if (item.contains("rem")) {
+			ItemStack stack = parseItemStack(player, price, false);
+			if (stack == null)
+				return;
 			String keyword = "buying";
 			if (!selling) {
 				keyword = "selling";
@@ -282,41 +305,15 @@ public class TraderCommands {
 			return;
 		}
 		selling = !selling;
-		String[] split = item.split(":");
-		ItemStack stack = parseItemStack(split);
-		if (stack == null) {
-			player.sendMessage(ChatColor.RED
-					+ "Invalid item ID or name specified.");
+		ItemStack stack = parseItemStack(player, item, false);
+		if (stack == null)
 			return;
-		}
-		split = price.split(":");
-		ItemStack cost = null;
-		if (split.length != 1) {
-			cost = parseItemStack(split);
-			if (cost == null) {
-				player.sendMessage(ChatColor.RED
-						+ "Invalid item ID or name specified.");
-				return;
-			}
-		}
-		if (cost == null && !EconomyHandler.useEcoPlugin()) {
-			player.sendMessage(ChatColor.GRAY
-					+ "This server is not using an economy plugin, so the price cannot be "
-					+ "that kind of value. If you meant to use an item as currency, "
-					+ "please format it in this format: item ID:amount(:data).");
+		ItemStack cost = parseItemStack(player, price, true);
+		if (cost == null)
 			return;
-		}
-		boolean iConomy = false;
-		if (cost == null) {
-			iConomy = true;
-		}
-		ItemPrice itemPrice;
-		if (!iConomy) {
-			itemPrice = new ItemPrice(cost);
-		} else {
-			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
-		}
-		itemPrice.setiConomy(iConomy);
+		ItemPrice itemPrice = createItemPrice(player, price);
+		if (itemPrice == null)
+			return;
 		Stockable s = new Stockable(stack, itemPrice, true);
 		String keyword = "buying";
 		if (selling) {
@@ -336,6 +333,60 @@ public class TraderCommands {
 		player.sendMessage(ChatColor.GREEN + "The trader is now " + keyword
 				+ " " + MessageUtils.getStockableMessage(s, ChatColor.GREEN)
 				+ ".");
+	}
+
+	private static ItemStack parseItemStack(Player player, String item,
+			boolean price) {
+		String[] split = item.split(":");
+		ItemStack stack = null;
+		if ((!price && split.length != 1) || price) {
+			stack = parseItemStack(split);
+			if (stack == null) {
+				player.sendMessage(ChatColor.RED
+						+ "Invalid item ID or name specified.");
+				return null;
+			}
+		}
+		if (price && stack == null && !EconomyHandler.useEcoPlugin()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "This server is not using an economy plugin, so the price cannot be "
+					+ "that kind of value. If you meant to use an item as currency, "
+					+ "please format it in this format: item ID:amount(:data).");
+			return null;
+		}
+		return stack;
+	}
+
+	private static ItemPrice createItemPrice(Player player, String price) {
+		String[] split = price.split(":");
+		ItemStack cost = null;
+		if (split.length != 1) {
+			cost = parseItemStack(split);
+			if (cost == null) {
+				player.sendMessage(ChatColor.RED
+						+ "Invalid item ID or name specified.");
+				return null;
+			}
+		}
+		if (cost == null && !EconomyHandler.useEcoPlugin()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "This server is not using an economy plugin, so the price cannot be "
+					+ "that kind of value. If you meant to use an item as currency, "
+					+ "please format it in this format: item ID:amount(:data).");
+			return null;
+		}
+		boolean iConomy = false;
+		if (cost == null) {
+			iConomy = true;
+		}
+		ItemPrice itemPrice;
+		if (!iConomy) {
+			itemPrice = new ItemPrice(cost);
+		} else {
+			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
+		}
+		itemPrice.setiConomy(iConomy);
+		return itemPrice;
 	}
 
 	/**

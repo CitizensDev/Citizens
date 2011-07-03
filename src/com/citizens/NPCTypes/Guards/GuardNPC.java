@@ -24,11 +24,9 @@ import com.citizens.Utils.PathUtils;
 
 public class GuardNPC extends Toggleable implements Clickable, Damageable,
 		Targetable {
-	private boolean isBodyguard = true;
-	private boolean isBouncer = false;
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
-	private GuardType guardType = GuardType.BODYGUARD;
+	private GuardType guardType = GuardType.NULL;
 	private List<String> blacklist = new ArrayList<String>();
 	private List<String> whitelist = new ArrayList<String>();
 	private double radius = 10;
@@ -48,7 +46,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * @return
 	 */
 	public boolean isBodyguard() {
-		return isBodyguard;
+		return guardType == GuardType.BODYGUARD;
 	}
 
 	/**
@@ -56,8 +54,8 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @param state
 	 */
-	public void setBodyguard(boolean state) {
-		this.isBodyguard = state;
+	public void setBodyguard() {
+		guardType = GuardType.BODYGUARD;
 	}
 
 	/**
@@ -66,7 +64,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * @return
 	 */
 	public boolean isBouncer() {
-		return isBouncer;
+		return guardType == GuardType.BOUNCER;
 	}
 
 	/**
@@ -74,8 +72,8 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @param state
 	 */
-	public void setBouncer(boolean state) {
-		this.isBouncer = state;
+	public void setBouncer() {
+		guardType = GuardType.BOUNCER;
 	}
 
 	/**
@@ -103,13 +101,6 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * @return
 	 */
 	public GuardType getGuardType() {
-		if (isBodyguard()) {
-			guardType = GuardType.BODYGUARD;
-		} else if (isBouncer()) {
-			guardType = GuardType.BOUNCER;
-		} else {
-			guardType = GuardType.NULL;
-		}
 		return guardType;
 	}
 

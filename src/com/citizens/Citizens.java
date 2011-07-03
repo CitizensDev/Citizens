@@ -182,7 +182,7 @@ public class Citizens extends JavaPlugin {
 			if (list.length > 0 && !list[0].isEmpty()) {
 				for (String name : list) {
 					int UID = Integer.parseInt(name.split("_")[0]);
-					Conversion.convert(UID);
+					Conversion.convert(UID, name.split("_")[1]);
 				}
 			}
 			Messaging

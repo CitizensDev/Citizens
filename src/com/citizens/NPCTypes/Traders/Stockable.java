@@ -4,13 +4,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.NPCTypes.Traders.Check;
-import com.citizens.NPCTypes.Traders.ItemPrice;
 import com.citizens.Utils.StringUtils;
 
 public class Stockable {
 	private final ItemStack stocking;
-	private final ItemPrice price;
+	private ItemPrice price;
 	private boolean selling;
 
 	/**
@@ -64,6 +62,7 @@ public class Stockable {
 				+ "(s)";
 	}
 
+	@Override
 	public String toString() {
 		String ret = "";
 		ret += stocking.getTypeId()
@@ -75,5 +74,9 @@ public class Stockable {
 		ret += price.toString() + ",";
 		ret += selling + ",";
 		return ret;
+	}
+
+	public void setPrice(ItemPrice price) {
+		this.price = price;
 	}
 }

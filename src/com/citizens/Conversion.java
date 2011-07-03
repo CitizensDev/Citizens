@@ -48,7 +48,8 @@ public class Conversion extends PropertyManager {
 	private static final PropertyHandler mode = new PropertyHandler(dir
 			+ "Wizards/mode.citizens", false);
 
-	public static void convert(int UID) {
+	public static void convert(int UID, String name) {
+		profiles.setString(UID + ".name", name);
 		if (inventories.keyExists(UID)) {
 			profiles.setString(UID + ".basic.inventory",
 					inventories.getString(UID));

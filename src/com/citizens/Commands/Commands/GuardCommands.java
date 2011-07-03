@@ -50,24 +50,18 @@ public class GuardCommands {
 		GuardNPC guard = npc.getToggleable("guard");
 		if (args.getString(1).equalsIgnoreCase("bodyguard")) {
 			if (!guard.isBodyguard()) {
-				guard.setBodyguard(true);
+				guard.setBodyguard();
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " is now a bodyguard.");
-				if (guard.isBouncer()) {
-					guard.setBouncer(false);
-				}
 			} else {
 				Messaging.sendError(player, npc.getStrippedName()
 						+ " is already a bodyguard.");
 			}
 		} else if (args.getString(1).equalsIgnoreCase("bouncer")) {
 			if (!guard.isBouncer()) {
-				guard.setBouncer(true);
+				guard.setBouncer();
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " is now a bouncer.");
-				if (guard.isBodyguard()) {
-					guard.setBodyguard(false);
-				}
 			} else {
 				Messaging.sendError(player, npc.getStrippedName()
 						+ " is already a bouncer.");

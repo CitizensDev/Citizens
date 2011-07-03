@@ -81,14 +81,16 @@ public class BasicCommands {
 	@CommandPermissions("admin")
 	public static void reload(CommandContext args, Player player, HumanNPC npc) {
 		Messaging.log("Reloading configuration settings....");
-		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
+		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+				+ "] Reloading....");
 
 		UtilityProperties.initialize();
 		PropertyManager.loadAll();
 		Constants.setupVariables();
 
 		Messaging.log("Reloaded.");
-		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloaded.");
+		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+				+ "] Reloaded.");
 	}
 
 	@CommandRequirements()
@@ -103,12 +105,14 @@ public class BasicCommands {
 	public static void forceSave(CommandContext args, Player player,
 			HumanNPC npc) {
 		Messaging.log("Saving...");
-		player.sendMessage(ChatColor.GREEN + "[Citizens] Saving...");
+		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+				+ "] Saving...");
 
 		PropertyManager.saveState();
 
 		Messaging.log("Saved.");
-		player.sendMessage(ChatColor.GREEN + "[Citizens] Saved.");
+		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+				+ "] Saved.");
 	}
 
 	@CommandRequirements()
@@ -278,7 +282,8 @@ public class BasicCommands {
 		}
 		NPCManager.remove(npc.getUID());
 		NPCManager.deselectNPC(player);
-		player.sendMessage(ChatColor.GRAY + npc.getName() + " disappeared.");
+		player.sendMessage(StringUtils.wrap(npc.getName(), ChatColor.GRAY)
+				+ " disappeared.");
 	}
 
 	@Command(

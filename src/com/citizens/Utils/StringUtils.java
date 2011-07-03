@@ -73,8 +73,8 @@ public class StringUtils {
 	 * @param string
 	 * @return
 	 */
-	public static String wrap(String string) {
-		return ChatColor.YELLOW + string + ChatColor.GREEN;
+	public static String wrap(Object string) {
+		return ChatColor.YELLOW + string.toString() + ChatColor.GREEN;
 	}
 
 	/**
