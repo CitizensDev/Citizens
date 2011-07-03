@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.citizens.NPCs.NPCManager;
@@ -428,7 +428,7 @@ public abstract class CommandsManager<T extends Player> {
 
 		if (method != null && methodArgs != null
 				&& serverCommands.get(method) == null
-				&& methodArgs[1] instanceof CommandSender) {
+				&& methodArgs[1] instanceof ConsoleCommandSender) {
 			throw new ServerCommandException();
 		}
 

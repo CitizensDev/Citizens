@@ -169,7 +169,7 @@ public class TraderCommands {
 		TraderNPC trader = npc.getToggleable("trader");
 		ArrayList<Stockable> stock = trader.getStockables(!selling);
 		int page = 1;
-		if (args.length() == 3)
+		if (args.length() >= 2)
 			page = args.getInteger(2);
 		String keyword = "Buying ";
 		if (selling)
