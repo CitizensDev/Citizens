@@ -195,8 +195,8 @@ public class Citizens extends JavaPlugin {
 		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(
 				null);
 		Collections.sort(sorted);
-		int max = sorted.get(sorted.size() - 1), count = 0;
-		while (count != max) {
+		int max = sorted.size() == 0 ? 0 : sorted.get(sorted.size() - 1), count = 0;
+		while (count <= max) {
 			if (PropertyManager.getNPCProfiles().pathExists(count)) {
 				UIDList.append(count + ",");
 			}
