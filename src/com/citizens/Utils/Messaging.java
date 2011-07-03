@@ -10,7 +10,7 @@ import com.citizens.Resources.NPClib.HumanNPC;
 
 public class Messaging {
 	private static final Logger log = Logger.getLogger("Minecraft");
-	private final static boolean debug = true;
+	private final static boolean debug = false;
 	private final static String[] colours = { "black", "dblue", "dgreen",
 			"dteal", "dred", "purple", "gold", "gray", "dgray", "blue",
 			"bgreen", "teal", "red", "pink", "yellow", "white" };

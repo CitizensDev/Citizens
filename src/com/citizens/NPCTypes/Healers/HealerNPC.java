@@ -168,8 +168,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 					InventoryUtils.decreaseItemInHand(player,
 							Material.DIAMOND_BLOCK);
 					// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
-					// Achievements.award(player, Achievement.HEALER_REVIVE,
-					// Material.DIAMOND_BLOCK);
+					// Achievements.award(player, Achievement.HEALER_REVIVE);
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " is fully healed.");

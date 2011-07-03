@@ -9,19 +9,26 @@ import com.citizens.Properties.PropertyManager;
 
 public class Achievements {
 	public enum Achievement {
-		EVIL_TAME("Misunderstood."),
-		NPC_CREATE("Your own slave."),
-		HEALER_REVIVE("Savior."),
-		EVIL_KILL("Removed Herobrine.");
+		EVIL_KILL("Removed Herobrine.", Material.DIAMOND_SWORD),
+		EVIL_TAME("Misunderstood.", Material.CAKE),
+		HEALER_REVIVE("Savior.", Material.DIAMOND_BLOCK),
+		NPC_CREATE("Your very own slave.", Material.SADDLE),
+		QUEST_COMPLETE("Quest complete!", Material.GOLD_INGOT);
 
 		private final String desc;
+		private final Material icon;
 
-		Achievement(String desc) {
+		Achievement(String desc, Material icon) {
 			this.desc = desc;
+			this.icon = icon;
 		}
 
 		public String getDescription() {
 			return this.desc;
+		}
+
+		public Material getIcon() {
+			return this.icon;
 		}
 	}
 
@@ -30,16 +37,14 @@ public class Achievements {
 	 * 
 	 * @param player
 	 * @param achievement
-	 * @param icon
 	 */
-	public static void award(Player player, Achievement achievement,
-			Material icon) {
+	public static void award(Player player, Achievement achievement) {
 		PlayerProfile profile = PropertyManager.getPlayerProfile(player
 				.getName());
 		if (!profile.getAchievements().contains(achievement.name())) {
 			profile.addAchievement(achievement.name());
 			((ContribPlayer) player).sendNotification("Citizens Achievement",
-					achievement.getDescription(), icon);
+					achievement.getDescription(), achievement.getIcon());
 		}
 	}
 }

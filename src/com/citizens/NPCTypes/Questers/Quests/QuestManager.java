@@ -63,12 +63,7 @@ public class QuestManager {
 	}
 
 	public enum RewardType {
-		HEALTH,
-		ITEM,
-		MONEY,
-		PERMISSION,
-		QUEST,
-		RANK;
+		HEALTH, ITEM, MONEY, PERMISSION, QUEST, RANK;
 	}
 
 	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
@@ -94,6 +89,8 @@ public class QuestManager {
 				QuestProgress progress = getProfile(player.getName())
 						.getProgress();
 				progress.cycle();
+				// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
+				// Achievements.award(player, Achievement.QUEST_COMPLETE);
 			}
 		}
 	}
