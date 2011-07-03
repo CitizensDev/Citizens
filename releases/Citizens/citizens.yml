@@ -7,6 +7,9 @@ range:
     bandits:
         steal-radius: '5'
 items:
+    overrides:
+        '30': Cobweb
+        '35': Cloth
     item-list-on: 'true'
     basic:
         select-items: '*'
@@ -18,6 +21,8 @@ items:
         mana-regen-item: '348'
         interact-item: '288'
 ticks:
+    guards:
+        respawn-delay: '100'
     healers:
         health-regen-increment: '12000'
     wizards:
@@ -29,6 +34,8 @@ ticks:
     pathing:
         max-stationary: '25'
         max-pathing: '-1'
+    waypoints:
+        right-click-pause: '70'
     general:
         delay: '1'
 general:
@@ -37,17 +44,20 @@ general:
     defaults:
         enable-following: 'true'
         talk-when-close: 'false'
+    convert-old: 'false'
     healers:
         pay-for-heal: 'true'
         regen-health: 'true'
     colors:
         use-npc-colours: 'true'
-        npc-colour: §f
+        npc-colour: f
     wizards:
         max-mana: '100'
         regen-mana: 'true'
         wizard-max-locations: '10'
     chat:
+        selection-message: <g>You selected <y><npc><g> (ID <y><npcid><g>).
         slashes-to-spaces: 'true'
         default-text: Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;
+        creation-message: <g>The NPC <y><npc><g> was born!
         format: '[%name%]: '
