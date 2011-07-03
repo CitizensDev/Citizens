@@ -25,6 +25,14 @@ public class NPCDataManager {
 			switch (event.getAction()) {
 			case LEFT_CLICK_BLOCK:
 				Location loc = event.getClickedBlock().getLocation();
+				if (!(npc.getWorld().getName().equals(event.getPlayer()
+						.getWorld().getName()))) {
+					event.getPlayer()
+							.sendMessage(
+									ChatColor.GRAY
+											+ "Waypoints must be in the same world as the npc.");
+					break;
+				}
 				if (npc.getWaypoints().getLast().distance(loc) > 25) {
 					event.getPlayer()
 							.sendMessage(
@@ -34,12 +42,18 @@ public class NPCDataManager {
 				}
 				npc.getWaypoints().add(loc);
 				event.getPlayer().sendMessage(
-						StringUtils.wrap("Added") + " waypoint at ("
-								+ StringUtils.wrap(loc.getBlockX()) + ", "
-								+ StringUtils.wrap(loc.getBlockY()) + ", "
-								+ StringUtils.wrap(loc.getBlockZ()) + ") ("
+						StringUtils.wrap("Added")
+								+ " waypoint at ("
+								+ StringUtils.wrap(loc.getBlockX())
+								+ ", "
+								+ StringUtils.wrap(loc.getBlockY())
+								+ ", "
+								+ StringUtils.wrap(loc.getBlockZ())
+								+ ") ("
 								+ StringUtils.wrap(npc.getWaypoints().size())
-								+ " waypoints)");
+								+ " "
+								+ StringUtils.pluralise("waypoint", npc
+										.getWaypoints().size()) + ")");
 				break;
 			case RIGHT_CLICK_BLOCK:
 			case RIGHT_CLICK_AIR:
