@@ -19,7 +19,7 @@ public class HelpUtils {
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
 			format(player, "citizens", "", "display Citizens information");
-			format(player, "citizens", "reload", "reloads Citizens files");
+			format(player, "citizens", "reload", "reload Citizens files");
 			format(player, "citizens", "save", "force a save of Citizens files");
 			format(player, "toggle", "[type]", "toggle an NPC type");
 			format(player, "toggle", "all [on/off]",
@@ -31,7 +31,8 @@ public class HelpUtils {
 		case 2:
 			header(player, "General", 2, 2);
 			format(player, "healer", "help", "healer NPC help page");
-			// format(player, "quester", "help", "quester NPC help page");
+			format(player, "landlord", "help", "landlord NPC help page");
+			format(player, "quester", "help", "quester NPC help page");
 			format(player, "trader", "help", "trader NPC help page");
 			format(player, "wizard", "help", "wizard NPC help page");
 			footer(player);
@@ -184,6 +185,16 @@ public class HelpUtils {
 				"add player to a guard's whitelist");
 		format(player, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
+		footer(player);
+	}
+
+	/**
+	 * Sends the help page for the landlord npc type
+	 * 
+	 * @param player
+	 */
+	public static void sendLandlordHelp(Player player) {
+		header(player, "Landlord", 1, 1);
 		footer(player);
 	}
 

@@ -567,5 +567,4 @@ public class PriorityBuffer<E> extends AbstractCollection<E> implements
 
 		return sb.toString();
 	}
-
 }

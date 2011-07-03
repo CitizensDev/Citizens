@@ -573,6 +573,7 @@ public class BasicCommands {
 				+ StringUtils.wrap(npc.getOwner()) + ".");
 	}
 
+	@CommandRequirements(requireSelected = true)
 	@Command(
 			aliases = "npc",
 			usage = "setowner [name]",
@@ -580,13 +581,17 @@ public class BasicCommands {
 			modifiers = "setowner",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
 	public static void setNPCOwner(CommandContext args, Player player,
 			HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN + "The owner of "
-				+ StringUtils.wrap(npc.getStrippedName()) + " is now "
-				+ StringUtils.wrap(args.getString(1)) + ".");
-		npc.getNPCData().setOwner(args.getString(1));
+		if (Permission.isAdmin(player)
+				|| Permission.canModify(player, npc, "basic")) {
+			player.sendMessage(ChatColor.GREEN + "The owner of "
+					+ StringUtils.wrap(npc.getStrippedName()) + " is now "
+					+ StringUtils.wrap(args.getString(1)) + ".");
+			npc.getNPCData().setOwner(args.getString(1));
+		} else {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
+		}
 	}
 
 	@Command(

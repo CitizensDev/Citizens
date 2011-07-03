@@ -32,5 +32,4 @@ public abstract class PathFinder {
 
 	public interface PathWorld {
 	}
-
 }

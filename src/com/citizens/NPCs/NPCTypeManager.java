@@ -26,8 +26,9 @@ public class NPCTypeManager {
 	}
 
 	public static void registerType(NPCType type, boolean autosave) {
-		if (autosave)
+		if (autosave) {
 			type.registerAutosave();
+		}
 		registerType(type);
 	}
 

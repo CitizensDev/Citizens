@@ -92,14 +92,16 @@ public class BinaryPathFinder extends PathFinder {
 	private void expand(PathNode path) {
 		Point p = path.point;
 		Integer min = mindists.get(p);
-		if (min == null || min > path.totalCost)
+		if (min == null || min > path.totalCost) {
 			mindists.put(p, path.totalCost);
-		else
+		} else {
 			return;
+		}
 		Point[] successors = generateSuccessors(path);
 		for (Point t : successors) {
-			if (t == null)
+			if (t == null) {
 				continue;
+			}
 			PathNode newPath = new PathNode(path);
 			newPath.point = t;
 			calculateTotalCost(newPath, p, t, false);

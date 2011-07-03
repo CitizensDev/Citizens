@@ -17,14 +17,15 @@ public class SettingsTree {
 			progressive.append(branch);
 			temp = new Branch(progressive.toString(), previous);
 			previous = temp;
-			if (getTree().get(progressive.toString()) == null)
+			if (getTree().get(progressive.toString()) == null) {
 				getTree().put(progressive.toString(), previous);
-			if (index != branches.length - 1)
+			}
+			if (index != branches.length - 1) {
 				progressive.append(".");
+			}
 			++index;
 		}
-		Branch branch = tree.get(progressive.toString());
-		branch.updateUpwards();
+		tree.get(progressive.toString()).updateUpwards();
 	}
 
 	public Branch get(String path) {
@@ -73,27 +74,31 @@ public class SettingsTree {
 
 		private void update(Map<String, Branch> tree) {
 			this.tree.putAll(tree);
-			if (this.parent != null)
+			if (this.parent != null) {
 				this.parent.update(this.tree);
+			}
 		}
 
 		public void removeUpwards() {
-			if (this.parent != null)
+			if (this.parent != null) {
 				this.parent.remove(tree);
+			}
 		}
 
 		private void remove(Map<String, Branch> tree) {
 			for (String string : tree.keySet()) {
 				this.tree.remove(string);
 			}
-			if (this.parent != null)
+			if (this.parent != null) {
 				this.parent.remove(tree);
+			}
 		}
 
 		private void addBranch(String path, Branch branch) {
 			this.tree.put(path, branch);
-			if (parent != null)
+			if (parent != null) {
 				parent.addBranch(path, branch);
+			}
 		}
 
 		public Map<String, Branch> getTree() {

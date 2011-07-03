@@ -31,19 +31,23 @@ public class SpawnValidator {
 		case JUST:
 			reset();
 		case INCLUDING:
-			for (int id : ids)
+			for (int id : ids) {
 				set(id, true);
+			}
 			break;
 		case NOT:
-			for (int id : ids)
+			for (int id : ids) {
 				set(id, false);
+			}
 			break;
 		case NOT_BETWEEN:
 			begin = ids[0];
 			end = ids[ids.length - 1];
-			for (byte id = 0; id <= 255; ++id)
-				if (id < begin || id > end)
+			for (byte id = 0; id <= 255; ++id) {
+				if (id < begin || id > end) {
 					set(id, true);
+				}
+			}
 			break;
 		}
 		return this;
@@ -87,15 +91,17 @@ public class SpawnValidator {
 		int get = index / 4;
 		index %= 4;
 		byte previous = flags[get];
-		if (flag)
+		if (flag) {
 			flags[get] = (byte) (previous | 1 << index);
-		else
+		} else {
 			flags[get] = (byte) (previous & ~(1 << index));
+		}
 	}
 
 	private void set(int[] banned, boolean flag) {
-		for (int id : banned)
+		for (int id : banned) {
 			set(id, flag);
+		}
 	}
 
 	private void setRange(int begin, int end, boolean flag) {

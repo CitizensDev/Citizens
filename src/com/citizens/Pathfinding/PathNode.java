@@ -28,11 +28,12 @@ public class PathNode implements Comparable<PathNode> {
 	@Override
 	public int compareTo(PathNode node) {
 		int result = node.totalCost - node.cost;
-		if (result > node.totalCost)
+		if (result > node.totalCost) {
 			return 1;
-		else if (result == 0)
+		} else if (result == 0) {
 			return 0;
-		else
+		} else {
 			return -1;
+		}
 	}
 }

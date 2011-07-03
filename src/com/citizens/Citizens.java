@@ -24,6 +24,7 @@ import com.citizens.NPCTypes.Guards.GuardNPC;
 import com.citizens.NPCTypes.Guards.GuardTask;
 import com.citizens.NPCTypes.Healers.HealerNPC;
 import com.citizens.NPCTypes.Healers.HealerTask;
+import com.citizens.NPCTypes.Landlords.LandlordNPC;
 import com.citizens.NPCTypes.Questers.QuesterNPC;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCTypes.Traders.TraderNPC;
@@ -36,6 +37,7 @@ import com.citizens.Properties.PropertyManager;
 import com.citizens.Properties.Properties.BlacksmithProperties;
 import com.citizens.Properties.Properties.GuardProperties;
 import com.citizens.Properties.Properties.HealerProperties;
+import com.citizens.Properties.Properties.LandlordProperties;
 import com.citizens.Properties.Properties.QuesterProperties;
 import com.citizens.Properties.Properties.TraderProperties;
 import com.citizens.Properties.Properties.UtilityProperties;
@@ -160,6 +162,8 @@ public class Citizens extends JavaPlugin {
 				purchaser, GuardNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("healer",
 				new HealerProperties(), purchaser, HealerNPC.class), true);
+		NPCTypeManager.registerType(new NPCType("landlord",
+				new LandlordProperties(), purchaser, LandlordNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("quester",
 				new QuesterProperties(), purchaser, QuesterNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("trader",

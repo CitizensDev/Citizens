@@ -5,21 +5,21 @@ import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 
-public class BlacksmithProperties extends PropertyManager implements Saveable {
-	private final String isBlacksmith = ".blacksmith.toggle";
+public class LandlordProperties extends PropertyManager implements Saveable {
+	private final String isLandlord = ".landlord.toggle";
 
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
-			setEnabled(npc, npc.isType("blacksmith"));
+			setEnabled(npc, npc.isType("landlord"));
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("blacksmith",
-					NPCTypeManager.getFactory("blacksmith"));
+			npc.registerType("landlord",
+					NPCTypeManager.getFactory("landlord"));
 		}
 		saveState(npc);
 	}
@@ -31,19 +31,19 @@ public class BlacksmithProperties extends PropertyManager implements Saveable {
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		profiles.setBoolean(npc.getUID() + isBlacksmith, value);
+		profiles.setBoolean(npc.getUID() + isLandlord, value);
 	}
 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
-		return profiles.getBoolean(npc.getUID() + isBlacksmith);
+		return profiles.getBoolean(npc.getUID() + isLandlord);
 	}
 
 	@Override
 	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isBlacksmith)) {
-			profiles.setString(nextUID + isBlacksmith,
-					profiles.getString(UID + isBlacksmith));
+		if (profiles.pathExists(UID + isLandlord)) {
+			profiles.setString(nextUID + isLandlord,
+					profiles.getString(UID + isLandlord));
 		}
 	}
 }
