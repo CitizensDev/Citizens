@@ -3,20 +3,18 @@ package com.citizens.NPCTypes.Questers.Objectives;
 import java.util.ArrayDeque;
 import java.util.Collections;
 
-import com.citizens.NPCTypes.Questers.Objectives.Objective;
-
 public class Objectives {
-	private final ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();
+	private final ArrayDeque<QuestStep> objectives = new ArrayDeque<QuestStep>();
 
-	public Objectives(Objective... objectives) {
+	public Objectives(QuestStep... objectives) {
 		Collections.addAll(this.objectives, objectives);
 	}
 
-	public void add(Objective objective) {
-		this.objectives.add(objective);
+	public void add(QuestStep step) {
+		this.objectives.add(step);
 	}
 
-	public ArrayDeque<Objective> all() {
+	public ArrayDeque<QuestStep> all() {
 		return objectives;
 	}
 
@@ -25,13 +23,13 @@ public class Objectives {
 	}
 
 	public static class ObjectiveCycler {
-		private ArrayDeque<Objective> objectives = new ArrayDeque<Objective>();
+		private ArrayDeque<QuestStep> objectives = new ArrayDeque<QuestStep>();
 
 		public ObjectiveCycler(Objectives objectives) {
 			this.objectives = objectives.all();
 		}
 
-		public Objective current() {
+		public QuestStep current() {
 			if (this.objectives.size() > 0)
 				return this.objectives.peek();
 			return null;

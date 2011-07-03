@@ -3,8 +3,8 @@ package com.citizens.NPCTypes.Questers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.citizens.NPCTypes.Questers.Objectives.Objective;
 import com.citizens.NPCTypes.Questers.Objectives.Objectives;
+import com.citizens.NPCTypes.Questers.Objectives.QuestStep;
 
 public class Quest {
 	private String questName = "";
@@ -77,8 +77,8 @@ public class Quest {
 		this.completionText = text;
 	}
 
-	public void addObjective(Objective objective) {
-		this.objectives.add(objective);
+	public void addObjective(QuestStep step) {
+		this.objectives.add(step);
 	}
 
 	public Objectives getObjectives() {

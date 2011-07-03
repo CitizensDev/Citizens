@@ -358,4 +358,8 @@ public class PathNPC extends EntityPlayer {
 	public void performAction(Animation action) {
 		this.animations.performAnimation(action);
 	}
+
+	public LivingEntity getTarget() {
+		return ((LivingEntity) this.targetEntity.getBukkitEntity());
+	}
 }

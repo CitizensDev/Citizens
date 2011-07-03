@@ -88,6 +88,7 @@ public class PropertyManager {
 		for (HumanNPC npc : NPCManager.getList().values()) {
 			save(npc);
 		}
+		profiles.save();
 	}
 
 	public static void saveState() {
@@ -95,6 +96,7 @@ public class PropertyManager {
 	}
 
 	public static void loadAll() {
+		profiles.load();
 		for (HumanNPC npc : NPCManager.getList().values()) {
 			load(npc);
 		}

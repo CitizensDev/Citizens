@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import com.citizens.Misc.ActionManager;
 import com.citizens.Misc.CachedAction;
 import com.citizens.Misc.NPCLocation;
-import com.citizens.NPCTypes.Guards.GuardNPC;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.LocationUtils;
@@ -32,6 +31,18 @@ public class GuardTask implements Runnable {
 			if (npc.isType("guard")) {
 				GuardNPC guard = npc.getToggleable("guard");
 				if (guard.isBouncer()) {
+					if (guard.isAttacking() && !npc.getHandle().hasTarget())
+						guard.setAttacking(false);
+					if (guard.isAttacking()
+							&& npc.getHandle().hasTarget()
+							&& LocationUtils.checkLocation(npc.getLocation(),
+									npc.getHandle().getTarget().getLocation(),
+									guard.getProtectionRadius())) {
+						npc.getHandle().cancelTarget();
+						guard.setAttacking(false);
+					}
+					if (guard.isAttacking())
+						continue;
 					Location loc = npc.getLocation();
 					for (Entity temp : npc.getPlayer().getNearbyEntities(
 							guard.getHalvedProtectionRadius(),
@@ -63,6 +74,8 @@ public class GuardTask implements Runnable {
 					}
 					entity = null;
 				} else if (guard.isBodyguard()) {
+					if (!npc.isPaused())
+						npc.setPaused(true);
 					Player p = Bukkit.getServer().getPlayer(npc.getOwner());
 					if (p != null) {
 						Location ownerloc = p.getLocation();
@@ -97,7 +110,7 @@ public class GuardTask implements Runnable {
 						entity = null;
 						if (LocationUtils.checkLocation(npc.getLocation(),
 								p.getLocation(), 25)) {
-							npc.target(p, false, -1, 2, 25);
+							PathUtils.target(npc, p, false, -1, 2, 25);
 						} else {
 							npc.teleport(p.getLocation());
 						}
@@ -125,7 +138,8 @@ public class GuardTask implements Runnable {
 				if (isBlacklisted(npc, name)
 						|| (entity instanceof Player && !name.equals(npc
 								.getOwner()))) {
-					attack(entity, npc);
+					attack(entity, guard);
+					guard.setAttacking(true);
 				}
 				cached.set("attemptedEntry");
 			}
@@ -135,12 +149,12 @@ public class GuardTask implements Runnable {
 				if (entity instanceof Player) {
 					if (!guard.getWhitelist().contains(name)
 							&& !guard.getWhitelist().contains("all")) {
-						attack(entity, npc);
+						attack(entity, guard);
 					}
 				} else if (!(entity instanceof Player)
 						&& CreatureType.fromName(StringUtils.capitalise(name)) != null) {
 					if (isBlacklisted(npc, name)) {
-						attack(entity, npc);
+						attack(entity, guard);
 					}
 				}
 			}
@@ -167,8 +181,8 @@ public class GuardTask implements Runnable {
 	 * @param player
 	 * @param npc
 	 */
-	private void attack(LivingEntity entity, HumanNPC npc) {
-		PathUtils.target(npc, entity, true, -1, -1, 25);
+	private void attack(LivingEntity entity, GuardNPC guard) {
+		guard.target(entity);
 	}
 
 	public static void checkRespawn(Player player) {

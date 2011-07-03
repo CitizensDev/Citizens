@@ -19,7 +19,11 @@ public class WaypointPath {
 		this.waypointIndex = waypointIndex;
 	}
 
-	public int getIndex() {
+	public Location currentWaypoint() {
+		return this.get(waypointIndex);
+	}
+
+	public int currentIndex() {
 		return waypointIndex;
 	}
 

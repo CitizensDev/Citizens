@@ -19,7 +19,7 @@ public abstract class QuestIncrementer {
 		this.quester = npc;
 		this.player = player;
 		this.questName = questName;
-		this.objective = objectives.current();
+		this.objective = objectives.current().current();
 	}
 
 	public HumanNPC getQuester() {

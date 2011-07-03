@@ -83,6 +83,7 @@ public class BasicCommands {
 		Messaging.log("Reloading configuration settings....");
 		player.sendMessage(ChatColor.GREEN + "[Citizens] Reloading....");
 
+		UtilityProperties.initialize();
 		PropertyManager.loadAll();
 		Constants.setupVariables();
 

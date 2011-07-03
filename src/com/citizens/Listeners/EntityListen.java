@@ -25,6 +25,7 @@ import com.citizens.NPCs.NPCManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
+import com.citizens.Utils.PathUtils;
 
 /**
  * Entity Listener
@@ -111,13 +112,15 @@ public class EntityListen extends EntityListener implements Listener {
 					player);
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
 			if (!rightClickEvent.isCancelled()) {
-				if (npc.getWaypoints().isStarted()) {
+				if (npc.getWaypoints().isStarted()
+						&& npc.getWaypoints().currentIndex() <= npc
+								.getWaypoints().size()) {
 					Bukkit.getServer()
 							.getScheduler()
 							.scheduleSyncDelayedTask(
 									Citizens.plugin,
 									new RestartPathTask(npc, npc.getWaypoints()
-											.get(npc.getWaypoints().getIndex())),
+											.currentWaypoint()),
 									Constants.rightClickPause);
 					npc.getHandle().cancelPath();
 					npc.setPaused(true);
@@ -143,7 +146,8 @@ public class EntityListen extends EntityListener implements Listener {
 
 		@Override
 		public void run() {
-			this.npc.createPath(point, -1, -1, Constants.pathFindingRange);
+			PathUtils
+					.createPath(npc, point, -1, -1, Constants.pathFindingRange);
 			npc.setPaused(false);
 		}
 	}

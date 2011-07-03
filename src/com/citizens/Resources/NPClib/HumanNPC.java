@@ -23,10 +23,10 @@ import com.citizens.Resources.NPClib.NPCAnimator.Animation;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;
-	private double balance;
 	private NPCData npcdata;
+	private double balance;
 	private boolean paused;
-	private WaypointPath waypoints = new WaypointPath();
+	private final WaypointPath waypoints = new WaypointPath();
 
 	private final ConcurrentHashMap<String, Toggleable> types = new ConcurrentHashMap<String, Toggleable>();
 
@@ -89,8 +89,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void teleport(Location loc) {
-		this.mcEntity.setLocation(loc.getX(), loc.getY(), loc.getZ(),
-				loc.getYaw(), loc.getPitch());
+		this.getPlayer().teleport(loc);
 	}
 
 	public void updateMovement() {
@@ -142,22 +141,7 @@ public class HumanNPC extends NPC {
 		this.balance = balance;
 	}
 
-	public boolean createPath(Location loc, int pathTicks, int stationaryTicks,
-			float range) {
-		return this.mcEntity.startPath(loc, pathTicks, stationaryTicks, range);
-	}
-
-	public void target(LivingEntity entity, boolean aggro, int pathTicks,
-			int stationaryTicks, float range) {
-		this.mcEntity.setTarget(entity, aggro, pathTicks, stationaryTicks,
-				range);
-	}
-
-	public void setAttackTimes(int times) {
-		this.mcEntity.setAttackTimes(times);
-	}
-
-	public boolean paused() {
+	public boolean isPaused() {
 		return this.paused;
 	}
 
@@ -183,10 +167,6 @@ public class HumanNPC extends NPC {
 
 	public Collection<Toggleable> types() {
 		return this.types.values();
-	}
-
-	public void setWaypoints(WaypointPath waypoints) {
-		this.waypoints = waypoints;
 	}
 
 	public boolean callDamageEvent(EntityDamageEvent event) {

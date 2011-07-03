@@ -13,6 +13,7 @@ import com.citizens.Resources.NPClib.NPCSpawner;
 import com.citizens.Resources.NPClib.WaypointPath;
 import com.citizens.Utils.LocationUtils;
 import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.PathUtils;
 
 public class TickTask implements Runnable {
 	// How far an NPC can 'see'
@@ -63,23 +64,23 @@ public class TickTask implements Runnable {
 			break;
 		case 1:
 			// TODO: merge the default and this case.
-			if (waypoints.getIndex() >= 1) {
+			if (waypoints.currentIndex() >= 1) {
 				if (!waypoints.isStarted()) {
-					npc.createPath(waypoints.get(0), -1, -1,
+					PathUtils.createPath(npc, waypoints.get(0), -1, -1,
 							Constants.pathFindingRange);
 					waypoints.setStarted(true);
 				}
-				if (!npc.paused() && npc.getHandle().pathFinished()) {
+				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 					waypoints.setIndex(0);
 					waypoints.setStarted(false);
 				}
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
-					npc.createPath(npc.getNPCData().getLocation(), -1, -1,
-							Constants.pathFindingRange);
+					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
+							-1, -1, Constants.pathFindingRange);
 					waypoints.setStarted(true);
 				}
-				if (!npc.paused() && npc.getHandle().pathFinished()) {
+				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 					waypoints.setIndex(1);
 					waypoints.setStarted(false);
 				}
@@ -87,18 +88,17 @@ public class TickTask implements Runnable {
 			break;
 		default:
 			if (!waypoints.isStarted()) {
-				if (waypoints.getIndex() + 1 > waypoints.size()) {
+				if (waypoints.currentIndex() + 1 > waypoints.size()) {
 					waypoints.setIndex(0);
 				}
-				npc.createPath(waypoints.get(waypoints.getIndex()), -1, -1,
+				PathUtils.createPath(npc, waypoints.currentWaypoint(), -1, -1,
 						Constants.pathFindingRange);
 				waypoints.setStarted(true);
 			}
-			if (!npc.paused() && npc.getHandle().pathFinished()) {
-				waypoints.setIndex(waypoints.getIndex() + 1);
+			if (!npc.isPaused() && npc.getHandle().pathFinished()) {
+				waypoints.setIndex(waypoints.currentIndex() + 1);
 				waypoints.setStarted(false);
 			}
-			npc.setWaypoints(waypoints);
 		}
 	}
 
@@ -114,5 +114,29 @@ public class TickTask implements Runnable {
 			cached.set("saidText");
 		}
 		ActionManager.putAction(entityID, name, cached);
+	}
+
+	public static void respawn(HumanNPC npc, int delay) {
+		new RespawnTask(npc).register(delay);
+	}
+
+	public static class RespawnTask implements Runnable {
+		private final int UID;
+		private final String owner;
+
+		public RespawnTask(HumanNPC npc) {
+			this.UID = npc.getUID();
+			this.owner = npc.getOwner();
+		}
+
+		public void register(int delay) {
+			Bukkit.getServer().getScheduler()
+					.scheduleSyncDelayedTask(Citizens.plugin, this, delay);
+		}
+
+		@Override
+		public void run() {
+			NPCManager.register(UID, owner);
+		}
 	}
 }

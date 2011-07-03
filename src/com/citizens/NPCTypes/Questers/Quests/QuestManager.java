@@ -9,7 +9,6 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import com.citizens.NPCTypes.Questers.Quest;
-import com.citizens.NPCTypes.Questers.Quests.QuestProgress;
 import com.citizens.Properties.PlayerProfile;
 import com.citizens.Resources.NPClib.HumanNPC;
 

@@ -8,9 +8,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.citizens.NPCTypes.Questers.Quest;
+import com.citizens.NPCTypes.Questers.Reward;
 import com.citizens.NPCTypes.Questers.Objectives.Objective;
 import com.citizens.NPCTypes.Questers.Objectives.Objectives;
 import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
+import com.citizens.NPCTypes.Questers.Objectives.QuestStep;
 import com.citizens.NPCTypes.Questers.QuestTypes.BuildQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.CollectQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.CombatQuest;
@@ -20,6 +22,7 @@ import com.citizens.NPCTypes.Questers.QuestTypes.DistanceQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.HuntQuest;
 import com.citizens.NPCTypes.Questers.QuestTypes.LocationQuest;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
+import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
 import com.citizens.NPCTypes.Questers.Rewards.EconpluginReward;
 import com.citizens.NPCTypes.Questers.Rewards.HealthReward;
 import com.citizens.NPCTypes.Questers.Rewards.ItemReward;
@@ -100,70 +103,158 @@ public class QuestFactory {
 					}
 				}
 			}
-			path = tempPath = questName + ".objectives.";
+			path = tempPath = questName + ".objectives";
 			Objectives objectives = new Objectives();
 			if (quests.pathExists(path)) {
-				for (Object objective : quests.getKeys(path)) {
-					path = tempPath + objective;
-					QuestType type = QuestType.getType(quests.getString(path
-							+ ".type"));
-					if (type == null) {
-						Messaging.log("Invalid quest objective (quest "
-								+ (questCount + 1)
-								+ ") - incorrect type specified.");
-						continue;
+				for (Object step : quests.getKeys(path)) {
+					QuestStep tempStep = new QuestStep();
+					for (Object objective : quests.getKeys(path + "." + step)) {
+						path = tempPath + objective;
+						QuestType type = QuestType.getType(quests
+								.getString(path + ".type"));
+						if (type == null) {
+							Messaging.log("Invalid quest objective (quest "
+									+ (questCount + 1)
+									+ ") - incorrect type specified.");
+							continue;
+						}
+						Objective obj = new Objective(type);
+						if (quests.pathExists(path + ".amount"))
+							obj.setAmount(quests.getInt(path + ".amount"));
+						if (quests.pathExists(path + ".npcdestination"))
+							obj.setDestination(quests.getInt(path
+									+ ".npcdestination"));
+						if (quests.pathExists(path + ".item")) {
+							int id = quests.getInt(path + ".item.id");
+							int amount = quests.getInt(path + ".item.amount");
+							byte data = 0;
+							if (quests.pathExists(path + ".item.data"))
+								data = (byte) quests
+										.getInt(path + ".item.data");
+							ItemStack stack = new ItemStack(id, amount);
+							stack.setData(new MaterialData(id, data));
+							obj.setItem(stack);
+						}
+						if (quests.pathExists(path + ".location")) {
+							String world = quests.getString(path
+									+ ".location.world");
+							double x = quests.getDouble(path + ".location.x");
+							double y = quests.getDouble(path + ".location.y");
+							double z = quests.getDouble(path + ".location.z");
+							float yaw = (float) quests.getDouble(path
+									+ ".location.yaw");
+							float pitch = (float) quests.getDouble(path
+									+ ".location.pitch");
+							Location loc = new Location(Bukkit.getServer()
+									.getWorld(world), x, y, z, yaw, pitch);
+							obj.setLocation(loc);
+						}
+						if (quests.pathExists(path + ".message")) {
+							obj.setMessage(quests.getString(path + ".message"));
+						}
+						if (quests.pathExists(path + ".materialid")) {
+							if (quests.getInt(path + ".materialid") != 0)
+								obj.setMaterial(Material.getMaterial(quests
+										.getInt(path + ".materialid")));
+						}
+						tempStep.add(obj);
 					}
-					Objective obj = new Objective(type);
-					if (quests.pathExists(path + ".amount"))
-						obj.setAmount(quests.getInt(path + ".amount"));
-					if (quests.pathExists(path + ".npcdestination"))
-						obj.setDestination(quests.getInt(path
-								+ ".npcdestination"));
-					if (quests.pathExists(path + ".item")) {
-						int id = quests.getInt(path + ".item.id");
-						int amount = quests.getInt(path + ".item.amount");
-						byte data = 0;
-						if (quests.pathExists(path + ".item.data"))
-							data = (byte) quests.getInt(path + ".item.data");
-						ItemStack stack = new ItemStack(id, amount);
-						stack.setData(new MaterialData(id, data));
-						obj.setItem(stack);
-					}
-					if (quests.pathExists(path + ".location")) {
-						String world = quests.getString(path
-								+ ".location.world");
-						double x = quests.getDouble(path + ".location.x");
-						double y = quests.getDouble(path + ".location.y");
-						double z = quests.getDouble(path + ".location.z");
-						float yaw = (float) quests.getDouble(path
-								+ ".location.yaw");
-						float pitch = (float) quests.getDouble(path
-								+ ".location.pitch");
-						Location loc = new Location(Bukkit.getServer()
-								.getWorld(world), x, y, z, yaw, pitch);
-						obj.setLocation(loc);
-					}
-					if (quests.pathExists(path + ".message")) {
-						obj.setMessage(quests.getString(path + ".message"));
-					}
-					if (quests.pathExists(path + ".materialid")) {
-						if (quests.getInt(path + ".materialid") != 0)
-							obj.setMaterial(Material.getMaterial(quests
-									.getInt(path + ".materialid")));
-					}
-					objectives.add(obj);
+					objectives.add(tempStep);
 				}
-				if (objectives.all().size() == 0) {
-					quest = null;
-					Messaging.log("Quest number " + (questCount + 1)
-							+ " is invalid - no objectives set.");
-					continue;
-				}
-				quest.setObjectives(objectives);
 			}
+			if (objectives.all().size() == 0) {
+				quest = null;
+				Messaging.log("Quest number " + (questCount + 1)
+						+ " is invalid - no objectives set.");
+				continue;
+			}
+			quest.setObjectives(objectives);
 			QuestManager.addQuest(quest);
 			++questCount;
 		}
 		Messaging.log("Loaded " + questCount + " quests.");
+	}
+
+	public static void saveQuest(ConfigurationHandler quests, Quest quest) {
+		String path = quest.getName();
+		quests.setString(path + ".texts.description", quest.getDescription());
+		quests.setString(path + ".texts.completion", quest.getCompletedText());
+		quests.setString(path + ".texts.acceptance", quest.getCompletedText());
+		quests.setBoolean(path + ".repeatable", quest.isRepeatable());
+		String temp = path + ".rewards.";
+		int count = 0;
+		for (Reward reward : quest.getRewards()) {
+			path = temp + count;
+			if (reward.getType() != RewardType.QUEST
+					&& reward.getType() != RewardType.RANK)
+				quests.setBoolean(path + ".take", reward.isTake());
+			switch (reward.getType()) {
+			case HEALTH:
+				quests.setInt(path + ".amount", (Integer) reward.getReward());
+				break;
+			case ITEM:
+				ItemStack item = (ItemStack) reward.getReward();
+				quests.setInt(path + ".id", item.getTypeId());
+				quests.setInt(path + ".amount", item.getAmount());
+				quests.setInt(path + ".data", item.getData() == null ? 0 : item
+						.getData().getData());
+				break;
+			case MONEY:
+				quests.setDouble(path + ".amount", (Double) reward.getReward());
+				break;
+			case PERMISSION:
+				quests.setString(path + ".permission",
+						(String) reward.getReward());
+				break;
+			case QUEST:
+				quests.setString(path + ".quest", (String) reward.getReward());
+				break;
+			case RANK:
+				quests.setString(path + ".rank", (String) reward.getReward());
+				break;
+			}
+			++count;
+		}
+		count = 0;
+		path += ".objectives";
+		int stepCount = 0;
+		for (QuestStep step : quest.getObjectives().all()) {
+			for (Objective objective : step.all()) {
+				temp = path + "." + stepCount + "." + count;
+				quests.setString(path + ".type", objective.getType().name()
+						.toLowerCase());
+				if (objective.getAmount() != -1)
+					quests.setInt(path + ".amount", objective.getAmount());
+				if (objective.getDestinationNPCID() != -1)
+					quests.setInt(path + ".npcdestination",
+							objective.getDestinationNPCID());
+				if (!objective.getMessage().isEmpty())
+					quests.setString(path + ".message", objective.getMessage());
+				if (objective.getItem() != null) {
+					ItemStack item = objective.getItem();
+					quests.setInt(path + ".item.id", item.getTypeId());
+					quests.setInt(path + ".item.amount", item.getAmount());
+					quests.setInt(path + ".item.data",
+							item.getData() == null ? 0 : item.getData()
+									.getData());
+				}
+				if (objective.getLocation() != null) {
+					Location loc = objective.getLocation();
+					quests.setString(path + ".location.world", loc.getWorld()
+							.getName());
+					quests.setDouble(path + ".location.x", loc.getX());
+					quests.setDouble(path + ".location.y", loc.getY());
+					quests.setDouble(path + ".location.z", loc.getZ());
+					quests.setDouble(path + ".location.yaw", loc.getYaw());
+					quests.setDouble(path + ".location.pitch", loc.getPitch());
+				}
+				if (objective.getMaterial() != null) {
+					quests.setInt(path + ".materialid", objective.getMaterial()
+							.getId());
+				}
+				++count;
+			}
+			++stepCount;
+		}
 	}
 }

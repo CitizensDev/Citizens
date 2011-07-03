@@ -4,17 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityTargetEvent;
 
+import com.citizens.Constants;
+import com.citizens.TickTask;
 import com.citizens.Interfaces.Clickable;
+import com.citizens.Interfaces.Damageable;
+import com.citizens.Interfaces.Targetable;
 import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCTypes.Guards.GuardManager.GuardType;
 import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Utils.PathUtils;
 
-public class GuardNPC extends Toggleable implements Clickable {
+public class GuardNPC extends Toggleable implements Clickable, Damageable,
+		Targetable {
 	private boolean isBodyguard = true;
 	private boolean isBouncer = false;
 	private boolean isAggressive = false;
+	private boolean isAttacking = false;
 	private GuardType guardType = GuardType.BODYGUARD;
 	private List<String> blacklist = new ArrayList<String>();
 	private List<String> whitelist = new ArrayList<String>();
@@ -210,5 +222,36 @@ public class GuardNPC extends Toggleable implements Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
+	}
+
+	public void setAttacking(boolean attacking) {
+		if (!attacking)
+			this.npc.setPaused(false);
+		this.isAttacking = attacking;
+	}
+
+	public boolean isAttacking() {
+		return isAttacking;
+	}
+
+	@Override
+	public void onTarget(EntityTargetEvent event) {
+	}
+
+	@Override
+	public void onDamage(EntityDamageEvent event) {
+		if (this.npc.getPlayer().getHealth() - event.getDamage() <= 0) {
+			TickTask.respawn(this.npc, Constants.guardRespawnDelay);
+		}
+		if (isAggressive() && event.getCause() == DamageCause.ENTITY_ATTACK) {
+			target((LivingEntity) ((EntityDamageByEntityEvent) event)
+					.getDamager());
+		}
+	}
+
+	public void target(LivingEntity entity) {
+		this.npc.setPaused(true);
+		this.setAttacking(true);
+		PathUtils.target(npc, entity, true, -1, -1, Constants.pathFindingRange);
 	}
 }

@@ -7,6 +7,7 @@ import com.citizens.Properties.Properties.UtilityProperties;
 public class Constants {
 	public static int evilNPCTameItem = 354;
 	public static int evilNPCTameChance = 5;
+	public static int guardRespawnDelay = 100;
 	public static int healerGiveHealthItem = 35;
 	public static int healerHealthRegenIncrement = 12000;
 	public static int healerTakeHealthItem = 276;
@@ -32,8 +33,8 @@ public class Constants {
 
 	public static float pathFindingRange = 16F;
 
-	public static String chatFormat = "[%name%]: ";
 	public static final String convertToSpaceChar = "/";
+	public static String chatFormat = "[%name%]: ";
 	public static String defaultText = "Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;";
 	public static String npcColour = "f";
 	public static String talkItems = "340,";
@@ -119,6 +120,7 @@ public class Constants {
 		wizardInteractItem = settings.getInt("items.wizards.interact-item");
 		wizardManaRegenItem = settings.getInt("items.wizards.mana-regen-item");
 		maxWizardMana = settings.getInt("general.wizards.max-mana");
+		guardRespawnDelay = settings.getInt("ticks.guards.respawn-delay");
 
 		// ####Economy settings####
 		Storage economy = UtilityProperties.getEconomySettings();

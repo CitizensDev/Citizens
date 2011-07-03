@@ -7,16 +7,13 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Interfaces.Clickable;
 import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCTypes.Questers.CompletedQuest;
-import com.citizens.NPCTypes.Questers.Quest;
-import com.citizens.NPCTypes.Questers.Reward;
 import com.citizens.NPCTypes.Questers.Quests.QuestManager;
 import com.citizens.NPCTypes.Questers.Rewards.QuestReward;
 import com.citizens.Properties.PlayerProfile;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.PageUtils;
-import com.citizens.Utils.StringUtils;
 import com.citizens.Utils.PageUtils.PageInstance;
+import com.citizens.Utils.StringUtils;
 import com.iConomy.util.Messaging;
 
 public class QuesterNPC extends Toggleable implements Clickable {
@@ -61,6 +58,50 @@ public class QuesterNPC extends Toggleable implements Clickable {
 		cycle(player);
 	}
 
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		if (QuestManager.getProfile(player.getName()).hasQuest()) {
+			PlayerProfile profile = QuestManager.getProfile(player.getName());
+			if (profile.getProgress().fullyCompleted()
+					&& profile.getProgress().getQuesterUID() == this.npc
+							.getUID()) {
+				Quest quest = QuestManager.getQuest(profile.getProgress()
+						.getQuestName());
+				Messaging.send(quest.getCompletedText());
+				for (Reward reward : quest.getRewards()) {
+					if (reward instanceof QuestReward)
+						((QuestReward) reward).grantQuest(player, npc);
+					else
+						reward.grant(player);
+				}
+				long elapsed = System.currentTimeMillis()
+						- profile.getProgress().getStartTime();
+				profile.setProgress(null);
+				profile.addCompletedQuest(new CompletedQuest(quest, npc
+						.getStrippedName(), elapsed));
+				QuestManager.setProfile(player.getName(), profile);
+	
+			}
+		} else {
+			if (previous == null
+					|| !previous.getName().equals(player.getName())) {
+				previous = player;
+				cycle(player);
+			}
+			if (display.currentPage() != display.maxPages()) {
+				display.displayNext();
+				if (display.currentPage() == display.maxPages()) {
+					player.sendMessage(ChatColor.GOLD
+							+ "Right click to accept.");
+				}
+			} else {
+				QuestManager.assignQuest(this.npc, player, quests.peek());
+				Messaging.send(player, getQuest(quests.peek())
+						.getAcceptanceText());
+			}
+		}
+	}
+
 	private void cycle(Player player) {
 		quests.addLast(quests.pop());
 		Quest quest = getQuest(quests.peek());
@@ -85,48 +126,6 @@ public class QuesterNPC extends Toggleable implements Clickable {
 
 	private Quest getQuest(String name) {
 		return QuestManager.getQuest(name);
-	}
-
-	@Override
-	public void onRightClick(Player player, HumanNPC npc) {
-		if (QuestManager.getProfile(player.getName()).hasQuest()) {
-			PlayerProfile profile = QuestManager.getProfile(player.getName());
-			if (profile.getProgress().fullyCompleted()
-					&& profile.getProgress().getQuesterUID() == this.npc
-							.getUID()) {
-				Quest quest = QuestManager.getQuest(profile.getProgress()
-						.getQuestName());
-				Messaging.send(quest.getCompletedText());
-				for (Reward reward : quest.getRewards()) {
-					if (reward instanceof QuestReward)
-						((QuestReward) reward).grantQuest(player, npc);
-					else
-						reward.grant(player);
-				}
-				long elapsed = System.currentTimeMillis()
-						- profile.getProgress().getStartTime();
-				profile.setProgress(null);
-				profile.addCompletedQuest(new CompletedQuest(quest, npc
-						.getStrippedName(), elapsed));
-				QuestManager.setProfile(player.getName(), profile);
-
-			}
-		} else {
-			if (previous == null
-					|| !previous.getName().equals(player.getName())) {
-				previous = player;
-				cycle(player);
-			}
-			if (display.currentPage() != display.maxPages()) {
-				display.displayNext();
-				if (display.currentPage() == display.maxPages()) {
-					player.sendMessage(ChatColor.GOLD
-							+ "Right click to accept.");
-				}
-			} else {
-				QuestManager.assignQuest(this.npc, player, quests.peek());
-			}
-		}
 	}
 
 	public boolean hasQuests() {

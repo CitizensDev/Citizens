@@ -53,6 +53,7 @@ public class Defaults {
 		nodes.put("items.wizards.mana-regen-item", "348");
 		// Tick Settings
 		nodes.put("ticks.general.delay", "1");
+		nodes.put("ticks.guards.respawn-delay", "100");
 		nodes.put("ticks.saving.use-task", "true");
 		nodes.put("ticks.saving.save-often", "true");
 		nodes.put("ticks.saving.delay", "72000");

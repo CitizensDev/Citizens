@@ -9,7 +9,8 @@ import com.citizens.Resources.NPClib.HumanNPC;
 public class PathUtils {
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,
 			int stationaryTicks, float range) {
-		return npc.createPath(loc, pathTicks, stationaryTicks, range);
+		return npc.getHandle()
+				.startPath(loc, pathTicks, stationaryTicks, range);
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,
@@ -28,7 +29,8 @@ public class PathUtils {
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks, int stationaryTicks, float range) {
-		npc.target(entity, aggro, pathTicks, stationaryTicks, range);
+		npc.getHandle().setTarget(entity, aggro, pathTicks, stationaryTicks,
+				range);
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
@@ -63,6 +65,6 @@ public class PathUtils {
 	}
 
 	public static void setAttackTimes(HumanNPC npc, int times) {
-		npc.setAttackTimes(times);
+		npc.getHandle().setAttackTimes(times);
 	}
 }
