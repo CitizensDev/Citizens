@@ -2,6 +2,7 @@ package com.citizens.Commands.Commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,6 +12,7 @@ import com.citizens.Resources.sk89q.Command;
 import com.citizens.Resources.sk89q.CommandContext;
 import com.citizens.Resources.sk89q.CommandPermissions;
 import com.citizens.Resources.sk89q.CommandRequirements;
+import com.citizens.Resources.sk89q.ServerCommand;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.StringUtils;
 
@@ -26,9 +28,10 @@ public class BlacksmithCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.blacksmith")
-	public static void sendBlacksmithHelp(CommandContext args, Player player,
-			HumanNPC npc) {
-		HelpUtils.sendBlacksmithHelp(player);
+	@ServerCommand()
+	public static void sendBlacksmithHelp(CommandContext args,
+			CommandSender sender, HumanNPC npc) {
+		HelpUtils.sendBlacksmithHelp(sender);
 	}
 
 	@Command(

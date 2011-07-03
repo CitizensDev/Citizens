@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,7 @@ import com.citizens.Resources.sk89q.Command;
 import com.citizens.Resources.sk89q.CommandContext;
 import com.citizens.Resources.sk89q.CommandPermissions;
 import com.citizens.Resources.sk89q.CommandRequirements;
+import com.citizens.Resources.sk89q.ServerCommand;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.Messaging;
 import com.citizens.Utils.StringUtils;
@@ -24,6 +26,7 @@ import com.citizens.Utils.StringUtils;
 public class GuardCommands {
 
 	@CommandRequirements()
+	@ServerCommand()
 	@Command(
 			aliases = "guard",
 			usage = "help",
@@ -32,9 +35,9 @@ public class GuardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.guard")
-	public static void sendGuardHelp(CommandContext args, Player player,
+	public static void sendGuardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendGuardHelp(player);
+		HelpUtils.sendGuardHelp(sender);
 	}
 
 	@Command(

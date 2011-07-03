@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.citizens.NPCs.NPCManager;
@@ -107,6 +108,8 @@ public abstract class CommandsManager<T extends Player> {
 	protected Injector injector;
 
 	protected Map<Method, CommandRequirements> requirements = new HashMap<Method, CommandRequirements>();
+
+	protected Map<Method, ServerCommand> serverCommands = new HashMap<Method, ServerCommand>();
 
 	/**
 	 * Register an class that contains commands (denoted by {@link Command}. If
@@ -190,6 +193,13 @@ public abstract class CommandsManager<T extends Player> {
 			}
 			if (requirements != null)
 				this.requirements.put(method, requirements);
+
+			ServerCommand serverCommand = null;
+			if (method.isAnnotationPresent(ServerCommand.class)) {
+				serverCommand = method.getAnnotation(ServerCommand.class);
+			}
+			if (serverCommand != null)
+				this.serverCommands.put(method, serverCommand);
 
 			// We want to be able invoke with an instance
 			if (!isStatic) {
@@ -416,6 +426,12 @@ public abstract class CommandsManager<T extends Player> {
 		Method method = map.get(new CommandIdentifier(cmdName.toLowerCase(),
 				modifier.toLowerCase()));
 
+		if (method != null && methodArgs != null
+				&& serverCommands.get(method) == null
+				&& methodArgs[1] instanceof CommandSender) {
+			throw new ServerCommandException();
+		}
+
 		if (method == null) {
 			if (parent == null) { // Root
 				throw new UnhandledCommandException();
@@ -425,10 +441,12 @@ public abstract class CommandsManager<T extends Player> {
 						player));
 			}
 		}
-		HumanNPC npc = getSelectedNPC(player);
 
-		if (!hasPermission(method, player, npc)) {
-			throw new CommandPermissionsException();
+		HumanNPC npc = (HumanNPC) methodArgs[2];
+		if (methodArgs[1] instanceof Player) {
+			if (!hasPermission(method, player, npc)) {
+				throw new CommandPermissionsException();
+			}
 		}
 
 		int argsCount = args.length - 1 - level;
@@ -441,7 +459,7 @@ public abstract class CommandsManager<T extends Player> {
 			} else {
 				executeMethod(method, args, player, methodArgs, level + 1);
 			}
-		} else {
+		} else if (methodArgs[1] instanceof Player) {
 			CommandRequirements requirements = this.requirements.get(method);
 
 			if (requirements != null) {
@@ -465,6 +483,7 @@ public abstract class CommandsManager<T extends Player> {
 				Messaging.debug("No annotation present.");
 			}
 		}
+
 		Command cmd = method.getAnnotation(Command.class);
 
 		String[] newArgs = new String[args.length - level];

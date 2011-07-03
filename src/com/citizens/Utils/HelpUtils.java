@@ -1,44 +1,44 @@
 package com.citizens.Utils;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 public class HelpUtils {
 
 	/**
 	 * Sends the help page for /citizens help
 	 * 
-	 * @param player
+	 * @param sender
 	 * @param page
 	 */
-	public static void sendHelpPage(Player player, int page) {
+	public static void sendHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:
-			header(player, "General", 1, 2);
-			player.sendMessage(ChatColor.GREEN + "  []"
+			header(sender, "General", 1, 2);
+			sender.sendMessage(ChatColor.GREEN + "  []"
 					+ StringUtils.wrap(" - required") + "  ()"
 					+ StringUtils.wrap(" - optional"));
-			format(player, "citizens", "", "display Citizens information");
-			format(player, "citizens", "reload", "reload Citizens files");
-			format(player, "citizens", "save", "force a save of Citizens files");
-			format(player, "toggle", "[type]", "toggle an NPC type");
-			format(player, "toggle", "all [on/off]",
+			format(sender, "citizens", "", "display Citizens information");
+			format(sender, "citizens", "reload", "reload Citizens files");
+			format(sender, "citizens", "save", "force a save of Citizens files");
+			format(sender, "toggle", "[type]", "toggle an NPC type");
+			format(sender, "toggle", "all [on/off]",
 					"toggle all types for an NPC");
-			format(player, "basic", "help [page]", "basic NPC help pages");
-			format(player, "blacksmith", "help", "blacksmith NPC help page");
-			format(player, "guard", "help", "guard NPC help page");
+			format(sender, "basic", "help [page]", "basic NPC help pages");
+			format(sender, "blacksmith", "help", "blacksmith NPC help page");
+			format(sender, "guard", "help", "guard NPC help page");
 			break;
 		case 2:
-			header(player, "General", 2, 2);
-			format(player, "healer", "help", "healer NPC help page");
-			format(player, "landlord", "help", "landlord NPC help page");
-			format(player, "quester", "help", "quester NPC help page");
-			format(player, "trader", "help", "trader NPC help page");
-			format(player, "wizard", "help", "wizard NPC help page");
-			footer(player);
+			header(sender, "General", 2, 2);
+			format(sender, "healer", "help", "healer NPC help page");
+			format(sender, "landlord", "help", "landlord NPC help page");
+			format(sender, "quester", "help", "quester NPC help page");
+			format(sender, "trader", "help", "trader NPC help page");
+			format(sender, "wizard", "help", "wizard NPC help page");
+			footer(sender);
 			break;
 		default:
-			player.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
 			break;
 		}
 	}
@@ -46,51 +46,51 @@ public class HelpUtils {
 	/**
 	 * Sends the help page for the basic npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 * @param page
 	 */
-	public static void sendBasicHelpPage(Player player, int page) {
+	public static void sendBasicHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:
-			header(player, "Basic NPC", 1, 3);
-			format(player, "npc", "create [name]", "create an NPC");
-			format(player, "npc", "set [text]", "set the text of an NPC");
-			format(player, "npc", "add [text]", "add text to an NPC");
-			format(player, "npc", "reset", "reset the text of an NPC");
-			format(player, "npc", "rename [name]", "rename an NPC");
-			format(player, "npc", "remove (all)", "remove all NPC(s)");
-			format(player, "npc", "item [item]",
+			header(sender, "Basic NPC", 1, 3);
+			format(sender, "npc", "create [name]", "create an NPC");
+			format(sender, "npc", "set [text]", "set the text of an NPC");
+			format(sender, "npc", "add [text]", "add text to an NPC");
+			format(sender, "npc", "reset", "reset the text of an NPC");
+			format(sender, "npc", "rename [name]", "rename an NPC");
+			format(sender, "npc", "remove (all)", "remove all NPC(s)");
+			format(sender, "npc", "item [item]",
 					"set the item that an NPC holds");
-			format(player, "npc", "armor [slot] [item]",
+			format(sender, "npc", "armor [slot] [item]",
 					"set the armor slot of an NPC");
-			format(player, "npc", "move", "move an NPC to your location");
+			format(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
-			header(player, "Basic NPC", 2, 3);
-			format(player, "npc", "moveto [x y z](world pitch yaw)",
+			header(sender, "Basic NPC", 2, 3);
+			format(sender, "npc", "moveto [x y z](world pitch yaw)",
 					"move an NPC to a location");
-			format(player, "npc", "tp", "teleport to the location of an NPC");
-			format(player, "npc", "copy",
+			format(sender, "npc", "tp", "teleport to the location of an NPC");
+			format(sender, "npc", "copy",
 					"make a clone of an NPC at your location");
-			format(player, "npc", "id", "get the ID of an NPC");
-			format(player, "npc", "select [ID]",
+			format(sender, "npc", "id", "get the ID of an NPC");
+			format(sender, "npc", "select [ID]",
 					"select an NPC with the given ID");
-			format(player, "npc", "owner", "get the owner of an NPC");
-			format(player, "npc", "setowner [name]", "set the owner of an NPC");
-			format(player, "npc", "talkclose [true|false]",
+			format(sender, "npc", "owner", "get the owner of an NPC");
+			format(sender, "npc", "setowner [name]", "set the owner of an NPC");
+			format(sender, "npc", "talkclose [true|false]",
 					"make an NPC talk to players");
-			format(player, "npc", "lookat [true|false]",
+			format(sender, "npc", "lookat [true|false]",
 					"make an NPC look at players");
 			break;
 		case 3:
-			header(player, "Basic NPC", 3, 3);
-			format(player, "npc", "list (name) (page)", "show a list of NPCs");
-			format(player, "npc", "[path|waypoints] (reset)",
+			header(sender, "Basic NPC", 3, 3);
+			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
+			format(sender, "npc", "[path|waypoints] (reset)",
 					"control an NPC's waypoints");
-			footer(player);
+			footer(sender);
 			break;
 		default:
-			player.sendMessage(MessageUtils.getMaxPagesMessage(page, 3));
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 3));
 			break;
 		}
 	}
@@ -98,26 +98,26 @@ public class HelpUtils {
 	/**
 	 * Sends the help page for the trader npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
-	public static void sendTraderHelp(Player player) {
-		header(player, "Trader", 1, 1);
-		format(player, "trader", "list [buy|sell] (page)",
+	public static void sendTraderHelp(CommandSender sender) {
+		header(sender, "Trader", 1, 1);
+		format(sender, "trader", "list [buy|sell] (page)",
 				"list a trader's buy/sell list");
-		format(player, "trader",
+		format(sender, "trader",
 				"[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]",
 				"add an item to a trader's stock");
-		format(player, "trader", "[buy|sell] remove [itemID:data]",
+		format(sender, "trader", "[buy|sell] remove [itemID:data]",
 				"remove item from a trader's stock");
-		format(player,
+		format(sender,
 				"trader",
 				"[buy|sell] edit [itemID(:amount:data)] [itemID(:amount:data)]",
 				"edit a trader's stock");
-		format(player, "trader", "unlimited [true|false]",
+		format(sender, "trader", "unlimited [true|false]",
 				"set whether a trader has unlimited stock");
-		format(player, "trader", "money [give|take] (amount)",
+		format(sender, "trader", "money [give|take] (amount)",
 				"control a trader's money");
-		footer(player);
+		footer(sender);
 	}
 
 	/**
@@ -125,72 +125,72 @@ public class HelpUtils {
 	 * 
 	 * @param player
 	 */
-	public static void sendHealerHelp(Player player) {
-		header(player, "Healer", 1, 1);
-		format(player, "healer", "status",
+	public static void sendHealerHelp(CommandSender sender) {
+		header(sender, "Healer", 1, 1);
+		format(sender, "healer", "status",
 				"view the health and level of a healer");
-		format(player, "healer", "level-up (levels)", "level-up a healer");
-		footer(player);
+		format(sender, "healer", "level-up (levels)", "level-up a healer");
+		footer(sender);
 	}
 
 	/**
 	 * Sends the help page for the wizard npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
-	public static void sendWizardHelp(Player player) {
-		header(player, "Wizard", 1, 1);
-		format(player, "wizard", "locations",
+	public static void sendWizardHelp(CommandSender sender) {
+		header(sender, "Wizard", 1, 1);
+		format(sender, "wizard", "locations",
 				"view the tp locations of a wizard");
-		format(player, "wizard", "addloc [name]",
+		format(sender, "wizard", "addloc [name]",
 				"add a tp location to the wizard");
-		format(player, "wizard", "removeloc [id]", "remove the tp location");
-		format(player, "wizard", "mode [mode]", "change the mode of a wizard");
-		format(player, "wizard", "status", "display the mode/mana of a wizard");
-		footer(player);
+		format(sender, "wizard", "removeloc [id]", "remove the tp location");
+		format(sender, "wizard", "mode [mode]", "change the mode of a wizard");
+		format(sender, "wizard", "status", "display the mode/mana of a wizard");
+		footer(sender);
 	}
 
 	/**
 	 * Sends the help page for the quester npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
-	public static void sendQuesterHelp(Player player) {
-		header(player, "Quester", 1, 1);
-		format(player, "quester", "assign [quest]", "assign a quest to an NPC");
-		format(player, "quester", "remove [quest]",
+	public static void sendQuesterHelp(CommandSender sender) {
+		header(sender, "Quester", 1, 1);
+		format(sender, "quester", "assign [quest]", "assign a quest to an NPC");
+		format(sender, "quester", "remove [quest]",
 				"remove a quest from an NPC");
-		footer(player);
+		footer(sender);
 	}
 
 	/**
 	 * Sends the help page for the blacksmith npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
-	public static void sendBlacksmithHelp(Player player) {
-		header(player, "Blacksmith", 1, 1);
-		format(player, "blacksmith", "uses",
+	public static void sendBlacksmithHelp(CommandSender sender) {
+		header(sender, "Blacksmith", 1, 1);
+		format(sender, "blacksmith", "uses",
 				"show how many uses your item has left");
-		footer(player);
+		footer(sender);
 	}
 
 	/**
 	 * Sends the help page for the guard npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
-	public static void sendGuardHelp(Player player) {
-		header(player, "Guard", 1, 1);
-		format(player, "guard", "[type]",
+	public static void sendGuardHelp(CommandSender sender) {
+		header(sender, "Guard", 1, 1);
+		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		format(player, "guard", "blacklist [mob]",
+		format(sender, "guard", "blacklist [mob]",
 				"add mob to a guard's blacklist");
-		format(player, "guard", "whitelist [player]",
+		format(sender, "guard", "whitelist [player]",
 				"add player to a guard's whitelist");
-		format(player, "guard", "radius [amount]",
+		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
-		footer(player);
+		footer(sender);
 	}
 
 	/**
@@ -198,22 +198,22 @@ public class HelpUtils {
 	 * 
 	 * @param player
 	 */
-	public static void sendLandlordHelp(Player player) {
-		header(player, "Landlord", 1, 1);
-		footer(player);
+	public static void sendLandlordHelp(CommandSender sender) {
+		header(sender, "Landlord", 1, 1);
+		footer(sender);
 	}
 
 	/**
 	 * Prints the header for the help menus
 	 * 
-	 * @param player
+	 * @param sender
 	 * @param npcType
 	 * @param page
 	 * @param maxPages
 	 */
-	private static void header(Player player, String npcType, int page,
+	private static void header(CommandSender sender, String npcType, int page,
 			int maxPages) {
-		player.sendMessage(ChatColor.GREEN + StringUtils.wrap("=========[ ")
+		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap("=========[ ")
 				+ "Citizens " + npcType + " Help" + ChatColor.WHITE + " <"
 				+ page + "/" + maxPages + ">" + StringUtils.wrap(" ]========="));
 	}
@@ -221,12 +221,12 @@ public class HelpUtils {
 	/**
 	 * Formats commands to fit a uniform style
 	 * 
-	 * @param player
+	 * @param sender
 	 * @param command
 	 * @param desc
 	 */
-	private static void format(Player player, String command, String args,
-			String desc) {
+	private static void format(CommandSender sender, String command,
+			String args, String desc) {
 		String message = "";
 		if (args.isEmpty()) {
 			message = StringUtils.wrap("/") + command + StringUtils.wrap(" - ")
@@ -235,16 +235,16 @@ public class HelpUtils {
 			message = StringUtils.wrap("/") + command + ChatColor.RED + " "
 					+ args + StringUtils.wrap(" - ") + desc;
 		}
-		player.sendMessage(message);
+		sender.sendMessage(message);
 	}
 
 	/**
 	 * Prints the footer for the help menus
 	 * 
-	 * @param player
+	 * @param sender
 	 */
-	private static void footer(Player player) {
-		player.sendMessage(ChatColor.DARK_GRAY
+	private static void footer(CommandSender sender) {
+		sender.sendMessage(ChatColor.DARK_GRAY
 				+ "=========[ Coded by: fullwall and aPunch ]=========");
 	}
 }

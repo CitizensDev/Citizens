@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.citizens.Resources.NPClib.HumanNPC;
@@ -25,6 +26,15 @@ public class Messaging {
 			message = message.replace("<npcid>", "" + npc.getUID());
 		}
 		player.sendMessage(message);
+	}
+
+	private static void send(CommandSender sender, HumanNPC npc, String message) {
+		message = colourise(StringUtils.colourise(message));
+		if (npc != null) {
+			message = message.replace("<npc>", npc.getStrippedName());
+			message = message.replace("<npcid>", "" + npc.getUID());
+		}
+		sender.sendMessage(message);
 	}
 
 	private static String colourise(String message) {
@@ -67,5 +77,9 @@ public class Messaging {
 
 	public static void sendError(Player player, String error) {
 		send(player, null, ChatColor.RED + error);
+	}
+
+	public static void sendError(CommandSender sender, String error) {
+		send(sender, null, ChatColor.RED + error);
 	}
 }

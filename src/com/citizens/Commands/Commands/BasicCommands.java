@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,6 +25,7 @@ import com.citizens.Resources.sk89q.Command;
 import com.citizens.Resources.sk89q.CommandContext;
 import com.citizens.Resources.sk89q.CommandPermissions;
 import com.citizens.Resources.sk89q.CommandRequirements;
+import com.citizens.Resources.sk89q.ServerCommand;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
@@ -33,7 +35,6 @@ import com.citizens.Utils.StringUtils;
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
 
-	@CommandRequirements()
 	@Command(
 			aliases = "citizens",
 			usage = "",
@@ -41,18 +42,20 @@ public class BasicCommands {
 			modifiers = "",
 			min = 0,
 			max = 0)
+	@ServerCommand()
 	@CommandPermissions("admin")
-	public static void viewInfo(CommandContext args, Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN + "==========[ "
+	@CommandRequirements()
+	public static void viewInfo(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		sender.sendMessage(ChatColor.GREEN + "==========[ "
 				+ StringUtils.wrap("Citizens") + " ]==========");
-		player.sendMessage(ChatColor.GREEN + "  Version: "
+		sender.sendMessage(ChatColor.GREEN + "  Version: "
 				+ StringUtils.wrap(Citizens.getVersion()));
-		player.sendMessage(ChatColor.GREEN + "  Authors: ");
-		player.sendMessage(ChatColor.YELLOW + "      - fullwall");
-		player.sendMessage(ChatColor.YELLOW + "      - aPunch");
+		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
+		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
+		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
 	}
 
-	@CommandRequirements()
 	@Command(
 			aliases = "citizens",
 			usage = "help (page)",
@@ -61,13 +64,15 @@ public class BasicCommands {
 			min = 1,
 			max = 2)
 	@CommandPermissions("use.basic")
-	public static void sendCitizensHelp(CommandContext args, Player player,
-			HumanNPC npc) {
+	@CommandRequirements()
+	@ServerCommand()
+	public static void sendCitizensHelp(CommandContext args,
+			CommandSender sender, HumanNPC npc) {
 		int page = 1;
 		if (args.argsLength() == 2) {
 			page = Integer.parseInt(args.getString(1));
 		}
-		HelpUtils.sendHelpPage(player, page);
+		HelpUtils.sendHelpPage(sender, page);
 	}
 
 	@CommandRequirements()
@@ -79,9 +84,11 @@ public class BasicCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("admin")
-	public static void reload(CommandContext args, Player player, HumanNPC npc) {
+	@ServerCommand()
+	public static void reload(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
 		Messaging.log("Reloading configuration settings....");
-		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
 				+ "] Reloading....");
 
 		UtilityProperties.initialize();
@@ -89,7 +96,7 @@ public class BasicCommands {
 		Constants.setupVariables();
 
 		Messaging.log("Reloaded.");
-		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
 				+ "] Reloaded.");
 	}
 
@@ -101,17 +108,20 @@ public class BasicCommands {
 			modifiers = "save",
 			min = 1,
 			max = 1)
+	@ServerCommand()
 	@CommandPermissions("admin")
-	public static void forceSave(CommandContext args, Player player,
+	public static void forceSave(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		Messaging.log("Saving...");
-		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+		if (sender instanceof Player)
+			Messaging.log("Saving...");
+		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
 				+ "] Saving...");
 
 		PropertyManager.saveState();
 
-		Messaging.log("Saved.");
-		player.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+		if (sender instanceof Player)
+			Messaging.log("Saved.");
+		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
 				+ "] Saved.");
 	}
 
@@ -124,13 +134,14 @@ public class BasicCommands {
 			min = 1,
 			max = 2)
 	@CommandPermissions("use.basic")
-	public static void sendBasicHelp(CommandContext args, Player player,
+	@ServerCommand()
+	public static void sendBasicHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		int page = 1;
 		if (args.argsLength() == 2) {
 			page = Integer.parseInt(args.getString(1));
 		}
-		HelpUtils.sendBasicHelpPage(player, page);
+		HelpUtils.sendBasicHelpPage(sender, page);
 	}
 
 	@CommandRequirements()

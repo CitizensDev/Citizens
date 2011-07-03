@@ -49,6 +49,7 @@ import com.citizens.Resources.sk89q.CommandPermissionsException;
 import com.citizens.Resources.sk89q.CommandUsageException;
 import com.citizens.Resources.sk89q.MissingNestedCommandException;
 import com.citizens.Resources.sk89q.RequirementMissingException;
+import com.citizens.Resources.sk89q.ServerCommandException;
 import com.citizens.Resources.sk89q.UnhandledCommandException;
 import com.citizens.Resources.sk89q.WrappedCommandException;
 import com.citizens.Utils.MessageUtils;
@@ -153,6 +154,66 @@ public class Citizens extends JavaPlugin {
 				+ ") loaded");
 	}
 
+	@Override
+	public void onLoad() {
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command,
+			String label, String[] args) {
+		Player player = null;
+		if (sender instanceof Player)
+			player = (Player) sender;
+		try {
+			// must put command into split.
+			String[] split = new String[args.length + 1];
+			System.arraycopy(args, 0, split, 1, args.length);
+			split[0] = command.getName().toLowerCase();
+
+			String modifier = "";
+			if (args.length > 0)
+				modifier = args[0];
+
+			// No command found!
+			if (!commands.hasCommand(split[0], modifier)) {
+				return false;
+			}
+
+			HumanNPC npc = null;
+			if (player != null && NPCManager.validateSelected(player)) {
+				npc = NPCManager.get(NPCManager.getSelected(player));
+			}
+			try {
+				commands.execute(split, player, player == null ? sender
+						: player, npc);
+			} catch (ServerCommandException e) {
+				sender.sendMessage(e.getMessage());
+			} catch (CommandPermissionsException e) {
+				Messaging.sendError(sender, MessageUtils.noPermissionsMessage);
+			} catch (MissingNestedCommandException e) {
+				Messaging.sendError(player, e.getUsage());
+			} catch (CommandUsageException e) {
+				Messaging.sendError(player, e.getMessage());
+				Messaging.sendError(player, e.getUsage());
+			} catch (RequirementMissingException e) {
+				Messaging.sendError(player, e.getMessage());
+			} catch (WrappedCommandException e) {
+				throw e.getCause();
+			} catch (UnhandledCommandException e) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			Messaging.sendError(player, "That is not a valid number.");
+		} catch (Throwable excp) {
+			excp.printStackTrace();
+			Messaging.sendError(player,
+					"Please report this error: [See console]");
+			Messaging.sendError(player,
+					excp.getClass().getName() + ": " + excp.getMessage());
+		}
+		return true;
+	}
+
 	private void registerTypes() {
 		OperationPurchaser purchaser = new OperationPurchaser();
 		NPCTypeManager.registerType(new NPCType("blacksmith",
@@ -170,10 +231,6 @@ public class Citizens extends JavaPlugin {
 				new TraderProperties(), purchaser, TraderNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("wizard",
 				new WizardProperties(), purchaser, WizardNPC.class), true);
-	}
-
-	@Override
-	public void onLoad() {
 	}
 
 	private void setupNPCs() {
@@ -287,61 +344,6 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage(MessageUtils.mustBeIngameMessage);
-			return true;
-		}
-		Player player = (Player) sender;
-		try {
-			// must put command into split.
-			String[] split = new String[args.length + 1];
-			System.arraycopy(args, 0, split, 1, args.length);
-			split[0] = command.getName().toLowerCase();
-
-			String modifier = "";
-			if (args.length > 0)
-				modifier = args[0];
-
-			// No command found!
-			if (!commands.hasCommand(split[0], modifier)) {
-				return false;
-			}
-
-			HumanNPC npc = null;
-			if (NPCManager.validateSelected(player)) {
-				npc = NPCManager.get(NPCManager.getSelected(player));
-			}
-			try {
-				commands.execute(split, player, player, npc);
-			} catch (CommandPermissionsException e) {
-				Messaging.sendError(player, MessageUtils.noPermissionsMessage);
-			} catch (MissingNestedCommandException e) {
-				Messaging.sendError(player, e.getUsage());
-			} catch (CommandUsageException e) {
-				Messaging.sendError(player, e.getMessage());
-				Messaging.sendError(player, e.getUsage());
-			} catch (RequirementMissingException e) {
-				Messaging.sendError(player, e.getMessage());
-			} catch (WrappedCommandException e) {
-				throw e.getCause();
-			} catch (UnhandledCommandException e) {
-				return false;
-			}
-		} catch (NumberFormatException e) {
-			Messaging.sendError(player, "That is not a valid number.");
-		} catch (Throwable excp) {
-			Messaging.sendError(player,
-					"Please report this error: [See console]");
-			Messaging.sendError(player,
-					excp.getClass().getName() + ": " + excp.getMessage());
-			excp.printStackTrace();
 		}
 		return true;
 	}
