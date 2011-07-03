@@ -127,6 +127,11 @@ public class CachedYAMLHandler implements Storage {
 		setString("" + path, value);
 	}
 
+	public void forceSetString(String path, String value) {
+		setString(path, value);
+		this.config.setProperty(path, value);
+	}
+
 	@Override
 	public int getInt(String path) {
 		if (valueExists(path)) {

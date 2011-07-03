@@ -88,11 +88,11 @@ public class PropertyManager {
 		for (HumanNPC npc : NPCManager.getList().values()) {
 			save(npc);
 		}
-		profiles.save();
 	}
 
 	public static void saveState() {
 		saveAllNPCs();
+		profiles.save();
 	}
 
 	public static void loadAll() {

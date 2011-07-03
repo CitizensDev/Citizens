@@ -551,7 +551,8 @@ public class BasicCommands {
 		npc = NPCManager.get(Integer.valueOf(args.getString(1)));
 		if (npc == null) {
 			player.sendMessage(ChatColor.RED + "No NPC with the ID "
-					+ args.getString(1) + ".");
+					+ StringUtils.wrap(args.getString(1), ChatColor.RED)
+					+ " exists.");
 		} else {
 			NPCManager.selectNPC(player, npc);
 			Messaging.send(player, npc, Constants.selectionMessage);

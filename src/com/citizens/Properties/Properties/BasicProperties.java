@@ -62,15 +62,20 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		String locale = loc.getWorld().getName() + "," + loc.getX() + ","
 				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
 				+ loc.getPitch();
-		profiles.setString(UID + location, locale);
+		profiles.forceSetString(UID + location, locale);
 	}
 
 	private void saveInventory(int UID, PlayerInventory inv) {
 		StringBuilder save = new StringBuilder();
+		int count = 0;
 		for (ItemStack i : inv.getContents()) {
 			if (i == null || i.getType() == Material.AIR) {
-				save.append("AIR,");
+				++count;
 			} else {
+				if (count > 0) {
+					save.append("AIR*" + count + ",");
+					count = 0;
+				}
 				save.append(i.getTypeId())
 						.append("/")
 						.append(i.getAmount())
@@ -78,6 +83,10 @@ public class BasicProperties extends PropertyManager implements Saveable {
 						.append((i.getData() == null) ? 0 : i.getData()
 								.getData()).append(",");
 			}
+		}
+		if (count > 0) {
+			save.append("AIR*" + count + ",");
+			count = 0;
 		}
 		profiles.setString(UID + inventory, save.toString());
 	}
@@ -90,12 +99,21 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
-			if (!split[0].equals("AIR") && !split[0].equals("0")) {
+			if (!split[0].contains("AIR") && !split[0].equals("0")) {
 				array.add(new ItemStack(StringUtils.parse(split[0]),
 						StringUtils.parse(split[1]), (short) 0,
 						(byte) StringUtils.parse(split[2])));
 			} else {
-				array.add(null);
+				if (split[0].equals("AIR")) {
+					array.add(null);
+				} else {
+					int count = Integer.parseInt(split[0].split("\\*")[1]);
+					while (count != 0) {
+						array.add(null);
+						--count;
+					}
+
+				}
 			}
 		}
 		PlayerInventory inv = new CraftInventoryPlayer(
