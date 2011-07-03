@@ -26,3 +26,8 @@ Changelog:
 -added '/citizens reload' command to reload Citizens settings
 -added '/citizens save' to force a save of Citizens files
 -pumpkins and jack-o-lanterns can now be used an helmets for NPCs
+
+--- v1.0.9a ---
+-guard fixes (THEY STILL DO NOT WORK 100%)
+-trader command fixes
+-fixed /npc remove command
