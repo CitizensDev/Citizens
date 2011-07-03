@@ -33,7 +33,8 @@ public class NPCDataManager {
 											+ "Waypoints must be in the same world as the npc.");
 					break;
 				}
-				if (npc.getWaypoints().getLast().distance(loc) > 25) {
+				if (npc.getWaypoints().size() > 0
+						&& npc.getWaypoints().getLast().distance(loc) > 25) {
 					event.getPlayer()
 							.sendMessage(
 									ChatColor.GRAY

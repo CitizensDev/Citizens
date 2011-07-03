@@ -30,6 +30,7 @@ import com.citizens.NPCTypes.Wizards.WizardNPC;
 import com.citizens.NPCTypes.Wizards.WizardTask;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.NPCs.NPCTypeManager;
+import com.citizens.Properties.PropertyHandler;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Properties.Properties.BlacksmithProperties;
 import com.citizens.Properties.Properties.GuardProperties;
@@ -171,6 +172,25 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupNPCs() {
+		if (Constants.convertOld) {
+			Messaging.log("Converting old nodes to new save system...");
+			PropertyHandler locations = new PropertyHandler(
+					"/plugins/Basic NPCs/Citizens.locations", false);
+			String[] list = locations.getString("list").split(",");
+			if (list.length > 0 && !list[0].isEmpty()) {
+				for (String name : list) {
+					int UID = Integer.parseInt(name.split("_")[0]);
+					// TODO REMOVE AFTER 1.0.9 IS RELEASED
+					if (Constants.convertOld) {
+						Conversion.convert(UID);
+					}
+				}
+			}
+			Messaging
+					.log("Finished conversion. You must delete all old files manually.");
+			UtilityProperties.getSettings().setBoolean("general.convert-old",
+					false);
+		}
 		int count = 0;
 		String UIDList = "";
 		while (PropertyManager.getNPCProfiles().pathExists(count)) {
@@ -179,18 +199,9 @@ public class Citizens extends JavaPlugin {
 		}
 		String[] values = UIDList.split(",");
 
-		if (Constants.convertOld) {
-			Messaging.log("Converting old nodes to new save system...");
-		}
 		if (values.length > 0 && !values[0].isEmpty()) {
 			for (String value : values) {
 				int UID = Integer.parseInt(value);
-				// TODO REMOVE AFTER 1.0.9 IS RELEASED
-				// CrapBukkit start
-				if (Constants.convertOld) {
-					Conversion.convert(UID);
-				}
-				// CrapBukkit end
 				Location loc = PropertyManager.getBasic().getLocation(UID);
 				if (loc != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
@@ -202,12 +213,6 @@ public class Citizens extends JavaPlugin {
 					}
 				}
 			}
-		}
-		if (Constants.convertOld) {
-			Messaging
-					.log("Finished conversion. You must delete all old files manually.");
-			UtilityProperties.getSettings().setBoolean("general.convert-old",
-					false);
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
