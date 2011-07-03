@@ -26,10 +26,11 @@ public class HelpUtils {
 					"toggle all types for an NPC");
 			format(player, "basic", "help [page]", "basic NPC help pages");
 			format(player, "blacksmith", "help", "blacksmith NPC help page");
-			format(player, "guard", "help", "guard NPC help page");
+			footer(player);
 			break;
 		case 2:
 			header(player, "General", 2, 2);
+			format(player, "guard", "help", "guard NPC help page");
 			format(player, "healer", "help", "healer NPC help page");
 			// format(player, "quester", "help", "quester NPC help page");
 			format(player, "trader", "help", "trader NPC help page");
@@ -77,11 +78,12 @@ public class HelpUtils {
 			format(player, "npc", "setowner [name]", "set the owner of an NPC");
 			format(player, "npc", "talkwhenclose [true|false]",
 					"make an NPC talk to players");
-			format(player, "npc", "lookatplayers [true|false]",
-					"make an NPC look at players");
+			footer(player);
 			break;
 		case 3:
 			header(player, "Basic NPC", 3, 3);
+			format(player, "npc", "lookatplayers [true|false]",
+					"make an NPC look at players");
 			format(player, "npc", "list (name) (page)", "show a list of NPCs");
 			format(player, "npc", "[path|waypoints] (reset)",
 					"control an NPC's waypoints");

@@ -57,7 +57,7 @@ public class SpawnValidator {
 		case DEFAULT:
 			all();
 			this.set(Range.LIQUIDS, false);
-			int[] banned = { 6, 17, 18, 26, 50, 51, 63, 64, 71, 77, 83, 85, 90 };
+			int[] banned = { 6, 18, 26, 50, 51, 63, 64, 71, 77, 83, 85, 90 };
 			this.set(banned, false);
 			this.set(0, false);
 		case LIQUIDS:
@@ -118,11 +118,18 @@ public class SpawnValidator {
 
 	public static class Spawn {
 		public enum Range {
-			ALL, DEFAULT, LIQUIDS;
+			ALL,
+			DEFAULT,
+			LIQUIDS;
 		}
 
 		public enum Type {
-			ALL_EXCEPT, BETWEEN, INCLUDING, JUST, NOT, NOT_BETWEEN;
+			ALL_EXCEPT,
+			BETWEEN,
+			INCLUDING,
+			JUST,
+			NOT,
+			NOT_BETWEEN;
 		}
 	}
 }

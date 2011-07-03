@@ -34,6 +34,10 @@ public class Messaging {
 					"" + ChatColor.getByCode(index));
 			++index;
 		}
+		for (int colour = 0; colour <= 16; ++colour) {
+			message = message.replaceAll("<" + colour + ">",
+					"" + ChatColor.getByCode(colour));
+		}
 		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
 		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
 		return message;
@@ -47,23 +51,15 @@ public class Messaging {
 		log(builder.toString(), Level.INFO);
 	}
 
-	public static void log(String message) {
+	public static void log(Object message, Level level) {
+		log.log(level, "[Citizens]: " + message);
+	}
+
+	public static void log(Object message) {
 		log(message, Level.INFO);
 	}
 
-	public static void log(String message, Level level) {
-		log.log(level, "[Citizens] " + message);
-	}
-
-	public static void log(boolean message) {
-		log("" + message);
-	}
-
-	public static void log(int message) {
-		log("" + message);
-	}
-
-	public static void debug(String message) {
+	public static void debug(Object message) {
 		if (debug) {
 			log(message);
 		}

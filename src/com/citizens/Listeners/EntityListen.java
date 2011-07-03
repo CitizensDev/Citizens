@@ -120,7 +120,7 @@ public class EntityListen extends EntityListener implements Listener {
 							.scheduleSyncDelayedTask(
 									Citizens.plugin,
 									new RestartPathTask(npc, npc.getWaypoints()
-											.currentWaypoint()),
+											.current()),
 									Constants.rightClickPause);
 					npc.getHandle().cancelPath();
 					npc.setPaused(true);

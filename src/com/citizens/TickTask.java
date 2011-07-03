@@ -91,7 +91,7 @@ public class TickTask implements Runnable {
 				if (waypoints.currentIndex() + 1 > waypoints.size()) {
 					waypoints.setIndex(0);
 				}
-				PathUtils.createPath(npc, waypoints.currentWaypoint(), -1, -1,
+				PathUtils.createPath(npc, waypoints.current(), -1, -1,
 						Constants.pathFindingRange);
 				waypoints.setStarted(true);
 			}

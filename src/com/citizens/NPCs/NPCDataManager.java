@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.citizens.Constants;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.StringUtils;
@@ -34,11 +35,14 @@ public class NPCDataManager {
 					break;
 				}
 				if (npc.getWaypoints().size() > 0
-						&& npc.getWaypoints().getLast().distance(loc) > 25) {
-					event.getPlayer()
-							.sendMessage(
-									ChatColor.GRAY
-											+ "Points can't be more than 25 blocks away from each other.");
+						&& npc.getWaypoints().getLast().distance(loc) > Constants.pathFindingRange) {
+					event.getPlayer().sendMessage(
+							ChatColor.GRAY
+									+ "Points can't be more than "
+									+ StringUtils.wrap(
+											Constants.pathFindingRange,
+											ChatColor.GRAY)
+									+ " blocks away from each other.");
 					break;
 				}
 				npc.getWaypoints().add(loc);

@@ -31,14 +31,17 @@ public class GuardTask implements Runnable {
 			if (npc.isType("guard")) {
 				GuardNPC guard = npc.getToggleable("guard");
 				if (guard.isBouncer()) {
-					if (guard.isAttacking() && !npc.getHandle().hasTarget())
+					if (guard.isAttacking() && !npc.getHandle().hasTarget()) {
+						guard.returnToBase();
 						guard.setAttacking(false);
+					}
 					if (guard.isAttacking()
 							&& npc.getHandle().hasTarget()
 							&& LocationUtils.checkLocation(npc.getLocation(),
 									npc.getHandle().getTarget().getLocation(),
 									guard.getProtectionRadius())) {
 						npc.getHandle().cancelTarget();
+						guard.returnToBase();
 						guard.setAttacking(false);
 					}
 					if (guard.isAttacking())
