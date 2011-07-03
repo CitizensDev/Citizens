@@ -95,10 +95,6 @@ public class PropertyManager {
 		saveAllNPCs();
 	}
 
-	public static void loadProfiles() {
-		profiles.load();
-	}
-
 	public static void loadAll() {
 		profiles.load();
 		for (HumanNPC npc : NPCManager.getList().values()) {

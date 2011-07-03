@@ -193,7 +193,8 @@ public class Citizens extends JavaPlugin {
 					.log("Finished conversion. You must delete all old files manually.");
 			UtilityProperties.getSettings().setBoolean("general.convert-old",
 					false);
-			PropertyManager.loadProfiles();
+			PropertyManager.getNPCProfiles().save();
+			PropertyManager.getNPCProfiles().load();
 		}
 		StringBuilder UIDList = new StringBuilder();
 		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(

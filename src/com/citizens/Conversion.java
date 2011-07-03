@@ -117,6 +117,5 @@ public class Conversion extends PropertyManager {
 		if (mode.keyExists(UID)) {
 			profiles.setString(UID + ".wizard.mode", mode.getString(UID));
 		}
-		profiles.save();
 	}
 }
