@@ -18,11 +18,12 @@ public class EconpluginReward implements Reward {
 
 	@Override
 	public void grant(Player player) {
-		if (EconomyHandler.useEcoPlugin()) {
-			if (this.take)
+		if (EconomyHandler.useEconPlugin()) {
+			if (this.take) {
 				ServerEconomyInterface.subtract(player.getName(), reward);
-			else
+			} else {
 				ServerEconomyInterface.add(player.getName(), reward);
+			}
 		}
 
 	}

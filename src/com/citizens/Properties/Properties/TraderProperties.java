@@ -84,13 +84,13 @@ public class TraderProperties extends PropertyManager implements Saveable {
 					String[] parts = main.split("/");
 					if (parts.length == 2) {
 						price = new ItemPrice(Double.parseDouble(parts[0]));
-						price.setiConomy(Boolean.parseBoolean(parts[1]));
+						price.setEconPlugin(Boolean.parseBoolean(parts[1]));
 					} else {
 						price = new ItemPrice(createItemStack(
 								Integer.parseInt(parts[0]),
 								Integer.parseInt(parts[1]),
 								Integer.parseInt(parts[2])));
-						price.setiConomy(Boolean.parseBoolean(parts[3]));
+						price.setEconPlugin(Boolean.parseBoolean(parts[3]));
 					}
 					break;
 				case 2:

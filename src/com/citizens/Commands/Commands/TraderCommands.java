@@ -62,7 +62,7 @@ public class TraderCommands {
 	@CommandPermissions("use.trader")
 	public static void controlMoney(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (!EconomyHandler.useEcoPlugin()) {
+		if (!EconomyHandler.useEconPlugin()) {
 			player.sendMessage(MessageUtils.noEconomyMessage);
 			return;
 		}
@@ -349,7 +349,7 @@ public class TraderCommands {
 				return null;
 			}
 		}
-		if (price && stack == null && !EconomyHandler.useEcoPlugin()) {
+		if (price && stack == null && !EconomyHandler.useEconPlugin()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "This server is not using an economy plugin, so the price cannot be "
 					+ "that kind of value. If you meant to use an item as currency, "
@@ -370,24 +370,24 @@ public class TraderCommands {
 				return null;
 			}
 		}
-		if (cost == null && !EconomyHandler.useEcoPlugin()) {
+		if (cost == null && !EconomyHandler.useEconPlugin()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "This server is not using an economy plugin, so the price cannot be "
 					+ "that kind of value. If you meant to use an item as currency, "
 					+ "please format it in this format: item ID:amount(:data).");
 			return null;
 		}
-		boolean iConomy = false;
+		boolean econPlugin = false;
 		if (cost == null) {
-			iConomy = true;
+			econPlugin = true;
 		}
 		ItemPrice itemPrice;
-		if (!iConomy) {
+		if (!econPlugin) {
 			itemPrice = new ItemPrice(cost);
 		} else {
 			itemPrice = new ItemPrice(Double.parseDouble(split[0]));
 		}
-		itemPrice.setiConomy(iConomy);
+		itemPrice.setEconPlugin(econPlugin);
 		return itemPrice;
 	}
 

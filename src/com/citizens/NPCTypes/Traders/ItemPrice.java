@@ -6,7 +6,7 @@ import org.bukkit.material.MaterialData;
 import com.citizens.Citizens;
 
 public class ItemPrice {
-	private boolean iConomy = false;
+	private boolean econPlugin = false;
 	private double price = 0;
 	private ItemStack item;
 
@@ -18,7 +18,7 @@ public class ItemPrice {
 	 */
 	public ItemPrice(double price) {
 		this.setPrice(price);
-		this.setiConomy(true);
+		this.setEconPlugin(true);
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class ItemPrice {
 	 */
 	public ItemPrice(ItemStack item) {
 		this.item = item;
-		this.setiConomy(false);
+		this.setEconPlugin(false);
 	}
 
 	public double getPrice() {
@@ -42,12 +42,12 @@ public class ItemPrice {
 		this.price = price;
 	}
 
-	public void setiConomy(boolean iConomy) {
-		this.iConomy = iConomy;
+	public void setEconPlugin(boolean econPlugin) {
+		this.econPlugin = econPlugin;
 	}
 
-	public boolean isiConomy() {
-		return iConomy;
+	public boolean isEconPlugin() {
+		return econPlugin;
 	}
 
 	public int getData() {
@@ -57,12 +57,13 @@ public class ItemPrice {
 	@Override
 	public String toString() {
 		String ret = "";
-		if (iConomy) {
-			ret += "" + price + Citizens.separatorChar + iConomy;
+		if (econPlugin) {
+			ret += "" + price + Citizens.separatorChar + econPlugin;
 		} else {
 			ret += "" + item.getAmount() + Citizens.separatorChar
 					+ item.getTypeId() + Citizens.separatorChar + getData()
-					+ Citizens.separatorChar + iConomy + Citizens.separatorChar;
+					+ Citizens.separatorChar + econPlugin
+					+ Citizens.separatorChar;
 		}
 		return ret;
 	}

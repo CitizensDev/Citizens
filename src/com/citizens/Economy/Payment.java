@@ -26,7 +26,7 @@ public class Payment {
 
 	/**
 	 * Defines a payment, which can be either an economy-plugin or an item
-	 * payment. This constructor defines an iConomy payment.
+	 * payment. This constructor defines an economy-plugin payment.
 	 * 
 	 * @param price
 	 * @param item
@@ -39,10 +39,10 @@ public class Payment {
 	}
 
 	public Payment(ItemPrice price2) {
-		this.setPrice(price2.isiConomy() ? price2.getPrice() : price2
+		this.setPrice(price2.isEconPlugin() ? price2.getPrice() : price2
 				.getItemStack().getAmount());
 		this.setItem(price2.getItemStack());
-		this.setEconomyPlugin(price2.isiConomy());
+		this.setEconomyPlugin(price2.isEconPlugin());
 	}
 
 	public Payment(ItemStack stocking) {

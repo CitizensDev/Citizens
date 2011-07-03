@@ -176,7 +176,7 @@ public class TraderTask implements Runnable {
 					+ MessageUtils.getStackString(buying, ChatColor.RED) + ".");
 			return;
 		}
-		if (!stockable.isiConomy() && mode != Mode.INFINITE) {
+		if (!stockable.isEconPlugin() && mode != Mode.INFINITE) {
 			ItemStack temp = stockable.getPrice().getItemStack().clone();
 			unbought = npc.getInventory().addItem(temp);
 			if (unbought.size() >= 1) {
@@ -231,7 +231,7 @@ public class TraderTask implements Runnable {
 					+ " to the trader's stock.");
 			return;
 		}
-		if (!stockable.isiConomy()) {
+		if (!stockable.isEconPlugin()) {
 			ItemStack temp = stockable.getPrice().getItemStack().clone();
 			unsold = player.getInventory().addItem(temp);
 			if (unsold.size() >= 1) {

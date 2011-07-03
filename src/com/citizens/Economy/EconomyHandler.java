@@ -133,7 +133,7 @@ public class EconomyHandler {
 	 * 
 	 * @return
 	 */
-	public static boolean useEcoPlugin() {
+	public static boolean useEconPlugin() {
 		return (useServerEconomy && useEconomy && serverEconomyEnabled);
 	}
 
@@ -146,7 +146,7 @@ public class EconomyHandler {
 	 */
 	public static boolean canBuy(Operation op, Player player) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.hasEnough(player, op);
 			} else {
 				return ItemInterface.hasEnough(player, op);
@@ -157,7 +157,7 @@ public class EconomyHandler {
 
 	public static boolean canBuyBlacksmith(Player player, Operation op) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.hasEnoughBlacksmith(player, op);
 			} else {
 				return ItemInterface.hasEnoughBlacksmith(player, op);
@@ -175,7 +175,7 @@ public class EconomyHandler {
 	 */
 	public static boolean canBuy(Payment payment, Player player) {
 		if (useEconomy) {
-			if (payment.isEconomyPlugin() && useEcoPlugin()) {
+			if (payment.isEconomyPlugin() && useEconPlugin()) {
 				return ServerEconomyInterface.hasEnough(payment, player);
 			} else {
 				return ItemInterface.hasEnough(payment, player);
@@ -194,7 +194,7 @@ public class EconomyHandler {
 	 */
 	public static boolean canBuy(Payment payment, HumanNPC npc) {
 		if (useEconomy) {
-			if (payment.isEconomyPlugin() && useEcoPlugin()) {
+			if (payment.isEconomyPlugin() && useEconPlugin()) {
 				return ServerEconomyInterface.hasEnough(payment, npc);
 			} else {
 				return ItemInterface.hasEnough(payment, npc.getPlayer());
@@ -212,7 +212,7 @@ public class EconomyHandler {
 	 */
 	public static double pay(Operation op, Player player) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.pay(player, op);
 			} else {
 				return ItemInterface.pay(player, op);
@@ -230,7 +230,7 @@ public class EconomyHandler {
 	 */
 	public static double pay(Operation op, Player player, int multiple) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.pay(player, op, multiple);
 			} else {
 				return ItemInterface.pay(player, op, multiple);
@@ -248,7 +248,7 @@ public class EconomyHandler {
 	 */
 	public static double pay(Payment payment, HumanNPC npc, int slot) {
 		if (useEconomy) {
-			if (payment.isEconomyPlugin() && useEcoPlugin()) {
+			if (payment.isEconomyPlugin() && useEconPlugin()) {
 				return ServerEconomyInterface.pay(npc, payment);
 			} else {
 				return ItemInterface.pay(npc.getPlayer(), payment, slot);
@@ -266,7 +266,7 @@ public class EconomyHandler {
 	 */
 	public static double pay(Payment payment, Player player, int slot) {
 		if (useEconomy) {
-			if (payment.isEconomyPlugin() && useEcoPlugin()) {
+			if (payment.isEconomyPlugin() && useEconPlugin()) {
 				return ServerEconomyInterface.pay(player, payment);
 			} else {
 				return ItemInterface.pay(player, payment, slot);
@@ -285,7 +285,7 @@ public class EconomyHandler {
 	 */
 	public static double payBlacksmith(Operation op, Player player) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.payBlacksmith(player,
 						player.getItemInHand(), op);
 			} else {
@@ -306,7 +306,7 @@ public class EconomyHandler {
 	 */
 	public static String getPaymentType(Operation op, String amount) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.format(amount);
 			} else {
 				return ItemInterface.getCurrency(op);
@@ -327,7 +327,7 @@ public class EconomyHandler {
 	public static String getBlacksmithPaymentType(Player player, Operation op,
 			String amount) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.format(amount);
 			} else {
 				return ItemInterface.getBlacksmithCurrency(player, op);
@@ -345,7 +345,7 @@ public class EconomyHandler {
 	 */
 	public static String getRemainder(Operation op, Player player) {
 		if (useEconomy) {
-			if (useEcoPlugin()) {
+			if (useEconPlugin()) {
 				return ServerEconomyInterface.getRemainder(op, player);
 			} else {
 				return ItemInterface.getRemainder(op, player);
@@ -362,7 +362,7 @@ public class EconomyHandler {
 	 */
 	public static String getCurrency(Payment payment, ChatColor colour) {
 		if (useEconomy) {
-			if (payment.isEconomyPlugin() && useEcoPlugin()) {
+			if (payment.isEconomyPlugin() && useEconPlugin()) {
 				return ServerEconomyInterface.format(payment.getPrice());
 			} else {
 				return ItemInterface.getCurrency(payment, colour);

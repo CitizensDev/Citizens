@@ -52,8 +52,8 @@ public class Stockable {
 		return selling;
 	}
 
-	public boolean isiConomy() {
-		return price.isiConomy();
+	public boolean isEconPlugin() {
+		return price.isEconPlugin();
 	}
 
 	public String getString(ChatColor colour) {
