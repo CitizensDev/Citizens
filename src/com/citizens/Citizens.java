@@ -56,7 +56,7 @@ import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
 
 /**
- * Citizens for Bukkit
+ * Citizens - NPCs for Bukkit
  */
 public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
@@ -66,7 +66,7 @@ public class Citizens extends JavaPlugin {
 	public static final String separatorChar = "/";
 
 	private static final String codename = "Odyssey";
-	private static final String letter = "a";
+	private static final String letter = "b";
 	private static final String version = "1.0.9" + letter;
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
