@@ -89,7 +89,8 @@ public class EntityListen extends EntityListener implements Listener {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCManager.selectNPC(player, npc);
 					Messaging.send(player, npc, Constants.selectionMessage);
-					return;
+					if (!Constants.quickSelect)
+						return;
 				}
 			}
 			// Call text-display event

@@ -57,6 +57,7 @@ public class Constants {
 	public static boolean useNPCColours = true;
 	public static boolean useSaveTask = true;
 	public static boolean convertOld = false;
+	public static boolean quickSelect = false;
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultTalkWhenClose = false;
@@ -85,6 +86,7 @@ public class Constants {
 		regenHealerHealth = settings.getBoolean("general.healers.regen-health");
 		regenWizardMana = settings.getBoolean("general.wizards.regen-mana");
 		convertOld = settings.getBoolean("general.convert-old");
+		quickSelect = settings.getBoolean("general.selection.quick-select");
 
 		// String defaults
 		chatFormat = settings.getString("general.chat.format");

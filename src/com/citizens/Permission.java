@@ -8,16 +8,19 @@ import com.citizens.NPCs.NPCManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.Messaging;
 import com.nijiko.permissions.Group;
+import com.nijiko.permissions.PermissionHandler;
 import com.nijiko.permissions.User;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Permission {
 	private static boolean permissionsEnabled = false;
+	private static PermissionHandler handler;
 
 	public static void initialize(Server server) {
 		Plugin test = server.getPluginManager().getPlugin("Permissions");
 		if (test != null) {
 			permissionsEnabled = true;
+			handler = ((Permissions) test).getHandler();
 			Messaging.log("Permissions enabled.");
 		} else {
 			Messaging
@@ -61,7 +64,7 @@ public class Permission {
 	}
 
 	private static boolean permission(Player player, String string) {
-		return Permissions.Security.has(player, string);
+		return handler.has(player, string);
 	}
 
 	public static boolean generic(Player player, String string) {
@@ -73,13 +76,13 @@ public class Permission {
 
 	public static void grantRank(Player player, String rank) {
 		if (permissionsEnabled) {
-			User user = Permissions.Security.getUserObject(player.getWorld()
-					.getName(), player.getName());
+			User user = handler.getUserObject(player.getWorld().getName(),
+					player.getName());
 			if (user == null) {
 				return;
 			}
-			Group group = Permissions.Security.getGroupObject(player.getWorld()
-					.getName(), rank);
+			Group group = handler.getGroupObject(player.getWorld().getName(),
+					rank);
 			if (group == null) {
 				return;
 			}
@@ -89,8 +92,8 @@ public class Permission {
 
 	public static void givePermission(Player player, String reward, boolean take) {
 		if (permissionsEnabled) {
-			User user = Permissions.Security.getUserObject(player.getWorld()
-					.getName(), player.getName());
+			User user = handler.getUserObject(player.getWorld().getName(),
+					player.getName());
 			if (user == null) {
 				return;
 			}
