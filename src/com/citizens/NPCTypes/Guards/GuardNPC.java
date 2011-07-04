@@ -164,7 +164,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * @param player
 	 */
 	public void addToWhitelist(String player) {
-		whitelist.add(player.toLowerCase());
+		whitelist.add(player);
 	}
 
 	/**

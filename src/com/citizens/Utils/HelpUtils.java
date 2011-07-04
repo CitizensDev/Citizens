@@ -213,9 +213,10 @@ public class HelpUtils {
 	 */
 	private static void header(CommandSender sender, String npcType, int page,
 			int maxPages) {
-		sender.sendMessage(ChatColor.GREEN + StringUtils.wrap("=========[ ")
-				+ "Citizens " + npcType + " Help" + ChatColor.WHITE + " <"
-				+ page + "/" + maxPages + ">" + StringUtils.wrap(" ]========="));
+		sender.sendMessage(ChatColor.YELLOW
+				+ StringUtils.listify(ChatColor.GREEN + "Citizens " + npcType
+						+ " Help" + ChatColor.WHITE + " <" + page + "/"
+						+ maxPages + ">" + ChatColor.YELLOW));
 	}
 
 	/**
@@ -245,6 +246,6 @@ public class HelpUtils {
 	 */
 	private static void footer(CommandSender sender) {
 		sender.sendMessage(ChatColor.DARK_GRAY
-				+ "=========[ Coded by: fullwall and aPunch ]=========");
+				+ StringUtils.listify("Coded by fullwall and aPunch"));
 	}
 }

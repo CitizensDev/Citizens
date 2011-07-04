@@ -12,12 +12,10 @@ public class SettingsTree {
 		String[] branches = path.split("\\.");
 		for (String branch : branches) {
 			progressive.append(branch);
-			if (getTree().get(progressive.toString()) == null) {
-				getTree().put(progressive.toString(), progressive.toString());
-			}
-			if (index != branches.length - 1) {
+			if (getTree().get(progressive.toString()) == null)
+				getTree().put(progressive.toString(), "");
+			if (index != branches.length - 1)
 				progressive.append(".");
-			}
 			++index;
 		}
 	}

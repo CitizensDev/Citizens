@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +19,7 @@ import com.citizens.Resources.sk89q.Command;
 import com.citizens.Resources.sk89q.CommandContext;
 import com.citizens.Resources.sk89q.CommandPermissions;
 import com.citizens.Resources.sk89q.CommandRequirements;
+import com.citizens.Resources.sk89q.ServerCommand;
 import com.citizens.Utils.HelpUtils;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
@@ -40,9 +42,10 @@ public class TraderCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("use.trader")
-	public static void sendTraderHelp(CommandContext args, Player player,
-			HumanNPC npc) {
-		HelpUtils.sendTraderHelp(player);
+	@ServerCommand()
+	public static void sendTraderHelp(CommandContext args,
+			CommandSender sender, HumanNPC npc) {
+		HelpUtils.sendTraderHelp(sender);
 	}
 
 	/**
@@ -169,7 +172,7 @@ public class TraderCommands {
 		TraderNPC trader = npc.getToggleable("trader");
 		ArrayList<Stockable> stock = trader.getStockables(!selling);
 		int page = 1;
-		if (args.length() >= 2)
+		if (args.argsLength() == 3)
 			page = args.getInteger(2);
 		String keyword = "Buying ";
 		if (selling)
@@ -180,18 +183,20 @@ public class TraderCommands {
 			return;
 		}
 		PageInstance instance = PageUtils.newInstance(player);
+		instance.push("");
 		for (Stockable stockable : stock) {
 			if (stockable == null)
 				continue;
 			instance.push(ChatColor.GREEN
 					+ keyword
-					+ ": "
 					+ MessageUtils.getStockableMessage(stockable,
 							ChatColor.GREEN) + ".");
 		}
 		if (page <= instance.maxPages()) {
-			instance.header(ChatColor.GOLD + "========== Trader " + keyword
-					+ "List (Page %x/%y) ==========");
+			instance.header(ChatColor.YELLOW
+					+ StringUtils.listify(ChatColor.GREEN + "Trader "
+							+ StringUtils.wrap(keyword) + "List (Page %x/%y)"
+							+ ChatColor.YELLOW));
 			instance.process(page);
 		} else {
 			player.sendMessage(MessageUtils.getMaxPagesMessage(page,

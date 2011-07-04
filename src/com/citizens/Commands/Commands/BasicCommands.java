@@ -47,8 +47,8 @@ public class BasicCommands {
 	@CommandRequirements()
 	public static void viewInfo(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		sender.sendMessage(ChatColor.GREEN + "==========[ "
-				+ StringUtils.wrap("Citizens") + " ]==========");
+		sender.sendMessage(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap("Citizens")));
 		sender.sendMessage(ChatColor.GREEN + "  Version: "
 				+ StringUtils.wrap(Citizens.getVersion()));
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
@@ -621,7 +621,7 @@ public class BasicCommands {
 			int UID = npc.getUID();
 			if (editing == null) {
 				player.sendMessage(ChatColor.AQUA
-						+ "=========[ Waypoint Editing Controls ]=========");
+						+ StringUtils.listify("Waypoint Editing Controls"));
 				player.sendMessage(StringUtils.wrap("Left")
 						+ " click adds a waypoint, while "
 						+ StringUtils.wrap("right") + " click acts as an undo.");

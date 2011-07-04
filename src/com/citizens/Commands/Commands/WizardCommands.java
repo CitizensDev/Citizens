@@ -73,13 +73,13 @@ public class WizardCommands {
 	@CommandPermissions("use.wizard")
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
-		player.sendMessage(ChatColor.BLUE + "========== " + ChatColor.GOLD
-				+ npc.getStrippedName() + "'s Wizard Status" + ChatColor.BLUE
-				+ " ==========");
+		player.sendMessage(ChatColor.AQUA
+				+ StringUtils.listify(ChatColor.GOLD + npc.getStrippedName()
+						+ "'s Wizard Status" + ChatColor.AQUA));
 		WizardNPC wizard = npc.getToggleable("wizard");
-		player.sendMessage(ChatColor.BLUE + "Mode: " + ChatColor.GOLD
+		player.sendMessage(ChatColor.AQUA + "Mode: " + ChatColor.GOLD
 				+ wizard.getMode());
-		player.sendMessage(ChatColor.BLUE + "Mana: " + ChatColor.GOLD
+		player.sendMessage(ChatColor.AQUA + "Mana: " + ChatColor.GOLD
 				+ wizard.getMana());
 	}
 
@@ -151,9 +151,8 @@ public class WizardCommands {
 		WizardNPC wizard = npc.getToggleable("wizard");
 		if (wizard.getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN
-					+ "========== "
-					+ StringUtils.wrap(npc.getStrippedName()
-							+ "'s Wizard Locations") + " ==========");
+					+ StringUtils.listify(StringUtils.wrap(npc
+							.getStrippedName() + "'s Wizard Locations")));
 			String locations[] = wizard.getLocations().split(":");
 			for (int i = 0; i < locations.length; i++) {
 				player.sendMessage(ChatColor.YELLOW + "" + (i + 1)

@@ -158,9 +158,9 @@ public class MessageUtils {
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {
-		return StringUtils.wrap(
-				stack.getAmount() + " " + getMaterialName(stack.getTypeId()),
-				colour) + "(s)";
+		return StringUtils.wrap(StringUtils.pluralise(stack.getAmount() + " "
+				+ getMaterialName(stack.getTypeId()), stack.getAmount() - 1),
+				colour);
 	}
 
 	public static String getItemName(int itemID) {
@@ -173,8 +173,7 @@ public class MessageUtils {
 				.split("_");
 		int count = 0;
 		for (String s : parts) {
-			parts[count] = s.replaceFirst("" + s.charAt(0),
-					"" + Character.toUpperCase(s.charAt(0)));
+			parts[count] = StringUtils.capitalise(s);
 			++count;
 		}
 		return Arrays.toString(parts).replace("[", "").replace("]", "")
@@ -193,8 +192,9 @@ public class MessageUtils {
 	 * @param maxPages
 	 */
 	public static String getMaxPagesMessage(int page, int maxPages) {
-		return ChatColor.GRAY + "The total number of pages is " + maxPages
-				+ ", page: " + page + " is not available.";
+		return ChatColor.GRAY + "The total number of pages is "
+				+ StringUtils.wrap(maxPages, ChatColor.GRAY) + ", page "
+				+ StringUtils.wrap(page, ChatColor.GRAY) + " is not available.";
 	}
 
 	/**

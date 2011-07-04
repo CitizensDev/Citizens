@@ -45,9 +45,9 @@ public class HealerCommands {
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
 		HealerNPC healer = npc.getToggleable("healer");
-		player.sendMessage(ChatColor.GREEN + "========== "
-				+ StringUtils.wrap(npc.getStrippedName() + "'s Healer Status")
-				+ " ==========");
+		player.sendMessage(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
+						+ "'s Healer Status")));
 		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
 				+ healer.getHealth() + ChatColor.RED + "/"
 				+ healer.getMaxHealth());
@@ -70,7 +70,7 @@ public class HealerCommands {
 			int levelsUp = 1;
 			if (args.argsLength() == 2) {
 				if (StringUtils.isNumber(args.getString(1))) {
-					levelsUp = Integer.parseInt(args.getString(1));
+					levelsUp = args.getInteger(1);
 				}
 			}
 			double paid = EconomyHandler.pay(Operation.HEALER_LEVELUP, player,

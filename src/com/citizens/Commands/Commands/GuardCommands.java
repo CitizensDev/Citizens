@@ -87,9 +87,8 @@ public class GuardCommands {
 		GuardNPC guard = npc.getToggleable("guard");
 		if (args.argsLength() == 1) {
 			player.sendMessage(ChatColor.GREEN
-					+ "========== "
-					+ StringUtils.wrap(npc.getStrippedName()
-							+ "'s Blacklisted Mobs") + " ==========");
+					+ StringUtils.listify(StringUtils.wrap(npc
+							.getStrippedName() + "'s Blacklisted Mobs")));
 			List<String> list = guard.getBlacklist();
 			if (list.isEmpty()) {
 				player.sendMessage(ChatColor.RED + "No mobs blacklisted.");
@@ -105,13 +104,13 @@ public class GuardCommands {
 						+ "That mob is already blacklisted.");
 			} else if (CreatureType.fromName(StringUtils.capitalise(mob)) != null) {
 				guard.addToBlacklist(mob);
-				player.sendMessage(ChatColor.GREEN + "You added the mob type "
+				player.sendMessage(ChatColor.GREEN + "Added "
 						+ StringUtils.wrap(mob) + " to "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
 			} else if (mob.equalsIgnoreCase("all")) {
 				guard.addToBlacklist(mob);
-				player.sendMessage(ChatColor.GREEN + "You added all mobs to "
+				player.sendMessage(ChatColor.GREEN + "Added all mobs to "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
 			} else {
@@ -133,9 +132,8 @@ public class GuardCommands {
 		GuardNPC guard = npc.getToggleable("guard");
 		if (args.argsLength() == 1) {
 			player.sendMessage(ChatColor.GREEN
-					+ "========== "
-					+ StringUtils.wrap(npc.getStrippedName()
-							+ "'s Whitelisted Players") + " ==========");
+					+ StringUtils.listify(StringUtils.wrap(npc
+							.getStrippedName() + "'s Whitelisted Players")));
 			List<String> list = guard.getWhitelist();
 			if (list.isEmpty()) {
 				player.sendMessage(ChatColor.RED + "No players whitelisted.");
@@ -145,7 +143,7 @@ public class GuardCommands {
 				}
 			}
 		} else if (args.argsLength() == 2) {
-			String allowed = args.getString(1).toLowerCase();
+			String allowed = args.getString(1);
 			if (guard.getWhitelist().contains(allowed)) {
 				player.sendMessage(ChatColor.RED
 						+ "That player is already whitelisted.");
@@ -159,7 +157,7 @@ public class GuardCommands {
 				} else {
 					guard.addToWhitelist(allowed);
 					msg += StringUtils.wrap(allowed);
-					player.sendMessage(ChatColor.GREEN + "You added "
+					player.sendMessage(ChatColor.GREEN + "Added "
 							+ StringUtils.wrap(allowed) + " to "
 							+ StringUtils.wrap(npc.getStrippedName() + "'s")
 							+ " whitelist.");

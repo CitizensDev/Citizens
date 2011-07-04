@@ -29,6 +29,10 @@ public class StringUtils {
 		return "[" + string + "]";
 	}
 
+	public static String listify(String string) {
+		return "========[ " + string + " ]========";
+	}
+
 	public static String capitalise(String toCapitalise) {
 		return toCapitalise.replaceFirst("" + toCapitalise.charAt(0), ""
 				+ Character.toUpperCase(toCapitalise.charAt(0)));
@@ -37,13 +41,13 @@ public class StringUtils {
 	public static ArrayDeque<String> colourise(ArrayDeque<String> text) {
 		ArrayDeque<String> newText = new ArrayDeque<String>();
 		for (String string : text) {
-			newText.add(string.replace("&", "�"));
+			newText.add(string.replace("&", "\u00A7"));
 		}
 		return newText;
 	}
 
 	public static String colourise(String string) {
-		return string.replace("&", "�");
+		return string.replace("&", "\u00A7");
 	}
 
 	public static Material parseMaterial(String material) {
