@@ -9,7 +9,7 @@ import com.citizens.Properties.Properties.UtilityProperties;
 
 public class StringUtils {
 	public static String pluralise(String string, int size) {
-		return size > 0 ? string + "s" : string;
+		return size > 1 ? string + "s" : string;
 	}
 
 	public static String parseColour(String s) {
