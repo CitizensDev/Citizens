@@ -47,4 +47,12 @@ public class CommandIdentifier {
 		}
 		return true;
 	}
+
+	public String getModifier() {
+		return this.modifier;
+	}
+
+	public String getCommand() {
+		return this.command;
+	}
 }

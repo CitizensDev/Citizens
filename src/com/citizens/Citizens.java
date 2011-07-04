@@ -3,9 +3,15 @@ package com.citizens;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -54,6 +60,7 @@ import com.citizens.Resources.sk89q.UnhandledCommandException;
 import com.citizens.Resources.sk89q.WrappedCommandException;
 import com.citizens.Utils.MessageUtils;
 import com.citizens.Utils.Messaging;
+import com.citizens.Utils.StringUtils;
 
 /**
  * Citizens - NPCs for Bukkit
@@ -176,7 +183,10 @@ public class Citizens extends JavaPlugin {
 
 			// No command found!
 			if (!commands.hasCommand(split[0], modifier)) {
-				return false;
+				if (!modifier.isEmpty()) {
+					boolean value = handleMistake(sender, split[0], modifier);
+					return value;
+				}
 			}
 
 			HumanNPC npc = null;
@@ -212,6 +222,42 @@ public class Citizens extends JavaPlugin {
 					excp.getClass().getName() + ": " + excp.getMessage());
 		}
 		return true;
+	}
+
+	private boolean handleMistake(CommandSender sender, String command,
+			String modifier) {
+		String[] modifiers = commands.getAllCommandModifiers(command);
+		Map<Integer, String> values = new TreeMap<Integer, String>();
+		int i = 0;
+		for (String string : modifiers) {
+			values.put(StringUtils.getLevenshteinDistance(modifier, string),
+					modifiers[i]);
+			++i;
+		}
+		int best = 0;
+		boolean stop = false;
+		Set<String> possible = new HashSet<String>();
+		for (Entry<Integer, String> entry : values.entrySet()) {
+			if (!stop) {
+				best = entry.getKey();
+				stop = true;
+			} else if (entry.getKey() > best) {
+				break;
+			}
+			possible.add(entry.getValue());
+		}
+		if (possible.size() > 0) {
+			sender.sendMessage(ChatColor.GRAY
+					+ "Unknown command. Did you mean:");
+			for (String string : possible) {
+				sender.sendMessage(ChatColor.AQUA
+						+ "                          -[ " + ChatColor.GREEN
+						+ command + " "
+						+ StringUtils.wrap(string, ChatColor.AQUA) + " ]-");
+			}
+			return true;
+		} else
+			return false;
 	}
 
 	private void registerTypes() {
