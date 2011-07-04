@@ -1,6 +1,5 @@
 package com.citizens.Commands.Commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -8,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
+import com.citizens.NPCTypes.Guards.GuardManager;
 import com.citizens.NPCTypes.Guards.GuardNPC;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Resources.sk89q.Command;
@@ -76,11 +76,11 @@ public class GuardCommands {
 
 	@Command(
 			aliases = "guard",
-			usage = "blacklist (mob)",
-			desc = "add mobs to a guard's blacklist",
+			usage = "blacklist (add|remove) (mob)",
+			desc = "control a guard's blacklist",
 			modifiers = "blacklist",
 			min = 1,
-			max = 2)
+			max = 3)
 	@CommandPermissions("modify.guard")
 	public static void blacklist(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -97,35 +97,50 @@ public class GuardCommands {
 					player.sendMessage(ChatColor.RED + aList);
 				}
 			}
-		} else if (args.argsLength() == 2) {
-			String mob = args.getString(1).toLowerCase();
-			if (guard.getBlacklist().contains(mob)) {
-				player.sendMessage(ChatColor.RED
-						+ "That mob is already blacklisted.");
-			} else if (CreatureType.fromName(StringUtils.capitalise(mob)) != null) {
-				guard.addToBlacklist(mob);
+		} else if (args.argsLength() == 3) {
+			String mob = args.getString(2).toLowerCase();
+			if (CreatureType.fromName(StringUtils.capitalise(mob)) == null
+					&& !mob.equalsIgnoreCase("all")) {
+				player.sendMessage(ChatColor.RED + "Invalid mob type.");
+				return;
+			}
+			boolean add = false;
+			if (args.getString(1).equalsIgnoreCase("add")) {
+				add = true;
+			}
+			if (add) {
+				if (guard.getBlacklist().contains(mob)) {
+					player.sendMessage(ChatColor.RED
+							+ "That mob is already blacklisted.");
+					return;
+				}
+				GuardManager.addToBlacklist(guard, mob);
 				player.sendMessage(ChatColor.GREEN + "Added "
 						+ StringUtils.wrap(mob) + " to "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
-			} else if (mob.equalsIgnoreCase("all")) {
-				guard.addToBlacklist(mob);
-				player.sendMessage(ChatColor.GREEN + "Added all mobs to "
+			} else {
+				if (!guard.getBlacklist().contains(mob)) {
+					player.sendMessage(ChatColor.RED
+							+ "That mob is not blacklisted.");
+					return;
+				}
+				GuardManager.removeFromBlacklist(guard, mob);
+				player.sendMessage(ChatColor.GREEN + "Removed "
+						+ StringUtils.wrap(mob) + " from "
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
-			} else {
-				player.sendMessage(ChatColor.RED + "Invalid mob type.");
 			}
 		}
 	}
 
 	@Command(
 			aliases = "guard",
-			usage = "whitelist (player)",
-			desc = "add players to a guard's whitelist",
+			usage = "whitelist (add|remove) (player)",
+			desc = "control a guard's whitelist",
 			modifiers = "whitelist",
 			min = 1,
-			max = 2)
+			max = 3)
 	@CommandPermissions("modify.guard")
 	public static void whitelist(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -142,29 +157,34 @@ public class GuardCommands {
 					player.sendMessage(ChatColor.GREEN + aList);
 				}
 			}
-		} else if (args.argsLength() == 2) {
-			String allowed = args.getString(1);
-			if (guard.getWhitelist().contains(allowed)) {
-				player.sendMessage(ChatColor.RED
-						+ "That player is already whitelisted.");
-			} else {
-				String msg = ChatColor.GREEN + "You added ";
-				if (args.getString(1).equalsIgnoreCase("all")) {
-					List<String> emptyList = new ArrayList<String>();
-					guard.setWhitelist(emptyList);
-					emptyList.add("all");
-					msg += "all players";
-				} else {
-					guard.addToWhitelist(allowed);
-					msg += StringUtils.wrap(allowed);
-					player.sendMessage(ChatColor.GREEN + "Added "
-							+ StringUtils.wrap(allowed) + " to "
-							+ StringUtils.wrap(npc.getStrippedName() + "'s")
-							+ " whitelist.");
+		} else if (args.argsLength() == 3) {
+			String allowed = args.getString(2).toLowerCase();
+			boolean add = false;
+			if (args.getString(1).equalsIgnoreCase("add")) {
+				add = true;
+			}
+			if (add) {
+				if (guard.getWhitelist().contains(allowed)) {
+					player.sendMessage(ChatColor.RED
+							+ "That player is already whitelisted.");
+					return;
 				}
-				msg += " to " + StringUtils.wrap(npc.getStrippedName() + "'s")
-						+ " whitelist";
-				player.sendMessage(msg);
+				GuardManager.addToWhitelist(guard, allowed);
+				player.sendMessage(ChatColor.GREEN + "Added "
+						+ StringUtils.wrap(allowed) + " to "
+						+ StringUtils.wrap(npc.getStrippedName() + "'s")
+						+ " whitelist.");
+			} else {
+				if (!guard.getWhitelist().contains(allowed)) {
+					player.sendMessage(ChatColor.RED
+							+ "That player is not whitelisted.");
+					return;
+				}
+				GuardManager.removeFromWhitelist(guard, allowed);
+				player.sendMessage(ChatColor.GREEN + "Removed "
+						+ StringUtils.wrap(allowed) + " from "
+						+ StringUtils.wrap(npc.getStrippedName() + "'s")
+						+ " whitelist.");
 			}
 		}
 	}

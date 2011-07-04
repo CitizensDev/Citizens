@@ -3,8 +3,6 @@ package com.citizens.NPCTypes.Guards;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -114,30 +112,12 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	}
 
 	/**
-	 * Get a list of mobs not allowed entry to a bodyguard's zone
+	 * Get a guard's blacklist
 	 * 
 	 * @return
 	 */
 	public List<String> getBlacklist() {
 		return blacklist;
-	}
-
-	/**
-	 * Add a mob to a list of unallowed mobs for a bodyguard's zone
-	 * 
-	 * @param mob
-	 */
-	public void addToBlacklist(String mob) {
-		if (mob.equalsIgnoreCase("all")) {
-			for (CreatureType type : CreatureType.values()) {
-				if (!blacklist.contains(type.toString().toLowerCase())) {
-					blacklist.add(type.toString().toLowerCase()
-							.replace("_", ""));
-				}
-			}
-		} else {
-			blacklist.add(mob.toLowerCase());
-		}
 	}
 
 	/**
@@ -156,15 +136,6 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 */
 	public List<String> getWhitelist() {
 		return whitelist;
-	}
-
-	/**
-	 * Add a player to a bodyguard's whitelist
-	 * 
-	 * @param player
-	 */
-	public void addToWhitelist(String player) {
-		whitelist.add(player);
 	}
 
 	/**
@@ -245,15 +216,5 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 		this.npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1, Constants.pathFindingRange);
-	}
-
-	public void returnToBase() {
-		Location loc;
-		if (npc.getWaypoints().size() > 0) {
-			loc = npc.getWaypoints().current();
-		} else {
-			loc = npc.getNPCData().getLocation();
-		}
-		PathUtils.createPath(npc, loc, -1, -1, Constants.pathFindingRange);
 	}
 }

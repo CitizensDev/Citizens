@@ -184,10 +184,10 @@ public class HelpUtils {
 		header(sender, "Guard", 1, 1);
 		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		format(sender, "guard", "blacklist [mob]",
-				"add mob to a guard's blacklist");
-		format(sender, "guard", "whitelist [player]",
-				"add player to a guard's whitelist");
+		format(sender, "guard", "blacklist (add|remove) (mob)",
+				"control a guard's blacklist");
+		format(sender, "guard", "whitelist (add|remove) (player)",
+				"control a guard's whitelist");
 		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		footer(sender);
