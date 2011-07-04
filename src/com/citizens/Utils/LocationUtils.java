@@ -17,11 +17,12 @@ public class LocationUtils {
 		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName())) {
 			return false;
 		}
+		double halved = range / 2;
 		double pX = pLoc.getX(), pY = pLoc.getY(), pZ = pLoc.getZ();
 		double lX = loc.getX(), lY = loc.getY(), lZ = loc.getZ();
-		return (pX <= lX + range && pX >= lX - range)
+		return (pX <= lX + halved && pX >= lX - halved)
 				&& (pY >= lY - range && pY <= lY + range)
-				&& (pZ >= lZ - range && pZ <= lZ + range);
+				&& (pZ >= lZ - halved && pZ <= lZ + halved);
 	}
 
 	/**
@@ -36,11 +37,12 @@ public class LocationUtils {
 		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName())) {
 			return false;
 		}
+		int halved = range / 2;
 		double pX = pLoc.getBlockX(), pY = pLoc.getBlockY(), pZ = pLoc
 				.getBlockZ();
 		double lX = loc.getBlockX(), lY = loc.getBlockY(), lZ = loc.getBlockZ();
-		return (pX <= lX + range && pX >= lX - range)
+		return (pX <= lX + halved && pX >= lX - halved)
 				&& (pY >= lY - range && pY <= lY + range)
-				&& (pZ >= lZ - range && pZ <= lZ + range);
+				&& (pZ >= lZ - halved && pZ <= lZ + halved);
 	}
 }
