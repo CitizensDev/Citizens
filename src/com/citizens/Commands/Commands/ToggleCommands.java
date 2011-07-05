@@ -1,6 +1,7 @@
 package com.citizens.Commands.Commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.citizens.Interfaces.NPCPurchaser;
@@ -13,10 +14,42 @@ import com.citizens.Resources.sk89q.Command;
 import com.citizens.Resources.sk89q.CommandContext;
 import com.citizens.Resources.sk89q.CommandPermissions;
 import com.citizens.Resources.sk89q.CommandRequirements;
+import com.citizens.Resources.sk89q.ServerCommand;
 import com.citizens.Utils.Messaging;
+import com.citizens.Utils.PageUtils;
+import com.citizens.Utils.PageUtils.PageInstance;
 import com.citizens.Utils.StringUtils;
 
 public class ToggleCommands {
+
+	@Command(
+			aliases = "toggle",
+			usage = "list (page)",
+			desc = "view list of toggles",
+			modifiers = { "list", "help" },
+			min = 1,
+			max = 2)
+	@ServerCommand()
+	@CommandPermissions("use.basic")
+	@CommandRequirements()
+	public static void viewInfo(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		PageInstance instance = PageUtils.newInstance(sender);
+		int page = 1;
+		if (args.argsLength() == 2) {
+			page = args.getInteger(1);
+		}
+		instance.header(ChatColor.YELLOW
+				+ StringUtils.listify(ChatColor.GREEN
+						+ "NPC Toggle List <%x/%y>" + ChatColor.YELLOW));
+		for (String type : NPCTypeManager.getTypes().keySet()) {
+			instance.push(ChatColor.GREEN
+					+ "    - "
+					+ StringUtils.wrap(StringUtils.capitalise(type
+							.toLowerCase())));
+		}
+		instance.process(page);
+	}
 
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(

@@ -3,23 +3,23 @@ package com.citizens.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 public class PageUtils {
-	public static PageInstance newInstance(Player player) {
-		return new PageInstance(player);
+	public static PageInstance newInstance(CommandSender sender) {
+		return new PageInstance(sender);
 	}
 
 	public static class PageInstance {
 		private String header = "";
 		private final List<String> lines = new ArrayList<String>();
-		private final Player player;
+		private final CommandSender sender;
 		private boolean smoothTransition = false;
 		private boolean hasDisplayed = false;
 		private int currentPage = 1;
 
-		public PageInstance(Player player) {
-			this.player = player;
+		public PageInstance(CommandSender sender) {
+			this.sender = sender;
 		}
 
 		public void header(String header) {
@@ -74,7 +74,7 @@ public class PageUtils {
 		}
 
 		private void send(String line) {
-			Messaging.send(player, null, line);
+			Messaging.send(sender, null, line);
 		}
 
 		private String colour(String line) {

@@ -28,6 +28,9 @@ public class CitizensCommandsManager<T extends Player> extends
 		if (perm.contains("create.")) {
 			return Permission.canCreate(player, perm.replace("create.", ""));
 		}
+		if (perm.equals("any")) {
+			return true;
+		}
 		return false;
 	}
 

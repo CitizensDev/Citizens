@@ -28,7 +28,11 @@ public class Messaging {
 		player.sendMessage(message);
 	}
 
-	private static void send(CommandSender sender, HumanNPC npc, String message) {
+	static void send(CommandSender sender, HumanNPC npc, String message) {
+		if (sender instanceof Player) {
+			send((Player) sender, npc, message);
+			return;
+		}
 		message = colourise(StringUtils.colourise(message));
 		if (npc != null) {
 			message = message.replace("<npc>", npc.getStrippedName());
