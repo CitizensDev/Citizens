@@ -31,3 +31,10 @@ Changelog:
 -guard fixes (THEY STILL DO NOT WORK 100%)
 -trader command fixes
 -fixed /npc remove command
+
+--- v1.0.9b ---
+-fixed NPCs not saving
+-added command suggestions ("Unknown command. Did you mean: ....")
+-trader command fixes
+-added /trader clear [buy|sell] command for clearing a trader's stock
+-added /toggle [list|help] for toggling help

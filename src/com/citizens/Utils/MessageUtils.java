@@ -47,8 +47,9 @@ public class MessageUtils {
 	 */
 	public static void sendText(HumanNPC npc, Player player) {
 		String text = getText(npc, player);
-		if (!text.isEmpty())
+		if (!text.isEmpty()) {
 			Messaging.send(player, npc, text);
+		}
 	}
 
 	/**
@@ -174,8 +175,9 @@ public class MessageUtils {
 		int count = 0;
 		for (String s : parts) {
 			parts[count] = StringUtils.capitalise(s);
-			if (count < parts.length - 1)
+			if (count < parts.length - 1) {
 				parts[count] += " ";
+			}
 			++count;
 		}
 		return Arrays.toString(parts).replace("[", "").replace("]", "")

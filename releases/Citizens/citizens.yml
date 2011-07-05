@@ -4,8 +4,6 @@ range:
         pathfinding: '16'
     basic:
         look: '4'
-    bandits:
-        steal-radius: '5'
 items:
     overrides:
         '30': Cobweb
@@ -61,3 +59,5 @@ general:
         default-text: Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;
         creation-message: <g>The NPC <y><npc><g> was born!
         format: '[%name%]: '
+    selection:
+        quick-select: 'false'

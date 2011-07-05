@@ -21,15 +21,17 @@ public class HelpUtils {
 			format(sender, "citizens", "", "display Citizens information");
 			format(sender, "citizens", "reload", "reload Citizens files");
 			format(sender, "citizens", "save", "force a save of Citizens files");
+			format(sender, "toggle", "[help|list] (page)",
+					"view toggleable NPCs");
 			format(sender, "toggle", "[type]", "toggle an NPC type");
 			format(sender, "toggle", "all [on/off]",
 					"toggle all types for an NPC");
 			format(sender, "basic", "help [page]", "basic NPC help pages");
 			format(sender, "blacksmith", "help", "blacksmith NPC help page");
-			format(sender, "guard", "help", "guard NPC help page");
 			break;
 		case 2:
 			header(sender, "General", 2, 2);
+			format(sender, "guard", "help", "guard NPC help page");
 			format(sender, "healer", "help", "healer NPC help page");
 			format(sender, "landlord", "help", "landlord NPC help page");
 			format(sender, "quester", "help", "quester NPC help page");
@@ -117,13 +119,14 @@ public class HelpUtils {
 				"set whether a trader has unlimited stock");
 		format(sender, "trader", "money [give|take] (amount)",
 				"control a trader's money");
+		format(sender, "trader", "clear [buy|sell]", "clear a trader's stock");
 		footer(sender);
 	}
 
 	/**
 	 * Sends the help page for the healer npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
 	public static void sendHealerHelp(CommandSender sender) {
 		header(sender, "Healer", 1, 1);
@@ -196,7 +199,7 @@ public class HelpUtils {
 	/**
 	 * Sends the help page for the landlord npc type
 	 * 
-	 * @param player
+	 * @param sender
 	 */
 	public static void sendLandlordHelp(CommandSender sender) {
 		header(sender, "Landlord", 1, 1);

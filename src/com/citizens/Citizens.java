@@ -246,17 +246,14 @@ public class Citizens extends JavaPlugin {
 			possible.add(entry.getValue());
 		}
 		if (possible.size() > 0) {
-			sender.sendMessage(ChatColor.GRAY
-					+ "Unknown command. Did you mean:");
+			sender.sendMessage(ChatColor.GRAY + "Unknown command. Did you mean:");
 			for (String string : possible) {
-				sender.sendMessage(ChatColor.AQUA
-						+ "                          -[ " + ChatColor.GREEN
-						+ command + " "
-						+ StringUtils.wrap(string, ChatColor.AQUA) + " ]-");
+				sender.sendMessage(StringUtils.wrap("    /") + command + " "
+						+ StringUtils.wrap(string));
 			}
 			return true;
-		} else
-			return false;
+		}
+		return false;
 	}
 
 	private void registerTypes() {
