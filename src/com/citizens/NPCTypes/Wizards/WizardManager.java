@@ -114,6 +114,7 @@ public class WizardManager {
 	/**
 	 * Increase the mana of a wizard
 	 * 
+	 * @param npc
 	 * @param mana
 	 */
 	public static void increaseMana(HumanNPC npc, int mana) {
@@ -126,6 +127,8 @@ public class WizardManager {
 	/**
 	 * Decrease the mana of a wizard
 	 * 
+	 * @param player
+	 * @param npc
 	 * @param mana
 	 */
 	public static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
@@ -135,11 +138,10 @@ public class WizardManager {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " has lost 5 mana.");
 			return true;
-		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " does not have enough mana to do that.");
-			return false;
 		}
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+				+ " does not have enough mana to do that.");
+		return false;
 	}
 
 	/**

@@ -62,7 +62,7 @@ public class Messaging {
 	}
 
 	public static void log(Object message, Level level) {
-		log.log(level, "[Citizens]: " + message);
+		log.log(level, "[Citizens] " + message);
 	}
 
 	public static void log(Object message) {

@@ -65,7 +65,6 @@ public class Defaults {
 		nodes.put("ticks.wizards.mana-regen-rate", "6000");
 		// Range Settings
 		nodes.put("range.basic.look", "4");
-		nodes.put("range.bandits.steal-radius", "5");
 		nodes.put("range.guards.default-bouncer-protection-radius", "5");
 		nodes.put("range.guards.pathfinding", "16");
 		return nodes;
