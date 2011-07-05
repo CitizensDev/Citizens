@@ -40,6 +40,7 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public void save() {
+		config.getAll().clear();
 		for (Entry<String, String> entry : tree.getTree().entrySet()) {
 			if (entry.getValue() != null && !entry.getValue().isEmpty()
 					&& !StringUtils.isNumber(entry.getKey())) {
