@@ -628,10 +628,12 @@ public class BasicCommands {
 				player.sendMessage(StringUtils.wrap("Repeat")
 						+ " this command to finish.");
 				editing = UID;
+				npc.setPaused(true);
 			} else if (editing == UID) {
 				player.sendMessage(StringUtils.wrap("Finished")
 						+ " editing waypoints.");
 				editing = null;
+				npc.setPaused(false);
 			} else if (editing != UID) {
 				player.sendMessage(ChatColor.GRAY + "Now editing "
 						+ StringUtils.wrap(npc.getStrippedName())

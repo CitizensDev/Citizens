@@ -135,12 +135,15 @@ public class GuardTask implements Runnable {
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
 		GuardNPC guard = npc.getToggleable("guard");
+		if (!guard.isAggressive()) {
+			return;
+		}
 		if (guard.isBouncer()) {
 			CachedAction cached = ActionManager.getAction(entityID, name);
 			if (!cached.has("attemptedEntry")) {
 				if (isBlacklisted(npc, name)
-						|| (entity instanceof Player && !name.equals(npc
-								.getOwner()))) {
+						|| (entity instanceof Player && !guard
+								.isWhiteListed((Player) entity))) {
 					attack(entity, guard);
 					guard.setAttacking(true);
 				}
@@ -148,17 +151,14 @@ public class GuardTask implements Runnable {
 			}
 			ActionManager.putAction(entityID, name, cached);
 		} else if (guard.isBodyguard()) {
-			if (guard.isAggressive()) {
-				if (entity instanceof Player) {
-					if (!guard.getWhitelist().contains(name)
-							&& !guard.getWhitelist().contains("all")) {
-						attack(entity, guard);
-					}
-				} else if (!(entity instanceof Player)
-						&& CreatureType.fromName(StringUtils.capitalise(name)) != null) {
-					if (isBlacklisted(npc, name)) {
-						attack(entity, guard);
-					}
+			if (entity instanceof Player) {
+				if (!guard.isWhiteListed((Player) entity)) {
+					attack(entity, guard);
+				}
+			} else if (CreatureType.fromName(StringUtils.capitalise(name
+					.toLowerCase())) != null) {
+				if (isBlacklisted(npc, name)) {
+					attack(entity, guard);
 				}
 			}
 		}

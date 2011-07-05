@@ -1,6 +1,6 @@
 package com.citizens.Commands.Commands;
 
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -42,32 +42,34 @@ public class GuardCommands {
 
 	@Command(
 			aliases = "guard",
-			usage = "type [type]",
+			usage = "[type]",
 			desc = "change a guard's type",
-			modifiers = "type",
-			min = 2,
-			max = 2)
+			modifiers = { "bodyguard", "bouncer" },
+			min = 1,
+			max = 1)
 	@CommandPermissions("modify.guard")
 	public static void changeType(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
-		if (args.getString(1).equalsIgnoreCase("bodyguard")) {
+		if (args.getString(0).equalsIgnoreCase("bodyguard")) {
 			if (!guard.isBodyguard()) {
 				guard.setBodyguard();
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " is now a bodyguard.");
 			} else {
-				Messaging.sendError(player, npc.getStrippedName()
-						+ " is already a bodyguard.");
+				guard.clear();
+				Messaging.send(player, npc, npc.getStrippedName()
+						+ " has stopped being a bodyguard.");
 			}
-		} else if (args.getString(1).equalsIgnoreCase("bouncer")) {
+		} else if (args.getString(0).equalsIgnoreCase("bouncer")) {
 			if (!guard.isBouncer()) {
 				guard.setBouncer();
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " is now a bouncer.");
 			} else {
-				Messaging.sendError(player, npc.getStrippedName()
-						+ " is already a bouncer.");
+				guard.clear();
+				Messaging.send(player, npc, npc.getStrippedName()
+						+ " is stopped being a bouncer.");
 			}
 		} else {
 			Messaging.sendError(player, "That is not a valid guard type.");
@@ -89,7 +91,7 @@ public class GuardCommands {
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap(npc
 							.getStrippedName() + "'s Blacklisted Mobs")));
-			List<String> list = guard.getBlacklist();
+			Set<String> list = guard.getBlacklist();
 			if (list.isEmpty()) {
 				player.sendMessage(ChatColor.RED + "No mobs blacklisted.");
 			} else {
@@ -149,7 +151,7 @@ public class GuardCommands {
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap(npc
 							.getStrippedName() + "'s Whitelisted Players")));
-			List<String> list = guard.getWhitelist();
+			Set<String> list = guard.getWhitelist();
 			if (list.isEmpty()) {
 				player.sendMessage(ChatColor.RED + "No players whitelisted.");
 			} else {

@@ -1,8 +1,8 @@
 package com.citizens.Properties.Properties;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.citizens.Constants;
 import com.citizens.Interfaces.Saveable;
@@ -45,34 +45,34 @@ public class GuardProperties extends PropertyManager implements Saveable {
 		profiles.setString(UID + type, guardType.toString().toLowerCase());
 	}
 
-	private List<String> getBlacklist(int UID) {
+	private Set<String> getBlacklist(int UID) {
 		String save = profiles.getString(UID + blacklist);
-		List<String> mobs = new ArrayList<String>();
+		Set<String> mobs = new HashSet<String>();
 		Collections.addAll(mobs, save.split(","));
 		return mobs;
 	}
 
-	private void saveBlacklist(int UID, List<String> mobs) {
-		String save = "";
+	private void saveBlacklist(int UID, Set<String> mobs) {
+		StringBuilder save = new StringBuilder();
 		for (String mob : mobs) {
-			save += mob + ",";
+			save.append(mob + ",");
 		}
-		profiles.setString(UID + blacklist, save);
+		profiles.setString(UID + blacklist, save.toString());
 	}
 
-	private List<String> getWhitelist(int UID) {
+	private Set<String> getWhitelist(int UID) {
 		String save = profiles.getString(UID + whitelist);
-		List<String> players = new ArrayList<String>();
+		Set<String> players = new HashSet<String>();
 		Collections.addAll(players, save.split(","));
 		return players;
 	}
 
-	private void saveWhitelist(int UID, List<String> players) {
-		String save = "";
+	private void saveWhitelist(int UID, Set<String> players) {
+		StringBuilder save = new StringBuilder();
 		for (String player : players) {
-			save += player + ",";
+			save.append(player + ",");
 		}
-		profiles.setString(UID + whitelist, save);
+		profiles.setString(UID + whitelist, save.toString());
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.citizens.NPCTypes.Guards;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.CreatureType;
@@ -41,7 +41,7 @@ public class GuardManager {
 	 * @param mob
 	 */
 	public static void addToBlacklist(GuardNPC guard, String mob) {
-		List<String> blacklist = guard.getBlacklist();
+		Set<String> blacklist = guard.getBlacklist();
 		if (mob.equalsIgnoreCase("all")) {
 			for (CreatureType type : CreatureType.values()) {
 				if (!blacklist.contains(type.toString().toLowerCase())) {
@@ -61,7 +61,7 @@ public class GuardManager {
 	 * @param mob
 	 */
 	public static void removeFromBlacklist(GuardNPC guard, String mob) {
-		List<String> blacklist = guard.getBlacklist();
+		Set<String> blacklist = guard.getBlacklist();
 		if (mob.equalsIgnoreCase("all")) {
 			for (CreatureType type : CreatureType.values()) {
 				if (blacklist.contains(type.toString().toLowerCase())) {
@@ -82,7 +82,7 @@ public class GuardManager {
 	 */
 	public static void addToWhitelist(GuardNPC guard, String player) {
 		if (player.equalsIgnoreCase("all")) {
-			List<String> emptyList = new ArrayList<String>();
+			Set<String> emptyList = new HashSet<String>();
 			emptyList.add("all");
 			guard.setWhitelist(emptyList);
 			return;
@@ -97,7 +97,7 @@ public class GuardManager {
 	 * @param player
 	 */
 	public static void removeFromWhitelist(GuardNPC guard, String player) {
-		List<String> whitelist = guard.getWhitelist();
+		Set<String> whitelist = guard.getWhitelist();
 		if (player.equalsIgnoreCase("all")) {
 			for (String name : whitelist) {
 				whitelist.remove(name);

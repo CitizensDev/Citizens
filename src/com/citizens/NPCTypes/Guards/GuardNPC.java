@@ -1,7 +1,7 @@
 package com.citizens.NPCTypes.Guards;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,8 +25,8 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
 	private GuardType guardType = GuardType.NULL;
-	private List<String> blacklist = new ArrayList<String>();
-	private List<String> whitelist = new ArrayList<String>();
+	private Set<String> blacklist = new HashSet<String>();
+	private Set<String> whitelist = new HashSet<String>();
 	private double radius = 10;
 
 	/**
@@ -74,6 +74,10 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 		guardType = GuardType.BOUNCER;
 	}
 
+	public void clear() {
+		guardType = GuardType.NULL;
+	}
+
 	/**
 	 * Get whether a bodyguard NPC kills on sight
 	 * 
@@ -116,7 +120,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @return
 	 */
-	public List<String> getBlacklist() {
+	public Set<String> getBlacklist() {
 		return blacklist;
 	}
 
@@ -125,8 +129,12 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @param mobBlacklist
 	 */
-	public void setBlacklist(List<String> blacklist) {
+	public void setBlacklist(Set<String> blacklist) {
 		this.blacklist = blacklist;
+	}
+
+	public boolean isBlacklisted(String name) {
+		return this.blacklist.contains("all") || this.blacklist.contains(name);
 	}
 
 	/**
@@ -134,7 +142,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @return
 	 */
-	public List<String> getWhitelist() {
+	public Set<String> getWhitelist() {
 		return whitelist;
 	}
 
@@ -143,8 +151,14 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @param whitelist
 	 */
-	public void setWhitelist(List<String> whitelist) {
+	public void setWhitelist(Set<String> whitelist) {
 		this.whitelist = whitelist;
+	}
+
+	public boolean isWhiteListed(Player player) {
+		return player.getName().equals(npc.getOwner())
+				|| this.whitelist.contains("all")
+				|| this.whitelist.contains(player.getName());
 	}
 
 	/**
