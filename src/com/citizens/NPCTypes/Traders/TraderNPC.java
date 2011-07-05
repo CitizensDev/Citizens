@@ -89,6 +89,11 @@ public class TraderNPC extends Toggleable implements Clickable {
 		}
 	}
 
+	public void removeStockable(Check check) {
+		this.stocking.remove(check);
+	
+	}
+
 	public boolean isStocked(int itemID, short dataValue, boolean selling) {
 		if (checkStockingIntegrity()) {
 			if (fetchStockable(itemID, dataValue, selling) != null) {

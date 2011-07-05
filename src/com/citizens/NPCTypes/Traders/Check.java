@@ -1,7 +1,5 @@
 package com.citizens.NPCTypes.Traders;
 
-import com.citizens.NPCTypes.Traders.Check;
-
 public class Check {
 	private int itemID;
 	private short dataValue;
@@ -62,5 +60,9 @@ public class Check {
 		Check other = (Check) obj;
 		return itemID == other.itemID && dataValue == other.dataValue
 				&& selling == other.selling;
+	}
+
+	public boolean isSelling() {
+		return this.selling;
 	}
 }

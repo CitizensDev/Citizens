@@ -11,6 +11,7 @@ import org.bukkit.util.config.Configuration;
 
 import com.citizens.Interfaces.Storage;
 import com.citizens.Utils.Messaging;
+import com.citizens.Utils.StringUtils;
 
 public class CachedYAMLHandler implements Storage {
 	private final SettingsTree tree = new SettingsTree();
@@ -33,16 +34,17 @@ public class CachedYAMLHandler implements Storage {
 	public void load() {
 		config.load();
 		for (Entry<String, Object> entry : this.config.getAll().entrySet()) {
-			tree.populate(entry.getKey());
-			tree.getTree().put(entry.getKey(), entry.getValue().toString());
+			tree.set(entry.getKey(), entry.getValue().toString());
 		}
 	}
 
 	@Override
 	public void save() {
 		for (Entry<String, String> entry : tree.getTree().entrySet()) {
-			if (entry.getValue() != null && !entry.getValue().isEmpty())
+			if (entry.getValue() != null && !entry.getValue().isEmpty()
+					&& !StringUtils.isNumber(entry.getKey())) {
 				this.config.setProperty(entry.getKey(), entry.getValue());
+			}
 		}
 		this.config.save();
 	}

@@ -174,6 +174,8 @@ public class MessageUtils {
 		int count = 0;
 		for (String s : parts) {
 			parts[count] = StringUtils.capitalise(s);
+			if (count < parts.length - 1)
+				parts[count] += " ";
 			++count;
 		}
 		return Arrays.toString(parts).replace("[", "").replace("]", "")

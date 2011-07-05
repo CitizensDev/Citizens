@@ -14,7 +14,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.citizens.Constants;
 import com.citizens.Events.NPCCreatureSpawnEvent;
 import com.citizens.Properties.Properties.UtilityProperties;
 import com.citizens.Resources.NPClib.HumanNPC;
@@ -28,6 +27,7 @@ public class CreatureTask implements Runnable {
 			CreatureNPCType.class);
 	private Player[] online;
 	private static boolean dirty = true;
+	private static Random random = new Random(System.currentTimeMillis());
 
 	@Override
 	public void run() {
@@ -36,22 +36,25 @@ public class CreatureTask implements Runnable {
 			dirty = false;
 		}
 		if (online != null && online.length > 0) {
-			Player player = online[new Random().nextInt(online.length)];
+			Player player = online[random.nextInt(online.length)];
 			// TODO - work out best method of getting creature type to spawn
 			// (perhaps randomly?).
-			CreatureNPCType type = CreatureNPCType.values()[new Random(
-					System.currentTimeMillis()).nextInt(CreatureNPCType
-					.values().length)];
-			if (spawned.get(type) == null) {
-				spawned.put(type, 0);
-			} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
-				HumanNPC npc = spawnCreature(type, player.getLocation());
-				if (npc != null) {
-					spawned.put(type, spawned.get(type) + 1);
-					creatureNPCs.put(npc.getPlayer().getEntityId(),
-							(CreatureNPC) npc.getHandle());
-					onSpawn(creatureNPCs.get(npc.getPlayer().getEntityId()));
-				}
+			CreatureNPCType type = CreatureNPCType.values()[random
+					.nextInt(CreatureNPCType.values().length)];
+			spawnCreature(player.getLocation(), type);
+		}
+	}
+
+	private void spawnCreature(Location location, CreatureNPCType type) {
+		if (spawned.get(type) == null) {
+			spawned.put(type, 0);
+		} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
+			HumanNPC npc = spawnCreature(type, location);
+			if (npc != null) {
+				spawned.put(type, spawned.get(type) + 1);
+				creatureNPCs.put(npc.getPlayer().getEntityId(),
+						(CreatureNPC) npc.getHandle());
+				onSpawn(creatureNPCs.get(npc.getPlayer().getEntityId()));
 			}
 		}
 	}
@@ -66,7 +69,6 @@ public class CreatureTask implements Runnable {
 	}
 
 	private HumanNPC spawnCreature(CreatureNPCType type, Location loc) {
-		Random random = new Random(System.currentTimeMillis());
 		int offsetX = 0, offsetZ = 0, offset = 25;
 		offsetX += offset * getRandomInt(random, 2);
 		offsetZ += offset * getRandomInt(random, 2);

@@ -1,10 +1,10 @@
 package com.citizens.Properties;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SettingsTree {
-	private final Map<String, String> tree = new ConcurrentHashMap<String, String>();
+	private final Map<String, String> tree = new HashMap<String, String>(100);
 
 	public void populate(String path) {
 		StringBuilder progressive = new StringBuilder();
@@ -12,8 +12,9 @@ public class SettingsTree {
 		String[] branches = path.split("\\.");
 		for (String branch : branches) {
 			progressive.append(branch);
-			if (getTree().get(progressive.toString()) == null)
-				getTree().put(progressive.toString(), "");
+			if (tree.get(progressive.toString()) == null) {
+				tree.put(progressive.toString(), "");
+			}
 			if (index != branches.length - 1)
 				progressive.append(".");
 			++index;
@@ -21,7 +22,7 @@ public class SettingsTree {
 	}
 
 	public String get(String path) {
-		return getTree().get(path);
+		return tree.get(path);
 	}
 
 	public Map<String, String> getTree() {
@@ -29,8 +30,8 @@ public class SettingsTree {
 	}
 
 	public void set(String path, String value) {
-		populate(path);
 		tree.put(path, value);
+		populate(path);
 	}
 
 	public void remove(String path) {

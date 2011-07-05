@@ -84,7 +84,6 @@ public class Citizens extends JavaPlugin {
 	public void onDisable() {
 		// Save the local copy of our files to disk.
 		PropertyManager.saveState();
-
 		NPCManager.despawnAll();
 		CreatureTask.despawnAll();
 
@@ -297,8 +296,8 @@ public class Citizens extends JavaPlugin {
 			UtilityProperties.getSettings().setBoolean("general.convert-old",
 					false);
 			PropertyManager.getNPCProfiles().save();
-			PropertyManager.getNPCProfiles().load();
 		}
+		PropertyManager.getNPCProfiles().load();
 		StringBuilder UIDList = new StringBuilder();
 		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(
 				null);

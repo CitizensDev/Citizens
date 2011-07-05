@@ -47,7 +47,11 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	public Location getLocation(int UID) {
 		String[] values = profiles.getString(UID + location).split(",");
 		if (values.length != 6) {
-			Messaging.log("Invalid location length. Length: " + values.length);
+			if (values[0].isEmpty()) {
+				Messaging.log("Missing location for " + UID);
+			} else
+				Messaging.log("Invalid location length. Length: "
+						+ values.length);
 			return null;
 		} else {
 			return new Location(Bukkit.getServer().getWorld(values[0]),
