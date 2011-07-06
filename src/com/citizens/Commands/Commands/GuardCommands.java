@@ -87,7 +87,12 @@ public class GuardCommands {
 	public static void blacklist(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
-		if (args.argsLength() == 1) {
+		switch (args.argsLength()) {
+		case 2:
+			player.sendMessage(ChatColor.GRAY
+					+ "Insufficient or too many arguments.");
+			break;
+		case 1:
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap(npc
 							.getStrippedName() + "'s Blacklisted Mobs")));
@@ -99,7 +104,8 @@ public class GuardCommands {
 					player.sendMessage(ChatColor.RED + aList);
 				}
 			}
-		} else if (args.argsLength() == 3) {
+			break;
+		case 3:
 			String mob = args.getString(2).toLowerCase();
 			if (CreatureType.fromName(StringUtils.capitalise(mob)) == null
 					&& !mob.equalsIgnoreCase("all")) {
@@ -133,6 +139,7 @@ public class GuardCommands {
 						+ StringUtils.wrap(npc.getStrippedName() + "'s")
 						+ " blacklist.");
 			}
+			break;
 		}
 	}
 

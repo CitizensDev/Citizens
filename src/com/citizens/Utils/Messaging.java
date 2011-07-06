@@ -3,6 +3,7 @@ package com.citizens.Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -85,5 +86,11 @@ public class Messaging {
 
 	public static void sendError(CommandSender sender, String error) {
 		send(sender, null, ChatColor.RED + error);
+	}
+
+	public static void sendUncertain(String name, String message) {
+		Player player = Bukkit.getServer().getPlayer(name);
+		if (player != null)
+			send(player, null, message);
 	}
 }

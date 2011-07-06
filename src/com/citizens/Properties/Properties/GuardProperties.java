@@ -42,7 +42,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveGuardType(int UID, GuardType guardType) {
-		profiles.setString(UID + type, guardType.toString().toLowerCase());
+		profiles.setString(UID + type, guardType.name());
 	}
 
 	private Set<String> getBlacklist(int UID) {

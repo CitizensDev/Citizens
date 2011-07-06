@@ -13,7 +13,9 @@ import com.citizens.Resources.NPClib.NPCSpawner;
 import com.citizens.Resources.NPClib.WaypointPath;
 import com.citizens.Utils.LocationUtils;
 import com.citizens.Utils.MessageUtils;
+import com.citizens.Utils.Messaging;
 import com.citizens.Utils.PathUtils;
+import com.citizens.Utils.StringUtils;
 
 public class TickTask implements Runnable {
 	// How far an NPC can 'see'
@@ -35,6 +37,9 @@ public class TickTask implements Runnable {
 				updateWaypoints(npc);
 				npc.updateMovement();
 				NPCSpawner.removeNPCFromPlayerList(npc);
+				if (npc.getPlayer().isDead()) {
+					NPCSpawner.despawnNPC(npc);
+				}
 				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();
@@ -116,7 +121,8 @@ public class TickTask implements Runnable {
 		ActionManager.putAction(entityID, name, cached);
 	}
 
-	public static void respawn(HumanNPC npc, int delay) {
+	public static void scheduleRespawn(HumanNPC npc, int delay) {
+		NPCManager.removeForRespawn(npc.getUID());
 		new RespawnTask(npc).register(delay);
 	}
 
@@ -137,6 +143,9 @@ public class TickTask implements Runnable {
 		@Override
 		public void run() {
 			NPCManager.register(UID, owner);
+			Messaging.sendUncertain(owner,
+					StringUtils.wrap(NPCManager.get(UID).getName())
+							+ " has respawned.");
 		}
 	}
 }

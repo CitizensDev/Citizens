@@ -203,9 +203,8 @@ public class NPCManager {
 	 */
 	public static void remove(int UID) {
 		PropertyManager.remove(get(UID));
-		NPCSpawner.despawnNPC(list.get(UID));
+		NPCSpawner.despawnNPC(list.remove(UID));
 		GlobalUIDs.remove(UID);
-		list.remove(UID);
 	}
 
 	public static void removeAll() {

@@ -3,11 +3,14 @@ package com.citizens.NPCTypes.Guards;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.citizens.Constants;
@@ -19,6 +22,7 @@ import com.citizens.Interfaces.Toggleable;
 import com.citizens.NPCTypes.Guards.GuardManager.GuardType;
 import com.citizens.Resources.NPClib.HumanNPC;
 import com.citizens.Utils.PathUtils;
+import com.citizens.Utils.StringUtils;
 
 public class GuardNPC extends Toggleable implements Clickable, Damageable,
 		Targetable {
@@ -218,12 +222,22 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	@Override
 	public void onDamage(EntityDamageEvent event) {
 		if (this.npc.getPlayer().getHealth() - event.getDamage() <= 0) {
-			TickTask.respawn(this.npc, Constants.guardRespawnDelay);
+			return;
 		}
 		if (isAggressive() && event.getCause() == DamageCause.ENTITY_ATTACK) {
 			target((LivingEntity) ((EntityDamageByEntityEvent) event)
 					.getDamager());
 		}
+	}
+
+	@Override
+	public void onDeath(EntityDeathEvent event) {
+		Player player = Bukkit.getServer().getPlayer(npc.getOwner());
+		if (player != null)
+			player.sendMessage(ChatColor.GRAY + "Your guard NPC "
+					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
+					+ " died.");
+		TickTask.scheduleRespawn(this.npc, Constants.guardRespawnDelay);
 	}
 
 	public void target(LivingEntity entity) {

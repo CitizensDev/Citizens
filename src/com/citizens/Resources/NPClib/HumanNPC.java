@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -178,6 +179,14 @@ public class HumanNPC extends NPC {
 			}
 		}
 		return found;
+	}
+
+	public void callDeathEvent(EntityDeathEvent event) {
+		for (Toggleable t : types.values()) {
+			if (t instanceof Damageable) {
+				((Damageable) t).onDeath(event);
+			}
+		}
 	}
 
 	public boolean callTargetEvent(EntityTargetEvent event) {

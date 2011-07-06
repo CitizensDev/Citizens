@@ -134,6 +134,9 @@ public class EntityListen extends EntityListener implements Listener {
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
 		CreatureTask.onEntityDeath(event.getEntity());
+		if (NPCManager.isNPC(event.getEntity())) {
+			NPCManager.get(event.getEntity()).callDeathEvent(event);
+		}
 	}
 
 	private class RestartPathTask implements Runnable {
