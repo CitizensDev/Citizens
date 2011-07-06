@@ -446,7 +446,6 @@ public class BasicCommands {
 				.getItem(slot));
 		player.getInventory().setItem(slot, item);
 		ArrayList<Integer> items = npc.getNPCData().getItems();
-		int oldhelmet = items.get(1);
 
 		if (args.getString(1).contains("helm")) {
 			items.set(1, mat.getId());
@@ -460,11 +459,10 @@ public class BasicCommands {
 		npc.getNPCData().setItems(items);
 		NPCDataManager.addItems(npc, items);
 
-		if ((oldhelmet != 0 && items.get(1) == 0)) {
-			// Despawn the old NPC, register our new one.
-			NPCManager.removeForRespawn(npc.getUID());
-			NPCManager.register(npc.getUID(), npc.getOwner());
-		}
+		// Despawn the old NPC, register our new one.
+		NPCManager.removeForRespawn(npc.getUID());
+		NPCManager.register(npc.getUID(), npc.getOwner());
+
 		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ "'s armor was set to "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))

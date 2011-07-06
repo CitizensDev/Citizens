@@ -26,7 +26,7 @@ public class PirateTask implements Runnable {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			{
 				npc = entry.getValue();
-				npc.updateMovement();
+				npc.doTick();
 				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();

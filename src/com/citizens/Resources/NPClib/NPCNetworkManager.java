@@ -13,7 +13,8 @@ public class NPCNetworkManager extends NetworkManager {
 			NetHandler paramNetHandler) {
 		super(paramSocket, paramString, paramNetHandler);
 		try {
-			Field f = NetworkManager.class.getDeclaredField("j");
+			// the field above the 3 synchronized lists.
+			Field f = NetworkManager.class.getDeclaredField("l");
 			f.setAccessible(true);
 			f.set(this, false);
 		} catch (Exception e) {

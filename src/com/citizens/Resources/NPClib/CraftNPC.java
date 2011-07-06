@@ -18,7 +18,7 @@ public class CraftNPC extends PathNPC {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger("Minecraft");
 	@SuppressWarnings("unused")
-	private int lastTargetId;
+	private final int lastTargetId;
 	private long lastBounceTick;
 	private int lastBounceId;
 	boolean said = false;

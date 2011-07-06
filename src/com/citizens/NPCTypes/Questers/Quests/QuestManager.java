@@ -63,7 +63,12 @@ public class QuestManager {
 	}
 
 	public enum RewardType {
-		HEALTH, ITEM, MONEY, PERMISSION, QUEST, RANK;
+		HEALTH,
+		ITEM,
+		MONEY,
+		PERMISSION,
+		QUEST,
+		RANK;
 	}
 
 	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
@@ -75,7 +80,8 @@ public class QuestManager {
 	}
 
 	public static void unload(Player player) {
-		getProfile(player.getName()).save();
+		if (getProfile(player.getName()) != null)
+			getProfile(player.getName()).save();
 		cachedProfiles.put(player.getName(), null);
 	}
 

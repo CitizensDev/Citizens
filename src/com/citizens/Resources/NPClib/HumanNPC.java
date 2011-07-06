@@ -3,6 +3,8 @@ package com.citizens.Resources.NPClib;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.minecraft.server.Packet0KeepAlive;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -92,7 +94,8 @@ public class HumanNPC extends NPC {
 		this.getPlayer().teleport(loc);
 	}
 
-	public void updateMovement() {
+	public void doTick() {
+		this.mcEntity.netServerHandler.sendPacket(new Packet0KeepAlive());
 		this.mcEntity.updateMove();
 		this.mcEntity.applyGravity();
 	}
