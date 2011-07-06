@@ -269,6 +269,7 @@ public class BasicCommands {
 		newNPC.teleport(player.getLocation());
 		newNPC.getNPCData().setLocation(player.getLocation());
 		PropertyManager.copyNPCs(npc.getUID(), newUID);
+		PropertyManager.load(newNPC);
 	}
 
 	@Command(
@@ -429,7 +430,7 @@ public class BasicCommands {
 			player.sendMessage(ChatColor.RED + "Invalid item.");
 			return;
 		}
-		if (!player.getInventory().contains(mat)) {
+		if (mat != Material.AIR && !player.getInventory().contains(mat)) {
 			player.sendMessage(ChatColor.RED
 					+ "You need to have the item in your inventory to add it to the NPC.");
 			return;
@@ -557,6 +558,7 @@ public class BasicCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("use.basic")
+	@CommandRequirements()
 	public static void selectNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		npc = NPCManager.get(Integer.valueOf(args.getString(1)));

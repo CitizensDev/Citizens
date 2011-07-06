@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.Payment;
 import com.citizens.Economy.EconomyHandler.Operation;
 import com.citizens.Properties.Properties.UtilityProperties;
 import com.citizens.Utils.MessageUtils;
@@ -101,6 +99,14 @@ public class ItemInterface {
 			}
 		}
 		return false;
+	}
+
+	public static boolean isFree(Player player, Operation op) {
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
+		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
+				currencyAddendum));
+		return price <= 0 || ID == 0;
 	}
 
 	/**

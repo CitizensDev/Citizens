@@ -4,9 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Economy.ItemInterface;
-import com.citizens.Economy.Payment;
-import com.citizens.Economy.ServerEconomyInterface;
 import com.citizens.Resources.NPClib.HumanNPC;
 
 // TODO merge blacksmith methods with regular methods (also in ItemInterface and ServerEcoInterface)
@@ -198,6 +195,17 @@ public class EconomyHandler {
 				return ServerEconomyInterface.hasEnough(payment, npc);
 			} else {
 				return ItemInterface.hasEnough(payment, npc.getPlayer());
+			}
+		}
+		return true;
+	}
+
+	public static boolean isFree(Player player, Operation op) {
+		if (useEconomy) {
+			if (useEconPlugin()) {
+				return ServerEconomyInterface.isFree(player, op);
+			} else {
+				return ItemInterface.isFree(player, op);
 			}
 		}
 		return true;

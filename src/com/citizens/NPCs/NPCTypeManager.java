@@ -10,19 +10,19 @@ public class NPCTypeManager {
 	private static final Map<String, NPCType> types = new HashMap<String, NPCType>();
 
 	public static NPCFactory getFactory(String string) {
-		return getTypes().get(string).factory();
+		return types.get(string).factory();
 	}
 
 	public static void registerType(NPCType type) {
-		getTypes().put(type.getType(), type);
+		types.put(type.getType(), type);
 	}
 
 	public static boolean validType(String type) {
-		return getTypes().get(type) != null;
+		return types.get(type) != null;
 	}
 
 	public static NPCType getType(String type) {
-		return getTypes().get(type);
+		return types.get(type);
 	}
 
 	public static void registerType(NPCType type, boolean autosave) {

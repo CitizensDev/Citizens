@@ -68,10 +68,16 @@ public class HealerCommands {
 			HealerNPC healer = npc.getToggleable("healer");
 			int level = healer.getLevel();
 			int levelsUp = 1;
-			if (args.argsLength() == 2) {
-				if (StringUtils.isNumber(args.getString(1))) {
-					levelsUp = args.getInteger(1);
-				}
+			if (args.argsLength() == 2
+					&& StringUtils.isNumber(args.getString(1))) {
+				levelsUp = args.getInteger(1);
+			}
+			if ((level + levelsUp) > 10) {
+				levelsUp = (10 - level);
+				player.sendMessage(ChatColor.GRAY
+						+ "Number of levels-up brought down to "
+						+ StringUtils.wrap(levelsUp)
+						+ " (maximum 10 healer levels).");
 			}
 			double paid = EconomyHandler.pay(Operation.HEALER_LEVELUP, player,
 					levelsUp);

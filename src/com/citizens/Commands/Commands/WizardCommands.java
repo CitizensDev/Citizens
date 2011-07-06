@@ -74,13 +74,13 @@ public class WizardCommands {
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.sendMessage(ChatColor.AQUA
-				+ StringUtils.listify(ChatColor.GOLD + npc.getStrippedName()
+				+ StringUtils.listify(ChatColor.GREEN + npc.getStrippedName()
 						+ "'s Wizard Status" + ChatColor.AQUA));
 		WizardNPC wizard = npc.getToggleable("wizard");
-		player.sendMessage(ChatColor.AQUA + "Mode: " + ChatColor.GOLD
-				+ wizard.getMode());
-		player.sendMessage(ChatColor.AQUA + "Mana: " + ChatColor.GOLD
-				+ wizard.getMana());
+		player.sendMessage(ChatColor.GREEN + "    Mode: "
+				+ StringUtils.wrap(wizard.getMode()));
+		player.sendMessage(ChatColor.GREEN + "    Mana: "
+				+ StringUtils.wrap(wizard.getMana()));
 	}
 
 	@Command(

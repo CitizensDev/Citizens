@@ -157,7 +157,7 @@ public class WizardManager {
 				boolean canSend = false;
 				WizardNPC wizard = npc.getToggleable("wizard");
 				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0) {
+				if (paid > 0 || EconomyHandler.isFree(player, op)) {
 					String msg = ChatColor.GREEN
 							+ "Paid "
 							+ StringUtils.wrap(EconomyHandler.getPaymentType(

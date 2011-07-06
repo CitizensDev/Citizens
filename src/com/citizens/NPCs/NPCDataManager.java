@@ -130,7 +130,7 @@ public class NPCDataManager {
 			player.sendMessage(ChatColor.RED + "Incorrect item name.");
 			return;
 		}
-		if (!player.getInventory().contains(mat)) {
+		if (mat != Material.AIR && !player.getInventory().contains(mat)) {
 			player.sendMessage(ChatColor.RED
 					+ "You need to have at least 1 of the item in your inventory to add it to the NPC.");
 			return;

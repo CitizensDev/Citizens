@@ -3,7 +3,6 @@ package com.citizens.NPCTypes.Healers;
 import java.util.Map.Entry;
 
 import com.citizens.Constants;
-import com.citizens.NPCTypes.Healers.HealerNPC;
 import com.citizens.NPCs.NPCManager;
 import com.citizens.Resources.NPClib.HumanNPC;
 

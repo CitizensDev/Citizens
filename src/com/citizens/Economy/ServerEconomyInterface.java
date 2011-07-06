@@ -78,6 +78,12 @@ public class ServerEconomyInterface {
 		return "" + (price - acc.balance());
 	}
 
+	public static boolean isFree(Player player, Operation op) {
+		double price = UtilityProperties.getPrice(Operation.getString(op,
+				addendum));
+		return price <= 0;
+	}
+
 	/**
 	 * Checks whether the player has enough money for an operation.
 	 * 

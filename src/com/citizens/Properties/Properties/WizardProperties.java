@@ -8,6 +8,7 @@ import com.citizens.NPCTypes.Wizards.WizardNPC;
 import com.citizens.NPCs.NPCTypeManager;
 import com.citizens.Properties.PropertyManager;
 import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.Utils.Messaging;
 
 public class WizardProperties extends PropertyManager implements Saveable {
 	private static final String isWizard = ".wizard.toggle";
@@ -73,10 +74,13 @@ public class WizardProperties extends PropertyManager implements Saveable {
 
 	@Override
 	public void saveState(HumanNPC npc) {
+		Messaging.log("at");
 		if (exists(npc)) {
+			Messaging.log("exists");
 			boolean is = npc.isType("wizard");
 			setEnabled(npc, is);
 			if (is) {
+				Messaging.log("is");
 				WizardNPC wizard = npc.getToggleable("wizard");
 				saveLocations(npc.getUID(), wizard.getLocations());
 				saveMana(npc.getUID(), wizard.getMana());
@@ -108,7 +112,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 
 	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
-		profiles.setBoolean(npc.getUID(), value);
+		profiles.setBoolean(npc.getUID() + isWizard, value);
 	}
 
 	@Override

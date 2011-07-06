@@ -59,9 +59,8 @@ public class PropertyManager {
 
 	public static void save(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			if (saveable.getEnabled(npc)) {
+			if (saveable.getEnabled(npc))
 				saveable.saveState(npc);
-			}
 		}
 	}
 
