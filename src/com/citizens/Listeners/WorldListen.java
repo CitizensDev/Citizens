@@ -57,7 +57,8 @@ public class WorldListen extends WorldListener implements Listener {
 		for (NPCLocation tempLoc : toRespawn.keySet()) {
 			if (tempLoc.getChunkX() == event.getChunk().getX()
 					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
-				NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
+				if (NPCManager.get(tempLoc.getUID()) != null)
+					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
 				toRespawn.remove(tempLoc);
 			}
 		}

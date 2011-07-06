@@ -37,8 +37,9 @@ public class SettingsTree {
 
 	public void remove(String path) {
 		for (String key : tree.keySet()) {
-			if (key.startsWith(path))
+			if (key.startsWith(path)) {
 				tree.remove(key);
+			}
 		}
 	}
 }

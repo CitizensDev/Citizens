@@ -32,15 +32,17 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public void load() {
+		clear();
 		config.load();
 		for (Entry<String, Object> entry : this.config.getAll().entrySet()) {
 			tree.set(entry.getKey(), entry.getValue().toString());
 		}
+		clear();
 	}
 
 	@Override
 	public void save() {
-		config.getAll().clear();
+		clear();
 		for (Entry<String, String> entry : tree.getTree().entrySet()) {
 			if (entry.getValue() != null && !entry.getValue().isEmpty()
 					&& !StringUtils.isNumber(entry.getKey())) {
@@ -48,6 +50,13 @@ public class CachedYAMLHandler implements Storage {
 			}
 		}
 		this.config.save();
+		clear();
+	}
+
+	private void clear() {
+		for (String path : config.getAll().keySet()) {
+			config.removeProperty(path);
+		}
 	}
 
 	private void create() {

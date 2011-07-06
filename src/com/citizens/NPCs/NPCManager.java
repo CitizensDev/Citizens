@@ -63,13 +63,13 @@ public class NPCManager {
 		}
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
-		npc.setNPCData(new NPCData(name, UID, loc, colour, items, NPCTexts
+		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items, NPCTexts
 				.get(UID), PropertyManager.getBasic().getLookWhenClose(UID),
 				PropertyManager.getBasic().getTalkWhenClose(UID), owner));
 		PropertyManager.getBasic().setOwner(UID, owner);
 		PropertyManager.load(npc);
 
-		registerUID(UID, name);
+		registerUID(UID, npcName);
 		list.put(UID, npc);
 
 		PropertyManager.save(npc);
@@ -164,10 +164,10 @@ public class NPCManager {
 	 * @param player
 	 */
 	public static void facePlayer(HumanNPC npc, Player player) {
-		Location loc = npc.getLocation();
-		double xDiff = player.getLocation().getX() - loc.getX();
-		double yDiff = player.getLocation().getY() - loc.getY();
-		double zDiff = player.getLocation().getZ() - loc.getZ();
+		Location loc = npc.getLocation(), pl = player.getLocation();
+		double xDiff = pl.getX() - loc.getX();
+		double yDiff = pl.getY() - loc.getY();
+		double zDiff = pl.getZ() - loc.getZ();
 		double DistanceXZ = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
 		double DistanceY = Math.sqrt(DistanceXZ * DistanceXZ + yDiff * yDiff);
 		double yaw = (Math.acos(xDiff / DistanceXZ) * 180 / Math.PI);
@@ -203,8 +203,8 @@ public class NPCManager {
 	 */
 	public static void remove(int UID) {
 		PropertyManager.remove(get(UID));
-		GlobalUIDs.remove(UID);
 		NPCSpawner.despawnNPC(list.get(UID));
+		GlobalUIDs.remove(UID);
 		list.remove(UID);
 	}
 

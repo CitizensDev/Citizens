@@ -55,7 +55,6 @@ public class TraderCommands {
 	 * @param player
 	 * @param npc
 	 */
-	@CommandRequirements(requiredType = "trader", requireSelected = true)
 	@Command(
 			aliases = "trader",
 			usage = "money (give|take) (amount)",

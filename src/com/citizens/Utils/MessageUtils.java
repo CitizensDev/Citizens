@@ -74,7 +74,7 @@ public class MessageUtils {
 		if (!text.isEmpty()) {
 			if (Constants.useNPCColours) {
 				text = StringUtils.colourise(Constants.chatFormat.replace(
-						"%name%", npc.getName())) + text;
+						"%name%", npc.getStrippedName())) + text;
 			} else {
 				text = StringUtils.colourise(Constants.chatFormat.replace(
 						"%name%", "&" + Constants.npcColour + name

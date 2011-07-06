@@ -81,48 +81,37 @@ public class Citizens extends JavaPlugin {
 	public static boolean initialized = false;
 
 	@Override
-	public void onDisable() {
-		// Save the local copy of our files to disk.
-		PropertyManager.saveState();
-		NPCManager.despawnAll();
-		CreatureTask.despawnAll();
-
-		Messaging.log("version [" + getVersion() + "] (" + codename
-				+ ") disabled");
-	}
-
-	@Override
 	public void onEnable() {
 		plugin = this;
-
+	
 		// Register NPC types.
 		registerTypes();
-
+	
 		// Register our commands.
 		CommandHandler.registerCommands();
-
+	
 		// Register our events.
 		new EntityListen().registerEvents();
 		new WorldListen().registerEvents();
 		new ServerListen().registerEvents();
 		new PlayerListen().registerEvents();
-
+	
 		// Register files.
 		PropertyManager.registerProperties();
-
+	
 		// Initialize Permissions.
 		Permission.initialize(Bukkit.getServer());
-
+	
 		// Load settings.
 		Constants.setupVariables();
-
+	
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask(), Constants.spawnTaskDelay,
 				Constants.spawnTaskDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
-
+	
 		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
 		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
@@ -136,7 +125,7 @@ public class Citizens extends JavaPlugin {
 					.log("Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
 			setupNPCs();
 		}
-
+	
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(Constants.npcRange), Constants.tickDelay,
@@ -154,10 +143,21 @@ public class Citizens extends JavaPlugin {
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
-
+	
 		QuestManager.initialize();
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") loaded");
+	}
+
+	@Override
+	public void onDisable() {
+		// Save the local copy of our files to disk.
+		PropertyManager.saveState();
+		NPCManager.despawnAll();
+		CreatureTask.despawnAll();
+
+		Messaging.log("version [" + getVersion() + "] (" + codename
+				+ ") disabled");
 	}
 
 	@Override
@@ -221,6 +221,15 @@ public class Citizens extends JavaPlugin {
 					excp.getClass().getName() + ": " + excp.getMessage());
 		}
 		return true;
+	}
+
+	/**
+	 * Get the current version of Citizens
+	 * 
+	 * @return
+	 */
+	public static String getVersion() {
+		return version;
 	}
 
 	private boolean handleMistake(CommandSender sender, String command,
@@ -331,15 +340,6 @@ public class Citizens extends JavaPlugin {
 				new WizardTask(), Constants.wizardManaRegenRate,
 				Constants.wizardManaRegenRate);
 		initialized = true;
-	}
-
-	/**
-	 * Get the current version of Citizens
-	 * 
-	 * @return
-	 */
-	public static String getVersion() {
-		return version;
 	}
 
 	/**

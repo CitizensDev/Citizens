@@ -3,6 +3,7 @@ package com.citizens.Commands;
 import com.citizens.Citizens;
 import com.citizens.Commands.Commands.BasicCommands;
 import com.citizens.Commands.Commands.BlacksmithCommands;
+import com.citizens.Commands.Commands.GuardCommands;
 import com.citizens.Commands.Commands.HealerCommands;
 import com.citizens.Commands.Commands.ToggleCommands;
 import com.citizens.Commands.Commands.TraderCommands;
@@ -17,7 +18,7 @@ public class CommandHandler {
 	public static void registerCommands() {
 		Citizens.commands.register(BasicCommands.class);
 		Citizens.commands.register(BlacksmithCommands.class);
-		// Citizens.commands.register(GuardCommands.class);
+		Citizens.commands.register(GuardCommands.class);
 		Citizens.commands.register(HealerCommands.class);
 		// Citizens.commands.register(LandlordCommands.class);
 		// Citizens.commands.register(QuestCommands.class);
