@@ -140,16 +140,11 @@ public class HealerNPC extends Toggleable implements Clickable {
 			} else if (player.getItemInHand().getTypeId() == Constants.healerGiveHealthItem) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
-						if (Constants.payForHealerHeal) {
-							buyHeal(player, npc, Operation.HEALER_HEAL, false);
-						} else {
-							player.setHealth(playerHealth - 1);
-							healer.setHealth(healerHealth + 1);
-							player.sendMessage(ChatColor.GREEN
-									+ "You donated some health to the healer "
-									+ StringUtils.wrap(npc.getStrippedName())
-									+ ".");
-						}
+						player.setHealth(playerHealth - 1);
+						healer.setHealth(healerHealth + 1);
+						player.sendMessage(ChatColor.GREEN
+								+ "You donated some health to the healer "
+								+ StringUtils.wrap(npc.getStrippedName()) + ".");
 					} else {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName()) + " is fully healed.");

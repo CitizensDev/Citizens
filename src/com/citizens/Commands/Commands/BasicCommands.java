@@ -349,7 +349,7 @@ public class BasicCommands {
 			}
 			npc.getNPCData().setColour(colour);
 			NPCManager.setColour(npc.getUID(), npc.getOwner());
-			player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
+			player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
 					+ "}'s name color is now "
 					+ args.getString(1).replace("&", "\u00A7") + "this}."));
 		}
