@@ -1,4 +1,4 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -14,23 +14,23 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.Citizens;
 import com.citizens.Constants;
 import com.citizens.Permission;
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.NPCs.NPCDataManager;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
-import com.citizens.Resources.sk89q.ServerCommand;
-import com.citizens.Utils.HelpUtils;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.ServerUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.npcs.NPCDataManager;
+import com.citizens.npcs.NPCManager;
+import com.citizens.properties.PropertyManager;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
+import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.HelpUtils;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.ServerUtils;
+import com.citizens.utils.StringUtils;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands {
@@ -212,7 +212,7 @@ public class BasicCommands {
 			desc = "move an NPC to a location",
 			modifiers = "moveto",
 			min = 4,
-			max = 4)
+			max = 6)
 	@CommandPermissions("modify.basic")
 	public static void moveNPCToLocation(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -221,7 +221,7 @@ public class BasicCommands {
 		float yaw = npc.getLocation().getYaw();
 		float pitch = npc.getLocation().getPitch();
 		String world = "";
-		switch (args.argsLength() - 1) {
+		switch (args.argsLength()) {
 		case 6:
 			yaw = Float.parseFloat(args.getString(index));
 			--index;

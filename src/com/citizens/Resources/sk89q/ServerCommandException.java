@@ -1,6 +1,6 @@
-package com.citizens.Resources.sk89q;
+package com.citizens.resources.sk89q;
 
-import com.citizens.Utils.MessageUtils;
+import com.citizens.utils.MessageUtils;
 
 public class ServerCommandException extends CommandException {
 

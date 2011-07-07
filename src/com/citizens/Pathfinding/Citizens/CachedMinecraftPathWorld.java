@@ -1,6 +1,6 @@
-package com.citizens.Pathfinding.Citizens;
+package com.citizens.pathfinding.citizens;
 
-import com.citizens.Pathfinding.PathFinder.PathWorld;
+import com.citizens.pathfinding.PathFinder.PathWorld;
 
 public final class CachedMinecraftPathWorld implements PathWorld {
 	private final ChunkCache cache;

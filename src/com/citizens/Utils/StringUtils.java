@@ -1,11 +1,11 @@
-package com.citizens.Utils;
+package com.citizens.utils;
 
 import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import com.citizens.Properties.Properties.UtilityProperties;
+import com.citizens.properties.properties.UtilityProperties;
 
 public class StringUtils {
 	public static String pluralise(String string, int size) {

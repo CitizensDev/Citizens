@@ -1,4 +1,4 @@
-package com.citizens.Pathfinding;
+package com.citizens.pathfinding;
 
 public final class Point {
 	public final int x;

@@ -1,4 +1,4 @@
-package com.citizens.Resources.sk89q;
+package com.citizens.resources.sk89q;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class CitizensCommandsManager<T extends Player> extends
 		CommandsManager<T> {

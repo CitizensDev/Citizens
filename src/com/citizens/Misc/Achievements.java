@@ -1,11 +1,11 @@
-package com.citizens.Misc;
+package com.citizens.misc;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkitcontrib.player.ContribPlayer;
 
-import com.citizens.Properties.PlayerProfile;
-import com.citizens.Properties.PropertyManager;
+import com.citizens.properties.PlayerProfile;
+import com.citizens.properties.PropertyManager;
 
 public class Achievements {
 	public enum Achievement {

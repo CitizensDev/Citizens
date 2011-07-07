@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Guards;
+package com.citizens.npctypes.guards;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,14 +15,14 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.citizens.Constants;
 import com.citizens.TickTask;
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Damageable;
-import com.citizens.Interfaces.Targetable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCTypes.Guards.GuardManager.GuardType;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.PathUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.npctypes.guards.GuardManager.GuardType;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Damageable;
+import com.citizens.npctypes.interfaces.Targetable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.PathUtils;
+import com.citizens.utils.StringUtils;
 
 public class GuardNPC extends Toggleable implements Clickable, Damageable,
 		Targetable {

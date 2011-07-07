@@ -1,4 +1,4 @@
-package com.citizens.Properties.Properties;
+package com.citizens.properties.properties;
 
 import java.util.Random;
 
@@ -6,11 +6,11 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
-import com.citizens.Interfaces.Storage;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.ConfigurationHandler;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.NPClib.Creatures.CreatureNPCType;
+import com.citizens.interfaces.Storage;
+import com.citizens.npcs.NPCManager;
+import com.citizens.properties.ConfigurationHandler;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.npclib.creatures.CreatureNPCType;
 
 public class UtilityProperties {
 	private static ConfigurationHandler economy;
@@ -64,11 +64,11 @@ public class UtilityProperties {
 		}
 		return null;
 	}
-	
+
 	public static int getNPCCount(String name) {
 		int count = 0;
-		for(HumanNPC npc : NPCManager.getList().values()) {
-			if(npc.getOwner().equals(name)) {
+		for (HumanNPC npc : NPCManager.getList().values()) {
+			if (npc.getOwner().equals(name)) {
 				count++;
 			}
 		}

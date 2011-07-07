@@ -1,9 +1,9 @@
-package com.citizens.Properties.Properties;
+package com.citizens.properties.properties;
 
-import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCs.NPCTypeManager;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npcs.NPCTypeManager;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class BlacksmithProperties extends PropertyManager implements Saveable {
 	private final String isBlacksmith = ".blacksmith.toggle";

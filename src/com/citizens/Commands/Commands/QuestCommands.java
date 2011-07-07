@@ -1,13 +1,13 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.NPCTypes.Questers.Quests.ChatManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
+import com.citizens.npctypes.questers.quests.ChatManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
 
 @CommandRequirements(
 		requireSelected = true,

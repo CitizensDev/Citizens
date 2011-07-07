@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Wizards;
+package com.citizens.npctypes.wizards;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,14 +9,14 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Constants;
 import com.citizens.Permission;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCTypes.Wizards.WizardManager.WizardMode;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.InventoryUtils;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.wizards.WizardManager.WizardMode;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.InventoryUtils;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.StringUtils;
 
 public class WizardNPC extends Toggleable implements Clickable {
 	private String locations = "";

@@ -1,19 +1,19 @@
-package com.citizens.NPCTypes.Questers;
+package com.citizens.npctypes.questers;
 
 import java.util.ArrayDeque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.citizens.NPCTypes.Questers.Rewards.QuestReward;
-import com.citizens.Properties.PlayerProfile;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.PageUtils;
-import com.citizens.Utils.PageUtils.PageInstance;
-import com.citizens.Utils.StringUtils;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.questers.quests.QuestManager;
+import com.citizens.npctypes.questers.rewards.QuestReward;
+import com.citizens.properties.PlayerProfile;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.PageUtils;
+import com.citizens.utils.PageUtils.PageInstance;
+import com.citizens.utils.StringUtils;
 import com.iConomy.util.Messaging;
 
 public class QuesterNPC extends Toggleable implements Clickable {
@@ -80,7 +80,7 @@ public class QuesterNPC extends Toggleable implements Clickable {
 				profile.addCompletedQuest(new CompletedQuest(quest, npc
 						.getStrippedName(), elapsed));
 				QuestManager.setProfile(player.getName(), profile);
-	
+
 			}
 		} else {
 			if (previous == null

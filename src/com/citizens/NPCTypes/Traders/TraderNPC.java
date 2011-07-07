@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Traders;
+package com.citizens.npctypes.traders;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Citizens;
 import com.citizens.Permission;
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCTypes.Traders.TraderManager.Mode;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.InventoryUtils;
+import com.citizens.npcs.NPCManager;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.traders.TraderManager.Mode;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.InventoryUtils;
 
 public class TraderNPC extends Toggleable implements Clickable {
 	private boolean unlimited = false;
@@ -91,7 +91,7 @@ public class TraderNPC extends Toggleable implements Clickable {
 
 	public void removeStockable(Check check) {
 		this.stocking.remove(check);
-	
+
 	}
 
 	public boolean isStocked(int itemID, short dataValue, boolean selling) {

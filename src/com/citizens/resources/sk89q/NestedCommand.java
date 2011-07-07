@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.citizens.Resources.sk89q;
+package com.citizens.resources.sk89q;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

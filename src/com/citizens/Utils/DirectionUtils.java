@@ -1,4 +1,4 @@
-package com.citizens.Utils;
+package com.citizens.utils;
 
 import java.util.HashMap;
 import java.util.Map;

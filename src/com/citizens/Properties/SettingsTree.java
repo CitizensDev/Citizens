@@ -1,4 +1,4 @@
-package com.citizens.Properties;
+package com.citizens.properties;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

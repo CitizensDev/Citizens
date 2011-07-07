@@ -1,4 +1,4 @@
-package com.citizens.NPCs;
+package com.citizens.npcs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

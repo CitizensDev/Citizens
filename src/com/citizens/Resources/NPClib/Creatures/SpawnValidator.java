@@ -1,7 +1,7 @@
-package com.citizens.Resources.NPClib.Creatures;
+package com.citizens.resources.npclib.creatures;
 
-import com.citizens.Resources.NPClib.Creatures.SpawnValidator.Spawn.Range;
-import com.citizens.Resources.NPClib.Creatures.SpawnValidator.Spawn.Type;
+import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Range;
+import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Type;
 
 public class SpawnValidator {
 	private final byte[] flags = new byte[64];

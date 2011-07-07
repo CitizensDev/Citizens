@@ -6,20 +6,15 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.citizens.Events.NPCCreatureSpawnEvent;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.NPClib.NPCSpawner;
-import com.citizens.Resources.NPClib.Creatures.CreatureNPC;
-import com.citizens.Resources.NPClib.Creatures.CreatureNPCType;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.npclib.NPCSpawner;
+import com.citizens.resources.npclib.creatures.CreatureNPC;
+import com.citizens.resources.npclib.creatures.CreatureNPCType;
 
 public class CreatureTask implements Runnable {
 	public final static Map<Integer, CreatureNPC> creatureNPCs = new ConcurrentHashMap<Integer, CreatureNPC>();
@@ -41,15 +36,15 @@ public class CreatureTask implements Runnable {
 			// (perhaps randomly?).
 			CreatureNPCType type = CreatureNPCType.values()[random
 					.nextInt(CreatureNPCType.values().length)];
-			spawnCreature(player.getLocation(), type);
+			spawnCreature(type, player.getLocation());
 		}
 	}
 
-	private void spawnCreature(Location location, CreatureNPCType type) {
+	private void spawnCreature(CreatureNPCType type, Location location) {
 		if (spawned.get(type) == null) {
 			spawned.put(type, 0);
 		} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
-			HumanNPC npc = spawnCreature(type, location);
+			HumanNPC npc = type.getSpawner().spawn(type, location);
 			if (npc != null) {
 				spawned.put(type, spawned.get(type) + 1);
 				creatureNPCs.put(npc.getPlayer().getEntityId(),
@@ -61,84 +56,6 @@ public class CreatureTask implements Runnable {
 
 	private void onSpawn(CreatureNPC creatureNPC) {
 		creatureNPC.onSpawn();
-	}
-
-	private int getRandomInt(Random random, int max) {
-		int ran = random.nextInt(max);
-		return random.nextBoolean() ? -ran : ran;
-	}
-
-	private HumanNPC spawnCreature(CreatureNPCType type, Location loc) {
-		int offsetX = 0, offsetZ = 0, offset = 25;
-		offsetX += offset * getRandomInt(random, 2);
-		offsetZ += offset * getRandomInt(random, 2);
-
-		int startX = loc.getBlockX() + offsetX;
-		int startZ = loc.getBlockZ() + offsetZ;
-		int searchY = 3, searchXZ = 4;
-
-		World world = loc.getWorld();
-		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
-			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
-				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					if (type.spawnOn().isValid(
-							world.getBlockTypeIdAt(x, y - 1, z))
-							& type.spawnIn().isValid(
-									world.getBlockTypeIdAt(x, y, z))
-							&& type.spawnIn().isValid(
-									world.getBlockTypeIdAt(x, y + 1, z))) {
-						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
-							if (areEntitiesOnBlock(world.getChunkAt(x, z), x,
-									y, z)) {
-								if (canSpawn(type)) {
-									HumanNPC npc = NPCSpawner.spawnNPC(0,
-											UtilityProperties
-													.getRandomName(type), loc
-													.getWorld(), x, y, z,
-											random.nextInt(360), 0, type);
-									// call NPC creature-spawning event
-									NPCCreatureSpawnEvent spawnEvent = new NPCCreatureSpawnEvent(
-											npc, loc);
-									Bukkit.getServer().getPluginManager()
-											.callEvent(spawnEvent);
-									if (spawnEvent.isCancelled()) {
-										return null;
-									}
-									return npc;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	private boolean canSpawn(CreatureNPCType type) {
-		boolean spawn = false;
-		switch (type) {
-		case EVIL:
-			spawn = Constants.spawnEvils;
-			break;
-		case PIRATE:
-			spawn = Constants.spawnPirates;
-			break;
-		}
-		return spawn;
-	}
-
-	private boolean areEntitiesOnBlock(Chunk chunk, int x, int y, int z) {
-		for (Entity entity : chunk.getEntities()) {
-			if (entity instanceof LivingEntity) {
-				Location loc = entity.getLocation();
-				if (loc.getBlockX() == x && loc.getBlockY() == y
-						&& loc.getBlockZ() == z) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	public static void setDirty() {

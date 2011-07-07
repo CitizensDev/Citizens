@@ -1,4 +1,4 @@
-package com.citizens.Resources.NPClib;
+package com.citizens.resources.npclib;
 
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 
-import com.citizens.Resources.NPClib.Creatures.CreatureNPCType;
+import com.citizens.resources.npclib.creatures.CreatureNPCType;
 
 public class NPCSpawner {
 	protected static WorldServer getWorldServer(World world) {

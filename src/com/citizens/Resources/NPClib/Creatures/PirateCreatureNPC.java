@@ -1,4 +1,4 @@
-package com.citizens.Resources.NPClib.Creatures;
+package com.citizens.resources.npclib.creatures;
 
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;

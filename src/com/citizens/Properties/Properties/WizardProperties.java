@@ -1,14 +1,14 @@
-package com.citizens.Properties.Properties;
+package com.citizens.properties.properties;
 
 import org.bukkit.entity.CreatureType;
 
-import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCTypes.Wizards.WizardManager.WizardMode;
-import com.citizens.NPCTypes.Wizards.WizardNPC;
-import com.citizens.NPCs.NPCTypeManager;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.Messaging;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npcs.NPCTypeManager;
+import com.citizens.npctypes.wizards.WizardManager.WizardMode;
+import com.citizens.npctypes.wizards.WizardNPC;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.Messaging;
 
 public class WizardProperties extends PropertyManager implements Saveable {
 	private static final String isWizard = ".wizard.toggle";

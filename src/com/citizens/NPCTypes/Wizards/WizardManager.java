@@ -1,14 +1,14 @@
-package com.citizens.NPCTypes.Wizards;
+package com.citizens.npctypes.wizards;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.citizens.Constants;
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.StringUtils;
 
 public class WizardManager {
 	/**

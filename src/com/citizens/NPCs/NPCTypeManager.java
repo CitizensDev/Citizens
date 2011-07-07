@@ -1,10 +1,10 @@
-package com.citizens.NPCs;
+package com.citizens.npcs;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.citizens.Interfaces.NPCFactory;
-import com.citizens.Interfaces.NPCType;
+import com.citizens.npctypes.interfaces.NPCFactory;
+import com.citizens.npctypes.interfaces.NPCType;
 
 public class NPCTypeManager {
 	private static final Map<String, NPCType> types = new HashMap<String, NPCType>();

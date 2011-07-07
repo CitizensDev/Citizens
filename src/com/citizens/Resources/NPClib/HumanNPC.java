@@ -1,11 +1,8 @@
-package com.citizens.Resources.NPClib;
+package com.citizens.resources.npclib;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.minecraft.server.Packet0KeepAlive;
-
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,14 +11,14 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Damageable;
-import com.citizens.Interfaces.NPCFactory;
-import com.citizens.Interfaces.Targetable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCs.NPCData;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.NPCAnimator.Animation;
+import com.citizens.npcs.NPCData;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Damageable;
+import com.citizens.npctypes.interfaces.NPCFactory;
+import com.citizens.npctypes.interfaces.Targetable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.NPCAnimator.Animation;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;
@@ -74,10 +71,6 @@ public class HumanNPC extends NPC {
 		return this.mcEntity;
 	}
 
-	public Chunk getChunk() {
-		return this.getLocation().getBlock().getChunk();
-	}
-
 	public void setHandle(CraftNPC handle) {
 		this.mcEntity = handle;
 	}
@@ -95,7 +88,6 @@ public class HumanNPC extends NPC {
 	}
 
 	public void doTick() {
-		this.mcEntity.netServerHandler.sendPacket(new Packet0KeepAlive());
 		this.mcEntity.updateMove();
 		this.mcEntity.applyGravity();
 	}
@@ -202,5 +194,13 @@ public class HumanNPC extends NPC {
 			}
 		}
 		return found;
+	}
+
+	public int getChunkX() {
+		return this.getLocation().getBlockX() << 4;
+	}
+
+	public int getChunkZ() {
+		return this.getLocation().getBlockZ() << 4;
 	}
 }

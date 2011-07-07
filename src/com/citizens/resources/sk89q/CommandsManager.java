@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.citizens.Resources.sk89q;
+package com.citizens.resources.sk89q;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,10 +33,10 @@ import java.util.logging.Logger;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.Messaging;
+import com.citizens.npcs.NPCManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
 
 /**
  * <p>

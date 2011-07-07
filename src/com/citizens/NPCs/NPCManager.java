@@ -1,4 +1,4 @@
-package com.citizens.NPCs;
+package com.citizens.npcs;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,12 +13,12 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Constants;
 import com.citizens.Permission;
-import com.citizens.Events.NPCSpawnEvent;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.NPClib.NPCList;
-import com.citizens.Resources.NPClib.NPCSpawner;
-import com.citizens.Utils.StringUtils;
+import com.citizens.events.NPCSpawnEvent;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.npclib.NPCList;
+import com.citizens.resources.npclib.NPCSpawner;
+import com.citizens.utils.StringUtils;
 
 public class NPCManager {
 	public static final Map<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
@@ -192,8 +192,16 @@ public class NPCManager {
 	 */
 	public static void despawn(int UID) {
 		GlobalUIDs.remove(UID);
-		NPCSpawner.despawnNPC(list.get(UID));
-		list.remove(UID);
+		NPCSpawner.despawnNPC(list.remove(UID));
+	}
+
+	/**
+	 * Despawns all npcs.
+	 */
+	public static void despawnAll() {
+		for (Integer i : GlobalUIDs.keySet()) {
+			despawn(i);
+		}
 	}
 
 	/**
@@ -220,7 +228,7 @@ public class NPCManager {
 	 */
 	public static void removeForRespawn(int UID) {
 		PropertyManager.save(list.get(UID));
-		NPCSpawner.despawnNPC(list.get(UID));
+		despawn(UID);
 	}
 
 	/**
@@ -346,15 +354,6 @@ public class NPCManager {
 		}
 		texts.add(text);
 		setText(UID, texts);
-	}
-
-	/**
-	 * Despawns all npcs.
-	 */
-	public static void despawnAll() {
-		for (Integer i : GlobalUIDs.keySet()) {
-			despawn(i);
-		}
 	}
 
 	public static int getSelected(Player player) {

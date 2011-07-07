@@ -1,4 +1,4 @@
-package com.citizens.Properties.Properties;
+package com.citizens.properties.properties;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,13 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.citizens.Constants;
-import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCs.NPCData;
-import com.citizens.NPCs.NPCDataManager;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.StringUtils;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npcs.NPCData;
+import com.citizens.npcs.NPCDataManager;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.StringUtils;
 
 public class BasicProperties extends PropertyManager implements Saveable {
 	private final String name = ".basic.name";

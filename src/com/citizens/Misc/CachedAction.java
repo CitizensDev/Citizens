@@ -1,4 +1,4 @@
-package com.citizens.Misc;
+package com.citizens.misc;
 
 import java.util.HashMap;
 

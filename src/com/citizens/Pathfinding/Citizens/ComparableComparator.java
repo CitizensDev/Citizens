@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.citizens.Pathfinding.Citizens;
+package com.citizens.pathfinding.citizens;
 
 import java.io.Serializable;
 import java.util.Comparator;

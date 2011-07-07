@@ -1,7 +1,7 @@
-package com.citizens.Pathfinding.Citizens;
+package com.citizens.pathfinding.citizens;
 
-import com.citizens.Pathfinding.PathFinder.PathPlayer;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.pathfinding.PathFinder.PathPlayer;
+import com.citizens.resources.npclib.HumanNPC;
 
 public final class NPCPathPlayer implements PathPlayer {
 	private final HumanNPC npc;

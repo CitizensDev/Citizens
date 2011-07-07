@@ -1,9 +1,9 @@
-package com.citizens.Events;
+package com.citizens.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class NPCDisplayTextEvent extends NPCEvent implements Cancellable {
 	private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class NPCDisplayTextEvent extends NPCEvent implements Cancellable {
 	}
 
 	/**
-	 * Get the text involved in the event. 
+	 * Get the text involved in the event.
 	 * 
 	 * @return text involved in the event.
 	 */

@@ -1,4 +1,4 @@
-package com.citizens.Utils;
+package com.citizens.utils;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -10,15 +10,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.Economy.Payment;
-import com.citizens.NPCTypes.Traders.ItemPrice;
-import com.citizens.NPCTypes.Traders.Stockable;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.PageUtils.PageInstance;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.Payment;
+import com.citizens.npcs.NPCManager;
+import com.citizens.npctypes.traders.ItemPrice;
+import com.citizens.npctypes.traders.Stockable;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.PageUtils.PageInstance;
 
 public class MessageUtils {
 	public static final String noPermissionsMessage = ChatColor.RED

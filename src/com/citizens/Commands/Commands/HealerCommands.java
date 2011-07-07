@@ -1,18 +1,18 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.NPCTypes.Healers.HealerNPC;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
-import com.citizens.Utils.HelpUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.npctypes.healers.HealerNPC;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
+import com.citizens.utils.HelpUtils;
+import com.citizens.utils.StringUtils;
 
 @CommandRequirements(
 		requireSelected = true,

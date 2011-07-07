@@ -1,4 +1,4 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -6,15 +6,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.NPCTypes.Blacksmiths.BlacksmithManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
-import com.citizens.Resources.sk89q.ServerCommand;
-import com.citizens.Utils.HelpUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.npctypes.blacksmiths.BlacksmithManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
+import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.HelpUtils;
+import com.citizens.utils.StringUtils;
 
 @CommandRequirements(requiredType = "blacksmith")
 public class BlacksmithCommands {

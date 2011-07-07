@@ -1,8 +1,8 @@
-package com.citizens.Properties.Properties;
+package com.citizens.properties.properties;
 
-import com.citizens.NPCTypes.Questers.Quest;
-import com.citizens.NPCTypes.Questers.Quests.QuestFactory;
-import com.citizens.Properties.ConfigurationHandler;
+import com.citizens.npctypes.questers.Quest;
+import com.citizens.npctypes.questers.quests.QuestFactory;
+import com.citizens.properties.ConfigurationHandler;
 
 public class QuestProperties {
 	private static ConfigurationHandler quests;

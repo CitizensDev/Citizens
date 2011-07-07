@@ -1,4 +1,4 @@
-package com.citizens.Properties;
+package com.citizens.properties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,13 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-import com.citizens.Interfaces.Storage;
-import com.citizens.NPCTypes.Questers.CompletedQuest;
-import com.citizens.NPCTypes.Questers.Objectives.Objective.Progress;
-import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.citizens.NPCTypes.Questers.Quests.QuestProgress;
-import com.citizens.NPCs.NPCManager;
+import com.citizens.interfaces.Storage;
+import com.citizens.npcs.NPCManager;
+import com.citizens.npctypes.questers.CompletedQuest;
+import com.citizens.npctypes.questers.objectives.Objective.Progress;
+import com.citizens.npctypes.questers.quests.QuestIncrementer;
+import com.citizens.npctypes.questers.quests.QuestManager;
+import com.citizens.npctypes.questers.quests.QuestProgress;
 
 public class PlayerProfile {
 	private final ConfigurationHandler profile;

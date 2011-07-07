@@ -1,13 +1,14 @@
-package com.citizens.Misc;
+package com.citizens.misc;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 public class NPCLocation {
 	private final int x;
 	private final int y;
 	private final int z;
+	private final int chunkX;
+	private final int chunkZ;
 	private final float yaw;
 	private final float pitch;
 	private final String world;
@@ -31,6 +32,8 @@ public class NPCLocation {
 		this.world = loc.getWorld().getName();
 		this.UID = UID;
 		this.owner = owner;
+		this.chunkX = loc.getBlock().getChunk().getX();
+		this.chunkZ = loc.getBlock().getChunk().getZ();
 	}
 
 	public int getZ() {
@@ -54,15 +57,11 @@ public class NPCLocation {
 		return this.owner;
 	}
 
-	private Chunk getChunk() {
-		return this.getLocation().getBlock().getChunk();
-	}
-
 	public int getChunkX() {
-		return this.getChunk().getX();
+		return this.chunkX;
 	}
 
 	public int getChunkZ() {
-		return this.getChunk().getZ();
+		return this.chunkZ;
 	}
 }

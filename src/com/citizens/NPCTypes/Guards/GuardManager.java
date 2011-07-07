@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Guards;
+package com.citizens.npctypes.guards;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,8 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.CreatureType;
 
 import com.citizens.Constants;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.PathUtils;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.PathUtils;
 
 public class GuardManager {
 	public enum GuardType {

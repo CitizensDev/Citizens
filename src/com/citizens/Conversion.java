@@ -1,7 +1,7 @@
 package com.citizens;
 
-import com.citizens.Properties.PropertyHandler;
-import com.citizens.Properties.PropertyManager;
+import com.citizens.properties.PropertyHandler;
+import com.citizens.properties.PropertyManager;
 
 // TODO REMOVE AFTER 1.0.9 IS RELEASED
 public class Conversion extends PropertyManager {

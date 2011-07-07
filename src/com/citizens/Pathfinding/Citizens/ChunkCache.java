@@ -1,4 +1,4 @@
-package com.citizens.Pathfinding.Citizens;
+package com.citizens.pathfinding.citizens;
 
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;

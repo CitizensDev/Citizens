@@ -1,11 +1,11 @@
-package com.citizens.NPCTypes.Questers.Rewards;
+package com.citizens.npctypes.questers.rewards;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.ServerEconomyInterface;
-import com.citizens.NPCTypes.Questers.Reward;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.ServerEconomyInterface;
+import com.citizens.npctypes.questers.Reward;
+import com.citizens.npctypes.questers.quests.QuestManager.RewardType;
 
 public class EconpluginReward implements Reward {
 	private final double reward;

@@ -1,10 +1,10 @@
-package com.citizens.Utils;
+package com.citizens.utils;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
 import com.citizens.Constants;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class PathUtils {
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,

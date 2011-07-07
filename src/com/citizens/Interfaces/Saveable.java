@@ -1,6 +1,6 @@
-package com.citizens.Interfaces;
+package com.citizens.interfaces;
 
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 public interface Saveable {
 	/**

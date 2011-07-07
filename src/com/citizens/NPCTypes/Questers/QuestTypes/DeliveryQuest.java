@@ -1,12 +1,12 @@
-package com.citizens.NPCTypes.Questers.QuestTypes;
+package com.citizens.npctypes.questers.questtypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import com.citizens.Events.NPCTargetEvent;
-import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.citizens.NPCTypes.Questers.Quests.QuestIncrementer;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.events.NPCTargetEvent;
+import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
+import com.citizens.npctypes.questers.quests.QuestIncrementer;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class DeliveryQuest extends QuestIncrementer {
 	public DeliveryQuest(HumanNPC npc, Player player, String questName,

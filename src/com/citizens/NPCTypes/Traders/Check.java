@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Traders;
+package com.citizens.npctypes.traders;
 
 public class Check {
 	private int itemID;

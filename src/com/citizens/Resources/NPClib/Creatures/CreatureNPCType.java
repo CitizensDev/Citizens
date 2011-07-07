@@ -1,8 +1,8 @@
-package com.citizens.Resources.NPClib.Creatures;
+package com.citizens.resources.npclib.creatures;
 
 import com.citizens.Constants;
-import com.citizens.Resources.NPClib.Creatures.SpawnValidator.Spawn.Range;
-import com.citizens.Resources.NPClib.Creatures.SpawnValidator.Spawn.Type;
+import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Range;
+import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Type;
 
 public enum CreatureNPCType {
 	// TODO - might be a little longwinded on constructing validators.
@@ -18,6 +18,7 @@ public enum CreatureNPCType {
 	private final Class<? extends CreatureNPC> instance;
 	private final SpawnValidator spawnIn;
 	private final SpawnValidator spawnOn;
+	private Spawner spawner = new DefaultSpawner();
 
 	CreatureNPCType(Class<? extends CreatureNPC> instance, int max,
 			String possibleNames, SpawnValidator spawnIn, SpawnValidator spawnOn) {
@@ -46,5 +47,13 @@ public enum CreatureNPCType {
 
 	public SpawnValidator spawnOn() {
 		return spawnOn;
+	}
+
+	public Spawner getSpawner() {
+		return spawner;
+	}
+
+	public void setSpawner(Spawner spawner) {
+		this.spawner = spawner;
 	}
 }

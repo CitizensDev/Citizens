@@ -1,15 +1,15 @@
-package com.citizens.Economy;
+package com.citizens.economy;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.nijikokun.register.payment.Method.MethodAccount;
-import com.citizens.Utils.MessageUtils;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.register.Method.MethodAccount;
+import com.citizens.utils.MessageUtils;
 
 public class ServerEconomyInterface {
 	public static final String addendum = ".econplugin";

@@ -1,9 +1,9 @@
-package com.citizens.Pathfinding.Citizens;
+package com.citizens.pathfinding.citizens;
 
-import com.citizens.Pathfinding.PathFinder.PathHeuristic;
-import com.citizens.Pathfinding.PathFinder.PathPlayer;
-import com.citizens.Pathfinding.PathFinder.PathWorld;
-import com.citizens.Pathfinding.Point;
+import com.citizens.pathfinding.PathFinder.PathHeuristic;
+import com.citizens.pathfinding.PathFinder.PathPlayer;
+import com.citizens.pathfinding.PathFinder.PathWorld;
+import com.citizens.pathfinding.Point;
 
 public class CitizensPathHeuristic implements PathHeuristic {
 

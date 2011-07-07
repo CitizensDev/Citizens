@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Questers.Quests;
+package com.citizens.npctypes.questers.quests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,9 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatManager {
 	public enum QuestOperation {
-		CREATE, EDIT, REMOVE;
+		CREATE,
+		EDIT,
+		REMOVE;
 	}
 
 	private static final List<String> hasEditMode = new ArrayList<String>();

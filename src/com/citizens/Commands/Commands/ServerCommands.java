@@ -1,4 +1,4 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 public class ServerCommands {
 

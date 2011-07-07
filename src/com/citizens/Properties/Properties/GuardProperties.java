@@ -1,16 +1,16 @@
-package com.citizens.Properties.Properties;
+package com.citizens.properties.properties;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.citizens.Constants;
-import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCTypes.Guards.GuardManager.GuardType;
-import com.citizens.NPCTypes.Guards.GuardNPC;
-import com.citizens.NPCs.NPCTypeManager;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npcs.NPCTypeManager;
+import com.citizens.npctypes.guards.GuardManager.GuardType;
+import com.citizens.npctypes.guards.GuardNPC;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class GuardProperties extends PropertyManager implements Saveable {
 	private static final String isGuard = ".guard.toggle";

@@ -1,4 +1,4 @@
-package com.citizens.Listeners;
+package com.citizens.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,17 +15,17 @@ import org.bukkit.plugin.PluginManager;
 import com.citizens.Citizens;
 import com.citizens.Constants;
 import com.citizens.CreatureTask;
-import com.citizens.Events.NPCDisplayTextEvent;
-import com.citizens.Events.NPCRightClickEvent;
-import com.citizens.Events.NPCTargetEvent;
-import com.citizens.Interfaces.Listener;
-import com.citizens.NPCTypes.Questers.QuesterNPC;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.PathUtils;
+import com.citizens.events.NPCDisplayTextEvent;
+import com.citizens.events.NPCRightClickEvent;
+import com.citizens.events.NPCTargetEvent;
+import com.citizens.interfaces.Listener;
+import com.citizens.npcs.NPCManager;
+import com.citizens.npctypes.questers.QuesterNPC;
+import com.citizens.npctypes.questers.quests.QuestManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.PathUtils;
 
 /**
  * Entity Listener

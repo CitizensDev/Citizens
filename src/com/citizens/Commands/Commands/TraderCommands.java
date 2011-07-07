@@ -1,4 +1,4 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import java.util.ArrayList;
 
@@ -8,25 +8,25 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Economy.Payment;
-import com.citizens.Economy.ServerEconomyInterface;
-import com.citizens.NPCTypes.Traders.Check;
-import com.citizens.NPCTypes.Traders.ItemPrice;
-import com.citizens.NPCTypes.Traders.Stockable;
-import com.citizens.NPCTypes.Traders.TraderNPC;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
-import com.citizens.Resources.sk89q.ServerCommand;
-import com.citizens.Utils.HelpUtils;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.PageUtils;
-import com.citizens.Utils.PageUtils.PageInstance;
-import com.citizens.Utils.StringUtils;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.Payment;
+import com.citizens.economy.ServerEconomyInterface;
+import com.citizens.npctypes.traders.Check;
+import com.citizens.npctypes.traders.ItemPrice;
+import com.citizens.npctypes.traders.Stockable;
+import com.citizens.npctypes.traders.TraderNPC;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
+import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.HelpUtils;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.PageUtils;
+import com.citizens.utils.PageUtils.PageInstance;
+import com.citizens.utils.StringUtils;
 
 @CommandRequirements(
 		requireSelected = true,

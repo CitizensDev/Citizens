@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Traders;
+package com.citizens.npctypes.traders;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;

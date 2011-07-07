@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Questers.Objectives;
+package com.citizens.npctypes.questers.objectives;
 
 import java.util.ArrayList;
 import java.util.List;

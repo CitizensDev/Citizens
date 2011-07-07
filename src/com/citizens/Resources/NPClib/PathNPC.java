@@ -1,4 +1,4 @@
-package com.citizens.Resources.NPClib;
+package com.citizens.resources.npclib;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.citizens.Constants;
-import com.citizens.Resources.NPClib.NPCAnimator.Animation;
+import com.citizens.resources.npclib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;

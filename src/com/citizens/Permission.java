@@ -4,9 +4,9 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.Messaging;
+import com.citizens.npcs.NPCManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.Messaging;
 import com.nijiko.permissions.Group;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijiko.permissions.User;

@@ -1,4 +1,4 @@
-package com.citizens.Resources.NPClib.Creatures;
+package com.citizens.resources.npclib.creatures;
 
 import java.util.Random;
 
@@ -18,12 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.Constants;
 import com.citizens.CreatureTask;
 import com.citizens.Permission;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Utils.InventoryUtils;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.StringUtils;
+import com.citizens.npcs.NPCManager;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.utils.InventoryUtils;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.StringUtils;
 
 public class EvilCreatureNPC extends CreatureNPC {
 	private boolean isTame = false;

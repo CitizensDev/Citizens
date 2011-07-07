@@ -1,14 +1,14 @@
-package com.citizens.Events;
+package com.citizens.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class NPCRightClickEvent extends NPCEvent implements Cancellable {
 	private static final long serialVersionUID = 1L;
 	private boolean cancelled = false;
-	private Player player;
+	private final Player player;
 
 	public NPCRightClickEvent(HumanNPC npc, Player player) {
 		super("NPCRightClickEvent", npc);

@@ -1,4 +1,4 @@
-package com.citizens.Pathfinding;
+package com.citizens.pathfinding;
 
 import java.util.Collection;
 

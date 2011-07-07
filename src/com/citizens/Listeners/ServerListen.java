@@ -1,4 +1,4 @@
-package com.citizens.Listeners;
+package com.citizens.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -8,10 +8,10 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
-import com.citizens.Economy.EconomyHandler;
-import com.citizens.Interfaces.Listener;
-import com.citizens.Resources.nijikokun.register.payment.Methods;
-import com.citizens.Utils.Messaging;
+import com.citizens.economy.EconomyHandler;
+import com.citizens.interfaces.Listener;
+import com.citizens.resources.register.Methods;
+import com.citizens.utils.Messaging;
 
 public class ServerListen extends ServerListener implements Listener {
 	private final Methods methods;

@@ -1,13 +1,13 @@
-package com.citizens.Economy;
+package com.citizens.economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Utils.MessageUtils;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.utils.MessageUtils;
 
 public class ItemInterface {
 	private static final String addendum = ".item";

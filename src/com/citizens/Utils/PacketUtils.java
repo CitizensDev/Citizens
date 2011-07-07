@@ -1,4 +1,4 @@
-package com.citizens.Utils;
+package com.citizens.utils;
 
 import net.minecraft.server.Packet;
 

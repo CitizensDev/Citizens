@@ -1,8 +1,6 @@
-package com.citizens.Misc;
+package com.citizens.misc;
 
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.citizens.Misc.CachedAction;
 
 public class ActionManager {
 	private static final ConcurrentHashMap<Integer, ConcurrentHashMap<String, CachedAction>> actions = new ConcurrentHashMap<Integer, ConcurrentHashMap<String, CachedAction>>();

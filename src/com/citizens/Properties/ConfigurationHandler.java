@@ -1,4 +1,4 @@
-package com.citizens.Properties;
+package com.citizens.properties;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +12,8 @@ import org.bukkit.util.config.ConfigurationNode;
 
 import com.citizens.Constants;
 import com.citizens.Defaults;
-import com.citizens.Interfaces.Storage;
-import com.citizens.Utils.Messaging;
+import com.citizens.interfaces.Storage;
+import com.citizens.utils.Messaging;
 
 public class ConfigurationHandler implements Storage {
 	private final Configuration config;

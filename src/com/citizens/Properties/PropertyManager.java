@@ -1,13 +1,13 @@
-package com.citizens.Properties;
+package com.citizens.properties;
 
 import java.util.HashMap;
 
-import com.citizens.Interfaces.Saveable;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Properties.Properties.BasicProperties;
-import com.citizens.Properties.Properties.QuestProperties;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npcs.NPCManager;
+import com.citizens.properties.properties.BasicProperties;
+import com.citizens.properties.properties.QuestProperties;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class PropertyManager {
 	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();

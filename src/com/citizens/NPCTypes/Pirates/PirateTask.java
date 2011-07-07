@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Pirates;
+package com.citizens.npctypes.pirates;
 
 import java.util.Map.Entry;
 import java.util.Random;
@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
-import com.citizens.Misc.ActionManager;
-import com.citizens.Misc.CachedAction;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.LocationUtils;
-import com.citizens.Utils.MessageUtils;
+import com.citizens.misc.ActionManager;
+import com.citizens.misc.CachedAction;
+import com.citizens.npcs.NPCManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.LocationUtils;
+import com.citizens.utils.MessageUtils;
 import com.iConomy.util.Messaging;
 
 public class PirateTask implements Runnable {
@@ -42,8 +42,8 @@ public class PirateTask implements Runnable {
 	}
 
 	private void resetActions(int entityID, String name, HumanNPC npc) {
-		ActionManager
-				.resetAction(entityID, name, "takenItem", npc.isType("pirate"));
+		ActionManager.resetAction(entityID, name, "takenItem",
+				npc.isType("pirate"));
 	}
 
 	private void cacheActions(Player player, HumanNPC npc, int entityID,

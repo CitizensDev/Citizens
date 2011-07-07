@@ -1,4 +1,4 @@
-package com.citizens.Resources.NPClib;
+package com.citizens.resources.npclib;
 
 import net.minecraft.server.DataWatcher;
 import net.minecraft.server.Packet17;
@@ -8,7 +8,7 @@ import net.minecraft.server.Packet40EntityMetadata;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.citizens.Utils.PacketUtils;
+import com.citizens.utils.PacketUtils;
 
 public class NPCAnimator {
 	private final PathNPC npc;

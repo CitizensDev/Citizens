@@ -1,4 +1,4 @@
-package com.citizens.Pathfinding;
+package com.citizens.pathfinding;
 
 public abstract class PathFinder {
 	protected final PathHeuristic heuristic;

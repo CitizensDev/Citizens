@@ -1,4 +1,4 @@
-package com.citizens.Pathfinding;
+package com.citizens.pathfinding;
 
 public class PathNode implements Comparable<PathNode> {
 	public Point point;

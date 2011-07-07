@@ -1,13 +1,13 @@
-package com.citizens.Commands;
+package com.citizens.commands;
 
 import com.citizens.Citizens;
-import com.citizens.Commands.Commands.BasicCommands;
-import com.citizens.Commands.Commands.BlacksmithCommands;
-import com.citizens.Commands.Commands.GuardCommands;
-import com.citizens.Commands.Commands.HealerCommands;
-import com.citizens.Commands.Commands.ToggleCommands;
-import com.citizens.Commands.Commands.TraderCommands;
-import com.citizens.Commands.Commands.WizardCommands;
+import com.citizens.commands.commands.BasicCommands;
+import com.citizens.commands.commands.BlacksmithCommands;
+import com.citizens.commands.commands.GuardCommands;
+import com.citizens.commands.commands.HealerCommands;
+import com.citizens.commands.commands.ToggleCommands;
+import com.citizens.commands.commands.TraderCommands;
+import com.citizens.commands.commands.WizardCommands;
 
 public class CommandHandler {
 	/**

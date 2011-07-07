@@ -1,4 +1,4 @@
-package com.citizens.Properties;
+package com.citizens.properties;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import java.util.logging.Level;
 
 import org.bukkit.util.config.Configuration;
 
-import com.citizens.Interfaces.Storage;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.StringUtils;
+import com.citizens.interfaces.Storage;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.StringUtils;
 
 public class CachedYAMLHandler implements Storage {
 	private final SettingsTree tree = new SettingsTree();

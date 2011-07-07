@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Questers.Quests;
+package com.citizens.npctypes.questers.quests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import com.citizens.NPCTypes.Questers.Objectives.Objective;
-import com.citizens.NPCTypes.Questers.Objectives.Objectives;
-import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.npctypes.questers.objectives.Objective;
+import com.citizens.npctypes.questers.objectives.Objectives;
+import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
+import com.citizens.resources.npclib.HumanNPC;
 import com.iConomy.util.Messaging;
 
 public class QuestProgress {

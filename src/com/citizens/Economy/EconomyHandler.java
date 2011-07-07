@@ -1,10 +1,10 @@
-package com.citizens.Economy;
+package com.citizens.economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 // TODO merge blacksmith methods with regular methods (also in ItemInterface and ServerEcoInterface)
 public class EconomyHandler {

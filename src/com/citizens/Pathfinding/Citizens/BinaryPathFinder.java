@@ -1,13 +1,13 @@
-package com.citizens.Pathfinding.Citizens;
+package com.citizens.pathfinding.citizens;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.citizens.Pathfinding.Path;
-import com.citizens.Pathfinding.PathFinder;
-import com.citizens.Pathfinding.PathNode;
-import com.citizens.Pathfinding.Point;
-import com.citizens.Utils.Messaging;
+import com.citizens.pathfinding.Path;
+import com.citizens.pathfinding.PathFinder;
+import com.citizens.pathfinding.PathNode;
+import com.citizens.pathfinding.Point;
+import com.citizens.utils.Messaging;
 
 public class BinaryPathFinder extends PathFinder {
 	private final PriorityBuffer<PathNode> paths;

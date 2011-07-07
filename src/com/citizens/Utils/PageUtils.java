@@ -1,4 +1,4 @@
-package com.citizens.Utils;
+package com.citizens.utils;
 
 import java.util.ArrayList;
 import java.util.List;

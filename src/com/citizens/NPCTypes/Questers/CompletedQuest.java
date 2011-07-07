@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Questers;
+package com.citizens.npctypes.questers;
 
 public class CompletedQuest {
 	private final String npcName;

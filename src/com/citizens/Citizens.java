@@ -18,49 +18,49 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.citizens.Commands.CommandHandler;
-import com.citizens.Implementations.OperationPurchaser;
-import com.citizens.Interfaces.NPCType;
-import com.citizens.Listeners.EntityListen;
-import com.citizens.Listeners.PlayerListen;
-import com.citizens.Listeners.ServerListen;
-import com.citizens.Listeners.WorldListen;
-import com.citizens.NPCTypes.Blacksmiths.BlacksmithNPC;
-import com.citizens.NPCTypes.Guards.GuardNPC;
-import com.citizens.NPCTypes.Guards.GuardTask;
-import com.citizens.NPCTypes.Healers.HealerNPC;
-import com.citizens.NPCTypes.Healers.HealerTask;
-import com.citizens.NPCTypes.Landlords.LandlordNPC;
-import com.citizens.NPCTypes.Questers.QuesterNPC;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager;
-import com.citizens.NPCTypes.Traders.TraderNPC;
-import com.citizens.NPCTypes.Wizards.WizardNPC;
-import com.citizens.NPCTypes.Wizards.WizardTask;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.NPCs.NPCTypeManager;
-import com.citizens.Properties.PropertyHandler;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Properties.Properties.BlacksmithProperties;
-import com.citizens.Properties.Properties.GuardProperties;
-import com.citizens.Properties.Properties.HealerProperties;
-import com.citizens.Properties.Properties.LandlordProperties;
-import com.citizens.Properties.Properties.QuesterProperties;
-import com.citizens.Properties.Properties.TraderProperties;
-import com.citizens.Properties.Properties.UtilityProperties;
-import com.citizens.Properties.Properties.WizardProperties;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.nijikokun.register.payment.Method;
-import com.citizens.Resources.sk89q.CitizensCommandsManager;
-import com.citizens.Resources.sk89q.CommandPermissionsException;
-import com.citizens.Resources.sk89q.CommandUsageException;
-import com.citizens.Resources.sk89q.MissingNestedCommandException;
-import com.citizens.Resources.sk89q.RequirementMissingException;
-import com.citizens.Resources.sk89q.ServerCommandException;
-import com.citizens.Resources.sk89q.UnhandledCommandException;
-import com.citizens.Resources.sk89q.WrappedCommandException;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.StringUtils;
+import com.citizens.commands.CommandHandler;
+import com.citizens.listeners.EntityListen;
+import com.citizens.listeners.PlayerListen;
+import com.citizens.listeners.ServerListen;
+import com.citizens.listeners.WorldListen;
+import com.citizens.npcs.NPCManager;
+import com.citizens.npcs.NPCTypeManager;
+import com.citizens.npctypes.blacksmiths.BlacksmithNPC;
+import com.citizens.npctypes.guards.GuardNPC;
+import com.citizens.npctypes.guards.GuardTask;
+import com.citizens.npctypes.healers.HealerNPC;
+import com.citizens.npctypes.healers.HealerTask;
+import com.citizens.npctypes.interfaces.NPCType;
+import com.citizens.npctypes.interfaces.OperationPurchaser;
+import com.citizens.npctypes.landlords.LandlordNPC;
+import com.citizens.npctypes.questers.QuesterNPC;
+import com.citizens.npctypes.questers.quests.QuestManager;
+import com.citizens.npctypes.traders.TraderNPC;
+import com.citizens.npctypes.wizards.WizardNPC;
+import com.citizens.npctypes.wizards.WizardTask;
+import com.citizens.properties.PropertyHandler;
+import com.citizens.properties.PropertyManager;
+import com.citizens.properties.properties.BlacksmithProperties;
+import com.citizens.properties.properties.GuardProperties;
+import com.citizens.properties.properties.HealerProperties;
+import com.citizens.properties.properties.LandlordProperties;
+import com.citizens.properties.properties.QuesterProperties;
+import com.citizens.properties.properties.TraderProperties;
+import com.citizens.properties.properties.UtilityProperties;
+import com.citizens.properties.properties.WizardProperties;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.register.Method;
+import com.citizens.resources.sk89q.CitizensCommandsManager;
+import com.citizens.resources.sk89q.CommandPermissionsException;
+import com.citizens.resources.sk89q.CommandUsageException;
+import com.citizens.resources.sk89q.MissingNestedCommandException;
+import com.citizens.resources.sk89q.RequirementMissingException;
+import com.citizens.resources.sk89q.ServerCommandException;
+import com.citizens.resources.sk89q.UnhandledCommandException;
+import com.citizens.resources.sk89q.WrappedCommandException;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.StringUtils;
 
 /**
  * Citizens - NPCs for Bukkit
@@ -83,35 +83,35 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
-	
+
 		// Register NPC types.
 		registerTypes();
-	
+
 		// Register our commands.
 		CommandHandler.registerCommands();
-	
+
 		// Register our events.
 		new EntityListen().registerEvents();
 		new WorldListen().registerEvents();
 		new ServerListen().registerEvents();
 		new PlayerListen().registerEvents();
-	
+
 		// Register files.
 		PropertyManager.registerProperties();
-	
+
 		// Initialize Permissions.
 		Permission.initialize(Bukkit.getServer());
-	
+
 		// Load settings.
 		Constants.setupVariables();
-	
+
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask(), Constants.spawnTaskDelay,
 				Constants.spawnTaskDelay);
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
-	
+
 		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
 		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
@@ -125,7 +125,7 @@ public class Citizens extends JavaPlugin {
 					.log("Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
 			setupNPCs();
 		}
-	
+
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(Constants.npcRange), Constants.tickDelay,
@@ -143,7 +143,7 @@ public class Citizens extends JavaPlugin {
 						}
 					}, Constants.saveDelay, Constants.saveDelay);
 		}
-	
+
 		QuestManager.initialize();
 		Messaging.log("version [" + getVersion() + "] (" + codename
 				+ ") loaded");
@@ -255,7 +255,8 @@ public class Citizens extends JavaPlugin {
 			possible.add(entry.getValue());
 		}
 		if (possible.size() > 0) {
-			sender.sendMessage(ChatColor.GRAY + "Unknown command. Did you mean:");
+			sender.sendMessage(ChatColor.GRAY
+					+ "Unknown command. Did you mean:");
 			for (String string : possible) {
 				sender.sendMessage(StringUtils.wrap("    /") + command + " "
 						+ StringUtils.wrap(string));

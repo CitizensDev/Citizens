@@ -1,4 +1,4 @@
-package com.citizens.Listeners;
+package com.citizens.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -8,8 +8,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
-import com.citizens.Interfaces.Listener;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager;
+import com.citizens.interfaces.Listener;
+import com.citizens.npctypes.questers.quests.QuestManager;
 
 public class BlockListen extends BlockListener implements Listener {
 

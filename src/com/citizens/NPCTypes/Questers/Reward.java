@@ -1,8 +1,8 @@
-package com.citizens.NPCTypes.Questers;
+package com.citizens.npctypes.questers;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
+import com.citizens.npctypes.questers.quests.QuestManager.RewardType;
 
 public interface Reward {
 	public void grant(Player player);

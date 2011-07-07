@@ -1,4 +1,4 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import java.util.Set;
 
@@ -7,17 +7,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
-import com.citizens.NPCTypes.Guards.GuardManager;
-import com.citizens.NPCTypes.Guards.GuardNPC;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
-import com.citizens.Resources.sk89q.ServerCommand;
-import com.citizens.Utils.HelpUtils;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.StringUtils;
+import com.citizens.npctypes.guards.GuardManager;
+import com.citizens.npctypes.guards.GuardNPC;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
+import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.HelpUtils;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.StringUtils;
 
 @CommandRequirements(
 		requireSelected = true,

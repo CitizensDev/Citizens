@@ -1,10 +1,10 @@
-package com.citizens.NPCTypes.Landlords;
+package com.citizens.npctypes.landlords;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class LandlordNPC extends Toggleable implements Clickable {
 

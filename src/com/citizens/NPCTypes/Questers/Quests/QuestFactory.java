@@ -1,4 +1,4 @@
-package com.citizens.NPCTypes.Questers.Quests;
+package com.citizens.npctypes.questers.quests;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,31 +7,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-import com.citizens.NPCTypes.Questers.Quest;
-import com.citizens.NPCTypes.Questers.Reward;
-import com.citizens.NPCTypes.Questers.Objectives.Objective;
-import com.citizens.NPCTypes.Questers.Objectives.Objectives;
-import com.citizens.NPCTypes.Questers.Objectives.Objectives.ObjectiveCycler;
-import com.citizens.NPCTypes.Questers.Objectives.QuestStep;
-import com.citizens.NPCTypes.Questers.QuestTypes.BuildQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.CollectQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.CombatQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.DeliveryQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.DestroyQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.DistanceQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.HuntQuest;
-import com.citizens.NPCTypes.Questers.QuestTypes.LocationQuest;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager.QuestType;
-import com.citizens.NPCTypes.Questers.Quests.QuestManager.RewardType;
-import com.citizens.NPCTypes.Questers.Rewards.EconpluginReward;
-import com.citizens.NPCTypes.Questers.Rewards.HealthReward;
-import com.citizens.NPCTypes.Questers.Rewards.ItemReward;
-import com.citizens.NPCTypes.Questers.Rewards.PermissionReward;
-import com.citizens.NPCTypes.Questers.Rewards.QuestReward;
-import com.citizens.NPCTypes.Questers.Rewards.RankReward;
-import com.citizens.Properties.ConfigurationHandler;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.Messaging;
+import com.citizens.npctypes.questers.Quest;
+import com.citizens.npctypes.questers.Reward;
+import com.citizens.npctypes.questers.objectives.Objective;
+import com.citizens.npctypes.questers.objectives.Objectives;
+import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
+import com.citizens.npctypes.questers.objectives.QuestStep;
+import com.citizens.npctypes.questers.quests.QuestManager.QuestType;
+import com.citizens.npctypes.questers.quests.QuestManager.RewardType;
+import com.citizens.npctypes.questers.questtypes.BuildQuest;
+import com.citizens.npctypes.questers.questtypes.CollectQuest;
+import com.citizens.npctypes.questers.questtypes.CombatQuest;
+import com.citizens.npctypes.questers.questtypes.DeliveryQuest;
+import com.citizens.npctypes.questers.questtypes.DestroyQuest;
+import com.citizens.npctypes.questers.questtypes.DistanceQuest;
+import com.citizens.npctypes.questers.questtypes.HuntQuest;
+import com.citizens.npctypes.questers.questtypes.LocationQuest;
+import com.citizens.npctypes.questers.rewards.EconpluginReward;
+import com.citizens.npctypes.questers.rewards.HealthReward;
+import com.citizens.npctypes.questers.rewards.ItemReward;
+import com.citizens.npctypes.questers.rewards.PermissionReward;
+import com.citizens.npctypes.questers.rewards.QuestReward;
+import com.citizens.npctypes.questers.rewards.RankReward;
+import com.citizens.properties.ConfigurationHandler;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.Messaging;
 
 public class QuestFactory {
 

@@ -1,8 +1,8 @@
-package com.citizens.Misc;
+package com.citizens.misc;
 
 import java.lang.reflect.Method;
 
-import com.citizens.Utils.Messaging;
+import com.citizens.utils.Messaging;
 
 /*
  Copyright (c) 2005, Corey Goldberg

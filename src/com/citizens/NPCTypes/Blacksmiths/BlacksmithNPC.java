@@ -1,13 +1,13 @@
-package com.citizens.NPCTypes.Blacksmiths;
+package com.citizens.npctypes.blacksmiths;
 
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
-import com.citizens.Economy.EconomyHandler.Operation;
-import com.citizens.Interfaces.Clickable;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.MessageUtils;
+import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.npctypes.interfaces.Clickable;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.MessageUtils;
 
 public class BlacksmithNPC extends Toggleable implements Clickable {
 

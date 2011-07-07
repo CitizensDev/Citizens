@@ -1,4 +1,4 @@
-package com.citizens.Listeners;
+package com.citizens.listeners;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,11 +11,12 @@ import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
 import com.citizens.CreatureTask;
-import com.citizens.Interfaces.Listener;
-import com.citizens.Misc.NPCLocation;
-import com.citizens.NPCs.NPCManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.NPClib.Creatures.CreatureNPC;
+import com.citizens.interfaces.Listener;
+import com.citizens.misc.NPCLocation;
+import com.citizens.npcs.NPCManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.npclib.creatures.CreatureNPC;
+import com.citizens.utils.Messaging;
 
 public class WorldListen extends WorldListener implements Listener {
 	private final ConcurrentHashMap<NPCLocation, Integer> toRespawn = new ConcurrentHashMap<NPCLocation, Integer>();
@@ -34,9 +35,10 @@ public class WorldListen extends WorldListener implements Listener {
 		// Stores NPC location/name for later respawn.
 		for (Integer entry : NPCManager.GlobalUIDs.keySet()) {
 			HumanNPC npc = NPCManager.get(entry);
-
-			if (npc != null && npc.getChunk().getX() == event.getChunk().getX()
-					&& npc.getChunk().getZ() == event.getChunk().getZ()) {
+			if (event.getWorld().getChunkAt(npc.getLocation())
+					.equals(event.getChunk())) {
+				Messaging.log("Despawned at", event.getChunk().getX(), event
+						.getChunk().getZ());
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, npc.getUID());
@@ -57,6 +59,8 @@ public class WorldListen extends WorldListener implements Listener {
 		for (NPCLocation tempLoc : toRespawn.keySet()) {
 			if (tempLoc.getChunkX() == event.getChunk().getX()
 					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
+				Messaging.log("Reloaded at", tempLoc.getChunkX(),
+						tempLoc.getChunkZ());
 				if (NPCManager.get(tempLoc.getUID()) != null)
 					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
 				toRespawn.remove(tempLoc);

@@ -1,4 +1,4 @@
-package com.citizens.Resources.NPClib;
+package com.citizens.resources.npclib;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -8,12 +8,15 @@ import net.minecraft.server.Packet;
 import net.minecraft.server.Packet101CloseWindow;
 import net.minecraft.server.Packet102WindowClick;
 import net.minecraft.server.Packet106Transaction;
+import net.minecraft.server.Packet10Flying;
 import net.minecraft.server.Packet130UpdateSign;
 import net.minecraft.server.Packet14BlockDig;
 import net.minecraft.server.Packet15Place;
 import net.minecraft.server.Packet16BlockItemSwitch;
 import net.minecraft.server.Packet255KickDisconnect;
+import net.minecraft.server.Packet28EntityVelocity;
 import net.minecraft.server.Packet3Chat;
+import net.minecraft.server.Packet51MapChunk;
 import net.minecraft.server.Packet9Respawn;
 
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -57,6 +60,18 @@ public class NPCNetHandler extends NetServerHandler {
 
 	@Override
 	public void a(Packet9Respawn packet9respawn) {
+	}
+
+	@Override
+	public void a(Packet10Flying packet10flying) {
+	}
+
+	@Override
+	public void a(Packet51MapChunk packet50mapchunk) {
+	}
+
+	@Override
+	public void a(Packet28EntityVelocity packet28entityvelocity) {
 	}
 
 	@Override

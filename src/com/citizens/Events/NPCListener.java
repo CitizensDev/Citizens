@@ -1,4 +1,4 @@
-package com.citizens.Events;
+package com.citizens.events;
 
 import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;

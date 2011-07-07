@@ -1,4 +1,4 @@
-package com.citizens.Interfaces;
+package com.citizens.interfaces;
 
 public interface Listener {
 	/**

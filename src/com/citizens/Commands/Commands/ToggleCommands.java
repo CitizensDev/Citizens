@@ -1,24 +1,24 @@
-package com.citizens.Commands.Commands;
+package com.citizens.commands.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.citizens.Interfaces.NPCPurchaser;
-import com.citizens.Interfaces.NPCType;
-import com.citizens.Interfaces.Toggleable;
-import com.citizens.NPCs.NPCTypeManager;
-import com.citizens.Properties.PropertyManager;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Resources.sk89q.Command;
-import com.citizens.Resources.sk89q.CommandContext;
-import com.citizens.Resources.sk89q.CommandPermissions;
-import com.citizens.Resources.sk89q.CommandRequirements;
-import com.citizens.Resources.sk89q.ServerCommand;
-import com.citizens.Utils.Messaging;
-import com.citizens.Utils.PageUtils;
-import com.citizens.Utils.PageUtils.PageInstance;
-import com.citizens.Utils.StringUtils;
+import com.citizens.npcs.NPCTypeManager;
+import com.citizens.npctypes.interfaces.NPCPurchaser;
+import com.citizens.npctypes.interfaces.NPCType;
+import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.properties.PropertyManager;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.sk89q.Command;
+import com.citizens.resources.sk89q.CommandContext;
+import com.citizens.resources.sk89q.CommandPermissions;
+import com.citizens.resources.sk89q.CommandRequirements;
+import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.Messaging;
+import com.citizens.utils.PageUtils;
+import com.citizens.utils.PageUtils.PageInstance;
+import com.citizens.utils.StringUtils;
 
 public class ToggleCommands {
 
@@ -105,8 +105,8 @@ public class ToggleCommands {
 			type.factory().create(npc).register();
 		if (!npc.isType(type.getType())) {
 			npc.addType(type.getType(), type.factory());
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName()) + " is now a "
-					+ type.getType() + "!");
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " is now a " + type.getType() + "!");
 		} else {
 			npc.removeType(type.getType());
 			player.sendMessage(StringUtils.wrap(npc.getName())

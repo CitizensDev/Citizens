@@ -1,4 +1,4 @@
-package com.citizens.NPCs;
+package com.citizens.npcs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,9 +12,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
-import com.citizens.Resources.NPClib.HumanNPC;
-import com.citizens.Utils.MessageUtils;
-import com.citizens.Utils.StringUtils;
+import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.MessageUtils;
+import com.citizens.utils.StringUtils;
 
 public class NPCDataManager {
 	public static final Map<String, Integer> pathEditors = new HashMap<String, Integer>();

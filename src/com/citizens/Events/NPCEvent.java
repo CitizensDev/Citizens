@@ -1,12 +1,12 @@
-package com.citizens.Events;
+package com.citizens.events;
 
 import org.bukkit.event.Event;
 
-import com.citizens.Resources.NPClib.HumanNPC;
+import com.citizens.resources.npclib.HumanNPC;
 
 public class NPCEvent extends Event {
 	private static final long serialVersionUID = 1L;
-	private HumanNPC npc;
+	private final HumanNPC npc;
 
 	public NPCEvent(String name, HumanNPC npc) {
 		super(name);

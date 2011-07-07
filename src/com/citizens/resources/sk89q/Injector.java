@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.citizens.Resources.sk89q;
+package com.citizens.resources.sk89q;
 
 import java.lang.reflect.InvocationTargetException;
 
