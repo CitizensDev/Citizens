@@ -161,8 +161,6 @@ public class HealerNPC extends Toggleable implements Clickable {
 							+ "'s health with a magical block of diamond.");
 					InventoryUtils.decreaseItemInHand(player,
 							Material.DIAMOND_BLOCK);
-					// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
-					// Achievements.award(player, Achievement.HEALER_REVIVE);
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " is fully healed.");

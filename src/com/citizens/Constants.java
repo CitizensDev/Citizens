@@ -39,7 +39,7 @@ public class Constants {
 	public static String npcColour = "f";
 	public static String talkItems = "340,";
 	public static String selectItems = "*";
-	public static String evilNames = "Herobrine,aPunch,fullwall,Notch,EvilSeph,";
+	public static String evilNames = "Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,";
 	public static String pirateNames = "Pirate_Pete,Piratebay,Jack_Sparrow,";
 	public static String failureToTameMessages = "Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;";
 	public static String pirateStealMessages = "I stole yer booty.;Aaargh.;";

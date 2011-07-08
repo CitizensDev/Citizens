@@ -185,8 +185,6 @@ public class BasicCommands {
 			}
 		}
 
-		// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
-		// Achievements.award(player, Achievement.NPC_CREATE);
 		NPCManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created, Constants.selectionMessage);
 	}

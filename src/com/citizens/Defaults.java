@@ -167,7 +167,7 @@ public class Defaults {
 		nodes.put("evil.spawn.max", "2");
 		nodes.put("pirates.spawn.max", "2");
 		nodes.put("evil.misc.names",
-				"Herobrine,aPunch,fullwall,Notch,EvilSeph,");
+				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,");
 		nodes.put("pirates.misc.names", "Pirate_Pete,Piratebay,Jack_Sparrow,");
 		nodes.put("evil.misc.tame-chance", "5");
 		nodes.put("evil.items.tame-item", "354");

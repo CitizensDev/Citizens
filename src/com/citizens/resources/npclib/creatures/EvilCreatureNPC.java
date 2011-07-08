@@ -67,10 +67,6 @@ public class EvilCreatureNPC extends CreatureNPC {
 			if (damager != null) {
 				this.targetAggro = true;
 				this.targetEntity = ((CraftEntity) damager).getHandle();
-				// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
-				// if (e.getEntity().isDead() && damager instanceof Player) {
-				// Achievements.award((Player) damager, Achievement.EVIL_KILL);
-				// }
 			}
 		}
 	}
@@ -102,16 +98,13 @@ public class EvilCreatureNPC extends CreatureNPC {
 				player.sendMessage(ChatColor.GREEN + "You have tamed "
 						+ StringUtils.wrap(npc.getStrippedName())
 						+ "! You can now toggle it to be any type.");
-				// TODO Uncomment after BukkitContrib is updated to MC 1.7.2
-				// Achievements.award(player, Achievement.EVIL_TAME);
 			} else {
 				Messaging
 						.send(player,
 								this.npc,
-								ChatColor.RED
-										+ "["
-										+ npc.getStrippedName()
-										+ "] "
+								StringUtils.colourise(Constants.chatFormat
+										.replace("%name%",
+												npc.getStrippedName()))
 										+ ChatColor.WHITE
 										+ MessageUtils
 												.getRandomMessage(Constants.failureToTameMessages));
