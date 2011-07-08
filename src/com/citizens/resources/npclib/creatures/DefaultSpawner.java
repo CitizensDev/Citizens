@@ -42,8 +42,7 @@ public class DefaultSpawner implements Spawner {
 										world.getBlockTypeIdAt(x, y, z))
 								&& type.spawnIn().isValid(
 										world.getBlockTypeIdAt(x, y + 1, z))) {
-							if (areEntitiesOnBlock(last, x,
-									y, z)) {
+							if (areEntitiesOnBlock(last, x, y, z)) {
 								if (canSpawn(type)) {
 									HumanNPC npc = NPCSpawner.spawnNPC(0,
 											UtilityProperties

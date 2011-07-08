@@ -19,19 +19,12 @@ import net.minecraft.server.Packet3Chat;
 import net.minecraft.server.Packet51MapChunk;
 import net.minecraft.server.Packet9Respawn;
 
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-
 public class NPCNetHandler extends NetServerHandler {
 
 	public NPCNetHandler(MinecraftServer minecraftserver,
 			EntityPlayer entityplayer, NetworkManager netMgr) {
 		super(minecraftserver, netMgr, entityplayer);
 		netMgr.a(this);
-	}
-
-	@Override
-	public CraftPlayer getPlayer() {
-		return null;
 	}
 
 	@Override
