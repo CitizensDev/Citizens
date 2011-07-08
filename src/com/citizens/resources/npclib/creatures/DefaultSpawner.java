@@ -29,17 +29,20 @@ public class DefaultSpawner implements Spawner {
 		int searchY = 3, searchXZ = 4;
 
 		World world = loc.getWorld();
+		Chunk last = null;
 		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
 			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					if (type.spawnOn().isValid(
-							world.getBlockTypeIdAt(x, y - 1, z))
-							& type.spawnIn().isValid(
-									world.getBlockTypeIdAt(x, y, z))
-							&& type.spawnIn().isValid(
-									world.getBlockTypeIdAt(x, y + 1, z))) {
-						if (world.isChunkLoaded(world.getChunkAt(x, z))) {
-							if (areEntitiesOnBlock(world.getChunkAt(x, z), x,
+					if (world.isChunkLoaded(x >> 4, z >> 4)) {
+						if (world.getChunkAt(x >> 4, z >> 4) != last)
+							last = world.getChunkAt(x >> 4, z >> 4);
+						if (type.spawnOn().isValid(
+								world.getBlockTypeIdAt(x, y - 1, z))
+								& type.spawnIn().isValid(
+										world.getBlockTypeIdAt(x, y, z))
+								&& type.spawnIn().isValid(
+										world.getBlockTypeIdAt(x, y + 1, z))) {
+							if (areEntitiesOnBlock(last, x,
 									y, z)) {
 								if (canSpawn(type)) {
 									HumanNPC npc = NPCSpawner.spawnNPC(0,

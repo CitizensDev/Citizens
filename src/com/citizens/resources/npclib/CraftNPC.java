@@ -67,7 +67,7 @@ public class CraftNPC extends PathNPC {
 	}
 
 	private boolean chunkLoaded() {
-		return this.bukkitEntity.getWorld().isChunkLoaded(
-				this.bukkitEntity.getLocation().getBlock().getChunk());
+		return this.bukkitEntity.getWorld().isChunkLoaded(this.npc.getChunkX(),
+				this.npc.getChunkZ());
 	}
 }

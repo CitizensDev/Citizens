@@ -197,10 +197,10 @@ public class HumanNPC extends NPC {
 	}
 
 	public int getChunkX() {
-		return this.getLocation().getBlockX() << 4;
+		return this.getLocation().getBlockX() >> 4;
 	}
 
 	public int getChunkZ() {
-		return this.getLocation().getBlockZ() << 4;
+		return this.getLocation().getBlockZ() >> 4;
 	}
 }
