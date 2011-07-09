@@ -19,7 +19,6 @@ public class Constants {
 	public static int maxWizardMana = 100;
 	public static int saveDelay = 72000;
 	public static int spawnTaskDelay = 200;
-	public static int spawnPiratesDelay = 200;
 	public static int rightClickPause = 70;
 	public static int tickDelay = 1;
 	public static int wizardMaxLocations = 10;

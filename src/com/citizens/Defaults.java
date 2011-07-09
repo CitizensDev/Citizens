@@ -205,6 +205,8 @@ public class Defaults {
 
 	private static ArrayList<String> writeMobDeletes() {
 		ArrayList<String> nodes = new ArrayList<String>();
+		nodes.add("pirates.spawn.delay");
+		nodes.add("evil.spawn.delay");
 		return nodes;
 	}
 }

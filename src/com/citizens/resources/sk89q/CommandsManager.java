@@ -251,7 +251,9 @@ public abstract class CommandsManager<T extends Player> {
 	public boolean hasCommand(String command, String modifier) {
 		return commands.get(null).containsKey(
 				new CommandIdentifier(command.toLowerCase(), modifier
-						.toLowerCase()));
+						.toLowerCase()))
+				|| commands.get(null).containsKey(
+						new CommandIdentifier(command.toLowerCase(), "*"));
 	}
 
 	/**
@@ -425,6 +427,8 @@ public abstract class CommandsManager<T extends Player> {
 		Map<CommandIdentifier, Method> map = commands.get(parent);
 		Method method = map.get(new CommandIdentifier(cmdName.toLowerCase(),
 				modifier.toLowerCase()));
+		if (method == null)
+			method = map.get(new CommandIdentifier(cmdName.toLowerCase(), "*"));
 
 		if (method != null && methodArgs != null
 				&& serverCommands.get(method) == null

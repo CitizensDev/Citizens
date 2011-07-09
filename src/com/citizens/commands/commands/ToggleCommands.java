@@ -56,8 +56,7 @@ public class ToggleCommands {
 			aliases = { "toggle", "tog", "t" },
 			usage = "[type]",
 			desc = "toggle an NPC type",
-			modifiers = { "blacksmith", "guard", "healer", "quester", "trader",
-					"wizard" },
+			modifiers = "*",
 			min = 1,
 			max = 1)
 	public static void toggleNPC(CommandContext args, Player player,
