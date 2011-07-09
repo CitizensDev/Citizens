@@ -22,6 +22,7 @@ public class Defaults {
 		HashMap<String, String> nodes = new HashMap<String, String>();
 		// General Settings
 		nodes.put("general.convert-old", "true");
+		nodes.put("general.debug-mode", "true");
 		nodes.put("general.limits.npcs-per-player", "10");
 		nodes.put("general.selection.quick-select", "false");
 		nodes.put("general.defaults.enable-following", "true");

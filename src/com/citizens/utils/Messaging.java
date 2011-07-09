@@ -8,11 +8,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.citizens.Constants;
 import com.citizens.resources.npclib.HumanNPC;
 
 public class Messaging {
 	private static final Logger log = Logger.getLogger("Minecraft");
-	private final static boolean debug = false;
 	private final static String[] colours = { "black", "dblue", "dgreen",
 			"dteal", "dred", "purple", "gold", "gray", "dgray", "blue",
 			"bgreen", "teal", "red", "pink", "yellow", "white" };
@@ -75,7 +75,7 @@ public class Messaging {
 	}
 
 	public static void debug(Object message) {
-		if (debug) {
+		if (Constants.debugMode) {
 			log(message);
 		}
 	}
