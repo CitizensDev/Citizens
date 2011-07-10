@@ -367,7 +367,7 @@ public class Citizens extends JavaPlugin {
 	 * 
 	 * @return Whether the ID is used for a tool.
 	 */
-	public boolean validateTool(String key, int type, boolean sneaking) {
+	public static boolean validateTool(String key, int type, boolean sneaking) {
 		if (Constants.useItemList) {
 			String[] items = UtilityProperties.getSettings().getString(key)
 					.split(",");

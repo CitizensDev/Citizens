@@ -37,7 +37,7 @@ public class GuardTask implements Runnable {
 					}
 					if (guard.isAttacking()
 							&& npc.getHandle().hasTarget()
-							&& LocationUtils.checkLocation(npc.getLocation(),
+							&& !LocationUtils.checkLocation(npc.getLocation(),
 									npc.getHandle().getTarget().getLocation(),
 									guard.getProtectionRadius())) {
 						npc.getHandle().cancelTarget();

@@ -32,8 +32,8 @@ public class NPCLocation {
 		this.world = loc.getWorld().getName();
 		this.UID = UID;
 		this.owner = owner;
-		this.chunkX = loc.getBlock().getChunk().getX();
-		this.chunkZ = loc.getBlock().getChunk().getZ();
+		this.chunkX = this.x >> 4;
+		this.chunkZ = this.z >> 4;
 	}
 
 	public int getZ() {

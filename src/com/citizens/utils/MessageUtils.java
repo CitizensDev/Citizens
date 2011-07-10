@@ -159,6 +159,8 @@ public class MessageUtils {
 	}
 
 	public static String getStackString(ItemStack stack, ChatColor colour) {
+		if (stack == null)
+			return "";
 		return StringUtils.wrap(StringUtils.pluralise(stack.getAmount() + " "
 				+ getMaterialName(stack.getTypeId()), stack.getAmount()),
 				colour);

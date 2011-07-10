@@ -84,7 +84,7 @@ public class EntityListen extends EntityListener implements Listener {
 		HumanNPC npc = NPCManager.get(e.getEntity());
 		if (npc != null && event.getTarget() instanceof Player) {
 			Player player = (Player) event.getTarget();
-			if (Citizens.plugin.validateTool("items.basic.select-items", player
+			if (Citizens.validateTool("items.basic.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCManager.selectNPC(player, npc);
@@ -94,7 +94,7 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 			}
 			// Call text-display event
-			if (Citizens.plugin.validateTool("items.basic.talk-items", player
+			if (Citizens.validateTool("items.basic.talk-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				Player target = (Player) e.getTarget();
 				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,

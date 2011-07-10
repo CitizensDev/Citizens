@@ -37,9 +37,6 @@ public class TickTask implements Runnable {
 				updateWaypoints(npc);
 				npc.doTick();
 				NPCSpawner.removeNPCFromPlayerList(npc);
-				if (npc.getPlayer().isDead()) {
-					NPCSpawner.despawnNPC(npc);
-				}
 				UID = entry.getKey();
 				for (Player p : online) {
 					String name = p.getName();

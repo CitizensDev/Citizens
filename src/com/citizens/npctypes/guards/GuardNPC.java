@@ -237,6 +237,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 			player.sendMessage(ChatColor.GRAY + "Your guard NPC "
 					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
 					+ " died.");
+		event.getDrops().clear();
 		TickTask.scheduleRespawn(this.npc, Constants.guardRespawnDelay);
 	}
 
