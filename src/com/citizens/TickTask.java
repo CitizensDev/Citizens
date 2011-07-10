@@ -18,13 +18,6 @@ import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
 
 public class TickTask implements Runnable {
-	// How far an NPC can 'see'
-	private final double range;
-
-	public TickTask(double range) {
-		// range is checked in both directions, so we halve the passed range.
-		this.range = range / 2;
-	}
 
 	@Override
 	public void run() {
@@ -44,7 +37,7 @@ public class TickTask implements Runnable {
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
 						if (LocationUtils.checkLocation(npc.getLocation(),
-								p.getLocation(), range)) {
+								p.getLocation(), Constants.npcRange)) {
 							if (npc.getHandle().pathFinished()
 									&& npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
