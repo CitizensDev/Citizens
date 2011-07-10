@@ -112,17 +112,48 @@ public class BasicCommands {
 	@CommandPermissions("admin")
 	public static void forceSave(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		if (sender instanceof Player)
+		if (sender instanceof Player) {
 			Messaging.log("Saving...");
+		}
 		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
 				+ "] Saving...");
 
 		PropertyManager.saveState();
 
-		if (sender instanceof Player)
+		if (sender instanceof Player) {
 			Messaging.log("Saved.");
+		}
 		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
 				+ "] Saved.");
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "citizens",
+			usage = "debug",
+			desc = "toggle debug mode for Citizens",
+			modifiers = "debug",
+			min = 1,
+			max = 1)
+	@ServerCommand()
+	@CommandPermissions("admin")
+	public static void toggleDebugMode(CommandContext args,
+			CommandSender sender, HumanNPC npc) {
+		if (Constants.debugMode) {
+			Messaging.log("Debug mode is now false.");
+			if (sender instanceof Player) {
+				Messaging.send((Player) sender, npc, "Debug mode is now "
+						+ ChatColor.RED + "false");
+			}
+		} else {
+			Messaging.log("Debug mode is now true.");
+			if (sender instanceof Player) {
+				Messaging.send((Player) sender, npc, "Debug mode is now "
+						+ ChatColor.GREEN + "true");
+			}
+		}
+		UtilityProperties.getSettings().setBoolean("general.debug-mode",
+				!Constants.debugMode);
 	}
 
 	@CommandRequirements()

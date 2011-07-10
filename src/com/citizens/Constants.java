@@ -57,6 +57,7 @@ public class Constants {
 	public static boolean useSaveTask = true;
 	public static boolean convertOld = false;
 	public static boolean quickSelect = false;
+	public static boolean debugMode = false;
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultTalkWhenClose = false;
@@ -86,6 +87,7 @@ public class Constants {
 		regenWizardMana = settings.getBoolean("general.wizards.regen-mana");
 		convertOld = settings.getBoolean("general.convert-old");
 		quickSelect = settings.getBoolean("general.selection.quick-select");
+		debugMode = settings.getBoolean("general.debug-mode");
 
 		// String defaults
 		chatFormat = settings.getString("general.chat.format");
