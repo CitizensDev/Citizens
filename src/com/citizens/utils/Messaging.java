@@ -29,7 +29,7 @@ public class Messaging {
 		player.sendMessage(message);
 	}
 
-	static void send(CommandSender sender, HumanNPC npc, String message) {
+	public static void send(CommandSender sender, HumanNPC npc, String message) {
 		if (sender instanceof Player) {
 			send((Player) sender, npc, message);
 			return;
@@ -40,22 +40,6 @@ public class Messaging {
 			message = message.replace("<npcid>", "" + npc.getUID());
 		}
 		sender.sendMessage(message);
-	}
-
-	private static String colourise(String message) {
-		byte index = 0;
-		for (String colour : colours) {
-			message = message.replaceAll("<" + colour + ">",
-					"" + ChatColor.getByCode(index));
-			++index;
-		}
-		for (int colour = 0; colour <= 16; ++colour) {
-			message = message.replaceAll("<" + colour + ">",
-					"" + ChatColor.getByCode(colour));
-		}
-		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
-		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
-		return message;
 	}
 
 	public static void log(Object... messages) {
@@ -80,6 +64,12 @@ public class Messaging {
 		}
 	}
 
+	public static void debug(Object... messages) {
+		if (Constants.debugMode) {
+			log(messages);
+		}
+	}
+
 	public static void sendError(Player player, String error) {
 		send(player, null, ChatColor.RED + error);
 	}
@@ -92,5 +82,21 @@ public class Messaging {
 		Player player = Bukkit.getServer().getPlayer(name);
 		if (player != null)
 			send(player, null, message);
+	}
+
+	private static String colourise(String message) {
+		byte index = 0;
+		for (String colour : colours) {
+			message = message.replaceAll("<" + colour + ">",
+					"" + ChatColor.getByCode(index));
+			++index;
+		}
+		for (int colour = 0; colour <= 16; ++colour) {
+			message = message.replaceAll("<" + colour + ">",
+					"" + ChatColor.getByCode(colour));
+		}
+		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
+		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
+		return message;
 	}
 }

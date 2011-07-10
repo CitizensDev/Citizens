@@ -37,7 +37,7 @@ public class WorldListen extends WorldListener implements Listener {
 			HumanNPC npc = NPCManager.get(entry);
 			if (event.getWorld().getChunkAt(npc.getLocation())
 					.equals(event.getChunk())) {
-				Messaging.log("Despawned at", event.getChunk().getX(), event
+				Messaging.debug("Despawned at", event.getChunk().getX(), event
 						.getChunk().getZ());
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
@@ -59,7 +59,7 @@ public class WorldListen extends WorldListener implements Listener {
 		for (NPCLocation tempLoc : toRespawn.keySet()) {
 			if (tempLoc.getChunkX() == event.getChunk().getX()
 					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
-				Messaging.log("Reloaded at", tempLoc.getChunkX(),
+				Messaging.debug("Reloaded at", tempLoc.getChunkX(),
 						tempLoc.getChunkZ());
 				if (NPCManager.get(tempLoc.getUID()) != null)
 					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());

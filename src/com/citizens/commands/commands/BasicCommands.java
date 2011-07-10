@@ -139,21 +139,22 @@ public class BasicCommands {
 	@CommandPermissions("admin")
 	public static void toggleDebugMode(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		if (Constants.debugMode) {
-			Messaging.log("Debug mode is now false.");
-			if (sender instanceof Player) {
-				Messaging.send((Player) sender, npc, "Debug mode is now "
-						+ ChatColor.RED + "false");
-			}
-		} else {
-			Messaging.log("Debug mode is now true.");
-			if (sender instanceof Player) {
-				Messaging.send((Player) sender, npc, "Debug mode is now "
-						+ ChatColor.GREEN + "true");
-			}
-		}
 		UtilityProperties.getSettings().setBoolean("general.debug-mode",
 				!Constants.debugMode);
+		Constants.debugMode = !Constants.debugMode;
+		if (Constants.debugMode) {
+			Messaging.log("Debug mode is now on.");
+			if (sender instanceof Player) {
+				Messaging.send((Player) sender, npc, "Debug mode is now "
+						+ ChatColor.GREEN + "on");
+			}
+		} else {
+			Messaging.log("Debug mode is now off.");
+			if (sender instanceof Player) {
+				Messaging.send((Player) sender, npc, "Debug mode is now "
+						+ ChatColor.RED + "off");
+			}
+		}
 	}
 
 	@CommandRequirements()
