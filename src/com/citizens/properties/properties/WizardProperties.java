@@ -8,7 +8,6 @@ import com.citizens.npctypes.wizards.WizardManager.WizardMode;
 import com.citizens.npctypes.wizards.WizardNPC;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
-import com.citizens.utils.Messaging;
 
 public class WizardProperties extends PropertyManager implements Saveable {
 	private static final String isWizard = ".wizard.toggle";
@@ -74,13 +73,10 @@ public class WizardProperties extends PropertyManager implements Saveable {
 
 	@Override
 	public void saveState(HumanNPC npc) {
-		Messaging.log("at");
 		if (exists(npc)) {
-			Messaging.log("exists");
 			boolean is = npc.isType("wizard");
 			setEnabled(npc, is);
 			if (is) {
-				Messaging.log("is");
 				WizardNPC wizard = npc.getToggleable("wizard");
 				saveLocations(npc.getUID(), wizard.getLocations());
 				saveMana(npc.getUID(), wizard.getMana());

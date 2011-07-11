@@ -61,8 +61,9 @@ public class WorldListen extends WorldListener implements Listener {
 					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
 				Messaging.debug("Reloaded at", tempLoc.getChunkX(),
 						tempLoc.getChunkZ());
-				if (NPCManager.get(tempLoc.getUID()) != null)
+				if (NPCManager.get(tempLoc.getUID()) != null) {
 					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
+				}
 				toRespawn.remove(tempLoc);
 			}
 		}

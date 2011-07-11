@@ -41,5 +41,7 @@ Changelog:
 
 --- v1.0.9c ---
 -added '/citizens debug' command to toggle Citizens debug-mode
+-added 'debug-mode' property in citizens.yml
+-added 'quick-select' property in citizens.yml; if it is set to true
 -fixed random chunk generation bug (?)
 -fixed memory leak issues (?)

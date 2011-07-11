@@ -289,30 +289,15 @@ public class NPCManager {
 	}
 
 	/**
-	 * Overloaded method to add an optional permission string parameter (admin
-	 * overrides)
+	 * Checks if a player owns a given npc.
 	 * 
 	 * @param player
 	 * @param UID
-	 * @param permission
-	 * @return
-	 */
-	public static boolean validateOwnership(Player player, int UID,
-			String permission) {
-		return Permission.generic(player,
-				permission.replace("citizens.", "citizens.admin."))
-				|| validateOwnership(player, UID);
-	}
-
-	/**
-	 * Checks if a player owns a given npc.
-	 * 
-	 * @param UID
-	 * @param p
 	 * @return
 	 */
 	public static boolean validateOwnership(Player player, int UID) {
-		return get(UID).getOwner().equals(player.getName());
+		return Permission.isAdmin(player)
+				|| get(UID).getOwner().equals(player.getName());
 	}
 
 	/**
