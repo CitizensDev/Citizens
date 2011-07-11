@@ -15,7 +15,7 @@ evil:
     misc:
         failed-tame-messages: Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;
         tame-chance: '5'
-        names: Herobrine,aPunch,fullwall,Notch,EvilSeph,
+        names: Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,
 general:
     spawn:
         delay: '200'

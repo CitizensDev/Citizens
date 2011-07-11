@@ -42,6 +42,7 @@ Changelog:
 --- v1.0.9c ---
 -added '/citizens debug' command to toggle Citizens debug-mode
 -added 'debug-mode' property in citizens.yml
--added 'quick-select' property in citizens.yml; if it is set to true
+-added 'quick-select' property in citizens.yml; if it is set to true, an NPC will be selected and 
+ perform its action all at once when you select it
 -fixed random chunk generation bug (?)
 -fixed memory leak issues (?)

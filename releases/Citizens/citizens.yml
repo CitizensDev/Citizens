@@ -46,6 +46,7 @@ general:
     healers:
         pay-for-heal: 'true'
         regen-health: 'true'
+    debug-mode: 'true'
     colors:
         use-npc-colours: 'true'
         npc-colour: f
