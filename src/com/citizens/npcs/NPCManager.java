@@ -279,13 +279,7 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p, int UID) {
-		if (selectedNPCs.get(p.getName()) != null
-				&& !selectedNPCs.get(p.getName()).toString().isEmpty()) {
-			if (selectedNPCs.get(p.getName()) == UID) {
-				return true;
-			}
-		}
-		return false;
+		return validateSelected(p) && selectedNPCs.get(p.getName()) == UID;
 	}
 
 	/**
@@ -298,6 +292,10 @@ public class NPCManager {
 	public static boolean validateOwnership(Player player, int UID) {
 		return Permission.isAdmin(player)
 				|| get(UID).getOwner().equals(player.getName());
+	}
+
+	public static boolean strictValidateOwnership(Player player, int UID) {
+		return get(UID).getOwner().equals(player.getName());
 	}
 
 	/**

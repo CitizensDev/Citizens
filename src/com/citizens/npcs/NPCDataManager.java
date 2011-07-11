@@ -23,6 +23,14 @@ public class NPCDataManager {
 		String name = event.getPlayer().getName();
 		if (pathEditors.get(name) != null) {
 			HumanNPC npc = NPCManager.get(pathEditors.get(name));
+			if (npc == null) {
+				pathEditors.remove(name);
+				event.getPlayer()
+						.sendMessage(
+								ChatColor.GRAY
+										+ "Something went wrong (NPC is dead?).");
+				return;
+			}
 			switch (event.getAction()) {
 			case LEFT_CLICK_BLOCK:
 				Location loc = event.getClickedBlock().getLocation();

@@ -148,7 +148,7 @@ public class TraderNPC extends Toggleable implements Clickable {
 		TraderNPC trader = npc.getToggleable("trader");
 		if (trader.isFree()) {
 			Mode mode;
-			if (NPCManager.validateOwnership(player, npc.getUID())) {
+			if (NPCManager.strictValidateOwnership(player, npc.getUID())) {
 				if (!Permission.canModify(player, npc, "trader")) {
 					return;
 				}

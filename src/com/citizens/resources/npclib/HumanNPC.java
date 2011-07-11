@@ -25,7 +25,7 @@ public class HumanNPC extends NPC {
 	private NPCData npcdata;
 	private double balance;
 	private boolean paused;
-	private final WaypointPath waypoints = new WaypointPath();
+	private WaypointPath waypoints = new WaypointPath();
 
 	private final ConcurrentHashMap<String, Toggleable> types = new ConcurrentHashMap<String, Toggleable>();
 
@@ -60,6 +60,8 @@ public class HumanNPC extends NPC {
 	}
 
 	public WaypointPath getWaypoints() {
+		if (waypoints == null)
+			this.waypoints = new WaypointPath();
 		return this.waypoints;
 	}
 
