@@ -32,7 +32,6 @@ import com.citizens.npctypes.healers.HealerNPC;
 import com.citizens.npctypes.healers.HealerTask;
 import com.citizens.npctypes.interfaces.NPCType;
 import com.citizens.npctypes.interfaces.OperationPurchaser;
-import com.citizens.npctypes.landlords.LandlordNPC;
 import com.citizens.npctypes.questers.QuesterNPC;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.traders.TraderNPC;
@@ -43,7 +42,6 @@ import com.citizens.properties.PropertyManager;
 import com.citizens.properties.properties.BlacksmithProperties;
 import com.citizens.properties.properties.GuardProperties;
 import com.citizens.properties.properties.HealerProperties;
-import com.citizens.properties.properties.LandlordProperties;
 import com.citizens.properties.properties.QuesterProperties;
 import com.citizens.properties.properties.TraderProperties;
 import com.citizens.properties.properties.UtilityProperties;
@@ -73,7 +71,7 @@ public class Citizens extends JavaPlugin {
 	public static final String separatorChar = "/";
 
 	private static final String codename = "Odyssey";
-	private static final String letter = "b";
+	private static final String letter = "c";
 	private static final String version = "1.0.9" + letter;
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
@@ -274,8 +272,6 @@ public class Citizens extends JavaPlugin {
 				purchaser, GuardNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("healer",
 				new HealerProperties(), purchaser, HealerNPC.class), true);
-		NPCTypeManager.registerType(new NPCType("landlord",
-				new LandlordProperties(), purchaser, LandlordNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("quester",
 				new QuesterProperties(), purchaser, QuesterNPC.class), true);
 		NPCTypeManager.registerType(new NPCType("trader",

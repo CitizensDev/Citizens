@@ -38,3 +38,8 @@ Changelog:
 -trader command fixes
 -added /trader clear [buy|sell] command for clearing a trader's stock
 -added /toggle [list|help] for toggling help
+
+--- v1.0.9c ---
+-added '/citizens debug' command to toggle Citizens debug-mode
+-fixed random chunk generation bug (?)
+-fixed memory leak issues (?)

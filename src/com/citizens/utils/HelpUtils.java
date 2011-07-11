@@ -197,16 +197,6 @@ public class HelpUtils {
 	}
 
 	/**
-	 * Sends the help page for the landlord npc type
-	 * 
-	 * @param sender
-	 */
-	public static void sendLandlordHelp(CommandSender sender) {
-		header(sender, "Landlord", 1, 1);
-		footer(sender);
-	}
-
-	/**
 	 * Prints the header for the help menus
 	 * 
 	 * @param sender

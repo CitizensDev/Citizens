@@ -324,8 +324,8 @@ public class BasicCommands {
 		}
 		NPCManager.remove(npc.getUID());
 		NPCManager.deselectNPC(player);
-		player.sendMessage(StringUtils.wrap(npc.getName(), ChatColor.GRAY)
-				+ " disappeared.");
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
+				ChatColor.GRAY) + " disappeared.");
 	}
 
 	@Command(
@@ -398,7 +398,7 @@ public class BasicCommands {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
 		NPCManager.setText(npc.getUID(), texts);
-		player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
+		player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
 				+ "}'s text was set to {" + text + "}."));
 	}
 
@@ -493,7 +493,7 @@ public class BasicCommands {
 		NPCManager.removeForRespawn(npc.getUID());
 		NPCManager.register(npc.getUID(), npc.getOwner());
 
-		player.sendMessage(StringUtils.wrap(npc.getName())
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ "'s armor was set to "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))
 				+ ".");

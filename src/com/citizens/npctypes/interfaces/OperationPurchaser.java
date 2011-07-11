@@ -32,7 +32,7 @@ public class OperationPurchaser implements NPCPurchaser {
 			String type) {
 		if (EconomyHandler.useEconomy()) {
 			return MessageUtils.getPaidMessage(getOperation(type), paid,
-					npc.getName(), type, true);
+					npc.getStrippedName(), type, true);
 		}
 		return "";
 	}
