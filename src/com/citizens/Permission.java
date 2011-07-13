@@ -47,7 +47,7 @@ public class Permission {
 		if (permissionsEnabled) {
 			return (isAdmin(player))
 					|| (npc != null && NPCManager.validateOwnership(player,
-							npc.getUID()))
+							npc.getUID(), true))
 					|| permission(player, "citizens.modify." + type);
 		}
 		return player.isOp();
@@ -57,7 +57,7 @@ public class Permission {
 		if (permissionsEnabled) {
 			return (isAdmin(player))
 					|| (npc != null && NPCManager.validateOwnership(player,
-							npc.getUID()))
+							npc.getUID(), true))
 					|| permission(player, "citizens.use." + type);
 		}
 		return player.isOp();

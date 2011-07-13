@@ -58,8 +58,8 @@ public class GuardTask implements Runnable {
 						String name = "";
 						if (entity instanceof Player) {
 							Player player = (Player) entity;
-							if (!NPCManager.strictValidateOwnership(player,
-									npc.getUID())) {
+							if (!NPCManager.validateOwnership(player,
+									npc.getUID(), false)) {
 								name = player.getName();
 							}
 						} else {
@@ -95,7 +95,7 @@ public class GuardTask implements Runnable {
 							if (entity instanceof Player) {
 								Player player = (Player) entity;
 								if (!NPCManager.validateOwnership(player,
-										npc.getUID())) {
+										npc.getUID(), true)) {
 									name = player.getName();
 								}
 							} else {

@@ -238,10 +238,10 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "moveTo [x y z](world pitch yaw)",
+			usage = "moveto [x y z](world pitch yaw)",
 			desc = "move an NPC to a location",
 			modifiers = "moveto",
-			min = 4,
+			min = 3,
 			max = 6)
 	@CommandPermissions("modify.basic")
 	public static void moveNPCToLocation(CommandContext args, Player player,
@@ -250,7 +250,7 @@ public class BasicCommands {
 		double x = 0, y = 0, z = 0;
 		float yaw = npc.getLocation().getYaw();
 		float pitch = npc.getLocation().getPitch();
-		String world = "";
+		String world = npc.getWorld().getName();
 		switch (args.argsLength()) {
 		case 6:
 			yaw = Float.parseFloat(args.getString(index));

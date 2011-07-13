@@ -4,6 +4,7 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldServer;
 
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
@@ -54,6 +55,19 @@ public class NPCSpawner {
 			eh.setLocation(x, y, z, yaw, pitch);
 			ws.players.remove(eh);
 			return new HumanNPC(eh, UID, name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
+		try {
+			WorldServer ws = getWorldServer(loc.getWorld());
+			ws.addEntity(npc.getHandle());
+			npc.teleport(loc);
+			ws.players.remove(npc.getHandle());
+			return npc;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

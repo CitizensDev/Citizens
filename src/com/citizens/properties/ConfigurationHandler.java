@@ -54,10 +54,12 @@ public class ConfigurationHandler implements Storage {
 	private void loadDeletes(List<String> nodes) {
 		boolean found = false;
 		for (String node : nodes) {
-			Messaging.log("Deleting outdated setting " + node + ".");
-			removeKey(node);
-			if (!found) {
-				found = true;
+			if (pathExists(node)) {
+				Messaging.log("Deleting outdated setting " + node + ".");
+				removeKey(node);
+				if (!found) {
+					found = true;
+				}
 			}
 		}
 		if (found) {

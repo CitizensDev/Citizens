@@ -35,14 +35,15 @@ public class WorldListen extends WorldListener implements Listener {
 		// Stores NPC location/name for later respawn.
 		for (Integer entry : NPCManager.GlobalUIDs.keySet()) {
 			HumanNPC npc = NPCManager.get(entry);
-			if (event.getWorld().getChunkAt(npc.getLocation())
-					.equals(event.getChunk())) {
-				Messaging.debug("Despawned at", event.getChunk().getX(), event
-						.getChunk().getZ());
+			if (event.getChunk().getX() == npc.getChunkX()
+					&& event.getChunk().getZ() == npc.getChunkZ()) {
+				Messaging.debug("Despawned", npc.getUID(), "at", event
+						.getChunk().getX(), event.getChunk().getZ(),
+						"(" + npc.getChunkX(), npc.getChunkZ() + ")");
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, npc.getUID());
-				NPCManager.removeForRespawn(entry);
+				NPCManager.safeDespawn(npc);
 			}
 		}
 		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
@@ -59,9 +60,9 @@ public class WorldListen extends WorldListener implements Listener {
 		for (NPCLocation tempLoc : toRespawn.keySet()) {
 			if (tempLoc.getChunkX() == event.getChunk().getX()
 					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
-				Messaging.debug("Reloaded at", tempLoc.getChunkX(),
-						tempLoc.getChunkZ());
 				if (NPCManager.get(tempLoc.getUID()) != null) {
+					Messaging.debug("Reloaded", tempLoc.getUID(), "at",
+							tempLoc.getChunkX(), tempLoc.getChunkZ());
 					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
 				}
 				toRespawn.remove(tempLoc);

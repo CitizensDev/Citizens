@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
+import com.citizens.resources.npclib.creatures.CreatureNPC;
+
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 
 	private static final long serialVersionUID = 7208318521278059987L;
@@ -17,8 +19,10 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 		if (entity == null) {
 			return null;
 		}
-		if (((CraftEntity) entity).getHandle() instanceof CraftNPC) {
-			return ((CraftNPC) (((CraftEntity) entity).getHandle())).npc;
+		net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
+				.getHandle();
+		if (mcEntity instanceof CraftNPC && !(mcEntity instanceof CreatureNPC)) {
+			return ((CraftNPC) mcEntity).npc;
 		}
 		return null;
 	}
