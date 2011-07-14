@@ -58,7 +58,7 @@ public class GuardCommands {
 						+ " is now a bodyguard.");
 			} else {
 				guard.clear();
-				Messaging.send(player, npc, npc.getStrippedName()
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 						+ " has stopped being a bodyguard.");
 			}
 		} else if (args.getString(0).equalsIgnoreCase("bouncer")) {
@@ -68,8 +68,8 @@ public class GuardCommands {
 						+ " is now a bouncer.");
 			} else {
 				guard.clear();
-				Messaging.send(player, npc, npc.getStrippedName()
-						+ " is stopped being a bouncer.");
+				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+						+ " has stopped being a bouncer.");
 			}
 		} else {
 			Messaging.sendError(player, "That is not a valid guard type.");

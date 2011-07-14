@@ -26,16 +26,18 @@ public class DefaultSpawner implements Spawner {
 
 		int startX = loc.getBlockX() + offsetX;
 		int startZ = loc.getBlockZ() + offsetZ;
-		int searchY = 3, searchXZ = 4;
+		int searchY = 3, searchXZ = 4, shiftedX = 0, shiftedZ = 0;
 
 		World world = loc.getWorld();
 		Chunk last = null;
 		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
 			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
 				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
-					if (world.isChunkLoaded(x >> 4, z >> 4)) {
-						if (world.getChunkAt(x >> 4, z >> 4) != last)
-							last = world.getChunkAt(x >> 4, z >> 4);
+					shiftedX = x >> 4;
+					shiftedZ = z >> 4;
+					if (world.isChunkLoaded(shiftedX, shiftedZ)) {
+						if (world.getChunkAt(shiftedX, shiftedZ) != last)
+							last = world.getChunkAt(shiftedX, shiftedZ);
 						if (type.spawnOn().isValid(
 								world.getBlockTypeIdAt(x, y - 1, z))
 								& type.spawnIn().isValid(
@@ -44,7 +46,7 @@ public class DefaultSpawner implements Spawner {
 										world.getBlockTypeIdAt(x, y + 1, z))) {
 							if (areEntitiesOnBlock(last, x, y, z)) {
 								if (canSpawn(type)) {
-									HumanNPC npc = NPCSpawner.spawnNPC(0,
+									HumanNPC npc = NPCSpawner.spawnNPC(-1,
 											UtilityProperties
 													.getRandomName(type), loc
 													.getWorld(), x, y, z,

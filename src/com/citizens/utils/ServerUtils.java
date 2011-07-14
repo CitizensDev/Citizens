@@ -45,6 +45,8 @@ public class ServerUtils {
 				return;
 			}
 			String url = new URI(con.getHeaderField("Location")).toString();
+			// TODO: This doesn't give the new version number or work backwards
+			// (1.0.9d will be a 'new' version compared to 1.0.9c)
 			if (!url.contains(Citizens.getVersion().replace(".", "-"))) {
 				Messaging.send(player, null, ChatColor.YELLOW + "**ALERT** "
 						+ ChatColor.GREEN

@@ -30,22 +30,22 @@ public class GuardTask implements Runnable {
 			HumanNPC npc = entry.getValue();
 			if (npc.isType("guard")) {
 				GuardNPC guard = npc.getToggleable("guard");
+				if (guard.isAttacking() && !npc.getHandle().hasTarget()) {
+					GuardManager.returnToBase(npc);
+					guard.setAttacking(false);
+				}
+				if (guard.isAttacking()
+						&& npc.getHandle().hasTarget()
+						&& !LocationUtils.checkLocation(npc.getLocation(), npc
+								.getHandle().getTarget().getLocation(),
+								guard.getProtectionRadius())) {
+					npc.getHandle().cancelTarget();
+					GuardManager.returnToBase(npc);
+					guard.setAttacking(false);
+				}
+				if (guard.isAttacking())
+					continue;
 				if (guard.isBouncer()) {
-					if (guard.isAttacking() && !npc.getHandle().hasTarget()) {
-						GuardManager.returnToBase(npc);
-						guard.setAttacking(false);
-					}
-					if (guard.isAttacking()
-							&& npc.getHandle().hasTarget()
-							&& !LocationUtils.checkLocation(npc.getLocation(),
-									npc.getHandle().getTarget().getLocation(),
-									guard.getProtectionRadius())) {
-						npc.getHandle().cancelTarget();
-						GuardManager.returnToBase(npc);
-						guard.setAttacking(false);
-					}
-					if (guard.isAttacking())
-						continue;
 					Location loc = npc.getLocation();
 					for (Entity temp : npc.getPlayer().getNearbyEntities(
 							guard.getHalvedProtectionRadius(),
@@ -63,8 +63,13 @@ public class GuardTask implements Runnable {
 								name = player.getName();
 							}
 						} else {
-							name = entity.getClass().getName().toLowerCase()
-									.replace("entity", "");
+							name = entity
+									.getClass()
+									.getName()
+									.toLowerCase()
+									.replace(
+											"org.bukkit.craftbukkit.entity.craft",
+											"");
 						}
 						if (LocationUtils.checkLocation(loc,
 								entity.getLocation(),

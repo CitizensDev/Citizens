@@ -22,7 +22,9 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 		net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
 				.getHandle();
 		if (mcEntity instanceof CraftNPC && !(mcEntity instanceof CreatureNPC)) {
-			return ((CraftNPC) mcEntity).npc;
+			HumanNPC npc = ((CraftNPC) mcEntity).npc;
+			if (get(npc.getUID()) != null)
+				return npc;
 		}
 		return null;
 	}

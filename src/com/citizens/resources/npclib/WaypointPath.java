@@ -20,7 +20,9 @@ public class WaypointPath {
 	}
 
 	public Location current() {
-		return this.get(waypointIndex);
+		if (waypoints.size() - 1 > waypointIndex)
+			return this.get(waypointIndex);
+		return null;
 	}
 
 	public int currentIndex() {
