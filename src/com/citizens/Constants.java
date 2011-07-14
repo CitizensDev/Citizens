@@ -58,6 +58,7 @@ public class Constants {
 	public static boolean convertOld = false;
 	public static boolean quickSelect = false;
 	public static boolean debugMode = false;
+	public static boolean notifyUpdates = true;
 
 	public static boolean convertSlashes = false;
 	public static boolean defaultTalkWhenClose = false;
@@ -88,6 +89,7 @@ public class Constants {
 		convertOld = settings.getBoolean("general.convert-old");
 		quickSelect = settings.getBoolean("general.selection.quick-select");
 		debugMode = settings.getBoolean("general.debug-mode");
+		notifyUpdates = settings.getBoolean("general.notify-updates");
 
 		// String defaults
 		chatFormat = settings.getString("general.chat.format");

@@ -132,12 +132,10 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getBlacksmithCurrency(Player player, Operation op) {
-		ItemStack item = player.getItemInHand();
-		int price = getBlacksmithPrice(player, item, op);
-		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
-				ID, price)));
+				UtilityProperties.getCurrencyID(Operation.getString(op,
+						currencyAddendum)), getBlacksmithPrice(player,
+						player.getItemInHand(), op))));
 	}
 
 	/**

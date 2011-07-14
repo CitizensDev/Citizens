@@ -71,7 +71,7 @@ public class Citizens extends JavaPlugin {
 	public static final String separatorChar = "/";
 
 	private static final String codename = "Odyssey";
-	private static final String letter = "c";
+	private static final String letter = "d";
 	private static final String version = "1.0.9" + letter;
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();

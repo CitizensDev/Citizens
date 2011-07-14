@@ -6,6 +6,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -14,7 +15,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
+import com.citizens.Constants;
 import com.citizens.CreatureTask;
+import com.citizens.Permission;
 import com.citizens.events.NPCTargetEvent;
 import com.citizens.interfaces.Listener;
 import com.citizens.npcs.NPCDataManager;
@@ -23,12 +26,15 @@ import com.citizens.npctypes.guards.GuardTask;
 import com.citizens.npctypes.questers.quests.ChatManager;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.ServerUtils;
 
 public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
+		pm.registerEvent(Event.Type.PLAYER_JOIN, this, Event.Priority.Normal,
+				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, this, Event.Priority.Normal,
 				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
@@ -43,6 +49,12 @@ public class PlayerListen extends PlayerListener implements Listener {
 				Event.Priority.Normal, Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, this,
 				Event.Priority.Normal, Citizens.plugin);
+	}
+
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		if (Permission.isAdmin(event.getPlayer()) && Constants.notifyUpdates) {
+			ServerUtils.checkForUpdates(event.getPlayer());
+		}
 	}
 
 	@Override

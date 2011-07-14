@@ -46,3 +46,8 @@ Changelog:
  perform its action all at once when you select it
 -fixed random chunk generation bug (?)
 -fixed memory leak issues (?)
+
+--- v1.0.9d ---
+-if you have the 'citizens.admin' node and the node 'general.notify-updates' is set to true, you will
+ be notified if a new version of Citizens is available
+-fixed NPCs disappearing
