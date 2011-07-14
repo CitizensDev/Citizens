@@ -507,7 +507,7 @@ public class BasicCommands {
 			modifiers = "tp",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("admin")
 	public static void teleportToNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.teleport(npc.getNPCData().getLocation());
@@ -589,7 +589,7 @@ public class BasicCommands {
 	@CommandRequirements()
 	public static void selectNPC(CommandContext args, Player player,
 			HumanNPC npc) {
-		npc = NPCManager.get(Integer.valueOf(args.getString(1)));
+		npc = NPCManager.get(args.getInteger(1));
 		if (npc == null) {
 			player.sendMessage(ChatColor.RED + "No NPC with the ID "
 					+ StringUtils.wrap(args.getString(1), ChatColor.RED)
@@ -623,17 +623,13 @@ public class BasicCommands {
 			modifiers = "setowner",
 			min = 2,
 			max = 2)
+	@CommandPermissions("modify.basic")
 	public static void setNPCOwner(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (Permission.isAdmin(player)
-				|| Permission.canModify(player, npc, "basic")) {
-			player.sendMessage(ChatColor.GREEN + "The owner of "
-					+ StringUtils.wrap(npc.getStrippedName()) + " is now "
-					+ StringUtils.wrap(args.getString(1)) + ".");
-			npc.getNPCData().setOwner(args.getString(1));
-		} else {
-			player.sendMessage(MessageUtils.noPermissionsMessage);
-		}
+		player.sendMessage(ChatColor.GREEN + "The owner of "
+				+ StringUtils.wrap(npc.getStrippedName()) + " is now "
+				+ StringUtils.wrap(args.getString(1)) + ".");
+		npc.getNPCData().setOwner(args.getString(1));
 	}
 
 	@Command(
