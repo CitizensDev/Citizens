@@ -61,6 +61,7 @@ public class PathNPC extends EntityPlayer {
 		} else {
 			this.path = null;
 		}
+		--this.attackTicks;
 		--this.noDamageTicks; // Update entity
 	}
 

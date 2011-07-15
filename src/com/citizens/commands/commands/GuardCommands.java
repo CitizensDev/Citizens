@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.citizens.npctypes.guards.GuardManager;
 import com.citizens.npctypes.guards.GuardNPC;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.npclib.creatures.CreatureNPCType;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
 import com.citizens.resources.sk89q.CommandPermissions;
@@ -17,6 +18,7 @@ import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.resources.sk89q.ServerCommand;
 import com.citizens.utils.HelpUtils;
 import com.citizens.utils.Messaging;
+import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
 
 @CommandRequirements(
@@ -51,6 +53,7 @@ public class GuardCommands {
 	public static void changeType(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
+		PathUtils.cancelTarget(npc);
 		if (args.getString(0).equalsIgnoreCase("bodyguard")) {
 			if (!guard.isBodyguard()) {
 				guard.setBodyguard();
@@ -80,7 +83,7 @@ public class GuardCommands {
 			aliases = "guard",
 			usage = "blacklist (add|remove) (mob)",
 			desc = "control a guard's blacklist",
-			modifiers = "blacklist",
+			modifiers = { "blacklist", "bl" },
 			min = 1,
 			max = 3)
 	@CommandPermissions("modify.guard")
@@ -101,15 +104,22 @@ public class GuardCommands {
 				player.sendMessage(ChatColor.RED + "No mobs blacklisted.");
 			} else {
 				for (String aList : list) {
-					player.sendMessage(ChatColor.RED + aList);
+					if (aList.isEmpty())
+						continue;
+					if (CreatureType.fromName(StringUtils.capitalise(aList
+							.toLowerCase())) != null)
+						aList = StringUtils.capitalise(aList.toLowerCase());
+					player.sendMessage(ChatColor.GREEN + "    - "
+							+ StringUtils.wrap(aList));
 				}
 			}
 			break;
 		case 3:
 			String mob = args.getString(2).toLowerCase();
 			if (CreatureType.fromName(StringUtils.capitalise(mob)) == null
-					&& !mob.equalsIgnoreCase("all")) {
-				player.sendMessage(ChatColor.RED + "Invalid mob type.");
+					&& !mob.equalsIgnoreCase("all")
+					&& CreatureNPCType.fromName(mob) == null) {
+				player.sendMessage(ChatColor.GRAY + "Invalid mob type.");
 				return;
 			}
 			boolean add = false;
@@ -147,7 +157,7 @@ public class GuardCommands {
 			aliases = "guard",
 			usage = "whitelist (add|remove) (player)",
 			desc = "control a guard's whitelist",
-			modifiers = "whitelist",
+			modifiers = { "whitelist", "wl" },
 			min = 1,
 			max = 3)
 	@CommandPermissions("modify.guard")
@@ -163,7 +173,13 @@ public class GuardCommands {
 				player.sendMessage(ChatColor.RED + "No players whitelisted.");
 			} else {
 				for (String aList : list) {
-					player.sendMessage(ChatColor.GREEN + aList);
+					if (aList.isEmpty())
+						continue;
+					if (CreatureType.fromName(StringUtils.capitalise(aList
+							.toLowerCase())) != null)
+						aList = StringUtils.capitalise(aList.toLowerCase());
+					player.sendMessage(ChatColor.GREEN + "    - "
+							+ StringUtils.wrap(aList));
 				}
 			}
 		} else if (args.argsLength() == 3) {
@@ -218,5 +234,25 @@ public class GuardCommands {
 			Messaging.sendError(player, npc.getStrippedName()
 					+ " must be a bouncer first.");
 		}
+	}
+
+	@Command(
+			aliases = "guard",
+			usage = "aggro",
+			desc = "set a guard to be aggressive",
+			modifiers = "aggro",
+			min = 1,
+			max = 1)
+	@CommandPermissions("modify.guard")
+	public static void toggleAggro(CommandContext args, Player player,
+			HumanNPC npc) {
+		GuardNPC guard = npc.getToggleable("guard");
+		guard.setAggressive(!guard.isAggressive());
+		if (guard.isAggressive())
+			player.sendMessage(StringUtils.wrap(npc.getName())
+					+ " is now aggressive.");
+		else
+			player.sendMessage(StringUtils.wrap(npc.getName())
+					+ " has stopped being aggressive.");
 	}
 }

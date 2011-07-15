@@ -103,6 +103,10 @@ public class QuesterNPC extends Toggleable implements Clickable {
 	}
 
 	private void cycle(Player player) {
+		if (quests == null) {
+			player.sendMessage(ChatColor.GRAY + "No quests available.");
+			return;
+		}
 		quests.addLast(quests.pop());
 		Quest quest = getQuest(quests.peek());
 		display = PageUtils.newInstance(player);

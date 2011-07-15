@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.citizens.Constants;
 import com.citizens.TickTask;
+import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
 import com.citizens.npctypes.interfaces.Clickable;
 import com.citizens.npctypes.interfaces.Damageable;
@@ -160,8 +162,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	}
 
 	public boolean isWhiteListed(Player player) {
-		return player.getName().equals(npc.getOwner())
-				|| this.whitelist.contains("all")
+		return isOwner(player) || this.whitelist.contains("all")
 				|| this.whitelist.contains(player.getName());
 	}
 
@@ -206,8 +207,6 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	}
 
 	public void setAttacking(boolean attacking) {
-		if (!attacking)
-			this.npc.setPaused(false);
 		this.isAttacking = attacking;
 	}
 
@@ -225,9 +224,15 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 			return;
 		}
 		if (isAggressive() && event.getCause() == DamageCause.ENTITY_ATTACK) {
-			target((LivingEntity) ((EntityDamageByEntityEvent) event)
-					.getDamager());
+			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
+			if (!isOwner(ev.getDamager()))
+				target((LivingEntity) ev.getDamager());
 		}
+	}
+
+	private boolean isOwner(Entity damager) {
+		return damager instanceof Player ? NPCManager.validateOwnership(
+				(Player) damager, npc.getUID(), false) : false;
 	}
 
 	@Override

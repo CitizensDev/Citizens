@@ -193,6 +193,7 @@ public class HelpUtils {
 				"control a guard's whitelist");
 		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
+		format(sender, "guard", "aggro", "toggle aggro");
 		footer(sender);
 	}
 

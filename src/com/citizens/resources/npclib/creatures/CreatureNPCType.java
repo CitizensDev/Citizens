@@ -56,4 +56,9 @@ public enum CreatureNPCType {
 	public void setSpawner(Spawner spawner) {
 		this.spawner = spawner;
 	}
+
+	public static CreatureNPCType fromName(String mob) {
+		return CreatureNPCType.valueOf(mob.toUpperCase().replace("CREATURENPC",
+				""));
+	}
 }

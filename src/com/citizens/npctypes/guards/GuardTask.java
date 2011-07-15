@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -16,6 +17,7 @@ import com.citizens.misc.CachedAction;
 import com.citizens.misc.NPCLocation;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.resources.npclib.creatures.CreatureNPC;
 import com.citizens.utils.LocationUtils;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
@@ -36,15 +38,24 @@ public class GuardTask implements Runnable {
 				}
 				if (guard.isAttacking()
 						&& npc.getHandle().hasTarget()
-						&& !LocationUtils.checkLocation(npc.getLocation(), npc
+						&& (!LocationUtils.checkLocation(npc.getLocation(), npc
 								.getHandle().getTarget().getLocation(),
-								guard.getProtectionRadius())) {
+								guard.getProtectionRadius()) || !LocationUtils
+								.checkLocation(npc.getLocation(), npc
+										.getNPCData().getLocation(), guard
+										.getProtectionRadius()))) {
 					npc.getHandle().cancelTarget();
 					GuardManager.returnToBase(npc);
 					guard.setAttacking(false);
 				}
-				if (guard.isAttacking())
+				if (guard.isAttacking()) {
 					continue;
+				}
+				if (npc.isPaused()
+						&& LocationUtils.checkLocation(npc.getLocation(), npc
+								.getNPCData().getLocation())) {
+					npc.setPaused(false);
+				}
 				if (guard.isBouncer()) {
 					Location loc = npc.getLocation();
 					for (Entity temp : npc.getPlayer().getNearbyEntities(
@@ -55,22 +66,9 @@ public class GuardTask implements Runnable {
 							continue;
 						}
 						entity = (LivingEntity) temp;
-						String name = "";
-						if (entity instanceof Player) {
-							Player player = (Player) entity;
-							if (!NPCManager.validateOwnership(player,
-									npc.getUID(), false)) {
-								name = player.getName();
-							}
-						} else {
-							name = entity
-									.getClass()
-									.getName()
-									.toLowerCase()
-									.replace(
-											"org.bukkit.craftbukkit.entity.craft",
-											"");
-						}
+						String name = getNameFromEntity(entity, npc.getUID());
+						if (name.isEmpty())
+							continue;
 						if (LocationUtils.checkLocation(loc,
 								entity.getLocation(),
 								guard.getProtectionRadius())) {
@@ -96,19 +94,13 @@ public class GuardTask implements Runnable {
 								continue;
 							}
 							entity = (LivingEntity) temp;
-							String name = "";
-							if (entity instanceof Player) {
-								Player player = (Player) entity;
-								if (!NPCManager.validateOwnership(player,
-										npc.getUID(), true)) {
-									name = player.getName();
-								}
-							} else {
-								name = entity.getClass().getName()
-										.toLowerCase().replace("entity", "");
-							}
+							String name = getNameFromEntity(entity,
+									npc.getUID());
+							if (name.isEmpty())
+								continue;
 							if (LocationUtils.checkLocation(ownerloc,
-									entity.getLocation(), 25)) {
+									entity.getLocation(),
+									guard.getProtectionRadius())) {
 								cacheActions(npc, entity, entity.getEntityId(),
 										name);
 							} else {
@@ -118,7 +110,7 @@ public class GuardTask implements Runnable {
 						entity = null;
 						if (LocationUtils.checkLocation(npc.getLocation(),
 								p.getLocation(), 25)) {
-							PathUtils.target(npc, p, false, -1, 2, 25);
+							PathUtils.target(npc, p, false, -1, -1, 25);
 						} else {
 							npc.teleport(p.getLocation());
 						}
@@ -137,6 +129,26 @@ public class GuardTask implements Runnable {
 		}
 	}
 
+	private String getNameFromEntity(Entity entity, int UID) {
+		String name = "";
+		if (((CraftEntity) entity).getHandle() instanceof CreatureNPC) {
+			name = "npcmob."
+					+ ((CreatureNPC) ((CraftEntity) entity).getHandle())
+							.getType().name().toLowerCase()
+							.replace("creaturenpc", "");
+		} else if (entity instanceof Player) {
+			Player player = (Player) entity;
+			if (!NPCManager.validateOwnership(player, UID, false)) {
+				name = player.getName();
+			} else
+				return "";
+		} else {
+			name = entity.getClass().getName().toLowerCase()
+					.replace("org.bukkit.craftbukkit.entity.craft", "");
+		}
+		return name;
+	}
+
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
 		GuardNPC guard = npc.getToggleable("guard");
@@ -146,8 +158,13 @@ public class GuardTask implements Runnable {
 		if (guard.isBouncer()) {
 			CachedAction cached = ActionManager.getAction(entityID, name);
 			if (!cached.has("attemptedEntry")) {
+				boolean mob = false;
+				if (name.contains("npcmob.")) {
+					name = name.replace("npcmob.", "");
+					mob = true;
+				}
 				if (isBlacklisted(npc, name)
-						|| (entity instanceof Player && !guard
+						|| (!mob && entity instanceof Player && !guard
 								.isWhiteListed((Player) entity))) {
 					attack(entity, guard);
 					guard.setAttacking(true);

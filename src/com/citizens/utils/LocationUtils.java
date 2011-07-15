@@ -45,4 +45,8 @@ public class LocationUtils {
 				&& (pY >= lY - range && pY <= lY + range)
 				&& (pZ >= lZ - halved && pZ <= lZ + halved);
 	}
+
+	public static boolean checkLocation(Location loc, Location second) {
+		return checkLocation(loc, second, 0);
+	}
 }
