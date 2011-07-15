@@ -28,6 +28,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 	private int mana = 10;
 	private String time = "morning";
 	private CreatureType mob = CreatureType.CHICKEN;
+	private boolean unlimitedMana = false;
 
 	/**
 	 * Wizard NPC object
@@ -243,12 +244,40 @@ public class WizardNPC extends Toggleable implements Clickable {
 		this.time = time;
 	}
 
+	/**
+	 * Get the mob that a wizard will spawn
+	 * 
+	 * @return
+	 */
 	public CreatureType getMob() {
 		return mob;
 	}
 
+	/**
+	 * Set the mob that a wizard will spawn
+	 * 
+	 * @param mob
+	 */
 	public void setMob(CreatureType mob) {
 		this.mob = mob;
+	}
+
+	/**
+	 * Get whether a wizard has unlimited mana
+	 * 
+	 * @return
+	 */
+	public boolean hasUnlimitedMana() {
+		return unlimitedMana;
+	}
+
+	/**
+	 * Set whether a wizard has unlimited mana
+	 * 
+	 * @param unlimitedMana
+	 */
+	public void setUnlimitedMana(boolean unlimitedMana) {
+		this.unlimitedMana = unlimitedMana;
 	}
 
 	@Override

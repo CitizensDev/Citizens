@@ -149,7 +149,9 @@ public class HelpUtils {
 				"add a tp location to the wizard");
 		format(sender, "wizard", "removeloc [id]", "remove the tp location");
 		format(sender, "wizard", "mode [mode]", "change the mode of a wizard");
-		format(sender, "wizard", "status", "display the mode/mana of a wizard");
+		format(sender, "wizard", "status", "display the status of a wizard");
+		format(sender, "wizard", "unlimited",
+				"toggle a wizard's mana as unlimited");
 		footer(sender);
 	}
 

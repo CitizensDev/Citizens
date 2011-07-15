@@ -16,6 +16,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 	private static final String mode = ".wizard.mode";
 	private static final String time = ".wizard.time";
 	private static final String mob = ".wizard.mob";
+	private static final String unlimitedMana = ".wizard.unlimited-mana";
 
 	public static void setEnabled(int UID, boolean enabled) {
 		profiles.setBoolean(UID + isWizard, enabled);
@@ -71,6 +72,14 @@ public class WizardProperties extends PropertyManager implements Saveable {
 		return CreatureType.CREEPER;
 	}
 
+	public static void saveUnlimitedMana(int UID, boolean unlimited) {
+		profiles.setBoolean(UID + unlimitedMana, unlimited);
+	}
+
+	public static boolean hasUnlimitedMana(int UID) {
+		return profiles.getBoolean(UID + unlimitedMana);
+	}
+
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
@@ -83,6 +92,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 				saveMode(npc.getUID(), wizard.getMode());
 				saveTime(npc.getUID(), wizard.getTime());
 				saveMob(npc.getUID(), wizard.getMob());
+				saveUnlimitedMana(npc.getUID(), wizard.hasUnlimitedMana());
 			}
 		}
 	}
@@ -97,6 +107,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 			wizard.setMode(getMode(npc.getUID()));
 			wizard.setTime(getTime(npc.getUID()));
 			wizard.setMob(getMob(npc.getUID()));
+			wizard.setUnlimitedMana(hasUnlimitedMana(npc.getUID()));
 		}
 		saveState(npc);
 	}
@@ -137,6 +148,10 @@ public class WizardProperties extends PropertyManager implements Saveable {
 		}
 		if (profiles.pathExists(UID + mob)) {
 			profiles.setString(nextUID + mob, profiles.getString(UID + mob));
+		}
+		if (profiles.pathExists(UID + unlimitedMana)) {
+			profiles.setString(nextUID + unlimitedMana,
+					profiles.getString(UID + unlimitedMana));
 		}
 	}
 }

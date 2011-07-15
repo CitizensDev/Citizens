@@ -11,8 +11,12 @@ public class WizardTask implements Runnable {
 	@Override
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
-			if (Constants.regenWizardMana) {
-				HumanNPC npc = entry.getValue();
+			HumanNPC npc = entry.getValue();
+			if (!npc.isType("wizard")) {
+				return;
+			}
+			WizardNPC wizard = npc.getToggleable("wizard");
+			if (Constants.regenWizardMana && !wizard.hasUnlimitedMana()) {
 				WizardManager.increaseMana(npc, 1);
 			}
 		}

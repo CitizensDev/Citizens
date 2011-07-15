@@ -11,9 +11,6 @@ import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
 public class WizardManager {
-	/**
-	 * Wizard modes
-	 */
 	public enum WizardMode {
 		/**
 		 * Teleports players
@@ -89,9 +86,8 @@ public class WizardManager {
 	 */
 	public static boolean spawnMob(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
-			WizardNPC wizard = npc.getToggleable("wizard");
 			player.getWorld().spawnCreature(player.getLocation(),
-					wizard.getMob());
+					((WizardNPC) npc.getToggleable("wizard")).getMob());
 			return true;
 		}
 		return false;
@@ -133,6 +129,9 @@ public class WizardManager {
 	 */
 	public static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
 		WizardNPC wizard = npc.getToggleable("wizard");
+		if (wizard.hasUnlimitedMana()) {
+			return true;
+		}
 		if (wizard.getMana() - mana >= 0) {
 			wizard.setMana(wizard.getMana() - mana);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())

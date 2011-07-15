@@ -73,14 +73,18 @@ public class WizardCommands {
 	@CommandPermissions("use.wizard")
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
-		player.sendMessage(ChatColor.AQUA
+		player.sendMessage(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN + npc.getStrippedName()
-						+ "'s Wizard Status" + ChatColor.AQUA));
+						+ "'s Wizard Status" + ChatColor.YELLOW));
 		WizardNPC wizard = npc.getToggleable("wizard");
 		player.sendMessage(ChatColor.GREEN + "    Mode: "
 				+ StringUtils.wrap(wizard.getMode()));
+		String mana = "" + wizard.getMana();
+		if (wizard.hasUnlimitedMana()) {
+			mana = "unlimited";
+		}
 		player.sendMessage(ChatColor.GREEN + "    Mana: "
-				+ StringUtils.wrap(wizard.getMana()));
+				+ StringUtils.wrap(mana));
 	}
 
 	@Command(
@@ -162,6 +166,27 @@ public class WizardCommands {
 		} else {
 			player.sendMessage(ChatColor.RED + npc.getStrippedName()
 					+ " cannot perform that action in this mode.");
+		}
+	}
+
+	@Command(
+			aliases = "wizard",
+			usage = "unlimited",
+			desc = "toggle a wizard's mana as unlimited",
+			modifiers = "unlimited",
+			min = 1,
+			max = 1)
+	@CommandPermissions("modify.wizard")
+	public static void toggleUnlimitedMana(CommandContext args, Player player,
+			HumanNPC npc) {
+		WizardNPC wizard = npc.getToggleable("wizard");
+		wizard.setUnlimitedMana(!wizard.hasUnlimitedMana());
+		if (wizard.hasUnlimitedMana()) {
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " now has unlimited mana.");
+		} else {
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " no longer has unlimited mana.");
 		}
 	}
 }

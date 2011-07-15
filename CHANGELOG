@@ -53,3 +53,5 @@ Changelog:
 -fixed NPCs disappearing
 -fixed Evil NPCs spawning in blocks
 -fixed Evil NPCs failing to get damaged properly
+-wizard-interact-item can now be set to '*'
+-added option to have a wizard with unlimited mana (toggle using in-game command '/wizard unlimited')
