@@ -122,7 +122,6 @@ public class Constants {
 		rightClickPause = settings.getInt("ticks.waypoints.right-click-pause");
 		wizardMaxLocations = settings
 				.getInt("general.wizards.wizard-max-locations");
-		wizardInteractItem = settings.getInt("items.wizards.interact-item");
 		wizardManaRegenItem = settings.getInt("items.wizards.mana-regen-item");
 		maxWizardMana = settings.getInt("general.wizards.max-mana");
 		guardRespawnDelay = settings.getInt("ticks.guards.respawn-delay");

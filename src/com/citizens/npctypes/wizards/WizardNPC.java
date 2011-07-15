@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
+import com.citizens.Citizens;
 import com.citizens.Constants;
 import com.citizens.Permission;
 import com.citizens.economy.EconomyHandler.Operation;
@@ -302,7 +303,8 @@ public class WizardNPC extends Toggleable implements Clickable {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			WizardNPC wizard = npc.getToggleable("wizard");
-			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
+			if (Citizens.validateTool("items.wizards.interact-item", player
+					.getItemInHand().getTypeId(), player.isSneaking())) {
 				WizardMode mode = wizard.getMode();
 				switch (mode) {
 				case TELEPORT:
