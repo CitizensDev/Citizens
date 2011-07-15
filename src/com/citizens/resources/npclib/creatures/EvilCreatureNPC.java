@@ -8,11 +8,7 @@ import net.minecraft.server.World;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.entity.CraftEntity;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Constants;
@@ -53,21 +49,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void onDeath() {
 		ItemStack item;
-		if ((item = UtilityProperties.getRandomDrop()) != null) {
+		if ((item = UtilityProperties.getRandomDrop(Constants.evilDrops)) != null) {
 			this.getEntity().getWorld()
 					.dropItemNaturally(this.getLocation(), item);
-		}
-	}
-
-	@Override
-	public void onDamage(EntityDamageEvent event) {
-		if (event instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
-			Entity damager = e.getDamager();
-			if (damager != null) {
-				this.targetAggro = true;
-				this.targetEntity = ((CraftEntity) damager).getHandle();
-			}
 		}
 	}
 

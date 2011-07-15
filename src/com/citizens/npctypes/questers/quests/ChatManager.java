@@ -8,9 +8,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatManager {
 	public enum QuestOperation {
-		CREATE,
-		EDIT,
-		REMOVE;
+		CREATE, EDIT, REMOVE;
 	}
 
 	private static final List<String> hasEditMode = new ArrayList<String>();

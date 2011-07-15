@@ -2,7 +2,7 @@
 By fullwall and aPunch
 
 Supports:
--Minecraft Beta 1.7.2
+-Minecraft Beta 1.7.3
 -CraftBukkit 953
 -Permissions 2.7.x and 3.x
 -iConomy 4 & 5
@@ -51,3 +51,5 @@ Changelog:
 -if you have the 'citizens.admin' node and the node 'general.notify-updates' is set to true, you will
  be notified if a new version of Citizens is available
 -fixed NPCs disappearing
+-fixed Evil NPCs spawning in blocks
+-fixed Evil NPCs failing to get damaged properly
