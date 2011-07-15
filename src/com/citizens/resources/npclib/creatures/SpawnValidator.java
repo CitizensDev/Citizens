@@ -20,8 +20,14 @@ public class SpawnValidator {
 	public SpawnValidator change(Type type, int... ids) {
 		int begin, end;
 		switch (type) {
+		case ALL:
+			all();
+			break;
 		case ALL_EXCEPT:
 			all();
+			for (int id : ids) {
+				set(id, false);
+			}
 			break;
 		case BETWEEN:
 			begin = ids[0];
@@ -79,6 +85,18 @@ public class SpawnValidator {
 		return get(id);
 	}
 
+	private void all() {
+		for (byte i = 0; i <= 63; ++i) {
+			flags[i] = 0xF;
+		}
+	}
+
+	private void reset() {
+		for (byte i = 0; i <= 63; ++i) {
+			flags[i] = 0;
+		}
+	}
+
 	private boolean get(int index) {
 		index &= 255;
 		int get = index / 4;
@@ -110,18 +128,6 @@ public class SpawnValidator {
 		}
 	}
 
-	private void all() {
-		for (byte i = 0; i <= 63; ++i) {
-			flags[i] = 0xF;
-		}
-	}
-
-	private void reset() {
-		for (byte i = 0; i <= 63; ++i) {
-			flags[i] = 0;
-		}
-	}
-
 	public static class Spawn {
 		public enum Range {
 			ALL,
@@ -130,6 +136,7 @@ public class SpawnValidator {
 		}
 
 		public enum Type {
+			ALL,
 			ALL_EXCEPT,
 			BETWEEN,
 			INCLUDING,

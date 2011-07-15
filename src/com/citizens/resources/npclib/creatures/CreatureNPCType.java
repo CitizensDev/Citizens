@@ -7,12 +7,11 @@ import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Type;
 public enum CreatureNPCType {
 	// TODO - might be a little longwinded on constructing validators.
 	EVIL(EvilCreatureNPC.class, Constants.maxEvils, Constants.evilNames,
-			new SpawnValidator(Type.ALL_EXCEPT, 0).set(Range.LIQUIDS, false),
-			new SpawnValidator(Range.DEFAULT, false)),
+			new SpawnValidator(Type.JUST, 0), new SpawnValidator(Range.DEFAULT,
+					false)),
 	PIRATE(PirateCreatureNPC.class, Constants.maxPirates,
-			Constants.pirateNames, new SpawnValidator(Type.ALL_EXCEPT, 0).set(
-					Range.LIQUIDS, false), new SpawnValidator(Type.INCLUDING,
-					8, 9));
+			Constants.pirateNames, new SpawnValidator(Type.JUST, 0),
+			new SpawnValidator(Type.INCLUDING, 8, 9));
 	private final int max;
 	private final String possible;
 	private final Class<? extends CreatureNPC> instance;
