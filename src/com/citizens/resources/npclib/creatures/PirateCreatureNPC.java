@@ -7,7 +7,6 @@ import net.minecraft.server.World;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PirateCreatureNPC extends CreatureNPC {
@@ -39,19 +38,19 @@ public class PirateCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void doTick() {
+		this.randomPather = false;
 		if (isBoating()) {
 			// findShore();
 		} else {
-			// lootInventory();
-			// lootChests();
-			// stealEconomyPluginMoney();
+			// loot();
 		}
 	}
 
 	private boolean isBoating() {
 		Vehicle vehicle = this.npc.getPlayer().getVehicle();
-		if (vehicle == null)
+		if (vehicle == null) {
 			return false;
+		}
 		return vehicle instanceof Boat;
 	}
 
@@ -69,10 +68,6 @@ public class PirateCreatureNPC extends CreatureNPC {
 	private void removeBoat() {
 		this.npc.getPlayer().eject();
 		this.npc.getPlayer().getVehicle().remove();
-	}
-
-	@Override
-	public void onDamage(EntityDamageEvent event) {
 	}
 
 	@Override

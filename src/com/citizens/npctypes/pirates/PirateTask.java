@@ -5,6 +5,8 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,9 +17,16 @@ import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.LocationUtils;
 import com.citizens.utils.MessageUtils;
+import com.citizens.utils.StringUtils;
 import com.iConomy.util.Messaging;
 
 public class PirateTask implements Runnable {
+	public enum LootType {
+		INVENTORY, CHEST, ECONOMY_PLUGIN;
+	}
+
+	private final Random random = new Random();
+
 	@Override
 	public void run() {
 		HumanNPC npc;
@@ -26,15 +35,26 @@ public class PirateTask implements Runnable {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			{
 				npc = entry.getValue();
-				npc.doTick();
-				UID = entry.getKey();
-				for (Player p : online) {
-					String name = p.getName();
-					if (LocationUtils.checkLocation(npc.getLocation(),
-							p.getLocation(), 0)) {
-						cacheActions(p, npc, UID, name);
-					} else {
-						resetActions(UID, name, npc);
+				if (npc.isType("pirate")) {
+					npc.doTick();
+					UID = entry.getKey();
+					for (Player p : online) {
+						String name = p.getName();
+						if (LocationUtils.checkLocation(npc.getLocation(),
+								p.getLocation(), 0)) {
+							cachePlayerActions(p, npc, UID, name);
+						} else {
+							resetActions(UID, name, npc);
+						}
+					}
+					for (BlockState block : npc.getLocation().getBlock()
+							.getChunk().getTileEntities()) {
+						if (block.getType() == Material.CHEST
+								&& LocationUtils.checkLocation(npc
+										.getLocation(), block.getBlock()
+										.getLocation(), 10)) {
+
+						}
 					}
 				}
 			}
@@ -44,14 +64,24 @@ public class PirateTask implements Runnable {
 	private void resetActions(int entityID, String name, HumanNPC npc) {
 		ActionManager.resetAction(entityID, name, "takenItem",
 				npc.isType("pirate"));
+		ActionManager.resetAction(entityID, name, "robbedAccount",
+				npc.isType("pirate"));
 	}
 
-	private void cacheActions(Player player, HumanNPC npc, int entityID,
+	private void cachePlayerActions(Player player, HumanNPC npc, int entityID,
 			String name) {
 		CachedAction cached = ActionManager.getAction(entityID, name);
-		if (!cached.has("takenItem") && npc.isType("pirate")) {
-			steal(player, npc);
-			cached.set("takenItem");
+		int rand = random.nextInt(1);
+		if (rand == 0) {
+			if (!cached.has("takenItem")) {
+				steal(player, npc, LootType.INVENTORY);
+				cached.set("takenItem");
+			}
+		} else {
+			if (!cached.has("robbedAccount")) {
+				steal(player, npc, LootType.ECONOMY_PLUGIN);
+				cached.set("robbedAccount");
+			}
 		}
 		ActionManager.putAction(entityID, name, cached);
 	}
@@ -62,13 +92,14 @@ public class PirateTask implements Runnable {
 	 * 
 	 * @param player
 	 * @param npc
+	 * @param action
 	 */
-	private void steal(Player player, HumanNPC npc) {
-		Random random = new Random();
-		int randomSlot;
-		int count = 0;
-		ItemStack item = null;
-		if (npc.isType("pirate")) {
+	private void steal(Player player, HumanNPC npc, LootType action) {
+		switch (action) {
+		case INVENTORY:
+			int randomSlot;
+			int count = 0;
+			ItemStack item = null;
 			int limit = player.getInventory().getSize();
 			while (true) {
 				randomSlot = random.nextInt(limit);
@@ -77,15 +108,14 @@ public class PirateTask implements Runnable {
 					player.getInventory().setItem(randomSlot, null);
 					Messaging
 							.send(player,
-									ChatColor.RED
-											+ "["
-											+ npc.getStrippedName()
-											+ "] "
+									StringUtils.colourise(Constants.chatFormat
+											.replace("%name%",
+													npc.getStrippedName()))
 											+ ChatColor.WHITE
 											+ MessageUtils
 													.getRandomMessage(Constants.pirateStealMessages));
 					// may want to check if this returns a non-empty
-					// hashmap (bandit didn't have enough room).
+					// hashmap (pirate didn't have enough room).
 					npc.getInventory().addItem(item);
 					break;
 				} else {
@@ -95,6 +125,13 @@ public class PirateTask implements Runnable {
 					count += 1;
 				}
 			}
+			break;
+		case CHEST:
+			// TODO loot from chests
+			break;
+		case ECONOMY_PLUGIN:
+			// TODO steal player's economy money
+			break;
 		}
 	}
 }

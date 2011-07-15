@@ -5,7 +5,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.citizens.resources.npclib.CraftNPC;
@@ -51,7 +54,16 @@ public abstract class CreatureNPC extends CraftNPC {
 	 * 
 	 * @param event
 	 */
-	public abstract void onDamage(EntityDamageEvent event);
+	public void onDamage(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
+			Entity damager = e.getDamager();
+			if (damager != null) {
+				this.targetAggro = true;
+				this.targetEntity = ((CraftEntity) damager).getHandle();
+			}
+		}
+	}
 
 	/**
 	 * Returns the type of this creature.

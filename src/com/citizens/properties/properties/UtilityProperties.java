@@ -5,7 +5,6 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Constants;
 import com.citizens.interfaces.Storage;
 import com.citizens.npcs.NPCManager;
 import com.citizens.properties.ConfigurationHandler;
@@ -53,8 +52,8 @@ public class UtilityProperties {
 		return split[new Random().nextInt(split.length)];
 	}
 
-	public static ItemStack getRandomDrop() {
-		String[] split = Constants.evilDrops.split(",");
+	public static ItemStack getRandomDrop(String drops) {
+		String[] split = drops.split(",");
 		int id = Integer.parseInt(split[new Random().nextInt(split.length)]);
 		int amount = new Random().nextInt(3);
 		if (Material.getMaterial(id) != null) {
