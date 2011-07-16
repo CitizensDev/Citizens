@@ -357,4 +357,9 @@ public final class PropertyHandler implements Storage {
 	public void clear() {
 		this.properties.clear();
 	}
+
+	@Override
+	public Object getRaw(String string) {
+		return properties.getProperty(string);
+	}
 }

@@ -68,4 +68,6 @@ public interface Storage {
 	public void setBoolean(String key, boolean value);
 
 	public void setBoolean(int key, boolean value);
+
+	public Object getRaw(String string);
 }

@@ -339,4 +339,9 @@ public class ConfigurationHandler implements Storage {
 	public ConfigurationNode getNode(String path) {
 		return this.config.getNode(path);
 	}
+
+	@Override
+	public Object getRaw(String path) {
+		return config.getProperty(path);
+	}
 }

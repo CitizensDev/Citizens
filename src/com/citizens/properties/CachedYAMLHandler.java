@@ -309,4 +309,9 @@ public class CachedYAMLHandler implements Storage {
 		}
 		return ret;
 	}
+
+	@Override
+	public Object getRaw(String string) {
+		return config.getProperty(string);
+	}
 }

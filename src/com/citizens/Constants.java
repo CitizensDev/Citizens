@@ -1,10 +1,71 @@
 package com.citizens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.citizens.economy.EconomyHandler;
 import com.citizens.interfaces.Storage;
 import com.citizens.properties.properties.UtilityProperties;
 
 public class Constants {
+	private enum Config {
+		ECONOMY,
+		MOB,
+		SETTINGS;
+
+		private final List<Constant> settings = new ArrayList<Constant>();
+
+		public void add(Constant constant) {
+			this.settings.add(constant);
+		}
+
+		public List<Constant> get() {
+			return this.settings;
+		}
+	}
+
+	public enum Constant {
+		EvilNPCTameItem(Config.MOB, "evil.items.tame-item", 354),
+		EvilNPCTameChance(Config.MOB, "evil.misc.tame-chance", 5);
+
+		private final String path;
+		private Object value;
+
+		Constant(Config config, String path, Object value) {
+			this.path = path;
+			this.value = value;
+			config.add(this);
+		}
+
+		public boolean getBoolean() {
+			return (Boolean) this.getValue();
+		}
+
+		public double getDouble() {
+			return (Double) this.getValue();
+		}
+
+		public int getInt() {
+			return (Integer) this.getValue();
+		}
+
+		public String getString() {
+			return (String) this.getValue();
+		}
+
+		public Object getValue() {
+			return this.value;
+		}
+
+		public void set(Object value) {
+			this.value = value;
+		}
+
+		public String getPath() {
+			return path;
+		}
+	}
+
 	public static int evilNPCTameItem = 354;
 	public static int evilNPCTameChance = 5;
 	public static int guardRespawnDelay = 100;
@@ -70,6 +131,25 @@ public class Constants {
 	 * Sets up miscellaneous variables, mostly reading from property files.
 	 */
 	public static void setupVariables() {
+		Storage local;
+		for (Config config : Config.values()) {
+			switch (config) {
+			case ECONOMY:
+				local = UtilityProperties.getEconomySettings();
+				break;
+			case MOB:
+				local = UtilityProperties.getMobSettings();
+				break;
+			case SETTINGS:
+				local = UtilityProperties.getSettings();
+				break;
+			default:
+				local = UtilityProperties.getSettings();
+			}
+			for (Constant constant : config.get()) {
+				constant.set(local.getRaw(constant.getPath()));
+			}
+		}
 		// ####Citizens settings####
 		Storage settings = UtilityProperties.getSettings();
 
@@ -98,7 +178,6 @@ public class Constants {
 		npcColour = settings.getString("general.colors.npc-colour");
 		talkItems = settings.getString("items.basic.talk-items");
 		selectItems = settings.getString("items.basic.select-items");
-
 		// Double defaults
 		defaultBouncerProtectionRadius = settings
 				.getDouble("range.guards.default-bouncer-protection-radius");
