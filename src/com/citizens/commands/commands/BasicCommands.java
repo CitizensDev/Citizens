@@ -12,8 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.Constants;
+import com.citizens.SettingsManager;
 import com.citizens.Permission;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npcs.NPCDataManager;
@@ -93,7 +94,7 @@ public class BasicCommands {
 
 		UtilityProperties.initialize();
 		PropertyManager.loadAll();
-		Constants.setupVariables();
+		SettingsManager.setupVariables();
 
 		Messaging.log("Reloaded.");
 		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
@@ -139,10 +140,11 @@ public class BasicCommands {
 	@CommandPermissions("admin")
 	public static void toggleDebugMode(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		UtilityProperties.getSettings().setBoolean("general.debug-mode",
-				!Constants.debugMode);
-		Constants.debugMode = !Constants.debugMode;
-		if (Constants.debugMode) {
+		boolean debug = Constant.DebugMode.getBoolean();
+		UtilityProperties.getSettings()
+				.setBoolean("general.debug-mode", !debug);
+		debug = !debug;
+		if (debug) {
 			Messaging.log("Debug mode is now on.");
 			if (sender instanceof Player) {
 				Messaging.send((Player) sender, npc, "Debug mode is now "
@@ -186,8 +188,8 @@ public class BasicCommands {
 	@CommandPermissions("create.basic")
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
-				&& !Permission.isAdmin(player)) {
+		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
+				.getInt() && !Permission.isAdmin(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -207,7 +209,7 @@ public class BasicCommands {
 
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
-		Messaging.send(player, created, Constants.creationMessage);
+		Messaging.send(player, created, Constant.CreationMessage.getString());
 
 		if (EconomyHandler.useEconomy()) {
 			double paid = EconomyHandler.pay(Operation.BASIC_CREATION, player);
@@ -218,7 +220,7 @@ public class BasicCommands {
 		}
 
 		NPCManager.selectNPC(player, NPCManager.get(UID));
-		Messaging.send(player, created, Constants.selectionMessage);
+		Messaging.send(player, created, Constant.SelectionMessage.getString());
 	}
 
 	@Command(
@@ -287,8 +289,8 @@ public class BasicCommands {
 			max = 1)
 	@CommandPermissions("create.basic")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
-		if (UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
-				&& !Permission.isAdmin(player)) {
+		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
+				.getInt() && !Permission.isAdmin(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -596,7 +598,7 @@ public class BasicCommands {
 					+ " exists.");
 		} else {
 			NPCManager.selectNPC(player, npc);
-			Messaging.send(player, npc, Constants.selectionMessage);
+			Messaging.send(player, npc, Constant.SelectionMessage.getString());
 		}
 	}
 

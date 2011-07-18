@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Storage;
 import com.citizens.utils.Messaging;
 
@@ -133,7 +133,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void removeKey(String key) {
 		this.properties.remove(key);
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -182,7 +182,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setString(String key, String value) {
 		this.properties.setProperty(key, value);
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -223,7 +223,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setInt(String key, int value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -264,7 +264,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setDouble(String key, double value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -305,7 +305,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setLong(String key, long value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -344,7 +344,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setBoolean(String key, boolean value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}

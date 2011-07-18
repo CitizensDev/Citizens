@@ -7,13 +7,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Constants;
 import com.citizens.CreatureTask;
 import com.citizens.Permission;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.npcs.NPCManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.InventoryUtils;
@@ -49,7 +48,8 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void onDeath() {
 		ItemStack item;
-		if ((item = UtilityProperties.getRandomDrop(Constants.evilDrops)) != null) {
+		if ((item = UtilityProperties.getRandomDrop(Constant.EvilDrops
+				.getString())) != null) {
 			this.getEntity().getWorld()
 					.dropItemNaturally(this.getLocation(), item);
 		}
@@ -62,8 +62,8 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onRightClick(Player player) {
-		if (UtilityProperties.getNPCCount(player.getName()) >= Constants.maxNPCsPerPlayer
-				&& !Permission.isAdmin(player)) {
+		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
+				.getInt() && !Permission.isAdmin(player)) {
 			Messaging
 					.sendError(
 							player,
@@ -71,10 +71,11 @@ public class EvilCreatureNPC extends CreatureNPC {
 			return;
 		}
 		if (npc.getHandle() instanceof CreatureNPC
-				&& player.getItemInHand().getTypeId() == Constants.evilNPCTameItem) {
-			if (new Random().nextInt(100) <= Constants.evilNPCTameChance) {
-				InventoryUtils.decreaseItemInHand(player,
-						Material.getMaterial(Constants.evilNPCTameItem));
+				&& player.getItemInHand().getTypeId() == Constant.EvilNPCTameItem
+						.getInt()) {
+			if (new Random().nextInt(100) <= Constant.EvilNPCTameChance
+					.getInt()) {
+				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
 				CreatureTask.despawn(this);
 				NPCManager.register(npc.getName(), player.getLocation(),
@@ -86,12 +87,13 @@ public class EvilCreatureNPC extends CreatureNPC {
 				Messaging
 						.send(player,
 								this.npc,
-								StringUtils.colourise(Constants.chatFormat
-										.replace("%name%",
+								StringUtils.colourise(Constant.ChatFormat
+										.getString().replace("%name%",
 												npc.getStrippedName()))
 										+ ChatColor.WHITE
 										+ MessageUtils
-												.getRandomMessage(Constants.failureToTameMessages));
+												.getRandomMessage(Constant.FailureToTameMessages
+														.getString()));
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCTypeManager;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
@@ -26,7 +26,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 
 	private double getProtectionRadius(int UID) {
 		return profiles.getDouble(UID + radius,
-				Constants.defaultBouncerProtectionRadius);
+				Constant.DefaultBouncerProtectionRadius.getDouble());
 	}
 
 	private void saveAggressive(int UID, boolean aggro) {

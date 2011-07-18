@@ -3,13 +3,12 @@ package com.citizens.npctypes.wizards;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.citizens.Citizens;
-import com.citizens.Constants;
 import com.citizens.Permission;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npctypes.interfaces.Clickable;
 import com.citizens.npctypes.interfaces.Toggleable;
@@ -288,7 +287,8 @@ public class WizardNPC extends Toggleable implements Clickable {
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
-			if (player.getItemInHand().getTypeId() == Constants.wizardInteractItem) {
+			if (player.getItemInHand().getTypeId() == Constant.WizardInteractItem
+					.getInt()) {
 				WizardNPC wizard = npc.getToggleable("wizard");
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
@@ -357,22 +357,23 @@ public class WizardNPC extends Toggleable implements Clickable {
 							+ "No valid mode selected.");
 					break;
 				}
-			} else if (player.getItemInHand().getTypeId() == Constants.wizardManaRegenItem) {
+			} else if (player.getItemInHand().getTypeId() == Constant.WizardManaRegenItem
+					.getInt()) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
-				if (wizard.getMana() + 10 < Constants.maxWizardMana) {
+				if (wizard.getMana() + 10 < Constant.MaxWizardMana.getInt()) {
 					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
-				} else if (wizard.getMana() + 10 == Constants.maxWizardMana) {
-					mana = Constants.maxWizardMana;
+				} else if (wizard.getMana() + 10 == Constant.MaxWizardMana
+						.getInt()) {
+					mana = Constant.MaxWizardMana.getInt();
 					msg += " mana has been fully replenished.";
 				} else {
 					msg += " mana cannot be regenerated with that item any further.";
 					return;
 				}
-				InventoryUtils.decreaseItemInHand(player,
-						Material.getMaterial(Constants.wizardManaRegenItem));
+				InventoryUtils.decreaseItemInHand(player);
 				player.sendMessage(msg);
 				wizard.setMana(mana);
 			}

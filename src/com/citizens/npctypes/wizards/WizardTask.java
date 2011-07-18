@@ -2,7 +2,7 @@ package com.citizens.npctypes.wizards;
 
 import java.util.Map.Entry;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 
@@ -16,7 +16,8 @@ public class WizardTask implements Runnable {
 				return;
 			}
 			WizardNPC wizard = npc.getToggleable("wizard");
-			if (Constants.regenWizardMana && !wizard.hasUnlimitedMana()) {
+			if (Constant.RegenWizardMana.getBoolean()
+					&& !wizard.hasUnlimitedMana()) {
 				WizardManager.increaseMana(npc, 1);
 			}
 		}

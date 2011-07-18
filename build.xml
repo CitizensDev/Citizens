@@ -28,7 +28,6 @@
  	    	<pathelement location="${libs}/iCo5.jar"/>
  	        <pathelement location="${libs}/iConomy.jar"/>
  	    	<pathelement location="${libs}/Permissions.jar"/>
- 	   		<pathelement location="${libs}/BukkitContrib.jar"/>
  	    </classpath>
     </javac>
   </target>

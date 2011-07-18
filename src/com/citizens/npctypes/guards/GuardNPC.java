@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.TickTask;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
@@ -243,12 +243,13 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
 					+ " died.");
 		event.getDrops().clear();
-		TickTask.scheduleRespawn(this.npc, Constants.guardRespawnDelay);
+		TickTask.scheduleRespawn(this.npc, Constant.GuardRespawnDelay.getInt());
 	}
 
 	public void target(LivingEntity entity) {
 		this.npc.setPaused(true);
 		this.setAttacking(true);
-		PathUtils.target(npc, entity, true, -1, -1, Constants.pathFindingRange);
+		PathUtils.target(npc, entity, true, -1, -1,
+				Constant.PathfindingRange.getFloat());
 	}
 }

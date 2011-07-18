@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.citizens.Constants;
 import com.citizens.Permission;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npctypes.interfaces.Clickable;
@@ -114,10 +114,11 @@ public class HealerNPC extends Toggleable implements Clickable {
 		int playerHealth = player.getHealth();
 		int healerHealth = healer.getHealth();
 		if (Permission.canUse(player, npc, getType())) {
-			if (player.getItemInHand().getTypeId() == Constants.healerTakeHealthItem) {
+			if (player.getItemInHand().getTypeId() == Constant.HealerTakeHealthItem
+					.getInt()) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
-						if (Constants.payForHealerHeal) {
+						if (Constant.PayForHealerHeal.getBoolean()) {
 							buyHeal(player, npc, Operation.HEALER_HEAL, true);
 						} else {
 							player.setHealth(playerHealth + 1);
@@ -136,7 +137,8 @@ public class HealerNPC extends Toggleable implements Clickable {
 					player.sendMessage(ChatColor.GREEN
 							+ "You are fully healed.");
 				}
-			} else if (player.getItemInHand().getTypeId() == Constants.healerGiveHealthItem) {
+			} else if (player.getItemInHand().getTypeId() == Constant.HealerGiveHealthItem
+					.getInt()) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
 						player.setHealth(playerHealth - 1);
@@ -159,8 +161,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 					player.sendMessage(ChatColor.GREEN + "You restored all of "
 							+ StringUtils.wrap(npc.getStrippedName())
 							+ "'s health with a magical block of diamond.");
-					InventoryUtils.decreaseItemInHand(player,
-							Material.DIAMOND_BLOCK);
+					InventoryUtils.decreaseItemInHand(player);
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " is fully healed.");

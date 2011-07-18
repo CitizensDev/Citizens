@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.citizens.SettingsManager.Constant;
 import com.citizens.misc.ActionManager;
 import com.citizens.misc.CachedAction;
 import com.citizens.npcs.NPCManager;
@@ -37,7 +38,7 @@ public class TickTask implements Runnable {
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
 						if (LocationUtils.checkLocation(npc.getLocation(),
-								p.getLocation(), Constants.npcRange)) {
+								p.getLocation(), Constant.NPCRange.getDouble())) {
 							if (npc.getHandle().pathFinished()
 									&& npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
@@ -62,7 +63,7 @@ public class TickTask implements Runnable {
 			if (waypoints.currentIndex() >= 1) {
 				if (!waypoints.isStarted()) {
 					PathUtils.createPath(npc, waypoints.get(0), -1, -1,
-							Constants.pathFindingRange);
+							Constant.PathfindingRange.getFloat());
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -72,7 +73,7 @@ public class TickTask implements Runnable {
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
 					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
-							-1, -1, Constants.pathFindingRange);
+							-1, -1, Constant.PathfindingRange.getFloat());
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -87,7 +88,7 @@ public class TickTask implements Runnable {
 					waypoints.setIndex(0);
 				}
 				PathUtils.createPath(npc, waypoints.current(), -1, -1,
-						Constants.pathFindingRange);
+						Constant.PathfindingRange.getFloat());
 				waypoints.setStarted(true);
 			}
 			if (!npc.isPaused() && npc.getHandle().pathFinished()) {

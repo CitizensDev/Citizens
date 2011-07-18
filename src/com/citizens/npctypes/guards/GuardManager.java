@@ -6,7 +6,7 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.entity.CreatureType;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
 
@@ -119,6 +119,7 @@ public class GuardManager {
 		} else {
 			loc = npc.getNPCData().getLocation();
 		}
-		PathUtils.createPath(npc, loc, -1, -1, Constants.pathFindingRange);
+		PathUtils.createPath(npc, loc, -1, -1,
+				Constant.PathfindingRange.getFloat());
 	}
 }

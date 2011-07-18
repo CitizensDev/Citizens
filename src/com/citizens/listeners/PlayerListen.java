@@ -15,9 +15,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
-import com.citizens.Constants;
 import com.citizens.CreatureTask;
 import com.citizens.Permission;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCTargetEvent;
 import com.citizens.interfaces.Listener;
 import com.citizens.npcs.NPCDataManager;
@@ -52,7 +52,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (Permission.isAdmin(event.getPlayer()) && Constants.notifyUpdates) {
+		if (Permission.isAdmin(event.getPlayer())
+				&& Constant.NotifyUpdates.getBoolean()) {
 			ServerUtils.checkForUpdates(event.getPlayer());
 		}
 	}

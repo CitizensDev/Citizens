@@ -10,7 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.misc.ActionManager;
 import com.citizens.misc.CachedAction;
 import com.citizens.npcs.NPCManager;
@@ -108,12 +108,13 @@ public class PirateTask implements Runnable {
 					player.getInventory().setItem(randomSlot, null);
 					Messaging
 							.send(player,
-									StringUtils.colourise(Constants.chatFormat
-											.replace("%name%",
+									StringUtils.colourise(Constant.ChatFormat
+											.getString().replace("%name%",
 													npc.getStrippedName()))
 											+ ChatColor.WHITE
 											+ MessageUtils
-													.getRandomMessage(Constants.pirateStealMessages));
+													.getRandomMessage(Constant.PirateStealMessages
+															.getString()));
 					// may want to check if this returns a non-empty
 					// hashmap (pirate didn't have enough room).
 					npc.getInventory().addItem(item);

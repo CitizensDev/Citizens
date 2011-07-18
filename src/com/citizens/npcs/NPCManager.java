@@ -11,8 +11,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.citizens.Constants;
+import com.citizens.Citizens;
 import com.citizens.Permission;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCSpawnEvent;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
@@ -42,8 +43,8 @@ public class NPCManager {
 		if (colour != 0xF) {
 			npcName = ChatColor.getByCode(colour) + name;
 		}
-		if (Constants.convertSlashes) {
-			String[] brokenName = npcName.split(Constants.convertToSpaceChar);
+		if (Constant.ConvertSlashes.getBoolean()) {
+			String[] brokenName = npcName.split(Citizens.separatorChar);
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0) {
 					npcName = brokenName[i];
@@ -89,9 +90,9 @@ public class NPCManager {
 		int UID = PropertyManager.getBasic().getNewNpcID();
 		PropertyManager.getBasic().saveLocation(loc, UID);
 		PropertyManager.getBasic().saveLookWhenClose(UID,
-				Constants.defaultFollowingEnabled);
+				Constant.DefaultFollowingEnabled.getBoolean());
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
-				Constants.defaultTalkWhenClose);
+				Constant.DefaultTalkWhenClose.getBoolean());
 		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner);
 		return UID;

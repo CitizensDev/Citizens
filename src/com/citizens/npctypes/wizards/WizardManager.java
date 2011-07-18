@@ -3,7 +3,7 @@ package com.citizens.npctypes.wizards;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.resources.npclib.HumanNPC;
@@ -115,7 +115,8 @@ public class WizardManager {
 	 */
 	public static void increaseMana(HumanNPC npc, int mana) {
 		WizardNPC wizard = npc.getToggleable("wizard");
-		if (wizard != null && wizard.getMana() + mana < Constants.maxWizardMana) {
+		if (wizard != null
+				&& wizard.getMana() + mana < Constant.MaxWizardMana.getInt()) {
 			wizard.setMana(wizard.getMana() + mana);
 		}
 	}

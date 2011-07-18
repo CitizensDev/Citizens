@@ -18,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
 import com.citizens.listeners.EntityListen;
 import com.citizens.listeners.PlayerListen;
@@ -37,7 +38,6 @@ import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.traders.TraderNPC;
 import com.citizens.npctypes.wizards.WizardNPC;
 import com.citizens.npctypes.wizards.WizardTask;
-import com.citizens.properties.PropertyHandler;
 import com.citizens.properties.PropertyManager;
 import com.citizens.properties.properties.BlacksmithProperties;
 import com.citizens.properties.properties.GuardProperties;
@@ -101,12 +101,12 @@ public class Citizens extends JavaPlugin {
 		Permission.initialize(Bukkit.getServer());
 
 		// Load settings.
-		Constants.setupVariables();
+		SettingsManager.setupVariables();
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new CreatureTask(), Constants.spawnTaskDelay,
-				Constants.spawnTaskDelay);
+				new CreatureTask(), Constant.SpawnTaskDelay.getInt(),
+				Constant.SpawnTaskDelay.getInt());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
 
@@ -126,10 +126,10 @@ public class Citizens extends JavaPlugin {
 
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(), Constants.tickDelay, Constants.tickDelay);
+				new TickTask(), Constant.TickDelay.getInt(), Constant.TickDelay.getInt());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new GuardTask(), Constants.tickDelay, Constants.tickDelay);
-		if (Constants.useSaveTask) {
+				new GuardTask(), Constant.TickDelay.getInt(), Constant.TickDelay.getInt());
+		if (Constant.UseSaveTask.getBoolean()) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
 						@Override
@@ -138,7 +138,7 @@ public class Citizens extends JavaPlugin {
 							PropertyManager.saveState();
 							Messaging.log("Saved.");
 						}
-					}, Constants.saveDelay, Constants.saveDelay);
+					}, Constant.SaveDelay.getInt(), Constant.SaveDelay.getInt());
 		}
 
 		QuestManager.initialize();
@@ -281,24 +281,6 @@ public class Citizens extends JavaPlugin {
 	}
 
 	private void setupNPCs() {
-		// TODO REMOVE AFTER 1.0.9 IS RELEASED
-		if (Constants.convertOld) {
-			Messaging.log("Converting old nodes to new save system...");
-			PropertyHandler locations = new PropertyHandler(
-					"plugins/Citizens/Basic NPCs/Citizens.locations", false);
-			String[] list = locations.getString("list").split(",");
-			if (list.length > 0 && !list[0].isEmpty()) {
-				for (String name : list) {
-					int UID = Integer.parseInt(name.split("_")[0]);
-					Conversion.convert(UID, name.split("_")[1]);
-				}
-			}
-			Messaging
-					.log("Finished conversion. You must delete all old files manually.");
-			UtilityProperties.getSettings().setBoolean("general.convert-old",
-					false);
-			PropertyManager.getNPCProfiles().save();
-		}
 		PropertyManager.getNPCProfiles().load();
 		StringBuilder UIDList = new StringBuilder();
 		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(
@@ -333,8 +315,8 @@ public class Citizens extends JavaPlugin {
 				new HealerTask(), HealerTask.getHealthRegenRate(),
 				HealerTask.getHealthRegenRate());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new WizardTask(), Constants.wizardManaRegenRate,
-				Constants.wizardManaRegenRate);
+				new WizardTask(), Constant.WizardManaRegenRate.getInt(),
+				Constant.WizardManaRegenRate.getInt());
 		initialized = true;
 	}
 
@@ -363,7 +345,7 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether the ID is used for a tool.
 	 */
 	public static boolean validateTool(String key, int type, boolean sneaking) {
-		if (Constants.useItemList) {
+		if (Constant.UseItemList.getBoolean()) {
 			String[] items = UtilityProperties.getSettings().getString(key)
 					.split(",");
 			List<String> item = Arrays.asList(items);

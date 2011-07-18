@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
 
-import com.citizens.Constants;
-import com.citizens.Defaults;
+import com.citizens.SettingsManager;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Storage;
 import com.citizens.utils.Messaging;
 
@@ -31,36 +31,14 @@ public class ConfigurationHandler implements Storage {
 		}
 		boolean found = false;
 		if (fileName.contains("citizens.yml")) {
-			loadRenames(Defaults.settingsRenames);
-			loadDefaults(Defaults.settingsDefaults);
-			loadDeletes(Defaults.settingsDeletes);
+			loadDefaults(SettingsManager.settingsDefaults);
 			found = true;
 		} else if (fileName.contains("economy.yml")) {
-			loadRenames(Defaults.economyRenames);
-			loadDefaults(Defaults.economyDefaults);
-			loadDeletes(Defaults.economyDeletes);
+			loadDefaults(SettingsManager.economyDefaults);
 			found = true;
 		} else if (fileName.contains("mobs.yml")) {
-			loadRenames(Defaults.mobRenames);
-			loadDefaults(Defaults.mobDefaults);
-			loadDeletes(Defaults.mobDeletes);
+			loadDefaults(SettingsManager.mobDefaults);
 			found = true;
-		}
-		if (found) {
-			save();
-		}
-	}
-
-	private void loadDeletes(List<String> nodes) {
-		boolean found = false;
-		for (String node : nodes) {
-			if (pathExists(node)) {
-				Messaging.log("Deleting outdated setting " + node + ".");
-				removeKey(node);
-				if (!found) {
-					found = true;
-				}
-			}
 		}
 		if (found) {
 			save();
@@ -73,25 +51,6 @@ public class ConfigurationHandler implements Storage {
 			if (!pathExists(node.getKey())) {
 				Messaging.log("Writing default setting " + node.getKey() + ".");
 				setString(node.getKey(), node.getValue());
-				if (!found) {
-					found = true;
-				}
-			}
-		}
-		if (found) {
-			save();
-		}
-	}
-
-	private void loadRenames(Map<String, String> nodes) {
-		boolean found = false;
-		for (Entry<String, String> node : nodes.entrySet()) {
-			if (pathExists(node.getKey())) {
-				String key = node.getValue();
-				String value = getString(node.getKey());
-				Messaging.log("Renaming setting " + node.getKey() + ".");
-				removeKey(node.getKey());
-				setString(key, value);
 				if (!found) {
 					found = true;
 				}
@@ -131,7 +90,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void removeKey(String path) {
 		this.config.removeProperty(path);
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -180,7 +139,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setString(String path, String value) {
 		this.config.setProperty(path, value);
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -216,7 +175,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setInt(String path, int value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -252,7 +211,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setDouble(String path, double value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -288,7 +247,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setLong(String path, long value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}
@@ -322,7 +281,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setBoolean(String path, boolean value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constants.saveOften) {
+		if (Constant.SaveOften.getBoolean()) {
 			save();
 		}
 	}

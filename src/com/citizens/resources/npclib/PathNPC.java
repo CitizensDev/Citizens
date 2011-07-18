@@ -16,7 +16,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.citizens.Constants;
 import com.citizens.resources.npclib.NPCAnimator.Animation;
 
 public class PathNPC extends EntityPlayer {
@@ -29,6 +28,7 @@ public class PathNPC extends EntityPlayer {
 	private boolean hasAttacked = false;
 	protected boolean jumping = false;
 	protected boolean randomPather = false;
+	public static final double jumpFactor = 0.05D;
 	private int pathTicks = 0;
 	private int pathTickLimit = -1;
 	private int stationaryTicks = 0;
@@ -188,7 +188,7 @@ public class PathNPC extends EntityPlayer {
 		if (inWater || inLava) {
 			this.motY += 0.03999999910593033D;
 		} else if (this.onGround) {
-			this.motY = 0.41999998688697815D + Constants.JUMP_FACTOR;
+			this.motY = 0.41999998688697815D + jumpFactor;
 			// Augment defaults to actually get over a block.
 		}
 	}

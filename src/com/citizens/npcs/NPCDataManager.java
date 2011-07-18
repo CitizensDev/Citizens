@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
@@ -43,14 +43,17 @@ public class NPCDataManager {
 					break;
 				}
 				if (npc.getWaypoints().size() > 0
-						&& npc.getWaypoints().getLast().distance(loc) > Constants.pathFindingRange) {
-					event.getPlayer().sendMessage(
-							ChatColor.GRAY
-									+ "Points can't be more than "
-									+ StringUtils.wrap(
-											Constants.pathFindingRange,
-											ChatColor.GRAY)
-									+ " blocks away from each other.");
+						&& npc.getWaypoints().getLast().distance(loc) > Constant.PathfindingRange
+								.getFloat()) {
+					event.getPlayer()
+							.sendMessage(
+									ChatColor.GRAY
+											+ "Points can't be more than "
+											+ StringUtils.wrap(
+													Constant.PathfindingRange
+															.getFloat(),
+													ChatColor.GRAY)
+											+ " blocks away from each other.");
 					break;
 				}
 				npc.getWaypoints().add(loc);
@@ -171,7 +174,7 @@ public class NPCDataManager {
 			NPCManager.removeForRespawn(npc.getUID());
 			NPCManager.register(npc.getUID(), npc.getOwner());
 		}
-		player.sendMessage(StringUtils.wrap(npc.getName())
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ "'s in-hand item was set to "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))
 				+ ".");

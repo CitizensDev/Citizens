@@ -13,8 +13,8 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
-import com.citizens.Constants;
 import com.citizens.CreatureTask;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCDisplayTextEvent;
 import com.citizens.events.NPCRightClickEvent;
 import com.citizens.events.NPCTargetEvent;
@@ -88,9 +88,11 @@ public class EntityListen extends EntityListener implements Listener {
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCManager.selectNPC(player, npc);
-					Messaging.send(player, npc, Constants.selectionMessage);
-					if (!Constants.quickSelect)
+					Messaging.send(player, npc,
+							Constant.SelectionMessage.getString());
+					if (!Constant.QuickSelect.getBoolean()) {
 						return;
+					}
 				}
 			}
 			// Call text-display event
@@ -122,7 +124,7 @@ public class EntityListen extends EntityListener implements Listener {
 									Citizens.plugin,
 									new RestartPathTask(npc, npc.getWaypoints()
 											.current()),
-									Constants.rightClickPause);
+									Constant.RightClickPause.getInt());
 					npc.getHandle().cancelPath();
 					npc.setPaused(true);
 				}
@@ -150,8 +152,8 @@ public class EntityListen extends EntityListener implements Listener {
 
 		@Override
 		public void run() {
-			PathUtils
-					.createPath(npc, point, -1, -1, Constants.pathFindingRange);
+			PathUtils.createPath(npc, point, -1, -1,
+					Constant.PathfindingRange.getFloat());
 			npc.setPaused(false);
 		}
 	}

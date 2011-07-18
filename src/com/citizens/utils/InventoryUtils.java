@@ -1,6 +1,5 @@
 package com.citizens.utils;
 
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,13 +28,12 @@ public class InventoryUtils {
 	 * Remove items from a player's current held slot
 	 * 
 	 * @param player
-	 * @param material
 	 */
-	public static void decreaseItemInHand(Player player, Material material) {
+	public static void decreaseItemInHand(Player player) {
 		ItemStack item = null;
 		if (player.getItemInHand().getAmount() > 1) {
-			item = new ItemStack(material,
-					player.getItemInHand().getAmount() - 1);
+			item = new ItemStack(player.getItemInHand().getTypeId(), player
+					.getItemInHand().getAmount() - 1);
 		}
 		player.setItemInHand(item);
 	}

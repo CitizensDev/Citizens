@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.Constants;
+import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.economy.Payment;
@@ -36,7 +36,7 @@ public class MessageUtils {
 			+ "This server is not using an economy plugin.";
 	public static final String reachedNPCLimitMessage = ChatColor.RED
 			+ "You have reached the NPC-creation limit of "
-			+ Constants.maxNPCsPerPlayer + ".";
+			+ Constant.MaxNPCsPerPlayer.getInt() + ".";
 
 	/**
 	 * Parses a basic npc's text for sending.
@@ -69,16 +69,18 @@ public class MessageUtils {
 			NPCManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
-			text = getRandomMessage(Constants.defaultText);
+			text = getRandomMessage(Constant.DefaultText.getString());
 		}
 		if (!text.isEmpty()) {
-			if (Constants.useNPCColours) {
-				text = StringUtils.colourise(Constants.chatFormat.replace(
-						"%name%", npc.getStrippedName())) + text;
+			if (Constant.UseNPCColours.getBoolean()) {
+				text = StringUtils.colourise(Constant.ChatFormat.getString()
+						.replace("%name%", npc.getStrippedName())) + text;
 			} else {
-				text = StringUtils.colourise(Constants.chatFormat.replace(
-						"%name%", "&" + Constants.npcColour + name
-								+ ChatColor.WHITE))
+				text = StringUtils.colourise(Constant.ChatFormat.getString()
+						.replace(
+								"%name%",
+								"&" + Constant.NPCColour.getString() + name
+										+ ChatColor.WHITE))
 						+ text;
 			}
 			return text;
@@ -213,7 +215,7 @@ public class MessageUtils {
 	public static String getRandomMessage(String messages) {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
-		if (text.equals(Constants.defaultText)) {
+		if (text.equals(Constant.DefaultText.getString())) {
 			return text.replace('&', '§');
 		}
 		return text;

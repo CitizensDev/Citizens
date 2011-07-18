@@ -2,7 +2,8 @@ package com.citizens.resources.npclib;
 
 import org.bukkit.ChatColor;
 
-import com.citizens.Constants;
+import com.citizens.Citizens;
+import com.citizens.SettingsManager.Constant;
 
 public class NPC {
 
@@ -19,14 +20,14 @@ public class NPC {
 	}
 
 	public String getName() {
-		if (Constants.convertSlashes) {
+		if (Constant.ConvertSlashes.getBoolean()) {
 			String returnName = "";
 			String[] brokenName = this.name.split(" ");
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0) {
 					returnName = brokenName[i];
 				} else {
-					returnName += Constants.convertToSpaceChar + brokenName[i];
+					returnName += Citizens.separatorChar + brokenName[i];
 				}
 			}
 			return ChatColor.stripColor(returnName);
