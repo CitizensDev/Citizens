@@ -116,11 +116,13 @@ public class SettingsManager {
 		}
 
 		public float toFloat() {
-			return (Float) this.getValue();
+			return this.getValue() instanceof Double ? new Float(
+					(Double) this.getValue()) : (Integer) this.getValue();
 		}
 
 		public double toDouble() {
-			return (Double) this.getValue();
+			return this.getValue() instanceof Double ? (Double) this.getValue()
+					: (Integer) this.getValue();
 		}
 
 		public int toInt() {

@@ -320,6 +320,8 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void createPathEntity(Location loc) {
+		if (loc == null)
+			return;
 		createPathEntity(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
