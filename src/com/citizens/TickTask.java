@@ -38,7 +38,7 @@ public class TickTask implements Runnable {
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
 						if (LocationUtils.checkLocation(npc.getLocation(),
-								p.getLocation(), Constant.NPCRange.getDouble())) {
+								p.getLocation(), Constant.NPCRange.toDouble())) {
 							if (npc.getHandle().pathFinished()
 									&& npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
@@ -63,7 +63,7 @@ public class TickTask implements Runnable {
 			if (waypoints.currentIndex() >= 1) {
 				if (!waypoints.isStarted()) {
 					PathUtils.createPath(npc, waypoints.get(0), -1, -1,
-							Constant.PathfindingRange.getFloat());
+							Constant.PathfindingRange.toFloat());
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -73,7 +73,7 @@ public class TickTask implements Runnable {
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
 					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
-							-1, -1, Constant.PathfindingRange.getFloat());
+							-1, -1, Constant.PathfindingRange.toFloat());
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -88,7 +88,7 @@ public class TickTask implements Runnable {
 					waypoints.setIndex(0);
 				}
 				PathUtils.createPath(npc, waypoints.current(), -1, -1,
-						Constant.PathfindingRange.getFloat());
+						Constant.PathfindingRange.toFloat());
 				waypoints.setStarted(true);
 			}
 			if (!npc.isPaused() && npc.getHandle().pathFinished()) {

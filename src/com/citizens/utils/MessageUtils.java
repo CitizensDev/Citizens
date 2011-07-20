@@ -36,7 +36,7 @@ public class MessageUtils {
 			+ "This server is not using an economy plugin.";
 	public static final String reachedNPCLimitMessage = ChatColor.RED
 			+ "You have reached the NPC-creation limit of "
-			+ Constant.MaxNPCsPerPlayer.getInt() + ".";
+			+ Constant.MaxNPCsPerPlayer.toInt() + ".";
 
 	/**
 	 * Parses a basic npc's text for sending.
@@ -72,7 +72,7 @@ public class MessageUtils {
 			text = getRandomMessage(Constant.DefaultText.getString());
 		}
 		if (!text.isEmpty()) {
-			if (Constant.UseNPCColours.getBoolean()) {
+			if (Constant.UseNPCColours.toBoolean()) {
 				text = StringUtils.colourise(Constant.ChatFormat.getString()
 						.replace("%name%", npc.getStrippedName())) + text;
 			} else {

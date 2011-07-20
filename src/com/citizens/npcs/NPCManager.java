@@ -43,7 +43,7 @@ public class NPCManager {
 		if (colour != 0xF) {
 			npcName = ChatColor.getByCode(colour) + name;
 		}
-		if (Constant.ConvertSlashes.getBoolean()) {
+		if (Constant.ConvertSlashes.toBoolean()) {
 			String[] brokenName = npcName.split(Citizens.separatorChar);
 			for (int i = 0; i < brokenName.length; i++) {
 				if (i == 0) {
@@ -90,9 +90,9 @@ public class NPCManager {
 		int UID = PropertyManager.getBasic().getNewNpcID();
 		PropertyManager.getBasic().saveLocation(loc, UID);
 		PropertyManager.getBasic().saveLookWhenClose(UID,
-				Constant.DefaultFollowingEnabled.getBoolean());
+				Constant.DefaultFollowingEnabled.toBoolean());
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
-				Constant.DefaultTalkWhenClose.getBoolean());
+				Constant.DefaultTalkWhenClose.toBoolean());
 		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner);
 		return UID;

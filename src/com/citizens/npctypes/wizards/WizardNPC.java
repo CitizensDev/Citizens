@@ -288,7 +288,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constant.WizardInteractItem
-					.getInt()) {
+					.toInt()) {
 				WizardNPC wizard = npc.getToggleable("wizard");
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
@@ -358,16 +358,16 @@ public class WizardNPC extends Toggleable implements Clickable {
 					break;
 				}
 			} else if (player.getItemInHand().getTypeId() == Constant.WizardManaRegenItem
-					.getInt()) {
+					.toInt()) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
-				if (wizard.getMana() + 10 < Constant.MaxWizardMana.getInt()) {
+				if (wizard.getMana() + 10 < Constant.MaxWizardMana.toInt()) {
 					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
 				} else if (wizard.getMana() + 10 == Constant.MaxWizardMana
-						.getInt()) {
-					mana = Constant.MaxWizardMana.getInt();
+						.toInt()) {
+					mana = Constant.MaxWizardMana.toInt();
 					msg += " mana has been fully replenished.";
 				} else {
 					msg += " mana cannot be regenerated with that item any further.";

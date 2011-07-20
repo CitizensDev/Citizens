@@ -105,8 +105,8 @@ public class Citizens extends JavaPlugin {
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new CreatureTask(), Constant.SpawnTaskDelay.getInt(),
-				Constant.SpawnTaskDelay.getInt());
+				new CreatureTask(), Constant.SpawnTaskDelay.toInt(),
+				Constant.SpawnTaskDelay.toInt());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
 
@@ -126,10 +126,12 @@ public class Citizens extends JavaPlugin {
 
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(), Constant.TickDelay.getInt(), Constant.TickDelay.getInt());
+				new TickTask(), Constant.TickDelay.toInt(),
+				Constant.TickDelay.toInt());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new GuardTask(), Constant.TickDelay.getInt(), Constant.TickDelay.getInt());
-		if (Constant.UseSaveTask.getBoolean()) {
+				new GuardTask(), Constant.TickDelay.toInt(),
+				Constant.TickDelay.toInt());
+		if (Constant.UseSaveTask.toBoolean()) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
 						@Override
@@ -138,7 +140,7 @@ public class Citizens extends JavaPlugin {
 							PropertyManager.saveState();
 							Messaging.log("Saved.");
 						}
-					}, Constant.SaveDelay.getInt(), Constant.SaveDelay.getInt());
+					}, Constant.SaveDelay.toInt(), Constant.SaveDelay.toInt());
 		}
 
 		QuestManager.initialize();
@@ -315,8 +317,8 @@ public class Citizens extends JavaPlugin {
 				new HealerTask(), HealerTask.getHealthRegenRate(),
 				HealerTask.getHealthRegenRate());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new WizardTask(), Constant.WizardManaRegenRate.getInt(),
-				Constant.WizardManaRegenRate.getInt());
+				new WizardTask(), Constant.WizardManaRegenRate.toInt(),
+				Constant.WizardManaRegenRate.toInt());
 		initialized = true;
 	}
 
@@ -345,7 +347,7 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether the ID is used for a tool.
 	 */
 	public static boolean validateTool(String key, int type, boolean sneaking) {
-		if (Constant.UseItemList.getBoolean()) {
+		if (Constant.UseItemList.toBoolean()) {
 			String[] items = UtilityProperties.getSettings().getString(key)
 					.split(",");
 			List<String> item = Arrays.asList(items);

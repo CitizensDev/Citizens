@@ -140,7 +140,7 @@ public class BasicCommands {
 	@CommandPermissions("admin")
 	public static void toggleDebugMode(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		boolean debug = Constant.DebugMode.getBoolean();
+		boolean debug = Constant.DebugMode.toBoolean();
 		UtilityProperties.getSettings()
 				.setBoolean("general.debug-mode", !debug);
 		debug = !debug;
@@ -189,7 +189,7 @@ public class BasicCommands {
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.getInt() && !Permission.isAdmin(player)) {
+				.toInt() && !Permission.isAdmin(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -290,7 +290,7 @@ public class BasicCommands {
 	@CommandPermissions("create.basic")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
 		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.getInt() && !Permission.isAdmin(player)) {
+				.toInt() && !Permission.isAdmin(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}

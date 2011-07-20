@@ -133,7 +133,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void removeKey(String key) {
 		this.properties.remove(key);
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -143,6 +143,7 @@ public final class PropertyHandler implements Storage {
 		removeKey("" + key);
 	}
 
+	@Override
 	public boolean keyExists(String key) {
 		return this.properties.containsKey(key);
 	}
@@ -182,7 +183,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setString(String key, String value) {
 		this.properties.setProperty(key, value);
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -223,7 +224,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setInt(String key, int value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -264,7 +265,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setDouble(String key, double value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -305,7 +306,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setLong(String key, long value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -344,7 +345,7 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public void setBoolean(String key, boolean value) {
 		this.properties.setProperty(key, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -361,5 +362,10 @@ public final class PropertyHandler implements Storage {
 	@Override
 	public Object getRaw(String string) {
 		return properties.getProperty(string);
+	}
+
+	@Override
+	public void setRaw(String path, Object value) {
+		this.properties.setProperty(path, value.toString());
 	}
 }

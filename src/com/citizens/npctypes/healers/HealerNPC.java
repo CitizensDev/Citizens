@@ -115,10 +115,10 @@ public class HealerNPC extends Toggleable implements Clickable {
 		int healerHealth = healer.getHealth();
 		if (Permission.canUse(player, npc, getType())) {
 			if (player.getItemInHand().getTypeId() == Constant.HealerTakeHealthItem
-					.getInt()) {
+					.toInt()) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
-						if (Constant.PayForHealerHeal.getBoolean()) {
+						if (Constant.PayForHealerHeal.toBoolean()) {
 							buyHeal(player, npc, Operation.HEALER_HEAL, true);
 						} else {
 							player.setHealth(playerHealth + 1);
@@ -138,7 +138,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 							+ "You are fully healed.");
 				}
 			} else if (player.getItemInHand().getTypeId() == Constant.HealerGiveHealthItem
-					.getInt()) {
+					.toInt()) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
 						player.setHealth(playerHealth - 1);

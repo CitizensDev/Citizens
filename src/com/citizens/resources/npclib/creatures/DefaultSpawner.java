@@ -79,10 +79,10 @@ public class DefaultSpawner implements Spawner {
 		boolean spawn = false;
 		switch (type) {
 		case EVIL:
-			spawn = Constant.SpawnEvils.getBoolean();
+			spawn = Constant.SpawnEvils.toBoolean();
 			break;
 		case PIRATE:
-			spawn = Constant.SpawnPirates.getBoolean();
+			spawn = Constant.SpawnPirates.toBoolean();
 			break;
 		}
 		return spawn;

@@ -53,7 +53,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if (Permission.isAdmin(event.getPlayer())
-				&& Constant.NotifyUpdates.getBoolean()) {
+				&& Constant.NotifyUpdates.toBoolean()) {
 			ServerUtils.checkForUpdates(event.getPlayer());
 		}
 	}

@@ -206,7 +206,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 
 	public boolean getLookWhenClose(int UID) {
 		return profiles.getBoolean(UID + lookWhenClose,
-				Constant.DefaultFollowingEnabled.getBoolean());
+				Constant.DefaultFollowingEnabled.toBoolean());
 	}
 
 	public void saveLookWhenClose(int UID, boolean value) {
@@ -215,7 +215,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 
 	public boolean getTalkWhenClose(int UID) {
 		return profiles.getBoolean(UID + talkWhenClose,
-				Constant.DefaultTalkWhenClose.getBoolean());
+				Constant.DefaultTalkWhenClose.toBoolean());
 	}
 
 	public void saveTalkWhenClose(int UID, boolean value) {

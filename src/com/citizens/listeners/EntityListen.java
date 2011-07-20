@@ -90,7 +90,7 @@ public class EntityListen extends EntityListener implements Listener {
 					NPCManager.selectNPC(player, npc);
 					Messaging.send(player, npc,
 							Constant.SelectionMessage.getString());
-					if (!Constant.QuickSelect.getBoolean()) {
+					if (!Constant.QuickSelect.toBoolean()) {
 						return;
 					}
 				}
@@ -124,7 +124,7 @@ public class EntityListen extends EntityListener implements Listener {
 									Citizens.plugin,
 									new RestartPathTask(npc, npc.getWaypoints()
 											.current()),
-									Constant.RightClickPause.getInt());
+									Constant.RightClickPause.toInt());
 					npc.getHandle().cancelPath();
 					npc.setPaused(true);
 				}
@@ -153,7 +153,7 @@ public class EntityListen extends EntityListener implements Listener {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, point, -1, -1,
-					Constant.PathfindingRange.getFloat());
+					Constant.PathfindingRange.toFloat());
 			npc.setPaused(false);
 		}
 	}

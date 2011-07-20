@@ -63,7 +63,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void onRightClick(Player player) {
 		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.getInt() && !Permission.isAdmin(player)) {
+				.toInt() && !Permission.isAdmin(player)) {
 			Messaging
 					.sendError(
 							player,
@@ -72,9 +72,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 		}
 		if (npc.getHandle() instanceof CreatureNPC
 				&& player.getItemInHand().getTypeId() == Constant.EvilNPCTameItem
-						.getInt()) {
+						.toInt()) {
 			if (new Random().nextInt(100) <= Constant.EvilNPCTameChance
-					.getInt()) {
+					.toInt()) {
 				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
 				CreatureTask.despawn(this);

@@ -70,4 +70,8 @@ public interface Storage {
 	public void setBoolean(int key, boolean value);
 
 	public Object getRaw(String string);
+
+	public void setRaw(String path, Object value);
+
+	public boolean keyExists(String path);
 }

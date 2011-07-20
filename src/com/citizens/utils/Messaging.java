@@ -59,13 +59,13 @@ public class Messaging {
 	}
 
 	public static void debug(Object message) {
-		if (Constant.DebugMode.getBoolean()) {
+		if (Constant.DebugMode.toBoolean()) {
 			log(message);
 		}
 	}
 
 	public static void debug(Object... messages) {
-		if (Constant.DebugMode.getBoolean()) {
+		if (Constant.DebugMode.toBoolean()) {
 			log(messages);
 		}
 	}

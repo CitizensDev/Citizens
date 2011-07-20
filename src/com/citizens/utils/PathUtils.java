@@ -16,16 +16,16 @@ public class PathUtils {
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,
 			int stationaryTicks) {
 		return createPath(npc, loc, pathTicks, stationaryTicks,
-				Constant.PathfindingRange.getFloat());
+				Constant.PathfindingRange.toFloat());
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks) {
 		return createPath(npc, loc, pathTicks,
-				Constant.MaxStationaryTicks.getInt());
+				Constant.MaxStationaryTicks.toInt());
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc) {
-		return createPath(npc, loc, Constant.MaxPathingTicks.getInt());
+		return createPath(npc, loc, Constant.MaxPathingTicks.toInt());
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
@@ -37,17 +37,17 @@ public class PathUtils {
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks, int stationaryTicks) {
 		target(npc, entity, aggro, pathTicks, stationaryTicks,
-				Constant.PathfindingRange.getFloat());
+				Constant.PathfindingRange.toFloat());
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks) {
 		target(npc, entity, aggro, pathTicks,
-				Constant.MaxStationaryTicks.getInt());
+				Constant.MaxStationaryTicks.toInt());
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro) {
-		target(npc, entity, aggro, Constant.MaxPathingTicks.getInt());
+		target(npc, entity, aggro, Constant.MaxPathingTicks.toInt());
 	}
 
 	public static boolean pathFinished(HumanNPC npc) {

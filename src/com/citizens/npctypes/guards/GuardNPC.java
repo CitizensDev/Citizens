@@ -243,13 +243,13 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
 					+ " died.");
 		event.getDrops().clear();
-		TickTask.scheduleRespawn(this.npc, Constant.GuardRespawnDelay.getInt());
+		TickTask.scheduleRespawn(this.npc, Constant.GuardRespawnDelay.toInt());
 	}
 
 	public void target(LivingEntity entity) {
 		this.npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
-				Constant.PathfindingRange.getFloat());
+				Constant.PathfindingRange.toFloat());
 	}
 }

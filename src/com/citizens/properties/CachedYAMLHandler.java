@@ -314,4 +314,14 @@ public class CachedYAMLHandler implements Storage {
 	public Object getRaw(String string) {
 		return config.getProperty(string);
 	}
+
+	@Override
+	public void setRaw(String path, Object value) {
+		config.setProperty(path, value);
+	}
+
+	@Override
+	public boolean keyExists(String path) {
+		return pathExists(path);
+	}
 }

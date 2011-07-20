@@ -3,14 +3,11 @@ package com.citizens.properties;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
 
-import com.citizens.SettingsManager;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Storage;
 import com.citizens.utils.Messaging;
@@ -28,36 +25,6 @@ public class ConfigurationHandler implements Storage {
 			save();
 		} else {
 			load();
-		}
-		boolean found = false;
-		if (fileName.contains("citizens.yml")) {
-			loadDefaults(SettingsManager.settingsDefaults);
-			found = true;
-		} else if (fileName.contains("economy.yml")) {
-			loadDefaults(SettingsManager.economyDefaults);
-			found = true;
-		} else if (fileName.contains("mobs.yml")) {
-			loadDefaults(SettingsManager.mobDefaults);
-			found = true;
-		}
-		if (found) {
-			save();
-		}
-	}
-
-	private void loadDefaults(Map<String, String> nodes) {
-		boolean found = false;
-		for (Entry<String, String> node : nodes.entrySet()) {
-			if (!pathExists(node.getKey())) {
-				Messaging.log("Writing default setting " + node.getKey() + ".");
-				setString(node.getKey(), node.getValue());
-				if (!found) {
-					found = true;
-				}
-			}
-		}
-		if (found) {
-			save();
 		}
 	}
 
@@ -90,7 +57,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void removeKey(String path) {
 		this.config.removeProperty(path);
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -139,7 +106,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setString(String path, String value) {
 		this.config.setProperty(path, value);
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -175,7 +142,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setInt(String path, int value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -211,7 +178,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setDouble(String path, double value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -247,7 +214,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setLong(String path, long value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -281,7 +248,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setBoolean(String path, boolean value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.getBoolean()) {
+		if (Constant.SaveOften.toBoolean()) {
 			save();
 		}
 	}
@@ -302,5 +269,15 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public Object getRaw(String path) {
 		return config.getProperty(path);
+	}
+
+	@Override
+	public void setRaw(String path, Object value) {
+		config.setProperty(path, value);
+	}
+
+	@Override
+	public boolean keyExists(String path) {
+		return pathExists(path);
 	}
 }

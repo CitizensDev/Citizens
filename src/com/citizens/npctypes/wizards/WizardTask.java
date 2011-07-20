@@ -16,7 +16,7 @@ public class WizardTask implements Runnable {
 				return;
 			}
 			WizardNPC wizard = npc.getToggleable("wizard");
-			if (Constant.RegenWizardMana.getBoolean()
+			if (Constant.RegenWizardMana.toBoolean()
 					&& !wizard.hasUnlimitedMana()) {
 				WizardManager.increaseMana(npc, 1);
 			}
