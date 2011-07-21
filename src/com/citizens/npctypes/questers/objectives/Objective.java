@@ -9,10 +9,12 @@ import com.citizens.npctypes.questers.quests.QuestManager.QuestType;
 public class Objective {
 	private int amount = -1;
 	private int destination = -1;
+
 	private ItemStack item = null;
 	private Location location = null;
 	private String message = "";
 	private Material material = null;
+
 	private final Progress progress = new Progress();
 	private final QuestType type;
 

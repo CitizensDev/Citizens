@@ -2,6 +2,7 @@ package com.citizens.npctypes.questers.quests;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Type;
 
 import com.citizens.npctypes.questers.objectives.Objective;
 import com.citizens.npctypes.questers.objectives.Objective.Progress;
@@ -37,4 +38,6 @@ public abstract class QuestIncrementer {
 	public abstract boolean isCompleted();
 
 	public abstract void updateProgress(Event event);
+
+	public abstract Type[] getEventTypes();
 }

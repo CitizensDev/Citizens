@@ -2,6 +2,7 @@ package com.citizens.npctypes.questers.questtypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
@@ -36,5 +37,10 @@ public class DistanceQuest extends QuestIncrementer {
 	@Override
 	public boolean isCompleted() {
 		return this.getProgress().getAmount() >= this.objective.getAmount();
+	}
+
+	@Override
+	public Type[] getEventTypes() {
+		return new Type[] { Type.PLAYER_MOVE };
 	}
 }

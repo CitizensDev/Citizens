@@ -2,6 +2,8 @@ package com.citizens.npctypes.questers.questtypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Type;
+import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.citizens.events.NPCTargetEvent;
 import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
@@ -16,7 +18,8 @@ public class DeliveryQuest extends QuestIncrementer {
 
 	@Override
 	public void updateProgress(Event event) {
-		if (event instanceof NPCTargetEvent) {
+		if (event instanceof EntityTargetEvent
+				&& event instanceof NPCTargetEvent) {
 			NPCTargetEvent e = (NPCTargetEvent) event;
 			if (e.getTarget().getEntityId() == this.player.getEntityId()) {
 				if (((HumanNPC) e.getEntity()).getUID() == this.objective
@@ -34,5 +37,10 @@ public class DeliveryQuest extends QuestIncrementer {
 	@Override
 	public boolean isCompleted() {
 		return this.getProgress().getAmount() >= this.objective.getAmount();
+	}
+
+	@Override
+	public Type[] getEventTypes() {
+		return new Type[] { Type.ENTITY_TARGET };
 	}
 }

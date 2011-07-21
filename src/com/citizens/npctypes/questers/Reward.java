@@ -14,5 +14,4 @@ public interface Reward {
 	public Object getReward();
 
 	public boolean isTake();
-
 }

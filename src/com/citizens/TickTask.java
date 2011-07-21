@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.misc.ActionManager;
-import com.citizens.misc.CachedAction;
+import com.citizens.misc.ActionManager.CachedAction;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCSpawner;

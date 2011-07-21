@@ -2,6 +2,7 @@ package com.citizens.npctypes.questers.questtypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
@@ -28,4 +29,10 @@ public class BuildQuest extends QuestIncrementer {
 	public boolean isCompleted() {
 		return this.getProgress().getAmount() >= this.objective.getAmount();
 	}
+
+	@Override
+	public Type[] getEventTypes() {
+		return new Type[] { Type.BLOCK_PLACE };
+	}
+
 }

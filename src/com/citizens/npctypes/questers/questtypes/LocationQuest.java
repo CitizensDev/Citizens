@@ -2,6 +2,7 @@ package com.citizens.npctypes.questers.questtypes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
@@ -31,5 +32,10 @@ public class LocationQuest extends QuestIncrementer {
 	public boolean isCompleted() {
 		return LocationUtils.withinRange(this.objective.getLocation(), this
 				.getProgress().getLastLocation(), 0);
+	}
+
+	@Override
+	public Type[] getEventTypes() {
+		return new Type[] { Type.PLAYER_MOVE };
 	}
 }

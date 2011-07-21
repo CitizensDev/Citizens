@@ -1,13 +1,10 @@
 package com.citizens.waypoints;
 
-import org.bukkit.entity.Player;
-
 import com.citizens.interfaces.Storage;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.ConversationUtils.Converser;
 
-public interface WaypointModifier {
-	public boolean construct(Player player, String message);
-
+public interface WaypointModifier extends Converser {
 	public void onReach(HumanNPC npc);
 
 	public void parse(Storage storage, String root);

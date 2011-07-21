@@ -4,6 +4,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
@@ -30,5 +31,10 @@ public class HuntQuest extends QuestIncrementer {
 	@Override
 	public boolean isCompleted() {
 		return this.getProgress().getAmount() >= this.objective.getAmount();
+	}
+
+	@Override
+	public Type[] getEventTypes() {
+		return new Type[] { Type.ENTITY_DEATH };
 	}
 }
