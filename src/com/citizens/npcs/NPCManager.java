@@ -44,10 +44,11 @@ public class NPCManager {
 		name = ChatColor.stripColor(name);
 		String npcName = name;
 		if (Constant.ConvertSlashes.toBoolean()) {
-			npcName.replace(Citizens.separatorChar, " ");
+			npcName = npcName.replace(Citizens.separatorChar, " ");
 		}
-		if (colour != 0xF)
+		if (colour < 0xF) {
 			npcName = ChatColor.getByCode(colour) + name;
+		}
 		HumanNPC npc = NPCSpawner.spawnNPC(UID, npcName, loc.getWorld(),
 				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);

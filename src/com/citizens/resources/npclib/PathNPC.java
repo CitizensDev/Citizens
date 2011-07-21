@@ -355,7 +355,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public boolean hasTarget() {
-		return this.targetEntity == null;
+		return this.targetEntity != null;
 	}
 
 	public void performAction(Animation action) {

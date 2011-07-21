@@ -152,7 +152,11 @@ public class BasicProperties extends PropertyManager implements Saveable {
 			profiles.setInt(UID + color, 0xF);
 			return 0xF;
 		}
-		return Integer.parseInt(profiles.getString(UID + color), 16);
+		try {
+			return Integer.parseInt(profiles.getString(UID + color), 16);
+		} catch (NumberFormatException ex) {
+			return 0xF;
+		}
 	}
 
 	private void saveColour(int UID, int colour) {
