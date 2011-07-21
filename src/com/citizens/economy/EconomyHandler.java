@@ -4,12 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.citizens.SettingsManager.Constant;
 import com.citizens.resources.npclib.HumanNPC;
 
 public class EconomyHandler {
-	private static boolean useEconomy = true;
+	private static boolean useEconomy = Constant.UseEconomy.toBoolean();
 	private static boolean serverEconomyEnabled = false;
-	private static boolean useServerEconomy = false;
+	private static boolean useServerEconomy = Constant.UseEconPlugin
+			.toBoolean();
 
 	private static final String prefix = "prices.";
 	public static final String[] materialAddendums = { ".misc", ".wood",
@@ -98,15 +100,6 @@ public class EconomyHandler {
 	 */
 	public static void setServerEconomyEnabled(boolean value) {
 		serverEconomyEnabled = value;
-	}
-
-	/**
-	 * Checks if types of economy are being used.
-	 * 
-	 */
-	public static void setUpVariables(boolean useEco, boolean useEconplugin) {
-		useEconomy = useEco;
-		useServerEconomy = useEconplugin;
 	}
 
 	/**

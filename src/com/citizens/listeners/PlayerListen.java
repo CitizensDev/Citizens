@@ -23,7 +23,6 @@ import com.citizens.interfaces.Listener;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.guards.GuardTask;
-import com.citizens.npctypes.questers.quests.ChatManager;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.ConversationUtils;
@@ -87,11 +86,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
-		String name = event.getPlayer().getName();
-		if (!ChatManager.hasEditMode(name)) {
-			return;
-		}
-		// TODO do stuff
+		ConversationUtils.onChat(event);
 	}
 
 	@Override
