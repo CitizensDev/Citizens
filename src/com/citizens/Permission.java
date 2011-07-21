@@ -4,6 +4,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.citizens.SettingsManager.Constant;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.Messaging;
@@ -16,7 +17,16 @@ public class Permission {
 	private static boolean permissionsEnabled = false;
 	private static PermissionHandler handler;
 
+	private static boolean permission(Player player, String string) {
+		return Constant.UseSuperPerms.toBoolean() ? player
+				.hasPermission(string) : handler.has(player, string);
+	}
+
 	public static void initialize(Server server) {
+		if (Constant.UseSuperPerms.toBoolean()) {
+			permissionsEnabled = true;
+			return;
+		}
 		Plugin test = server.getPluginManager().getPlugin("Permissions");
 		if (test != null) {
 			permissionsEnabled = true;
@@ -61,10 +71,6 @@ public class Permission {
 					|| permission(player, "citizens.use." + type);
 		}
 		return player.isOp();
-	}
-
-	private static boolean permission(Player player, String string) {
-		return handler.has(player, string);
 	}
 
 	public static boolean generic(Player player, String string) {

@@ -79,6 +79,8 @@ public class SettingsManager {
 		ConvertSlashes(Config.SETTINGS, "general.chat.slashes-to-spaces", true),
 		DefaultTalkWhenClose(Config.SETTINGS,
 				"general.defaults.talk-when-close", false),
+		UseSuperPerms(Config.SETTINGS,
+				"general.permissions.use-bukkit-permissions", false),
 		// economy.yml
 		UseEconomy(Config.ECONOMY, "economy.use-economy", true),
 		UseEconPlugin(Config.ECONOMY, "economy.use-econplugin", false),
