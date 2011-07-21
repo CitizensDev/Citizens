@@ -3,7 +3,6 @@ package com.citizens.npcs;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,11 +19,15 @@ import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCList;
 import com.citizens.resources.npclib.NPCSpawner;
 import com.citizens.utils.StringUtils;
+import com.google.common.collect.MapMaker;
 
 public class NPCManager {
-	public static final Map<Integer, String> GlobalUIDs = new ConcurrentHashMap<Integer, String>();
-	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new ConcurrentHashMap<Integer, ArrayDeque<String>>();
-	private static final Map<String, Integer> selectedNPCs = new ConcurrentHashMap<String, Integer>();
+	public static final Map<Integer, String> GlobalUIDs = new MapMaker()
+			.makeMap();
+	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new MapMaker()
+			.makeMap();
+	private static final Map<String, Integer> selectedNPCs = new MapMaker()
+			.makeMap();
 	private static NPCList list = new NPCList();
 
 	/**
@@ -40,28 +43,22 @@ public class NPCManager {
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
 		String npcName = name;
-		if (colour != 0xF) {
-			npcName = ChatColor.getByCode(colour) + name;
-		}
 		if (Constant.ConvertSlashes.toBoolean()) {
-			String[] brokenName = npcName.split(Citizens.separatorChar);
-			for (int i = 0; i < brokenName.length; i++) {
-				if (i == 0) {
-					npcName = brokenName[i];
-				} else {
-					npcName += " " + brokenName[i];
-				}
-			}
+			npcName.replace(Citizens.separatorChar, " ");
 		}
+		if (colour != 0xF)
+			npcName = ChatColor.getByCode(colour) + name;
 		HumanNPC npc = NPCSpawner.spawnNPC(UID, npcName, loc.getWorld(),
 				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
+
 		NPCSpawnEvent event = new NPCSpawnEvent(npc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 			NPCSpawner.despawnNPC(npc);
 			return;
 		}
+
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
 		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items, NPCTexts
@@ -72,10 +69,9 @@ public class NPCManager {
 
 		registerUID(UID, npcName);
 		list.put(UID, npc);
-
 		PropertyManager.save(npc);
 
-		npc.getPlayer().setSleepingIgnored(true);
+		npc.getPlayer().setSleepingIgnored(true); // Fix beds.
 	}
 
 	/**

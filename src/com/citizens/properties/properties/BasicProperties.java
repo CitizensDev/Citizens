@@ -23,6 +23,8 @@ import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.StringUtils;
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 
 public class BasicProperties extends PropertyManager implements Saveable {
 	private final String name = ".basic.name";
@@ -140,44 +142,17 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		return array;
 	}
 
-	private void saveItems(int UID, ArrayList<Integer> items2) {
-		StringBuilder toSave = new StringBuilder();
-		for (Integer i : items2) {
-			toSave.append(i).append(",");
-		}
-		profiles.setString(UID + items, toSave.toString());
+	private void saveItems(int UID, ArrayList<Integer> items) {
+		profiles.setString(UID + this.items,
+				Joiner.on(",").join(items.toArray()));
 	}
 
 	public int getColour(int UID) {
-		try {
-			return profiles.getInt(UID + color, 0xf);
-		} catch (NumberFormatException ex) {
-			int colour = 0xf;
-			if (profiles.pathExists(UID + color)
-					&& !profiles.getString(UID + color).isEmpty()) {
-				try {
-					colour = Integer.parseInt(""
-							+ profiles.getString(UID + color)
-									.charAt(profiles.getString(UID + color)
-											.length() - 1));
-				} catch (NumberFormatException e) {
-					try {
-						colour = Integer
-								.parseInt(
-										""
-												+ profiles.getString(
-														UID + color).charAt(
-														profiles.getString(
-																UID + color)
-																.length() - 1),
-										16);
-					} catch (NumberFormatException exa) {
-					}
-				}
-			}
-			saveColour(UID, colour);
-			return colour;
+		if (Strings.isNullOrEmpty(profiles.getString(UID + color))) {
+			profiles.setInt(UID + color, 0xF);
+			return 0xF;
 		}
+		return Integer.parseInt(profiles.getString(UID + color), 16);
 	}
 
 	private void saveColour(int UID, int colour) {
@@ -195,13 +170,10 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveText(int UID, ArrayDeque<String> texts) {
-		StringBuilder buf = new StringBuilder();
-		if (texts != null) {
-			for (String string : texts) {
-				buf.append(string).append(";");
-			}
-		}
-		profiles.setString(UID + text, buf.toString());
+		if (texts == null)
+			return;
+		profiles.setString(UID + text,
+				Joiner.on(";").skipNulls().join(texts.toArray()));
 	}
 
 	public boolean getLookWhenClose(int UID) {
@@ -228,14 +200,6 @@ public class BasicProperties extends PropertyManager implements Saveable {
 
 	public void setOwner(int UID, String name) {
 		profiles.setString(UID + owner, name);
-	}
-
-	public int getNewNpcID() {
-		int count = 0;
-		while (profiles.pathExists(count)) {
-			++count;
-		}
-		return count;
 	}
 
 	private void saveWaypoints(int UID, List<Location> waypoints) {
@@ -348,5 +312,12 @@ public class BasicProperties extends PropertyManager implements Saveable {
 			profiles.setString(nextUID + lookWhenClose,
 					profiles.getString(UID + lookWhenClose));
 		}
+	}
+
+	public int getNewNpcID() {
+		int count = 0;
+		while (profiles.pathExists(count))
+			++count;
+		return count;
 	}
 }

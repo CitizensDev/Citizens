@@ -1,6 +1,6 @@
 package com.citizens.listeners;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -17,9 +17,11 @@ import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.creatures.CreatureNPC;
 import com.citizens.utils.Messaging;
+import com.google.common.collect.MapMaker;
 
 public class WorldListen extends WorldListener implements Listener {
-	private final ConcurrentHashMap<NPCLocation, Integer> toRespawn = new ConcurrentHashMap<NPCLocation, Integer>();
+	private final Map<NPCLocation, Integer> toRespawn = new MapMaker()
+			.makeMap();
 
 	@Override
 	public void registerEvents() {

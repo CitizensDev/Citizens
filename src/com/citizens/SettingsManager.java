@@ -8,12 +8,15 @@ import java.util.Map;
 import com.citizens.interfaces.Storage;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.Messaging;
+import com.google.common.collect.Lists;
 
 public class SettingsManager {
 	public static final Map<String, Object> economyDefaults = writeEconomySettings();
 
 	private enum Config {
-		ECONOMY, MOB, SETTINGS;
+		ECONOMY,
+		MOB,
+		SETTINGS;
 
 		private final List<Constant> settings = new ArrayList<Constant>();
 
@@ -29,46 +32,30 @@ public class SettingsManager {
 	public enum Constant {
 		// citizens.yml
 		GuardRespawnDelay(Config.SETTINGS, "ticks.guards.respawn-delay", 100),
-		HealerGiveHealthItem(
-				Config.SETTINGS,
-				"items.healers.give-health-item",
+		HealerGiveHealthItem(Config.SETTINGS, "items.healers.give-health-item",
 				35),
-		HealerTakeHealthItem(
-				Config.SETTINGS,
-				"items.healers.take-health-item",
+		HealerTakeHealthItem(Config.SETTINGS, "items.healers.take-health-item",
 				278),
-		HealerHealthRegenIncrement(
-				Config.SETTINGS,
-				"ticks.healers.health-regen-increment",
-				12000),
+		HealerHealthRegenIncrement(Config.SETTINGS,
+				"ticks.healers.health-regen-increment", 12000),
 		MaxNPCsPerPlayer(Config.SETTINGS, "general.limits.npcs-per-player", 10),
 		MaxStationaryTicks(Config.SETTINGS, "ticks.pathing.max-stationary", -1),
 		MaxPathingTicks(Config.SETTINGS, "ticks.pathing.max-pathing", -1),
 		MaxWizardMana(Config.SETTINGS, "general.wizards.max-mana", 100),
 		SaveDelay(Config.SETTINGS, "ticks.saving.delay", 72000),
-		RightClickPause(
-				Config.SETTINGS,
-				"ticks.waypoints.right-click-pause",
+		RightClickPause(Config.SETTINGS, "ticks.waypoints.right-click-pause",
 				70),
 		TickDelay(Config.SETTINGS, "ticks.general.delay", 1),
-		WizardMaxLocations(
-				Config.SETTINGS,
-				"general.wizards.wizard-max-locations",
-				10),
+		WizardMaxLocations(Config.SETTINGS,
+				"general.wizards.wizard-max-locations", 10),
 		WizardInteractItem(Config.SETTINGS, "items.wizards.interact-item", 288),
-		WizardManaRegenItem(
-				Config.SETTINGS,
-				"items.wizards.mana-regen-item",
+		WizardManaRegenItem(Config.SETTINGS, "items.wizards.mana-regen-item",
 				348),
-		WizardManaRegenRate(
-				Config.SETTINGS,
-				"ticks.wizards.mana-regen-rate",
+		WizardManaRegenRate(Config.SETTINGS, "ticks.wizards.mana-regen-rate",
 				6000),
 		NPCRange(Config.SETTINGS, "range.basic.look", 5),
-		DefaultBouncerProtectionRadius(
-				Config.SETTINGS,
-				"range.guards.default-bouncer-protection-radius",
-				10),
+		DefaultBouncerProtectionRadius(Config.SETTINGS,
+				"range.guards.default-bouncer-protection-radius", 10),
 		PathfindingRange(Config.SETTINGS, "range.guards.pathfinding", 16F),
 		ChatFormat(Config.SETTINGS, "general.chat.format", "[%name%]: "),
 		DefaultText(
@@ -78,18 +65,12 @@ public class SettingsManager {
 		NPCColour(Config.SETTINGS, "general.colors.npc-colour", "f"),
 		TalkItems(Config.SETTINGS, "items.basic.talk-items", "340,"),
 		SelectItems(Config.SETTINGS, "items.basic.select-items", "*"),
-		SelectionMessage(
-				Config.SETTINGS,
-				"general.chat.selection-message",
+		SelectionMessage(Config.SETTINGS, "general.chat.selection-message",
 				"<g>You selected <y><npc><g> (ID <y><npcid><g>)."),
-		CreationMessage(
-				Config.SETTINGS,
-				"general.chat.creation-message",
+		CreationMessage(Config.SETTINGS, "general.chat.creation-message",
 				"<g>The NPC <y><npc><g> was born!"),
-		DefaultFollowingEnabled(
-				Config.SETTINGS,
-				"general.defaults.enable-following",
-				true),
+		DefaultFollowingEnabled(Config.SETTINGS,
+				"general.defaults.enable-following", true),
 		PayForHealerHeal(Config.SETTINGS, "general.healers.pay-for-heal", true),
 		RegenHealerHealth(Config.SETTINGS, "general.healers.regen-health", true),
 		RegenWizardMana(Config.SETTINGS, "general.wizards.regen-mana", true),
@@ -101,14 +82,10 @@ public class SettingsManager {
 		DebugMode(Config.SETTINGS, "general.debug-mode", false),
 		NotifyUpdates(Config.SETTINGS, "general.notify-updates", true),
 		ConvertSlashes(Config.SETTINGS, "general.chat.slashes-to-spaces", true),
-		DefaultTalkWhenClose(
-				Config.SETTINGS,
-				"general.defaults.talk-when-close",
-				false),
-		UseSuperPerms(
-				Config.SETTINGS,
-				"general.permissions.use-bukkit-permissions",
-				false),
+		DefaultTalkWhenClose(Config.SETTINGS,
+				"general.defaults.talk-when-close", false),
+		UseSuperPerms(Config.SETTINGS,
+				"general.permissions.use-bukkit-permissions", false),
 		// economy.yml
 		UseEconomy(Config.ECONOMY, "economy.use-economy", true),
 		UseEconPlugin(Config.ECONOMY, "economy.use-econplugin", false),
@@ -118,21 +95,13 @@ public class SettingsManager {
 		MaxEvils(Config.MOB, "evil.spawn.max", 2),
 		MaxPirates(Config.MOB, "pirates.spawn.max", 2),
 		SpawnTaskDelay(Config.MOB, "general.spawn.delay", 200),
-		EvilNames(
-				Config.MOB,
-				"evil.misc.names",
+		EvilNames(Config.MOB, "evil.misc.names",
 				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,"),
-		PirateNames(
-				Config.MOB,
-				"pirates.misc.names",
+		PirateNames(Config.MOB, "pirates.misc.names",
 				"Pirate_Pete,Piratebay,Jack_Sparrow,"),
-		FailureToTameMessages(
-				Config.MOB,
-				"evil.misc.failed-tame-messages",
+		FailureToTameMessages(Config.MOB, "evil.misc.failed-tame-messages",
 				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;"),
-		PirateStealMessages(
-				Config.MOB,
-				"pirates.misc.steal-messages",
+		PirateStealMessages(Config.MOB, "pirates.misc.steal-messages",
 				"I stole yer booty.;Aaargh.;"),
 		EvilDrops(Config.MOB, "evil.items.drops", "260,357,2256,"),
 		SpawnEvils(Config.MOB, "evil.spawn.spawn", false),
@@ -229,12 +198,12 @@ public class SettingsManager {
 		HashMap<String, Object> nodes = new HashMap<String, Object>();
 		nodes.put("economy.use-economy", true);
 		nodes.put("economy.use-econplugin", false);
-		nodes.put("prices.basic.creation.item", 10);
-		nodes.put("prices.basic.creation.item-currency-id", 37);
-		nodes.put("prices.basic.creation.econplugin", 100);
-		nodes.put("prices.blacksmith.creation.item", 10);
-		nodes.put("prices.blacksmith.creation.item-currency-id", 37);
-		nodes.put("prices.blacksmith.creation.econplugin", 100);
+		for (String type : Lists.newArrayList("basic", "blacksmith", "guard",
+				"healer", "quester", "trader", "wizard")) {
+			nodes.put("prices." + type + ".creation.item", 10);
+			nodes.put("prices." + type + ".creation.item-currency-id", 37);
+			nodes.put("prices." + type + ".creation.econplugin", 100);
+		}
 		nodes.put("prices.blacksmith.armorrepair.item-currency-id", 37);
 		nodes.put("prices.blacksmith.armorrepair.econplugin.leather", 0.25);
 		nodes.put("prices.blacksmith.armorrepair.econplugin.gold", 0.50);
@@ -246,6 +215,7 @@ public class SettingsManager {
 		nodes.put("prices.blacksmith.armorrepair.item.chainmail", 3);
 		nodes.put("prices.blacksmith.armorrepair.item.iron", 4);
 		nodes.put("prices.blacksmith.armorrepair.item.diamond", 5);
+
 		nodes.put("prices.blacksmith.toolrepair.item-currency-id", 37);
 		nodes.put("prices.blacksmith.toolrepair.econplugin.wood", 0.25);
 		nodes.put("prices.blacksmith.toolrepair.econplugin.gold", 0.50);
@@ -259,36 +229,27 @@ public class SettingsManager {
 		nodes.put("prices.blacksmith.toolrepair.item.iron", 4);
 		nodes.put("prices.blacksmith.toolrepair.item.diamond", 5);
 		nodes.put("prices.blacksmith.toolrepair.item.misc", 2);
-		nodes.put("prices.guard.creation.item", 10);
-		nodes.put("prices.guard.creation.item-currency-id", 37);
-		nodes.put("prices.guard.creation.econplugin", 100);
-		nodes.put("prices.healer.creation.item", 10);
-		nodes.put("prices.healer.creation.item-currency-id", 37);
-		nodes.put("prices.healer.creation.econplugin", 100);
+
 		nodes.put("prices.healer.levelup.item", 10);
 		nodes.put("prices.healer.levelup.item-currency-id", 37);
 		nodes.put("prices.healer.levelup.econplugin", 100);
+
 		nodes.put("prices.healer.heal.item", 10);
 		nodes.put("prices.healer.heal.item-currency-id", 37);
 		nodes.put("prices.healer.heal.econplugin", 100);
-		nodes.put("prices.quester.creation.item", 10);
-		nodes.put("prices.quester.creation.item-currency-id", 37);
-		nodes.put("prices.quester.creation.econplugin", 100);
-		nodes.put("prices.trader.creation.item", 10);
-		nodes.put("prices.trader.creation.item-currency-id", 37);
-		nodes.put("prices.trader.creation.econplugin", 100);
-		nodes.put("prices.wizard.creation.item", 10);
-		nodes.put("prices.wizard.creation.item-currency-id", 37);
-		nodes.put("prices.wizard.creation.econplugin", 100);
+
 		nodes.put("prices.wizard.teleport.item", 10);
 		nodes.put("prices.wizard.teleport.item-currency-id", 37);
 		nodes.put("prices.wizard.teleport.econplugin", 100);
+
 		nodes.put("prices.wizard.changetime.item", 10);
 		nodes.put("prices.wizard.changetime.item-currency-id", 37);
 		nodes.put("prices.wizard.changetime.econplugin", 100);
+
 		nodes.put("prices.wizard.spawnmob.item", 10);
 		nodes.put("prices.wizard.spawnmob.item-currency-id", 37);
 		nodes.put("prices.wizard.spawnmob.econplugin", 100);
+
 		nodes.put("prices.wizard.togglestorm.item", 10);
 		nodes.put("prices.wizard.togglestorm.item-currency-id", 37);
 		nodes.put("prices.wizard.togglestorm.econplugin", 100);

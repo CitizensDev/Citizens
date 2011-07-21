@@ -12,6 +12,7 @@ import com.citizens.npctypes.traders.Stockable;
 import com.citizens.npctypes.traders.TraderNPC;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
+import com.google.common.base.Joiner;
 
 public class TraderProperties extends PropertyManager implements Saveable {
 	private final String isTrader = ".trader.toggle";
@@ -49,15 +50,14 @@ public class TraderProperties extends PropertyManager implements Saveable {
 
 	private void saveStockables(int UID,
 			ConcurrentHashMap<Check, Stockable> stockables) {
-		String string = "";
-		setStockables(UID, string);
-		int count = 0;
-		for (Stockable entry : stockables.values()) {
-			if (!string.contains(entry.toString()))
-				string += (entry.toString() + ";");
-			count += 1;
-		}
-		setStockables(UID, string);
+		/*
+			for (Stockable entry : stockables.values()) {
+				if (!string.contains(entry.toString()))
+					string += (entry.toString() + ";");
+					count += 1;
+			}
+		*/
+		setStockables(UID, Joiner.on(";").join(stockables.values()));
 	}
 
 	private ConcurrentHashMap<Check, Stockable> getStockables(int UID) {

@@ -3,7 +3,6 @@ package com.citizens;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,9 +14,11 @@ import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCSpawner;
 import com.citizens.resources.npclib.creatures.CreatureNPC;
 import com.citizens.resources.npclib.creatures.CreatureNPCType;
+import com.google.common.collect.MapMaker;
 
 public class CreatureTask implements Runnable {
-	public final static Map<Integer, CreatureNPC> creatureNPCs = new ConcurrentHashMap<Integer, CreatureNPC>();
+	public final static Map<Integer, CreatureNPC> creatureNPCs = new MapMaker()
+			.makeMap();
 	private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
 			CreatureNPCType.class);
 	private Player[] online;

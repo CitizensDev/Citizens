@@ -1,7 +1,5 @@
 package com.citizens.resources.npclib;
 
-import java.util.logging.Logger;
-
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -14,9 +12,6 @@ import org.bukkit.entity.Player;
 import com.citizens.Citizens;
 
 public class CraftNPC extends PathNPC {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger("Minecraft");
 	@SuppressWarnings("unused")
 	private final int lastTargetId;
 	private long lastBounceTick;

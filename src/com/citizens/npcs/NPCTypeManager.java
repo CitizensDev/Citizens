@@ -1,13 +1,13 @@
 package com.citizens.npcs;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.citizens.npctypes.interfaces.NPCFactory;
 import com.citizens.npctypes.interfaces.NPCType;
+import com.google.common.collect.Maps;
 
 public class NPCTypeManager {
-	private static final Map<String, NPCType> types = new HashMap<String, NPCType>();
+	private static final Map<String, NPCType> types = Maps.newHashMap();
 
 	public static NPCFactory getFactory(String string) {
 		return types.get(string).factory();

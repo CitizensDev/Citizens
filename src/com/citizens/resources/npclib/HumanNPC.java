@@ -1,7 +1,7 @@
 package com.citizens.resources.npclib;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -20,6 +20,7 @@ import com.citizens.npctypes.interfaces.Toggleable;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.NPCAnimator.Animation;
 import com.citizens.waypoints.WaypointPath;
+import com.google.common.collect.MapMaker;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;
@@ -28,7 +29,7 @@ public class HumanNPC extends NPC {
 	private boolean paused;
 	private WaypointPath waypoints = new WaypointPath();
 
-	private final ConcurrentHashMap<String, Toggleable> types = new ConcurrentHashMap<String, Toggleable>();
+	private final Map<String, Toggleable> types = new MapMaker().makeMap();
 
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);

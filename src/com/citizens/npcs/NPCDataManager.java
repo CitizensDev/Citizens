@@ -1,7 +1,6 @@
 package com.citizens.npcs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
@@ -15,9 +14,10 @@ import com.citizens.SettingsManager.Constant;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
+import com.google.common.collect.Maps;
 
 public class NPCDataManager {
-	public static final Map<String, Integer> pathEditors = new HashMap<String, Integer>();
+	public static final Map<String, Integer> pathEditors = Maps.newHashMap();
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
 		String name = event.getPlayer().getName();

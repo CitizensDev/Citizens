@@ -1,7 +1,5 @@
 package com.citizens.properties.properties;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.citizens.SettingsManager.Constant;
@@ -11,6 +9,8 @@ import com.citizens.npctypes.guards.GuardManager.GuardType;
 import com.citizens.npctypes.guards.GuardNPC;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
 
 public class GuardProperties extends PropertyManager implements Saveable {
 	private static final String isGuard = ".guard.toggle";
@@ -46,33 +46,20 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	}
 
 	private Set<String> getBlacklist(int UID) {
-		String save = profiles.getString(UID + blacklist);
-		Set<String> mobs = new HashSet<String>();
-		Collections.addAll(mobs, save.split(","));
-		return mobs;
+		return Sets.newHashSet(profiles.getString(UID + blacklist).split(","));
 	}
 
 	private void saveBlacklist(int UID, Set<String> mobs) {
-		StringBuilder save = new StringBuilder();
-		for (String mob : mobs) {
-			save.append(mob + ",");
-		}
-		profiles.setString(UID + blacklist, save.toString());
+		profiles.setString(UID + blacklist, Joiner.on(",").join(mobs.toArray()));
 	}
 
 	private Set<String> getWhitelist(int UID) {
-		String save = profiles.getString(UID + whitelist);
-		Set<String> players = new HashSet<String>();
-		Collections.addAll(players, save.split(","));
-		return players;
+		return Sets.newHashSet(profiles.getString(UID + whitelist).split(","));
 	}
 
 	private void saveWhitelist(int UID, Set<String> players) {
-		StringBuilder save = new StringBuilder();
-		for (String player : players) {
-			save.append(player + ",");
-		}
-		profiles.setString(UID + whitelist, save.toString());
+		profiles.setString(UID + whitelist,
+				Joiner.on(",").join(players.toArray()));
 	}
 
 	@Override
