@@ -36,4 +36,9 @@ public class QuestReward implements Reward {
 	public boolean isTake() {
 		return false;
 	}
+
+	@Override
+	public boolean canTake(Player player) {
+		return true;
+	}
 }

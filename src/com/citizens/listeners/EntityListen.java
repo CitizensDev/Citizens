@@ -153,7 +153,7 @@ public class EntityListen extends EntityListener implements Listener {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, point, -1, -1,
-					Constant.PathfindingRange.toFloat());
+					Constant.PathfindingRange.toDouble());
 			npc.setPaused(false);
 		}
 	}

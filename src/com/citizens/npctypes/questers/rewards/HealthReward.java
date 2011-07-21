@@ -36,4 +36,9 @@ public class HealthReward implements Reward {
 	public boolean isTake() {
 		return take;
 	}
+
+	@Override
+	public boolean canTake(Player player) {
+		return take ? player.getHealth() - reward > 0 : true;
+	}
 }

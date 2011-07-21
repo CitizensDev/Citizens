@@ -42,4 +42,10 @@ public class EconpluginReward implements Reward {
 	public boolean isTake() {
 		return take;
 	}
+
+	@Override
+	public boolean canTake(Player player) {
+		return take ? ServerEconomyInterface.getBalance(player.getName())
+				- reward >= 0 : true;
+	}
 }

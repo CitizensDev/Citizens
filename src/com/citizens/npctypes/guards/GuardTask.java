@@ -13,7 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.citizens.misc.ActionManager;
-import com.citizens.misc.CachedAction;
+import com.citizens.misc.ActionManager.CachedAction;
 import com.citizens.misc.NPCLocation;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
@@ -38,10 +38,10 @@ public class GuardTask implements Runnable {
 				}
 				if (guard.isAttacking()
 						&& npc.getHandle().hasTarget()
-						&& (!LocationUtils.checkLocation(npc.getLocation(), npc
+						&& (!LocationUtils.withinRange(npc.getLocation(), npc
 								.getHandle().getTarget().getLocation(),
 								guard.getProtectionRadius()) || !LocationUtils
-								.checkLocation(npc.getLocation(), npc
+								.withinRange(npc.getLocation(), npc
 										.getNPCData().getLocation(), guard
 										.getProtectionRadius()))) {
 					npc.getHandle().cancelTarget();
@@ -52,7 +52,7 @@ public class GuardTask implements Runnable {
 					continue;
 				}
 				if (npc.isPaused()
-						&& LocationUtils.checkLocation(npc.getLocation(), npc
+						&& LocationUtils.withinRange(npc.getLocation(), npc
 								.getNPCData().getLocation())) {
 					npc.setPaused(false);
 				}
@@ -69,7 +69,7 @@ public class GuardTask implements Runnable {
 						String name = getNameFromEntity(entity, npc.getUID());
 						if (name.isEmpty())
 							continue;
-						if (LocationUtils.checkLocation(loc,
+						if (LocationUtils.withinRange(loc,
 								entity.getLocation(),
 								guard.getProtectionRadius())) {
 							cacheActions(npc, entity, entity.getEntityId(),
@@ -98,7 +98,7 @@ public class GuardTask implements Runnable {
 									npc.getUID());
 							if (name.isEmpty())
 								continue;
-							if (LocationUtils.checkLocation(ownerloc,
+							if (LocationUtils.withinRange(ownerloc,
 									entity.getLocation(),
 									guard.getProtectionRadius())) {
 								cacheActions(npc, entity, entity.getEntityId(),
@@ -108,7 +108,7 @@ public class GuardTask implements Runnable {
 							}
 						}
 						entity = null;
-						if (LocationUtils.checkLocation(npc.getLocation(),
+						if (LocationUtils.withinRange(npc.getLocation(),
 								p.getLocation(), 25)) {
 							PathUtils.target(npc, p, false, -1, -1, 25);
 						} else {

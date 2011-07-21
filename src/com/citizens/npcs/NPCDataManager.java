@@ -44,14 +44,14 @@ public class NPCDataManager {
 				}
 				if (npc.getWaypoints().size() > 0
 						&& npc.getWaypoints().getLast().distance(loc) > Constant.PathfindingRange
-								.toFloat()) {
+								.toDouble()) {
 					event.getPlayer()
 							.sendMessage(
 									ChatColor.GRAY
 											+ "Points can't be more than "
 											+ StringUtils.wrap(
 													Constant.PathfindingRange
-															.toFloat(),
+															.toDouble(),
 													ChatColor.GRAY)
 											+ " blocks away from each other.");
 					break;

@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.misc.ActionManager;
-import com.citizens.misc.CachedAction;
+import com.citizens.misc.ActionManager.CachedAction;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.LocationUtils;
@@ -22,7 +22,9 @@ import com.iConomy.util.Messaging;
 
 public class PirateTask implements Runnable {
 	public enum LootType {
-		INVENTORY, CHEST, ECONOMY_PLUGIN;
+		INVENTORY,
+		CHEST,
+		ECONOMY_PLUGIN;
 	}
 
 	private final Random random = new Random();
@@ -40,7 +42,7 @@ public class PirateTask implements Runnable {
 					UID = entry.getKey();
 					for (Player p : online) {
 						String name = p.getName();
-						if (LocationUtils.checkLocation(npc.getLocation(),
+						if (LocationUtils.withinRange(npc.getLocation(),
 								p.getLocation(), 0)) {
 							cachePlayerActions(p, npc, UID, name);
 						} else {
@@ -50,9 +52,8 @@ public class PirateTask implements Runnable {
 					for (BlockState block : npc.getLocation().getBlock()
 							.getChunk().getTileEntities()) {
 						if (block.getType() == Material.CHEST
-								&& LocationUtils.checkLocation(npc
-										.getLocation(), block.getBlock()
-										.getLocation(), 10)) {
+								&& LocationUtils.withinRange(npc.getLocation(),
+										block.getBlock().getLocation(), 10)) {
 
 						}
 					}

@@ -11,12 +11,12 @@ import com.citizens.misc.CachedAction;
 import com.citizens.npcs.NPCManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCSpawner;
-import com.citizens.resources.npclib.WaypointPath;
 import com.citizens.utils.LocationUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
+import com.citizens.waypoints.WaypointPath;
 
 public class TickTask implements Runnable {
 
@@ -37,7 +37,7 @@ public class TickTask implements Runnable {
 					if (npc.getNPCData().isLookClose()
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
-						if (LocationUtils.checkLocation(npc.getLocation(),
+						if (LocationUtils.withinRange(npc.getLocation(),
 								p.getLocation(), Constant.NPCRange.toDouble())) {
 							if (npc.getHandle().pathFinished()
 									&& npc.getNPCData().isLookClose()) {
@@ -63,7 +63,7 @@ public class TickTask implements Runnable {
 			if (waypoints.currentIndex() >= 1) {
 				if (!waypoints.isStarted()) {
 					PathUtils.createPath(npc, waypoints.get(0), -1, -1,
-							Constant.PathfindingRange.toFloat());
+							Constant.PathfindingRange.toDouble());
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -73,7 +73,7 @@ public class TickTask implements Runnable {
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
 					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
-							-1, -1, Constant.PathfindingRange.toFloat());
+							-1, -1, Constant.PathfindingRange.toDouble());
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -88,7 +88,7 @@ public class TickTask implements Runnable {
 					waypoints.setIndex(0);
 				}
 				PathUtils.createPath(npc, waypoints.current(), -1, -1,
-						Constant.PathfindingRange.toFloat());
+						Constant.PathfindingRange.toDouble());
 				waypoints.setStarted(true);
 			}
 			if (!npc.isPaused() && npc.getHandle().pathFinished()) {

@@ -120,6 +120,6 @@ public class GuardManager {
 			loc = npc.getNPCData().getLocation();
 		}
 		PathUtils.createPath(npc, loc, -1, -1,
-				Constant.PathfindingRange.toFloat());
+				Constant.PathfindingRange.toDouble());
 	}
 }

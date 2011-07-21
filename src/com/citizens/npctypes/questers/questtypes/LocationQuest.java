@@ -20,7 +20,7 @@ public class LocationQuest extends QuestIncrementer {
 		// Possibility for a distance away parameter.
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
-			if (LocationUtils.checkLocation(ev.getPlayer().getLocation(),
+			if (LocationUtils.withinRange(ev.getPlayer().getLocation(),
 					this.objective.getLocation(), 0))
 				this.getProgress()
 						.setLastLocation(ev.getPlayer().getLocation());
@@ -29,7 +29,7 @@ public class LocationQuest extends QuestIncrementer {
 
 	@Override
 	public boolean isCompleted() {
-		return LocationUtils.checkLocation(this.objective.getLocation(), this
+		return LocationUtils.withinRange(this.objective.getLocation(), this
 				.getProgress().getLastLocation(), 0);
 	}
 }

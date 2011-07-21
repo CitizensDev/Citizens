@@ -12,7 +12,7 @@ public class LocationUtils {
 	 * @param range
 	 * @return
 	 */
-	public static boolean checkLocation(Location loc, Location pLoc,
+	public static boolean withinRange(Location loc, Location pLoc,
 			double range) {
 		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName())) {
 			return false;
@@ -33,7 +33,7 @@ public class LocationUtils {
 	 * @param range
 	 * @return
 	 */
-	public static boolean checkLocation(Location loc, Location pLoc, int range) {
+	public static boolean withinRange(Location loc, Location pLoc, int range) {
 		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName())) {
 			return false;
 		}
@@ -46,7 +46,7 @@ public class LocationUtils {
 				&& (pZ >= lZ - halved && pZ <= lZ + halved);
 	}
 
-	public static boolean checkLocation(Location loc, Location second) {
-		return checkLocation(loc, second, 0);
+	public static boolean withinRange(Location loc, Location second) {
+		return withinRange(loc, second, 0);
 	}
 }

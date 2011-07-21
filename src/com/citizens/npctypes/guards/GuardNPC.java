@@ -250,6 +250,6 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 		this.npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
-				Constant.PathfindingRange.toFloat());
+				Constant.PathfindingRange.toDouble());
 	}
 }

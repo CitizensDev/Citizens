@@ -14,7 +14,12 @@ public class NPCAnimator {
 	private final PathNPC npc;
 
 	public enum Animation {
-		ACT_HURT, CROUCH, SLEEP, SWING_ARM, UNSLEEP, UNCROUCH;
+		ACT_HURT,
+		CROUCH,
+		SLEEP,
+		SWING_ARM,
+		UNSLEEP,
+		UNCROUCH;
 	}
 
 	public NPCAnimator(PathNPC pathNPC) {
@@ -66,32 +71,34 @@ public class NPCAnimator {
 		return this.npc.aa();
 	}
 
+	private Packet40EntityMetadata getMetadataPacket() {
+		return new Packet40EntityMetadata(this.npc.id, getWatcher());
+	}
+
+	private Packet18ArmAnimation getArmAnimationPacket(int data) {
+		return new Packet18ArmAnimation(this.npc, data);
+	}
+
 	private void crouch() {
 		npc.setSneak(true);
-		DataWatcher watcher = getWatcher();
-		Packet40EntityMetadata packet = new Packet40EntityMetadata(this.npc.id,
-				watcher);
-		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64, packet,
-				getPlayer());
+		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
+				getMetadataPacket(), getPlayer());
 	}
 
 	private void uncrouch() {
 		npc.setSneak(false);
-		DataWatcher watcher = getWatcher();
-		Packet40EntityMetadata packet = new Packet40EntityMetadata(this.npc.id,
-				watcher);
-		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64, packet,
-				getPlayer());
+		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
+				getMetadataPacket(), getPlayer());
 	}
 
 	private void swingArm() {
 		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
-				new Packet18ArmAnimation(this.npc, 1), getPlayer());
+				getArmAnimationPacket(1), getPlayer());
 	}
 
 	private void actHurt() {
 		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
-				new Packet18ArmAnimation(this.npc, 2), getPlayer());
+				getArmAnimationPacket(2), getPlayer());
 	}
 
 	private Player getPlayer() {

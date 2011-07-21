@@ -307,10 +307,10 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public boolean startPath(Location loc, int maxTicks,
-			int maxStationaryTicks, float pathingRange) {
+			int maxStationaryTicks, double range) {
 		this.pathTickLimit = maxTicks;
 		this.stationaryTickLimit = maxStationaryTicks;
-		this.pathingRange = pathingRange;
+		this.pathingRange = (float) range;
 		return createPath(loc);
 	}
 
@@ -330,11 +330,11 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
-			int maxStationaryTicks, float pathingRange) {
+			int maxStationaryTicks, double range) {
 		this.targetEntity = ((CraftLivingEntity) entity).getHandle();
 		this.targetAggro = aggro;
 		this.pathTickLimit = maxTicks;
-		this.pathingRange = pathingRange;
+		this.pathingRange = (float) range;
 		this.stationaryTickLimit = maxStationaryTicks;
 	}
 

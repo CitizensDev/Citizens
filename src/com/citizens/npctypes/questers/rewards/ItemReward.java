@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.ItemInterface;
 import com.citizens.economy.Payment;
 import com.citizens.npctypes.questers.Reward;
 import com.citizens.npctypes.questers.quests.QuestManager.RewardType;
@@ -39,5 +40,11 @@ public class ItemReward implements Reward {
 	@Override
 	public boolean isTake() {
 		return take;
+	}
+
+	@Override
+	public boolean canTake(Player player) {
+		return take ? ItemInterface.hasEnough(new Payment(reward), player)
+				: true;
 	}
 }

@@ -1,4 +1,4 @@
-package com.citizens.resources.npclib;
+package com.citizens.waypoints;
 
 import java.util.ArrayList;
 import java.util.List;

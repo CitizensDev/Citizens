@@ -19,6 +19,7 @@ import com.citizens.npctypes.interfaces.Targetable;
 import com.citizens.npctypes.interfaces.Toggleable;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.NPCAnimator.Animation;
+import com.citizens.waypoints.WaypointPath;
 
 public class HumanNPC extends NPC {
 	private CraftNPC mcEntity;
