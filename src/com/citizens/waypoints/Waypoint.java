@@ -18,7 +18,7 @@ public class Waypoint {
 
 	public void onReach(HumanNPC npc) {
 		for (WaypointModifier modifier : modifiers) {
-			modifier.onReach(npc);
+			modifier.onReach(npc, this);
 		}
 	}
 
