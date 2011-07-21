@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
 
 public class ItemInterface {
 	private static final String addendum = ".item";
@@ -132,6 +133,8 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getBlacksmithCurrency(Player player, Operation op) {
+		Messaging.log("getBlacksmithCurrency PRICE: "
+				+ getBlacksmithPrice(player, op));
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
 				UtilityProperties.getCurrencyID(Operation.getString(op,
 						currencyAddendum)), getBlacksmithPrice(player, op))));
@@ -272,11 +275,12 @@ public class ItemInterface {
 	public static double payBlacksmith(Player player, Operation op) {
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
-		double price = getBlacksmithPrice(player, op);
-		if (price <= 0 || currencyID == 0) {
-			return price;
+		blacksmithPrice = getBlacksmithPrice(player, op);
+		Messaging.log("payBlacksmith PRICE: " + blacksmithPrice);
+		if (blacksmithPrice <= 0 || currencyID == 0) {
+			return blacksmithPrice;
 		}
-		double current = price;
+		double current = blacksmithPrice;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
@@ -297,12 +301,11 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static int getBlacksmithPrice(Player player, Operation op) {
+	private static int getBlacksmithPrice(Player player, Operation op) {
 		ItemStack item = player.getItemInHand();
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
-		blacksmithPrice = (maxDurability - (maxDurability - item
-				.getDurability()))
+		double price = (maxDurability - (maxDurability - item.getDurability()))
 				* UtilityProperties
 						.getPrice(Operation
 								.getString(
@@ -310,10 +313,11 @@ public class ItemInterface {
 										addendum
 												+ EconomyHandler.materialAddendums[EconomyHandler
 														.getBlacksmithIndex(item)]));
-		if (blacksmithPrice < 1.0) {
-			blacksmithPrice += 1;
+		if (price < 1.0) {
+			price = 1;
 		}
-		return (int) blacksmithPrice;
+		Messaging.log("price: " + price);
+		return (int) price;
 	}
 
 	/**

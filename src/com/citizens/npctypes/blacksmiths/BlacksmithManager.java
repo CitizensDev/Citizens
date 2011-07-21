@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
 public class BlacksmithManager {
@@ -58,8 +59,9 @@ public class BlacksmithManager {
 											+ paid)) + ".");
 				}
 			} else {
-				player.sendMessage(ChatColor.RED
-						+ "Your item is already fully repaired.");
+				player.sendMessage(ChatColor.RED + "Your "
+						+ MessageUtils.getStackString(item)
+						+ "is already fully repaired.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(ChatColor.RED
