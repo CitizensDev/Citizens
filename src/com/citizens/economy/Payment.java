@@ -2,7 +2,6 @@ package com.citizens.economy;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npctypes.traders.ItemPrice;
 
 public class Payment {
@@ -49,10 +48,6 @@ public class Payment {
 		this.setEconomyPlugin(false);
 		this.setItem(stocking);
 		this.setPrice(stocking.getAmount());
-	}
-
-	public Payment(Operation op) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void setEconomyPlugin(boolean econPlugin) {

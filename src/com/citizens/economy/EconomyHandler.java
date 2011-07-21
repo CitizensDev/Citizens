@@ -73,10 +73,6 @@ public class EconomyHandler {
 		 */
 		BLACKSMITH_ARMORREPAIR,
 		/**
-		 * Create a bandit NPC
-		 */
-		BANDIT_CREATION,
-		/**
 		 * Create a guard NPC
 		 */
 		GUARD_CREATION;
@@ -285,19 +281,16 @@ public class EconomyHandler {
 	/**
 	 * Pay a price for a blacksmith operation
 	 * 
-	 * @param op
 	 * @param player
-	 * @param multiple
+	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmith(Operation op, Player player) {
+	public static double payBlacksmith(Player player, Operation op) {
 		if (useEconomy) {
 			if (useEconPlugin()) {
-				return ServerEconomyInterface.payBlacksmith(player,
-						player.getItemInHand(), op);
+				return ServerEconomyInterface.payBlacksmith(player, op);
 			} else {
-				return ItemInterface.payBlacksmith(player,
-						player.getItemInHand(), op);
+				return ItemInterface.payBlacksmith(player, op);
 			}
 		}
 		return 0;

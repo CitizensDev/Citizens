@@ -127,12 +127,7 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static boolean hasEnoughBlacksmith(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(
-				op,
-				addendum
-						+ EconomyHandler.materialAddendums[EconomyHandler
-								.getBlacksmithIndex(player.getItemInHand())]));
-		return playerHasEnough(player.getName(), price);
+		return playerHasEnough(player.getName(), getBlacksmithPrice(player, op));
 	}
 
 	/**
@@ -215,15 +210,15 @@ public class ServerEconomyInterface {
 	}
 
 	/**
-	 * Pays for a blacksmith operation
+	 * Get the price for a blacksmith operation
 	 * 
 	 * @param player
 	 * @param item
 	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmith(Player player, ItemStack item,
-			Operation op) {
+	public static double getBlacksmithPrice(Player player, Operation op) {
+		ItemStack item = player.getItemInHand();
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
 		double price = (maxDurability - (maxDurability - item.getDurability()))
@@ -234,6 +229,18 @@ public class ServerEconomyInterface {
 										addendum
 												+ EconomyHandler.materialAddendums[EconomyHandler
 														.getBlacksmithIndex(item)]));
+		return price;
+	}
+
+	/**
+	 * Pays for a blacksmith operation
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
+	public static double payBlacksmith(Player player, Operation op) {
+		double price = getBlacksmithPrice(player, op);
 		subtract(player.getName(), price);
 		return price;
 	}

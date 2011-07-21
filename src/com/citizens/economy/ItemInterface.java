@@ -134,8 +134,7 @@ public class ItemInterface {
 	public static String getBlacksmithCurrency(Player player, Operation op) {
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
 				UtilityProperties.getCurrencyID(Operation.getString(op,
-						currencyAddendum)), getBlacksmithPrice(player,
-						player.getItemInHand(), op))));
+						currencyAddendum)), getBlacksmithPrice(player, op))));
 	}
 
 	/**
@@ -221,8 +220,9 @@ public class ItemInterface {
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
 				current = decreaseItemStack(player, currencyID, current, count);
-				if (current <= 0)
+				if (current <= 0) {
 					break;
+				}
 			}
 			count += 1;
 		}
@@ -240,19 +240,22 @@ public class ItemInterface {
 	public static double pay(Player player, Payment payment, int slot) {
 		int currencyID = payment.getItem().getTypeId();
 		double current = payment.getPrice();
-		if (current <= 0)
+		if (current <= 0) {
 			return current;
+		}
 		int count = 0;
 		if (slot != -1) {
 			current = decreaseItemStack(player, currencyID, current, slot);
 		}
-		if (current <= 0)
+		if (current <= 0) {
 			return payment.getPrice();
+		}
 		for (ItemStack item : player.getInventory().getContents()) {
 			if (item != null) {
 				current = decreaseItemStack(player, currencyID, current, count);
-				if (current <= 0)
+				if (current <= 0) {
 					break;
+				}
 			}
 			count += 1;
 		}
@@ -263,18 +266,17 @@ public class ItemInterface {
 	 * Pays for a blacksmith operation
 	 * 
 	 * @param player
-	 * @param item
 	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmith(Player player, ItemStack item,
-			Operation op) {
+	public static double payBlacksmith(Player player, Operation op) {
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
-		double current = getBlacksmithPrice(player, item, op);
-		if (current <= 0 || currencyID == 0) {
-			return blacksmithPrice;
+		double price = getBlacksmithPrice(player, op);
+		if (price <= 0 || currencyID == 0) {
+			return price;
 		}
+		double current = price;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
@@ -292,12 +294,11 @@ public class ItemInterface {
 	 * Get the price for repairing an item
 	 * 
 	 * @param player
-	 * @param item
 	 * @param op
 	 * @return
 	 */
-	public static int getBlacksmithPrice(Player player, ItemStack item,
-			Operation op) {
+	public static int getBlacksmithPrice(Player player, Operation op) {
+		ItemStack item = player.getItemInHand();
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
 		blacksmithPrice = (maxDurability - (maxDurability - item
