@@ -60,8 +60,8 @@ public class BlacksmithManager {
 				}
 			} else {
 				player.sendMessage(ChatColor.RED + "Your "
-						+ MessageUtils.getStackString(item) + ChatColor.RED
-						+ " is already fully repaired.");
+						+ MessageUtils.getMaterialName(item.getTypeId())
+						+ ChatColor.RED + " is already fully repaired.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(ChatColor.RED
