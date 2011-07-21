@@ -1,4 +1,4 @@
-package com.citizens.waypoints.effects;
+package com.citizens.waypoints.modifiers;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
