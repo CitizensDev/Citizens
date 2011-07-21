@@ -1,5 +1,7 @@
 package com.citizens;
 
+import java.util.Map;
+
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -12,19 +14,32 @@ import com.nijiko.permissions.Group;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijiko.permissions.User;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import com.platymuus.bukkit.permissions.PermissionsPlugin;
 
 public class Permission {
+	private static boolean useSuperperms;
 	private static boolean permissionsEnabled = false;
 	private static PermissionHandler handler;
+	private static PermissionsPlugin superperms;
 
 	private static boolean permission(Player player, String string) {
-		return Constant.UseSuperPerms.toBoolean() ? player
-				.hasPermission(string) : handler.has(player, string);
+		return useSuperperms ? player.hasPermission(string) : handler.has(
+				player, string);
 	}
 
 	public static void initialize(Server server) {
 		if (Constant.UseSuperPerms.toBoolean()) {
-			permissionsEnabled = true;
+			Plugin test = server.getPluginManager().getPlugin(
+					"PermissionsBukkit");
+			if (test != null) {
+				useSuperperms = true;
+				permissionsEnabled = true;
+				superperms = (PermissionsPlugin) test;
+				Messaging.log("Permissions enabled.");
+			} else {
+				Messaging
+						.log("PermissionsBukkit isn't loaded, commands can only be used by ops.");
+			}
 			return;
 		}
 		Plugin test = server.getPluginManager().getPlugin("Permissions");
@@ -47,28 +62,33 @@ public class Permission {
 
 	public static boolean canCreate(Player player, String type) {
 		if (permissionsEnabled) {
-			return isAdmin(player)
-					|| permission(player, "citizens.create." + type);
+			String permission = useSuperperms ? "citizens." + type + ".create"
+					: "citizens.create." + type;
+			return isAdmin(player) || permission(player, permission);
 		}
 		return player.isOp();
 	}
 
 	public static boolean canModify(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
+			String permission = useSuperperms ? "citizens." + type + ".modify"
+					: "citizens.modify." + type;
 			return (isAdmin(player))
 					|| (npc != null && NPCManager.validateOwnership(player,
 							npc.getUID(), true))
-					|| permission(player, "citizens.modify." + type);
+					|| permission(player, permission);
 		}
 		return player.isOp();
 	}
 
 	public static boolean canUse(Player player, HumanNPC npc, String type) {
 		if (permissionsEnabled) {
+			String permission = useSuperperms ? "citizens." + type + ".use"
+					: "citizens.use." + type;
 			return (isAdmin(player))
 					|| (npc != null && NPCManager.validateOwnership(player,
 							npc.getUID(), true))
-					|| permission(player, "citizens.use." + type);
+					|| permission(player, permission);
 		}
 		return player.isOp();
 	}
@@ -82,31 +102,44 @@ public class Permission {
 
 	public static void grantRank(Player player, String rank) {
 		if (permissionsEnabled) {
-			User user = handler.getUserObject(player.getWorld().getName(),
-					player.getName());
-			if (user == null) {
-				return;
+			if (useSuperperms) {
+				superperms.getPlayerInfo(player.getName()).getGroups()
+						.add(superperms.getGroup(rank));
+			} else {
+				User user = handler.getUserObject(player.getWorld().getName(),
+						player.getName());
+				if (user == null) {
+					return;
+				}
+				Group group = handler.getGroupObject(player.getWorld()
+						.getName(), rank);
+				if (group == null) {
+					return;
+				}
+				user.addParent(group);
 			}
-			Group group = handler.getGroupObject(player.getWorld().getName(),
-					rank);
-			if (group == null) {
-				return;
-			}
-			user.addParent(group);
 		}
 	}
 
 	public static void givePermission(Player player, String reward, boolean take) {
 		if (permissionsEnabled) {
-			User user = handler.getUserObject(player.getWorld().getName(),
-					player.getName());
-			if (user == null) {
-				return;
-			}
-			if (take) {
-				user.removePermission(reward);
+			if (useSuperperms) {
+				Map<String, Boolean> permissions = superperms.getPlayerInfo(
+						player.getName()).getPermissions();
+				if (take)
+					permissions.remove(reward);
+				else
+					permissions.put(reward, true);
 			} else {
-				user.addPermission(reward);
+				User user = handler.getUserObject(player.getWorld().getName(),
+						player.getName());
+				if (user == null) {
+					return;
+				}
+				if (take)
+					user.removePermission(reward);
+				else
+					user.addPermission(reward);
 			}
 		}
 	}
