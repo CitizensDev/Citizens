@@ -1,14 +1,15 @@
 package com.citizens.utils;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 
 public class ConversationUtils {
-	private static Map<String, Converser> conversations = new HashMap<String, Converser>();
+	private static Map<String, Converser> conversations = new ConcurrentHashMap<String, Converser>();
 
 	public static void addConverser(Player player, Converser converser) {
 		if (conversations.get(player.getName()) != null) {
@@ -17,6 +18,7 @@ public class ConversationUtils {
 			return;
 		}
 		conversations.put(player.getName(), converser);
+		converser.begin(player);
 	}
 
 	public static void onChat(PlayerChatEvent event) {
@@ -31,11 +33,26 @@ public class ConversationUtils {
 	}
 
 	public static void remove(Player player) {
+		Converser converser = conversations.get(player.getName());
+		if (converser != null)
+			converser.end(player);
 		conversations.remove(player.getName());
 	}
 
+	public static void verify() {
+		for (String name : conversations.keySet()) {
+			if (Bukkit.getServer().getPlayer(name) == null) {
+				conversations.remove(name);
+			}
+		}
+	}
+
 	public interface Converser {
+		public void begin(Player player);
+
 		public boolean converse(ConversationMessage message);
+
+		public void end(Player player);
 	}
 
 	public static class ConversationMessage {

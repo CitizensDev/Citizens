@@ -26,6 +26,7 @@ import com.citizens.npctypes.guards.GuardTask;
 import com.citizens.npctypes.questers.quests.ChatManager;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.ConversationUtils;
 import com.citizens.utils.ServerUtils;
 
 public class PlayerListen extends PlayerListener implements Listener {
@@ -51,6 +52,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 				Event.Priority.Normal, Citizens.plugin);
 	}
 
+	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if (Permission.isAdmin(event.getPlayer())
 				&& Constant.NotifyUpdates.toBoolean()) {
@@ -70,6 +72,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 		NPCDataManager.pathEditors.remove(event.getPlayer().getName());
 		QuestManager.unload(event.getPlayer());
 		CreatureTask.setDirty();
+		ConversationUtils.verify();
 	}
 
 	@Override
