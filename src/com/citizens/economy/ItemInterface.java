@@ -8,12 +8,10 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.MessageUtils;
-import com.citizens.utils.Messaging;
 
 public class ItemInterface {
 	private static final String addendum = ".item";
 	private static final String currencyAddendum = ".item-currency-id";
-	private static double blacksmithPrice;
 
 	/**
 	 * Checks the inventory of a player for having enough for an operation.
@@ -54,12 +52,7 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static boolean hasEnoughBlacksmith(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(
-				op,
-				addendum
-						+ EconomyHandler.materialAddendums[EconomyHandler
-								.getBlacksmithIndex(player.getItemInHand())]));
-
+		double price = getBlacksmithPrice(player, op);
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
 		if (price <= 0 || currencyID == 0) {
@@ -133,8 +126,6 @@ public class ItemInterface {
 	 * @return
 	 */
 	public static String getBlacksmithCurrency(Player player, Operation op) {
-		Messaging.log("getBlacksmithCurrency PRICE: "
-				+ getBlacksmithPrice(player, op));
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
 				UtilityProperties.getCurrencyID(Operation.getString(op,
 						currencyAddendum)), getBlacksmithPrice(player, op))));
@@ -275,8 +266,7 @@ public class ItemInterface {
 	public static double payBlacksmith(Player player, Operation op) {
 		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
 				op, currencyAddendum));
-		blacksmithPrice = getBlacksmithPrice(player, op);
-		Messaging.log("payBlacksmith PRICE: " + blacksmithPrice);
+		double blacksmithPrice = getBlacksmithPrice(player, op);
 		if (blacksmithPrice <= 0 || currencyID == 0) {
 			return blacksmithPrice;
 		}
@@ -313,10 +303,9 @@ public class ItemInterface {
 										addendum
 												+ EconomyHandler.materialAddendums[EconomyHandler
 														.getBlacksmithIndex(item)]));
-		if (price < 1.0) {
+		if (price < 1) {
 			price = 1;
 		}
-		Messaging.log("price: " + price);
 		return (int) price;
 	}
 
@@ -329,6 +318,7 @@ public class ItemInterface {
 	 * @param slot
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	private static double decreaseItemStack(Player player, int currencyID,
 			double current, int slot) {
 		ItemStack item = player.getInventory().getItem(slot);
@@ -346,6 +336,7 @@ public class ItemInterface {
 			}
 			player.getInventory().setItem(slot, item);
 		}
+		player.updateInventory();
 		return current;
 	}
 }

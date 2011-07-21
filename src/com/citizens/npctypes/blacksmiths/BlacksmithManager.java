@@ -50,18 +50,18 @@ public class BlacksmithManager {
 			if (item.getDurability() > 0) {
 				double paid = EconomyHandler.payBlacksmith(player, op);
 				if (paid > 0 || EconomyHandler.isFree(player, op)) {
-					item.setDurability((short) 0);
-					player.setItemInHand(item);
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " has repaired your item for "
 							+ StringUtils.wrap(EconomyHandler
 									.getBlacksmithPaymentType(player, op, ""
 											+ paid)) + ".");
+					item.setDurability((short) 0);
+					player.setItemInHand(item);
 				}
 			} else {
 				player.sendMessage(ChatColor.RED + "Your "
-						+ MessageUtils.getStackString(item)
-						+ "is already fully repaired.");
+						+ MessageUtils.getStackString(item) + ChatColor.RED
+						+ " is already fully repaired.");
 			}
 		} else if (EconomyHandler.useEconomy()) {
 			player.sendMessage(ChatColor.RED

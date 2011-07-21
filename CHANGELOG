@@ -57,3 +57,4 @@ Changelog:
 -added option to have a wizard with unlimited mana (toggle using in-game command '/wizard unlimited')
 -any single quotes around config values will now break the plugin (100% intended)
 -fixed accounts going negative when using blacksmiths
+- fixed inventory not updating properly while making purchases
