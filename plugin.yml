@@ -64,69 +64,31 @@ permissions:
         default: false
         children:
             citizens.admin: true
-    citizens.admin:
-        description: Gives special permissions to the user.
-    citizens.trader.create:
-        description: Allows a user to create traders.
-    citizens.trader.modify:
-        description: Allows a user to modify traders.
-    citizens.trader.use:
-        description: Allows a user to use traders.
     citizens.trader.*:
         children:
             citizens.trader.create: true
             citizens.trader.modify: true
             citizens.trader.use: true
-    citizens.guard.create:
-        description: Allows a user to create guards.
-    citizens.guard.modify:
-        description: Allows a user to modify guards.
-    citizens.guard.use:
-        description: Allows a user to use guards.
     citizens.guard.*:
         children:
             citizens.guard.create: true
             citizens.guard.modify: true
             citizens.guard.use: true
-    citizens.basic.create:
-        description: Allows a user to create basic npcs.
-    citizens.basic.modify:
-        description: Allows a user to modify basic npcs.
-    citizens.basic.use:
-        description: Allows a user to use basic npcs.
     citizens.basic.*:
         children:
             citizens.basic.create: true
             citizens.basic.modify: true
             citizens.basic.use: true
-    citizens.quester.create:
-        description: Allows a user to create questers.
-    citizens.quester.modify:
-        description: Allows a user to modify questers.
-    citizens.quester.use:
-        description: Allows a user to use questers.
     citizens.quester.*:
         children:
             citizens.quester.create: true
             citizens.quester.modify: true
             citizens.quester.use: true
-    citizens.healer.create:
-        description: Allows a user to create healers.
-    citizens.healer.modify:
-        description: Allows a user to modify healers.
-    citizens.healer.use:
-        description: Allows a user to use healers.
     citizens.healer.*:
         children:
             citizens.healer.create: true
             citizens.healer.modify: true
             citizens.healer.use: true
-    citizens.blacksmith.create:
-        description: Allows a user to create blacksmiths.
-    citizens.blacksmith.modify:
-        description: Allows a user to modify blacksmiths.
-    citizens.blacksmith.use:
-        description: Allows a user to use blacksmiths.
     citizens.blacksmith.*:
         children:
             citizens.blacksmith.create: true
