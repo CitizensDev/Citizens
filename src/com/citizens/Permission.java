@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.Messaging;
 import com.nijiko.permissions.Group;
 import com.nijiko.permissions.PermissionHandler;
@@ -56,6 +57,22 @@ public class Permission {
 			return hasPermission(player, string);
 		}
 		return player.isOp();
+	}
+
+	public static boolean canCreate(Player player) {
+		return UtilityProperties.getNPCCount(player.getName()) < getMaxNPCs(player)
+				|| Permission.hasPermission(player, "citizens.admin")
+				|| Permission.hasPermission(player,
+						"citizens.npccount.unlimited");
+	}
+
+	private static int getMaxNPCs(Player player) {
+		for (int x = 1; x <= 100; x++) {
+			if (hasPermission(player, "citizens.npccount." + x)) {
+				return x;
+			}
+		}
+		return 0;
 	}
 
 	public static void grantRank(Player player, String rank) {

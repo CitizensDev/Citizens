@@ -62,8 +62,9 @@ public class HumanNPC extends NPC {
 	}
 
 	public WaypointPath getWaypoints() {
-		if (waypoints == null)
+		if (waypoints == null) {
 			this.waypoints = new WaypointPath();
+		}
 		return this.waypoints;
 	}
 
@@ -173,8 +174,9 @@ public class HumanNPC extends NPC {
 		for (Toggleable t : types.values()) {
 			if (t instanceof Damageable) {
 				((Damageable) t).onDamage(event);
-				if (!found)
+				if (!found) {
 					found = true;
+				}
 			}
 		}
 		return found;
@@ -193,8 +195,9 @@ public class HumanNPC extends NPC {
 		for (Toggleable t : types.values()) {
 			if (t instanceof Targetable) {
 				((Targetable) t).onTarget(event);
-				if (!found)
+				if (!found) {
 					found = true;
+				}
 			}
 		}
 		return found;

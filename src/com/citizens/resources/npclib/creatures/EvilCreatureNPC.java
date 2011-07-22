@@ -62,12 +62,11 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onRightClick(Player player) {
-		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.toInt() && !Permission.hasPermission(player, "citizens.admin")) {
+		if (!Permission.canCreate(player)) {
 			Messaging
 					.sendError(
 							player,
-							"You cannot tame this Evil NPC because you have reached the maximum NPC creation limit.");
+							"You cannot tame this Evil NPC because you have reached the NPC creation limit.");
 			return;
 		}
 		if (npc.getHandle() instanceof CreatureNPC

@@ -174,13 +174,14 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveText(int UID, ArrayDeque<String> texts) {
-		if (texts == null)
+		if (texts == null) {
 			return;
+		}
 		profiles.setString(UID + text,
 				Joiner.on(";").skipNulls().join(texts.toArray()));
 	}
 
-	public boolean getLookWhenClose(int UID) {
+	public boolean isLookWhenClose(int UID) {
 		return profiles.getBoolean(UID + lookWhenClose,
 				Constant.DefaultFollowingEnabled.toBoolean());
 	}
@@ -189,7 +190,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		profiles.setBoolean(UID + lookWhenClose, value);
 	}
 
-	public boolean getTalkWhenClose(int UID) {
+	public boolean isTalkWhenClose(int UID) {
 		return profiles.getBoolean(UID + talkWhenClose,
 				Constant.DefaultTalkWhenClose.toBoolean());
 	}
@@ -202,7 +203,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		return profiles.getString(UID + owner);
 	}
 
-	public void setOwner(int UID, String name) {
+	public void saveOwner(int UID, String name) {
 		profiles.setString(UID + owner, name);
 	}
 
@@ -244,7 +245,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		saveLookWhenClose(UID, npcdata.isLookClose());
 		saveTalkWhenClose(UID, npcdata.isTalkClose());
 		saveWaypoints(UID, npc.getWaypoints().getWaypoints());
-		setOwner(UID, npcdata.getOwner());
+		saveOwner(UID, npcdata.getOwner());
 	}
 
 	@Override
@@ -257,8 +258,8 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		npcdata.setColour(getColour(UID));
 		npcdata.setItems(getItems(UID));
 		npcdata.setTexts(getText(UID));
-		npcdata.setLookClose(getLookWhenClose(UID));
-		npcdata.setTalkClose(getTalkWhenClose(UID));
+		npcdata.setLookClose(isLookWhenClose(UID));
+		npcdata.setTalkClose(isTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
 		npc.getWaypoints().setPoints(getWaypoints(UID, npc.getWorld()));
 		if (getInventory(npc.getUID()) != null) {

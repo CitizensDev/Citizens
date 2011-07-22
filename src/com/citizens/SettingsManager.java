@@ -42,7 +42,6 @@ public class SettingsManager {
 				Config.SETTINGS,
 				"ticks.healers.health-regen-increment",
 				12000),
-		MaxNPCsPerPlayer(Config.SETTINGS, "general.limits.npcs-per-player", 10),
 		MaxStationaryTicks(Config.SETTINGS, "ticks.pathing.max-stationary", -1),
 		MaxPathingTicks(Config.SETTINGS, "ticks.pathing.max-pathing", -1),
 		MaxWizardMana(Config.SETTINGS, "general.wizards.max-mana", 100),

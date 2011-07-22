@@ -12,5 +12,4 @@ public interface WaypointModifier extends Converser {
 	public void save(Storage storage, String root);
 
 	public WaypointModifierType getType();
-
 }

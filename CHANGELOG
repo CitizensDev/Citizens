@@ -4,7 +4,8 @@ By fullwall and aPunch
 Supports:
 -Minecraft Beta 1.7.3
 -CraftBukkit 1000
--Permissions 2.7.x and 3.x (as well as Bukkit permissions system)
+-Permissions 2.7.x and 3.x
+-PermissionsBukkit 1.x
 -iConomy 4 & 5
 -BOSEconomy 0.6.2
 -EssentialsEco 2.4.x
@@ -56,9 +57,12 @@ Changelog:
 -wizard-interact-item can now be set to '*'
 -added option to have a wizard with unlimited mana (toggle using in-game command '/wizard unlimited')
 -any single quotes around config values will now break the plugin (100% intended)
--fixed accounts going negative when using blacksmiths
+-fixed economy plugin accounts going negative when using blacksmiths
 -fixed inventory not updating properly while making purchases
 -fixed wrong amount of item currency being removed from inventory when using a blacksmith
 -support for built-in Bukkit permissions system ('general.use-bukkit-permissions' node in citizens.yml)
 -fixed Evil NPCs not attacking until attacked
 -revamped permissions nodes again (see documentation on GitHub wiki)
+-fixed economy plugin accounts going negative when creating an NPC
+-added ability to give a 'citizens.npccount.(amount)' node to players, with (amount) being the maximum NPCs
+ that a player/group can create (use 'citizens.npccount.unlimited' for unlimited NPCs)

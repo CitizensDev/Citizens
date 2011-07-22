@@ -22,7 +22,7 @@ import com.citizens.utils.PageUtils.PageInstance;
 
 public class MessageUtils {
 	public static final String noPermissionsMessage = ChatColor.RED
-			+ "You don't have permission to use that command.";
+			+ "You don't have permission to do that.";
 	public static String notEnoughMoneyMessage = ChatColor.GRAY
 			+ "You don't have enough money to do that.";
 	public static final String mustBeIngameMessage = "You must use this command ingame";
@@ -35,8 +35,7 @@ public class MessageUtils {
 	public static final String noEconomyMessage = ChatColor.GRAY
 			+ "This server is not using an economy plugin.";
 	public static final String reachedNPCLimitMessage = ChatColor.RED
-			+ "You have reached the NPC-creation limit of "
-			+ Constant.MaxNPCsPerPlayer.toInt() + ".";
+			+ "You have reached the NPC-creation limit.";
 
 	/**
 	 * Parses a basic npc's text for sending.

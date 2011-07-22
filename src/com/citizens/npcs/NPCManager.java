@@ -63,9 +63,9 @@ public class NPCManager {
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
 		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items, NPCTexts
-				.get(UID), PropertyManager.getBasic().getLookWhenClose(UID),
-				PropertyManager.getBasic().getTalkWhenClose(UID), owner));
-		PropertyManager.getBasic().setOwner(UID, owner);
+				.get(UID), PropertyManager.getBasic().isLookWhenClose(UID),
+				PropertyManager.getBasic().isTalkWhenClose(UID), owner));
+		PropertyManager.getBasic().saveOwner(UID, owner);
 		PropertyManager.load(npc);
 
 		registerUID(UID, npcName);

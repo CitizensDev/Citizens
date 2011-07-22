@@ -33,7 +33,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 		profiles.setBoolean(UID + aggressive, aggro);
 	}
 
-	private boolean getAggressive(int UID) {
+	private boolean isAggressive(int UID) {
 		return profiles.getBoolean(UID + aggressive);
 	}
 
@@ -87,7 +87,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 			guard.setBlacklist(getBlacklist(npc.getUID()));
 			guard.setWhitelist(getWhitelist(npc.getUID()));
 			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));
-			guard.setAggressive(getAggressive(npc.getUID()));
+			guard.setAggressive(isAggressive(npc.getUID()));
 		}
 		saveState(npc);
 	}

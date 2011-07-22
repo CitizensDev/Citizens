@@ -77,6 +77,7 @@ permissions:
             citizens.healer.*: true
             citizens.wizard.*: true
             citizens.quester.*: true
+            citizens.npccount.unlimited: true
     citizens.toggle.*:
         children:
             citizens.toggle.help: true

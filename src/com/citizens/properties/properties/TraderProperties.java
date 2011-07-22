@@ -32,7 +32,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 		profiles.setBoolean(UID + unlimited, value);
 	}
 
-	private boolean getUnlimited(int UID) {
+	private boolean isUnlimited(int UID) {
 		return profiles.getBoolean(UID + unlimited);
 	}
 
@@ -51,12 +51,10 @@ public class TraderProperties extends PropertyManager implements Saveable {
 	private void saveStockables(int UID,
 			ConcurrentHashMap<Check, Stockable> stockables) {
 		/*
-			for (Stockable entry : stockables.values()) {
-				if (!string.contains(entry.toString()))
-					string += (entry.toString() + ";");
-					count += 1;
-			}
-		*/
+		 * for (Stockable entry : stockables.values()) { if
+		 * (!string.contains(entry.toString())) string += (entry.toString() +
+		 * ";"); count += 1; }
+		 */
 		setStockables(UID, Joiner.on(";").join(stockables.values()));
 	}
 
@@ -131,7 +129,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 			npc.registerType("trader", NPCTypeManager.getFactory("trader"));
 			TraderNPC trader = npc.getToggleable("trader");
 			npc.setBalance(getBalance(npc.getUID()));
-			trader.setUnlimited(getUnlimited(npc.getUID()));
+			trader.setUnlimited(isUnlimited(npc.getUID()));
 			trader.setStocking(getStockables(npc.getUID()));
 		}
 		saveState(npc);

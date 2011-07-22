@@ -189,13 +189,27 @@ public class BasicCommands {
 	@CommandPermissions("basic.create")
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.toInt() && !Permission.hasPermission(player, "citizens.admin")) {
+		if (!Permission.canCreate(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		String firstArg = args.getString(1);
+		if (EconomyHandler.useEconomy()) {
+			if (EconomyHandler.canBuy(Operation.BASIC_CREATION, player)) {
+				double paid = EconomyHandler.pay(Operation.BASIC_CREATION,
+						player);
+				if (paid > 0) {
+					player.sendMessage(MessageUtils
+							.getPaidMessage(Operation.BASIC_CREATION, paid,
+									firstArg, "", false));
+				}
+			} else {
+				player.sendMessage(MessageUtils.getNoMoneyMessage(
+						Operation.BASIC_CREATION, player));
+				return;
+			}
+		}
 		if (args.argsLength() >= 3) {
 			texts.add(args.getJoinedStrings(2));
 		}
@@ -211,14 +225,6 @@ public class BasicCommands {
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
 		Messaging.send(player, created, Constant.CreationMessage.getString());
-
-		if (EconomyHandler.useEconomy()) {
-			double paid = EconomyHandler.pay(Operation.BASIC_CREATION, player);
-			if (paid > 0) {
-				player.sendMessage(MessageUtils.getPaidMessage(
-						Operation.BASIC_CREATION, paid, firstArg, "", false));
-			}
-		}
 
 		NPCManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created, Constant.SelectionMessage.getString());
@@ -290,8 +296,7 @@ public class BasicCommands {
 			max = 1)
 	@CommandPermissions("basic.modify.copy")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
-		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.toInt() && !Permission.hasPermission(player, "citizens.admin")) {
+		if (!Permission.canCreate(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
