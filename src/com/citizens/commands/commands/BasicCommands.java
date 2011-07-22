@@ -55,6 +55,7 @@ public class BasicCommands {
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
+		sender.sendMessage(ChatColor.YELLOW + "      - NeonMaster");
 	}
 
 	@Command(
@@ -509,7 +510,7 @@ public class BasicCommands {
 			modifiers = "tp",
 			min = 1,
 			max = 1)
-	@CommandPermissions("admin.teleport")
+	@CommandPermissions("basic.use.teleport")
 	public static void teleportToNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.teleport(npc.getNPCData().getLocation());

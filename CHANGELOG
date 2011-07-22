@@ -61,3 +61,4 @@ Changelog:
 -fixed wrong amount of item currency being removed from inventory when using a blacksmith
 -support for built-in Bukkit permissions system ('general.use-bukkit-permissions' node in citizens.yml)
 -fixed Evil NPCs not attacking until attacked
+-revamped permissions nodes again (see documentation on GitHub wiki)

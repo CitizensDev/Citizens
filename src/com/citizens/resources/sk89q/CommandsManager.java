@@ -321,9 +321,7 @@ public abstract class CommandsManager<T extends Player> {
 			Method childMethod = entry.getValue();
 			found = true;
 
-			HumanNPC npc = getSelectedNPC(player);
-
-			if (hasPermission(childMethod, player, npc)) {
+			if (hasPermission(childMethod, player)) {
 				Command childCmd = childMethod.getAnnotation(Command.class);
 
 				allowedCommands.add(childCmd.aliases()[0]);
@@ -448,7 +446,7 @@ public abstract class CommandsManager<T extends Player> {
 
 		HumanNPC npc = (HumanNPC) methodArgs[2];
 		if (methodArgs[1] instanceof Player) {
-			if (!hasPermission(method, player, npc)) {
+			if (!hasPermission(method, player)) {
 				throw new CommandPermissionsException();
 			}
 		}
@@ -531,13 +529,6 @@ public abstract class CommandsManager<T extends Player> {
 		}
 	}
 
-	private HumanNPC getSelectedNPC(T player) {
-		if (NPCManager.validateSelected(player)) {
-			return NPCManager.get(NPCManager.getSelected(player));
-		}
-		return null;
-	}
-
 	/**
 	 * Returns whether a player has access to a command.
 	 * 
@@ -545,7 +536,7 @@ public abstract class CommandsManager<T extends Player> {
 	 * @param player
 	 * @return
 	 */
-	protected boolean hasPermission(Method method, T player, HumanNPC npc) {
+	protected boolean hasPermission(Method method, T player) {
 		CommandPermissions perms = method
 				.getAnnotation(CommandPermissions.class);
 		if (perms == null) {
@@ -553,7 +544,7 @@ public abstract class CommandsManager<T extends Player> {
 		}
 
 		for (String perm : perms.value()) {
-			if (hasPermission(player, npc, perm)) {
+			if (hasPermission(player, perm)) {
 				return true;
 			}
 		}
@@ -562,13 +553,13 @@ public abstract class CommandsManager<T extends Player> {
 	}
 
 	/**
-	 * Returns whether a player permission..
+	 * Returns whether a player has permission
 	 * 
 	 * @param player
 	 * @param perm
 	 * @return
 	 */
-	public abstract boolean hasPermission(T player, HumanNPC npc, String perm);
+	public abstract boolean hasPermission(T player, String perm);
 
 	/**
 	 * Get the injector used to create new instances. This can be null, in which

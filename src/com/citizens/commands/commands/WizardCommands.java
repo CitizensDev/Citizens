@@ -149,7 +149,7 @@ public class WizardCommands {
 			modifiers = "locations",
 			min = 1,
 			max = 1)
-	@CommandPermissions("wizard.use.displaylocations")
+	@CommandPermissions("wizard.use.locations")
 	public static void displayLocations(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");

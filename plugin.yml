@@ -1,7 +1,7 @@
 name: Citizens
 main: com.citizens.Citizens
 version: 1.0.9
-authors: [fullwall, aPunch]
+authors: [fullwall, aPunch, NeonMaster]
 softdepend: [Permissions]
 commands:
     npc:
@@ -68,7 +68,6 @@ permissions:
             citizens.admin.save: true
             citizens.admin.debug: true
             citizens.admin.removeall: true
-            citizens.admin.teleport: true
             citizens.admin.toggleall: true
             citizens.toggle.*: true
             citizens.trader.*: true
@@ -129,6 +128,7 @@ permissions:
             citizens.basic.use.select: true
             citizens.basic.use.getowner: true
             citizens.basic.use.list: true
+            citizens.basic.use.teleport: true
     citizens.basic.modify.*:
         children:
             citizens.basic.modify.move: true
@@ -186,7 +186,7 @@ permissions:
         children:
             citizens.wizard.use.help: true
             citizens.wizard.use.status: true
-            citizens.wizard.use.displaylocations: true
+            citizens.wizard.use.locations: true
             citizens.wizard.use.interact: true
     citizens.wizard.modify.*:
         children:
