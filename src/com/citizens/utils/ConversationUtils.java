@@ -22,11 +22,18 @@ public class ConversationUtils {
 	}
 
 	public static void onChat(PlayerChatEvent event) {
-		if (conversations.get(event.getPlayer().getName()) != null) {
-			boolean finished = conversations.get(event.getPlayer().getName())
-					.converse(
-							new ConversationMessage(event.getPlayer(), event
-									.getMessage()));
+		String name = event.getPlayer().getName();
+		if (conversations.get(name) != null) {
+			event.setCancelled(true);
+			boolean finished;
+			if (ChatType.get(event.getMessage()) != null) {
+				finished = conversations.get(name).special(
+						ChatType.get(event.getMessage()));
+			} else {
+				finished = conversations.get(name).converse(
+						new ConversationMessage(event.getPlayer(), event
+								.getMessage()));
+			}
 			if (finished)
 				remove(event.getPlayer());
 		}
@@ -47,10 +54,41 @@ public class ConversationUtils {
 		}
 	}
 
+	public enum ChatType {
+		EXIT("exit", "finish", "end"),
+		UNDO("undo");
+		private final String[] possibilities;
+
+		ChatType(String... string) {
+			this.possibilities = string;
+		}
+
+		public static ChatType get(String message) {
+			if (message.split(" ").length != 1)
+				return null;
+			else
+				for (ChatType type : ChatType.values()) {
+					if (type.possible(message.toLowerCase()))
+						return type;
+				}
+			return null;
+		}
+
+		public boolean possible(String string) {
+			for (String possibility : possibilities) {
+				if (possibility.equals(string))
+					return true;
+			}
+			return false;
+		}
+	}
+
 	public interface Converser {
 		public void begin(Player player);
 
 		public boolean converse(ConversationMessage message);
+
+		public boolean special(ChatType type);
 
 		public void end(Player player);
 	}
