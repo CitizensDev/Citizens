@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.citizens.Permission;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.Payment;
 import com.citizens.economy.ServerEconomyInterface;
@@ -42,7 +43,7 @@ public class TraderCommands {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.trader")
+	@CommandPermissions("trader.use.help")
 	@ServerCommand()
 	public static void sendTraderHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
@@ -62,7 +63,6 @@ public class TraderCommands {
 			modifiers = "money",
 			min = 1,
 			max = 3)
-	@CommandPermissions("use.trader")
 	public static void controlMoney(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (!EconomyHandler.useEconPlugin()) {
@@ -71,12 +71,22 @@ public class TraderCommands {
 		}
 		switch (args.argsLength()) {
 		case 1:
-			player.sendMessage(StringUtils.wrap(npc.getName())
-					+ " has "
-					+ StringUtils.wrap(ServerEconomyInterface.format(npc
-							.getBalance())) + ".");
+			if (Permission.hasPermission(player,
+					"citizens.trader.use.showmoney")) {
+				player.sendMessage(StringUtils.wrap(npc.getName())
+						+ " has "
+						+ StringUtils.wrap(ServerEconomyInterface.format(npc
+								.getBalance())) + ".");
+			} else {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+			}
 			break;
 		case 3:
+			if (!Permission.hasPermission(player,
+					"citizens.trader.modify.money")) {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+				return;
+			}
 			double amount;
 			try {
 				amount = Double.parseDouble(args.getString(2));
@@ -141,7 +151,6 @@ public class TraderCommands {
 			Messaging.sendError(player, "Incorrect syntax. See /trader help");
 			break;
 		}
-
 	}
 
 	/**
@@ -160,7 +169,7 @@ public class TraderCommands {
 			modifiers = "list",
 			min = 2,
 			max = 3)
-	@CommandPermissions("use.trader")
+	@CommandPermissions("trader.use.list")
 	public static void displayList(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (!args.getString(1).contains("s")
@@ -218,7 +227,7 @@ public class TraderCommands {
 			modifiers = { "unlimited", "unlim", "unl" },
 			min = 2,
 			max = 2)
-	@CommandPermissions("admin")
+	@CommandPermissions("trader.modify.unlimited")
 	public static void changeUnlimited(CommandContext args, Player player,
 			HumanNPC npc) {
 		String unlimited = args.getString(1);
@@ -255,7 +264,7 @@ public class TraderCommands {
 			modifiers = { "buy", "sell" },
 			min = 3,
 			max = 4)
-	@CommandPermissions("modify.trader")
+	@CommandPermissions("trader.modify.stock")
 	public static void changeTraderStock(CommandContext args, Player player,
 			HumanNPC npc) {
 		// TODO this is horrible, clean it up
@@ -358,7 +367,7 @@ public class TraderCommands {
 			modifiers = { "clear" },
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.trader")
+	@CommandPermissions("trader.modify.clearstock")
 	public static void clearTraderStock(CommandContext args, Player player,
 			HumanNPC npc) {
 		boolean selling = args.getString(1).contains("bu");

@@ -7,8 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.citizens.SettingsManager.Constant;
-import com.citizens.npcs.NPCManager;
-import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.Messaging;
 import com.nijiko.permissions.Group;
 import com.nijiko.permissions.PermissionHandler;
@@ -22,7 +20,7 @@ public class Permission {
 	private static PermissionHandler handler;
 	private static PermissionsPlugin superperms;
 
-	private static boolean permission(Player player, String string) {
+	public static boolean hasPermission(Player player, String string) {
 		return useSuperperms ? player.hasPermission(string) : handler.has(
 				player, string);
 	}
@@ -53,49 +51,9 @@ public class Permission {
 		}
 	}
 
-	public static boolean isAdmin(Player player) {
-		if (permissionsEnabled) {
-			return permission(player, "citizens.admin");
-		}
-		return player.isOp();
-	}
-
-	public static boolean canCreate(Player player, String type) {
-		if (permissionsEnabled) {
-			String permission = useSuperperms ? "citizens." + type + ".create"
-					: "citizens.create." + type;
-			return isAdmin(player) || permission(player, permission);
-		}
-		return player.isOp();
-	}
-
-	public static boolean canModify(Player player, HumanNPC npc, String type) {
-		if (permissionsEnabled) {
-			String permission = useSuperperms ? "citizens." + type + ".modify"
-					: "citizens.modify." + type;
-			return (isAdmin(player))
-					|| (npc != null && NPCManager.validateOwnership(player,
-							npc.getUID(), true))
-					|| permission(player, permission);
-		}
-		return player.isOp();
-	}
-
-	public static boolean canUse(Player player, HumanNPC npc, String type) {
-		if (permissionsEnabled) {
-			String permission = useSuperperms ? "citizens." + type + ".use"
-					: "citizens.use." + type;
-			return (isAdmin(player))
-					|| (npc != null && NPCManager.validateOwnership(player,
-							npc.getUID(), true))
-					|| permission(player, permission);
-		}
-		return player.isOp();
-	}
-
 	public static boolean generic(Player player, String string) {
 		if (permissionsEnabled) {
-			return permission(player, string);
+			return hasPermission(player, string);
 		}
 		return player.isOp();
 	}

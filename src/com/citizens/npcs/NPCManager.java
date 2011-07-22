@@ -289,7 +289,8 @@ public class NPCManager {
 	 */
 	public static boolean validateOwnership(Player player, int UID,
 			boolean checkAdmin) {
-		return (checkAdmin && Permission.isAdmin(player))
+		return (checkAdmin && Permission
+				.hasPermission(player, "citizens.admin"))
 				|| get(UID).getOwner().equals(player.getName());
 	}
 

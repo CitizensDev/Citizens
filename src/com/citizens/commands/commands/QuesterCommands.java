@@ -27,7 +27,7 @@ public class QuesterCommands {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.quester")
+	@CommandPermissions("quester.use.help")
 	public static void sendQuesterHelp(CommandContext args, Player player,
 			HumanNPC npc) {
 		HelpUtils.sendQuesterHelp(player);
@@ -40,7 +40,7 @@ public class QuesterCommands {
 			modifiers = "assign",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.quester")
+	@CommandPermissions("quester.modify.assignquest")
 	public static void assignQuest(CommandContext args, Player player,
 			HumanNPC npc) {
 		QuesterNPC quester = npc.getToggleable("quester");
@@ -64,7 +64,7 @@ public class QuesterCommands {
 			modifiers = "remove",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.quester")
+	@CommandPermissions("quester.modify.removequest")
 	public static void removeQuest(CommandContext args, Player player,
 			HumanNPC npc) {
 		QuesterNPC quester = npc.getToggleable("quester");

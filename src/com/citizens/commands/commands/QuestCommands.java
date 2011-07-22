@@ -22,7 +22,7 @@ public class QuestCommands {
 			modifiers = "edit",
 			min = 1,
 			max = 1)
-	@CommandPermissions("modify.quester")
+	@CommandPermissions("quester.modify.questedit")
 	public static void editQuests(CommandContext args, Player player,
 			HumanNPC npc) {
 		ChatManager.setEditMode(player.getName(), true);

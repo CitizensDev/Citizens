@@ -53,7 +53,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (Permission.isAdmin(event.getPlayer())
+		if (Permission.hasPermission(event.getPlayer(), "citizens.admin")
 				&& Constant.NotifyUpdates.toBoolean()) {
 			ServerUtils.checkForUpdates(event.getPlayer());
 		}

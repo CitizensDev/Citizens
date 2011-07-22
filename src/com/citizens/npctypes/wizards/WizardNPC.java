@@ -286,7 +286,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		if (Permission.canUse(player, npc, getType())) {
+		if (Permission.hasPermission(player, "citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == Constant.WizardInteractItem
 					.toInt()) {
 				WizardNPC wizard = npc.getToggleable("wizard");
@@ -330,7 +330,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (Permission.canUse(player, npc, getType())) {
+		if (Permission.hasPermission(player, "citizens.wizard.use.interact")) {
 			WizardNPC wizard = npc.getToggleable("wizard");
 			if (Citizens.validateTool("items.wizards.interact-item", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {

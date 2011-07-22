@@ -36,7 +36,7 @@ public class GuardCommands {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.guard")
+	@CommandPermissions("guard.use.help")
 	public static void sendGuardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		HelpUtils.sendGuardHelp(sender);
@@ -49,7 +49,7 @@ public class GuardCommands {
 			modifiers = { "bodyguard", "bouncer" },
 			min = 1,
 			max = 1)
-	@CommandPermissions("modify.guard")
+	@CommandPermissions("guard.modify.changetype")
 	public static void changeType(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
@@ -86,7 +86,7 @@ public class GuardCommands {
 			modifiers = { "blacklist", "bl" },
 			min = 1,
 			max = 3)
-	@CommandPermissions("modify.guard")
+	@CommandPermissions("guard.modify.blacklist")
 	public static void blacklist(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
@@ -104,11 +104,13 @@ public class GuardCommands {
 				player.sendMessage(ChatColor.RED + "No mobs blacklisted.");
 			} else {
 				for (String aList : list) {
-					if (aList.isEmpty())
+					if (aList.isEmpty()) {
 						continue;
+					}
 					if (CreatureType.fromName(StringUtils.capitalise(aList
-							.toLowerCase())) != null)
+							.toLowerCase())) != null) {
 						aList = StringUtils.capitalise(aList.toLowerCase());
+					}
 					player.sendMessage(ChatColor.GREEN + "    - "
 							+ StringUtils.wrap(aList));
 				}
@@ -160,7 +162,7 @@ public class GuardCommands {
 			modifiers = { "whitelist", "wl" },
 			min = 1,
 			max = 3)
-	@CommandPermissions("modify.guard")
+	@CommandPermissions("guard.modify.whitelist")
 	public static void whitelist(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
@@ -173,11 +175,13 @@ public class GuardCommands {
 				player.sendMessage(ChatColor.RED + "No players whitelisted.");
 			} else {
 				for (String aList : list) {
-					if (aList.isEmpty())
+					if (aList.isEmpty()) {
 						continue;
+					}
 					if (CreatureType.fromName(StringUtils.capitalise(aList
-							.toLowerCase())) != null)
+							.toLowerCase())) != null) {
 						aList = StringUtils.capitalise(aList.toLowerCase());
+					}
 					player.sendMessage(ChatColor.GREEN + "    - "
 							+ StringUtils.wrap(aList));
 				}
@@ -221,7 +225,7 @@ public class GuardCommands {
 			modifiers = "radius",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.guard")
+	@CommandPermissions("guard.modify.radius")
 	public static void changeRadius(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
@@ -243,16 +247,17 @@ public class GuardCommands {
 			modifiers = "aggro",
 			min = 1,
 			max = 1)
-	@CommandPermissions("modify.guard")
+	@CommandPermissions("guard.modify.aggro")
 	public static void toggleAggro(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
 		guard.setAggressive(!guard.isAggressive());
-		if (guard.isAggressive())
+		if (guard.isAggressive()) {
 			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " is now aggressive.");
-		else
+		} else {
 			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has stopped being aggressive.");
+		}
 	}
 }

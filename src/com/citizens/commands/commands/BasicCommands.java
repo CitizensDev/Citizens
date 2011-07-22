@@ -44,7 +44,7 @@ public class BasicCommands {
 			min = 0,
 			max = 0)
 	@ServerCommand()
-	@CommandPermissions("admin")
+	@CommandPermissions("admin.info")
 	@CommandRequirements()
 	public static void viewInfo(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
@@ -64,7 +64,7 @@ public class BasicCommands {
 			modifiers = "help",
 			min = 1,
 			max = 2)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("basic.use.help")
 	@CommandRequirements()
 	@ServerCommand()
 	public static void sendCitizensHelp(CommandContext args,
@@ -84,7 +84,7 @@ public class BasicCommands {
 			modifiers = "reload",
 			min = 1,
 			max = 1)
-	@CommandPermissions("admin")
+	@CommandPermissions("admin.reload")
 	@ServerCommand()
 	public static void reload(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
@@ -110,7 +110,7 @@ public class BasicCommands {
 			min = 1,
 			max = 1)
 	@ServerCommand()
-	@CommandPermissions("admin")
+	@CommandPermissions("admin.save")
 	public static void forceSave(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		if (sender instanceof Player) {
@@ -137,7 +137,7 @@ public class BasicCommands {
 			min = 1,
 			max = 1)
 	@ServerCommand()
-	@CommandPermissions("admin")
+	@CommandPermissions("admin.debug")
 	public static void toggleDebugMode(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
 		boolean debug = Constant.DebugMode.toBoolean();
@@ -167,7 +167,7 @@ public class BasicCommands {
 			modifiers = "help",
 			min = 1,
 			max = 2)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("basic.use.help")
 	@ServerCommand()
 	public static void sendBasicHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
@@ -185,11 +185,11 @@ public class BasicCommands {
 			desc = "create an NPC",
 			modifiers = "create",
 			min = 2)
-	@CommandPermissions("create.basic")
+	@CommandPermissions("basic.create")
 	public static void createNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.toInt() && !Permission.isAdmin(player)) {
+				.toInt() && !Permission.hasPermission(player, "citizens.admin")) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -230,7 +230,7 @@ public class BasicCommands {
 			modifiers = "move",
 			min = 1,
 			max = 1)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.move")
 	public static void moveNPC(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " is enroute to your location!");
@@ -245,7 +245,7 @@ public class BasicCommands {
 			modifiers = "moveto",
 			min = 3,
 			max = 6)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.moveto")
 	public static void moveNPCToLocation(CommandContext args, Player player,
 			HumanNPC npc) {
 		int index = args.argsLength() - 1;
@@ -287,10 +287,10 @@ public class BasicCommands {
 			modifiers = "copy",
 			min = 1,
 			max = 1)
-	@CommandPermissions("create.basic")
+	@CommandPermissions("basic.modify.copy")
 	public static void copyNPC(CommandContext args, Player player, HumanNPC npc) {
 		if (UtilityProperties.getNPCCount(player.getName()) >= Constant.MaxNPCsPerPlayer
-				.toInt() && !Permission.isAdmin(player)) {
+				.toInt() && !Permission.hasPermission(player, "citizens.admin")) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -311,11 +311,11 @@ public class BasicCommands {
 			modifiers = "remove",
 			min = 1,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.remove")
 	public static void removeNPCs(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
-			if (Permission.isAdmin(player)) {
+			if (Permission.hasPermission(player, "citizens.admin.removeall")) {
 				NPCManager.removeAll();
 				NPCManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
@@ -337,7 +337,7 @@ public class BasicCommands {
 			modifiers = "rename",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.rename")
 	public static void renameNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		String name = args.getString(1);
@@ -358,8 +358,8 @@ public class BasicCommands {
 			modifiers = "color",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
-	public static void setNPCColour(CommandContext args, Player player,
+	@CommandPermissions("basic.modify.color")
+	public static void setNPCColor(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (!args.getString(1).substring(0, 1).equals("&")) {
 			player.sendMessage(ChatColor.RED + "Use an & to specify color.");
@@ -375,7 +375,7 @@ public class BasicCommands {
 					colour = Integer.parseInt(
 							args.getString(1).substring(1, 2), 16);
 				} catch (NumberFormatException e) {
-					player.sendMessage(ChatColor.RED + "Invalid colour code.");
+					player.sendMessage(ChatColor.RED + "Invalid color code.");
 					return;
 				}
 			}
@@ -393,7 +393,7 @@ public class BasicCommands {
 			desc = "set the text of an NPC",
 			modifiers = "set",
 			min = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.settext")
 	public static void setNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
 		String text = args.getJoinedStrings(1);
@@ -410,7 +410,7 @@ public class BasicCommands {
 			desc = "add text to an NPC",
 			modifiers = "add",
 			min = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.addtext")
 	public static void addNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
 		String text = args.getJoinedStrings(1);
@@ -426,7 +426,7 @@ public class BasicCommands {
 			modifiers = "reset",
 			min = 1,
 			max = 1)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.resettext")
 	public static void resetNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
 		NPCManager.resetText(npc.getUID());
@@ -441,7 +441,7 @@ public class BasicCommands {
 			modifiers = "item",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.item")
 	public static void setNPCItemInHand(CommandContext args, Player player,
 			HumanNPC npc) {
 		NPCDataManager.setItemInHand(player, npc, args.getString(1));
@@ -454,7 +454,7 @@ public class BasicCommands {
 			modifiers = "armor",
 			min = 3,
 			max = 3)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.armor")
 	public static void setNPCArmor(CommandContext args, Player player,
 			HumanNPC npc) {
 		Material mat = StringUtils.parseMaterial(args.getString(2));
@@ -509,7 +509,7 @@ public class BasicCommands {
 			modifiers = "tp",
 			min = 1,
 			max = 1)
-	@CommandPermissions("admin")
+	@CommandPermissions("admin.teleport")
 	public static void teleportToNPC(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.teleport(npc.getNPCData().getLocation());
@@ -524,7 +524,7 @@ public class BasicCommands {
 			modifiers = "talkclose",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.talkclose")
 	public static void changeNPCTalkWhenClose(CommandContext args,
 			Player player, HumanNPC npc) {
 		boolean talk = false;
@@ -548,7 +548,7 @@ public class BasicCommands {
 			modifiers = "lookat",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.lookat")
 	public static void changeNPCLookWhenClose(CommandContext args,
 			Player player, HumanNPC npc) {
 		boolean look = false;
@@ -573,7 +573,7 @@ public class BasicCommands {
 			modifiers = "id",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("basic.use.id")
 	public static void displayNPCID(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "The ID of this NPC is "
@@ -587,7 +587,7 @@ public class BasicCommands {
 			modifiers = "select",
 			min = 2,
 			max = 2)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("basic.use.select")
 	@CommandRequirements()
 	public static void selectNPC(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -610,7 +610,7 @@ public class BasicCommands {
 			modifiers = "owner",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("basic.use.getowner")
 	public static void getNPCOwner(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "The owner of this NPC is "
@@ -625,7 +625,7 @@ public class BasicCommands {
 			modifiers = "setowner",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.setowner")
 	public static void setNPCOwner(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.sendMessage(ChatColor.GREEN + "The owner of "
@@ -641,7 +641,7 @@ public class BasicCommands {
 			modifiers = { "path", "waypoints" },
 			min = 1,
 			max = 2)
-	@CommandPermissions("modify.basic")
+	@CommandPermissions("basic.modify.waypoints")
 	public static void editWaypoints(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.length() == 2) {
@@ -684,7 +684,7 @@ public class BasicCommands {
 			modifiers = "list",
 			min = 1,
 			max = 3)
-	@CommandPermissions("use.basic")
+	@CommandPermissions("basic.modify.list")
 	public static void displayNPCList(CommandContext args, Player player,
 			HumanNPC npc) {
 		switch (args.argsLength()) {

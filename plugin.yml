@@ -60,37 +60,137 @@ commands:
         usage: |
                     You typed the command incorrectly. It should be /<command> help.
 permissions:
-    citizens.*:
+    citizens.admin:
         default: false
         children:
-            citizens.admin: true
+            citizens.admin.info: true
+            citizens.admin.reload: true
+            citizens.admin.save: true
+            citizens.admin.debug: true
+            citizens.admin.removeall: true
+            citizens.admin.teleport: true
+            citizens.admin.toggleall: true
+            citizens.toggle.*: true
+            citizens.trader.*: true
+            citizens.basic.*: true
+            citizens.guard.*: true
+            citizens.blacksmith.*: true
+            citizens.healer.*: true
+            citizens.wizard.*: true
+            citizens.quester.*: true
+    citizens.toggle.*:
+        children:
+            citizens.toggle.help: true
+            citizens.toggle.blacksmith: true
+            citizens.toggle.guard: true
+            citizens.toggle.healer: true
+            citizens.toggle.trader: true
+            citizens.toggle.quester: true
+            citizens.toggle.wizard: true
     citizens.trader.*:
         children:
-            citizens.trader.create: true
-            citizens.trader.modify: true
-            citizens.trader.use: true
+            citizens.trader.use.*: true
+            citizens.trader.modify.*: true
+    citizens.trader.use.*:
+        children:
+            citizens.trader.use.help: true
+            citizens.trader.use.showmoney: true
+            citizens.trader.use.list: true
+            citizens.trader.use.trade: true
+    citizens.trader.modify.*:
+        children:
+            citizens.trader.modify.money: true
+            citizens.trader.modify.unlimited: true
+            citizens.trader.modify.stock: true
+            citizens.trader.modify.clearstock: true
     citizens.guard.*:
         children:
-            citizens.guard.create: true
-            citizens.guard.modify: true
-            citizens.guard.use: true
+            citizens.guard.use.*: true
+            citizens.guard.modify.*: true
+    citizens.guard.use.*:
+        children:
+            citizens.guard.use.help: true
+    citizens.guard.modify.*:
+        children:
+            citizens.guard.modify.changetype: true
+            citizens.guard.modify.blacklist: true
+            citizens.guard.modify.whitelist: true
+            citizens.guard.modify.radius: true
+            citizens.guard.modify.aggro: true    
     citizens.basic.*:
         children:
             citizens.basic.create: true
-            citizens.basic.modify: true
-            citizens.basic.use: true
+            citizens.basic.use.*: true
+            citizens.basic.modify.*: true
+    citizens.basic.use.*:
+        children:
+            citizens.basic.use.help: true
+            citizens.basic.use.id: true
+            citizens.basic.use.select: true
+            citizens.basic.use.getowner: true
+            citizens.basic.use.list: true
+    citizens.basic.modify.*:
+        children:
+            citizens.basic.modify.move: true
+            citizens.basic.modify.moveto: true
+            citizens.basic.modify.copy: true
+            citizens.basic.modify.remove: true
+            citizens.basic.modify.rename: true
+            citizens.basic.modify.color: true
+            citizens.basic.modify.settext: true
+            citizens.basic.modify.addtext: true
+            citizens.basic.modify.resettext: true
+            citizens.basic.modify,item: true
+            citizens.basic.modify.armor: true
+            citizens.basic.modify.lookat: true
+            citizens.basic.modify.talkclose: true
+            citizens.basic.modify.setowner: true
+            citizens.basic.modify.waypoints: true
     citizens.quester.*:
         children:
-            citizens.quester.create: true
-            citizens.quester.modify: true
-            citizens.quester.use: true
+            citizens.quester.modify.*: true
+            citizens.quester.use.*: true
+    citizens.quester.use.*:
+        children:
+            citizens.quester.use.help: true
+    citizens.quester.modify.*:
+        children:
+            citizens.quester.modify.questedit: true
+            citizens.quester.modify.assignquest: true
+            citizens.quester.modify.removequest: true
     citizens.healer.*:
         children:
-            citizens.healer.create: true
-            citizens.healer.modify: true
-            citizens.healer.use: true
+            citizens.healer.use.*: true
+            citizens.healer.modify.*: true
+    citizens.healer.use.*:
+        children:
+            citizens.healer.use.help: true
+            citizens.healer.use.status: true
+            citizens.healer.use.heal: true
+    citizens.healer.modify.*:
+        children:
+            citizens.healer.modify.levelup: true
     citizens.blacksmith.*:
         children:
-            citizens.blacksmith.create: true
-            citizens.blacksmith.modify: true
-            citizens.blacksmith.use: true
+            citizens.blacksmith.use.*: true
+    citizens.blacksmith.use.*:
+        children:
+            citizens.blacksmith.use.uses: true
+            citizens.blacksmith.use.help: true
+            citizens.blacksmith.use.repair: true
+    citizens.wizard.*:
+        children:
+            citizens.wizard.use.*: true
+            citizens.wizard.modify.*: true
+    citizens.wizard.use.*:
+        children:
+            citizens.wizard.use.help: true
+            citizens.wizard.use.status: true
+            citizens.wizard.use.displaylocations: true
+            citizens.wizard.use.interact: true
+    citizens.wizard.modify.*:
+        children:
+            citizens.wizard.modify.mode: true
+            citizens.wizard.modify.addloc: true
+            citizens.wizard.modify.removeloc: true
+            citizens.wizard.modify.unlimited: true

@@ -31,7 +31,7 @@ public class BlacksmithNPC extends Toggleable implements Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (Permission.canUse(player, npc, getType())) {
+		if (Permission.hasPermission(player, "citizens.blacksmith.use.repair")) {
 			Operation op = null;
 			if (BlacksmithManager.validateTool(player.getItemInHand())) {
 				op = Operation.BLACKSMITH_TOOLREPAIR;

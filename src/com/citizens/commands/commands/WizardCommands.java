@@ -27,7 +27,7 @@ public class WizardCommands {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.wizard")
+	@CommandPermissions("wizard.use.help")
 	public static void sendWizardHelp(CommandContext args, Player player,
 			HumanNPC npc) {
 		HelpUtils.sendWizardHelp(player);
@@ -40,7 +40,7 @@ public class WizardCommands {
 			modifiers = "mode",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.wizard")
+	@CommandPermissions("wizard.modify.mode")
 	public static void changeMode(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardMode wizardMode;
@@ -70,7 +70,7 @@ public class WizardCommands {
 			modifiers = "status",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.wizard")
+	@CommandPermissions("wizard.use.status")
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW
@@ -94,7 +94,7 @@ public class WizardCommands {
 			modifiers = "addloc",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.wizard")
+	@CommandPermissions("wizard.modify.addloc")
 	public static void addLocation(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");
@@ -116,7 +116,7 @@ public class WizardCommands {
 			modifiers = "removeloc",
 			min = 2,
 			max = 2)
-	@CommandPermissions("modify.wizard")
+	@CommandPermissions("wizard.modify.removeloc")
 	public static void removeLocation(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");
@@ -149,7 +149,7 @@ public class WizardCommands {
 			modifiers = "locations",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.wizard")
+	@CommandPermissions("wizard.use.displaylocations")
 	public static void displayLocations(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");
@@ -176,7 +176,7 @@ public class WizardCommands {
 			modifiers = "unlimited",
 			min = 1,
 			max = 1)
-	@CommandPermissions("modify.wizard")
+	@CommandPermissions("wizard.modify.unlimited")
 	public static void toggleUnlimitedMana(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");

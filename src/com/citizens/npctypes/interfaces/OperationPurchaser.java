@@ -44,7 +44,7 @@ public class OperationPurchaser implements NPCPurchaser {
 
 	@Override
 	public boolean hasPermission(Player player, String type) {
-		return Permission.canCreate(player, type);
+		return Permission.hasPermission(player, "citizens.toggle." + type);
 	}
 
 	@Override

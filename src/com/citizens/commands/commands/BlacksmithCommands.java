@@ -27,7 +27,7 @@ public class BlacksmithCommands {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.blacksmith")
+	@CommandPermissions("blacksmith.use.help")
 	@ServerCommand()
 	public static void sendBlacksmithHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
@@ -41,7 +41,7 @@ public class BlacksmithCommands {
 			modifiers = "uses",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.blacksmith")
+	@CommandPermissions("blacksmith.use.uses")
 	public static void showUses(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
 		String itemName = item.getType().name().toLowerCase().replace("_", " ");

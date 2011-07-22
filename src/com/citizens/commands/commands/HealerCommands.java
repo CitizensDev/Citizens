@@ -28,7 +28,7 @@ public class HealerCommands {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.healer")
+	@CommandPermissions("healer.use.help")
 	public static void sendHealerHelp(CommandContext args, Player player,
 			HumanNPC npc) {
 		HelpUtils.sendHealerHelp(player);
@@ -41,7 +41,7 @@ public class HealerCommands {
 			modifiers = "status",
 			min = 1,
 			max = 1)
-	@CommandPermissions("use.healer")
+	@CommandPermissions("healer.use.status")
 	public static void displayStatus(CommandContext args, Player player,
 			HumanNPC npc) {
 		HealerNPC healer = npc.getToggleable("healer");
@@ -62,7 +62,7 @@ public class HealerCommands {
 			modifiers = "level-up",
 			min = 1,
 			max = 2)
-	@CommandPermissions("modify.healer")
+	@CommandPermissions("healer.modify.levelup")
 	public static void levelUp(CommandContext args, Player player, HumanNPC npc) {
 		if (EconomyHandler.useEconomy()) {
 			HealerNPC healer = npc.getToggleable("healer");

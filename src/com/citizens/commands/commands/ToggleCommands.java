@@ -30,7 +30,7 @@ public class ToggleCommands {
 			min = 1,
 			max = 2)
 	@ServerCommand()
-	@CommandPermissions("use.basic")
+	@CommandPermissions("toggle.help")
 	@CommandRequirements()
 	public static void viewInfo(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
@@ -81,7 +81,7 @@ public class ToggleCommands {
 			modifiers = "all",
 			min = 2,
 			max = 2)
-	@CommandPermissions("admin")
+	@CommandPermissions("admin.toggleall")
 	public static void toggleAllNPCTypes(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.getString(1).equalsIgnoreCase("on")) {
@@ -100,8 +100,9 @@ public class ToggleCommands {
 	 */
 	private static void toggleState(Player player, HumanNPC npc, NPCType type,
 			boolean register) {
-		if (register)
+		if (register) {
 			type.factory().create(npc).register();
+		}
 		if (!npc.isType(type.getType())) {
 			npc.addType(type.getType(), type.factory());
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())

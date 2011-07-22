@@ -3,8 +3,8 @@ By fullwall and aPunch
 
 Supports:
 -Minecraft Beta 1.7.3
--CraftBukkit 953
--Permissions 2.7.x and 3.x
+-CraftBukkit 1000
+-Permissions 2.7.x and 3.x (as well as Bukkit permissions system)
 -iConomy 4 & 5
 -BOSEconomy 0.6.2
 -EssentialsEco 2.4.x
@@ -59,4 +59,5 @@ Changelog:
 -fixed accounts going negative when using blacksmiths
 -fixed inventory not updating properly while making purchases
 -fixed wrong amount of item currency being removed from inventory when using a blacksmith
--support for built-in Bukkit permissions system (use-bukkit-permissions node in citizens.yml)
+-support for built-in Bukkit permissions system ('general.use-bukkit-permissions' node in citizens.yml)
+-fixed Evil NPCs not attacking until attacked
