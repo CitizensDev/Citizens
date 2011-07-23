@@ -11,7 +11,7 @@ public abstract class WaypointModifier extends Converser {
 		this.waypoint = waypoint;
 	}
 
-	public abstract void onReach(HumanNPC npc, Waypoint waypoint);
+	public abstract void onReach(HumanNPC npc);
 
 	public abstract void parse(Storage storage, String root);
 

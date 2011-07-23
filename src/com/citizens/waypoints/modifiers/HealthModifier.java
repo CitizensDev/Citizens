@@ -21,7 +21,7 @@ public class HealthModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void onReach(HumanNPC npc, Waypoint waypoint) {
+	public void onReach(HumanNPC npc) {
 		int health = npc.getPlayer().getHealth();
 		health = take ? health - amount : health + amount;
 		if (health > 20)

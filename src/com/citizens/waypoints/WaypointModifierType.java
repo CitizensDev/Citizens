@@ -2,12 +2,13 @@ package com.citizens.waypoints;
 
 import java.lang.reflect.Constructor;
 
+import com.citizens.waypoints.modifiers.ChatModifier;
 import com.citizens.waypoints.modifiers.DelayModifier;
 import com.citizens.waypoints.modifiers.HealthModifier;
 import com.citizens.waypoints.modifiers.TeleportModifier;
 
 public enum WaypointModifierType {
-	CHAT(null),
+	CHAT(ChatModifier.class),
 	DELAY(DelayModifier.class),
 	HEALTH(HealthModifier.class),
 	TELEPORT(TeleportModifier.class),

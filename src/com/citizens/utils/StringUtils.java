@@ -225,4 +225,8 @@ public class StringUtils {
 		// actually has the most recent cost counts
 		return p[n];
 	}
+
+	public static boolean isCommand(String message) {
+		return message.charAt(0) == '/';
+	}
 }
