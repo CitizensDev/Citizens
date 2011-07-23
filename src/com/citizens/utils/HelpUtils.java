@@ -89,6 +89,8 @@ public class HelpUtils {
 			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
 			format(sender, "npc", "[path|waypoints] (reset)",
 					"control an NPC's waypoints");
+			format(sender, "waypoint", "modifier [type]",
+					"add a modifier to an NPC's waypoints");
 			footer(sender);
 			break;
 		default:

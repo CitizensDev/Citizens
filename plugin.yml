@@ -83,6 +83,7 @@ permissions:
             citizens.healer.*: true
             citizens.wizard.*: true
             citizens.quester.*: true
+            citizens.waypoints.*: true
             citizens.npccount.unlimited: true
     citizens.toggle.*:
         children:
@@ -152,7 +153,6 @@ permissions:
             citizens.basic.modify.lookat: true
             citizens.basic.modify.talkclose: true
             citizens.basic.modify.setowner: true
-            citizens.basic.modify.waypoints: true
     citizens.quester.*:
         children:
             citizens.quester.modify.*: true
@@ -201,3 +201,14 @@ permissions:
             citizens.wizard.modify.addloc: true
             citizens.wizard.modify.removeloc: true
             citizens.wizard.modify.unlimited: true
+    citizens.waypoints.*:
+        children:
+            citizens.waypoints.edit: true
+            citizens.waypoints.modifier.*: true
+    citizens.waypoints.modifier.*:
+        children:
+            citizens.waypoints.modifier.chat: true
+            citizens.waypoints.modifier.effect: true
+            citizens.waypoints.modifier.health: true
+            citizens.waypoints.modifier.teleport: true
+            citizens.waypoints.modifier.delay: true

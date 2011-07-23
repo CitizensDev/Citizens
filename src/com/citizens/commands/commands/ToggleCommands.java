@@ -109,7 +109,7 @@ public class ToggleCommands {
 					+ " is now a " + type.getType() + "!");
 		} else {
 			npc.removeType(type.getType());
-			player.sendMessage(StringUtils.wrap(npc.getName())
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " has stopped being a " + type.getType() + ".");
 		}
 	}

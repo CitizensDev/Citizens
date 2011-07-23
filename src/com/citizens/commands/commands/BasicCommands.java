@@ -512,7 +512,7 @@ public class BasicCommands {
 				+ ".");
 	}
 
-	@CommandRequirements()
+	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "tp",
@@ -644,7 +644,7 @@ public class BasicCommands {
 			modifiers = { "path", "waypoints" },
 			min = 1,
 			max = 2)
-	@CommandPermissions("basic.modify.waypoints")
+	@CommandPermissions("waypoints.edit")
 	public static void editWaypoints(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.length() == 2) {

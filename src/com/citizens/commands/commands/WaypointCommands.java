@@ -8,7 +8,6 @@ import com.citizens.npcs.NPCDataManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
-import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.utils.ConversationUtils;
 import com.citizens.utils.MessageUtils;
@@ -21,12 +20,11 @@ public class WaypointCommands {
 
 	@Command(
 			aliases = { "wp", "waypoint" },
-			usage = "add [type]",
+			usage = "modifier [type]",
 			desc = "add a modifier",
 			modifiers = { "modifier", "mod" },
-			min = 3,
-			max = 3)
-	@CommandPermissions("basic.modify.waypoints")
+			min = 2,
+			max = 2)
 	public static void addWaypointModifier(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (NPCDataManager.pathEditors.get(player.getName()) == null) {
@@ -41,7 +39,7 @@ public class WaypointCommands {
 			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
 			return;
 		}
-		if (!Permission.generic(player, "citizens.waypoints."
+		if (!Permission.generic(player, "citizens.waypoints.modifier"
 				+ modifier.name().toLowerCase())) {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 			return;
