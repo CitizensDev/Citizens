@@ -16,7 +16,7 @@ import com.citizens.waypoints.WaypointModifierType;
 
 public class TeleportModifier extends WaypointModifier {
 	private Location loc;
-	private ConstructableLocation construct;
+	private final ConstructableLocation construct = new ConstructableLocation();
 	private final int X = 0, Y = 1, Z = 2, PITCH = 3, YAW = 4;
 
 	public TeleportModifier(Waypoint waypoint) {

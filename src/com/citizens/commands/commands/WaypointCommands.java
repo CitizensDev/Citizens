@@ -33,12 +33,18 @@ public class WaypointCommands {
 			return;
 		}
 		String type = args.getString(2);
-		if (WaypointModifierType.valueOf(type.toUpperCase()) == null) {
+		WaypointModifierType modifier;
+		try {
+			modifier = WaypointModifierType.valueOf(type.toUpperCase());
+			if (modifier == null) {
+				player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
+				return;
+			}
+		} catch (Exception e) {
 			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
 			return;
 		}
-		WaypointModifierType modifier = WaypointModifierType.valueOf(type
-				.toUpperCase());
+		modifier = WaypointModifierType.valueOf(type.toUpperCase());
 		player.sendMessage(ChatColor.AQUA
 				+ StringUtils.listify(StringUtils.wrap(StringUtils
 						.capitalise(modifier.name().toLowerCase()))
