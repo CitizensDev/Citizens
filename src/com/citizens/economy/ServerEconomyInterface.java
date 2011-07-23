@@ -116,7 +116,7 @@ public class ServerEconomyInterface {
 	 * @return
 	 */
 	public static boolean hasEnough(Payment payment, HumanNPC npc) {
-		return npc.getBalance() >= payment.getPrice();
+		return npc.getBalance() - payment.getPrice() >= 0;
 	}
 
 	/**

@@ -28,7 +28,6 @@ public class PathNPC extends EntityPlayer {
 	private boolean hasAttacked = false;
 	protected boolean jumping = false;
 	protected boolean randomPather = false;
-	public static final double jumpFactor = 0.05D;
 	private int pathTicks = 0;
 	private int pathTickLimit = -1;
 	private int stationaryTicks = 0;
@@ -39,6 +38,7 @@ public class PathNPC extends EntityPlayer {
 	private int prevY;
 	private int prevZ;
 	protected float pathingRange = 16;
+	private static final double jumpFactor = 0.05D;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -141,8 +141,8 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getPathVector() {
 		Vec3D vec3d = path.a(this);
-		double length = (this.length * 1.9F);
-		// 2.0 -> 1.9 - closer to destination before stopping.
+		double length = (this.length * 1.85F);
+		// 2.0 -> 1.85 - closer to destination before stopping.
 		while (vec3d != null
 				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
 			this.path.a(); // Increment path index.

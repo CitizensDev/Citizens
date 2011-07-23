@@ -21,7 +21,7 @@ public class Permission {
 	private static PermissionHandler handler;
 	private static PermissionsPlugin superperms;
 
-	public static boolean hasPermission(Player player, String string) {
+	private static boolean hasPermission(Player player, String string) {
 		return useSuperperms ? player.hasPermission(string) : handler.has(
 				player, string);
 	}
@@ -60,10 +60,9 @@ public class Permission {
 	}
 
 	public static boolean canCreate(Player player) {
-		return UtilityProperties.getNPCCount(player.getName()) < getMaxNPCs(player)
-				|| Permission.hasPermission(player, "citizens.admin")
-				|| Permission.hasPermission(player,
-						"citizens.npccount.unlimited");
+		return generic(player, "citizens.admin")
+				|| generic(player, "citizens.npccount.unlimited")
+				|| UtilityProperties.getNPCCount(player.getName()) < getMaxNPCs(player);
 	}
 
 	private static int getMaxNPCs(Player player) {

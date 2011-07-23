@@ -59,6 +59,12 @@ commands:
         description: Performs Citizens-related commands.
         usage: |
                     You typed the command incorrectly. It should be /<command> help.
+    waypoint:
+        aliases: [wp, waypoints]
+        description: Modifies waypoints.
+        usage: |
+                    The command was not recognised.
+                    
 permissions:
     citizens.admin:
         default: false

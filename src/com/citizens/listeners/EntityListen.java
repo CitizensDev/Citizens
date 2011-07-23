@@ -1,7 +1,6 @@
 package com.citizens.listeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -26,7 +25,6 @@ import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.Messaging;
-import com.citizens.utils.PathUtils;
 
 /**
  * Entity Listener
@@ -117,17 +115,10 @@ public class EntityListen extends EntityListener implements Listener {
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
 			if (!rightClickEvent.isCancelled()) {
 				if (npc.getWaypoints().isStarted()
-						&& npc.getWaypoints().currentIndex() <= npc
-								.getWaypoints().size()) {
-					Bukkit.getServer()
-							.getScheduler()
-							.scheduleSyncDelayedTask(
-									Citizens.plugin,
-									new RestartPathTask(npc, npc.getWaypoints()
-											.current().getLocation()),
-									Constant.RightClickPause.toInt());
-					npc.getHandle().cancelPath();
-					npc.setPaused(true);
+						&& npc.getWaypoints().current() != null) {
+					npc.getWaypoints().scheduleDelay(npc,
+							npc.getWaypoints().current().getLocation(),
+							Constant.RightClickPause.toInt());
 				}
 				npc.callRightClick(player, rightClickEvent.getNPC());
 			}
@@ -139,23 +130,6 @@ public class EntityListen extends EntityListener implements Listener {
 		CreatureTask.onEntityDeath(event.getEntity());
 		if (NPCManager.isNPC(event.getEntity())) {
 			NPCManager.get(event.getEntity()).callDeathEvent(event);
-		}
-	}
-
-	private class RestartPathTask implements Runnable {
-		private final Location point;
-		private final HumanNPC npc;
-
-		public RestartPathTask(HumanNPC npc, Location point) {
-			this.npc = npc;
-			this.point = point;
-		}
-
-		@Override
-		public void run() {
-			PathUtils.createPath(npc, point, -1, -1,
-					Constant.PathfindingRange.toDouble());
-			npc.setPaused(false);
 		}
 	}
 }

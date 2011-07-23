@@ -30,9 +30,15 @@ public class ConversationUtils {
 				finished = conversations.get(name).special(event.getPlayer(),
 						ChatType.get(event.getMessage()));
 			} else {
-				finished = conversations.get(name).converse(
-						new ConversationMessage(event.getPlayer(), event
-								.getMessage()));
+				try {
+					finished = conversations.get(name).converse(
+							new ConversationMessage(event.getPlayer(), event
+									.getMessage()));
+				} catch (NumberFormatException ex) {
+					event.getPlayer().sendMessage(
+							ChatColor.RED + "That is not a valid number.");
+					finished = false;
+				}
 			}
 			if (finished)
 				remove(event.getPlayer());
@@ -84,7 +90,7 @@ public class ConversationUtils {
 	public static abstract class Converser {
 		protected int step = 0;
 		protected boolean attemptedExit = false;
-		protected static final String endMessage = "Type in "
+		protected static final String endMessage = ChatColor.GREEN + "Type in "
 				+ StringUtils.wrap("finish") + " to end or "
 				+ StringUtils.wrap("restart") + " to begin again.";
 

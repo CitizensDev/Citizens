@@ -113,7 +113,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 		HealerNPC healer = npc.getToggleable("healer");
 		int playerHealth = player.getHealth();
 		int healerHealth = healer.getHealth();
-		if (Permission.hasPermission(player, "citizens.healer.use.heal")) {
+		if (Permission.generic(player, "citizens.healer.use.heal")) {
 			if (player.getItemInHand().getTypeId() == Constant.HealerTakeHealthItem
 					.toInt()) {
 				if (playerHealth < 20) {

@@ -71,8 +71,7 @@ public class TraderCommands {
 		}
 		switch (args.argsLength()) {
 		case 1:
-			if (Permission.hasPermission(player,
-					"citizens.trader.use.showmoney")) {
+			if (Permission.generic(player, "citizens.trader.use.showmoney")) {
 				player.sendMessage(StringUtils.wrap(npc.getName())
 						+ " has "
 						+ StringUtils.wrap(ServerEconomyInterface.format(npc
@@ -82,8 +81,7 @@ public class TraderCommands {
 			}
 			break;
 		case 3:
-			if (!Permission.hasPermission(player,
-					"citizens.trader.modify.money")) {
+			if (!Permission.generic(player, "citizens.trader.modify.money")) {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 				return;
 			}
@@ -446,6 +444,9 @@ public class TraderCommands {
 				data = Short.parseShort(split[2]);
 			case 2:
 				amount = Integer.parseInt(split[1]);
+				if (amount <= 0 || amount > 64) {
+					return null;
+				}
 			default:
 				break;
 			}

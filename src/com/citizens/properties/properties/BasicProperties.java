@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.server.InventoryPlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -151,20 +152,23 @@ public class BasicProperties extends PropertyManager implements Saveable {
 				Joiner.on(",").join(items.toArray()));
 	}
 
-	public int getColour(int UID) {
+	public ChatColor getColour(int UID) {
 		if (Strings.isNullOrEmpty(profiles.getString(UID + color))) {
 			profiles.setInt(UID + color, 0xF);
-			return 0xF;
+			return ChatColor.WHITE;
 		}
 		try {
-			return Integer.parseInt(profiles.getString(UID + color));
+			return ChatColor.getByCode(Integer.parseInt(profiles.getString(UID
+					+ color)));
 		} catch (NumberFormatException ex) {
-			return Integer.parseInt(profiles.getString(UID + color), 16);
+			return ChatColor.getByCode(Integer.parseInt(
+					profiles.getString(UID + color), 16));
 		}
 	}
 
-	private void saveColour(int UID, int colour) {
-		profiles.setInt(UID + color, colour);
+	private void saveColour(int UID, ChatColor colour) {
+		profiles.setInt(UID + color, colour == null ? ChatColor.WHITE.getCode()
+				: colour.getCode());
 	}
 
 	public ArrayDeque<String> getText(int UID) {
@@ -235,8 +239,11 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private List<Waypoint> getWaypoints(int UID, World world) {
-		String read = profiles.getString(UID + waypoints);
 		List<Waypoint> temp = new ArrayList<Waypoint>();
+		if (!profiles.pathExists(UID + waypoints)) {
+			return temp;
+		}
+		String read = profiles.getString(UID + waypoints);
 		Waypoint waypoint = null;
 		if (!read.isEmpty()) {
 			for (String str : read.split(";")) {
@@ -250,17 +257,22 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		String path = "", root = "";
 		WaypointModifier modifier = null;
 		for (String key : profiles.getKeys(UID + waypoints)) {
-			root = key;
+			root = UID + waypoints + "." + key;
 			waypoint = new Waypoint(LocationUtils.loadLocation(profiles, root,
 					true));
+
 			waypoint.setDelay(profiles.getInt(root + ".delay"));
-			root += ".modifiers";
-			for (String innerKey : profiles.getKeys(root)) {
-				path = root + "." + innerKey;
-				modifier = WaypointModifierType.valueOf(
-						profiles.getString(path + ".type")).create(waypoint);
-				modifier.parse(profiles, path);
-				waypoint.addModifier(modifier);
+
+			if (profiles.pathExists(root + ".modifiers")) {
+				root += ".modifiers";
+				for (String innerKey : profiles.getKeys(root)) {
+					path = root + "." + innerKey;
+					modifier = WaypointModifierType.valueOf(
+							profiles.getString(path + ".type"))
+							.create(waypoint);
+					modifier.parse(profiles, path);
+					waypoint.addModifier(modifier);
+				}
 			}
 			temp.add(waypoint);
 		}

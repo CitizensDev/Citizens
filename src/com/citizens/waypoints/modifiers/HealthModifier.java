@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.citizens.interfaces.Storage;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.ConversationUtils.ConversationMessage;
+import com.citizens.utils.StringUtils;
 import com.citizens.waypoints.Waypoint;
 import com.citizens.waypoints.WaypointModifier;
 import com.citizens.waypoints.WaypointModifierType;
@@ -63,7 +64,9 @@ public class HealthModifier extends WaypointModifier {
 			amount = message.getInteger(0);
 			player.sendMessage(getMessage("health amount", amount));
 			player.sendMessage(ChatColor.GREEN
-					+ "Enter in whether taking health is on or off.");
+					+ "Enter in whether taking health is "
+					+ StringUtils.wrap("on") + "or " + StringUtils.wrap("off")
+					+ ".");
 			break;
 		case TAKE:
 			String bool = message.getString(0);
@@ -72,7 +75,7 @@ public class HealthModifier extends WaypointModifier {
 			else
 				take = true;
 			player.sendMessage(ChatColor.GREEN
-					+ (take ? "Not taking health." : "Taking health."));
+					+ (take ? "Taking health." : "Not taking health."));
 		default:
 			player.sendMessage(endMessage);
 		}

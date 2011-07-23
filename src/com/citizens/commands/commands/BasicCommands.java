@@ -322,7 +322,7 @@ public class BasicCommands {
 	public static void removeNPCs(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
-			if (Permission.hasPermission(player, "citizens.admin.removeall")) {
+			if (Permission.generic(player, "citizens.admin.removeall")) {
 				NPCManager.removeAll();
 				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
@@ -386,7 +386,11 @@ public class BasicCommands {
 					return;
 				}
 			}
-			npc.getNPCData().setColour(colour);
+			if (ChatColor.getByCode(colour) == null) {
+				player.sendMessage(ChatColor.RED + "Color code not recognised.");
+				return;
+			}
+			npc.getNPCData().setColour(ChatColor.getByCode(colour));
 			NPCManager.setColour(npc.getUID(), npc.getOwner());
 			player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
 					+ "}'s name color is now "

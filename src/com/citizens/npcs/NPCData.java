@@ -3,13 +3,14 @@ package com.citizens.npcs;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 public class NPCData {
 	private String name;
 	private int UID;
 	private Location location;
-	private int colour = 0xF;
+	private ChatColor colour = ChatColor.WHITE;
 	private ArrayList<Integer> items;
 	private ArrayDeque<String> texts;
 	private boolean lookClose;
@@ -29,7 +30,7 @@ public class NPCData {
 	 * @param talkClose
 	 * @param owner
 	 */
-	public NPCData(String name, int UID, Location loc, int colour,
+	public NPCData(String name, int UID, Location loc, ChatColor colour,
 			ArrayList<Integer> items, ArrayDeque<String> texts,
 			boolean lookClose, boolean talkClose, String owner) {
 		this.setName(name);
@@ -67,11 +68,11 @@ public class NPCData {
 		return location;
 	}
 
-	public void setColour(int code) {
+	public void setColour(ChatColor code) {
 		this.colour = code;
 	}
 
-	public int getColour() {
+	public ChatColor getColour() {
 		return colour;
 	}
 

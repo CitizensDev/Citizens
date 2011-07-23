@@ -33,15 +33,15 @@ public class NPCManager {
 	public static void register(int UID, String owner) {
 		Location loc = PropertyManager.getBasic().getLocation(UID);
 
-		int colour = PropertyManager.getBasic().getColour(UID);
+		ChatColor colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
 		if (Constant.ConvertSlashes.toBoolean()) {
 			name = name.replace(Citizens.separatorChar, " ");
 		}
 		String npcName = name;
-		if (colour < 0xF) {
-			npcName = ChatColor.getByCode(colour) + name;
+		if (colour != ChatColor.WHITE) {
+			npcName = colour + name;
 		}
 		HumanNPC npc = NPCSpawner.spawnNPC(UID, npcName, loc.getWorld(),
 				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
@@ -56,9 +56,10 @@ public class NPCManager {
 
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
-		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items, NPCDataManager.NPCTexts
-				.get(UID), PropertyManager.getBasic().isLookWhenClose(UID),
-				PropertyManager.getBasic().isTalkWhenClose(UID), owner));
+		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items,
+				NPCDataManager.NPCTexts.get(UID), PropertyManager.getBasic()
+						.isLookWhenClose(UID), PropertyManager.getBasic()
+						.isTalkWhenClose(UID), owner));
 		PropertyManager.getBasic().saveOwner(UID, owner);
 		PropertyManager.load(npc);
 
@@ -229,7 +230,8 @@ public class NPCManager {
 	 */
 	public static boolean validateSelected(Player p) {
 		return NPCDataManager.selectedNPCs.get(p.getName()) != null
-				&& !NPCDataManager.selectedNPCs.get(p.getName()).toString().isEmpty();
+				&& !NPCDataManager.selectedNPCs.get(p.getName()).toString()
+						.isEmpty();
 	}
 
 	/**
@@ -240,7 +242,8 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p, int UID) {
-		return validateSelected(p) && NPCDataManager.selectedNPCs.get(p.getName()) == UID;
+		return validateSelected(p)
+				&& NPCDataManager.selectedNPCs.get(p.getName()) == UID;
 	}
 
 	/**
@@ -252,8 +255,7 @@ public class NPCManager {
 	 */
 	public static boolean validateOwnership(Player player, int UID,
 			boolean checkAdmin) {
-		return (checkAdmin && Permission
-				.hasPermission(player, "citizens.admin"))
+		return (checkAdmin && Permission.generic(player, "citizens.admin"))
 				|| get(UID).getOwner().equals(player.getName());
 	}
 

@@ -14,7 +14,7 @@ public class CitizensCommandsManager<T extends Player> extends
 
 	@Override
 	public boolean hasPermission(T player, String perm) {
-		return Permission.hasPermission(player, "citizens." + perm);
+		return Permission.generic(player, "citizens." + perm);
 	}
 
 	public String[] getAllCommandModifiers(String command) {
