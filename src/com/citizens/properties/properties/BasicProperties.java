@@ -153,9 +153,9 @@ public class BasicProperties extends PropertyManager implements Saveable {
 			return 0xF;
 		}
 		try {
-			return Integer.parseInt(profiles.getString(UID + color), 16);
+			return Integer.parseInt(profiles.getString(UID + color));
 		} catch (NumberFormatException ex) {
-			return 0xF;
+			return Integer.parseInt(profiles.getString(UID + color), 16);
 		}
 	}
 

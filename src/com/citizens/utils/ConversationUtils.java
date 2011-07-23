@@ -27,7 +27,7 @@ public class ConversationUtils {
 			event.setCancelled(true);
 			boolean finished;
 			if (ChatType.get(event.getMessage()) != null) {
-				finished = conversations.get(name).special(
+				finished = conversations.get(name).special(event.getPlayer(),
 						ChatType.get(event.getMessage()));
 			} else {
 				finished = conversations.get(name).converse(
@@ -40,9 +40,6 @@ public class ConversationUtils {
 	}
 
 	public static void remove(Player player) {
-		Converser converser = conversations.get(player.getName());
-		if (converser != null)
-			converser.end(player);
 		conversations.remove(player.getName());
 	}
 
@@ -83,14 +80,54 @@ public class ConversationUtils {
 		}
 	}
 
-	public interface Converser {
-		public void begin(Player player);
+	public static abstract class Converser {
+		protected int step = 0;
+		protected boolean attemptedExit = false;
 
-		public boolean converse(ConversationMessage message);
+		public abstract void begin(Player player);
 
-		public boolean special(ChatType type);
+		public abstract boolean converse(ConversationMessage message);
 
-		public void end(Player player);
+		public abstract boolean allowExit();
+
+		public boolean special(Player player, ChatType type) {
+			if (type == ChatType.UNDO) {
+				resetExit();
+				if (step == 0)
+					player.sendMessage(ChatColor.GRAY + "Nothing to undo.");
+				else
+					step = getUndoStep();
+			} else if (type == ChatType.EXIT) {
+				if (!allowExit()) {
+					if (attemptedExit) {
+						player.sendMessage(ChatColor.GRAY + "Exiting.");
+						onExit();
+						return true;
+					} else if (!attemptedExit) {
+						player.sendMessage(ChatColor.GRAY
+								+ "Not finished yet. Do you really want to exit?");
+						attemptedExit = true;
+					}
+				} else {
+					player.sendMessage(ChatColor.GREEN + "Finished.");
+					onExit();
+				}
+			}
+			return false;
+		}
+
+		protected int getUndoStep() {
+			return step - 1;
+		}
+
+		protected void resetExit() {
+			if (this.attemptedExit)
+				this.attemptedExit = false;
+		}
+
+		protected void onExit() {
+
+		}
 	}
 
 	public static class ConversationMessage {

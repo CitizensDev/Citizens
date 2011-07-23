@@ -296,7 +296,6 @@ public class Citizens extends JavaPlugin {
 			++count;
 		}
 		String[] values = UIDList.toString().split(",");
-
 		if (values.length > 0 && !values[0].isEmpty()) {
 			for (String value : values) {
 				int UID = Integer.parseInt(value);

@@ -4,12 +4,18 @@ import com.citizens.interfaces.Storage;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.ConversationUtils.Converser;
 
-public interface WaypointModifier extends Converser {
-	public void onReach(HumanNPC npc, Waypoint waypoint);
+public abstract class WaypointModifier extends Converser {
+	protected Waypoint waypoint;
 
-	public void parse(Storage storage, String root);
+	public WaypointModifier(Waypoint waypoint) {
+		this.waypoint = waypoint;
+	}
 
-	public void save(Storage storage, String root);
+	public abstract void onReach(HumanNPC npc, Waypoint waypoint);
 
-	public WaypointModifierType getType();
+	public abstract void parse(Storage storage, String root);
+
+	public abstract void save(Storage storage, String root);
+
+	public abstract WaypointModifierType getType();
 }

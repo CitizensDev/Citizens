@@ -9,7 +9,7 @@ public class NPCData {
 	private String name;
 	private int UID;
 	private Location location;
-	private int colour = 0xf;
+	private int colour = 0xF;
 	private ArrayList<Integer> items;
 	private ArrayDeque<String> texts;
 	private boolean lookClose;
