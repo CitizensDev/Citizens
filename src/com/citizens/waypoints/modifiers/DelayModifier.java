@@ -18,7 +18,7 @@ public class DelayModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void onReach(HumanNPC npc, Waypoint waypoint) {
+	public void onReach(HumanNPC npc) {
 	}
 
 	@Override

@@ -121,7 +121,7 @@ public class ConversationUtils {
 						attemptedExit = true;
 					}
 				} else {
-					player.sendMessage(ChatColor.GREEN + "Finished.");
+					player.sendMessage(StringUtils.wrap("Finished") + ".");
 					onExit();
 				}
 			} else if (type == ChatType.RESTART) {

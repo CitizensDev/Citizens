@@ -85,7 +85,7 @@ public class TeleportModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void onReach(HumanNPC npc, Waypoint waypoint) {
+	public void onReach(HumanNPC npc) {
 		npc.teleport(loc);
 	}
 
