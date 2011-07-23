@@ -21,19 +21,19 @@ public class HelpUtils {
 			format(sender, "citizens", "", "display Citizens information");
 			format(sender, "citizens", "reload", "reload Citizens files");
 			format(sender, "citizens", "save", "force a save of Citizens files");
+			format(sender, "citizens", "debug", "toggle Citizens debug mode");
 			format(sender, "toggle", "[help|list] (page)",
 					"view toggleable NPCs");
 			format(sender, "toggle", "[type]", "toggle an NPC type");
 			format(sender, "toggle", "all [on/off]",
 					"toggle all types for an NPC");
 			format(sender, "basic", "help [page]", "basic NPC help pages");
-			format(sender, "blacksmith", "help", "blacksmith NPC help page");
 			break;
 		case 2:
 			header(sender, "General", 2, 2);
+			format(sender, "blacksmith", "help", "blacksmith NPC help page");
 			format(sender, "guard", "help", "guard NPC help page");
 			format(sender, "healer", "help", "healer NPC help page");
-			format(sender, "landlord", "help", "landlord NPC help page");
 			format(sender, "quester", "help", "quester NPC help page");
 			format(sender, "trader", "help", "trader NPC help page");
 			format(sender, "wizard", "help", "wizard NPC help page");
@@ -70,7 +70,7 @@ public class HelpUtils {
 		case 2:
 			header(sender, "Basic NPC", 2, 3);
 			format(sender, "npc", "moveto [x y z](world pitch yaw)",
-					"move an NPC to a location");
+					"move NPC to a location");
 			format(sender, "npc", "tp", "teleport to the location of an NPC");
 			format(sender, "npc", "copy",
 					"make a clone of an NPC at your location");

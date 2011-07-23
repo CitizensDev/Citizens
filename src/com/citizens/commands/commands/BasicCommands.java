@@ -196,21 +196,6 @@ public class BasicCommands {
 		}
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		String firstArg = args.getString(1);
-		if (EconomyHandler.useEconomy()) {
-			if (EconomyHandler.canBuy(Operation.BASIC_CREATION, player)) {
-				double paid = EconomyHandler.pay(Operation.BASIC_CREATION,
-						player);
-				if (paid > 0) {
-					player.sendMessage(MessageUtils
-							.getPaidMessage(Operation.BASIC_CREATION, paid,
-									firstArg, "", false));
-				}
-			} else {
-				player.sendMessage(MessageUtils.getNoMoneyMessage(
-						Operation.BASIC_CREATION, player));
-				return;
-			}
-		}
 		if (args.argsLength() >= 3) {
 			texts.add(args.getJoinedStrings(2));
 		}
@@ -221,6 +206,21 @@ public class BasicCommands {
 		}
 		int UID = NPCManager.register(firstArg, player.getLocation(),
 				player.getName());
+		if (EconomyHandler.useEconomy()) {
+			if (EconomyHandler.canBuy(Operation.BASIC_CREATION, player)) {
+				double paid = EconomyHandler.pay(Operation.BASIC_CREATION,
+						player);
+				if (paid > 0) {
+					player.sendMessage(MessageUtils.getPaidMessage(
+							Operation.BASIC_CREATION, paid, NPCManager.get(UID)
+									.getStrippedName(), "", false));
+				}
+			} else {
+				player.sendMessage(MessageUtils.getNoMoneyMessage(
+						Operation.BASIC_CREATION, player));
+				return;
+			}
+		}
 		NPCDataManager.setText(UID, texts);
 
 		HumanNPC created = NPCManager.get(UID);
@@ -530,23 +530,19 @@ public class BasicCommands {
 
 	@Command(
 			aliases = "npc",
-			usage = "talkclose [true|false]",
-			desc = "set an NPC's talk-when-close setting",
+			usage = "talkclose",
+			desc = "toggle an NPC's talk-when-close setting",
 			modifiers = "talkclose",
-			min = 2,
-			max = 2)
+			min = 1,
+			max = 1)
 	@CommandPermissions("basic.modify.talkclose")
 	public static void changeNPCTalkWhenClose(CommandContext args,
 			Player player, HumanNPC npc) {
-		boolean talk = false;
-		if (args.getString(1).equals("true")) {
-			talk = true;
-		}
-		npc.getNPCData().setTalkClose(talk);
-		if (talk) {
+		npc.getNPCData().setTalkClose(!npc.getNPCData().isTalkClose());
+		if (npc.getNPCData().isTalkClose()) {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will now talk to nearby players.");
-		} else if (!talk) {
+		} else {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will stop talking to nearby players.");
 		}
@@ -557,20 +553,16 @@ public class BasicCommands {
 			usage = "lookat [true|false]",
 			desc = "set an NPC's look-when-close setting",
 			modifiers = "lookat",
-			min = 2,
-			max = 2)
+			min = 1,
+			max = 1)
 	@CommandPermissions("basic.modify.lookat")
 	public static void changeNPCLookWhenClose(CommandContext args,
 			Player player, HumanNPC npc) {
-		boolean look = false;
-		if (args.getString(1).equals("true")) {
-			look = true;
-		}
-		npc.getNPCData().setLookClose(look);
-		if (look) {
+		npc.getNPCData().setLookClose(!npc.getNPCData().isLookClose());
+		if (npc.getNPCData().isLookClose()) {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will now look at players.");
-		} else if (!look) {
+		} else {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " will stop looking at players.");
 		}
