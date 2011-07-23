@@ -30,11 +30,16 @@ public class InventoryUtils {
 	 * @param player
 	 */
 	public static void decreaseItemInHand(Player player) {
-		ItemStack item = null;
-		if (player.getItemInHand().getAmount() > 1) {
-			item = new ItemStack(player.getItemInHand().getTypeId(), player
-					.getItemInHand().getAmount() - 1);
+		player.setItemInHand(decreaseItemStack(player.getItemInHand()));
+	}
+
+	public static ItemStack decreaseItemStack(ItemStack stack) {
+		int amount = stack.getAmount() - 1;
+		if (amount == 0) {
+			stack = null;
+		} else {
+			stack.setAmount(amount);
 		}
-		player.setItemInHand(item);
+		return stack;
 	}
 }

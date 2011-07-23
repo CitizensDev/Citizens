@@ -21,8 +21,12 @@ import com.citizens.npcs.NPCData;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.LocationUtils;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.StringUtils;
+import com.citizens.waypoints.Waypoint;
+import com.citizens.waypoints.WaypointModifier;
+import com.citizens.waypoints.WaypointModifierType;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 
@@ -207,26 +211,58 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		profiles.setString(UID + owner, name);
 	}
 
-	private void saveWaypoints(int UID, List<Location> waypoints) {
-		String write = "", temp = "";
-		for (Location loc : waypoints) {
-			temp = loc.getBlockX() + "," + loc.getBlockY() + ","
-					+ loc.getBlockZ() + ";";
-			write += temp;
+	private void saveWaypoints(int UID, List<Waypoint> list) {
+		int count = 0, innercount = 0;
+		String path = "", root = "";
+		for (Waypoint waypoint : list) {
+			innercount = 0;
+
+			path = UID + this.waypoints + "." + count;
+			LocationUtils.saveLocation(profiles, waypoint.getLocation(), path,
+					true);
+
+			profiles.setInt(path + ".delay", waypoint.getDelay());
+			path += ".modifiers.";
+
+			for (WaypointModifier modifier : waypoint.getModifiers()) {
+				root = path + innercount;
+				profiles.setString(root + ".type", modifier.getType().name());
+				modifier.save(profiles, root);
+				++innercount;
+			}
+			++count;
 		}
-		profiles.setString(UID + this.waypoints, write);
 	}
 
-	private List<Location> getWaypoints(int UID, World world) {
+	private List<Waypoint> getWaypoints(int UID, World world) {
 		String read = profiles.getString(UID + waypoints);
-		List<Location> temp = new ArrayList<Location>();
+		List<Waypoint> temp = new ArrayList<Waypoint>();
+		Waypoint waypoint = null;
 		if (!read.isEmpty()) {
 			for (String str : read.split(";")) {
 				String[] split = str.split(",");
-				temp.add(new Location(world, Double.parseDouble(split[0]),
-						Double.parseDouble(split[1]), Double
-								.parseDouble(split[2])));
+				temp.add(new Waypoint(new Location(world, Double
+						.parseDouble(split[0]), Double.parseDouble(split[1]),
+						Double.parseDouble(split[2]))));
 			}
+			return temp;
+		}
+		String path = "", root = "";
+		WaypointModifier modifier = null;
+		for (String key : profiles.getKeys(UID + waypoints)) {
+			root = key;
+			waypoint = new Waypoint(LocationUtils.loadLocation(profiles, root,
+					true));
+			waypoint.setDelay(profiles.getInt(root + ".delay"));
+			root += ".modifiers";
+			for (String innerKey : profiles.getKeys(root)) {
+				path = root + "." + innerKey;
+				modifier = WaypointModifierType.valueOf(
+						profiles.getString(path + ".type")).create(waypoint);
+				modifier.parse(profiles, path);
+				waypoint.addModifier(modifier);
+			}
+			temp.add(waypoint);
 		}
 		return temp;
 	}

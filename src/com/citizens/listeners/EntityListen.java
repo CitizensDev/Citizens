@@ -19,6 +19,7 @@ import com.citizens.events.NPCDisplayTextEvent;
 import com.citizens.events.NPCRightClickEvent;
 import com.citizens.events.NPCTargetEvent;
 import com.citizens.interfaces.Listener;
+import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.questers.QuesterNPC;
 import com.citizens.npctypes.questers.quests.QuestManager;
@@ -87,7 +88,7 @@ public class EntityListen extends EntityListener implements Listener {
 			if (Citizens.validateTool("items.basic.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
-					NPCManager.selectNPC(player, npc);
+					NPCDataManager.selectNPC(player, npc);
 					Messaging.send(player, npc,
 							Constant.SelectionMessage.getString());
 					if (!Constant.QuickSelect.toBoolean()) {
@@ -123,7 +124,7 @@ public class EntityListen extends EntityListener implements Listener {
 							.scheduleSyncDelayedTask(
 									Citizens.plugin,
 									new RestartPathTask(npc, npc.getWaypoints()
-											.current()),
+											.current().getLocation()),
 									Constant.RightClickPause.toInt());
 					npc.getHandle().cancelPath();
 					npc.setPaused(true);

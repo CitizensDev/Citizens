@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.SettingsManager;
 import com.citizens.Permission;
+import com.citizens.SettingsManager;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
@@ -28,6 +28,7 @@ import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.resources.sk89q.ServerCommand;
 import com.citizens.utils.HelpUtils;
+import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.ServerUtils;
@@ -220,13 +221,13 @@ public class BasicCommands {
 		}
 		int UID = NPCManager.register(firstArg, player.getLocation(),
 				player.getName());
-		NPCManager.setText(UID, texts);
+		NPCDataManager.setText(UID, texts);
 
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
 		Messaging.send(player, created, Constant.CreationMessage.getString());
 
-		NPCManager.selectNPC(player, NPCManager.get(UID));
+		NPCDataManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created, Constant.SelectionMessage.getString());
 	}
 
@@ -323,7 +324,7 @@ public class BasicCommands {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
 			if (Permission.hasPermission(player, "citizens.admin.removeall")) {
 				NPCManager.removeAll();
-				NPCManager.deselectNPC(player);
+				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -331,7 +332,7 @@ public class BasicCommands {
 			return;
 		}
 		NPCManager.remove(npc.getUID());
-		NPCManager.deselectNPC(player);
+		NPCDataManager.deselectNPC(player);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
 				ChatColor.GRAY) + " disappeared.");
 	}
@@ -405,7 +406,7 @@ public class BasicCommands {
 		String text = args.getJoinedStrings(1);
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
-		NPCManager.setText(npc.getUID(), texts);
+		NPCDataManager.setText(npc.getUID(), texts);
 		player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
 				+ "}'s text was set to {" + text + "}."));
 	}
@@ -420,7 +421,7 @@ public class BasicCommands {
 	public static void addNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
 		String text = args.getJoinedStrings(1);
-		NPCManager.addText(npc.getUID(), text);
+		NPCDataManager.addText(npc.getUID(), text);
 		player.sendMessage(StringUtils.wrap(text) + " was added to "
 				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
 	}
@@ -435,7 +436,7 @@ public class BasicCommands {
 	@CommandPermissions("basic.modify.resettext")
 	public static void resetNPCText(CommandContext args, Player player,
 			HumanNPC npc) {
-		NPCManager.resetText(npc.getUID());
+		NPCDataManager.resetText(npc.getUID());
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
 				+ " text was reset!");
 	}
@@ -480,7 +481,7 @@ public class BasicCommands {
 			return;
 		}
 		int slot = player.getInventory().first(mat);
-		ItemStack item = NPCDataManager.decreaseItemStack(player.getInventory()
+		ItemStack item = InventoryUtils.decreaseItemStack(player.getInventory()
 				.getItem(slot));
 		player.getInventory().setItem(slot, item);
 		ArrayList<Integer> items = npc.getNPCData().getItems();
@@ -603,7 +604,7 @@ public class BasicCommands {
 					+ StringUtils.wrap(args.getString(1), ChatColor.RED)
 					+ " exists.");
 		} else {
-			NPCManager.selectNPC(player, npc);
+			NPCDataManager.selectNPC(player, npc);
 			Messaging.send(player, npc, Constant.SelectionMessage.getString());
 		}
 	}

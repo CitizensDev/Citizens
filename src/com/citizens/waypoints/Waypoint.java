@@ -26,6 +26,10 @@ public class Waypoint {
 		this.modifiers.add(effect);
 	}
 
+	public List<WaypointModifier> getModifiers() {
+		return this.modifiers;
+	}
+
 	public Location getLocation() {
 		return waypoint;
 	}

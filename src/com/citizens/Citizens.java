@@ -24,6 +24,7 @@ import com.citizens.listeners.EntityListen;
 import com.citizens.listeners.PlayerListen;
 import com.citizens.listeners.ServerListen;
 import com.citizens.listeners.WorldListen;
+import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npcs.NPCTypeManager;
 import com.citizens.npctypes.blacksmiths.BlacksmithNPC;
@@ -189,7 +190,7 @@ public class Citizens extends JavaPlugin {
 
 			HumanNPC npc = null;
 			if (player != null && NPCManager.validateSelected(player)) {
-				npc = NPCManager.get(NPCManager.getSelected(player));
+				npc = NPCManager.get(NPCDataManager.getSelected(player));
 			}
 			try {
 				commands.execute(split, player, player == null ? sender
@@ -306,7 +307,7 @@ public class Citizens extends JavaPlugin {
 					ArrayDeque<String> text = PropertyManager.getBasic()
 							.getText(UID);
 					if (text != null) {
-						NPCManager.setText(UID, text);
+						NPCDataManager.setText(UID, text);
 					}
 				}
 			}

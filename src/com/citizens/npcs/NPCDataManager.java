@@ -1,5 +1,6 @@
 package com.citizens.npcs;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -12,12 +13,18 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
+import com.citizens.waypoints.Waypoint;
+import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 
 public class NPCDataManager {
 	public static final Map<String, Integer> pathEditors = Maps.newHashMap();
+	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new MapMaker()
+			.makeMap();
+	static final Map<String, Integer> selectedNPCs = new MapMaker().makeMap();
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
 		String name = event.getPlayer().getName();
@@ -43,7 +50,8 @@ public class NPCDataManager {
 					break;
 				}
 				if (npc.getWaypoints().size() > 0
-						&& npc.getWaypoints().getLast().distance(loc) > Constant.PathfindingRange
+						&& npc.getWaypoints().getLast().getLocation()
+								.distance(loc) > Constant.PathfindingRange
 								.toDouble()) {
 					event.getPlayer()
 							.sendMessage(
@@ -56,7 +64,7 @@ public class NPCDataManager {
 											+ " blocks away from each other.");
 					break;
 				}
-				npc.getWaypoints().add(loc);
+				npc.getWaypoints().add(new Waypoint(loc));
 				event.getPlayer().sendMessage(
 						StringUtils.wrap("Added")
 								+ " waypoint at ("
@@ -152,7 +160,8 @@ public class NPCDataManager {
 			return;
 		}
 		int slot = player.getInventory().first(mat);
-		ItemStack item = decreaseItemStack(player.getInventory().getItem(slot));
+		ItemStack item = InventoryUtils.decreaseItemStack(player.getInventory()
+				.getItem(slot));
 		player.getInventory().setItem(slot, item);
 
 		ArrayList<Integer> items = npc.getNPCData().getItems();
@@ -180,13 +189,61 @@ public class NPCDataManager {
 				+ ".");
 	}
 
-	public static ItemStack decreaseItemStack(ItemStack stack) {
-		int amount = stack.getAmount() - 1;
-		if (amount == 0) {
-			stack = null;
-		} else {
-			stack.setAmount(amount);
+	/**
+	 * Adds to an npc's text.
+	 * 
+	 * @param UID
+	 * @param text
+	 */
+	public static void addText(int UID, String text) {
+		ArrayDeque<String> texts = NPCDataManager.getText(UID);
+		if (texts == null) {
+			texts = new ArrayDeque<String>();
 		}
-		return stack;
+		texts.add(text);
+		NPCDataManager.setText(UID, texts);
+	}
+
+	public static int getSelected(Player player) {
+		return selectedNPCs.get(player.getName());
+	}
+
+	public static void selectNPC(Player player, HumanNPC npc) {
+		selectedNPCs.put(player.getName(), npc.getUID());
+	}
+
+	public static void deselectNPC(Player player) {
+		selectedNPCs.remove(player.getName());
+	}
+
+	/**
+	 * Returns an npc's text.
+	 * 
+	 * @param UID
+	 * @return
+	 */
+	public static ArrayDeque<String> getText(int UID) {
+		return NPCTexts.get(UID);
+	}
+
+	/**
+	 * Sets an npc's text to the given texts.
+	 * 
+	 * @param UID
+	 * @param text
+	 */
+	public static void setText(int UID, ArrayDeque<String> text) {
+		text = StringUtils.colourise(text);
+		NPCTexts.put(UID, text);
+		NPCManager.get(UID).getNPCData().setTexts(text);
+	}
+
+	/**
+	 * Resets an NPC's text.
+	 * 
+	 * @param UID
+	 */
+	public static void resetText(int UID) {
+		setText(UID, new ArrayDeque<String>());
 	}
 }

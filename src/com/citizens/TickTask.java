@@ -62,9 +62,7 @@ public class TickTask implements Runnable {
 			// TODO: merge the default and this case.
 			if (waypoints.currentIndex() >= 1) {
 				if (!waypoints.isStarted()) {
-					PathUtils.createPath(npc, waypoints.get(0), -1, -1,
-							Constant.PathfindingRange.toDouble());
-					waypoints.setStarted(true);
+					waypoints.schedule(npc, 0);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 					waypoints.setIndex(0);
@@ -87,9 +85,7 @@ public class TickTask implements Runnable {
 				if (waypoints.currentIndex() + 1 > waypoints.size()) {
 					waypoints.setIndex(0);
 				}
-				PathUtils.createPath(npc, waypoints.current(), -1, -1,
-						Constant.PathfindingRange.toDouble());
-				waypoints.setStarted(true);
+				waypoints.scheduleNext(npc);
 			}
 			if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 				waypoints.setIndex(waypoints.currentIndex() + 1);

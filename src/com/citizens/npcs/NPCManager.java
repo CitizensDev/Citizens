@@ -1,6 +1,5 @@
 package com.citizens.npcs;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -18,15 +17,10 @@ import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCList;
 import com.citizens.resources.npclib.NPCSpawner;
-import com.citizens.utils.StringUtils;
 import com.google.common.collect.MapMaker;
 
 public class NPCManager {
 	public static final Map<Integer, String> GlobalUIDs = new MapMaker()
-			.makeMap();
-	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new MapMaker()
-			.makeMap();
-	private static final Map<String, Integer> selectedNPCs = new MapMaker()
 			.makeMap();
 	private static NPCList list = new NPCList();
 
@@ -42,10 +36,10 @@ public class NPCManager {
 		int colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
-		String npcName = name;
 		if (Constant.ConvertSlashes.toBoolean()) {
-			npcName = npcName.replace(Citizens.separatorChar, " ");
+			name = name.replace(Citizens.separatorChar, " ");
 		}
+		String npcName = name;
 		if (colour < 0xF) {
 			npcName = ChatColor.getByCode(colour) + name;
 		}
@@ -62,7 +56,7 @@ public class NPCManager {
 
 		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
 
-		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items, NPCTexts
+		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items, NPCDataManager.NPCTexts
 				.get(UID), PropertyManager.getBasic().isLookWhenClose(UID),
 				PropertyManager.getBasic().isTalkWhenClose(UID), owner));
 		PropertyManager.getBasic().saveOwner(UID, owner);
@@ -93,37 +87,6 @@ public class NPCManager {
 		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner);
 		return UID;
-	}
-
-	/**
-	 * Sets an npc's text to the given texts.
-	 * 
-	 * @param UID
-	 * @param text
-	 */
-	public static void setText(int UID, ArrayDeque<String> text) {
-		text = StringUtils.colourise(text);
-		NPCTexts.put(UID, text);
-		get(UID).getNPCData().setTexts(text);
-	}
-
-	/**
-	 * Returns an npc's text.
-	 * 
-	 * @param UID
-	 * @return
-	 */
-	public static ArrayDeque<String> getText(int UID) {
-		return NPCTexts.get(UID);
-	}
-
-	/**
-	 * Resets an NPC's text.
-	 * 
-	 * @param UID
-	 */
-	public static void resetText(int UID) {
-		setText(UID, new ArrayDeque<String>());
 	}
 
 	/**
@@ -265,8 +228,8 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p) {
-		return selectedNPCs.get(p.getName()) != null
-				&& !selectedNPCs.get(p.getName()).toString().isEmpty();
+		return NPCDataManager.selectedNPCs.get(p.getName()) != null
+				&& !NPCDataManager.selectedNPCs.get(p.getName()).toString().isEmpty();
 	}
 
 	/**
@@ -277,7 +240,7 @@ public class NPCManager {
 	 * @return
 	 */
 	public static boolean validateSelected(Player p, int UID) {
-		return validateSelected(p) && selectedNPCs.get(p.getName()) == UID;
+		return validateSelected(p) && NPCDataManager.selectedNPCs.get(p.getName()) == UID;
 	}
 
 	/**
@@ -318,33 +281,6 @@ public class NPCManager {
 	public static void setColour(int UID, String owner) {
 		removeForRespawn(UID);
 		register(UID, owner);
-	}
-
-	/**
-	 * Adds to an npc's text.
-	 * 
-	 * @param UID
-	 * @param text
-	 */
-	public static void addText(int UID, String text) {
-		ArrayDeque<String> texts = getText(UID);
-		if (texts == null) {
-			texts = new ArrayDeque<String>();
-		}
-		texts.add(text);
-		setText(UID, texts);
-	}
-
-	public static int getSelected(Player player) {
-		return selectedNPCs.get(player.getName());
-	}
-
-	public static void selectNPC(Player player, HumanNPC npc) {
-		selectedNPCs.put(player.getName(), npc.getUID());
-	}
-
-	public static void deselectNPC(Player player) {
-		selectedNPCs.remove(player.getName());
 	}
 
 	public static void safeDespawn(HumanNPC npc) {

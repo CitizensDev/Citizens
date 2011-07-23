@@ -13,6 +13,7 @@ import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.economy.Payment;
+import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.traders.ItemPrice;
 import com.citizens.npctypes.traders.Stockable;
@@ -60,12 +61,12 @@ public class MessageUtils {
 	 */
 	public static String getText(HumanNPC npc, Player player) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
-		ArrayDeque<String> array = NPCManager.getText(npc.getUID());
+		ArrayDeque<String> array = NPCDataManager.getText(npc.getUID());
 		String text = "";
 		if (array != null && array.size() > 0) {
 			text = array.pop();
 			array.addLast(text);
-			NPCManager.setText(npc.getUID(), array);
+			NPCDataManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
 			text = getRandomMessage(Constant.DefaultText.getString());

@@ -115,7 +115,7 @@ public class GuardManager {
 	public static void returnToBase(HumanNPC npc) {
 		Location loc;
 		if (npc.getWaypoints().size() > 0) {
-			loc = npc.getWaypoints().current();
+			loc = npc.getWaypoints().current().getLocation();
 		} else {
 			loc = npc.getNPCData().getLocation();
 		}

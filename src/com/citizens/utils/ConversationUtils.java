@@ -53,7 +53,8 @@ public class ConversationUtils {
 
 	public enum ChatType {
 		EXIT("exit", "finish", "end"),
-		UNDO("undo");
+		UNDO("undo"),
+		RESTART("restart");
 		private final String[] possibilities;
 
 		ChatType(String... string) {
@@ -83,12 +84,17 @@ public class ConversationUtils {
 	public static abstract class Converser {
 		protected int step = 0;
 		protected boolean attemptedExit = false;
+		protected static final String endMessage = "Type in "
+				+ StringUtils.wrap("finish") + " to end or "
+				+ StringUtils.wrap("restart") + " to begin again.";
 
 		public abstract void begin(Player player);
 
 		public abstract boolean converse(ConversationMessage message);
 
 		public abstract boolean allowExit();
+
+		protected abstract void onExit();
 
 		public boolean special(Player player, ChatType type) {
 			if (type == ChatType.UNDO) {
@@ -112,6 +118,9 @@ public class ConversationUtils {
 					player.sendMessage(ChatColor.GREEN + "Finished.");
 					onExit();
 				}
+			} else if (type == ChatType.RESTART) {
+				player.sendMessage(ChatColor.GRAY + "Restarted.");
+				step = 0;
 			}
 			return false;
 		}
@@ -125,8 +134,13 @@ public class ConversationUtils {
 				this.attemptedExit = false;
 		}
 
-		protected void onExit() {
+		protected void exit(Player player) {
+			special(player, ChatType.EXIT);
+		}
 
+		public String getMessage(String type, Object value) {
+			return ChatColor.GREEN + "Set " + type + " to "
+					+ StringUtils.wrap(value) + ".";
 		}
 	}
 

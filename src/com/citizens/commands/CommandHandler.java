@@ -7,6 +7,7 @@ import com.citizens.commands.commands.GuardCommands;
 import com.citizens.commands.commands.HealerCommands;
 import com.citizens.commands.commands.ToggleCommands;
 import com.citizens.commands.commands.TraderCommands;
+import com.citizens.commands.commands.WaypointCommands;
 import com.citizens.commands.commands.WizardCommands;
 
 public class CommandHandler {
@@ -25,6 +26,7 @@ public class CommandHandler {
 		// Citizens.commands.register(QuesterCommands.class);
 		Citizens.commands.register(ToggleCommands.class);
 		Citizens.commands.register(TraderCommands.class);
+		Citizens.commands.register(WaypointCommands.class);
 		Citizens.commands.register(WizardCommands.class);
 	}
 }
