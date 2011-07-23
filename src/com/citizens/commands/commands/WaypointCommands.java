@@ -3,6 +3,7 @@ package com.citizens.commands.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.citizens.Permission;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -10,6 +11,7 @@ import com.citizens.resources.sk89q.CommandContext;
 import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.utils.ConversationUtils;
+import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 import com.citizens.waypoints.Waypoint;
 import com.citizens.waypoints.WaypointModifierType;
@@ -33,18 +35,17 @@ public class WaypointCommands {
 			return;
 		}
 		String type = args.getString(2);
-		WaypointModifierType modifier;
-		try {
-			modifier = WaypointModifierType.valueOf(type.toUpperCase());
-			if (modifier == null) {
-				player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
-				return;
-			}
-		} catch (Exception e) {
+		WaypointModifierType modifier = WaypointModifierType.value(type
+				.toUpperCase());
+		if (modifier == null) {
 			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
 			return;
 		}
-		modifier = WaypointModifierType.valueOf(type.toUpperCase());
+		if (!Permission.generic(player, "citizens.waypoints."
+				+ modifier.name().toLowerCase())) {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
+			return;
+		}
 		player.sendMessage(ChatColor.AQUA
 				+ StringUtils.listify(StringUtils.wrap(StringUtils
 						.capitalise(modifier.name().toLowerCase()))

@@ -32,4 +32,12 @@ public enum WaypointModifierType {
 			return null;
 		}
 	}
+
+	public static WaypointModifierType value(String type) {
+		try {
+			return WaypointModifierType.valueOf(type);
+		} catch (IllegalArgumentException excp) {
+			return null;
+		}
+	}
 }
