@@ -291,7 +291,7 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	private static int getBlacksmithPrice(Player player, Operation op) {
+	public static int getBlacksmithPrice(Player player, Operation op) {
 		ItemStack item = player.getItemInHand();
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();

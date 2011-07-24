@@ -267,9 +267,8 @@ public class NPCManager {
 	 * @param owner
 	 */
 	public static void rename(int UID, String changeTo, String owner) {
-		HumanNPC n = get(UID);
-		PropertyManager.remove(n);
-		n.getNPCData().setName(changeTo);
+		HumanNPC npc = get(UID);
+		npc.getNPCData().setName(changeTo);
 		removeForRespawn(UID);
 		register(UID, owner);
 	}

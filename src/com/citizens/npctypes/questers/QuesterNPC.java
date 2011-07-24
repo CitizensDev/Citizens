@@ -9,7 +9,6 @@ import com.citizens.npctypes.interfaces.Clickable;
 import com.citizens.npctypes.interfaces.Toggleable;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.questers.rewards.QuestReward;
-import com.citizens.properties.PlayerProfile;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PageUtils;
 import com.citizens.utils.PageUtils.PageInstance;

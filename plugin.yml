@@ -94,36 +94,17 @@ permissions:
             citizens.toggle.trader: true
             citizens.toggle.quester: true
             citizens.toggle.wizard: true
-    citizens.trader.*:
+    citizens.waypoints.*:
         children:
-            citizens.trader.use.*: true
-            citizens.trader.modify.*: true
-    citizens.trader.use.*:
+            citizens.waypoints.edit: true
+            citizens.waypoints.modifier.*: true
+    citizens.waypoints.modifier.*:
         children:
-            citizens.trader.use.help: true
-            citizens.trader.use.showmoney: true
-            citizens.trader.use.list: true
-            citizens.trader.use.trade: true
-    citizens.trader.modify.*:
-        children:
-            citizens.trader.modify.money: true
-            citizens.trader.modify.unlimited: true
-            citizens.trader.modify.stock: true
-            citizens.trader.modify.clearstock: true
-    citizens.guard.*:
-        children:
-            citizens.guard.use.*: true
-            citizens.guard.modify.*: true
-    citizens.guard.use.*:
-        children:
-            citizens.guard.use.help: true
-            citizens.guard.use.blacklist: true
-    citizens.guard.modify.*:
-        children:
-            citizens.guard.modify.type: true
-            citizens.guard.modify.blacklist: true
-            citizens.guard.modify.radius: true
-            citizens.guard.modify.aggro: true    
+            citizens.waypoints.modifier.chat: true
+            citizens.waypoints.modifier.effect: true
+            citizens.waypoints.modifier.health: true
+            citizens.waypoints.modifier.teleport: true
+            citizens.waypoints.modifier.delay: true
     citizens.basic.*:
         children:
             citizens.basic.create: true
@@ -151,6 +132,40 @@ permissions:
             citizens.basic.modify.lookat: true
             citizens.basic.modify.talkclose: true
             citizens.basic.modify.setowner: true
+    citizens.blacksmith.*:
+        children:
+            citizens.blacksmith.use.*: true
+    citizens.blacksmith.use.*:
+        children:
+            citizens.blacksmith.use.status: true
+            citizens.blacksmith.use.help: true
+            citizens.blacksmith.use.repair: true
+    citizens.guard.*:
+        children:
+            citizens.guard.use.*: true
+            citizens.guard.modify.*: true
+    citizens.guard.use.*:
+        children:
+            citizens.guard.use.help: true
+            citizens.guard.use.blacklist: true
+    citizens.guard.modify.*:
+        children:
+            citizens.guard.modify.type: true
+            citizens.guard.modify.blacklist: true
+            citizens.guard.modify.radius: true
+            citizens.guard.modify.aggro: true
+    citizens.healer.*:
+        children:
+            citizens.healer.use.*: true
+            citizens.healer.modify.*: true
+    citizens.healer.use.*:
+        children:
+            citizens.healer.use.help: true
+            citizens.healer.use.status: true
+            citizens.healer.use.heal: true
+    citizens.healer.modify.*:
+        children:
+            citizens.healer.modify.levelup: true  
     citizens.quester.*:
         children:
             citizens.quester.modify.*: true
@@ -163,26 +178,22 @@ permissions:
             citizens.quester.modify.questedit: true
             citizens.quester.modify.assignquest: true
             citizens.quester.modify.removequest: true
-    citizens.healer.*:
+    citizens.trader.*:
         children:
-            citizens.healer.use.*: true
-            citizens.healer.modify.*: true
-    citizens.healer.use.*:
+            citizens.trader.use.*: true
+            citizens.trader.modify.*: true
+    citizens.trader.use.*:
         children:
-            citizens.healer.use.help: true
-            citizens.healer.use.status: true
-            citizens.healer.use.heal: true
-    citizens.healer.modify.*:
+            citizens.trader.use.help: true
+            citizens.trader.use.showmoney: true
+            citizens.trader.use.list: true
+            citizens.trader.use.trade: true
+    citizens.trader.modify.*:
         children:
-            citizens.healer.modify.levelup: true
-    citizens.blacksmith.*:
-        children:
-            citizens.blacksmith.use.*: true
-    citizens.blacksmith.use.*:
-        children:
-            citizens.blacksmith.use.uses: true
-            citizens.blacksmith.use.help: true
-            citizens.blacksmith.use.repair: true
+            citizens.trader.modify.money: true
+            citizens.trader.modify.unlimited: true
+            citizens.trader.modify.stock: true
+            citizens.trader.modify.clearstock: true 
     citizens.wizard.*:
         children:
             citizens.wizard.use.*: true
@@ -199,14 +210,3 @@ permissions:
             citizens.wizard.modify.addloc: true
             citizens.wizard.modify.removeloc: true
             citizens.wizard.modify.unlimited: true
-    citizens.waypoints.*:
-        children:
-            citizens.waypoints.edit: true
-            citizens.waypoints.modifier.*: true
-    citizens.waypoints.modifier.*:
-        children:
-            citizens.waypoints.modifier.chat: true
-            citizens.waypoints.modifier.effect: true
-            citizens.waypoints.modifier.health: true
-            citizens.waypoints.modifier.teleport: true
-            citizens.waypoints.modifier.delay: true

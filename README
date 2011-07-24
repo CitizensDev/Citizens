@@ -1,0 +1,30 @@
+===== Citizens - NPCs for Bukkit =====
+By fullwall, aPunch, and NeonMaster
+
+Supports:
+-Minecraft Beta 1.7.3
+-CraftBukkit 1000
+-Permissions 2.7.x and 3.x
+-PermissionsBukkit 1.x
+-iConomy 4 & 5
+-BOSEconomy 0.6.2
+-EssentialsEco 2.4.x
+
+Licensing:
+Read the LICENSE file for the Citizens license.
+
+Wiki:
+You can find tons of information on Citizens permissions nodes, commands, and more on our wiki.
+URL: www.github.com/fullwall/Citizens/wiki
+
+Reporting Bugs:
+You can report bugs on the Bukkit forum thread. However, it is more likely to get noticed
+if you report it on the Issue Tracker here: www.github.com/fullwall/Citizens/issues.
+
+It is also imperative that you follow these guidelines if you don't want your bug report to be ignored:
+
+-Make sure the bug you are experiencing is not already posted in the "Known Bugs" section on the Bukkit 
+ forum thread
+-Read the last page or two of the thread to see if your question/bug has already been answered/reported
+-Provide as much information as possible (Minecraft version, CraftBukkit version, Citizens version, and 
+ the version of any other plugin (if applicable))

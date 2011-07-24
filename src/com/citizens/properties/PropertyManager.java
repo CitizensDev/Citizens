@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
+import com.citizens.npctypes.questers.PlayerProfile;
 import com.citizens.properties.properties.BasicProperties;
 import com.citizens.properties.properties.QuestProperties;
 import com.citizens.properties.properties.UtilityProperties;

@@ -174,8 +174,8 @@ public class HelpUtils {
 	 */
 	public static void sendBlacksmithHelp(CommandSender sender) {
 		header(sender, "Blacksmith", 1, 1);
-		format(sender, "blacksmith", "uses",
-				"show how many uses your item has left");
+		format(sender, "blacksmith", "status",
+				"view the status of your in-hand item");
 		footer(sender);
 	}
 
@@ -188,10 +188,8 @@ public class HelpUtils {
 		header(sender, "Guard", 1, 1);
 		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		format(sender, "guard", "blacklist [add|remove] (mob)",
+		format(sender, "guard", "blacklist (add|remove) (-g) (entry)",
 				"control a guard's blacklist");
-		format(sender, "guard", "whitelist [add|remove] (player)",
-				"control a guard's whitelist");
 		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		format(sender, "guard", "aggro", "toggle aggro");

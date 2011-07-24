@@ -82,9 +82,10 @@ public class GuardCommands {
 
 	@Command(
 			aliases = "guard",
-			usage = "blacklist (add|remove) (entry)",
+			usage = "blacklist (add|remove) (-g) (entry)",
 			desc = "control a guard's blacklist",
 			modifiers = { "blacklist", "bl" },
+			flags = "g",
 			min = 1,
 			max = 3)
 	public static void blacklist(CommandContext args, Player player,

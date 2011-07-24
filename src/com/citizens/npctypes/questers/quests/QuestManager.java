@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
+import com.citizens.npctypes.questers.PlayerProfile;
 import com.citizens.npctypes.questers.Quest;
-import com.citizens.properties.PlayerProfile;
 import com.citizens.resources.npclib.HumanNPC;
 
 public class QuestManager {

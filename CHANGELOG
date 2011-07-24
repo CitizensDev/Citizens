@@ -1,16 +1,6 @@
 ===== Citizens - NPCs for Bukkit =====
-By fullwall and aPunch
+By fullwall, aPunch, and NeonMaster
 
-Supports:
--Minecraft Beta 1.7.3
--CraftBukkit 1000
--Permissions 2.7.x and 3.x
--PermissionsBukkit 1.x
--iConomy 4 & 5
--BOSEconomy 0.6.2
--EssentialsEco 2.4.x
-
-Changelog:
 --- v1.0.9 ---
 -updated to Minecraft Beta 1.7.2
 -updated to latest CraftBukkit Recommended Build
@@ -68,3 +58,5 @@ Changelog:
 -changed '/npc talkclose', '/npc lookat', and '/trader unlimited' commands to not use true/false arguments, now 
  you can just toggle them
 -replaced '/npc id' and '/npc owner' commands with '/npc', which also shows the NPC's current type(s)
+-fixed renaming an NPC resetting its toggled types
+-changed '/blacksmith uses' to '/blacksmith status', now shows cost of repairing your in-hand item

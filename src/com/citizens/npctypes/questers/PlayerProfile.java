@@ -1,4 +1,4 @@
-package com.citizens.properties;
+package com.citizens.npctypes.questers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,11 @@ import org.bukkit.material.MaterialData;
 
 import com.citizens.interfaces.Storage;
 import com.citizens.npcs.NPCManager;
-import com.citizens.npctypes.questers.CompletedQuest;
 import com.citizens.npctypes.questers.objectives.Objective.Progress;
 import com.citizens.npctypes.questers.quests.QuestIncrementer;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.questers.quests.QuestProgress;
+import com.citizens.properties.ConfigurationHandler;
 
 public class PlayerProfile {
 	private final ConfigurationHandler profile;
@@ -22,7 +22,6 @@ public class PlayerProfile {
 	private final List<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
 	private QuestProgress progress;
 	private final String name;
-	private final List<String> achievements;
 
 	public PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
@@ -30,15 +29,6 @@ public class PlayerProfile {
 		this.name = name;
 		this.load();
 		rank = 1;
-		achievements = profile.getKeys("achievements");
-	}
-
-	public List<String> getAchievements() {
-		return achievements;
-	}
-
-	public void addAchievement(String achievement) {
-		achievements.add(achievement);
 	}
 
 	public List<CompletedQuest> getCompletedQuests() {
