@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 
 import com.citizens.waypoints.modifiers.ChatModifier;
 import com.citizens.waypoints.modifiers.DelayModifier;
+import com.citizens.waypoints.modifiers.EffectModifier;
 import com.citizens.waypoints.modifiers.HealthModifier;
 import com.citizens.waypoints.modifiers.TeleportModifier;
 
@@ -12,7 +13,7 @@ public enum WaypointModifierType {
 	DELAY(DelayModifier.class),
 	HEALTH(HealthModifier.class),
 	TELEPORT(TeleportModifier.class),
-	EFFECT(null);
+	EFFECT(EffectModifier.class);
 
 	private final Constructor<? extends WaypointModifier> constructor;
 

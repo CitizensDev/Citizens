@@ -12,12 +12,39 @@ public class EffectUtils {
 			public int getIdentifier();
 		}
 
+		public static IEffect getByName(String name) {
+			name = name.toUpperCase().replace(" ", "_");
+			for (Effect effect : Effect.values()) {
+				if (effect.name().startsWith(name)) {
+					return effect;
+				}
+			}
+			for (Sound sound : Sound.values()) {
+				if (sound.name().startsWith(name)) {
+					return sound;
+				}
+			}
+			return null;
+		}
+
+		public static IEffect getByIdentifier(int identifier) {
+			for (Effect effect : Effect.values()) {
+				if (effect.getIdentifier() == identifier)
+					return effect;
+			}
+			for (Sound sound : Sound.values()) {
+				if (sound.getIdentifier() == identifier)
+					return sound;
+			}
+			return null;
+		}
+
 		public enum Effect implements IEffect {
 			/**
 			 * Creates the particles that appear when dispenser is used, data is
 			 * used as direction (up to 9).
 			 */
-			DISPENSER_PARTICLE_SPAWN(2000),
+			DISPENSER_PARTICLE(2000),
 			/**
 			 * Creates dig effects, uses the data as the block ID of the sound
 			 * to play.
@@ -32,6 +59,11 @@ public class EffectUtils {
 			@Override
 			public int getIdentifier() {
 				return this.effectIdentifier;
+			}
+
+			@Override
+			public String toString() {
+				return "" + this.getIdentifier();
 			}
 		}
 
@@ -73,6 +105,11 @@ public class EffectUtils {
 			@Override
 			public int getIdentifier() {
 				return this.soundIdentifier;
+			}
+
+			@Override
+			public String toString() {
+				return "" + this.getIdentifier();
 			}
 		}
 	}
