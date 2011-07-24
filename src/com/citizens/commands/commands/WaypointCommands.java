@@ -25,8 +25,7 @@ public class WaypointCommands {
 			modifiers = { "modifier", "mod" },
 			min = 2,
 			max = 2)
-	public static void addWaypointModifier(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void modifier(CommandContext args, Player player, HumanNPC npc) {
 		if (NPCDataManager.pathEditors.get(player.getName()) == null) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You must be editing your NPC's path.");

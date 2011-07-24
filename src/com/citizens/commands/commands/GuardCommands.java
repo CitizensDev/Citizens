@@ -37,7 +37,7 @@ public class GuardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("guard.use.help")
-	public static void sendGuardHelp(CommandContext args, CommandSender sender,
+	public static void guardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		HelpUtils.sendGuardHelp(sender);
 	}
@@ -50,8 +50,7 @@ public class GuardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("guard.modify.changetype")
-	public static void changeType(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void type(CommandContext args, Player player, HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
 		PathUtils.cancelTarget(npc);
 		if (args.getString(0).equalsIgnoreCase("bodyguard")) {
@@ -226,8 +225,7 @@ public class GuardCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("guard.modify.radius")
-	public static void changeRadius(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void radius(CommandContext args, Player player, HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
 		if (guard.isBouncer()) {
 			guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
@@ -248,8 +246,7 @@ public class GuardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("guard.modify.aggro")
-	public static void toggleAggro(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void aggro(CommandContext args, Player player, HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
 		guard.setAggressive(!guard.isAggressive());
 		if (guard.isAggressive()) {

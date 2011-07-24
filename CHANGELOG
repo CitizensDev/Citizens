@@ -65,4 +65,6 @@ Changelog:
 -fixed economy plugin accounts going negative when creating an NPC
 -added ability to give a 'citizens.npccount.(amount)' node to players, with (amount) being the maximum NPCs
  that a player/group can create (use 'citizens.npccount.unlimited' for unlimited NPCs)
--changed '/npc talkclose' and '/npc lookat' commands to not use true/false arguments, now you can just toggle it
+-changed '/npc talkclose', '/npc lookat', and '/trader unlimited' commands to not use true/false arguments, now 
+ you can just toggle them
+-replaced '/npc id' and '/npc owner' commands with '/npc', which also shows the NPC's current type(s)

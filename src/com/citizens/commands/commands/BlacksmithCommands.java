@@ -14,6 +14,7 @@ import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.resources.sk89q.ServerCommand;
 import com.citizens.utils.HelpUtils;
+import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
 @CommandRequirements(requiredType = "blacksmith")
@@ -29,7 +30,7 @@ public class BlacksmithCommands {
 			max = 1)
 	@CommandPermissions("blacksmith.use.help")
 	@ServerCommand()
-	public static void sendBlacksmithHelp(CommandContext args,
+	public static void blacksmithHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
 		HelpUtils.sendBlacksmithHelp(sender);
 	}
@@ -42,9 +43,9 @@ public class BlacksmithCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("blacksmith.use.uses")
-	public static void showUses(CommandContext args, Player player, HumanNPC npc) {
+	public static void uses(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
-		String itemName = item.getType().name().toLowerCase().replace("_", " ");
+		String itemName = MessageUtils.getMaterialName(item.getTypeId());
 		if (BlacksmithManager.validateTool(item)
 				|| BlacksmithManager.validateArmor(item)) {
 			player.sendMessage(ChatColor.GREEN

@@ -28,7 +28,7 @@ public class QuesterCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("quester.use.help")
-	public static void sendQuesterHelp(CommandContext args, Player player,
+	public static void questerHelp(CommandContext args, Player player,
 			HumanNPC npc) {
 		HelpUtils.sendQuesterHelp(player);
 	}
@@ -41,8 +41,7 @@ public class QuesterCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("quester.modify.assignquest")
-	public static void assignQuest(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void assign(CommandContext args, Player player, HumanNPC npc) {
 		QuesterNPC quester = npc.getToggleable("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
@@ -65,8 +64,7 @@ public class QuesterCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("quester.modify.removequest")
-	public static void removeQuest(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		QuesterNPC quester = npc.getToggleable("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY

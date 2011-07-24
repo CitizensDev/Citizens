@@ -32,7 +32,7 @@ public class ToggleCommands {
 	@ServerCommand()
 	@CommandPermissions("toggle.help")
 	@CommandRequirements()
-	public static void viewInfo(CommandContext args, CommandSender sender,
+	public static void toggleHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		PageInstance instance = PageUtils.newInstance(sender);
 		int page = 1;
@@ -59,8 +59,7 @@ public class ToggleCommands {
 			modifiers = "*",
 			min = 1,
 			max = 1)
-	public static void toggleNPC(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void toggle(CommandContext args, Player player, HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
 		if (!NPCTypeManager.validType(type)) {
 			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
@@ -82,7 +81,7 @@ public class ToggleCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("admin.toggleall")
-	public static void toggleAllNPCTypes(CommandContext args, Player player,
+	public static void toggleAll(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.getString(1).equalsIgnoreCase("on")) {
 			toggleAll(player, npc, true);

@@ -29,7 +29,7 @@ public class HealerCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("healer.use.help")
-	public static void sendHealerHelp(CommandContext args, Player player,
+	public static void healerHelp(CommandContext args, Player player,
 			HumanNPC npc) {
 		HelpUtils.sendHealerHelp(player);
 	}
@@ -42,8 +42,7 @@ public class HealerCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("healer.use.status")
-	public static void displayStatus(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		HealerNPC healer = npc.getToggleable("healer");
 		player.sendMessage(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()

@@ -45,8 +45,8 @@ public class TraderCommands {
 			max = 1)
 	@CommandPermissions("trader.use.help")
 	@ServerCommand()
-	public static void sendTraderHelp(CommandContext args,
-			CommandSender sender, HumanNPC npc) {
+	public static void traderHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
 		HelpUtils.sendTraderHelp(sender);
 	}
 
@@ -63,8 +63,7 @@ public class TraderCommands {
 			modifiers = "money",
 			min = 1,
 			max = 3)
-	public static void controlMoney(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void money(CommandContext args, Player player, HumanNPC npc) {
 		if (!EconomyHandler.useEconPlugin()) {
 			player.sendMessage(MessageUtils.noEconomyMessage);
 			return;
@@ -168,8 +167,7 @@ public class TraderCommands {
 			min = 2,
 			max = 3)
 	@CommandPermissions("trader.use.list")
-	public static void displayList(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void list(CommandContext args, Player player, HumanNPC npc) {
 		if (!args.getString(1).contains("s")
 				&& !args.getString(1).contains("b")) {
 			player.sendMessage(ChatColor.RED + "Not a valid list type.");
@@ -220,29 +218,22 @@ public class TraderCommands {
 	 */
 	@Command(
 			aliases = "trader",
-			usage = "unlimited [true|false]",
+			usage = "unlimited",
 			desc = "change the unlimited status of a trader",
 			modifiers = { "unlimited", "unlim", "unl" },
-			min = 2,
-			max = 2)
+			min = 1,
+			max = 1)
 	@CommandPermissions("trader.modify.unlimited")
-	public static void changeUnlimited(CommandContext args, Player player,
+	public static void unlimited(CommandContext args, Player player,
 			HumanNPC npc) {
-		String unlimited = args.getString(1);
 		TraderNPC trader = npc.getToggleable("trader");
-		if (unlimited.equalsIgnoreCase("true")
-				|| unlimited.equalsIgnoreCase("on")) {
-			trader.setUnlimited(true);
+		trader.setUnlimited(!trader.isUnlimited());
+		if (trader.isUnlimited()) {
 			player.sendMessage(ChatColor.GREEN
 					+ "The trader will now have unlimited stock!");
-		} else if (unlimited.equalsIgnoreCase("false")
-				|| unlimited.equalsIgnoreCase("off")) {
-			trader.setUnlimited(false);
-			player.sendMessage(ChatColor.GREEN
-					+ "The trader has stopped having unlimited stock.");
 		} else {
 			player.sendMessage(ChatColor.GREEN
-					+ "Incorrect unlimited type entered. Valid values are true, on, false, off.");
+					+ "The trader has stopped having unlimited stock.");
 		}
 	}
 
@@ -263,8 +254,7 @@ public class TraderCommands {
 			min = 3,
 			max = 4)
 	@CommandPermissions("trader.modify.stock")
-	public static void changeTraderStock(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void stock(CommandContext args, Player player, HumanNPC npc) {
 		// TODO this is horrible, clean it up
 		String item = args.getString(1);
 		String price = args.getString(2);
@@ -366,8 +356,7 @@ public class TraderCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("trader.modify.clearstock")
-	public static void clearTraderStock(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void clear(CommandContext args, Player player, HumanNPC npc) {
 		boolean selling = args.getString(1).contains("bu");
 		TraderNPC trader = npc.getToggleable("trader");
 		String keyword = "buying";

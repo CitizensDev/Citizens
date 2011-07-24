@@ -55,6 +55,7 @@ public class HelpUtils {
 		switch (page) {
 		case 1:
 			header(sender, "Basic NPC", 1, 3);
+			format(sender, "npc", "", "view an NPC's information");
 			format(sender, "npc", "create [name]", "create an NPC");
 			format(sender, "npc", "set [text]", "set the text of an NPC");
 			format(sender, "npc", "add [text]", "add text to an NPC");
@@ -65,32 +66,28 @@ public class HelpUtils {
 					"set the item that an NPC holds");
 			format(sender, "npc", "armor [slot] [item]",
 					"set the armor slot of an NPC");
-			format(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
 			header(sender, "Basic NPC", 2, 3);
+			format(sender, "npc", "move", "move an NPC to your location");
 			format(sender, "npc", "moveto [x y z](world pitch yaw)",
 					"move NPC to a location");
 			format(sender, "npc", "tp", "teleport to the location of an NPC");
 			format(sender, "npc", "copy",
 					"make a clone of an NPC at your location");
-			format(sender, "npc", "id", "get the ID of an NPC");
 			format(sender, "npc", "select [ID]",
 					"select an NPC with the given ID");
-			format(sender, "npc", "owner", "get the owner of an NPC");
 			format(sender, "npc", "setowner [name]", "set the owner of an NPC");
-			format(sender, "npc", "talkclose [true|false]",
-					"make an NPC talk to players");
-			format(sender, "npc", "lookat [true|false]",
-					"make an NPC look at players");
+			format(sender, "npc", "talkclose", "make an NPC talk to players");
+			format(sender, "npc", "lookat", "make an NPC look at players");
+			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
 			break;
 		case 3:
 			header(sender, "Basic NPC", 3, 3);
-			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
 			format(sender, "npc", "[path|waypoints] (reset)",
 					"control an NPC's waypoints");
 			format(sender, "waypoint", "modifier [type]",
-					"add a modifier to an NPC's waypoints");
+					"add a waypoint modifier to an NPC");
 			footer(sender);
 			break;
 		default:

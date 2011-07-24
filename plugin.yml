@@ -132,9 +132,7 @@ permissions:
     citizens.basic.use.*:
         children:
             citizens.basic.use.help: true
-            citizens.basic.use.id: true
             citizens.basic.use.select: true
-            citizens.basic.use.getowner: true
             citizens.basic.use.list: true
             citizens.basic.use.teleport: true
     citizens.basic.modify.*:

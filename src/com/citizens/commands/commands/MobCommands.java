@@ -17,9 +17,8 @@ public class MobCommands {
 			modifiers = "",
 			min = 1,
 			max = 1)
-	@CommandPermissions("admin")
-	public static void mobCommands(CommandContext args, Player player,
-			HumanNPC npc) {
+	@CommandPermissions("creature.spawn")
+	public static void spawn(CommandContext args, Player player, HumanNPC npc) {
 
 	}
 }

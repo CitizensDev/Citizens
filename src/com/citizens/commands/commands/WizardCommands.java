@@ -28,7 +28,7 @@ public class WizardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("wizard.use.help")
-	public static void sendWizardHelp(CommandContext args, Player player,
+	public static void wizardHelp(CommandContext args, Player player,
 			HumanNPC npc) {
 		HelpUtils.sendWizardHelp(player);
 	}
@@ -41,8 +41,7 @@ public class WizardCommands {
 			min = 2,
 			max = 2)
 	@CommandPermissions("wizard.modify.mode")
-	public static void changeMode(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void mode(CommandContext args, Player player, HumanNPC npc) {
 		WizardMode wizardMode;
 		if (WizardMode.parse(args.getString(1)) != null) {
 			wizardMode = WizardMode.parse(args.getString(1));
@@ -71,8 +70,7 @@ public class WizardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("wizard.use.status")
-	public static void displayStatus(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN + npc.getStrippedName()
 						+ "'s Wizard Status" + ChatColor.YELLOW));
@@ -150,7 +148,7 @@ public class WizardCommands {
 			min = 1,
 			max = 1)
 	@CommandPermissions("wizard.use.locations")
-	public static void displayLocations(CommandContext args, Player player,
+	public static void locations(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");
 		if (wizard.getMode() == WizardMode.TELEPORT) {
@@ -173,11 +171,11 @@ public class WizardCommands {
 			aliases = "wizard",
 			usage = "unlimited",
 			desc = "toggle a wizard's mana as unlimited",
-			modifiers = "unlimited",
+			modifiers = { "unlimited", "unlim", "unl" },
 			min = 1,
 			max = 1)
 	@CommandPermissions("wizard.modify.unlimited")
-	public static void toggleUnlimitedMana(CommandContext args, Player player,
+	public static void unlimited(CommandContext args, Player player,
 			HumanNPC npc) {
 		WizardNPC wizard = npc.getToggleable("wizard");
 		wizard.setUnlimitedMana(!wizard.hasUnlimitedMana());
