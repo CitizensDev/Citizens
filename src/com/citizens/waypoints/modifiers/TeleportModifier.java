@@ -25,16 +25,31 @@ public class TeleportModifier extends WaypointModifier {
 
 	@Override
 	public void begin(Player player) {
+		player.sendMessage(ChatColor.GREEN + "Type " + StringUtils.wrap("undo")
+				+ " at any time to go back one step, or "
+				+ StringUtils.wrap("current")
+				+ " to use your current location.");
 		player.sendMessage(ChatColor.GREEN
-				+ "Enter the x coordinate of the place to teleport to. Type "
-				+ StringUtils.wrap("undo")
-				+ " at any time to go back one step.");
+				+ "Enter the x coordinate of the place to teleport to.");
 	}
 
 	@Override
 	public boolean converse(ConversationMessage message) {
 		super.resetExit();
 		Player player = message.getPlayer();
+		if (message.getMessage().equalsIgnoreCase("current")) {
+			Location pLoc = player.getLocation();
+			if (!pLoc.getWorld().getName()
+					.equals(waypoint.getLocation().getWorld().getName())) {
+				player.sendMessage(ChatColor.GRAY
+						+ "You must be in the same world as the waypoint.");
+				return false;
+			}
+			construct.setValues(pLoc, false);
+			step = YAW;
+			player.sendMessage(endMessage);
+			return false;
+		}
 		double value = message.getDouble(0);
 		switch (step) {
 		case X:
