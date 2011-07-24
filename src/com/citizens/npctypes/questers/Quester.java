@@ -15,7 +15,7 @@ import com.citizens.utils.PageUtils.PageInstance;
 import com.citizens.utils.StringUtils;
 import com.iConomy.util.Messaging;
 
-public class QuesterNPC extends Toggleable implements Clickable {
+public class Quester extends Toggleable implements Clickable {
 	private PageInstance display;
 	private Player previous;
 	private final ArrayDeque<String> quests = new ArrayDeque<String>();
@@ -25,7 +25,7 @@ public class QuesterNPC extends Toggleable implements Clickable {
 	 * 
 	 * @param npc
 	 */
-	public QuesterNPC(HumanNPC npc) {
+	public Quester(HumanNPC npc) {
 		super(npc);
 	}
 

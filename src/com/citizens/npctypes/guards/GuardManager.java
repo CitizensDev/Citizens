@@ -39,7 +39,7 @@ public class GuardManager {
 	 * @param guard
 	 * @param mob
 	 */
-	public static void addToBlacklist(GuardNPC guard, String mob) {
+	public static void addToBlacklist(Guard guard, String mob) {
 		Set<String> blacklist = guard.getBlacklist();
 		if (mob.equalsIgnoreCase("all")) {
 			for (CreatureType type : CreatureType.values()) {
@@ -59,7 +59,7 @@ public class GuardManager {
 	 * @param guard
 	 * @param mob
 	 */
-	public static void removeFromBlacklist(GuardNPC guard, String mob) {
+	public static void removeFromBlacklist(Guard guard, String mob) {
 		Set<String> blacklist = guard.getBlacklist();
 		if (mob.equalsIgnoreCase("all")) {
 			for (CreatureType type : CreatureType.values()) {

@@ -31,7 +31,7 @@ public class GuardTask implements Runnable {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			HumanNPC npc = entry.getValue();
 			if (npc.isType("guard")) {
-				GuardNPC guard = npc.getToggleable("guard");
+				Guard guard = npc.getToggleable("guard");
 				if (guard.isAttacking() && !npc.getHandle().hasTarget()) {
 					GuardManager.returnToBase(npc);
 					guard.setAttacking(false);
@@ -155,7 +155,7 @@ public class GuardTask implements Runnable {
 
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
-		GuardNPC guard = npc.getToggleable("guard");
+		Guard guard = npc.getToggleable("guard");
 		if (!guard.isAggressive()) {
 			return;
 		}
@@ -196,7 +196,7 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-		return ((GuardNPC) npc.getToggleable("guard")).getBlacklist().contains(
+		return ((Guard) npc.getToggleable("guard")).getBlacklist().contains(
 				name);
 	}
 
@@ -206,7 +206,7 @@ public class GuardTask implements Runnable {
 	 * @param player
 	 * @param npc
 	 */
-	private void attack(LivingEntity entity, GuardNPC guard) {
+	private void attack(LivingEntity entity, Guard guard) {
 		guard.target(entity);
 	}
 

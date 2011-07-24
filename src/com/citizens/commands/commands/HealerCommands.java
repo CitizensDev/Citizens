@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
-import com.citizens.npctypes.healers.HealerNPC;
+import com.citizens.npctypes.healers.Healer;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
@@ -43,7 +43,7 @@ public class HealerCommands {
 			max = 1)
 	@CommandPermissions("healer.use.status")
 	public static void status(CommandContext args, Player player, HumanNPC npc) {
-		HealerNPC healer = npc.getToggleable("healer");
+		Healer healer = npc.getToggleable("healer");
 		player.sendMessage(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
 						+ "'s Healer Status")));
@@ -64,7 +64,7 @@ public class HealerCommands {
 	@CommandPermissions("healer.modify.levelup")
 	public static void levelUp(CommandContext args, Player player, HumanNPC npc) {
 		if (EconomyHandler.useEconomy()) {
-			HealerNPC healer = npc.getToggleable("healer");
+			Healer healer = npc.getToggleable("healer");
 			int level = healer.getLevel();
 			int levelsUp = 1;
 			if (args.argsLength() == 2

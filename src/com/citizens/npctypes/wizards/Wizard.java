@@ -18,7 +18,7 @@ import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
-public class WizardNPC extends Toggleable implements Clickable {
+public class Wizard extends Toggleable implements Clickable {
 	private String locations = "";
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
@@ -34,7 +34,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 	 * 
 	 * @param npc
 	 */
-	public WizardNPC(HumanNPC npc) {
+	public Wizard(HumanNPC npc) {
 		super(npc);
 	}
 
@@ -85,7 +85,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 	 * @return
 	 */
 	public void cycle(HumanNPC npc, WizardMode mode) {
-		WizardNPC wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getToggleable("wizard");
 		switch (mode) {
 		case TELEPORT:
 			currentLocation++;
@@ -289,7 +289,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == Constant.WizardInteractItem
 					.toInt()) {
-				WizardNPC wizard = npc.getToggleable("wizard");
+				Wizard wizard = npc.getToggleable("wizard");
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
 				switch (mode) {
@@ -331,7 +331,7 @@ public class WizardNPC extends Toggleable implements Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
-			WizardNPC wizard = npc.getToggleable("wizard");
+			Wizard wizard = npc.getToggleable("wizard");
 			if (Citizens.validateTool("items.wizards.interact-item", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				WizardMode mode = wizard.getMode();

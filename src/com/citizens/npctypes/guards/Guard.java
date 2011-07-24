@@ -26,7 +26,7 @@ import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
 
-public class GuardNPC extends Toggleable implements Clickable, Damageable,
+public class Guard extends Toggleable implements Clickable, Damageable,
 		Targetable {
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
@@ -39,7 +39,7 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	 * 
 	 * @param npc
 	 */
-	public GuardNPC(HumanNPC npc) {
+	public Guard(HumanNPC npc) {
 		super(npc);
 	}
 

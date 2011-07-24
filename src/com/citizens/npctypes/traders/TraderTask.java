@@ -124,7 +124,7 @@ public class TraderTask implements Runnable {
 	}
 
 	public void kill() {
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		trader.setFree(true);
 		if (!said) {
 			sendLeaveMessage();
@@ -311,7 +311,7 @@ public class TraderTask implements Runnable {
 		if (isTool(item.getTypeId())) {
 			durability = 0;
 		}
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		if (!trader.isStocked(item.getTypeId(), durability, selling)) {
 			player.sendMessage(StringUtils.wrap(
 					MessageUtils.getItemName(item.getTypeId()), ChatColor.RED)

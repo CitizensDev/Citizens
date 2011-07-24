@@ -2,7 +2,7 @@ package com.citizens.properties.properties;
 
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCTypeManager;
-import com.citizens.npctypes.questers.QuesterNPC;
+import com.citizens.npctypes.questers.Quester;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 
@@ -20,7 +20,7 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 
 	private void setQuests(HumanNPC npc) {
 		String write = "";
-		QuesterNPC quester = npc.getToggleable("quester");
+		Quester quester = npc.getToggleable("quester");
 		for (String quest : quester.getQuests()) {
 			write = write + quest + ";";
 		}
@@ -29,7 +29,7 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 
 	private String getQuests(HumanNPC npc) {
 		if (profiles.pathExists(npc.getUID() + quests)) {
-			QuesterNPC quester = npc.getToggleable("quester");
+			Quester quester = npc.getToggleable("quester");
 			for (String quest : profiles.getString(npc.getUID() + quests)
 					.split(";")) {
 				quester.addQuest(quest);

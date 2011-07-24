@@ -27,17 +27,17 @@ import com.citizens.listeners.WorldListen;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npcs.NPCTypeManager;
-import com.citizens.npctypes.blacksmiths.BlacksmithNPC;
-import com.citizens.npctypes.guards.GuardNPC;
+import com.citizens.npctypes.blacksmiths.Blacksmith;
+import com.citizens.npctypes.guards.Guard;
 import com.citizens.npctypes.guards.GuardTask;
-import com.citizens.npctypes.healers.HealerNPC;
+import com.citizens.npctypes.healers.Healer;
 import com.citizens.npctypes.healers.HealerTask;
 import com.citizens.npctypes.interfaces.NPCType;
 import com.citizens.npctypes.interfaces.OperationPurchaser;
-import com.citizens.npctypes.questers.QuesterNPC;
+import com.citizens.npctypes.questers.Quester;
 import com.citizens.npctypes.questers.quests.QuestManager;
-import com.citizens.npctypes.traders.TraderNPC;
-import com.citizens.npctypes.wizards.WizardNPC;
+import com.citizens.npctypes.traders.Trader;
+import com.citizens.npctypes.wizards.Wizard;
 import com.citizens.npctypes.wizards.WizardTask;
 import com.citizens.properties.PropertyManager;
 import com.citizens.properties.properties.BlacksmithProperties;
@@ -269,18 +269,18 @@ public class Citizens extends JavaPlugin {
 	private void registerTypes() {
 		OperationPurchaser purchaser = new OperationPurchaser();
 		NPCTypeManager.registerType(new NPCType("blacksmith",
-				new BlacksmithProperties(), purchaser, BlacksmithNPC.class),
+				new BlacksmithProperties(), purchaser, Blacksmith.class),
 				true);
 		NPCTypeManager.registerType(new NPCType("guard", new GuardProperties(),
-				purchaser, GuardNPC.class), true);
+				purchaser, Guard.class), true);
 		NPCTypeManager.registerType(new NPCType("healer",
-				new HealerProperties(), purchaser, HealerNPC.class), true);
+				new HealerProperties(), purchaser, Healer.class), true);
 		NPCTypeManager.registerType(new NPCType("quester",
-				new QuesterProperties(), purchaser, QuesterNPC.class), true);
+				new QuesterProperties(), purchaser, Quester.class), true);
 		NPCTypeManager.registerType(new NPCType("trader",
-				new TraderProperties(), purchaser, TraderNPC.class), true);
+				new TraderProperties(), purchaser, Trader.class), true);
 		NPCTypeManager.registerType(new NPCType("wizard",
-				new WizardProperties(), purchaser, WizardNPC.class), true);
+				new WizardProperties(), purchaser, Wizard.class), true);
 	}
 
 	private void setupNPCs() {

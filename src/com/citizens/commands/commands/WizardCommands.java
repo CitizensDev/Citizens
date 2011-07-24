@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.citizens.npctypes.wizards.WizardManager.WizardMode;
-import com.citizens.npctypes.wizards.WizardNPC;
+import com.citizens.npctypes.wizards.Wizard;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
@@ -45,7 +45,7 @@ public class WizardCommands {
 		WizardMode wizardMode;
 		if (WizardMode.parse(args.getString(1)) != null) {
 			wizardMode = WizardMode.parse(args.getString(1));
-			WizardNPC wizard = npc.getToggleable("wizard");
+			Wizard wizard = npc.getToggleable("wizard");
 			if (wizardMode != wizard.getMode()) {
 				wizard.setMode(wizardMode);
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName()
@@ -74,7 +74,7 @@ public class WizardCommands {
 		player.sendMessage(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN + npc.getStrippedName()
 						+ "'s Wizard Status" + ChatColor.YELLOW));
-		WizardNPC wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getToggleable("wizard");
 		player.sendMessage(ChatColor.GREEN + "    Mode: "
 				+ StringUtils.wrap(wizard.getMode()));
 		String mana = "" + wizard.getMana();
@@ -95,7 +95,7 @@ public class WizardCommands {
 	@CommandPermissions("wizard.modify.addloc")
 	public static void addLocation(CommandContext args, Player player,
 			HumanNPC npc) {
-		WizardNPC wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getToggleable("wizard");
 		if (wizard.getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN + "Added current location to "
 					+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
@@ -117,7 +117,7 @@ public class WizardCommands {
 	@CommandPermissions("wizard.modify.removeloc")
 	public static void removeLocation(CommandContext args, Player player,
 			HumanNPC npc) {
-		WizardNPC wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getToggleable("wizard");
 		if (wizard.getMode() == WizardMode.TELEPORT) {
 			String locations[] = wizard.getLocations().split(":");
 			String newLoc = "";
@@ -150,7 +150,7 @@ public class WizardCommands {
 	@CommandPermissions("wizard.use.locations")
 	public static void locations(CommandContext args, Player player,
 			HumanNPC npc) {
-		WizardNPC wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getToggleable("wizard");
 		if (wizard.getMode() == WizardMode.TELEPORT) {
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap(npc
@@ -177,7 +177,7 @@ public class WizardCommands {
 	@CommandPermissions("wizard.modify.unlimited")
 	public static void unlimited(CommandContext args, Player player,
 			HumanNPC npc) {
-		WizardNPC wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getToggleable("wizard");
 		wizard.setUnlimitedMana(!wizard.hasUnlimitedMana());
 		if (wizard.hasUnlimitedMana()) {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())

@@ -5,7 +5,7 @@ import org.bukkit.entity.CreatureType;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCTypeManager;
 import com.citizens.npctypes.wizards.WizardManager.WizardMode;
-import com.citizens.npctypes.wizards.WizardNPC;
+import com.citizens.npctypes.wizards.Wizard;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 
@@ -86,7 +86,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 			boolean is = npc.isType("wizard");
 			setEnabled(npc, is);
 			if (is) {
-				WizardNPC wizard = npc.getToggleable("wizard");
+				Wizard wizard = npc.getToggleable("wizard");
 				saveLocations(npc.getUID(), wizard.getLocations());
 				saveMana(npc.getUID(), wizard.getMana());
 				saveMode(npc.getUID(), wizard.getMode());
@@ -101,7 +101,7 @@ public class WizardProperties extends PropertyManager implements Saveable {
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
 			npc.registerType("wizard", NPCTypeManager.getFactory("wizard"));
-			WizardNPC wizard = npc.getToggleable("wizard");
+			Wizard wizard = npc.getToggleable("wizard");
 			wizard.setLocations(getLocations(npc.getUID()));
 			wizard.setMana(getMana(npc.getUID()));
 			wizard.setMode(getMode(npc.getUID()));

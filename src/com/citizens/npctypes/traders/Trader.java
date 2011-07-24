@@ -16,7 +16,7 @@ import com.citizens.npctypes.traders.TraderManager.Mode;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.InventoryUtils;
 
-public class TraderNPC extends Toggleable implements Clickable {
+public class Trader extends Toggleable implements Clickable {
 	private boolean unlimited = false;
 	private boolean free = true;
 	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
@@ -27,7 +27,7 @@ public class TraderNPC extends Toggleable implements Clickable {
 	 * 
 	 * @param npc
 	 */
-	public TraderNPC(HumanNPC npc) {
+	public Trader(HumanNPC npc) {
 		super(npc);
 	}
 
@@ -145,7 +145,7 @@ public class TraderNPC extends Toggleable implements Clickable {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		if (trader.isFree()) {
 			Mode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID(), false)) {

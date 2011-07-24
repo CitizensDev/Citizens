@@ -15,7 +15,7 @@ import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.traders.Check;
 import com.citizens.npctypes.traders.ItemPrice;
 import com.citizens.npctypes.traders.Stockable;
-import com.citizens.npctypes.traders.TraderNPC;
+import com.citizens.npctypes.traders.Trader;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
@@ -174,7 +174,7 @@ public class TraderCommands {
 			return;
 		}
 		boolean selling = args.getString(1).contains("s");
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		ArrayList<Stockable> stock = trader.getStockables(!selling);
 		int page = 1;
 		if (args.argsLength() == 3)
@@ -226,7 +226,7 @@ public class TraderCommands {
 	@CommandPermissions("trader.modify.unlimited")
 	public static void unlimited(CommandContext args, Player player,
 			HumanNPC npc) {
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		trader.setUnlimited(!trader.isUnlimited());
 		if (trader.isUnlimited()) {
 			player.sendMessage(ChatColor.GREEN
@@ -259,7 +259,7 @@ public class TraderCommands {
 		String item = args.getString(1);
 		String price = args.getString(2);
 		boolean selling = args.getString(0).contains("bu");
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		String keyword = "buying";
 		if (!selling) {
 			keyword = "selling";
@@ -358,7 +358,7 @@ public class TraderCommands {
 	@CommandPermissions("trader.modify.clearstock")
 	public static void clear(CommandContext args, Player player, HumanNPC npc) {
 		boolean selling = args.getString(1).contains("bu");
-		TraderNPC trader = npc.getToggleable("trader");
+		Trader trader = npc.getToggleable("trader");
 		String keyword = "buying";
 		if (!selling) {
 			keyword = "selling";

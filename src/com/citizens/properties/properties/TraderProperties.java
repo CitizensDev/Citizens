@@ -9,7 +9,7 @@ import com.citizens.npcs.NPCTypeManager;
 import com.citizens.npctypes.traders.Check;
 import com.citizens.npctypes.traders.ItemPrice;
 import com.citizens.npctypes.traders.Stockable;
-import com.citizens.npctypes.traders.TraderNPC;
+import com.citizens.npctypes.traders.Trader;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.google.common.base.Joiner;
@@ -115,7 +115,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 			boolean is = npc.isType("trader");
 			setEnabled(npc, is);
 			if (is) {
-				TraderNPC trader = npc.getToggleable("trader");
+				Trader trader = npc.getToggleable("trader");
 				saveUnlimited(npc.getUID(), trader.isUnlimited());
 				saveStockables(npc.getUID(), trader.getStocking());
 				saveBalance(npc.getUID(), npc.getBalance());
@@ -127,7 +127,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
 			npc.registerType("trader", NPCTypeManager.getFactory("trader"));
-			TraderNPC trader = npc.getToggleable("trader");
+			Trader trader = npc.getToggleable("trader");
 			npc.setBalance(getBalance(npc.getUID()));
 			trader.setUnlimited(isUnlimited(npc.getUID()));
 			trader.setStocking(getStockables(npc.getUID()));

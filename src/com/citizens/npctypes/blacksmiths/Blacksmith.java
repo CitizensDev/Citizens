@@ -9,14 +9,14 @@ import com.citizens.npctypes.interfaces.Toggleable;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 
-public class BlacksmithNPC extends Toggleable implements Clickable {
+public class Blacksmith extends Toggleable implements Clickable {
 
 	/**
 	 * Blacksmith NPC object
 	 * 
 	 * @param npc
 	 */
-	public BlacksmithNPC(HumanNPC npc) {
+	public Blacksmith(HumanNPC npc) {
 		super(npc);
 	}
 

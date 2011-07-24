@@ -1,64 +1,60 @@
 range:
     guards:
-        default-bouncer-protection-radius: '5'
-        pathfinding: '16'
+        default-bouncer-protection-radius: 10
+        pathfinding: 16.0
     basic:
-        look: '4'
+        look: 5
 items:
-    overrides:
-        '30': Cobweb
-        '35': Cloth
-    item-list-on: 'true'
+    item-list-on: true
     basic:
         select-items: '*'
         talk-items: 340,
     healers:
-        give-health-item: '35'
-        take-health-item: '276'
+        give-health-item: 35
+        take-health-item: 278
     wizards:
-        mana-regen-item: '348'
-        interact-item: '288'
+        mana-regen-item: 348
+        interact-item: 288
 ticks:
     guards:
-        respawn-delay: '100'
+        respawn-delay: 100
     healers:
-        health-regen-increment: '12000'
+        health-regen-increment: 12000
     wizards:
-        mana-regen-rate: '6000'
+        mana-regen-rate: 6000
     saving:
-        save-often: 'true'
-        use-task: 'true'
-        delay: '72000'
+        save-often: true
+        use-task: true
+        delay: 72000
     pathing:
-        max-stationary: '25'
-        max-pathing: '-1'
+        max-stationary: -1
+        max-pathing: -1
     waypoints:
-        right-click-pause: '70'
+        right-click-pause: 70
     general:
-        delay: '1'
+        delay: 1
 general:
-    limits:
-        npcs-per-player: '10'
     defaults:
-        enable-following: 'true'
-        talk-when-close: 'false'
-    convert-old: 'false'
+        enable-following: true
+        talk-when-close: false
+    debug-mode: false
     healers:
-        pay-for-heal: 'true'
-        regen-health: 'true'
-    debug-mode: 'true'
+        pay-for-heal: true
+        regen-health: true
     colors:
-        use-npc-colours: 'true'
+        use-npc-colours: true
         npc-colour: f
     wizards:
-        max-mana: '100'
-        regen-mana: 'true'
-        wizard-max-locations: '10'
+        regen-mana: true
+        max-mana: 100
+        wizard-max-locations: 10
+    notify-updates: true
     chat:
+        slashes-to-spaces: true
         selection-message: <g>You selected <y><npc><g> (ID <y><npcid><g>).
-        slashes-to-spaces: 'true'
         default-text: Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;
         creation-message: <g>The NPC <y><npc><g> was born!
         format: '[%name%]: '
     selection:
-        quick-select: 'false'
+        quick-select: false
+    use-bukkit-permissions: false

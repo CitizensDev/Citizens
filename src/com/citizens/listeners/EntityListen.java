@@ -20,7 +20,7 @@ import com.citizens.events.NPCTargetEvent;
 import com.citizens.interfaces.Listener;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
-import com.citizens.npctypes.questers.QuesterNPC;
+import com.citizens.npctypes.questers.Quester;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
@@ -102,7 +102,7 @@ public class EntityListen extends EntityListener implements Listener {
 				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
 						target, MessageUtils.getText(npc, target));
 				Bukkit.getServer().getPluginManager().callEvent(textEvent);
-				QuesterNPC quester = npc.getToggleable("quester");
+				Quester quester = npc.getToggleable("quester");
 				if (quester != null && quester.hasQuests()) {
 				} else if (textEvent.isCancelled()) {
 				} else if (!textEvent.getNPC().getNPCData().isLookClose()) {

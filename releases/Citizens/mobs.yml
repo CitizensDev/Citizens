@@ -1,21 +1,21 @@
 pirates:
     spawn:
-        spawn: 'false'
-        max: '2'
+        spawn: false
+        max: 2
     misc:
         names: Pirate_Pete,Piratebay,Jack_Sparrow,
         steal-messages: I stole yer booty.;Aaargh.;
 evil:
     spawn:
-        spawn: 'false'
-        max: '2'
+        spawn: false
+        max: 2
     items:
-        tame-item: '354'
+        tame-item: 354
         drops: 260,357,2256,
     misc:
         failed-tame-messages: Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;
-        tame-chance: '5'
         names: Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,
+        tame-chance: 5
 general:
     spawn:
-        delay: '200'
+        delay: 200

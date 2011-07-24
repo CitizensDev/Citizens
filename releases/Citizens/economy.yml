@@ -1,98 +1,93 @@
 economy:
-    use-econplugin: 'false'
-    use-economy: 'true'
+    use-econplugin: false
+    use-economy: true
 prices:
     blacksmith:
         creation:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         toolrepair:
             item:
-                wood: '1'
-                diamond: '5'
-                stone: '3'
-                gold: '2'
-                iron: '4'
-                misc: '2'
+                wood: 1
+                diamond: 5
+                stone: 3
+                gold: 2
+                iron: 4
+                misc: 2
             econplugin:
-                wood: '0.25'
-                diamond: '1.25'
-                stone: '0.75'
-                gold: '0.50'
-                iron: '1'
-                misc: '0.50'
-            item-currency-id: '37'
+                wood: 0.25
+                diamond: 1.25
+                stone: 0.75
+                gold: 0.5
+                iron: 1
+                misc: 0.5
+            item-currency-id: 37
         armorrepair:
             item:
-                diamond: '5'
-                gold: '2'
-                leather: '1'
-                iron: '4'
-                chainmail: '3'
+                diamond: 5
+                gold: 2
+                leather: 1
+                iron: 4
+                chainmail: 3
             econplugin:
-                diamond: '1.25'
-                gold: '0.50'
-                leather: '0.25'
-                iron: '1'
-                chainmail: '0.75'
-            item-currency-id: '37'
+                diamond: 1.25
+                gold: 0.5
+                leather: 0.25
+                iron: 1
+                chainmail: 0.75
+            item-currency-id: 37
     basic:
         creation:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
     guard:
         creation:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
     wizard:
         creation:
-            item: '20'
-            econplugin: '150'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         changetime:
-            item: '20'
-            econplugin: '150'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         spawnmob:
-            item: '20'
-            econplugin: '150'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         teleport:
-            item: '20'
-            econplugin: '150'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         togglestorm:
-            item: '20'
-            econplugin: '150'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
     trader:
         creation:
-            item: '20'
-            econplugin: '250'
-            item-currency-id: '37'
-    bandit:
-        creation:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
     healer:
         creation:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         heal:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
         levelup:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37
     quester:
         creation:
-            item: '10'
-            econplugin: '100'
-            item-currency-id: '37'
+            item: 10
+            econplugin: 100
+            item-currency-id: 37

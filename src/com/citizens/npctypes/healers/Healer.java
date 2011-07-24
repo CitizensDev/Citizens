@@ -15,7 +15,7 @@ import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
-public class HealerNPC extends Toggleable implements Clickable {
+public class Healer extends Toggleable implements Clickable {
 	private int health = 10;
 	private int level = 1;
 
@@ -24,7 +24,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 	 * 
 	 * @param npc
 	 */
-	public HealerNPC(HumanNPC npc) {
+	public Healer(HumanNPC npc) {
 		super(npc);
 	}
 
@@ -77,7 +77,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 	 */
 	private void buyHeal(Player player, HumanNPC npc, Operation op,
 			boolean healPlayer) {
-		HealerNPC healer = npc.getToggleable("healer");
+		Healer healer = npc.getToggleable("healer");
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			double paid = EconomyHandler.pay(op, player);
 			if (paid > 0) {
@@ -110,7 +110,7 @@ public class HealerNPC extends Toggleable implements Clickable {
 	// TODO Make this less ugly to look at
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		HealerNPC healer = npc.getToggleable("healer");
+		Healer healer = npc.getToggleable("healer");
 		int playerHealth = player.getHealth();
 		int healerHealth = healer.getHealth();
 		if (Permission.generic(player, "citizens.healer.use.heal")) {
