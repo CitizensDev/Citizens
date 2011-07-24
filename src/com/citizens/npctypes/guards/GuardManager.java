@@ -1,6 +1,5 @@
 package com.citizens.npctypes.guards;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -72,39 +71,6 @@ public class GuardManager {
 			return;
 		}
 		blacklist.remove(mob.toLowerCase());
-	}
-
-	/**
-	 * Add a player to a guard's whitelist
-	 * 
-	 * @guard
-	 * @param player
-	 */
-	public static void addToWhitelist(GuardNPC guard, String player) {
-		if (player.equalsIgnoreCase("all")) {
-			Set<String> emptyList = new HashSet<String>();
-			emptyList.add("all");
-			guard.setWhitelist(emptyList);
-			return;
-		}
-		guard.getWhitelist().add(player);
-	}
-
-	/**
-	 * Remove a player from a guard's whitelist
-	 * 
-	 * @param guard
-	 * @param player
-	 */
-	public static void removeFromWhitelist(GuardNPC guard, String player) {
-		Set<String> whitelist = guard.getWhitelist();
-		if (player.equalsIgnoreCase("all")) {
-			for (String name : whitelist) {
-				whitelist.remove(name);
-			}
-			return;
-		}
-		whitelist.remove(player);
 	}
 
 	/**

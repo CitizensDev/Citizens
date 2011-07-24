@@ -117,11 +117,11 @@ permissions:
     citizens.guard.use.*:
         children:
             citizens.guard.use.help: true
+            citizens.guard.use.blacklist: true
     citizens.guard.modify.*:
         children:
-            citizens.guard.modify.changetype: true
+            citizens.guard.modify.type: true
             citizens.guard.modify.blacklist: true
-            citizens.guard.modify.whitelist: true
             citizens.guard.modify.radius: true
             citizens.guard.modify.aggro: true    
     citizens.basic.*:

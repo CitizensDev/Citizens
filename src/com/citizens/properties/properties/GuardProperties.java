@@ -17,7 +17,6 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	private static final String type = ".guard.type";
 	private static final String radius = ".guard.radius";
 	private static final String blacklist = ".guard.blacklist";
-	private static final String whitelist = ".guard.whitelist";
 	private static final String aggressive = ".guard.aggressive";
 
 	private void saveProtectionRadius(int UID, double rad) {
@@ -53,15 +52,6 @@ public class GuardProperties extends PropertyManager implements Saveable {
 		profiles.setString(UID + blacklist, Joiner.on(",").join(mobs.toArray()));
 	}
 
-	private Set<String> getWhitelist(int UID) {
-		return Sets.newHashSet(profiles.getString(UID + whitelist).split(","));
-	}
-
-	private void saveWhitelist(int UID, Set<String> players) {
-		profiles.setString(UID + whitelist,
-				Joiner.on(",").join(players.toArray()));
-	}
-
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
@@ -71,7 +61,6 @@ public class GuardProperties extends PropertyManager implements Saveable {
 				GuardNPC guard = npc.getToggleable("guard");
 				saveGuardType(npc.getUID(), guard.getGuardType());
 				saveBlacklist(npc.getUID(), guard.getBlacklist());
-				saveWhitelist(npc.getUID(), guard.getWhitelist());
 				saveProtectionRadius(npc.getUID(), guard.getProtectionRadius());
 				saveAggressive(npc.getUID(), guard.isAggressive());
 			}
@@ -85,7 +74,6 @@ public class GuardProperties extends PropertyManager implements Saveable {
 			GuardNPC guard = npc.getToggleable("guard");
 			guard.setGuardType(getGuardType(npc.getUID()));
 			guard.setBlacklist(getBlacklist(npc.getUID()));
-			guard.setWhitelist(getWhitelist(npc.getUID()));
 			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));
 			guard.setAggressive(isAggressive(npc.getUID()));
 		}
@@ -119,10 +107,6 @@ public class GuardProperties extends PropertyManager implements Saveable {
 		if (profiles.pathExists(UID + blacklist)) {
 			profiles.setString(nextUID + blacklist,
 					profiles.getString(UID + blacklist));
-		}
-		if (profiles.pathExists(UID + whitelist)) {
-			profiles.setString(nextUID + whitelist,
-					profiles.getString(UID + whitelist));
 		}
 		if (profiles.pathExists(UID + radius)) {
 			profiles.setString(nextUID + radius,

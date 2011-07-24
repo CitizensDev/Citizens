@@ -32,7 +32,6 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 	private boolean isAttacking = false;
 	private GuardType guardType = GuardType.NULL;
 	private Set<String> blacklist = new HashSet<String>();
-	private Set<String> whitelist = new HashSet<String>();
 	private double radius = 10;
 
 	/**
@@ -141,29 +140,6 @@ public class GuardNPC extends Toggleable implements Clickable, Damageable,
 
 	public boolean isBlacklisted(String name) {
 		return this.blacklist.contains("all") || this.blacklist.contains(name);
-	}
-
-	/**
-	 * Get a list of players allowed to enter a bodyguard's zone
-	 * 
-	 * @return
-	 */
-	public Set<String> getWhitelist() {
-		return whitelist;
-	}
-
-	/**
-	 * Set the list of allowed players in a bodyguard's zone
-	 * 
-	 * @param whitelist
-	 */
-	public void setWhitelist(Set<String> whitelist) {
-		this.whitelist = whitelist;
-	}
-
-	public boolean isWhiteListed(Player player) {
-		return isOwner(player) || this.whitelist.contains("all")
-				|| this.whitelist.contains(player.getName());
 	}
 
 	/**

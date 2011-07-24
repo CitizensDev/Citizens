@@ -67,8 +67,9 @@ public class GuardTask implements Runnable {
 						}
 						entity = (LivingEntity) temp;
 						String name = getNameFromEntity(entity, npc.getUID());
-						if (name.isEmpty())
+						if (name.isEmpty()) {
 							continue;
+						}
 						if (LocationUtils.withinRange(loc,
 								entity.getLocation(),
 								guard.getProtectionRadius())) {
@@ -80,8 +81,9 @@ public class GuardTask implements Runnable {
 					}
 					entity = null;
 				} else if (guard.isBodyguard()) {
-					if (!npc.isPaused())
+					if (!npc.isPaused()) {
 						npc.setPaused(true);
+					}
 					Player p = Bukkit.getServer().getPlayer(npc.getOwner());
 					if (p != null) {
 						Location ownerloc = p.getLocation();
@@ -96,8 +98,9 @@ public class GuardTask implements Runnable {
 							entity = (LivingEntity) temp;
 							String name = getNameFromEntity(entity,
 									npc.getUID());
-							if (name.isEmpty())
+							if (name.isEmpty()) {
 								continue;
+							}
 							if (LocationUtils.withinRange(ownerloc,
 									entity.getLocation(),
 									guard.getProtectionRadius())) {
@@ -140,8 +143,9 @@ public class GuardTask implements Runnable {
 			Player player = (Player) entity;
 			if (!NPCManager.validateOwnership(player, UID, false)) {
 				name = player.getName();
-			} else
+			} else {
 				return "";
+			}
 		} else {
 			name = entity.getClass().getName().toLowerCase()
 					.replace("org.bukkit.craftbukkit.entity.craft", "");
@@ -163,9 +167,7 @@ public class GuardTask implements Runnable {
 					name = name.replace("npcmob.", "");
 					mob = true;
 				}
-				if (isBlacklisted(npc, name)
-						|| (!mob && entity instanceof Player && !guard
-								.isWhiteListed((Player) entity))) {
+				if (isBlacklisted(npc, name)) {
 					attack(entity, guard);
 					guard.setAttacking(true);
 				}
@@ -174,9 +176,7 @@ public class GuardTask implements Runnable {
 			ActionManager.putAction(entityID, name, cached);
 		} else if (guard.isBodyguard()) {
 			if (entity instanceof Player) {
-				if (!guard.isWhiteListed((Player) entity)) {
-					attack(entity, guard);
-				}
+				// do stuff
 			} else if (CreatureType.fromName(StringUtils.capitalise(name
 					.toLowerCase())) != null) {
 				if (isBlacklisted(npc, name)) {

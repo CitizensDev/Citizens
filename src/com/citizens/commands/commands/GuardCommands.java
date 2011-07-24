@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
+import com.citizens.Permission;
 import com.citizens.npctypes.guards.GuardManager;
 import com.citizens.npctypes.guards.GuardNPC;
 import com.citizens.resources.npclib.HumanNPC;
@@ -17,6 +18,7 @@ import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.resources.sk89q.ServerCommand;
 import com.citizens.utils.HelpUtils;
+import com.citizens.utils.MessageUtils;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
@@ -49,7 +51,7 @@ public class GuardCommands {
 			modifiers = { "bodyguard", "bouncer" },
 			min = 1,
 			max = 1)
-	@CommandPermissions("guard.modify.changetype")
+	@CommandPermissions("guard.modify.type")
 	public static void type(CommandContext args, Player player, HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
 		PathUtils.cancelTarget(npc);
@@ -80,12 +82,11 @@ public class GuardCommands {
 
 	@Command(
 			aliases = "guard",
-			usage = "blacklist (add|remove) (mob)",
+			usage = "blacklist (add|remove) (entry)",
 			desc = "control a guard's blacklist",
 			modifiers = { "blacklist", "bl" },
 			min = 1,
 			max = 3)
-	@CommandPermissions("guard.modify.blacklist")
 	public static void blacklist(CommandContext args, Player player,
 			HumanNPC npc) {
 		GuardNPC guard = npc.getToggleable("guard");
@@ -95,6 +96,10 @@ public class GuardCommands {
 					+ "Insufficient or too many arguments.");
 			break;
 		case 1:
+			if (!Permission.generic(player, "citizens.guard.use.blacklist")) {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+				return;
+			}
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap(npc
 							.getStrippedName() + "'s Blacklisted Mobs")));
@@ -116,6 +121,10 @@ public class GuardCommands {
 			}
 			break;
 		case 3:
+			if (!Permission.generic(player, "citizens.guard.modify.blacklist")) {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+				return;
+			}
 			String mob = args.getString(2).toLowerCase();
 			if (CreatureType.fromName(StringUtils.capitalise(mob)) == null
 					&& !mob.equalsIgnoreCase("all")
@@ -151,69 +160,6 @@ public class GuardCommands {
 						+ " blacklist.");
 			}
 			break;
-		}
-	}
-
-	@Command(
-			aliases = "guard",
-			usage = "whitelist (add|remove) (player)",
-			desc = "control a guard's whitelist",
-			modifiers = { "whitelist", "wl" },
-			min = 1,
-			max = 3)
-	@CommandPermissions("guard.modify.whitelist")
-	public static void whitelist(CommandContext args, Player player,
-			HumanNPC npc) {
-		GuardNPC guard = npc.getToggleable("guard");
-		if (args.argsLength() == 1) {
-			player.sendMessage(ChatColor.GREEN
-					+ StringUtils.listify(StringUtils.wrap(npc
-							.getStrippedName() + "'s Whitelisted Players")));
-			Set<String> list = guard.getWhitelist();
-			if (list.isEmpty()) {
-				player.sendMessage(ChatColor.RED + "No players whitelisted.");
-			} else {
-				for (String aList : list) {
-					if (aList.isEmpty()) {
-						continue;
-					}
-					if (CreatureType.fromName(StringUtils.capitalise(aList
-							.toLowerCase())) != null) {
-						aList = StringUtils.capitalise(aList.toLowerCase());
-					}
-					player.sendMessage(ChatColor.GREEN + "    - "
-							+ StringUtils.wrap(aList));
-				}
-			}
-		} else if (args.argsLength() == 3) {
-			String allowed = args.getString(2).toLowerCase();
-			boolean add = false;
-			if (args.getString(1).equalsIgnoreCase("add")) {
-				add = true;
-			}
-			if (add) {
-				if (guard.getWhitelist().contains(allowed)) {
-					player.sendMessage(ChatColor.RED
-							+ "That player is already whitelisted.");
-					return;
-				}
-				GuardManager.addToWhitelist(guard, allowed);
-				player.sendMessage(ChatColor.GREEN + "Added "
-						+ StringUtils.wrap(allowed) + " to "
-						+ StringUtils.wrap(npc.getStrippedName() + "'s")
-						+ " whitelist.");
-			} else {
-				if (!guard.getWhitelist().contains(allowed)) {
-					player.sendMessage(ChatColor.RED
-							+ "That player is not whitelisted.");
-					return;
-				}
-				GuardManager.removeFromWhitelist(guard, allowed);
-				player.sendMessage(ChatColor.GREEN + "Removed "
-						+ StringUtils.wrap(allowed) + " from "
-						+ StringUtils.wrap(npc.getStrippedName() + "'s")
-						+ " whitelist.");
-			}
 		}
 	}
 
