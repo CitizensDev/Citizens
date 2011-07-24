@@ -34,9 +34,8 @@ public class TeleportModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean converse(ConversationMessage message) {
+	public boolean converse(Player player, ConversationMessage message) {
 		super.resetExit();
-		Player player = message.getPlayer();
 		if (message.getMessage().equalsIgnoreCase("current")) {
 			Location pLoc = player.getLocation();
 			if (!pLoc.getWorld().getName()

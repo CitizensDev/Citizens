@@ -57,8 +57,8 @@ public class ChatModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean converse(ConversationMessage message) {
-		Player player = message.getPlayer();
+	public boolean converse(Player player, ConversationMessage message) {
+		super.resetExit();
 		if (StringUtils.isCommand(message.getMessage())) {
 			player.sendMessage(ChatColor.GRAY + "Can't perform commands yet.");
 			// player.sendMessage(ChatColor.GREEN + "Added command "

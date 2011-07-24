@@ -56,9 +56,8 @@ public class HealthModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean converse(ConversationMessage message) {
-		resetExit();
-		Player player = message.getPlayer();
+	public boolean converse(Player player, ConversationMessage message) {
+		super.resetExit();
 		switch (step) {
 		case AMOUNT:
 			amount = message.getInteger(0);

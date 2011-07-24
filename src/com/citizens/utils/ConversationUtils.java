@@ -12,7 +12,7 @@ public class ConversationUtils {
 	private static Map<String, Converser> conversations = new ConcurrentHashMap<String, Converser>();
 
 	public static void addConverser(Player player, Converser converser) {
-		if (conversations.get(player.getName()) != null) {
+		if (getConverser(player.getName()) != null) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You can only have one chat editor open at a time.");
 			return;
@@ -23,17 +23,16 @@ public class ConversationUtils {
 
 	public static void onChat(PlayerChatEvent event) {
 		String name = event.getPlayer().getName();
-		if (conversations.get(name) != null) {
+		if (getConverser(name) != null) {
 			event.setCancelled(true);
 			boolean finished;
 			if (ChatType.get(event.getMessage()) != null) {
-				finished = conversations.get(name).special(event.getPlayer(),
+				finished = getConverser(name).special(event.getPlayer(),
 						ChatType.get(event.getMessage()));
 			} else {
 				try {
-					finished = conversations.get(name).converse(
-							new ConversationMessage(event.getPlayer(), event
-									.getMessage()));
+					finished = getConverser(name).converse(event.getPlayer(),
+							new ConversationMessage(event.getMessage()));
 				} catch (NumberFormatException ex) {
 					event.getPlayer().sendMessage(
 							ChatColor.RED + "That is not a valid number.");
@@ -43,6 +42,10 @@ public class ConversationUtils {
 			if (finished)
 				remove(event.getPlayer());
 		}
+	}
+
+	private static Converser getConverser(String playerName) {
+		return conversations.get(playerName);
 	}
 
 	public static void remove(Player player) {
@@ -96,7 +99,8 @@ public class ConversationUtils {
 
 		public abstract void begin(Player player);
 
-		public abstract boolean converse(ConversationMessage message);
+		public abstract boolean converse(Player player,
+				ConversationMessage message);
 
 		public abstract boolean allowExit();
 
@@ -151,12 +155,10 @@ public class ConversationUtils {
 	}
 
 	public static class ConversationMessage {
-		private final Player player;
 		private final String message;
 		private final String[] split;
 
-		public ConversationMessage(Player player, String message) {
-			this.player = player;
+		public ConversationMessage(String message) {
 			this.message = message;
 			this.split = message.split(" ");
 		}
@@ -179,10 +181,6 @@ public class ConversationUtils {
 
 		public double getDouble(int index) throws NumberFormatException {
 			return Double.parseDouble(split[index]);
-		}
-
-		public Player getPlayer() {
-			return player;
 		}
 
 		public String getMessage() {

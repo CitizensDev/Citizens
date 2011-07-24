@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import com.citizens.properties.properties.UtilityProperties;
+import com.google.common.base.Joiner;
 
 public class StringUtils {
 	public static String pluralise(String string, int size) {
@@ -228,5 +229,11 @@ public class StringUtils {
 
 	public static boolean isCommand(String message) {
 		return message.charAt(0) == '/';
+	}
+
+	public static String format(Enum toFormat) {
+		String[] split = toFormat.name().toLowerCase().split("_");
+		split[0] = capitalise(split[0]);
+		return Joiner.on(" ").join(split);
 	}
 }

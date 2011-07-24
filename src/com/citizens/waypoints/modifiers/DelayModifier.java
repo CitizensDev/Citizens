@@ -40,8 +40,7 @@ public class DelayModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean converse(ConversationMessage message) {
-		Player player = message.getPlayer();
+	public boolean converse(Player player, ConversationMessage message) {
 		switch (step) {
 		case 0:
 			int temp = message.getInteger(0) * 20;

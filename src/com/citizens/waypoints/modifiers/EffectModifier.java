@@ -3,13 +3,20 @@ package com.citizens.waypoints.modifiers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.citizens.interfaces.Storage;
 import com.citizens.resources.npclib.HumanNPC;
+import com.citizens.utils.ConversationUtils.ChatType;
 import com.citizens.utils.ConversationUtils.ConversationMessage;
+import com.citizens.utils.EffectUtils;
+import com.citizens.utils.EffectUtils.EffectData;
 import com.citizens.utils.EffectUtils.Effects;
+import com.citizens.utils.EffectUtils.Effects.Effect;
 import com.citizens.utils.EffectUtils.Effects.IEffect;
+import com.citizens.utils.StringUtils;
 import com.citizens.waypoints.Waypoint;
 import com.citizens.waypoints.WaypointModifier;
 import com.citizens.waypoints.WaypointModifierType;
@@ -17,8 +24,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 public class EffectModifier extends WaypointModifier {
-	private final static int DELAY = 0;
-	private final List<IEffect> effects = new ArrayList<IEffect>();
+	private IEffect inProgress;
+	private final List<EffectData> effects = new ArrayList<EffectData>();
 
 	public EffectModifier(Waypoint waypoint) {
 		super(waypoint);
@@ -26,21 +33,31 @@ public class EffectModifier extends WaypointModifier {
 
 	@Override
 	public void onReach(HumanNPC npc) {
-
+		for (EffectData data : effects) {
+			EffectUtils.playSound(data.getEffect(), waypoint.getLocation(),
+					data.getData());
+		}
 	}
 
 	@Override
 	public void parse(Storage storage, String root) {
-		for (String effect : Splitter.on(",").split(
+		String[] innerSplit;
+		for (String effect : Splitter.on(";").split(
 				storage.getString(root + ".effects"))) {
-			effects.add(Effects.getByIdentifier(Integer.parseInt(effect)));
+			innerSplit = effect.split(",");
+			effects.add(new EffectData(Effects.getByIdentifier(Integer
+					.parseInt(innerSplit[0])), Integer.parseInt(innerSplit[1])));
 		}
 	}
 
 	@Override
 	public void save(Storage storage, String root) {
-		storage.setString(root + ".effects",
-				Joiner.on(",").join(effects.toArray()));
+		StringBuilder builder = new StringBuilder();
+		for (EffectData data : effects) {
+			builder.append(data.getEffect().getIdentifier() + ","
+					+ data.getData() + ";");
+		}
+		storage.setString(root + ".effects", builder.toString());
 	}
 
 	@Override
@@ -50,17 +67,90 @@ public class EffectModifier extends WaypointModifier {
 
 	@Override
 	public void begin(Player player) {
-
+		player.sendMessage(ChatColor.GREEN + "An " + StringUtils.wrap("effect")
+				+ " is a sound or visual cue that can be played at a location.");
+		player.sendMessage(ChatColor.GREEN + "Possible values are "
+				+ Joiner.on(", ").join(Effects.getFormattedEffects()) + ".");
+		player.sendMessage(ChatColor.GREEN + "Enter "
+				+ StringUtils.wrap("finish")
+				+ " at any time to finish editing.");
 	}
 
 	@Override
-	public boolean converse(ConversationMessage message) {
+	public boolean converse(Player player, ConversationMessage message) {
+		super.resetExit();
+		if (Effects.getByName(message.getMessage()) == null) {
+			player.sendMessage("Invalid effect name.");
+		} else {
+			if (inProgress == null) {
+				IEffect effect = Effects.getByName(message.getMessage());
+				if (effect instanceof Effect) {
+					switch ((Effect) effect) {
+					case DISPENSER_PARTICLE_SPAWN:
+						player.sendMessage(ChatColor.GREEN
+								+ "Enter a direction as a number from 0-9.");
+						inProgress = effect;
+						break;
+					case DIG:
+						player.sendMessage(ChatColor.GREEN
+								+ "Enter the block ID of the particle to spawn.");
+						inProgress = effect;
+						break;
+					default:
+					}
+				} else {
+					add(player, new EffectData(effect));
+				}
+			} else {
+				if (inProgress instanceof Effect) {
+					int data = message.getInteger(0);
+					switch ((Effect) inProgress) {
+					case DISPENSER_PARTICLE_SPAWN:
+						break;
+					case DIG:
+						if (data > 255 || Material.getMaterial(data) == null) {
+							player.sendMessage(ChatColor.GRAY
+									+ "Invalid block ID entered.");
+							return false;
+						}
+						player.sendMessage(super.getMessage("block ID",
+								StringUtils.format(Material.getMaterial(data))));
+						break;
+					}
+					add(player, new EffectData(inProgress, data));
+					inProgress = null;
+				}
+			}
+		}
 		return false;
+	}
+
+	private void add(Player player, EffectData data) {
+		effects.add(data);
+		player.sendMessage(ChatColor.GREEN
+				+ "Added effect "
+				+ StringUtils.wrap(StringUtils.format((Enum<?>) data
+						.getEffect())) + ".");
 	}
 
 	@Override
 	public boolean allowExit() {
-		return false;
+		return effects.size() > 0;
+	}
+
+	@Override
+	public boolean special(Player player, ChatType type) {
+		if (type == ChatType.RESTART) {
+			effects.clear();
+		} else if (type == ChatType.UNDO && allowExit()) {
+			effects.remove(effects.size() - 1);
+		}
+		return super.special(player, type);
+	}
+
+	@Override
+	protected int getUndoStep() {
+		return 1;
 	}
 
 	@Override

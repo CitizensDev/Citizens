@@ -1,10 +1,16 @@
 package com.citizens.utils;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import net.minecraft.server.Packet61;
 
 import org.bukkit.Location;
 
 import com.citizens.utils.EffectUtils.Effects.IEffect;
+import com.google.common.base.Joiner;
 
 public class EffectUtils {
 	public static class Effects {
@@ -12,31 +18,35 @@ public class EffectUtils {
 			public int getIdentifier();
 		}
 
+		public static Map<String, IEffect> names = new HashMap<String, IEffect>();
+		private static Set<String> formatted = new HashSet<String>();
+
 		public static IEffect getByName(String name) {
 			name = name.toUpperCase().replace(" ", "_");
-			for (Effect effect : Effect.values()) {
-				if (effect.name().startsWith(name)) {
-					return effect;
-				}
-			}
-			for (Sound sound : Sound.values()) {
-				if (sound.name().startsWith(name)) {
-					return sound;
+			for (String effect : names.keySet()) {
+				if (effect.startsWith(name)) {
+					return names.get(effect);
 				}
 			}
 			return null;
 		}
 
 		public static IEffect getByIdentifier(int identifier) {
-			for (Effect effect : Effect.values()) {
+			for (IEffect effect : names.values()) {
 				if (effect.getIdentifier() == identifier)
 					return effect;
 			}
-			for (Sound sound : Sound.values()) {
-				if (sound.getIdentifier() == identifier)
-					return sound;
-			}
 			return null;
+		}
+
+		public static Set<String> getFormattedEffects() {
+			return formatted;
+		}
+
+		public static void addFormatted(String name) {
+			String[] split = name.toLowerCase().split("_");
+			split[0] = StringUtils.capitalise(split[0]);
+			formatted.add(Joiner.on(" ").join(split));
 		}
 
 		public enum Effect implements IEffect {
@@ -44,7 +54,7 @@ public class EffectUtils {
 			 * Creates the particles that appear when dispenser is used, data is
 			 * used as direction (up to 9).
 			 */
-			DISPENSER_PARTICLE(2000),
+			DISPENSER_PARTICLE_SPAWN(2000),
 			/**
 			 * Creates dig effects, uses the data as the block ID of the sound
 			 * to play.
@@ -54,6 +64,8 @@ public class EffectUtils {
 
 			Effect(int effectIdentifier) {
 				this.effectIdentifier = effectIdentifier;
+				Effects.names.put(this.name(), this);
+				Effects.addFormatted(this.name());
 			}
 
 			@Override
@@ -100,6 +112,8 @@ public class EffectUtils {
 
 			Sound(int soundIdentifier) {
 				this.soundIdentifier = soundIdentifier;
+				Effects.names.put(this.name(), this);
+				Effects.addFormatted(this.name());
 			}
 
 			@Override
@@ -111,6 +125,28 @@ public class EffectUtils {
 			public String toString() {
 				return "" + this.getIdentifier();
 			}
+		}
+	}
+
+	public static class EffectData {
+		private final IEffect effect;
+		private final int data;
+
+		public EffectData(IEffect effect, int data) {
+			this.effect = effect;
+			this.data = data;
+		}
+
+		public EffectData(IEffect effect) {
+			this(effect, 0);
+		}
+
+		public IEffect getEffect() {
+			return effect;
+		}
+
+		public int getData() {
+			return data;
 		}
 	}
 
