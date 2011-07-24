@@ -59,7 +59,11 @@ public class EffectUtils {
 			 * Creates dig effects, uses the data as the block ID of the sound
 			 * to play.
 			 */
-			DIG(2001);
+			DIG(2001),
+			/**
+			 * Plays a record, uses data as the item ID of the record to play
+			 */
+			RECORD_PLAY(1005);
 			private final int effectIdentifier;
 
 			Effect(int effectIdentifier) {
@@ -97,17 +101,9 @@ public class EffectUtils {
 			 */
 			FIRE_EXTINGUISH(1004),
 			/**
-			 * Plays the open/close trapdoor sound (50/50)
-			 */
-			TRAPDOOR_SOUND(1003),
-			/**
 			 * Plays the fired arrow sound
 			 */
-			PROJECTILE_FIRE(1002),
-			/**
-			 * Plays a record, uses data as the item ID of the record to play
-			 */
-			RECORD_PLAY(1005);
+			PROJECTILE_FIRE(1002);
 			private final int soundIdentifier;
 
 			Sound(int soundIdentifier) {

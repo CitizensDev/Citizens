@@ -85,16 +85,19 @@ public class EffectModifier extends WaypointModifier {
 			if (inProgress == null) {
 				IEffect effect = Effects.getByName(message.getMessage());
 				if (effect instanceof Effect) {
+					inProgress = effect;
 					switch ((Effect) effect) {
 					case DISPENSER_PARTICLE_SPAWN:
 						player.sendMessage(ChatColor.GREEN
-								+ "Enter a direction as a number from 0-9.");
-						inProgress = effect;
+								+ "Enter a direction as a number from 1-8.");
 						break;
 					case DIG:
 						player.sendMessage(ChatColor.GREEN
 								+ "Enter the block ID of the particle to spawn.");
-						inProgress = effect;
+						break;
+					case RECORD_PLAY:
+						player.sendMessage(ChatColor.GREEN
+								+ "Enter the record to play (green or yellow).");
 						break;
 					default:
 					}
@@ -103,11 +106,20 @@ public class EffectModifier extends WaypointModifier {
 				}
 			} else {
 				if (inProgress instanceof Effect) {
-					int data = message.getInteger(0);
+					int data = 0;
 					switch ((Effect) inProgress) {
 					case DISPENSER_PARTICLE_SPAWN:
+						data = message.getInteger(0);
+						if (data > 8 || data < 1) {
+							player.sendMessage(ChatColor.GRAY
+									+ "Direction must be a number from 1-8.");
+							return false;
+						}
+						player.sendMessage(getMessage("particle direction",
+								data));
 						break;
 					case DIG:
+						data = message.getInteger(0);
 						if (data > 255 || Material.getMaterial(data) == null) {
 							player.sendMessage(ChatColor.GRAY
 									+ "Invalid block ID entered.");
@@ -115,6 +127,19 @@ public class EffectModifier extends WaypointModifier {
 						}
 						player.sendMessage(super.getMessage("block ID",
 								StringUtils.format(Material.getMaterial(data))));
+						break;
+					case RECORD_PLAY:
+						if (message.getMessage().equalsIgnoreCase("green"))
+							data = 2257;
+						else if (message.getMessage()
+								.equalsIgnoreCase("yellow"))
+							data = 2256;
+						else
+							data = -1;
+						if (data != 2256 && data != 2257) {
+							player.sendMessage(ChatColor.GRAY
+									+ "Not a valid record type.");
+						}
 						break;
 					}
 					add(player, new EffectData(inProgress, data));

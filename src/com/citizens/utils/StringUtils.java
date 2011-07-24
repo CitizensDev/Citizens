@@ -231,7 +231,7 @@ public class StringUtils {
 		return message.charAt(0) == '/';
 	}
 
-	public static String format(Enum toFormat) {
+	public static String format(Enum<?> toFormat) {
 		String[] split = toFormat.name().toLowerCase().split("_");
 		split[0] = capitalise(split[0]);
 		return Joiner.on(" ").join(split);
