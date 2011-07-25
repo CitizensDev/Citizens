@@ -673,7 +673,7 @@ public class BasicCommands implements CommandHandler {
 			modifiers = "list",
 			min = 1,
 			max = 3)
-	@CommandPermissions("basic.modify.list")
+	@CommandPermissions("basic.use.list")
 	public static void list(CommandContext args, Player player, HumanNPC npc) {
 		switch (args.argsLength()) {
 		case 1:
