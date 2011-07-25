@@ -55,14 +55,11 @@ import com.citizens.utils.StringUtils;
  */
 public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
-
 	public static Method economy;
-
 	public static final String separatorChar = "/";
 
-	private static final String codename = "Odyssey";
-	private static final String letter = "d";
-	private static final String version = "1.0.9" + letter;
+	private static final String codename = "Simplicity";
+	private static final String version = "1.1";
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
 

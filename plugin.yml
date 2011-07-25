@@ -1,6 +1,6 @@
 name: Citizens
 main: com.citizens.Citizens
-version: 1.0.9
+version: 1.1
 authors: [fullwall, aPunch, NeonMaster]
 softdepend: [Permissions]
 commands:
