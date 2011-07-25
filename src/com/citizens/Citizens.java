@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.citizens.SettingsManager.Constant;
+import com.citizens.commands.Commands;
 import com.citizens.listeners.EntityListen;
 import com.citizens.listeners.PlayerListen;
 import com.citizens.listeners.ServerListen;
@@ -75,7 +76,7 @@ public class Citizens extends JavaPlugin {
 		loadNPCTypes();
 
 		// Register our commands.
-		// CommandHandler.registerCommands();
+		Commands.registerCommands();
 
 		// Register our events.
 		new EntityListen().registerEvents();

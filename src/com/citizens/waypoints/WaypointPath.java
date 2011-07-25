@@ -80,37 +80,44 @@ public class WaypointPath {
 
 	public void schedule(HumanNPC npc, int index) {
 		this.setStarted(true);
-		Bukkit.getServer()
-				.getScheduler()
-				.scheduleSyncDelayedTask(Citizens.plugin,
-						new WaypointScheduler(npc, waypoints.get(index)),
-						waypoints.get(index).getDelay());
+		WaypointScheduler scheduler = new WaypointScheduler(npc, waypoints.get(
+				index).getLocation());
+		if (waypoints.get(index).getDelay() > 0)
+			Bukkit.getServer()
+					.getScheduler()
+					.scheduleSyncDelayedTask(Citizens.plugin, scheduler,
+							waypoints.get(index).getDelay());
+		else
+			scheduler.run();
 
+	}
+
+	public void scheduleDelay(HumanNPC npc, Location target, int delay) {
+		RestartPathTask task = new RestartPathTask(npc, target);
+		if (delay > 0)
+			Bukkit.getServer()
+					.getScheduler()
+					.scheduleSyncDelayedTask(Citizens.plugin,
+							new RestartPathTask(npc, target), delay);
+		else
+			task.run();
+		npc.setPaused(true);
 	}
 
 	private static class WaypointScheduler implements Runnable {
 		private final HumanNPC npc;
-		private final Waypoint target;
+		private final Location target;
 
-		public WaypointScheduler(HumanNPC npc, Waypoint target) {
+		public WaypointScheduler(HumanNPC npc, Location target) {
 			this.npc = npc;
 			this.target = target;
 		}
 
 		@Override
 		public void run() {
-			PathUtils.createPath(npc, target.getLocation(), -1, -1,
+			PathUtils.createPath(npc, target, -1, -1,
 					Constant.PathfindingRange.toDouble());
 		}
-	}
-
-	public void scheduleDelay(HumanNPC npc, Location target, int delay) {
-		Bukkit.getServer()
-				.getScheduler()
-				.scheduleSyncDelayedTask(Citizens.plugin,
-						new RestartPathTask(npc, target), delay);
-		npc.getHandle().cancelPath();
-		npc.setPaused(true);
 	}
 
 	private static class RestartPathTask implements Runnable {
