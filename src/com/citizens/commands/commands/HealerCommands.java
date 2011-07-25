@@ -3,6 +3,7 @@ package com.citizens.commands.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npctypes.healers.Healer;
@@ -18,7 +19,7 @@ import com.citizens.utils.StringUtils;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "healer")
-public class HealerCommands {
+public class HealerCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@Command(

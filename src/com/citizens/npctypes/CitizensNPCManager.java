@@ -3,6 +3,7 @@ package com.citizens.npctypes;
 import java.util.Map;
 
 import com.citizens.Citizens;
+import com.citizens.commands.CommandHandler;
 import com.citizens.properties.PropertyManager;
 import com.google.common.collect.Maps;
 
@@ -33,7 +34,7 @@ public class CitizensNPCManager {
 		return types;
 	}
 
-	public void registerCommands(Class<?> commands) {
+	public void registerCommands(Class<? extends CommandHandler> commands) {
 		Citizens.commands.register(commands);
 	}
 }

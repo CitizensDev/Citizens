@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.citizens.commands.CommandHandler;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.CitizensNPCManager;
 import com.citizens.npctypes.Purchaser;
@@ -19,7 +20,7 @@ import com.citizens.utils.PageUtils;
 import com.citizens.utils.PageUtils.PageInstance;
 import com.citizens.utils.StringUtils;
 
-public class ToggleCommands {
+public class ToggleCommands implements CommandHandler {
 
 	@Command(
 			aliases = "toggle",
@@ -99,7 +100,7 @@ public class ToggleCommands {
 	private static void toggleState(Player player, HumanNPC npc,
 			CitizensNPC type, boolean register) {
 		if (register) {
-			type.getProperties().register(npc);
+			PropertyManager.get(type.getType());
 		}
 		if (!npc.isType(type.getType())) {
 			npc.addType(type.getType());

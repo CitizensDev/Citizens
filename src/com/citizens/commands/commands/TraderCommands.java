@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Permission;
+import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.Payment;
 import com.citizens.economy.ServerEconomyInterface;
@@ -33,7 +34,7 @@ import com.citizens.utils.StringUtils;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "trader")
-public class TraderCommands {
+public class TraderCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@Command(

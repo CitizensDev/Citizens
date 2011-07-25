@@ -15,19 +15,18 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.TickTask;
+import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.GuardCommands;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
-import com.citizens.npctypes.interfaces.Damageable;
-import com.citizens.npctypes.interfaces.Targetable;
 import com.citizens.properties.properties.GuardProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
 
-public class Guard extends CitizensNPC implements Damageable, Targetable {
+public class Guard extends CitizensNPC {
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
 	private GuardType guardType = GuardType.NULL;
@@ -231,7 +230,7 @@ public class Guard extends CitizensNPC implements Damageable, Targetable {
 	}
 
 	@Override
-	public Object getCommands() {
+	public CommandHandler getCommands() {
 		return new GuardCommands();
 	}
 }

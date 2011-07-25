@@ -3,6 +3,7 @@ package com.citizens.npctypes.blacksmiths;
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
+import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.BlacksmithCommands;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.interfaces.Saveable;
@@ -41,7 +42,7 @@ public class Blacksmith extends CitizensNPC {
 	}
 
 	@Override
-	public Object getCommands() {
+	public CommandHandler getCommands() {
 		return new BlacksmithCommands();
 	}
 }

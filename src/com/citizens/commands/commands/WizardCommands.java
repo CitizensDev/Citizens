@@ -3,8 +3,9 @@ package com.citizens.commands.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.npctypes.wizards.WizardManager.WizardMode;
+import com.citizens.commands.CommandHandler;
 import com.citizens.npctypes.wizards.Wizard;
+import com.citizens.npctypes.wizards.WizardManager.WizardMode;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
@@ -17,7 +18,7 @@ import com.citizens.utils.StringUtils;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "wizard")
-public class WizardCommands {
+public class WizardCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@Command(

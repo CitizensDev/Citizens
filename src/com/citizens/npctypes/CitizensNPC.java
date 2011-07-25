@@ -5,6 +5,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
+import com.citizens.commands.CommandHandler;
 import com.citizens.interfaces.Saveable;
 import com.citizens.resources.npclib.HumanNPC;
 
@@ -38,10 +39,10 @@ public abstract class CitizensNPC {
 	 * 
 	 * @return NPC type's command object
 	 */
-	public abstract Object getCommands();
+	public abstract CommandHandler getCommands();
 
 	/**
-	 * Left-clicking an NPC
+	 * Left-clicking an NPC.
 	 * 
 	 * @param player
 	 *            Player doing the clicking
@@ -52,7 +53,7 @@ public abstract class CitizensNPC {
 	}
 
 	/**
-	 * Right-clicking an NPC
+	 * Right-clicking an NPC.
 	 * 
 	 * @param player
 	 *            Player doing the clicking
@@ -63,25 +64,27 @@ public abstract class CitizensNPC {
 	}
 
 	/**
-	 * Called when an NPC type targets
+	 * Called when an NPC type targets.
 	 * 
 	 * @param event
 	 *            Bukkit's EntityTargetEvent
 	 */
 	public void onTarget(EntityTargetEvent event) {
+		event.setCancelled(true);
 	}
 
 	/**
-	 * Called when an NPC type is damaged
+	 * Called when an NPC type is damaged.
 	 * 
 	 * @param event
 	 *            Bukkit's EntityDamageEvent
 	 */
 	public void onDamage(EntityDamageEvent event) {
+		event.setCancelled(true);
 	}
 
 	/**
-	 * Called when an NPC type is killed
+	 * Called when an NPC type is killed.
 	 * 
 	 * @param event
 	 *            Bukkit's EntityDeathEvent

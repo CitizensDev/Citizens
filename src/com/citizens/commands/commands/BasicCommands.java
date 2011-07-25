@@ -15,6 +15,7 @@ import com.citizens.Citizens;
 import com.citizens.Permission;
 import com.citizens.SettingsManager;
 import com.citizens.SettingsManager.Constant;
+import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npcs.NPCDataManager;
@@ -36,7 +37,7 @@ import com.citizens.utils.ServerUtils;
 import com.citizens.utils.StringUtils;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
-public class BasicCommands {
+public class BasicCommands implements CommandHandler {
 
 	@Command(
 			aliases = "citizens",

@@ -3,6 +3,7 @@ package com.citizens.commands.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.citizens.commands.CommandHandler;
 import com.citizens.npctypes.questers.Quester;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.resources.npclib.HumanNPC;
@@ -17,7 +18,7 @@ import com.citizens.utils.StringUtils;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "quester")
-public class QuesterCommands {
+public class QuesterCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@Command(

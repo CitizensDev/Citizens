@@ -2,6 +2,7 @@ package com.citizens.commands.commands;
 
 import org.bukkit.entity.Player;
 
+import com.citizens.commands.CommandHandler;
 import com.citizens.npctypes.questers.quests.ChatManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -13,7 +14,7 @@ import com.citizens.resources.sk89q.CommandRequirements;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "quester")
-public class QuestCommands {
+public class QuestCommands implements CommandHandler {
 
 	@Command(
 			aliases = "quests",

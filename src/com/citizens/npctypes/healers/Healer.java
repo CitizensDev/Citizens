@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
 import com.citizens.SettingsManager.Constant;
+import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.HealerCommands;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
@@ -169,7 +170,7 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public Object getCommands() {
+	public CommandHandler getCommands() {
 		return new HealerCommands();
 	}
 }

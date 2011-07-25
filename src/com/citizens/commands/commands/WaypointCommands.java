@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
+import com.citizens.commands.CommandHandler;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -16,7 +17,7 @@ import com.citizens.waypoints.Waypoint;
 import com.citizens.waypoints.WaypointModifierType;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
-public class WaypointCommands {
+public class WaypointCommands implements CommandHandler {
 
 	@Command(
 			aliases = { "wp", "waypoint" },

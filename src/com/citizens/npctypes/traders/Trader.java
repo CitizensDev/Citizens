@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Citizens;
 import com.citizens.Permission;
+import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.TraderCommands;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
@@ -171,7 +172,7 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public Object getCommands() {
+	public CommandHandler getCommands() {
 		return new TraderCommands();
 	}
 }

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.citizens.Citizens;
 import com.citizens.Permission;
 import com.citizens.SettingsManager.Constant;
+import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.WizardCommands;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.interfaces.Saveable;
@@ -381,7 +382,7 @@ public class Wizard extends CitizensNPC {
 	}
 
 	@Override
-	public Object getCommands() {
+	public CommandHandler getCommands() {
 		return new WizardCommands();
 	}
 }

@@ -8,8 +8,9 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
-import com.citizens.npctypes.guards.GuardManager;
+import com.citizens.commands.CommandHandler;
 import com.citizens.npctypes.guards.Guard;
+import com.citizens.npctypes.guards.GuardManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.creatures.CreatureNPCType;
 import com.citizens.resources.sk89q.Command;
@@ -27,7 +28,7 @@ import com.citizens.utils.StringUtils;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "guard")
-public class GuardCommands {
+public class GuardCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@ServerCommand()

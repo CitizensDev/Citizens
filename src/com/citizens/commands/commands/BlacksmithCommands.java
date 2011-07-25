@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.economy.ItemInterface;
@@ -23,7 +24,7 @@ import com.citizens.utils.Messaging;
 import com.citizens.utils.StringUtils;
 
 @CommandRequirements(requiredType = "blacksmith")
-public class BlacksmithCommands {
+public class BlacksmithCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@Command(
