@@ -2,7 +2,7 @@ package com.citizens.npctypes.questers.rewards;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyManager;
 import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.questers.Reward;
 import com.citizens.npctypes.questers.quests.QuestManager.RewardType;
@@ -18,7 +18,7 @@ public class EconpluginReward implements Reward {
 
 	@Override
 	public void grant(Player player) {
-		if (EconomyHandler.useEconPlugin()) {
+		if (EconomyManager.useEconPlugin()) {
 			if (this.take) {
 				ServerEconomyInterface.subtract(player.getName(), reward);
 			} else {

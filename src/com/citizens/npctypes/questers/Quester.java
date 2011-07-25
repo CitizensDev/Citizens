@@ -1,6 +1,7 @@
 package com.citizens.npctypes.questers;
 
 import java.util.ArrayDeque;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -136,5 +137,11 @@ public class Quester extends CitizensNPC {
 	@Override
 	public CommandHandler getCommands() {
 		return new QuesterCommands();
+	}
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.economy.EconomyHandler;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
@@ -43,18 +43,17 @@ public class BlacksmithManager {
 	 * @param npc
 	 * @param op
 	 */
-	public static void buyRepair(Player player, HumanNPC npc, Operation op) {
-		if (!EconomyHandler.useEconomy()
-				|| EconomyHandler.canBuyBlacksmith(player, op)) {
+	public static void buyRepair(Player player, HumanNPC npc,
+			EconomyOperation op) {
+		if (!EconomyManager.useEconomy() || op.canBuy(player)) {
 			ItemStack item = player.getItemInHand();
 			if (item.getDurability() > 0) {
-				double paid = EconomyHandler.payBlacksmith(player, op);
-				if (paid > 0 || EconomyHandler.isFree(player, op)) {
+				double paid = op.pay(player);
+				if (paid > 0 || op.isFree()) {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " has repaired your item for "
-							+ StringUtils.wrap(EconomyHandler
-									.getBlacksmithPaymentType(player, op, ""
-											+ paid)) + ".");
+							+ StringUtils.wrap(EconomyManager.getPaymentType(
+									player, op, "" + paid)) + ".");
 					item.setDurability((short) 0);
 					player.setItemInHand(item);
 				}
@@ -63,7 +62,7 @@ public class BlacksmithManager {
 						+ MessageUtils.getMaterialName(item.getTypeId())
 						+ ChatColor.RED + " is already fully repaired.");
 			}
-		} else if (EconomyHandler.useEconomy()) {
+		} else if (EconomyManager.useEconomy()) {
 			player.sendMessage(ChatColor.RED
 					+ "You do not have enough to repair that.");
 		}

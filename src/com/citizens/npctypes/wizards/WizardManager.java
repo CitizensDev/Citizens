@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.citizens.SettingsManager.Constant;
-import com.citizens.economy.EconomyHandler;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
@@ -151,53 +151,47 @@ public class WizardManager {
 	 * @param wizard
 	 * @param op
 	 */
-	public static void buy(Player player, HumanNPC npc, Operation op) {
-		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
-			if (EconomyHandler.useEconomy()) {
+	public static void buy(Player player, HumanNPC npc, EconomyOperation op) {
+		if (!EconomyManager.useEconomy() || op.canBuy(player)) {
+			if (EconomyManager.useEconomy()) {
 				boolean canSend = false;
 				Wizard wizard = npc.getType("wizard");
-				double paid = EconomyHandler.pay(op, player);
-				if (paid > 0 || EconomyHandler.isFree(player, op)) {
+				double paid = op.pay(player);
+				if (paid > 0 || op.isFree()) {
 					String msg = ChatColor.GREEN
 							+ "Paid "
-							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid));
-					switch (op) {
-					case WIZARD_TELEPORT:
+							+ StringUtils.wrap(EconomyManager.getPaymentType(
+									player, op, "" + paid));
+					if (op.getPath().equals("wizard-teleport")) {
 						msg += " for a teleport to "
 								+ StringUtils.wrap(wizard
 										.getCurrentLocationName()) + ".";
 						if (teleportPlayer(player, npc)) {
 							canSend = true;
 						}
-						break;
-					case WIZARD_SPAWNMOB:
+					} else if (op.getPath().equals("wizard-spawnmob")) {
 						msg += " to spawn a "
 								+ StringUtils.wrap(wizard.getMob().name()
 										.toLowerCase().replace("_", " ")) + ".";
 						if (spawnMob(player, npc)) {
 							canSend = true;
 						}
-						break;
-					case WIZARD_CHANGETIME:
+					} else if (op.getPath().equals("wizard-changetime")) {
 						msg += " to change the time to "
 								+ StringUtils.wrap(wizard.getTime()) + ".";
 						if (changeTime(player, npc)) {
 							canSend = true;
 						}
-						break;
-					case WIZARD_TOGGLESTORM:
+					} else if (op.getPath().equals("wizard-togglestorm")) {
 						msg += " to toggle a thunderstorm in the world "
 								+ StringUtils.wrap(player.getWorld().getName())
 								+ ".";
 						if (toggleStorm(player, npc)) {
 							canSend = true;
 						}
-						break;
-					default:
+					} else {
 						msg = ChatColor.RED + "No valid mode selected.";
 						canSend = true;
-						break;
 					}
 					if (canSend) {
 						player.sendMessage(msg);
@@ -207,7 +201,7 @@ public class WizardManager {
 				player.sendMessage(ChatColor.GRAY
 						+ "Your server has not turned economy on for Citizens.");
 			}
-		} else if (EconomyHandler.useEconomy()) {
+		} else if (EconomyManager.useEconomy()) {
 			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 		}
 	}

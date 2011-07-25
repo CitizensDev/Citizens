@@ -16,8 +16,8 @@ import com.citizens.Permission;
 import com.citizens.SettingsManager;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
-import com.citizens.economy.EconomyHandler;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.CitizensNPC;
@@ -235,18 +235,16 @@ public class BasicCommands implements CommandHandler {
 		}
 		int UID = NPCManager.register(firstArg, player.getLocation(),
 				player.getName());
-		if (EconomyHandler.useEconomy()) {
-			if (EconomyHandler.canBuy(Operation.BASIC_CREATION, player)) {
-				double paid = EconomyHandler.pay(Operation.BASIC_CREATION,
-						player);
+		if (EconomyManager.useEconomy()) {
+			EconomyOperation op = EconomyManager.getOperation("basic.creation");
+			if (op.canBuy(player)) {
+				double paid = op.pay(player);
 				if (paid > 0) {
-					player.sendMessage(MessageUtils.getPaidMessage(
-							Operation.BASIC_CREATION, paid, NPCManager.get(UID)
-									.getStrippedName(), "", false));
+					player.sendMessage(MessageUtils.getPaidMessage(player, op,
+							NPCManager.get(UID).getStrippedName(), false));
 				}
 			} else {
-				player.sendMessage(MessageUtils.getNoMoneyMessage(
-						Operation.BASIC_CREATION, player));
+				player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 				return;
 			}
 		}

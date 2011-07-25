@@ -50,9 +50,9 @@ public class CitizensNPCLoader {
 					throw new InvalidNPCTypeException(type.getType()
 							+ " is missing a valid Properties class.");
 				}
-				if (type.getPurchaser() == null) {
+				if (type.getDefaultSettings() == null) {
 					throw new InvalidNPCTypeException(type.getType()
-							+ " is missing a valid Purchaser class.");
+							+ " did not have any default settings registered.");
 				}
 				if (type.getCommands() == null) {
 					throw new InvalidNPCTypeException(type.getType()

@@ -5,13 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.MessageUtils;
 
 public class ItemInterface {
-	private static final String addendum = ".item";
-	private static final String currencyAddendum = ".item-currency-id";
 
 	/**
 	 * Checks the inventory of a player for having enough for an operation.
@@ -20,22 +17,20 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static boolean hasEnough(Player player, Operation op) {
+	public static boolean hasEnough(Player player, int itemCurrencyID,
+			int itemPrice) {
 		// Get the price/currency from the enum name.
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
+		// double price = UtilityProperties.getPrice(Operation.getString(op,
+		// addendum));
 
-		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
-				op, currencyAddendum));
-		if (price <= 0 || currencyID == 0) {
-			return true;
-		}
+		// int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+		// op, currencyAddendum));
 		// The current count.
 		int current = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
-			if (i != null && i.getTypeId() == currencyID) {
+			if (i != null && i.getTypeId() == itemCurrencyID) {
 				current += i.getAmount();
-				if (current >= price) {
+				if (current >= itemPrice) {
 					return true;
 				}
 			}
@@ -51,10 +46,9 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static boolean hasEnoughBlacksmith(Player player, Operation op) {
-		double price = getBlacksmithPrice(player, op);
-		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
-				op, currencyAddendum));
+	public static boolean hasEnoughBlacksmith(Player player, EconomyOperation op) {
+		double price = getBlacksmithPrice(op, player);
+		int currencyID = op.getItemCurrencyID();
 		if (price <= 0 || currencyID == 0) {
 			return true;
 		}
@@ -95,27 +89,15 @@ public class ItemInterface {
 		return false;
 	}
 
-	public static boolean isFree(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
-		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
-		return price <= 0 || ID == 0;
-	}
-
 	/**
 	 * Gets the item currency from an operation.
 	 * 
 	 * @param op
 	 * @return
 	 */
-	public static String getCurrency(Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
-		int ID = UtilityProperties.getCurrencyID(Operation.getString(op,
-				currencyAddendum));
+	public static String getCurrency(EconomyOperation op) {
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
-				ID, (int) price)));
+				op.getItemCurrencyID(), op.getItemPrice())));
 	}
 
 	/**
@@ -125,10 +107,10 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static String getBlacksmithCurrency(Player player, Operation op) {
+	public static String getBlacksmithCurrency(Player player,
+			EconomyOperation op) {
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
-				UtilityProperties.getCurrencyID(Operation.getString(op,
-						currencyAddendum)), getBlacksmithPrice(player, op))));
+				op.getItemCurrencyID(), getBlacksmithPrice(op, player))));
 	}
 
 	/**
@@ -149,11 +131,9 @@ public class ItemInterface {
 	 * @param player
 	 * @return
 	 */
-	public static String getRemainder(Operation op, Player player) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
-		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
-				op, currencyAddendum));
+	public static String getRemainder(EconomyOperation op, Player player) {
+		int price = op.getItemPrice();
+		int currencyID = op.getItemCurrencyID();
 		double current = price;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null && i.getTypeId() == currencyID) {
@@ -170,57 +150,24 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double pay(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
-		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
-				op, currencyAddendum));
-		if (price <= 0 || currencyID == 0) {
-			return price;
-		}
-		double current = price;
+	public static double pay(Player player, int itemCurrencyID, int itemPrice) {
+		// double price = UtilityProperties.getPrice(Operation.getString(op,
+		// addendum));
+		// int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
+		// op, currencyAddendum));
+		double current = itemPrice;
 		int count = 0;
 		for (ItemStack i : player.getInventory().getContents()) {
 			if (i != null) {
-				current = decreaseItemStack(player, currencyID, current, count);
+				current = decreaseItemStack(player, itemCurrencyID, current,
+						count);
 				if (current <= 0) {
 					break;
 				}
 			}
 			count += 1;
 		}
-		return price;
-	}
-
-	/**
-	 * Pays from the player's inventory using an operation, with the ability to
-	 * multiply
-	 * 
-	 * @param player
-	 * @param op
-	 * @param multiple
-	 * @return
-	 */
-	public static double pay(Player player, Operation op, int multiple) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum)) * multiple;
-		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
-				op, currencyAddendum));
-		if (price <= 0 || currencyID == 0) {
-			return price;
-		}
-		double current = price;
-		int count = 0;
-		for (ItemStack i : player.getInventory().getContents()) {
-			if (i != null) {
-				current = decreaseItemStack(player, currencyID, current, count);
-				if (current <= 0) {
-					break;
-				}
-			}
-			count += 1;
-		}
-		return price;
+		return itemPrice;
 	}
 
 	/**
@@ -263,10 +210,9 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmith(Player player, Operation op) {
-		int currencyID = UtilityProperties.getCurrencyID(Operation.getString(
-				op, currencyAddendum));
-		double blacksmithPrice = getBlacksmithPrice(player, op);
+	public static double payBlacksmith(Player player, EconomyOperation op) {
+		int currencyID = op.getItemCurrencyID();
+		double blacksmithPrice = getBlacksmithPrice(op, player);
 		if (blacksmithPrice <= 0 || currencyID == 0) {
 			return blacksmithPrice;
 		}
@@ -291,18 +237,14 @@ public class ItemInterface {
 	 * @param op
 	 * @return
 	 */
-	public static int getBlacksmithPrice(Player player, Operation op) {
+	public static int getBlacksmithPrice(EconomyOperation op, Player player) {
 		ItemStack item = player.getItemInHand();
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
 		double price = (maxDurability - (maxDurability - item.getDurability()))
-				* UtilityProperties
-						.getPrice(Operation
-								.getString(
-										op,
-										addendum
-												+ EconomyHandler.materialAddendums[EconomyHandler
-														.getBlacksmithIndex(item)]));
+				* (UtilityProperties.getItemPriceExtended(op.getPath(),
+						EconomyManager.materialAddendums[EconomyManager
+								.getBlacksmithIndex(item)]));
 		if (price < 1) {
 			price = 1;
 		}

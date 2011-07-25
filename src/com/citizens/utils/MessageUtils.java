@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.SettingsManager.Constant;
-import com.citizens.economy.EconomyHandler;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.economy.Payment;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
@@ -95,38 +95,36 @@ public class MessageUtils {
 	 * @param player
 	 * @return
 	 */
-	public static String getNoMoneyMessage(Operation op, Player player) {
+	public static String getNoMoneyMessage(EconomyOperation op, Player player) {
 		String message;
 		message = ChatColor.RED
 				+ "You need "
-				+ StringUtils.wrap(
-						EconomyHandler.getPaymentType(op,
-								EconomyHandler.getRemainder(op, player)),
-						ChatColor.RED) + " more to do that.";
+				+ StringUtils
+						.wrap(EconomyManager.getPaymentType(player, op,
+								EconomyManager.getRemainder(op, player)),
+								ChatColor.RED) + " more to do that.";
 		return message;
 	}
 
 	/**
 	 * Formats the paid message for an operation.
 	 * 
+	 * @param player
 	 * @param op
-	 * @param paid
 	 * @param npcName
-	 * @param type
 	 * @param useType
 	 * @return
 	 */
-	public static String getPaidMessage(Operation op, double paid,
-			String npcName, String type, boolean useType) {
+	public static String getPaidMessage(Player player, EconomyOperation op,
+			String npcName, boolean useType) {
 		String message;
 		message = ChatColor.GREEN
 				+ "Paid "
-				+ StringUtils
-						.wrap(EconomyHandler.getPaymentType(op, "" + paid))
-				+ " for ";
+				+ StringUtils.wrap(EconomyManager.getPaymentType(player, op, ""
+						+ op.getEconPluginPrice())) + " for ";
 		if (useType) {
 			message += StringUtils.wrap(npcName) + " to become a "
-					+ StringUtils.wrap(type) + ".";
+					+ StringUtils.wrap(op.getNPCType()) + ".";
 		} else {
 			message += StringUtils.wrap(npcName) + ".";
 		}
@@ -143,7 +141,7 @@ public class MessageUtils {
 		String message = "";
 		message += colour
 				+ StringUtils.wrap(
-						EconomyHandler.getCurrency(new Payment(price), colour),
+						EconomyManager.getCurrency(new Payment(price), colour),
 						colour);
 		return message;
 	}

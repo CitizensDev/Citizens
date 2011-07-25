@@ -1,6 +1,7 @@
 package com.citizens.npctypes.guards;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -232,5 +233,11 @@ public class Guard extends CitizensNPC {
 	@Override
 	public CommandHandler getCommands() {
 		return new GuardCommands();
+	}
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

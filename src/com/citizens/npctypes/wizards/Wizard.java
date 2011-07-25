@@ -1,5 +1,8 @@
 package com.citizens.npctypes.wizards;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,7 +14,7 @@ import com.citizens.Permission;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.WizardCommands;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.wizards.WizardManager.WizardMode;
@@ -333,18 +336,20 @@ public class Wizard extends CitizensNPC {
 				case TELEPORT:
 					if (wizard.getNumberOfLocations() > 0) {
 						WizardManager.buy(player, npc,
-								Operation.WIZARD_TELEPORT);
+								EconomyManager.getOperation("wizard-teleport"));
 					}
 					break;
 				case SPAWN:
-					WizardManager.buy(player, npc, Operation.WIZARD_SPAWNMOB);
+					WizardManager.buy(player, npc,
+							EconomyManager.getOperation("wizard-spawnmob"));
 					break;
 				case TIME:
-					WizardManager.buy(player, npc, Operation.WIZARD_CHANGETIME);
+					WizardManager.buy(player, npc,
+							EconomyManager.getOperation("wizard-time"));
 					break;
 				case WEATHER:
-					WizardManager
-							.buy(player, npc, Operation.WIZARD_TOGGLESTORM);
+					WizardManager.buy(player, npc,
+							EconomyManager.getOperation("wizard-weather"));
 					break;
 				default:
 					player.sendMessage(ChatColor.RED
@@ -384,5 +389,23 @@ public class Wizard extends CitizensNPC {
 	@Override
 	public CommandHandler getCommands() {
 		return new WizardCommands();
+	}
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		Map<String, Object> nodes = new HashMap<String, Object>();
+		nodes.put("prices.wizard.teleport.item", 10);
+		nodes.put("prices.wizard.teleport.item-currency-id", 37);
+		nodes.put("prices.wizard.teleport.econplugin", 100);
+		nodes.put("prices.wizard.changetime.item", 10);
+		nodes.put("prices.wizard.changetime.item-currency-id", 37);
+		nodes.put("prices.wizard.changetime.econplugin", 100);
+		nodes.put("prices.wizard.spawnmob.item", 10);
+		nodes.put("prices.wizard.spawnmob.item-currency-id", 37);
+		nodes.put("prices.wizard.spawnmob.econplugin", 100);
+		nodes.put("prices.wizard.togglestorm.item", 10);
+		nodes.put("prices.wizard.togglestorm.item-currency-id", 37);
+		nodes.put("prices.wizard.togglestorm.econplugin", 100);
+		return nodes;
 	}
 }

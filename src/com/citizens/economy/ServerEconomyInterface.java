@@ -5,11 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
-import com.citizens.resources.register.Method.MethodAccount;
-import com.citizens.utils.MessageUtils;
 
 public class ServerEconomyInterface {
 	public static final String addendum = ".econplugin";
@@ -71,17 +68,10 @@ public class ServerEconomyInterface {
 	 * @param player
 	 * @return
 	 */
-	public static String getRemainder(Operation op, Player player) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
-		MethodAccount acc = Citizens.economy.getAccount(player.getName());
-		return "" + (price - acc.balance());
-	}
-
-	public static boolean isFree(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
-		return price <= 0;
+	public static String getRemainder(EconomyOperation op, Player player) {
+		return ""
+				+ (op.getEconPluginPrice() - Citizens.economy.getAccount(
+						player.getName()).balance());
 	}
 
 	/**
@@ -91,9 +81,9 @@ public class ServerEconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static boolean hasEnough(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
+	public static boolean hasEnough(Player player, double price) {
+		// double price = UtilityProperties.getPrice(Operation.getString(op,
+		// addendum));
 		return playerHasEnough(player.getName(), price);
 	}
 
@@ -126,7 +116,7 @@ public class ServerEconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static boolean hasEnoughBlacksmith(Player player, Operation op) {
+	public static boolean hasEnoughBlacksmith(Player player, EconomyOperation op) {
 		return playerHasEnough(player.getName(), getBlacksmithPrice(player, op));
 	}
 
@@ -137,31 +127,10 @@ public class ServerEconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double pay(Player player, Operation op) {
-		double price = UtilityProperties.getPrice(Operation.getString(op,
-				addendum));
+	public static double pay(Player player, double price) {
+		// double price = UtilityProperties.getPrice(Operation.getString(op,
+		// addendum));
 		subtract(player.getName(), price);
-		return price;
-	}
-
-	/**
-	 * Pays for an operation using the player's money, with the ability to
-	 * multiply
-	 * 
-	 * @param player
-	 * @param op
-	 * @param multiple
-	 * @return
-	 */
-	public static double pay(Player player, Operation op, int multiple) {
-		double price = 0;
-		if (hasEnough(player, op)) {
-			price = UtilityProperties.getPrice(Operation
-					.getString(op, addendum));
-			subtract(player.getName(), price * multiple);
-		} else {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
-		}
 		return price;
 	}
 
@@ -217,18 +186,14 @@ public class ServerEconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double getBlacksmithPrice(Player player, Operation op) {
+	public static double getBlacksmithPrice(Player player, EconomyOperation op) {
 		ItemStack item = player.getItemInHand();
 		short maxDurability = Material.getMaterial(item.getTypeId())
 				.getMaxDurability();
 		double price = (maxDurability - (maxDurability - item.getDurability()))
-				* UtilityProperties
-						.getPrice(Operation
-								.getString(
-										op,
-										addendum
-												+ EconomyHandler.materialAddendums[EconomyHandler
-														.getBlacksmithIndex(item)]));
+				* UtilityProperties.getEconPluginPriceExtended(op.getPath(),
+						EconomyManager.materialAddendums[EconomyManager
+								.getBlacksmithIndex(item)]);
 		return price;
 	}
 
@@ -239,7 +204,7 @@ public class ServerEconomyInterface {
 	 * @param op
 	 * @return
 	 */
-	public static double payBlacksmith(Player player, Operation op) {
+	public static double payBlacksmith(Player player, EconomyOperation op) {
 		double price = getBlacksmithPrice(player, op);
 		subtract(player.getName(), price);
 		return price;

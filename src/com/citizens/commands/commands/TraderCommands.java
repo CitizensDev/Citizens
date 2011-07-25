@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
-import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyManager;
 import com.citizens.economy.Payment;
 import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.traders.Check;
@@ -65,7 +65,7 @@ public class TraderCommands implements CommandHandler {
 			min = 1,
 			max = 3)
 	public static void money(CommandContext args, Player player, HumanNPC npc) {
-		if (!EconomyHandler.useEconPlugin()) {
+		if (!EconomyManager.useEconPlugin()) {
 			player.sendMessage(MessageUtils.noEconomyMessage);
 			return;
 		}
@@ -93,10 +93,10 @@ public class TraderCommands implements CommandHandler {
 						+ "Invalid balance change amount entered.");
 				return;
 			}
-			if (args.getString(1).contains("g")) {
-				if (EconomyHandler.canBuy(new Payment(amount, true), player)) {
-					EconomyHandler.pay(new Payment(-amount, true), npc, -1);
-					EconomyHandler.pay(new Payment(amount, true), player, -1);
+			/*if (args.getString(1).contains("g")) {
+				if (EconomyManager.canBuy(new Payment(amount, true), player)) {
+					EconomyManager.pay(new Payment(-amount, true), npc, -1);
+					EconomyManager.pay(new Payment(amount, true), player, -1);
 					player.sendMessage(ChatColor.GREEN
 							+ "Gave "
 							+ StringUtils.wrap(ServerEconomyInterface
@@ -118,9 +118,9 @@ public class TraderCommands implements CommandHandler {
 									ChatColor.RED) + " more.");
 				}
 			} else if (args.getString(1).contains("t")) {
-				if (EconomyHandler.canBuy(new Payment(amount, true), npc)) {
-					EconomyHandler.pay(new Payment(amount, true), npc, -1);
-					EconomyHandler.pay(new Payment(-amount, true), player, -1);
+				if (EconomyManager.canBuy(new Payment(amount, true), npc)) {
+					EconomyManager.pay(new Payment(amount, true), npc, -1);
+					EconomyManager.pay(new Payment(-amount, true), player, -1);
 					player.sendMessage(ChatColor.GREEN
 							+ "Took "
 							+ StringUtils.wrap(ServerEconomyInterface
@@ -143,7 +143,7 @@ public class TraderCommands implements CommandHandler {
 				player.sendMessage(ChatColor.RED + "Invalid argument type "
 						+ StringUtils.wrap(args.getString(1), ChatColor.RED)
 						+ ".");
-			}
+			}*/
 			break;
 		default:
 			Messaging.sendError(player, "Incorrect syntax. See /trader help");
@@ -405,7 +405,7 @@ public class TraderCommands implements CommandHandler {
 						+ "Invalid item ID or name specified.");
 			}
 		}
-		if (price && stack == null && !EconomyHandler.useEconPlugin()) {
+		if (price && stack == null && !EconomyManager.useEconPlugin()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "This server is not using an economy plugin, so the price cannot be "
 					+ "that kind of value. If you meant to use an item as currency, "

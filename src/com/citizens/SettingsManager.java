@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.citizens.interfaces.Storage;
+import com.citizens.npctypes.CitizensNPCManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.Messaging;
-import com.google.common.collect.Lists;
 
 public class SettingsManager {
 	public static final Map<String, Object> economyDefaults = writeEconomySettings();
@@ -151,8 +152,13 @@ public class SettingsManager {
 		}
 
 		public double toDouble() {
-			return this.getValue() instanceof Double ? (Double) this.getValue()
-					: (Integer) this.getValue();
+			if (this.getValue() instanceof Float) {
+				return (Float) this.getValue();
+			} else if (this.getValue() instanceof Double) {
+				return (Double) this.getValue();
+			} else {
+				return (Integer) this.getValue();
+			}
 		}
 
 		public int toInt() {
@@ -226,61 +232,15 @@ public class SettingsManager {
 		HashMap<String, Object> nodes = new HashMap<String, Object>();
 		nodes.put("economy.use-economy", true);
 		nodes.put("economy.use-econplugin", false);
-		for (String type : Lists.newArrayList("basic", "blacksmith", "guard",
-				"healer", "quester", "trader", "wizard")) {
+		for (String type : Citizens.loadedTypes) {
 			nodes.put("prices." + type + ".creation.item", 10);
 			nodes.put("prices." + type + ".creation.item-currency-id", 37);
 			nodes.put("prices." + type + ".creation.econplugin", 100);
+			for (Entry<String, Object> entry : CitizensNPCManager.getType(type)
+					.getDefaultSettings().entrySet()) {
+				nodes.put(entry.getKey(), entry.getValue());
+			}
 		}
-		nodes.put("prices.blacksmith.armorrepair.item-currency-id", 37);
-		nodes.put("prices.blacksmith.armorrepair.econplugin.leather", 0.25);
-		nodes.put("prices.blacksmith.armorrepair.econplugin.gold", 0.50);
-		nodes.put("prices.blacksmith.armorrepair.econplugin.chainmail", 0.75);
-		nodes.put("prices.blacksmith.armorrepair.econplugin.iron", 1);
-		nodes.put("prices.blacksmith.armorrepair.econplugin.diamond", 1.25);
-		nodes.put("prices.blacksmith.armorrepair.item.leather", 1);
-		nodes.put("prices.blacksmith.armorrepair.item.gold", 2);
-		nodes.put("prices.blacksmith.armorrepair.item.chainmail", 3);
-		nodes.put("prices.blacksmith.armorrepair.item.iron", 4);
-		nodes.put("prices.blacksmith.armorrepair.item.diamond", 5);
-
-		nodes.put("prices.blacksmith.toolrepair.item-currency-id", 37);
-		nodes.put("prices.blacksmith.toolrepair.econplugin.wood", 0.25);
-		nodes.put("prices.blacksmith.toolrepair.econplugin.gold", 0.50);
-		nodes.put("prices.blacksmith.toolrepair.econplugin.stone", 0.75);
-		nodes.put("prices.blacksmith.toolrepair.econplugin.iron", 1);
-		nodes.put("prices.blacksmith.toolrepair.econplugin.diamond", 1.25);
-		nodes.put("prices.blacksmith.toolrepair.econplugin.misc", 0.50);
-		nodes.put("prices.blacksmith.toolrepair.item.wood", 1);
-		nodes.put("prices.blacksmith.toolrepair.item.gold", 2);
-		nodes.put("prices.blacksmith.toolrepair.item.stone", 3);
-		nodes.put("prices.blacksmith.toolrepair.item.iron", 4);
-		nodes.put("prices.blacksmith.toolrepair.item.diamond", 5);
-		nodes.put("prices.blacksmith.toolrepair.item.misc", 2);
-
-		nodes.put("prices.healer.levelup.item", 10);
-		nodes.put("prices.healer.levelup.item-currency-id", 37);
-		nodes.put("prices.healer.levelup.econplugin", 100);
-
-		nodes.put("prices.healer.heal.item", 10);
-		nodes.put("prices.healer.heal.item-currency-id", 37);
-		nodes.put("prices.healer.heal.econplugin", 100);
-
-		nodes.put("prices.wizard.teleport.item", 10);
-		nodes.put("prices.wizard.teleport.item-currency-id", 37);
-		nodes.put("prices.wizard.teleport.econplugin", 100);
-
-		nodes.put("prices.wizard.changetime.item", 10);
-		nodes.put("prices.wizard.changetime.item-currency-id", 37);
-		nodes.put("prices.wizard.changetime.econplugin", 100);
-
-		nodes.put("prices.wizard.spawnmob.item", 10);
-		nodes.put("prices.wizard.spawnmob.item-currency-id", 37);
-		nodes.put("prices.wizard.spawnmob.econplugin", 100);
-
-		nodes.put("prices.wizard.togglestorm.item", 10);
-		nodes.put("prices.wizard.togglestorm.item-currency-id", 37);
-		nodes.put("prices.wizard.togglestorm.econplugin", 100);
 		return nodes;
 	}
 }

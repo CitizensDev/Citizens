@@ -1,6 +1,7 @@
 package com.citizens.npctypes.traders;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -174,5 +175,11 @@ public class Trader extends CitizensNPC {
 	@Override
 	public CommandHandler getCommands() {
 		return new TraderCommands();
+	}
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

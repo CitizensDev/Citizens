@@ -4,10 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.CitizensNPCManager;
-import com.citizens.npctypes.Purchaser;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -15,6 +17,7 @@ import com.citizens.resources.sk89q.CommandContext;
 import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.MessageUtils;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.PageUtils;
 import com.citizens.utils.PageUtils.PageInstance;
@@ -120,24 +123,25 @@ public class ToggleCommands implements CommandHandler {
 	 * @param toggleable
 	 */
 	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
-		Purchaser purchaser = type.getPurchaser();
 		String toggle = type.getType();
-		if (!purchaser.hasPermission(player, toggle)) {
-			Messaging.send(player, npc,
-					purchaser.getNoPermissionsMessage(player, toggle));
+		if (!Permission.generic(player, "citizens.toggle." + toggle)) {
+			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
 		}
-		if (purchaser.canBuy(player, toggle)) {
-			double paid = purchaser.pay(player, toggle);
+		EconomyOperation op = EconomyManager.getOperation(toggle + "-create");
+		if (op.canBuy(player)) {
+			double paid = op.pay(player);
 			if (paid > 0) {
-				String message = purchaser.getPaidMessage(player, npc, paid,
-						toggle);
-				Messaging.send(player, npc, message);
+				Messaging.send(
+						player,
+						npc,
+						MessageUtils.getPaidMessage(player, op,
+								npc.getStrippedName(), true));
 			}
 			toggleState(player, npc, type, true);
 		} else {
-			String message = purchaser.getNoMoneyMessage(player, npc, toggle);
-			Messaging.send(player, npc, message);
+			Messaging.send(player, npc,
+					MessageUtils.getNoMoneyMessage(op, player));
 		}
 	}
 

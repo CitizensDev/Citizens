@@ -1,5 +1,8 @@
 package com.citizens.npctypes.healers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,8 +11,8 @@ import com.citizens.Permission;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.HealerCommands;
-import com.citizens.economy.EconomyHandler;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.properties.properties.HealerProperties;
@@ -69,11 +72,11 @@ public class Healer extends CitizensNPC {
 	 * @param npc
 	 * @param op
 	 */
-	private void buyHeal(Player player, HumanNPC npc, Operation op,
+	private void buyHeal(Player player, HumanNPC npc, EconomyOperation op,
 			boolean healPlayer) {
 		Healer healer = npc.getType("healer");
-		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
-			double paid = EconomyHandler.pay(op, player);
+		if (!EconomyManager.useEconomy() || op.canBuy(player)) {
+			double paid = op.pay(player);
 			if (paid > 0) {
 				int playerHealth = 0;
 				int healerHealth = 0;
@@ -82,22 +85,21 @@ public class Healer extends CitizensNPC {
 					playerHealth = player.getHealth() + 1;
 					healerHealth = healer.getHealth() - 1;
 					msg += " healed you for "
-							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid)) + ".";
+							+ StringUtils.wrap(EconomyManager.getPaymentType(
+									player, op, "" + paid)) + ".";
 				} else {
 					playerHealth = player.getHealth();
 					healerHealth = healer.getHealth() + 1;
 					msg += " has been healed for "
-							+ StringUtils.wrap(EconomyHandler.getPaymentType(
-									op, "" + paid)) + ".";
+							+ StringUtils.wrap(EconomyManager.getPaymentType(
+									player, op, "" + paid)) + ".";
 				}
 				player.setHealth(playerHealth);
 				healer.setHealth(healerHealth);
 				player.sendMessage(msg);
 			}
-		} else if (EconomyHandler.useEconomy()) {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(
-					Operation.HEALER_HEAL, player));
+		} else if (EconomyManager.useEconomy()) {
+			player.sendMessage(MessageUtils.getNoMoneyMessage(op, player));
 		}
 	}
 
@@ -113,7 +115,9 @@ public class Healer extends CitizensNPC {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
 						if (Constant.PayForHealerHeal.toBoolean()) {
-							buyHeal(player, npc, Operation.HEALER_HEAL, true);
+							buyHeal(player, npc,
+									EconomyManager.getOperation("healer-heal"),
+									true);
 						} else {
 							player.setHealth(playerHealth + 1);
 							healer.setHealth(healerHealth - 1);
@@ -172,5 +176,17 @@ public class Healer extends CitizensNPC {
 	@Override
 	public CommandHandler getCommands() {
 		return new HealerCommands();
+	}
+
+	@Override
+	public Map<String, Object> getDefaultSettings() {
+		Map<String, Object> nodes = new HashMap<String, Object>();
+		nodes.put("prices.healer.levelup.item", 10);
+		nodes.put("prices.healer.levelup.item-currency-id", 37);
+		nodes.put("prices.healer.levelup.econplugin", 100);
+		nodes.put("prices.healer.heal.item", 10);
+		nodes.put("prices.healer.heal.item-currency-id", 37);
+		nodes.put("prices.healer.heal.econplugin", 100);
+		return nodes;
 	}
 }

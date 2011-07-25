@@ -3,7 +3,6 @@ package com.citizens.npctypes.questers.rewards;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.ItemInterface;
 import com.citizens.economy.Payment;
 import com.citizens.npctypes.questers.Reward;
@@ -20,11 +19,11 @@ public class ItemReward implements Reward {
 
 	@Override
 	public void grant(Player player) {
-		if (this.take)
-			EconomyHandler.pay(new Payment(reward), player, player
-					.getInventory().getHeldItemSlot());
-		else
+		if (this.take) {
+			// dostuff
+		} else {
 			player.getWorld().dropItemNaturally(player.getLocation(), reward);
+		}
 	}
 
 	@Override

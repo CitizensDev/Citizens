@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.commands.CommandHandler;
-import com.citizens.economy.EconomyHandler;
-import com.citizens.economy.EconomyHandler.Operation;
+import com.citizens.economy.EconomyManager;
+import com.citizens.economy.EconomyOperation;
 import com.citizens.economy.ItemInterface;
 import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.blacksmiths.BlacksmithManager;
@@ -51,22 +51,24 @@ public class BlacksmithCommands implements CommandHandler {
 	@CommandPermissions("blacksmith.use.status")
 	public static void cost(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
-		Operation op = null;
+		String op = "";
 		if (BlacksmithManager.validateArmor(item)) {
-			op = Operation.BLACKSMITH_ARMORREPAIR;
+			op = "blacksmith-armorrepair";
 		} else if (BlacksmithManager.validateTool(item)) {
-			op = Operation.BLACKSMITH_TOOLREPAIR;
+			op = "blacksmith-toolrepair";
 		}
-		if (op == null) {
+		if (op.isEmpty()) {
 			Messaging.sendError(player,
 					MessageUtils.getMaterialName(item.getTypeId())
 							+ " is not a repairable item.");
 			return;
 		}
-		if (EconomyHandler.useEconomy()) {
-			double price = ItemInterface.getBlacksmithPrice(player, op);
-			if (EconomyHandler.useEconPlugin()) {
-				price = ServerEconomyInterface.getBlacksmithPrice(player, op);
+		EconomyOperation ecoOp = EconomyManager.getOperation(op);
+		if (EconomyManager.useEconomy()) {
+			double price = ItemInterface.getBlacksmithPrice(ecoOp, player);
+			if (EconomyManager.useEconPlugin()) {
+				price = ServerEconomyInterface
+						.getBlacksmithPrice(player, ecoOp);
 			}
 			player.sendMessage(ChatColor.GREEN
 					+ "Item: "
@@ -74,8 +76,8 @@ public class BlacksmithCommands implements CommandHandler {
 							.getTypeId())));
 			player.sendMessage(ChatColor.GREEN
 					+ "Cost: "
-					+ StringUtils.wrap(EconomyHandler.getBlacksmithPaymentType(
-							player, op, "" + price)));
+					+ StringUtils.wrap(EconomyManager.getPaymentType(player,
+							ecoOp, "" + price)));
 			player.sendMessage(ChatColor.GREEN
 					+ "Durability Remaining: "
 					+ StringUtils.wrap(Material.getMaterial(item.getTypeId())

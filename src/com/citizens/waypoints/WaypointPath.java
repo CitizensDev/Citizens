@@ -26,8 +26,9 @@ public class WaypointPath {
 	}
 
 	public Waypoint current() {
-		if (waypoints.size() > waypointIndex)
+		if (waypoints.size() > waypointIndex) {
 			return this.get(waypointIndex);
+		}
 		return null;
 	}
 
@@ -68,8 +69,9 @@ public class WaypointPath {
 	}
 
 	public Waypoint getLast() {
-		if (waypoints.size() == 0)
+		if (waypoints.size() == 0) {
 			return null;
+		}
 		return waypoints.get(waypoints.size() - 1);
 	}
 
@@ -82,25 +84,27 @@ public class WaypointPath {
 		this.setStarted(true);
 		WaypointScheduler scheduler = new WaypointScheduler(npc, waypoints.get(
 				index).getLocation());
-		if (waypoints.get(index).getDelay() > 0)
+		if (waypoints.get(index).getDelay() > 0) {
 			Bukkit.getServer()
 					.getScheduler()
 					.scheduleSyncDelayedTask(Citizens.plugin, scheduler,
 							waypoints.get(index).getDelay());
-		else
+		} else {
 			scheduler.run();
+		}
 
 	}
 
 	public void scheduleDelay(HumanNPC npc, Location target, int delay) {
 		RestartPathTask task = new RestartPathTask(npc, target);
-		if (delay > 0)
+		if (delay > 0) {
 			Bukkit.getServer()
 					.getScheduler()
 					.scheduleSyncDelayedTask(Citizens.plugin,
 							new RestartPathTask(npc, target), delay);
-		else
+		} else {
 			task.run();
+		}
 		npc.setPaused(true);
 	}
 

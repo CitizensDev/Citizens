@@ -68,6 +68,8 @@ public class Citizens extends JavaPlugin {
 
 	public static boolean initialized = false;
 
+	public static List<String> loadedTypes = new ArrayList<String>();
+
 	@Override
 	public void onEnable() {
 		plugin = this;
@@ -347,17 +349,16 @@ public class Citizens extends JavaPlugin {
 	 */
 	public void loadNPCTypes() {
 		File dir = new File(getDataFolder(), "types");
-		ArrayList<String> loaded = new ArrayList<String>();
 		dir.mkdir();
 		for (String f : dir.list()) {
 			if (f.contains(".jar")) {
 				CitizensNPC type = CitizensNPCLoader.loadNPCType(new File(dir,
 						f), this);
 				if (type != null) {
-					loaded.add(type.getType());
+					loadedTypes.add(type.getType());
 				}
 			}
 		}
-		Messaging.log("NPC types loaded: " + loaded.toString());
+		Messaging.log("NPC types loaded: " + loadedTypes.toString());
 	}
 }

@@ -1,5 +1,7 @@
 package com.citizens.npctypes;
 
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -26,20 +28,18 @@ public abstract class CitizensNPC {
 	public abstract Saveable getProperties();
 
 	/**
-	 * Get an NPC's purchaser
-	 * 
-	 * @return default NPC type purchaser, can be overriden
-	 */
-	public Purchaser getPurchaser() {
-		return new DefaultPurchaser();
-	}
-
-	/**
 	 * Get the commands for an NPC type
 	 * 
 	 * @return NPC type's command object
 	 */
 	public abstract CommandHandler getCommands();
+
+	/**
+	 * Get the default settings for an NPC type to register on start-up
+	 * 
+	 * @return map of settings
+	 */
+	public abstract Map<String, Object> getDefaultSettings();
 
 	/**
 	 * Left-clicking an NPC.

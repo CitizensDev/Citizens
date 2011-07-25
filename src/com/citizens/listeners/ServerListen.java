@@ -8,7 +8,7 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
-import com.citizens.economy.EconomyHandler;
+import com.citizens.economy.EconomyManager;
 import com.citizens.interfaces.Listener;
 import com.citizens.resources.register.Methods;
 import com.citizens.utils.Messaging;
@@ -34,7 +34,7 @@ public class ServerListen extends ServerListener implements Listener {
 		if (!this.methods.hasMethod()) {
 			if (this.methods.setMethod(event.getPlugin())) {
 				Citizens.setMethod(this.methods.getMethod());
-				EconomyHandler.setServerEconomyEnabled(true);
+				EconomyManager.setServerEconomyEnabled(true);
 				Messaging.log("Payment method found ("
 						+ methods.getMethod().getName() + " version: "
 						+ methods.getMethod().getVersion() + ")");
@@ -49,7 +49,7 @@ public class ServerListen extends ServerListener implements Listener {
 			if (check) {
 				Messaging.log("Payment method disabled.");
 			}
-			EconomyHandler.setServerEconomyEnabled(false);
+			EconomyManager.setServerEconomyEnabled(false);
 		}
 	}
 }
