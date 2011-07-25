@@ -9,27 +9,19 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Citizens;
 import com.citizens.Permission;
+import com.citizens.commands.commands.TraderCommands;
+import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
-import com.citizens.npctypes.interfaces.Clickable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.traders.TraderManager.Mode;
+import com.citizens.properties.properties.TraderProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.InventoryUtils;
 
-public class Trader extends Toggleable implements Clickable {
+public class Trader extends CitizensNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
 	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
-
-	/**
-	 * Holds information about a trader's stocked items, balance and whether it
-	 * is free/unlimited.
-	 * 
-	 * @param npc
-	 */
-	public Trader(HumanNPC npc) {
-		super(npc);
-	}
 
 	public ConcurrentHashMap<Check, Stockable> getStocking() {
 		return stocking;
@@ -140,12 +132,8 @@ public class Trader extends Toggleable implements Clickable {
 	}
 
 	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {
-	}
-
-	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		Trader trader = npc.getToggleable("trader");
+		Trader trader = npc.getType("trader");
 		if (trader.isFree()) {
 			Mode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID(), false)) {
@@ -175,5 +163,15 @@ public class Trader extends Toggleable implements Clickable {
 			player.sendMessage(ChatColor.RED
 					+ "Only one person may be served at a time!");
 		}
+	}
+
+	@Override
+	public Saveable getProperties() {
+		return new TraderProperties();
+	}
+
+	@Override
+	public Object getCommands() {
+		return new TraderCommands();
 	}
 }

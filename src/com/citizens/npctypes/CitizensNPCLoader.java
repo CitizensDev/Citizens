@@ -11,19 +11,18 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import com.citizens.Citizens;
-import com.citizens.npctypes.interfaces.Toggleable;
 import com.citizens.utils.Messaging;
 
-public class NPCTypeLoader {
+public class CitizensNPCLoader {
 
-	public static Toggleable loadNPCType(File file, Citizens plugin) {
+	public static CitizensNPC loadNPCType(File file, Citizens plugin) {
 		try {
 			JarFile jarFile = new JarFile(file);
 			Enumeration<JarEntry> entries = jarFile.entries();
 
 			String mainClass = null;
 			// register type in npctype.info file like so:
-			// main-class: com.citizens.CitizensBlacksmith.Blacksmith
+			// main-class: com.citizens.Blacksmith.Blacksmith
 			while (entries.hasMoreElements()) {
 				JarEntry element = entries.nextElement();
 				if (element.getName().equalsIgnoreCase("npctype.info")) {
@@ -34,7 +33,6 @@ public class NPCTypeLoader {
 					break;
 				}
 			}
-
 			if (mainClass != null) {
 				ClassLoader loader = URLClassLoader.newInstance(
 						new URL[] { file.toURI().toURL() }, plugin.getClass()
@@ -43,14 +41,28 @@ public class NPCTypeLoader {
 				for (Class<?> subclazz : clazz.getClasses()) {
 					Class.forName(subclazz.getName(), true, loader);
 				}
-				Class<? extends Toggleable> skillClass = clazz
-						.asSubclass(Toggleable.class);
-				Constructor<? extends Toggleable> ctor = skillClass
-						.getConstructor(plugin.getClass());
-				return ctor.newInstance(plugin);
+				Class<? extends CitizensNPC> typeClass = clazz
+						.asSubclass(CitizensNPC.class);
+				Constructor<? extends CitizensNPC> ctor = typeClass
+						.getConstructor();
+				CitizensNPC type = ctor.newInstance();
+				if (type.getProperties() == null) {
+					throw new InvalidNPCTypeException(type.getType()
+							+ " is missing a valid Properties class.");
+				}
+				if (type.getPurchaser() == null) {
+					throw new InvalidNPCTypeException(type.getType()
+							+ " is missing a valid Purchaser class.");
+				}
+				if (type.getCommands() == null) {
+					throw new InvalidNPCTypeException(type.getType()
+							+ " is missing a valid Commands class.");
+				}
+				return CitizensNPCManager.registerType(type);
 			} else {
 				throw new InvalidNPCTypeException("Failed to load "
-						+ file.getName() + ".");
+						+ file.getName()
+						+ ". Does the .jar file contain a npctype.info file?");
 			}
 		} catch (InvalidNPCTypeException ex) {
 			Messaging.log(ex.getMessage());

@@ -1,4 +1,4 @@
-package com.citizens.npctypes.interfaces;
+package com.citizens.npctypes;
 
 import org.bukkit.entity.Player;
 
@@ -8,7 +8,10 @@ import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 
-public class OperationPurchaser implements NPCPurchaser {
+/**
+ * Default Purchaser for NPC types
+ */
+public class DefaultPurchaser implements Purchaser {
 	private Operation getOperation(String type) {
 		return Operation.valueOf(type.toUpperCase() + "_CREATION");
 	}

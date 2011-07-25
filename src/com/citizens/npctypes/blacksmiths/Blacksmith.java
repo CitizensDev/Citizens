@@ -3,30 +3,19 @@ package com.citizens.npctypes.blacksmiths;
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
+import com.citizens.commands.commands.BlacksmithCommands;
 import com.citizens.economy.EconomyHandler.Operation;
-import com.citizens.npctypes.interfaces.Clickable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npctypes.CitizensNPC;
+import com.citizens.properties.properties.BlacksmithProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 
-public class Blacksmith extends Toggleable implements Clickable {
-
-	/**
-	 * Blacksmith NPC object
-	 * 
-	 * @param npc
-	 */
-	public Blacksmith(HumanNPC npc) {
-		super(npc);
-	}
+public class Blacksmith extends CitizensNPC {
 
 	@Override
 	public String getType() {
 		return "blacksmith";
-	}
-
-	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {
 	}
 
 	@Override
@@ -44,5 +33,15 @@ public class Blacksmith extends Toggleable implements Clickable {
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}
+	}
+
+	@Override
+	public Saveable getProperties() {
+		return new BlacksmithProperties();
+	}
+
+	@Override
+	public Object getCommands() {
+		return new BlacksmithCommands();
 	}
 }

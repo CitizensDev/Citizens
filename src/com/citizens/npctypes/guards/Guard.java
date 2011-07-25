@@ -12,36 +12,27 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.TickTask;
+import com.citizens.commands.commands.GuardCommands;
+import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
+import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
-import com.citizens.npctypes.interfaces.Clickable;
 import com.citizens.npctypes.interfaces.Damageable;
 import com.citizens.npctypes.interfaces.Targetable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.properties.properties.GuardProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
 
-public class Guard extends Toggleable implements Clickable, Damageable,
-		Targetable {
+public class Guard extends CitizensNPC implements Damageable, Targetable {
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
 	private GuardType guardType = GuardType.NULL;
 	private Set<String> blacklist = new HashSet<String>();
 	private double radius = 10;
-
-	/**
-	 * Guard NPC object
-	 * 
-	 * @param npc
-	 */
-	public Guard(HumanNPC npc) {
-		super(npc);
-	}
 
 	/**
 	 * Get whether a guard NPC is a bodyguard
@@ -191,41 +182,56 @@ public class Guard extends Toggleable implements Clickable, Damageable,
 	}
 
 	@Override
-	public void onTarget(EntityTargetEvent event) {
-	}
-
-	@Override
 	public void onDamage(EntityDamageEvent event) {
-		if (this.npc.getPlayer().getHealth() - event.getDamage() <= 0) {
+		if (!(event.getEntity() instanceof HumanNPC)) {
+			return;
+		}
+		HumanNPC npc = (HumanNPC) event.getEntity();
+		if (npc.getPlayer().getHealth() - event.getDamage() <= 0) {
 			return;
 		}
 		if (isAggressive() && event.getCause() == DamageCause.ENTITY_ATTACK) {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-			if (!isOwner(ev.getDamager()))
-				target((LivingEntity) ev.getDamager());
+			if (!isOwner(ev.getDamager(), npc))
+				target((LivingEntity) ev.getDamager(), npc);
 		}
 	}
 
-	private boolean isOwner(Entity damager) {
+	private boolean isOwner(Entity damager, HumanNPC npc) {
 		return damager instanceof Player ? NPCManager.validateOwnership(
 				(Player) damager, npc.getUID(), false) : false;
 	}
 
 	@Override
 	public void onDeath(EntityDeathEvent event) {
+		if (!(event.getEntity() instanceof HumanNPC)) {
+			return;
+		}
+		HumanNPC npc = (HumanNPC) event.getEntity();
 		Player player = Bukkit.getServer().getPlayer(npc.getOwner());
-		if (player != null)
+		if (player != null) {
 			player.sendMessage(ChatColor.GRAY + "Your guard NPC "
 					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
 					+ " died.");
+		}
 		event.getDrops().clear();
-		TickTask.scheduleRespawn(this.npc, Constant.GuardRespawnDelay.toInt());
+		TickTask.scheduleRespawn(npc, Constant.GuardRespawnDelay.toInt());
 	}
 
-	public void target(LivingEntity entity) {
-		this.npc.setPaused(true);
+	public void target(LivingEntity entity, HumanNPC npc) {
+		npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
 				Constant.PathfindingRange.toDouble());
+	}
+
+	@Override
+	public Saveable getProperties() {
+		return new GuardProperties();
+	}
+
+	@Override
+	public Object getCommands() {
+		return new GuardCommands();
 	}
 }

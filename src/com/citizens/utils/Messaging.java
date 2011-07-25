@@ -80,8 +80,9 @@ public class Messaging {
 
 	public static void sendUncertain(String name, String message) {
 		Player player = Bukkit.getServer().getPlayer(name);
-		if (player != null)
+		if (player != null) {
 			send(player, null, message);
+		}
 	}
 
 	private static String colourise(String message) {

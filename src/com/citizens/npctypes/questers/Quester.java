@@ -5,29 +5,22 @@ import java.util.ArrayDeque;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.npctypes.interfaces.Clickable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.commands.commands.QuesterCommands;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.questers.rewards.QuestReward;
+import com.citizens.properties.properties.QuesterProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PageUtils;
 import com.citizens.utils.PageUtils.PageInstance;
 import com.citizens.utils.StringUtils;
 import com.iConomy.util.Messaging;
 
-public class Quester extends Toggleable implements Clickable {
+public class Quester extends CitizensNPC {
 	private PageInstance display;
 	private Player previous;
 	private final ArrayDeque<String> quests = new ArrayDeque<String>();
-
-	/**
-	 * Quester NPC object
-	 * 
-	 * @param npc
-	 */
-	public Quester(HumanNPC npc) {
-		super(npc);
-	}
 
 	/**
 	 * Add a quest
@@ -62,8 +55,7 @@ public class Quester extends Toggleable implements Clickable {
 		if (QuestManager.getProfile(player.getName()).hasQuest()) {
 			PlayerProfile profile = QuestManager.getProfile(player.getName());
 			if (profile.getProgress().fullyCompleted()
-					&& profile.getProgress().getQuesterUID() == this.npc
-							.getUID()) {
+					&& profile.getProgress().getQuesterUID() == npc.getUID()) {
 				Quest quest = QuestManager.getQuest(profile.getProgress()
 						.getQuestName());
 				Messaging.send(quest.getCompletedText());
@@ -94,7 +86,7 @@ public class Quester extends Toggleable implements Clickable {
 							+ "Right click to accept.");
 				}
 			} else {
-				QuestManager.assignQuest(this.npc, player, quests.peek());
+				QuestManager.assignQuest(npc, player, quests.peek());
 				Messaging.send(player, getQuest(quests.peek())
 						.getAcceptanceText());
 			}
@@ -133,5 +125,15 @@ public class Quester extends Toggleable implements Clickable {
 
 	public boolean hasQuests() {
 		return this.quests == null ? false : this.quests.size() > 0;
+	}
+
+	@Override
+	public Saveable getProperties() {
+		return new QuesterProperties();
+	}
+
+	@Override
+	public Object getCommands() {
+		return new QuesterCommands();
 	}
 }

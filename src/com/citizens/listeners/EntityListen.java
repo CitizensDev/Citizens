@@ -102,7 +102,7 @@ public class EntityListen extends EntityListener implements Listener {
 				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
 						target, MessageUtils.getText(npc, target));
 				Bukkit.getServer().getPluginManager().callEvent(textEvent);
-				Quester quester = npc.getToggleable("quester");
+				Quester quester = npc.getType("quester");
 				if (quester != null && quester.hasQuests()) {
 				} else if (textEvent.isCancelled()) {
 				} else if (!textEvent.getNPC().getNPCData().isLookClose()) {

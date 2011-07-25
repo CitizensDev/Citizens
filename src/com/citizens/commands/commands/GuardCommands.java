@@ -53,7 +53,7 @@ public class GuardCommands {
 			max = 1)
 	@CommandPermissions("guard.modify.type")
 	public static void type(CommandContext args, Player player, HumanNPC npc) {
-		Guard guard = npc.getToggleable("guard");
+		Guard guard = npc.getType("guard");
 		PathUtils.cancelTarget(npc);
 		if (args.getString(0).equalsIgnoreCase("bodyguard")) {
 			if (!guard.isBodyguard()) {
@@ -90,7 +90,7 @@ public class GuardCommands {
 			max = 3)
 	public static void blacklist(CommandContext args, Player player,
 			HumanNPC npc) {
-		Guard guard = npc.getToggleable("guard");
+		Guard guard = npc.getType("guard");
 		switch (args.argsLength()) {
 		case 2:
 			player.sendMessage(ChatColor.GRAY
@@ -173,7 +173,7 @@ public class GuardCommands {
 			max = 2)
 	@CommandPermissions("guard.modify.radius")
 	public static void radius(CommandContext args, Player player, HumanNPC npc) {
-		Guard guard = npc.getToggleable("guard");
+		Guard guard = npc.getType("guard");
 		if (guard.isBouncer()) {
 			guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
@@ -194,7 +194,7 @@ public class GuardCommands {
 			max = 1)
 	@CommandPermissions("guard.modify.aggro")
 	public static void aggro(CommandContext args, Player player, HumanNPC npc) {
-		Guard guard = npc.getToggleable("guard");
+		Guard guard = npc.getType("guard");
 		guard.setAggressive(!guard.isAggressive());
 		if (guard.isAggressive()) {
 			player.sendMessage(StringUtils.wrap(npc.getName())

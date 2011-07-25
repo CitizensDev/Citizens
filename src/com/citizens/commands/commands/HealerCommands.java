@@ -43,7 +43,7 @@ public class HealerCommands {
 			max = 1)
 	@CommandPermissions("healer.use.status")
 	public static void status(CommandContext args, Player player, HumanNPC npc) {
-		Healer healer = npc.getToggleable("healer");
+		Healer healer = npc.getType("healer");
 		player.sendMessage(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
 						+ "'s Healer Status")));
@@ -64,7 +64,7 @@ public class HealerCommands {
 	@CommandPermissions("healer.modify.levelup")
 	public static void levelUp(CommandContext args, Player player, HumanNPC npc) {
 		if (EconomyHandler.useEconomy()) {
-			Healer healer = npc.getToggleable("healer");
+			Healer healer = npc.getType("healer");
 			int level = healer.getLevel();
 			int levelsUp = 1;
 			if (args.argsLength() == 2

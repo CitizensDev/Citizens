@@ -4,10 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.citizens.npcs.NPCTypeManager;
-import com.citizens.npctypes.interfaces.NPCPurchaser;
-import com.citizens.npctypes.interfaces.NPCType;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.CitizensNPC;
+import com.citizens.npctypes.CitizensNPCManager;
+import com.citizens.npctypes.Purchaser;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -42,7 +41,7 @@ public class ToggleCommands {
 		instance.header(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN
 						+ "NPC Toggle List <%x/%y>" + ChatColor.YELLOW));
-		for (String type : NPCTypeManager.getTypes().keySet()) {
+		for (String type : CitizensNPCManager.getTypes().keySet()) {
 			instance.push(ChatColor.GREEN
 					+ "    - "
 					+ StringUtils.wrap(StringUtils.capitalise(type
@@ -61,14 +60,14 @@ public class ToggleCommands {
 			max = 1)
 	public static void toggle(CommandContext args, Player player, HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
-		if (!NPCTypeManager.validType(type)) {
+		if (!CitizensNPCManager.validType(type)) {
 			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
 			return;
 		}
 		if (!PropertyManager.npcHasType(npc, type)) {
-			buyState(player, npc, NPCTypeManager.getType(type));
+			buyState(player, npc, CitizensNPCManager.getType(type));
 		} else {
-			toggleState(player, npc, NPCTypeManager.getType(type), false);
+			toggleState(player, npc, CitizensNPCManager.getType(type), false);
 		}
 	}
 
@@ -97,13 +96,13 @@ public class ToggleCommands {
 	 * @param register
 	 * @param toggleable
 	 */
-	private static void toggleState(Player player, HumanNPC npc, NPCType type,
-			boolean register) {
+	private static void toggleState(Player player, HumanNPC npc,
+			CitizensNPC type, boolean register) {
 		if (register) {
-			type.factory().create(npc).register();
+			type.getProperties().register(npc);
 		}
 		if (!npc.isType(type.getType())) {
-			npc.addType(type.getType(), type.factory());
+			npc.addType(type.getType());
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now a " + type.getType() + "!");
 		} else {
@@ -119,8 +118,8 @@ public class ToggleCommands {
 	 * @param player
 	 * @param toggleable
 	 */
-	private static void buyState(Player player, HumanNPC npc, NPCType type) {
-		NPCPurchaser purchaser = type.getPurchaser();
+	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
+		Purchaser purchaser = type.getPurchaser();
 		String toggle = type.getType();
 		if (!purchaser.hasPermission(player, toggle)) {
 			Messaging.send(player, npc,
@@ -150,15 +149,14 @@ public class ToggleCommands {
 	 */
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
-			for (NPCType t : NPCTypeManager.getTypes().values()) {
-				if (!npc.isType(t.getType())) {
-					toggleState(player, npc, t, false);
+			for (CitizensNPC type : npc.types()) {
+				if (!npc.isType(type.getType())) {
+					toggleState(player, npc, type, false);
 				}
 			}
 		} else {
-			for (Toggleable t : npc.types()) {
-				toggleState(player, npc, NPCTypeManager.getType(t.getType()),
-						false);
+			for (CitizensNPC type : npc.types()) {
+				toggleState(player, npc, type, false);
 			}
 		}
 	}

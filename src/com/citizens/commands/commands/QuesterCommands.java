@@ -42,7 +42,7 @@ public class QuesterCommands {
 			max = 2)
 	@CommandPermissions("quester.modify.assignquest")
 	public static void assign(CommandContext args, Player player, HumanNPC npc) {
-		Quester quester = npc.getToggleable("quester");
+		Quester quester = npc.getType("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
@@ -65,7 +65,7 @@ public class QuesterCommands {
 			max = 2)
 	@CommandPermissions("quester.modify.removequest")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
-		Quester quester = npc.getToggleable("quester");
+		Quester quester = npc.getType("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");

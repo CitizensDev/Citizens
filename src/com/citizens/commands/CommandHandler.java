@@ -2,13 +2,8 @@ package com.citizens.commands;
 
 import com.citizens.Citizens;
 import com.citizens.commands.commands.BasicCommands;
-import com.citizens.commands.commands.BlacksmithCommands;
-import com.citizens.commands.commands.GuardCommands;
-import com.citizens.commands.commands.HealerCommands;
 import com.citizens.commands.commands.ToggleCommands;
-import com.citizens.commands.commands.TraderCommands;
 import com.citizens.commands.commands.WaypointCommands;
-import com.citizens.commands.commands.WizardCommands;
 
 public class CommandHandler {
 	/**
@@ -17,16 +12,16 @@ public class CommandHandler {
 	 * @return
 	 */
 	public static void registerCommands() {
+		// TODO remove commented code when modularization is complete
 		Citizens.commands.register(BasicCommands.class);
-		Citizens.commands.register(BlacksmithCommands.class);
-		Citizens.commands.register(GuardCommands.class);
-		Citizens.commands.register(HealerCommands.class);
-		// Citizens.commands.register(LandlordCommands.class);
+		// Citizens.commands.register(BlacksmithCommands.class);
+		// Citizens.commands.register(GuardCommands.class);
+		// Citizens.commands.register(HealerCommands.class);
 		// Citizens.commands.register(QuestCommands.class);
 		// Citizens.commands.register(QuesterCommands.class);
 		Citizens.commands.register(ToggleCommands.class);
-		Citizens.commands.register(TraderCommands.class);
+		// Citizens.commands.register(TraderCommands.class);
 		Citizens.commands.register(WaypointCommands.class);
-		Citizens.commands.register(WizardCommands.class);
+		// Citizens.commands.register(WizardCommands.class);
 	}
 }

@@ -46,7 +46,7 @@ public class WizardManager {
 	 */
 	public static boolean teleportPlayer(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
-			player.teleport(((Wizard) npc.getToggleable("wizard"))
+			player.teleport(((Wizard) npc.getType("wizard"))
 					.getCurrentLocation());
 			return true;
 		}
@@ -61,7 +61,7 @@ public class WizardManager {
 	 */
 	public static boolean changeTime(Player player, HumanNPC npc) {
 		long time = 0;
-		Wizard wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getType("wizard");
 		if (wizard.getTime().equals("day")) {
 			time = 5000;
 		} else if (wizard.getTime().equals("night")) {
@@ -87,7 +87,7 @@ public class WizardManager {
 	public static boolean spawnMob(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
 			player.getWorld().spawnCreature(player.getLocation(),
-					((Wizard) npc.getToggleable("wizard")).getMob());
+					((Wizard) npc.getType("wizard")).getMob());
 			return true;
 		}
 		return false;
@@ -114,7 +114,7 @@ public class WizardManager {
 	 * @param mana
 	 */
 	public static void increaseMana(HumanNPC npc, int mana) {
-		Wizard wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getType("wizard");
 		if (wizard != null
 				&& wizard.getMana() + mana < Constant.MaxWizardMana.toInt()) {
 			wizard.setMana(wizard.getMana() + mana);
@@ -129,7 +129,7 @@ public class WizardManager {
 	 * @param mana
 	 */
 	public static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
-		Wizard wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getType("wizard");
 		if (wizard.hasUnlimitedMana()) {
 			return true;
 		}
@@ -155,7 +155,7 @@ public class WizardManager {
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			if (EconomyHandler.useEconomy()) {
 				boolean canSend = false;
-				Wizard wizard = npc.getToggleable("wizard");
+				Wizard wizard = npc.getType("wizard");
 				double paid = EconomyHandler.pay(op, player);
 				if (paid > 0 || EconomyHandler.isFree(player, op)) {
 					String msg = ChatColor.GREEN

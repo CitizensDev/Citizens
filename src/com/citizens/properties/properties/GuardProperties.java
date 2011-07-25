@@ -4,7 +4,6 @@ import java.util.Set;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Saveable;
-import com.citizens.npcs.NPCTypeManager;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
 import com.citizens.npctypes.guards.Guard;
 import com.citizens.properties.PropertyManager;
@@ -58,7 +57,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 			boolean is = npc.isType("guard");
 			setEnabled(npc, is);
 			if (is) {
-				Guard guard = npc.getToggleable("guard");
+				Guard guard = npc.getType("guard");
 				saveGuardType(npc.getUID(), guard.getGuardType());
 				saveBlacklist(npc.getUID(), guard.getBlacklist());
 				saveProtectionRadius(npc.getUID(), guard.getProtectionRadius());
@@ -70,8 +69,8 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("guard", NPCTypeManager.getFactory("guard"));
-			Guard guard = npc.getToggleable("guard");
+			npc.registerType("guard");
+			Guard guard = npc.getType("guard");
 			guard.setGuardType(getGuardType(npc.getUID()));
 			guard.setBlacklist(getBlacklist(npc.getUID()));
 			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));

@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.interfaces.Saveable;
-import com.citizens.npcs.NPCTypeManager;
 import com.citizens.npctypes.traders.Check;
 import com.citizens.npctypes.traders.ItemPrice;
 import com.citizens.npctypes.traders.Stockable;
@@ -115,7 +114,7 @@ public class TraderProperties extends PropertyManager implements Saveable {
 			boolean is = npc.isType("trader");
 			setEnabled(npc, is);
 			if (is) {
-				Trader trader = npc.getToggleable("trader");
+				Trader trader = npc.getType("trader");
 				saveUnlimited(npc.getUID(), trader.isUnlimited());
 				saveStockables(npc.getUID(), trader.getStocking());
 				saveBalance(npc.getUID(), npc.getBalance());
@@ -126,8 +125,8 @@ public class TraderProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("trader", NPCTypeManager.getFactory("trader"));
-			Trader trader = npc.getToggleable("trader");
+			npc.registerType("trader");
+			Trader trader = npc.getType("trader");
 			npc.setBalance(getBalance(npc.getUID()));
 			trader.setUnlimited(isUnlimited(npc.getUID()));
 			trader.setStocking(getStockables(npc.getUID()));

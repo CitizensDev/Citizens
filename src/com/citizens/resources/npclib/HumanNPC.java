@@ -12,11 +12,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.citizens.npcs.NPCData;
-import com.citizens.npctypes.interfaces.Clickable;
-import com.citizens.npctypes.interfaces.Damageable;
-import com.citizens.npctypes.interfaces.NPCFactory;
-import com.citizens.npctypes.interfaces.Targetable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.CitizensNPC;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.NPCAnimator.Animation;
 import com.citizens.waypoints.WaypointPath;
@@ -29,7 +25,7 @@ public class HumanNPC extends NPC {
 	private boolean paused;
 	private WaypointPath waypoints = new WaypointPath();
 
-	private final Map<String, Toggleable> types = new MapMaker().makeMap();
+	private final Map<String, CitizensNPC> types = new MapMaker().makeMap();
 
 	public HumanNPC(CraftNPC entity, int UID, String name) {
 		super(UID, name);
@@ -37,8 +33,8 @@ public class HumanNPC extends NPC {
 		this.mcEntity.npc = this;
 	}
 
-	public <T extends Toggleable> void addType(String type, NPCFactory factory) {
-		registerType(type, factory);
+	public <T extends CitizensNPC> void addType(String type) {
+		registerType(type);
 		PropertyManager.load(type, this);
 	}
 
@@ -51,13 +47,13 @@ public class HumanNPC extends NPC {
 		return this.types.get(type) != null;
 	}
 
-	public void registerType(String type, NPCFactory factory) {
-		Toggleable t = factory.create(this);
+	public void registerType(String type) {
+		CitizensNPC t = getType(type);
 		this.types.put(type, t);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getToggleable(String type) {
+	public <T> T getType(String type) {
 		return (T) this.types.get(type);
 	}
 
@@ -150,54 +146,44 @@ public class HumanNPC extends NPC {
 	}
 
 	public void callLeftClick(Player player, HumanNPC npc) {
-		for (Toggleable t : types.values()) {
-			if (t instanceof Clickable) {
-				((Clickable) t).onLeftClick(player, npc);
-			}
+		for (CitizensNPC t : types.values()) {
+			t.onLeftClick(player, npc);
 		}
 	}
 
 	public void callRightClick(Player player, HumanNPC npc) {
-		for (Toggleable t : types.values()) {
-			if (t instanceof Clickable) {
-				((Clickable) t).onRightClick(player, npc);
-			}
+		for (CitizensNPC t : types.values()) {
+			t.onRightClick(player, npc);
 		}
 	}
 
-	public Collection<Toggleable> types() {
+	public Collection<CitizensNPC> types() {
 		return this.types.values();
 	}
 
 	public boolean callDamageEvent(EntityDamageEvent event) {
 		boolean found = false;
-		for (Toggleable t : types.values()) {
-			if (t instanceof Damageable) {
-				((Damageable) t).onDamage(event);
-				if (!found) {
-					found = true;
-				}
+		for (CitizensNPC t : types.values()) {
+			t.onDamage(event);
+			if (!found) {
+				found = true;
 			}
 		}
 		return found;
 	}
 
 	public void callDeathEvent(EntityDeathEvent event) {
-		for (Toggleable t : types.values()) {
-			if (t instanceof Damageable) {
-				((Damageable) t).onDeath(event);
-			}
+		for (CitizensNPC t : types.values()) {
+			t.onDeath(event);
 		}
 	}
 
 	public boolean callTargetEvent(EntityTargetEvent event) {
 		boolean found = false;
-		for (Toggleable t : types.values()) {
-			if (t instanceof Targetable) {
-				((Targetable) t).onTarget(event);
-				if (!found) {
-					found = true;
-				}
+		for (CitizensNPC t : types.values()) {
+			t.onTarget(event);
+			if (!found) {
+				found = true;
 			}
 		}
 		return found;

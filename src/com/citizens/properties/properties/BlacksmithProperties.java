@@ -1,7 +1,6 @@
 package com.citizens.properties.properties;
 
 import com.citizens.interfaces.Saveable;
-import com.citizens.npcs.NPCTypeManager;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
 
@@ -18,8 +17,7 @@ public class BlacksmithProperties extends PropertyManager implements Saveable {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
-			npc.registerType("blacksmith",
-					NPCTypeManager.getFactory("blacksmith"));
+			npc.registerType("blacksmith");
 		}
 		saveState(npc);
 	}

@@ -1,6 +1,8 @@
 package com.citizens;
 
+import java.io.File;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,34 +21,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.citizens.SettingsManager.Constant;
-import com.citizens.commands.CommandHandler;
 import com.citizens.listeners.EntityListen;
 import com.citizens.listeners.PlayerListen;
 import com.citizens.listeners.ServerListen;
 import com.citizens.listeners.WorldListen;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
-import com.citizens.npcs.NPCTypeManager;
-import com.citizens.npctypes.blacksmiths.Blacksmith;
-import com.citizens.npctypes.guards.Guard;
+import com.citizens.npctypes.CitizensNPC;
+import com.citizens.npctypes.CitizensNPCLoader;
 import com.citizens.npctypes.guards.GuardTask;
-import com.citizens.npctypes.healers.Healer;
 import com.citizens.npctypes.healers.HealerTask;
-import com.citizens.npctypes.interfaces.NPCType;
-import com.citizens.npctypes.interfaces.OperationPurchaser;
-import com.citizens.npctypes.questers.Quester;
 import com.citizens.npctypes.questers.quests.QuestManager;
-import com.citizens.npctypes.traders.Trader;
-import com.citizens.npctypes.wizards.Wizard;
 import com.citizens.npctypes.wizards.WizardTask;
 import com.citizens.properties.PropertyManager;
-import com.citizens.properties.properties.BlacksmithProperties;
-import com.citizens.properties.properties.GuardProperties;
-import com.citizens.properties.properties.HealerProperties;
-import com.citizens.properties.properties.QuesterProperties;
-import com.citizens.properties.properties.TraderProperties;
 import com.citizens.properties.properties.UtilityProperties;
-import com.citizens.properties.properties.WizardProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.register.Method;
 import com.citizens.resources.sk89q.CitizensCommandsManager;
@@ -83,11 +71,11 @@ public class Citizens extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 
-		// Register NPC types.
-		registerTypes();
+		// Load NPC types.
+		loadNPCTypes();
 
 		// Register our commands.
-		CommandHandler.registerCommands();
+		// CommandHandler.registerCommands();
 
 		// Register our events.
 		new EntityListen().registerEvents();
@@ -266,23 +254,6 @@ public class Citizens extends JavaPlugin {
 		return false;
 	}
 
-	private void registerTypes() {
-		OperationPurchaser purchaser = new OperationPurchaser();
-		NPCTypeManager.registerType(new NPCType("blacksmith",
-				new BlacksmithProperties(), purchaser, Blacksmith.class),
-				true);
-		NPCTypeManager.registerType(new NPCType("guard", new GuardProperties(),
-				purchaser, Guard.class), true);
-		NPCTypeManager.registerType(new NPCType("healer",
-				new HealerProperties(), purchaser, Healer.class), true);
-		NPCTypeManager.registerType(new NPCType("quester",
-				new QuesterProperties(), purchaser, Quester.class), true);
-		NPCTypeManager.registerType(new NPCType("trader",
-				new TraderProperties(), purchaser, Trader.class), true);
-		NPCTypeManager.registerType(new NPCType("wizard",
-				new WizardProperties(), purchaser, Wizard.class), true);
-	}
-
 	private void setupNPCs() {
 		PropertyManager.getNPCProfiles().load();
 		StringBuilder UIDList = new StringBuilder();
@@ -368,5 +339,24 @@ public class Citizens extends JavaPlugin {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Load NPC types in the plugins/Citizens/types directory
+	 */
+	public void loadNPCTypes() {
+		File dir = new File(getDataFolder(), "types");
+		ArrayList<String> loaded = new ArrayList<String>();
+		dir.mkdir();
+		for (String f : dir.list()) {
+			if (f.contains(".jar")) {
+				CitizensNPC type = CitizensNPCLoader.loadNPCType(new File(dir,
+						f), this);
+				if (type != null) {
+					loaded.add(type.getType());
+				}
+			}
+		}
+		Messaging.log("NPC types loaded: " + loaded.toString());
 	}
 }

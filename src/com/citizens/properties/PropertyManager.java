@@ -54,20 +54,23 @@ public class PropertyManager {
 	}
 
 	public static void load(String type, HumanNPC npc) {
-		if (exists(npc) && get(type).getEnabled(npc))
+		if (exists(npc) && get(type).getEnabled(npc)) {
 			get(type).loadState(npc);
+		}
 	}
 
 	public static void save(HumanNPC npc) {
 		for (Saveable saveable : properties.values()) {
-			if (saveable.getEnabled(npc))
+			if (saveable.getEnabled(npc)) {
 				saveable.saveState(npc);
+			}
 		}
 	}
 
 	public static void save(String type, HumanNPC npc) {
-		if (exists(npc) && get(type).getEnabled(npc))
+		if (exists(npc) && get(type).getEnabled(npc)) {
 			get(type).saveState(npc);
+		}
 	}
 
 	public static void remove(HumanNPC npc) {

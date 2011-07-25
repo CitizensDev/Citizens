@@ -9,16 +9,18 @@ import org.bukkit.entity.Player;
 import com.citizens.Citizens;
 import com.citizens.Permission;
 import com.citizens.SettingsManager.Constant;
+import com.citizens.commands.commands.WizardCommands;
 import com.citizens.economy.EconomyHandler.Operation;
-import com.citizens.npctypes.interfaces.Clickable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.wizards.WizardManager.WizardMode;
+import com.citizens.properties.properties.WizardProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
-public class Wizard extends Toggleable implements Clickable {
+public class Wizard extends CitizensNPC {
 	private String locations = "";
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
@@ -28,15 +30,6 @@ public class Wizard extends Toggleable implements Clickable {
 	private String time = "morning";
 	private CreatureType mob = CreatureType.CHICKEN;
 	private boolean unlimitedMana = false;
-
-	/**
-	 * Wizard NPC object
-	 * 
-	 * @param npc
-	 */
-	public Wizard(HumanNPC npc) {
-		super(npc);
-	}
 
 	/**
 	 * Addds a location to the main location sting.
@@ -85,7 +78,7 @@ public class Wizard extends Toggleable implements Clickable {
 	 * @return
 	 */
 	public void cycle(HumanNPC npc, WizardMode mode) {
-		Wizard wizard = npc.getToggleable("wizard");
+		Wizard wizard = npc.getType("wizard");
 		switch (mode) {
 		case TELEPORT:
 			currentLocation++;
@@ -289,7 +282,7 @@ public class Wizard extends Toggleable implements Clickable {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == Constant.WizardInteractItem
 					.toInt()) {
-				Wizard wizard = npc.getToggleable("wizard");
+				Wizard wizard = npc.getType("wizard");
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
 				switch (mode) {
@@ -331,7 +324,7 @@ public class Wizard extends Toggleable implements Clickable {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
-			Wizard wizard = npc.getToggleable("wizard");
+			Wizard wizard = npc.getType("wizard");
 			if (Citizens.validateTool("items.wizards.interact-item", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				WizardMode mode = wizard.getMode();
@@ -380,5 +373,15 @@ public class Wizard extends Toggleable implements Clickable {
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}
+	}
+
+	@Override
+	public Saveable getProperties() {
+		return new WizardProperties();
+	}
+
+	@Override
+	public Object getCommands() {
+		return new WizardCommands();
 	}
 }

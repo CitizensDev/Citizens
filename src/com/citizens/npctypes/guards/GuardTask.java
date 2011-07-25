@@ -31,7 +31,7 @@ public class GuardTask implements Runnable {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
 			HumanNPC npc = entry.getValue();
 			if (npc.isType("guard")) {
-				Guard guard = npc.getToggleable("guard");
+				Guard guard = npc.getType("guard");
 				if (guard.isAttacking() && !npc.getHandle().hasTarget()) {
 					GuardManager.returnToBase(npc);
 					guard.setAttacking(false);
@@ -155,7 +155,7 @@ public class GuardTask implements Runnable {
 
 	private void cacheActions(HumanNPC npc, LivingEntity entity, int entityID,
 			String name) {
-		Guard guard = npc.getToggleable("guard");
+		Guard guard = npc.getType("guard");
 		if (!guard.isAggressive()) {
 			return;
 		}
@@ -168,7 +168,7 @@ public class GuardTask implements Runnable {
 					mob = true;
 				}
 				if (isBlacklisted(npc, name)) {
-					attack(entity, guard);
+					attack(entity, npc);
 					guard.setAttacking(true);
 				}
 				cached.set("attemptedEntry");
@@ -180,7 +180,7 @@ public class GuardTask implements Runnable {
 			} else if (CreatureType.fromName(StringUtils.capitalise(name
 					.toLowerCase())) != null) {
 				if (isBlacklisted(npc, name)) {
-					attack(entity, guard);
+					attack(entity, npc);
 				}
 			}
 		}
@@ -196,8 +196,7 @@ public class GuardTask implements Runnable {
 	 * @param entity
 	 */
 	private boolean isBlacklisted(HumanNPC npc, String name) {
-		return ((Guard) npc.getToggleable("guard")).getBlacklist().contains(
-				name);
+		return ((Guard) npc.getType("guard")).getBlacklist().contains(name);
 	}
 
 	/**
@@ -206,8 +205,8 @@ public class GuardTask implements Runnable {
 	 * @param player
 	 * @param npc
 	 */
-	private void attack(LivingEntity entity, Guard guard) {
-		guard.target(entity);
+	private void attack(LivingEntity entity, HumanNPC npc) {
+		((Guard) npc.getType("guard")).target(entity, npc);
 	}
 
 	public static void checkRespawn(Player player) {

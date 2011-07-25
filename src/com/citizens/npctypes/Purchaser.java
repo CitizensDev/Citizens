@@ -1,10 +1,10 @@
-package com.citizens.npctypes.interfaces;
+package com.citizens.npctypes;
 
 import org.bukkit.entity.Player;
 
 import com.citizens.resources.npclib.HumanNPC;
 
-public interface NPCPurchaser {
+public interface Purchaser {
 	public boolean hasPermission(Player player, String type);
 
 	public boolean canBuy(Player player, String type);

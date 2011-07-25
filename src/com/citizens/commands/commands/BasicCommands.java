@@ -19,7 +19,7 @@ import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.npctypes.CitizensNPC;
 import com.citizens.properties.PropertyManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
@@ -203,7 +203,7 @@ public class BasicCommands {
 			sender.sendMessage(ChatColor.RED + "None");
 			return;
 		}
-		for (Toggleable t : npc.types()) {
+		for (CitizensNPC t : npc.types()) {
 			sender.sendMessage(ChatColor.GRAY + "    - "
 					+ StringUtils.wrap(t.getType()));
 		}
@@ -606,7 +606,7 @@ public class BasicCommands {
 		}
 	}
 
-	@CommandRequirements(requireSelected = true)
+	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "setowner [name]",

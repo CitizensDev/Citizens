@@ -6,27 +6,20 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
 import com.citizens.SettingsManager.Constant;
+import com.citizens.commands.commands.HealerCommands;
 import com.citizens.economy.EconomyHandler;
 import com.citizens.economy.EconomyHandler.Operation;
-import com.citizens.npctypes.interfaces.Clickable;
-import com.citizens.npctypes.interfaces.Toggleable;
+import com.citizens.interfaces.Saveable;
+import com.citizens.npctypes.CitizensNPC;
+import com.citizens.properties.properties.HealerProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
 
-public class Healer extends Toggleable implements Clickable {
+public class Healer extends CitizensNPC {
 	private int health = 10;
 	private int level = 1;
-
-	/**
-	 * Healer NPC object
-	 * 
-	 * @param npc
-	 */
-	public Healer(HumanNPC npc) {
-		super(npc);
-	}
 
 	public int getHealth() {
 		return health;
@@ -77,7 +70,7 @@ public class Healer extends Toggleable implements Clickable {
 	 */
 	private void buyHeal(Player player, HumanNPC npc, Operation op,
 			boolean healPlayer) {
-		Healer healer = npc.getToggleable("healer");
+		Healer healer = npc.getType("healer");
 		if (!EconomyHandler.useEconomy() || EconomyHandler.canBuy(op, player)) {
 			double paid = EconomyHandler.pay(op, player);
 			if (paid > 0) {
@@ -110,7 +103,7 @@ public class Healer extends Toggleable implements Clickable {
 	// TODO Make this less ugly to look at
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		Healer healer = npc.getToggleable("healer");
+		Healer healer = npc.getType("healer");
 		int playerHealth = player.getHealth();
 		int healerHealth = healer.getHealth();
 		if (Permission.generic(player, "citizens.healer.use.heal")) {
@@ -171,6 +164,12 @@ public class Healer extends Toggleable implements Clickable {
 	}
 
 	@Override
-	public void onRightClick(Player player, HumanNPC npc) {
+	public Saveable getProperties() {
+		return new HealerProperties();
+	}
+
+	@Override
+	public Object getCommands() {
+		return new HealerCommands();
 	}
 }
