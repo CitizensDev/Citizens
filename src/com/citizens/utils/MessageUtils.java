@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyManager;
 import com.citizens.economy.EconomyOperation;
-import com.citizens.economy.Payment;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.traders.ItemPrice;
@@ -139,10 +138,11 @@ public class MessageUtils {
 	 */
 	public static String getPriceMessage(ItemPrice price, ChatColor colour) {
 		String message = "";
-		message += colour
-				+ StringUtils.wrap(
-						EconomyManager.getCurrency(new Payment(price), colour),
-						colour);
+		// message += colour
+		// + StringUtils.wrap(
+		// EconomyManager.getCurrency(new Payment(price), colour),
+		// colour);
+		// TODO
 		return message;
 	}
 

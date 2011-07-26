@@ -66,30 +66,6 @@ public class ItemInterface {
 	}
 
 	/**
-	 * Checks the inventory of a player for having enough for a payment.
-	 * 
-	 * @param payment
-	 * @param player
-	 * @return
-	 */
-	public static boolean hasEnough(Payment payment, Player player) {
-		int current = 0;
-		if (payment.getItem().getAmount() <= 0
-				|| payment.getItem().getTypeId() == 0) {
-			return true;
-		}
-		for (ItemStack i : player.getInventory().getContents()) {
-			if (i != null && i.getTypeId() == payment.getItem().getTypeId()) {
-				current += i.getAmount();
-				if (current >= payment.getPrice()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Gets the item currency from an operation.
 	 * 
 	 * @param op
@@ -111,17 +87,6 @@ public class ItemInterface {
 			EconomyOperation op) {
 		return ChatColor.stripColor(MessageUtils.getStackString(new ItemStack(
 				op.getItemCurrencyID(), getBlacksmithPrice(op, player))));
-	}
-
-	/**
-	 * Get the currency using a payment
-	 * 
-	 * @param payment
-	 * @param colour
-	 * @return
-	 */
-	public static String getCurrency(Payment payment, ChatColor colour) {
-		return MessageUtils.getStackString(payment.getItem(), colour);
 	}
 
 	/**
@@ -168,39 +133,6 @@ public class ItemInterface {
 			count += 1;
 		}
 		return itemPrice;
-	}
-
-	/**
-	 * Pays for a payment from the player's inventory.
-	 * 
-	 * @param player
-	 * @param payment
-	 * @param slot
-	 * @return
-	 */
-	public static double pay(Player player, Payment payment, int slot) {
-		int currencyID = payment.getItem().getTypeId();
-		double current = payment.getPrice();
-		if (current <= 0) {
-			return current;
-		}
-		int count = 0;
-		if (slot != -1) {
-			current = decreaseItemStack(player, currencyID, current, slot);
-		}
-		if (current <= 0) {
-			return payment.getPrice();
-		}
-		for (ItemStack item : player.getInventory().getContents()) {
-			if (item != null) {
-				current = decreaseItemStack(player, currencyID, current, count);
-				if (current <= 0) {
-					break;
-				}
-			}
-			count += 1;
-		}
-		return payment.getPrice();
 	}
 
 	/**

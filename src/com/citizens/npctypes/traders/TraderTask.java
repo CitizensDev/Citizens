@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.citizens.economy.EconomyManager;
-import com.citizens.economy.Payment;
 import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.traders.TraderManager.Mode;
 import com.citizens.resources.npclib.HumanNPC;
@@ -164,9 +162,9 @@ public class TraderTask implements Runnable {
 		// price is 5 stone
 		ItemStack buying = stockable.getStocking().clone();
 		// TODO replace old Payment code with EconomyOperation code
-		//EconomyManager.pay(new Payment(stockable.getPrice()), player, -1);
+		// EconomyManager.pay(new Payment(stockable.getPrice()), player, -1);
 		if (mode != Mode.INFINITE) {
-			//EconomyManager.pay(new Payment(buying), npc, slot);
+			// EconomyManager.pay(new Payment(buying), npc, slot);
 		}
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
@@ -217,9 +215,9 @@ public class TraderTask implements Runnable {
 		}
 		ItemStack selling = stockable.getStocking().clone();
 		if (mode != Mode.INFINITE) {
-			//EconomyManager.pay(new Payment(stockable.getPrice()), npc, -1);
+			// EconomyManager.pay(new Payment(stockable.getPrice()), npc, -1);
 		}
-		//EconomyManager.pay(new Payment(selling), player, slot);
+		// EconomyManager.pay(new Payment(selling), player, slot);
 		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
 		if (mode != Mode.INFINITE) {
 			unsold = npc.getInventory().addItem(selling);
@@ -263,26 +261,16 @@ public class TraderTask implements Runnable {
 	private boolean checkMiscellaneous(PlayerInventory inv,
 			Stockable stockable, boolean buying) {
 		ItemStack stocking = stockable.getStocking();
-		/*if (buying) {
-			if (!EconomyManager.canBuy(new Payment(stocking), npc)) {
-				sendNoMoneyMessage(stocking, true);
-				return true;
-			}
-			if (!EconomyManager.canBuy(new Payment(stockable.getPrice()),
-					player)) {
-				sendNoMoneyMessage(stocking, false);
-				return true;
-			}
-		} else {
-			if (!EconomyManager.canBuy(new Payment(stocking), player)) {
-				sendNoMoneyMessage(stocking, true);
-				return true;
-			}
-			if (!EconomyManager.canBuy(new Payment(stockable.getPrice()), npc)) {
-				sendNoMoneyMessage(stocking, false);
-				return true;
-			}
-		}*/
+		/*
+		 * if (buying) { if (!EconomyManager.canBuy(new Payment(stocking), npc))
+		 * { sendNoMoneyMessage(stocking, true); return true; } if
+		 * (!EconomyManager.canBuy(new Payment(stockable.getPrice()), player)) {
+		 * sendNoMoneyMessage(stocking, false); return true; } } else { if
+		 * (!EconomyManager.canBuy(new Payment(stocking), player)) {
+		 * sendNoMoneyMessage(stocking, true); return true; } if
+		 * (!EconomyManager.canBuy(new Payment(stockable.getPrice()), npc)) {
+		 * sendNoMoneyMessage(stocking, false); return true; } }
+		 */
 		return false;
 	}
 

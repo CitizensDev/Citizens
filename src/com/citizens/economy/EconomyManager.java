@@ -1,6 +1,5 @@
 package com.citizens.economy;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -100,23 +99,6 @@ public class EconomyManager {
 				return ServerEconomyInterface.getRemainder(op, player);
 			} else {
 				return ItemInterface.getRemainder(op, player);
-			}
-		}
-		return "0";
-	}
-
-	/**
-	 * Gets the currency of a payment (economy-plugin currency or item name).
-	 * 
-	 * @param payment
-	 * @return
-	 */
-	public static String getCurrency(Payment payment, ChatColor colour) {
-		if (useEconomy) {
-			if (payment.isEconomyPlugin() && useEconPlugin()) {
-				return ServerEconomyInterface.format(payment.getPrice());
-			} else {
-				return ItemInterface.getCurrency(payment, colour);
 			}
 		}
 		return "0";
