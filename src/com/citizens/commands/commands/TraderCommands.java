@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.Payment;
 import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.traders.Check;
 import com.citizens.npctypes.traders.ItemPrice;
@@ -93,57 +92,40 @@ public class TraderCommands implements CommandHandler {
 						+ "Invalid balance change amount entered.");
 				return;
 			}
-			/*if (args.getString(1).contains("g")) {
-				if (EconomyManager.canBuy(new Payment(amount, true), player)) {
-					EconomyManager.pay(new Payment(-amount, true), npc, -1);
-					EconomyManager.pay(new Payment(amount, true), player, -1);
-					player.sendMessage(ChatColor.GREEN
-							+ "Gave "
-							+ StringUtils.wrap(ServerEconomyInterface
-									.format(amount))
-							+ " to "
-							+ StringUtils.wrap(npc.getStrippedName())
-							+ ". Your balance is now "
-							+ StringUtils.wrap(ServerEconomyInterface
-									.getFormattedBalance(player.getName()),
-									ChatColor.GREEN) + ".");
-				} else {
-					player.sendMessage(ChatColor.RED
-							+ "You don't have enough money for that! Need "
-							+ StringUtils.wrap(ServerEconomyInterface
-									.format(amount
-											- ServerEconomyInterface
-													.getBalance(player
-															.getName())),
-									ChatColor.RED) + " more.");
-				}
-			} else if (args.getString(1).contains("t")) {
-				if (EconomyManager.canBuy(new Payment(amount, true), npc)) {
-					EconomyManager.pay(new Payment(amount, true), npc, -1);
-					EconomyManager.pay(new Payment(-amount, true), player, -1);
-					player.sendMessage(ChatColor.GREEN
-							+ "Took "
-							+ StringUtils.wrap(ServerEconomyInterface
-									.format(amount))
-							+ " from "
-							+ StringUtils.wrap(npc.getStrippedName())
-							+ ". Your balance is now "
-							+ StringUtils.wrap(ServerEconomyInterface
-									.getFormattedBalance(player.getName()))
-							+ ".");
-				} else {
-					player.sendMessage(ChatColor.RED
-							+ "The trader doesn't have enough money for that! It needs "
-							+ StringUtils.wrap(
-									ServerEconomyInterface.format(amount
-											- npc.getBalance()), ChatColor.RED)
-							+ " more in its balance.");
-				}
-			} else {
-				player.sendMessage(ChatColor.RED + "Invalid argument type "
-						+ StringUtils.wrap(args.getString(1), ChatColor.RED)
-						+ ".");
-			}*/
+			/*
+			 * if (args.getString(1).contains("g")) { if
+			 * (EconomyManager.canBuy(new Payment(amount, true), player)) {
+			 * EconomyManager.pay(new Payment(-amount, true), npc, -1);
+			 * EconomyManager.pay(new Payment(amount, true), player, -1);
+			 * player.sendMessage(ChatColor.GREEN + "Gave " +
+			 * StringUtils.wrap(ServerEconomyInterface .format(amount)) + " to "
+			 * + StringUtils.wrap(npc.getStrippedName()) +
+			 * ". Your balance is now " +
+			 * StringUtils.wrap(ServerEconomyInterface
+			 * .getFormattedBalance(player.getName()), ChatColor.GREEN) + ".");
+			 * } else { player.sendMessage(ChatColor.RED +
+			 * "You don't have enough money for that! Need " +
+			 * StringUtils.wrap(ServerEconomyInterface .format(amount -
+			 * ServerEconomyInterface .getBalance(player .getName())),
+			 * ChatColor.RED) + " more."); } } else if
+			 * (args.getString(1).contains("t")) { if (EconomyManager.canBuy(new
+			 * Payment(amount, true), npc)) { EconomyManager.pay(new
+			 * Payment(amount, true), npc, -1); EconomyManager.pay(new
+			 * Payment(-amount, true), player, -1);
+			 * player.sendMessage(ChatColor.GREEN + "Took " +
+			 * StringUtils.wrap(ServerEconomyInterface .format(amount)) +
+			 * " from " + StringUtils.wrap(npc.getStrippedName()) +
+			 * ". Your balance is now " +
+			 * StringUtils.wrap(ServerEconomyInterface
+			 * .getFormattedBalance(player.getName())) + "."); } else {
+			 * player.sendMessage(ChatColor.RED +
+			 * "The trader doesn't have enough money for that! It needs " +
+			 * StringUtils.wrap( ServerEconomyInterface.format(amount -
+			 * npc.getBalance()), ChatColor.RED) + " more in its balance."); } }
+			 * else { player.sendMessage(ChatColor.RED +
+			 * "Invalid argument type " + StringUtils.wrap(args.getString(1),
+			 * ChatColor.RED) + "."); }
+			 */
 			break;
 		default:
 			Messaging.sendError(player, "Incorrect syntax. See /trader help");
