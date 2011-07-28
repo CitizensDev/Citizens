@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.EconomyOperation;
 import com.citizens.npctypes.healers.Healer;
+import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
@@ -64,7 +64,7 @@ public class HealerCommands implements CommandHandler {
 			max = 2)
 	@CommandPermissions("healer.modify.levelup")
 	public static void levelUp(CommandContext args, Player player, HumanNPC npc) {
-		if (EconomyManager.useEconomy()) {
+		if (EconomyManager.useEconPlugin()) {
 			Healer healer = npc.getType("healer");
 			int level = healer.getLevel();
 			int levelsUp = 1;
@@ -79,20 +79,18 @@ public class HealerCommands implements CommandHandler {
 						+ StringUtils.wrap(levelsUp)
 						+ " (maximum 10 healer levels).");
 			}
-			EconomyOperation op = EconomyManager.getOperation("healer-levelup");
-			double paid = op.pay(player);
+			double paid = EconomyManager.pay(player,
+					UtilityProperties.getPrice("healer.levelup") * levelsUp);
 			if (paid > 0) {
 				if (level < 10) {
 					int newLevel = level + levelsUp;
 					healer.setLevel(newLevel);
 					player.sendMessage(ChatColor.GREEN
 							+ "You have leveled up the healer "
-							+ StringUtils.wrap(npc.getStrippedName())
-							+ " to "
-							+ StringUtils.wrap("Level " + newLevel)
-							+ " for "
-							+ StringUtils.wrap(EconomyManager.getPaymentType(
-									player, op, "" + paid * levelsUp) + "."));
+							+ StringUtils.wrap(npc.getStrippedName()) + " to "
+							+ StringUtils.wrap("Level " + newLevel) + " for "
+							+ StringUtils.wrap(EconomyManager.format(paid))
+							+ ".");
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " has reached the maximum level.");

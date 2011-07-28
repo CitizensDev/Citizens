@@ -3,7 +3,6 @@ package com.citizens.npctypes.questers.rewards;
 import org.bukkit.entity.Player;
 
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.questers.Reward;
 import com.citizens.npctypes.questers.quests.QuestManager.RewardType;
 
@@ -20,9 +19,9 @@ public class EconpluginReward implements Reward {
 	public void grant(Player player) {
 		if (EconomyManager.useEconPlugin()) {
 			if (this.take) {
-				ServerEconomyInterface.subtract(player.getName(), reward);
+				EconomyManager.subtract(player.getName(), reward);
 			} else {
-				ServerEconomyInterface.add(player.getName(), reward);
+				EconomyManager.add(player.getName(), reward);
 			}
 		}
 
@@ -45,7 +44,7 @@ public class EconpluginReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take ? ServerEconomyInterface.getBalance(player.getName())
-				- reward >= 0 : true;
+		return take ? EconomyManager.getBalance(player.getName()) - reward >= 0
+				: true;
 	}
 }

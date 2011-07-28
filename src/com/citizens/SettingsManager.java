@@ -15,7 +15,9 @@ public class SettingsManager {
 	public static final Map<String, Object> economyDefaults = writeEconomySettings();
 
 	private enum Config {
-		ECONOMY, MOB, SETTINGS;
+		ECONOMY,
+		MOB,
+		SETTINGS;
 
 		private final List<Constant> settings = new ArrayList<Constant>();
 
@@ -108,7 +110,6 @@ public class SettingsManager {
 				false),
 		UseSuperPerms(Config.SETTINGS, "general.use-bukkit-permissions", false),
 		// economy.yml
-		UseEconomy(Config.ECONOMY, "economy.use-economy", true),
 		UseEconPlugin(Config.ECONOMY, "economy.use-econplugin", false),
 		// mobs.yml
 		EvilNPCTameItem(Config.MOB, "evil.items.tame-item", 354),
@@ -233,9 +234,7 @@ public class SettingsManager {
 		nodes.put("economy.use-economy", true);
 		nodes.put("economy.use-econplugin", false);
 		for (String type : Citizens.loadedTypes) {
-			nodes.put("prices." + type + ".creation.item", 10);
-			nodes.put("prices." + type + ".creation.item-currency-id", 37);
-			nodes.put("prices." + type + ".creation.econplugin", 100);
+			nodes.put("prices." + type + ".creation", 100);
 			for (Entry<String, Object> entry : CitizensNPCManager.getType(type)
 					.getDefaultSettings().entrySet()) {
 				nodes.put(entry.getKey(), entry.getValue());

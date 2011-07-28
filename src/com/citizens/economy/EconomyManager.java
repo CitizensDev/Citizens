@@ -3,14 +3,15 @@ package com.citizens.economy;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.citizens.Citizens;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.properties.properties.UtilityProperties;
 
 public class EconomyManager {
-	private static boolean useEconomy = Constant.UseEconomy.toBoolean();
 	private static boolean serverEconomyEnabled = false;
 	private static boolean useServerEconomy = Constant.UseEconPlugin
 			.toBoolean();
+	public static final String addendum = ".econplugin";
 
 	public static final String[] materialAddendums = { ".misc", ".wood",
 			".gold", ".stone", ".iron", ".diamond", ".leather", ".chainmail" };
@@ -25,83 +26,28 @@ public class EconomyManager {
 	}
 
 	/**
-	 * A helper method to check if economy is currently enabled.
-	 * 
-	 * @return
-	 */
-	public static boolean useEconomy() {
-		return useEconomy;
-	}
-
-	/**
 	 * A helper method that checks a few variables for whether economy-plugins
-	 * should be enabled. (is using economy-plugins enabled? is economy enabled?
-	 * is an economy-plugin loaded?)
+	 * should be enabled. (is using economy-plugins enabled? is an
+	 * economy-plugin loaded?)
 	 * 
 	 * @return
 	 */
 	public static boolean useEconPlugin() {
-		return (useServerEconomy && useEconomy && serverEconomyEnabled);
-	}
-
-	/**
-	 * Pay a price for a blacksmith operation
-	 * 
-	 * @param player
-	 * @param op
-	 * @return
-	 */
-	public static double payBlacksmith(Player player, EconomyOperation op) {
-		if (useEconomy) {
-			if (useEconPlugin()) {
-				return ServerEconomyInterface.payBlacksmith(player, op);
-			} else {
-				return ItemInterface.payBlacksmith(player, op);
-			}
-		}
-		return 0;
+		return (useServerEconomy && serverEconomyEnabled);
 	}
 
 	/**
 	 * Gets what item ID or economy-plugin currency is being used for an
 	 * operation.
 	 * 
-	 * @param player
-	 * @param op
 	 * @param amount
 	 * @return
 	 */
-	public static String getPaymentType(Player player, EconomyOperation op,
-			String amount) {
-		if (useEconomy) {
-			if (useEconPlugin()) {
-				return ServerEconomyInterface.format(amount);
-			} else {
-				if (op.getNPCType().equals("blacksmith")) {
-					return ItemInterface.getBlacksmithCurrency(player, op);
-				}
-				return ItemInterface.getCurrency(op);
-			}
+	public static String getPaymentType(String amount) {
+		if (useEconPlugin()) {
+			return format(amount);
 		}
 		return "None";
-	}
-
-	/**
-	 * Gets what is necessary to complete an operation.
-	 * 
-	 * @param op
-	 * @param player
-	 * @return
-	 */
-	public static String getRemainder(EconomyOperation op, Player player) {
-		if (useEconomy) {
-			if (useEconPlugin()) {
-				return ServerEconomyInterface.getRemainder(op, player);
-			} else {
-				return ItemInterface.getRemainder(op, player);
-			}
-		}
-		return "0";
 	}
 
 	/**
@@ -135,10 +81,125 @@ public class EconomyManager {
 		return 0;
 	}
 
-	public static EconomyOperation getOperation(String path) {
-		return new EconomyOperation(path, "basic",
-				UtilityProperties.getCurrencyID(path),
-				UtilityProperties.getItemPrice(path),
-				UtilityProperties.getEconPluginPrice(path));
+	/**
+	 * Uses the economy-plugin methods to check whether a player has enough in
+	 * their account to pay.
+	 * 
+	 * @param name
+	 * @param amount
+	 * @return
+	 */
+	public static boolean playerHasEnough(String name, double amount) {
+		return Citizens.economy.hasAccount(name)
+				&& Citizens.economy.getAccount(name).hasEnough(amount);
+	}
+
+	/**
+	 * Gets an economy-plugin balance.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static double getBalance(String name) {
+		if (Citizens.economy.hasAccount(name)) {
+			return Citizens.economy.getAccount(name).balance();
+		}
+		return -1;
+	}
+
+	public static String getFormattedBalance(String name) {
+		return format(getBalance(name));
+	}
+
+	/**
+	 * Gets the iConomy currency.
+	 * 
+	 * @param amount
+	 * @return
+	 */
+	public static String format(String amount) {
+		return format(Double.parseDouble(amount));
+	}
+
+	/**
+	 * Gets the economy-plugin currency.
+	 * 
+	 * @param price
+	 * @return
+	 */
+	public static String format(double price) {
+		return Citizens.economy.format(price);
+	}
+
+	/**
+	 * Gets the remainder necessary for an operation to be completed.
+	 * 
+	 * @param op
+	 * @param player
+	 * @return
+	 */
+	public static String getRemainder(Player player, double totalPrice) {
+		if (useEconPlugin()) {
+			return ""
+					+ (totalPrice - Citizens.economy.getAccount(
+							player.getName()).balance());
+		}
+		return "0";
+	}
+
+	/**
+	 * Checks whether the player has enough money for an operation.
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
+	public static boolean hasEnough(Player player, double price) {
+		if (useEconPlugin()) {
+			return playerHasEnough(player.getName(), price);
+		}
+		return true;
+	}
+
+	/**
+	 * Pays for an operation using the player's money.
+	 * 
+	 * @param player
+	 * @param op
+	 * @return
+	 */
+	public static double pay(Player player, double price) {
+		subtract(player.getName(), price);
+		return price;
+	}
+
+	/**
+	 * Add money to a player's account
+	 * 
+	 * @param name
+	 * @param price
+	 */
+	public static void add(String name, double price) {
+		Citizens.economy.getAccount(name).add(price);
+	}
+
+	/**
+	 * Subtract money from a player's account
+	 * 
+	 * @param name
+	 * @param price
+	 */
+	public static void subtract(String name, double price) {
+		Citizens.economy.getAccount(name).subtract(price);
+	}
+
+	/**
+	 * Get whether or not an operation is free
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static boolean isFree(String path) {
+		return UtilityProperties.getPrice(path) <= 0;
 	}
 }

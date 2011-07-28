@@ -34,22 +34,8 @@ public class UtilityProperties {
 		return mobs;
 	}
 
-	public static int getItemPrice(String operation) {
-		return economy.getInt("prices." + operation + ".item.");
-	}
-
-	public static int getItemPriceExtended(String operation, String extension) {
-		return economy.getInt("prices." + operation + ".item." + extension);
-	}
-
-	public static double getEconPluginPrice(String operation) {
-		return economy.getDouble("prices." + operation + ".econplugin.");
-	}
-
-	public static double getEconPluginPriceExtended(String operation,
-			String extension) {
-		return economy.getDouble("prices." + operation + ".econplugin."
-				+ extension);
+	public static double getPrice(String path) {
+		return economy.getDouble("prices." + path);
 	}
 
 	public static int getCurrencyID(String string) {

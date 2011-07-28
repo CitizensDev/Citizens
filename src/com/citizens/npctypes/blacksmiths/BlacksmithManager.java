@@ -1,11 +1,12 @@
 package com.citizens.npctypes.blacksmiths;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.EconomyOperation;
+import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
@@ -43,17 +44,24 @@ public class BlacksmithManager {
 	 * @param npc
 	 * @param op
 	 */
-	public static void buyRepair(Player player, HumanNPC npc,
-			EconomyOperation op) {
-		if (!EconomyManager.useEconomy() || op.canBuy(player)) {
+	public static void buyRepair(Player player, HumanNPC npc, String repairType) {
+		if (EconomyManager.hasEnough(player,
+				getBlacksmithPrice(player, repairType))) {
 			ItemStack item = player.getItemInHand();
 			if (item.getDurability() > 0) {
-				double paid = op.pay(player);
-				if (paid > 0 || op.isFree()) {
+				double paid = EconomyManager.pay(player,
+						getBlacksmithPrice(player, repairType));
+				if (paid > 0
+						|| EconomyManager
+								.isFree("blacksmith."
+										+ repairType
+										+ "."
+										+ EconomyManager.materialAddendums[EconomyManager
+												.getBlacksmithIndex(item)])) {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " has repaired your item for "
-							+ StringUtils.wrap(EconomyManager.getPaymentType(
-									player, op, "" + paid)) + ".");
+							+ StringUtils.wrap(EconomyManager.format(paid))
+							+ ".");
 					item.setDurability((short) 0);
 					player.setItemInHand(item);
 				}
@@ -62,9 +70,29 @@ public class BlacksmithManager {
 						+ MessageUtils.getMaterialName(item.getTypeId())
 						+ ChatColor.RED + " is already fully repaired.");
 			}
-		} else if (EconomyManager.useEconomy()) {
+		} else {
 			player.sendMessage(ChatColor.RED
 					+ "You do not have enough to repair that.");
 		}
+	}
+
+	/**
+	 * Get the price for a blacksmith operation
+	 * 
+	 * @param player
+	 * @param repairType
+	 * @return
+	 */
+	public static double getBlacksmithPrice(Player player, String repairType) {
+		ItemStack item = player.getItemInHand();
+		short maxDurability = Material.getMaterial(item.getTypeId())
+				.getMaxDurability();
+		double price = (maxDurability - (maxDurability - item.getDurability()))
+				* UtilityProperties.getPrice("blacksmith."
+						+ repairType
+						+ "."
+						+ EconomyManager.materialAddendums[EconomyManager
+								.getBlacksmithIndex(item)]);
+		return price;
 	}
 }

@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.EconomyOperation;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.traders.ItemPrice;
@@ -90,18 +89,18 @@ public class MessageUtils {
 	/**
 	 * Formats the not enough money message for an operation.
 	 * 
-	 * @param op
 	 * @param player
+	 * @param path
 	 * @return
 	 */
-	public static String getNoMoneyMessage(EconomyOperation op, Player player) {
+	public static String getNoMoneyMessage(Player player, String path) {
 		String message;
 		message = ChatColor.RED
 				+ "You need "
-				+ StringUtils
-						.wrap(EconomyManager.getPaymentType(player, op,
-								EconomyManager.getRemainder(op, player)),
-								ChatColor.RED) + " more to do that.";
+				+ StringUtils.wrap(
+						EconomyManager.format(EconomyManager.getRemainder(
+								player, UtilityProperties.getPrice(path))),
+						ChatColor.RED) + " more to do that.";
 		return message;
 	}
 
@@ -109,21 +108,22 @@ public class MessageUtils {
 	 * Formats the paid message for an operation.
 	 * 
 	 * @param player
-	 * @param op
+	 * @param npcType
+	 * @param path
 	 * @param npcName
 	 * @param useType
 	 * @return
 	 */
-	public static String getPaidMessage(Player player, EconomyOperation op,
-			String npcName, boolean useType) {
+	public static String getPaidMessage(Player player, String npcType,
+			String path, String npcName, boolean useType) {
 		String message;
 		message = ChatColor.GREEN
 				+ "Paid "
-				+ StringUtils.wrap(EconomyManager.getPaymentType(player, op, ""
-						+ op.getEconPluginPrice())) + " for ";
+				+ StringUtils.wrap(EconomyManager.format(UtilityProperties
+						.getPrice(path)) + " for ");
 		if (useType) {
 			message += StringUtils.wrap(npcName) + " to become a "
-					+ StringUtils.wrap(op.getNPCType()) + ".";
+					+ StringUtils.wrap(npcType) + ".";
 		} else {
 			message += StringUtils.wrap(npcName) + ".";
 		}

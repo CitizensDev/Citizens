@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.traders.Check;
 import com.citizens.npctypes.traders.ItemPrice;
 import com.citizens.npctypes.traders.Stockable;
@@ -73,7 +72,7 @@ public class TraderCommands implements CommandHandler {
 			if (Permission.generic(player, "citizens.trader.use.showmoney")) {
 				player.sendMessage(StringUtils.wrap(npc.getName())
 						+ " has "
-						+ StringUtils.wrap(ServerEconomyInterface.format(npc
+						+ StringUtils.wrap(EconomyManager.format(npc
 								.getBalance())) + ".");
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);

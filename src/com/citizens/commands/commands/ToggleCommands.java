@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.EconomyOperation;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.CitizensNPCManager;
 import com.citizens.properties.PropertyManager;
+import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
 import com.citizens.resources.sk89q.CommandContext;
@@ -128,20 +128,21 @@ public class ToggleCommands implements CommandHandler {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
 		}
-		EconomyOperation op = EconomyManager.getOperation(toggle + "-create");
-		if (op.canBuy(player)) {
-			double paid = op.pay(player);
+		if (EconomyManager.hasEnough(player,
+				UtilityProperties.getPrice(toggle + ".creation"))) {
+			double paid = EconomyManager.pay(player,
+					UtilityProperties.getPrice(toggle + ".creation"));
 			if (paid > 0) {
 				Messaging.send(
 						player,
 						npc,
-						MessageUtils.getPaidMessage(player, op,
-								npc.getStrippedName(), true));
+						MessageUtils.getPaidMessage(player, toggle, toggle
+								+ ".creation", npc.getStrippedName(), true));
 			}
 			toggleState(player, npc, type, true);
 		} else {
-			Messaging.send(player, npc,
-					MessageUtils.getNoMoneyMessage(op, player));
+			Messaging.send(player, npc, MessageUtils.getNoMoneyMessage(player,
+					toggle + ".creation"));
 		}
 	}
 

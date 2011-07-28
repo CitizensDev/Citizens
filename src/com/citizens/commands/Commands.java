@@ -12,16 +12,8 @@ public class Commands {
 	 * @return
 	 */
 	public static void registerCommands() {
-		// TODO remove commented code when modularization is complete
 		Citizens.commands.register(BasicCommands.class);
-		// Citizens.commands.register(BlacksmithCommands.class);
-		// Citizens.commands.register(GuardCommands.class);
-		// Citizens.commands.register(HealerCommands.class);
-		// Citizens.commands.register(QuestCommands.class);
-		// Citizens.commands.register(QuesterCommands.class);
 		Citizens.commands.register(ToggleCommands.class);
-		// Citizens.commands.register(TraderCommands.class);
 		Citizens.commands.register(WaypointCommands.class);
-		// Citizens.commands.register(WizardCommands.class);
 	}
 }

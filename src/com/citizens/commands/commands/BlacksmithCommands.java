@@ -8,9 +8,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
-import com.citizens.economy.EconomyOperation;
-import com.citizens.economy.ItemInterface;
-import com.citizens.economy.ServerEconomyInterface;
 import com.citizens.npctypes.blacksmiths.BlacksmithManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -51,33 +48,27 @@ public class BlacksmithCommands implements CommandHandler {
 	@CommandPermissions("blacksmith.use.status")
 	public static void cost(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
-		String op = "";
+		String repairType = "";
 		if (BlacksmithManager.validateArmor(item)) {
-			op = "blacksmith-armorrepair";
+			repairType = "armorrepair";
 		} else if (BlacksmithManager.validateTool(item)) {
-			op = "blacksmith-toolrepair";
+			repairType = "toolrepair";
 		}
-		if (op.isEmpty()) {
+		if (repairType.isEmpty()) {
 			Messaging.sendError(player,
 					MessageUtils.getMaterialName(item.getTypeId())
 							+ " is not a repairable item.");
 			return;
 		}
-		EconomyOperation ecoOp = EconomyManager.getOperation(op);
-		if (EconomyManager.useEconomy()) {
-			double price = ItemInterface.getBlacksmithPrice(ecoOp, player);
-			if (EconomyManager.useEconPlugin()) {
-				price = ServerEconomyInterface
-						.getBlacksmithPrice(player, ecoOp);
-			}
+		if (EconomyManager.useEconPlugin()) {
+			double price = BlacksmithManager.getBlacksmithPrice(player,
+					repairType);
 			player.sendMessage(ChatColor.GREEN
 					+ "Item: "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(item
 							.getTypeId())));
-			player.sendMessage(ChatColor.GREEN
-					+ "Cost: "
-					+ StringUtils.wrap(EconomyManager.getPaymentType(player,
-							ecoOp, "" + price)));
+			player.sendMessage(ChatColor.GREEN + "Cost: "
+					+ StringUtils.wrap(EconomyManager.format(price)));
 			player.sendMessage(ChatColor.GREEN
 					+ "Durability Remaining: "
 					+ StringUtils.wrap(Material.getMaterial(item.getTypeId())

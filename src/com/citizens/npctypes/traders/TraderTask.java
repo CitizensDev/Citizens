@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.citizens.economy.ServerEconomyInterface;
+import com.citizens.economy.EconomyManager;
 import com.citizens.npctypes.traders.TraderManager.Mode;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
@@ -243,7 +243,7 @@ public class TraderTask implements Runnable {
 			}
 		} else {
 			double price = stockable.getPrice().getPrice();
-			ServerEconomyInterface.add(player.getName(), price);
+			EconomyManager.add(player.getName(), price);
 		}
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
