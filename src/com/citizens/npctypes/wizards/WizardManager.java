@@ -152,13 +152,14 @@ public class WizardManager {
 	 * @param op
 	 */
 	public static void buy(Player player, HumanNPC npc, String op) {
-		if (EconomyManager.hasEnough(player, UtilityProperties.getPrice(op))) {
+		if (EconomyManager.hasEnough(player, UtilityProperties.getPrice(op))
+				|| !EconomyManager.useEconPlugin()) {
 			boolean canSend = false;
 			Wizard wizard = npc.getType("wizard");
-			double paid = EconomyManager.pay(player,
-					UtilityProperties.getPrice(op));
-			String msg = ChatColor.GREEN + "Paid "
-					+ StringUtils.wrap(EconomyManager.format(paid));
+			String msg = ChatColor.GREEN
+					+ "Paid "
+					+ StringUtils.wrap(EconomyManager.format(EconomyManager
+							.pay(player, UtilityProperties.getPrice(op))));
 			if (op.equals("wizard.teleport")) {
 				msg += " for a teleport to "
 						+ StringUtils.wrap(wizard.getCurrentLocationName())

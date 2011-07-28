@@ -169,8 +169,11 @@ public class EconomyManager {
 	 * @return
 	 */
 	public static double pay(Player player, double price) {
-		subtract(player.getName(), price);
-		return price;
+		if (useEconPlugin()) {
+			subtract(player.getName(), price);
+			return price;
+		}
+		return 0;
 	}
 
 	/**

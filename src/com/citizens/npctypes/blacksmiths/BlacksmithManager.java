@@ -46,7 +46,8 @@ public class BlacksmithManager {
 	 */
 	public static void buyRepair(Player player, HumanNPC npc, String repairType) {
 		if (EconomyManager.hasEnough(player,
-				getBlacksmithPrice(player, repairType))) {
+				getBlacksmithPrice(player, repairType))
+				|| !EconomyManager.useEconPlugin()) {
 			ItemStack item = player.getItemInHand();
 			if (item.getDurability() > 0) {
 				double paid = EconomyManager.pay(player,

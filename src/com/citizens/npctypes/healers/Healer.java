@@ -75,10 +75,11 @@ public class Healer extends CitizensNPC {
 	private void buyHeal(Player player, HumanNPC npc, boolean healPlayer) {
 		Healer healer = npc.getType("healer");
 		if (EconomyManager.hasEnough(player,
-				UtilityProperties.getPrice("healer.heal"))) {
+				UtilityProperties.getPrice("healer.heal"))
+				|| !EconomyManager.useEconPlugin()) {
 			double paid = EconomyManager.pay(player,
 					UtilityProperties.getPrice("healer.heal"));
-			if (paid > 0) {
+			if (paid > 0 || EconomyManager.isFree("healer.heal")) {
 				int playerHealth = 0;
 				int healerHealth = 0;
 				String msg = StringUtils.wrap(npc.getStrippedName());

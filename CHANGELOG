@@ -60,3 +60,7 @@ By fullwall, aPunch, and NeonMaster
 -replaced '/npc id' and '/npc owner' commands with '/npc', which also shows the NPC's current type(s)
 -fixed renaming an NPC resetting its toggled types
 -changed '/blacksmith uses' to '/blacksmith status', now shows cost of repairing your in-hand item
+
+--- v1.1 ---
+-Citizens is now modular! You can download the full package or a customized ZIP file at www.citizensnpcs.net/download
+-removed item economy, if no economy plugin is detected, everything is free
