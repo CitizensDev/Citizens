@@ -6,9 +6,10 @@ Supports:
 -CraftBukkit 1000
 -Permissions 2.7.x and 3.x
 -PermissionsBukkit 1.x
--iConomy 4 & 5
--BOSEconomy 0.6.2
+-iConomy 4, 5, & 6
+-BOSEconomy 6 & 7
 -EssentialsEco 2.4.x
+-MultiCurrency
 
 Licensing:
 Read the LICENSE file for the Citizens license.

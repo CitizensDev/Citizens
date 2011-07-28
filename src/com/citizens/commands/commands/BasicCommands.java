@@ -235,14 +235,18 @@ public class BasicCommands implements CommandHandler {
 		int UID = NPCManager.register(firstArg, player.getLocation(),
 				player.getName());
 		if (EconomyManager.useEconPlugin()) {
-			if (EconomyManager.hasEnough(player, UtilityProperties.getPrice("basic.creation"))) {
-				double paid = EconomyManager.pay(player, UtilityProperties.getPrice("basic.creation"));
+			if (EconomyManager.hasEnough(player,
+					UtilityProperties.getPrice("basic.creation"))) {
+				double paid = EconomyManager.pay(player,
+						UtilityProperties.getPrice("basic.creation"));
 				if (paid > 0) {
-					player.sendMessage(MessageUtils.getPaidMessage(player, "basic", "basic.creation",
-							NPCManager.get(UID).getStrippedName(), false));
+					player.sendMessage(MessageUtils.getPaidMessage(player,
+							"basic", "basic.creation", NPCManager.get(UID)
+									.getStrippedName(), false));
 				}
 			} else {
-				player.sendMessage(MessageUtils.getNoMoneyMessage(player, "basic.creation"));
+				player.sendMessage(MessageUtils.getNoMoneyMessage(player,
+						"basic.creation"));
 				return;
 			}
 		}

@@ -22,9 +22,7 @@ import com.iConomy.util.Messaging;
 
 public class PirateTask implements Runnable {
 	public enum LootType {
-		INVENTORY,
-		CHEST,
-		ECONOMY_PLUGIN;
+		INVENTORY, CHEST, ECONOMY_PLUGIN;
 	}
 
 	private final Random random = new Random();

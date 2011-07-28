@@ -15,9 +15,7 @@ public class SettingsManager {
 	public static final Map<String, Object> economyDefaults = writeEconomySettings();
 
 	private enum Config {
-		ECONOMY,
-		MOB,
-		SETTINGS;
+		ECONOMY, MOB, SETTINGS;
 
 		private final List<Constant> settings = new ArrayList<Constant>();
 

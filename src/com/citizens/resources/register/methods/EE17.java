@@ -1,69 +1,69 @@
 package com.citizens.resources.register.methods;
 
-import org.bukkit.plugin.Plugin;
-
-import com.citizens.resources.register.Method;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.api.Economy;
 import com.earth2me.essentials.api.NoLoanPermittedException;
 import com.earth2me.essentials.api.UserDoesNotExistException;
 
+import com.citizens.resources.register.Method;
+
+import org.bukkit.plugin.Plugin;
+
+/**
+ * Essentials 17 Implementation of Method
+ * 
+ * @author Nijikokun <nijikokun@shortmail.com> (@nijikokun)
+ * @author Snowleo
+ * @author Acrobot
+ * @author KHobbits
+ * @copyright (c) 2011
+ * @license AOL license <http://aol.nexua.org>
+ */
 public class EE17 implements Method {
 	private Essentials Essentials;
 
-	@Override
 	public Essentials getPlugin() {
 		return this.Essentials;
 	}
 
-	@Override
 	public String getName() {
-		return "EssentialsEco";
+		return "Essentials";
 	}
 
-	@Override
 	public String getVersion() {
 		return "2.2";
 	}
 
-	@Override
 	public String format(double amount) {
 		return Economy.format(amount);
 	}
 
-	@Override
 	public boolean hasBanks() {
 		return false;
 	}
 
-	@Override
 	public boolean hasBank(String bank) {
 		return false;
 	}
 
-	@Override
 	public boolean hasAccount(String name) {
 		return Economy.playerExists(name);
 	}
 
-	@Override
 	public boolean hasBankAccount(String bank, String name) {
 		return false;
 	}
 
-	@Override
 	public MethodAccount getAccount(String name) {
 		if (!hasAccount(name))
 			return null;
 		return new EEcoAccount(name);
 	}
 
-	@Override
 	public MethodBankAccount getBankAccount(String bank, String name) {
 		return null;
 	}
 
-	@Override
 	public boolean isCompatible(Plugin plugin) {
 		try {
 			Class.forName("com.earth2me.essentials.api.Economy");
@@ -75,19 +75,17 @@ public class EE17 implements Method {
 				&& plugin instanceof Essentials;
 	}
 
-	@Override
 	public void setPlugin(Plugin plugin) {
 		Essentials = (Essentials) plugin;
 	}
 
 	public class EEcoAccount implements MethodAccount {
-		private final String name;
+		private String name;
 
 		public EEcoAccount(String name) {
 			this.name = name;
 		}
 
-		@Override
 		public double balance() {
 			Double balance = 0.0;
 
@@ -102,7 +100,6 @@ public class EE17 implements Method {
 			return balance;
 		}
 
-		@Override
 		public boolean set(double amount) {
 			try {
 				Economy.setMoney(name, amount);
@@ -121,7 +118,6 @@ public class EE17 implements Method {
 			return true;
 		}
 
-		@Override
 		public boolean add(double amount) {
 			try {
 				Economy.add(name, amount);
@@ -140,7 +136,6 @@ public class EE17 implements Method {
 			return true;
 		}
 
-		@Override
 		public boolean subtract(double amount) {
 			try {
 				Economy.subtract(name, amount);
@@ -159,7 +154,6 @@ public class EE17 implements Method {
 			return true;
 		}
 
-		@Override
 		public boolean multiply(double amount) {
 			try {
 				Economy.multiply(name, amount);
@@ -178,7 +172,6 @@ public class EE17 implements Method {
 			return true;
 		}
 
-		@Override
 		public boolean divide(double amount) {
 			try {
 				Economy.divide(name, amount);
@@ -197,7 +190,6 @@ public class EE17 implements Method {
 			return true;
 		}
 
-		@Override
 		public boolean hasEnough(double amount) {
 			try {
 				return Economy.hasEnough(name, amount);
@@ -210,7 +202,6 @@ public class EE17 implements Method {
 			return false;
 		}
 
-		@Override
 		public boolean hasOver(double amount) {
 			try {
 				return Economy.hasMore(name, amount);
@@ -223,7 +214,6 @@ public class EE17 implements Method {
 			return false;
 		}
 
-		@Override
 		public boolean hasUnder(double amount) {
 			try {
 				return Economy.hasLess(name, amount);
@@ -236,7 +226,6 @@ public class EE17 implements Method {
 			return false;
 		}
 
-		@Override
 		public boolean isNegative() {
 			try {
 				return Economy.isNegative(name);
@@ -249,7 +238,6 @@ public class EE17 implements Method {
 			return false;
 		}
 
-		@Override
 		public boolean remove() {
 			return false;
 		}

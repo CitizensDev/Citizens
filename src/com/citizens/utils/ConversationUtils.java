@@ -61,9 +61,7 @@ public class ConversationUtils {
 	}
 
 	public enum ChatType {
-		EXIT("exit", "finish", "end"),
-		UNDO("undo"),
-		RESTART("restart");
+		EXIT("exit", "finish", "end"), UNDO("undo"), RESTART("restart");
 		private final String[] possibilities;
 
 		ChatType(String... string) {

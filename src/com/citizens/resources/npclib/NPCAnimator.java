@@ -14,12 +14,7 @@ public class NPCAnimator {
 	private final PathNPC npc;
 
 	public enum Animation {
-		ACT_HURT,
-		CROUCH,
-		SLEEP,
-		SWING_ARM,
-		UNSLEEP,
-		UNCROUCH;
+		ACT_HURT, CROUCH, SLEEP, SWING_ARM, UNSLEEP, UNCROUCH;
 	}
 
 	public NPCAnimator(PathNPC pathNPC) {
