@@ -232,8 +232,13 @@ public class StringUtils {
 	}
 
 	public static String format(Enum<?> toFormat) {
+		return format(toFormat, true);
+	}
+
+	public static String format(Enum<?> toFormat, boolean capitalise) {
 		String[] split = toFormat.name().toLowerCase().split("_");
-		split[0] = capitalise(split[0]);
+		if (capitalise)
+			split[0] = capitalise(split[0]);
 		return Joiner.on(" ").join(split);
 	}
 }

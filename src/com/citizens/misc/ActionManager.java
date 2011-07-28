@@ -1,6 +1,7 @@
 package com.citizens.misc;
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionManager {
@@ -45,21 +46,18 @@ public class ActionManager {
 	}
 
 	public static class CachedAction {
-		private final HashMap<String, Boolean> actions = new HashMap<String, Boolean>();
+		private final Set<String> actions = new HashSet<String>();
 
 		public boolean has(String string) {
-			if (actions.get(string) == null) {
-				actions.put(string, false);
-			}
-			return actions.get(string);
+			return actions.contains(string);
 		}
 
 		public void reset(String string) {
-			actions.put(string, false);
+			actions.remove(string);
 		}
 
 		public void set(String string) {
-			actions.put(string, true);
+			actions.add(string);
 		}
 	}
 }

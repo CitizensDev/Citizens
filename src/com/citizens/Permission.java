@@ -1,5 +1,6 @@
 package com.citizens;
 
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Server;
@@ -116,5 +117,15 @@ public class Permission {
 					user.addPermission(reward);
 			}
 		}
+	}
+
+	public static List<com.platymuus.bukkit.permissions.Group> getGroups(
+			Player player) {
+		if (permissionsEnabled) {
+			if (useSuperperms) {
+				return superperms.getPlayerInfo(player.getName()).getGroups();
+			}
+		}
+		return null;
 	}
 }
