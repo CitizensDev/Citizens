@@ -1,15 +1,14 @@
 package com.citizens.properties.properties;
 
-import java.util.Set;
-
 import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Saveable;
-import com.citizens.npctypes.guards.GuardManager.GuardType;
+import com.citizens.npctypes.guards.FlagInfo;
+import com.citizens.npctypes.guards.FlagList;
+import com.citizens.npctypes.guards.FlagList.FlagType;
 import com.citizens.npctypes.guards.Guard;
+import com.citizens.npctypes.guards.GuardManager.GuardType;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.HumanNPC;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Sets;
 
 public class GuardProperties extends PropertyManager implements Saveable {
 	private static final String isGuard = ".guard.toggle";
@@ -43,12 +42,32 @@ public class GuardProperties extends PropertyManager implements Saveable {
 		profiles.setString(UID + type, guardType.name());
 	}
 
-	private Set<String> getBlacklist(int UID) {
-		return Sets.newHashSet(profiles.getString(UID + blacklist).split(","));
+	private void loadFlags(Guard guard, int UID) {
+		String root = UID + blacklist, path = root;
+		if (!profiles.pathExists(root))
+			return;
+		FlagList flags = guard.getFlags();
+		boolean isSafe;
+		int priority;
+		for (String key : profiles.getKeys(root)) {
+			path = root + "." + key;
+			isSafe = profiles.getBoolean(path + ".safe");
+			priority = profiles.getInt(path + ".priority");
+			flags.addFlag(FlagType.valueOf(profiles.getString(path + ".type")),
+					FlagInfo.newInstance(key, priority, isSafe));
+		}
 	}
 
-	private void saveBlacklist(int UID, Set<String> mobs) {
-		profiles.setString(UID + blacklist, Joiner.on(",").join(mobs.toArray()));
+	private void saveFlags(int UID, FlagList flags) {
+		String root = UID + blacklist, path = root;
+		for (FlagType type : FlagType.values()) {
+			for (FlagInfo info : flags.getByType(type).values()) {
+				path = root + "." + info.getName();
+				profiles.setString(path + ".type", type.name());
+				profiles.setBoolean(path + ".safe", info.isSafe());
+				profiles.setInt(path + ".priority", info.priority());
+			}
+		}
 	}
 
 	@Override
@@ -59,7 +78,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 			if (is) {
 				Guard guard = npc.getType("guard");
 				saveGuardType(npc.getUID(), guard.getGuardType());
-				saveBlacklist(npc.getUID(), guard.getBlacklist());
+				saveFlags(npc.getUID(), guard.getFlags());
 				saveProtectionRadius(npc.getUID(), guard.getProtectionRadius());
 				saveAggressive(npc.getUID(), guard.isAggressive());
 			}
@@ -71,8 +90,8 @@ public class GuardProperties extends PropertyManager implements Saveable {
 		if (getEnabled(npc)) {
 			npc.registerType("guard");
 			Guard guard = npc.getType("guard");
+			loadFlags(guard, npc.getUID());
 			guard.setGuardType(getGuardType(npc.getUID()));
-			guard.setBlacklist(getBlacklist(npc.getUID()));
 			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));
 			guard.setAggressive(isAggressive(npc.getUID()));
 		}

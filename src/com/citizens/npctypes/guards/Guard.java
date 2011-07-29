@@ -1,8 +1,6 @@
 package com.citizens.npctypes.guards;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,7 +29,7 @@ public class Guard extends CitizensNPC {
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
 	private GuardType guardType = GuardType.NULL;
-	private Set<String> blacklist = new HashSet<String>();
+	private final FlagList flags = new FlagList();
 	private double radius = 10;
 
 	/**
@@ -116,21 +114,8 @@ public class Guard extends CitizensNPC {
 	 * 
 	 * @return
 	 */
-	public Set<String> getBlacklist() {
-		return blacklist;
-	}
-
-	/**
-	 * Set the list of unallowed mobs for a bodyguard's zone
-	 * 
-	 * @param mobBlacklist
-	 */
-	public void setBlacklist(Set<String> blacklist) {
-		this.blacklist = blacklist;
-	}
-
-	public boolean isBlacklisted(String name) {
-		return this.blacklist.contains("all") || this.blacklist.contains(name);
+	public FlagList getFlags() {
+		return flags;
 	}
 
 	/**

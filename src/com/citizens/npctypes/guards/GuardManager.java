@@ -1,9 +1,8 @@
 package com.citizens.npctypes.guards;
 
-import java.util.Set;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Player;
 
 import com.citizens.SettingsManager.Constant;
 import com.citizens.resources.npclib.HumanNPC;
@@ -34,56 +33,26 @@ public class GuardManager {
 	}
 
 	/**
-	 * Add a mob to guard's blacklist
-	 * 
-	 * @param guard
-	 * @param mob
-	 */
-	public static void addToBlacklist(Guard guard, String mob) {
-		Set<String> blacklist = guard.getBlacklist();
-		if (mob.equalsIgnoreCase("all")) {
-			for (CreatureType type : CreatureType.values()) {
-				if (!blacklist.contains(type.toString().toLowerCase())) {
-					blacklist.add(type.toString().toLowerCase()
-							.replace("_", ""));
-				}
-			}
-			return;
-		}
-		blacklist.add(mob.toLowerCase());
-	}
-
-	/**
-	 * Remove a mob from a guard's blacklist
-	 * 
-	 * @param guard
-	 * @param mob
-	 */
-	public static void removeFromBlacklist(Guard guard, String mob) {
-		Set<String> blacklist = guard.getBlacklist();
-		if (mob.equalsIgnoreCase("all")) {
-			for (CreatureType type : CreatureType.values()) {
-				if (blacklist.contains(type.toString().toLowerCase())) {
-					blacklist.remove(type.toString().toLowerCase()
-							.replace("_", ""));
-				}
-			}
-			return;
-		}
-		blacklist.remove(mob.toLowerCase());
-	}
-
-	/**
 	 * Return a bouncer to its original position
+	 * 
+	 * @param guard
 	 * 
 	 * @param npc
 	 */
-	public static void returnToBase(HumanNPC npc) {
+	public static void returnToBase(Guard guard, HumanNPC npc) {
 		Location loc;
-		if (npc.getWaypoints().size() > 0) {
-			loc = npc.getWaypoints().current().getLocation();
+		if (guard.isBodyguard()) {
+			Player owner = Bukkit.getServer().getPlayer(npc.getOwner());
+			if (owner != null)
+				loc = owner.getLocation();
+			else
+				return;
 		} else {
-			loc = npc.getNPCData().getLocation();
+			if (npc.getWaypoints().size() > 0) {
+				loc = npc.getWaypoints().current().getLocation();
+			} else {
+				loc = npc.getNPCData().getLocation();
+			}
 		}
 		PathUtils.createPath(npc, loc, -1, -1,
 				Constant.PathfindingRange.toDouble());

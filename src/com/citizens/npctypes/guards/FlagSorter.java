@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -23,14 +24,28 @@ import com.google.common.collect.Lists;
 import com.platymuus.bukkit.permissions.Group;
 
 public class FlagSorter {
-	private final FlagsList list;
+	private final FlagList list;
 	private final Map<String, FlagInfo> groupMap = new HashMap<String, FlagInfo>();
 	private int lowestFound = 21;
 
-	public FlagSorter(FlagsList list) {
+	public FlagSorter(FlagList list) {
 		this.list = list;
 	}
 
+	private static final Function<Entity, LivingEntity> livingTransformer = new Function<Entity, LivingEntity>() {
+		@Override
+		public LivingEntity apply(Entity entity) {
+			return (LivingEntity) entity;
+		}
+	};
+	private static final Predicate<Entity> livingFilterer = new Predicate<Entity>() {
+		@Override
+		public boolean apply(Entity entity) {
+			return entity instanceof LivingEntity
+					&& !((LivingEntity) entity).isDead();
+		}
+
+	};
 	private final Predicate<Group> groupSorter = new Predicate<Group>() {
 		@Override
 		public boolean apply(Group group) {
@@ -161,5 +176,10 @@ public class FlagSorter {
 
 	private void reset() {
 		lowestFound = 21;
+	}
+
+	public List<LivingEntity> transformToLiving(List<Entity> entities) {
+		return ImmutableList.copyOf(Iterables.transform(
+				Iterables.filter(entities, livingFilterer), livingTransformer));
 	}
 }

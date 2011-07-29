@@ -1,5 +1,6 @@
 package com.citizens.npctypes.guards;
 
+
 public class FlagInfo {
 	private final int priority;
 	private final String name;
@@ -44,6 +45,10 @@ public class FlagInfo {
 			return false;
 		}
 		return true;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 
 	public static FlagInfo newInstance(String name) {
