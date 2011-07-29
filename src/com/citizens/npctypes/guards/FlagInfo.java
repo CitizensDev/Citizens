@@ -50,11 +50,19 @@ public class FlagInfo {
 		return newInstance(name, 1);
 	}
 
+	public static FlagInfo newInstance(String name, boolean safe) {
+		return newInstance(name, 1, safe);
+	}
+
 	public static FlagInfo newInstance(String name, int priority) {
 		return newInstance(name, priority, true);
 	}
 
 	public static FlagInfo newInstance(String name, int priority, boolean safe) {
+		if (priority < 1 || priority > 20) {
+			throw new IllegalArgumentException(
+					"priority must be between 1 and 20");
+		}
 		return new FlagInfo(name, priority, safe);
 	}
 }
