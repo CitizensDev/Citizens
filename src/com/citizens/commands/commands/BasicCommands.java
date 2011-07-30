@@ -38,13 +38,7 @@ import com.citizens.utils.StringUtils;
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands implements CommandHandler {
 
-	@Command(
-			aliases = "citizens",
-			usage = "",
-			desc = "view Citizens info",
-			modifiers = "",
-			min = 0,
-			max = 0)
+	@Command(aliases = "citizens", desc = "view Citizens info", max = 0)
 	@ServerCommand()
 	@CommandPermissions("admin.info")
 	@CommandRequirements()
@@ -182,13 +176,7 @@ public class BasicCommands implements CommandHandler {
 	}
 
 	@CommandRequirements(requireSelected = true)
-	@Command(
-			aliases = "npc",
-			usage = "",
-			desc = "view information for an NPC",
-			modifiers = "",
-			min = 0,
-			max = 0)
+	@Command(aliases = "npc", desc = "view information for an NPC", max = 0)
 	@CommandPermissions("basic.use.info")
 	public static void npc(CommandContext args, CommandSender sender,
 			HumanNPC npc) {

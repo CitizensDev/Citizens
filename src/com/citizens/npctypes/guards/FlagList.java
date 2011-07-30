@@ -1,5 +1,6 @@
 package com.citizens.npctypes.guards;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
 public class FlagList {
-	final Map<String, FlagInfo> players = Maps.newHashMap();
-	final Map<String, FlagInfo> groups = Maps.newHashMap();
-	final Map<String, FlagInfo> mobs = Maps.newHashMap();
+	private final Map<FlagType, HashMap<String, FlagInfo>> flags = Maps
+			.newEnumMap(FlagType.class);
 	final FlagSorter predicates = new FlagSorter(this);
 	private LivingEntity result;
 
@@ -52,23 +52,18 @@ public class FlagList {
 	}
 
 	public void addFlag(FlagType type, FlagInfo info) {
-		getByType(type).put(info.getName(), info);
+		if (type == FlagType.GROUP)
+			predicates.updateGroup(info);
+
+		getFlags(type).put(info.getName(), info);
 	}
 
 	public void removeFlag(FlagType type, String identifier) {
-		getByType(type).remove(identifier);
+		getFlags(type).remove(identifier);
 	}
 
-	public Map<String, FlagInfo> getByType(FlagType type) {
-		switch (type) {
-		case PLAYER:
-			return players;
-		case GROUP:
-			return groups;
-		case MOB:
-			return mobs;
-		}
-		return null;
+	public Map<String, FlagInfo> getFlags(FlagType type) {
+		return flags.get(type);
 	}
 
 	public enum FlagType {
@@ -76,4 +71,11 @@ public class FlagList {
 		MOB,
 		PLAYER;
 	}
+
+	public void addToAll(FlagInfo info) {
+		for (FlagType type : FlagType.values()) {
+			addFlag(type, info);
+		}
+	}
+
 }

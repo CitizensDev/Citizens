@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -14,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.citizens.CreatureTask;
 import com.citizens.Permission;
+import com.citizens.npctypes.guards.FlagList.FlagType;
 import com.citizens.utils.EntityUtils;
 import com.citizens.utils.StringUtils;
 import com.google.common.base.Function;
@@ -21,11 +21,17 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.TreeMultiset;
 import com.platymuus.bukkit.permissions.Group;
 
 public class FlagSorter {
+	// TODO: perhaps we should make a sorted copy as well of the base flags.
+	// Needs some cleaning up of code... perhaps less verbosity can be achieved.
+	// Optimisations are definitely possible.
 	private final FlagList list;
 	private final Map<String, FlagInfo> groupMap = new HashMap<String, FlagInfo>();
+	private final FlagType GROUPS = FlagType.GROUP, PLAYERS = FlagType.PLAYER,
+			MOBS = FlagType.MOB;
 	private int lowestFound = 21;
 
 	public FlagSorter(FlagList list) {
@@ -49,15 +55,16 @@ public class FlagSorter {
 	private final Predicate<Group> groupSorter = new Predicate<Group>() {
 		@Override
 		public boolean apply(Group group) {
-			return list.groups.containsKey(group.getName())
-					&& !list.groups.get(group.getName()).isSafe();
+			String name = group.getName().toLowerCase();
+			return getByType(GROUPS).containsKey(name)
+					&& !getByType(GROUPS).get(name).isSafe();
 		}
 	};
 
 	private final Function<Group, String> groupToString = new Function<Group, String>() {
 		@Override
 		public String apply(Group group) {
-			return group.getName();
+			return group.getName().toLowerCase();
 		}
 	};
 
@@ -73,33 +80,43 @@ public class FlagSorter {
 		@Override
 		public boolean apply(LivingEntity entity) {
 			if (CreatureTask.getCreature(entity) != null) {
-				return isTargetable(list.mobs, StringUtils.format(CreatureTask
-						.getCreature(entity).getType(), false));
+				String search = StringUtils.format(
+						CreatureTask.getCreature(entity).getType(), false);
+				if (isTargetable(getByType(MOBS), search)) {
+					updateLowest(get(getByType(MOBS), search));
+					return true;
+				}
+				return false;
 			} else if (entity instanceof Player) {
 				Player player = (Player) entity;
-				if (isTargetable(list.players, player.getName())) {
-					updateLowest(get(list.players, player.getName()));
+				String name = player.getName().toLowerCase();
+				if (isTargetable(getByType(PLAYERS), name)) {
+					updateLowest(get(getByType(PLAYERS), name));
 					return true;
 				} else {
-					if (groupMap.get(player.getName()) != null) {
+					if (!Permission.useSuperPerms()) {
+						return false;
+					}
+					if (groupMap.get(name) != null) {
 						return true;
 					}
 					List<String> transformed = ImmutableList.copyOf(Iterables
 							.transform(Iterables.filter(
 									Permission.getGroups(player), groupSorter),
 									groupToString));
-					TreeSet<FlagInfo> sorted = getSortedFlags(list.groups,
-							transformed);
+					TreeMultiset<FlagInfo> sorted = getSortedFlags(
+							getByType(GROUPS), transformed);
 					if (sorted.size() > 0) {
-						FlagInfo info = sorted.first();
-						groupMap.put(player.getName(), info);
+						FlagInfo info = sorted.elementSet().first();
+						groupMap.put(name, info);
 						updateLowest(info);
 					}
 					return sorted.size() == 0;
 				}
 			} else {
-				if (isTargetable(list.mobs, EntityUtils.getMonsterName(entity))) {
-					updateLowest(get(list.mobs,
+				if (isTargetable(getByType(MOBS),
+						EntityUtils.getMonsterName(entity))) {
+					updateLowest(get(getByType(MOBS),
 							EntityUtils.getMonsterName(entity)));
 					return true;
 				}
@@ -112,23 +129,50 @@ public class FlagSorter {
 		}
 	};
 
+	List<LivingEntity> getPossible(Iterable<LivingEntity> toProcess) {
+		List<LivingEntity> processed = Lists.newArrayList();
+		FlagInfo retrieved = null;
+		for (LivingEntity entity : toProcess) {
+			if (CreatureTask.getCreature(entity) != null) {
+				retrieved = getByType(MOBS).get(
+						StringUtils.format(CreatureTask.getCreature(entity)
+								.getType(), false));
+			} else if (entity instanceof Player) {
+				String name = ((Player) entity).getName().toLowerCase();
+				retrieved = getByType(PLAYERS).get(name) == null ? groupMap
+						.get(name) : getByType(PLAYERS).get(name);
+			} else {
+				retrieved = getByType(MOBS).get(
+						EntityUtils.getMonsterName(entity));
+			}
+			if (retrieved.priority() == lowestFound)
+				processed.add(entity);
+		}
+		reset();
+		return processed;
+	}
+
 	private void updateLowest(FlagInfo info) {
 		if (info.priority() < lowestFound) {
 			lowestFound = info.priority();
 		}
 	}
 
-	TreeSet<FlagInfo> getSortedFlags(Map<String, FlagInfo> process) {
+	private final Map<String, FlagInfo> getByType(FlagType type) {
+		return list.getFlags(type);
+	}
+
+	TreeMultiset<FlagInfo> getSortedFlags(Map<String, FlagInfo> process) {
 		return getSortedFlags(process.values());
 	}
 
-	TreeSet<FlagInfo> getSortedFlags(Collection<FlagInfo> process) {
-		TreeSet<FlagInfo> sorted = new TreeSet<FlagInfo>(priorityComparer);
+	TreeMultiset<FlagInfo> getSortedFlags(Collection<FlagInfo> process) {
+		TreeMultiset<FlagInfo> sorted = TreeMultiset.create(priorityComparer);
 		sorted.addAll(process);
 		return sorted;
 	}
 
-	TreeSet<FlagInfo> getSortedFlags(Map<String, FlagInfo> source,
+	TreeMultiset<FlagInfo> getSortedFlags(Map<String, FlagInfo> source,
 			Collection<String> toProcess) {
 		List<FlagInfo> processed = new ArrayList<FlagInfo>();
 		for (String string : toProcess) {
@@ -141,37 +185,9 @@ public class FlagSorter {
 	}
 
 	static boolean isTargetable(Map<String, FlagInfo> search, String key) {
+		if (search.containsKey("all"))
+			return !search.get("all").isSafe();
 		return search.containsKey(key) && !search.get(key).isSafe();
-	}
-
-	Predicate<LivingEntity> getSorter() {
-		return entitySorter;
-	}
-
-	Comparator<FlagInfo> getPriorityCompare() {
-		return priorityComparer;
-	}
-
-	List<LivingEntity> getPossible(Iterable<LivingEntity> toProcess) {
-		List<LivingEntity> processed = Lists.newArrayList();
-		FlagInfo retrieved = null;
-		for (LivingEntity entity : toProcess) {
-			if (CreatureTask.getCreature(entity) != null) {
-				retrieved = list.mobs.get(StringUtils.format(CreatureTask
-						.getCreature(entity).getType(), false));
-			} else if (entity instanceof Player) {
-				Player player = (Player) entity;
-				retrieved = list.players.get(player.getName()) == null ? groupMap
-						.get(player.getName()) : list.players.get(player
-						.getName());
-			} else {
-				retrieved = list.mobs.get(EntityUtils.getMonsterName(entity));
-			}
-			if (retrieved.priority() == lowestFound)
-				processed.add(entity);
-		}
-		reset();
-		return processed;
 	}
 
 	private void reset() {
@@ -182,4 +198,21 @@ public class FlagSorter {
 		return ImmutableList.copyOf(Iterables.transform(
 				Iterables.filter(entities, livingFilterer), livingTransformer));
 	}
+
+	Predicate<LivingEntity> getSorter() {
+		return entitySorter;
+	}
+
+	Comparator<FlagInfo> getPriorityCompare() {
+		return priorityComparer;
+	}
+
+	public void updateGroup(FlagInfo info) {
+		Group group = Permission.getGroup(info.getName());
+		for (String name : group.getPlayers()) {
+			if (groupMap.containsKey(name))
+				groupMap.put(name, info);
+		}
+	}
+
 }

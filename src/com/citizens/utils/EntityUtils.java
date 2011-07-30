@@ -18,6 +18,8 @@ import org.bukkit.entity.Squid;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
+import com.citizens.resources.npclib.creatures.CreatureNPCType;
+
 public class EntityUtils {
 	public static String getMonsterName(LivingEntity le) {
 		if (le instanceof Chicken) {
@@ -83,5 +85,15 @@ public class EntityUtils {
 			return CreatureType.ZOMBIE;
 		}
 		return null;
+	}
+
+	public static boolean validType(String name) {
+		return validType(name, false);
+	}
+
+	public static boolean validType(String name, boolean both) {
+		String formatted = name.toUpperCase().replace(" ", "_");
+		return CreatureType.fromName(formatted) != null
+				|| (both && CreatureNPCType.fromName(formatted) != null);
 	}
 }

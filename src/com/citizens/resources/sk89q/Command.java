@@ -53,7 +53,7 @@ public @interface Command {
 	 * same command label. The modifier determines which command to use based on
 	 * the first command argument.
 	 */
-	String[] modifiers();
+	String[] modifiers() default "";
 
 	/**
 	 * The minimum number of arguments. This should be 0 or above.

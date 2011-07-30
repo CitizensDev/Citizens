@@ -128,4 +128,17 @@ public class Permission {
 		}
 		return null;
 	}
+
+	public static com.platymuus.bukkit.permissions.Group getGroup(String name) {
+		if (permissionsEnabled) {
+			if (useSuperperms) {
+				return superperms.getGroup(name);
+			}
+		}
+		return null;
+	}
+
+	public static boolean useSuperPerms() {
+		return useSuperperms;
+	}
 }

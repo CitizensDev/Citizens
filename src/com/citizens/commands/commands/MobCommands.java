@@ -15,7 +15,6 @@ public class MobCommands implements CommandHandler {
 			aliases = "npcspawn",
 			usage = "npcspawn [type]",
 			desc = "spawn a mob npc",
-			modifiers = "",
 			min = 1,
 			max = 1)
 	@CommandPermissions("creature.spawn")

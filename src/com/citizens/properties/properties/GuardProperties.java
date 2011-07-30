@@ -61,7 +61,7 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	private void saveFlags(int UID, FlagList flags) {
 		String root = UID + blacklist, path = root;
 		for (FlagType type : FlagType.values()) {
-			for (FlagInfo info : flags.getByType(type).values()) {
+			for (FlagInfo info : flags.getFlags(type).values()) {
 				path = root + "." + info.getName();
 				profiles.setString(path + ".type", type.name());
 				profiles.setBoolean(path + ".safe", info.isSafe());

@@ -59,7 +59,7 @@ public class HealerCommands implements CommandHandler {
 			aliases = "healer",
 			usage = "level-up (levels)",
 			desc = "level-up a healer",
-			modifiers = "level-up",
+			modifiers = { "level-up", "lvl" },
 			min = 1,
 			max = 2)
 	@CommandPermissions("healer.modify.levelup")

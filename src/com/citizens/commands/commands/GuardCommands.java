@@ -1,9 +1,13 @@
 package com.citizens.commands.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
+import com.citizens.npctypes.guards.FlagInfo;
+import com.citizens.npctypes.guards.FlagList.FlagType;
 import com.citizens.npctypes.guards.Guard;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;
@@ -11,10 +15,12 @@ import com.citizens.resources.sk89q.CommandContext;
 import com.citizens.resources.sk89q.CommandPermissions;
 import com.citizens.resources.sk89q.CommandRequirements;
 import com.citizens.resources.sk89q.ServerCommand;
+import com.citizens.utils.EntityUtils;
 import com.citizens.utils.HelpUtils;
 import com.citizens.utils.Messaging;
 import com.citizens.utils.PathUtils;
 import com.citizens.utils.StringUtils;
+import com.platymuus.bukkit.permissions.Group;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -73,90 +79,77 @@ public class GuardCommands implements CommandHandler {
 		}
 	}
 
-	/*
-		@Command(
-				aliases = "guard",
-				usage = "blacklist (add|remove) (-g) (entry)",
-				desc = "control a guard's blacklist",
-				modifiers = { "blacklist", "bl" },
-				flags = "g",
-				min = 1,
-				max = 3)
-		public static void blacklist(CommandContext args, Player player,
-				HumanNPC npc) {
-			Guard guard = npc.getType("guard");
-			switch (args.argsLength()) {
-			case 2:
+	@Command(
+			aliases = "guard",
+			usage = "addflag [target] (-a -g -m (-p [priority]))",
+			desc = "control a guard's blacklist",
+			modifiers = { "addflag", "addf", "addfl" },
+			flags = "agmp",
+			min = 1,
+			max = 3)
+	public static void controlFlags(CommandContext args, Player player,
+			HumanNPC npc) {
+		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')) {
+			player.sendMessage("No type flags specified.");
+			return;
+		}
+
+		Guard guard = npc.getType("guard");
+		if (args.hasFlag('p') && args.argsLength() != 3) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Priority flag given without specifying a priority.");
+			return;
+		}
+
+		boolean isSafe = args.getString(1).charAt(0) == '-';
+		int priorityOffset = args.argsLength() == 2 ? 1
+				: args.argsLength() == 3 ? 2 : -1;
+		int priority = 1;
+		if (args.hasFlag('p')) {
+			if (priorityOffset == -1) {
 				player.sendMessage(ChatColor.GRAY
-						+ "Insufficient or too many arguments.");
-				break;
-			case 1:
-				if (!Permission.generic(player, "citizens.guard.use.blacklist")) {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-					return;
-				}
-				player.sendMessage(ChatColor.GREEN
-						+ StringUtils.listify(StringUtils.wrap(npc
-								.getStrippedName() + "'s Blacklisted Mobs")));
-				Set<String> list = guard.getBlacklist();
-				if (list.isEmpty()) {
-					player.sendMessage(ChatColor.RED + "No mobs blacklisted.");
-				} else {
-					for (String aList : list) {
-						if (aList.isEmpty()) {
-							continue;
-						}
-						if (CreatureType.fromName(StringUtils.capitalise(aList
-								.toLowerCase())) != null) {
-							aList = StringUtils.capitalise(aList.toLowerCase());
-						}
-						player.sendMessage(ChatColor.GREEN + "    - "
-								+ StringUtils.wrap(aList));
-					}
-				}
-				break;
-			case 3:
-				if (!Permission.generic(player, "citizens.guard.modify.blacklist")) {
-					player.sendMessage(MessageUtils.noPermissionsMessage);
-					return;
-				}
-				String mob = args.getString(2).toLowerCase();
-				if (CreatureType.fromName(StringUtils.capitalise(mob)) == null
-						&& !mob.equalsIgnoreCase("all")
-						&& CreatureNPCType.fromName(mob) == null) {
-					player.sendMessage(ChatColor.GRAY + "Invalid mob type.");
-					return;
-				}
-				boolean add = false;
-				if (args.getString(1).equalsIgnoreCase("add")) {
-					add = true;
-				}
-				if (add) {
-					if (guard.getBlacklist().contains(mob)) {
-						player.sendMessage(ChatColor.RED
-								+ "That mob is already blacklisted.");
-						return;
-					}
-					GuardManager.addToBlacklist(guard, mob);
-					player.sendMessage(ChatColor.GREEN + "Added "
-							+ StringUtils.wrap(mob) + " to "
-							+ StringUtils.wrap(npc.getStrippedName() + "'s")
-							+ " blacklist.");
-				} else {
-					if (!guard.getBlacklist().contains(mob)) {
-						player.sendMessage(ChatColor.RED
-								+ "That mob is not blacklisted.");
-						return;
-					}
-					GuardManager.removeFromBlacklist(guard, mob);
-					player.sendMessage(ChatColor.GREEN + "Removed "
-							+ StringUtils.wrap(mob) + " from "
-							+ StringUtils.wrap(npc.getStrippedName() + "'s")
-							+ " blacklist.");
-				}
-				break;
+						+ "Priority flag given without specifying a priority.");
+				return;
 			}
-		}*/
+			priority = args.getInteger(priorityOffset);
+		}
+		if (args.hasFlag('a')) {
+			guard.getFlags().addToAll(
+					FlagInfo.newInstance("all", priority, isSafe));
+		} else if (args.argsLength() == 1) {
+			player.sendMessage(ChatColor.GRAY + "No name given.");
+			return;
+		}
+
+		String name = isSafe ? args.getString(1).replaceFirst("-", "") : args
+				.getString(1);
+		name = name.toLowerCase();
+
+		if (args.hasFlag('g')) {
+			if (!Permission.useSuperPerms()) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Group flags require bukkit's permission system to be used.");
+				return;
+			}
+			Group group = Permission.getGroup(name);
+			if (group == null) {
+				player.sendMessage(ChatColor.GRAY + "Group not recognised.");
+				return;
+			}
+		}
+		if (args.hasFlag('m')) {
+			if (!EntityUtils.validType(name, true)) {
+				player.sendMessage(ChatColor.GRAY + "Mob type not recognised.");
+				return;
+			}
+		}
+		for (Character character : args.getFlags()) {
+			FlagType type = character == 'g' ? FlagType.GROUP
+					: character == 'p' ? FlagType.PLAYER : FlagType.MOB;
+			guard.getFlags().addFlag(type,
+					FlagInfo.newInstance(name, priority, isSafe));
+		}
+	}
 
 	@Command(
 			aliases = "guard",
