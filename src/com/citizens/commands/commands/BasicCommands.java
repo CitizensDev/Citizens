@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import com.citizens.Citizens;
 import com.citizens.Permission;
 import com.citizens.SettingsManager;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
 import com.citizens.npcs.NPCDataManager;
@@ -137,7 +136,7 @@ public class BasicCommands implements CommandHandler {
 	@CommandPermissions("admin.debug")
 	public static void debug(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		boolean debug = Constant.DebugMode.toBoolean();
+		boolean debug = SettingsManager.getBoolean("general.debug-mode");
 		UtilityProperties.getSettings()
 				.setBoolean("general.debug-mode", !debug);
 		debug = !debug;
@@ -242,10 +241,12 @@ public class BasicCommands implements CommandHandler {
 
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
-		Messaging.send(player, created, Constant.CreationMessage.getString());
+		Messaging.send(player, created,
+				SettingsManager.getString("general.chat.creation-message"));
 
 		NPCDataManager.selectNPC(player, NPCManager.get(UID));
-		Messaging.send(player, created, Constant.SelectionMessage.getString());
+		Messaging.send(player, created,
+				SettingsManager.getString("general.chat.selection-message"));
 	}
 
 	@Command(
@@ -591,7 +592,9 @@ public class BasicCommands implements CommandHandler {
 					+ " exists.");
 		} else {
 			NPCDataManager.selectNPC(player, npc);
-			Messaging.send(player, npc, Constant.SelectionMessage.getString());
+			Messaging
+					.send(player, npc, SettingsManager
+							.getString("general.chat.selection-message"));
 		}
 	}
 

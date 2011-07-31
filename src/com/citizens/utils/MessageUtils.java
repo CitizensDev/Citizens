@@ -120,7 +120,7 @@ public class MessageUtils {
 		message = ChatColor.GREEN
 				+ "Paid "
 				+ StringUtils.wrap(EconomyManager.format(UtilityProperties
-						.getPrice(path)) + " for ");
+						.getPrice(path))) + " for ";
 		if (useType) {
 			message += StringUtils.wrap(npcName) + " to become a "
 					+ StringUtils.wrap(npcType) + ".";

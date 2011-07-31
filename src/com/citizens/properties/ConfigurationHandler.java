@@ -3,14 +3,11 @@ package com.citizens.properties;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
 
-import com.citizens.SettingsManager;
 import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Storage;
 import com.citizens.utils.Messaging;
@@ -25,28 +22,9 @@ public class ConfigurationHandler implements Storage {
 		this.config = new Configuration(file);
 		if (!file.exists()) {
 			create();
-			if (fileName.contains("economy.yml")) {
-				loadEconomyDefaults(SettingsManager.economyDefaults);
-			}
 			save();
 		} else {
 			load();
-		}
-	}
-
-	private void loadEconomyDefaults(Map<String, Object> nodes) {
-		boolean found = false;
-		for (Entry<String, Object> node : nodes.entrySet()) {
-			if (!pathExists(node.getKey())) {
-				Messaging.log("Writing default setting " + node.getKey() + ".");
-				setRaw(node.getKey(), node.getValue());
-				if (!found) {
-					found = true;
-				}
-			}
-		}
-		if (found) {
-			save();
 		}
 	}
 

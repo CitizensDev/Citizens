@@ -4,13 +4,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
-import com.citizens.SettingsManager.Constant;
+import com.citizens.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 
 public class EconomyManager {
 	private static boolean serverEconomyEnabled = false;
-	private static boolean useServerEconomy = Constant.UseEconPlugin
-			.toBoolean();
+	private static boolean useEconPlugin = SettingsManager
+			.getBoolean("economy.use-economy");
 	public static final String addendum = ".econplugin";
 
 	public static final String[] materialAddendums = { ".misc", ".wood",
@@ -33,7 +33,7 @@ public class EconomyManager {
 	 * @return
 	 */
 	public static boolean useEconPlugin() {
-		return (useServerEconomy && serverEconomyEnabled);
+		return (useEconPlugin && serverEconomyEnabled);
 	}
 
 	/**

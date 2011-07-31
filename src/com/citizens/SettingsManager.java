@@ -12,20 +12,22 @@ import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.Messaging;
 
 public class SettingsManager {
-	public static final Map<String, Object> economyDefaults = writeEconomySettings();
+	private static List<Node> nodes = new ArrayList<Node>();
+	private static Map<String, Object> loadedNodes = new HashMap<String, Object>();
 
-	private enum Config {
-		ECONOMY, MOB, SETTINGS;
-
-		private final List<Constant> settings = new ArrayList<Constant>();
-
-		public void add(Constant constant) {
-			this.settings.add(constant);
-		}
-
-		public List<Constant> get() {
-			return this.settings;
-		}
+	public enum SettingsType {
+		/**
+		 * citizens.yml
+		 */
+		GENERAL,
+		/**
+		 * economy.yml
+		 */
+		ECONOMY,
+		/**
+		 * mobs.yml
+		 */
+		MOB;
 	}
 
 	public enum Constant {
@@ -34,81 +36,40 @@ public class SettingsManager {
 		HealerGiveHealthItem(
 				Config.SETTINGS,
 				"items.healers.give-health-item",
-				35),
-		HealerTakeHealthItem(
+				35), HealerTakeHealthItem(
 				Config.SETTINGS,
 				"items.healers.take-health-item",
-				278),
-		HealerHealthRegenIncrement(
+				278), HealerHealthRegenIncrement(
 				Config.SETTINGS,
 				"ticks.healers.health-regen-increment",
-				12000),
-		MaxStationaryTicks(Config.SETTINGS, "ticks.pathing.max-stationary", -1),
-		MaxPathingTicks(Config.SETTINGS, "ticks.pathing.max-pathing", -1),
-		MaxWizardMana(Config.SETTINGS, "general.wizards.max-mana", 100),
-		SaveDelay(Config.SETTINGS, "ticks.saving.delay", 72000),
-		RightClickPause(
+				12000), MaxWizardMana(
 				Config.SETTINGS,
-				"ticks.waypoints.right-click-pause",
-				70),
-		TickDelay(Config.SETTINGS, "ticks.general.delay", 1),
-		WizardMaxLocations(
+				"general.wizards.max-mana",
+				100), WizardMaxLocations(
 				Config.SETTINGS,
 				"general.wizards.wizard-max-locations",
-				10),
-		WizardInteractItem(Config.SETTINGS, "items.wizards.interact-item", 288),
-		WizardManaRegenItem(
+				10), WizardInteractItem(
+				Config.SETTINGS,
+				"items.wizards.interact-item",
+				288), WizardManaRegenItem(
 				Config.SETTINGS,
 				"items.wizards.mana-regen-item",
-				348),
-		WizardManaRegenRate(
+				348), WizardManaRegenRate(
 				Config.SETTINGS,
 				"ticks.wizards.mana-regen-rate",
-				6000),
-		NPCRange(Config.SETTINGS, "range.basic.look", 5),
-		DefaultBouncerProtectionRadius(
+				6000), DefaultBouncerProtectionRadius(
 				Config.SETTINGS,
 				"range.guards.default-bouncer-protection-radius",
-				10),
-		PathfindingRange(Config.SETTINGS, "range.guards.pathfinding", 16F),
-		ChatFormat(Config.SETTINGS, "general.chat.format", "[%name%]: "),
-		DefaultText(
+				10), PayForHealerHeal(
 				Config.SETTINGS,
-				"general.chat.default-text",
-				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"),
-		NPCColour(Config.SETTINGS, "general.colors.npc-colour", "f"),
-		TalkItems(Config.SETTINGS, "items.basic.talk-items", "340,"),
-		SelectItems(Config.SETTINGS, "items.basic.select-items", "*"),
-		SelectionMessage(
+				"general.healers.pay-for-heal",
+				true), RegenHealerHealth(
 				Config.SETTINGS,
-				"general.chat.selection-message",
-				"<g>You selected <y><npc><g> (ID <y><npcid><g>)."),
-		CreationMessage(
+				"general.healers.regen-health",
+				true), RegenWizardMana(
 				Config.SETTINGS,
-				"general.chat.creation-message",
-				"<g>The NPC <y><npc><g> was born!"),
-		DefaultFollowingEnabled(
-				Config.SETTINGS,
-				"general.defaults.enable-following",
+				"general.wizards.regen-mana",
 				true),
-		PayForHealerHeal(Config.SETTINGS, "general.healers.pay-for-heal", true),
-		RegenHealerHealth(Config.SETTINGS, "general.healers.regen-health", true),
-		RegenWizardMana(Config.SETTINGS, "general.wizards.regen-mana", true),
-		SaveOften(Config.SETTINGS, "ticks.saving.save-often", true),
-		UseItemList(Config.SETTINGS, "items.item-list-on", true),
-		UseNPCColours(Config.SETTINGS, "general.colors.use-npc-colours", true),
-		UseSaveTask(Config.SETTINGS, "ticks.saving.use-task", true),
-		QuickSelect(Config.SETTINGS, "general.selection.quick-select", false),
-		DebugMode(Config.SETTINGS, "general.debug-mode", false),
-		NotifyUpdates(Config.SETTINGS, "general.notify-updates", true),
-		ConvertSlashes(Config.SETTINGS, "general.chat.slashes-to-spaces", true),
-		DefaultTalkWhenClose(
-				Config.SETTINGS,
-				"general.defaults.talk-when-close",
-				false),
-		UseSuperPerms(Config.SETTINGS, "general.use-bukkit-permissions", false),
-		// economy.yml
-		UseEconPlugin(Config.ECONOMY, "economy.use-econplugin", false),
 		// mobs.yml
 		EvilNPCTameItem(Config.MOB, "evil.items.tame-item", 354),
 		EvilNPCTameChance(Config.MOB, "evil.misc.tame-chance", 5),
@@ -134,54 +95,27 @@ public class SettingsManager {
 		EvilDrops(Config.MOB, "evil.items.drops", "260,357,2256,"),
 		SpawnEvils(Config.MOB, "evil.spawn.spawn", false),
 		SpawnPirates(Config.MOB, "pirates.spawn.spawn", false);
+	}
 
-		private final Config config;
-		private final String path;
-		private Object value;
+	public static boolean getBoolean(String path) {
+		return (Boolean) loadedNodes.get(path);
+	}
 
-		Constant(Config config, String path, Object value) {
-			this.config = config;
-			this.path = path;
-			this.value = value;
-			config.add(this);
-		}
+	public static int getInt(String path) {
+		return (Integer) loadedNodes.get(path);
+	}
 
-		public boolean toBoolean() {
-			return (Boolean) this.getValue();
-		}
+	public static String getString(String path) {
+		return (String) loadedNodes.get(path);
+	}
 
-		public double toDouble() {
-			if (this.getValue() instanceof Float) {
-				return (Float) this.getValue();
-			} else if (this.getValue() instanceof Double) {
-				return (Double) this.getValue();
-			} else {
-				return (Integer) this.getValue();
-			}
-		}
-
-		public int toInt() {
-			return (Integer) this.getValue();
-		}
-
-		public String getString() {
-			return (String) this.getValue();
-		}
-
-		public Object getValue() {
-			return this.value;
-		}
-
-		public void set(Object value) {
-			this.value = value;
-		}
-
-		public String getPath() {
-			return path;
-		}
-
-		public Config getType() {
-			return config;
+	public static double getDouble(String path) {
+		if (loadedNodes.get(path) instanceof Float) {
+			return (Float) loadedNodes.get(path);
+		} else if (loadedNodes.get(path) instanceof Double) {
+			return (Double) loadedNodes.get(path);
+		} else {
+			return (Integer) loadedNodes.get(path);
 		}
 	}
 
@@ -192,34 +126,46 @@ public class SettingsManager {
 		Messaging.debug("Loading settings");
 		Storage local = null;
 		boolean found = false;
-		for (Config config : Config.values()) {
+		for (SettingsType type : SettingsType.values()) {
 			if (local != null && found) {
 				local.save();
 				found = false;
 			}
-			switch (config) {
+			switch (type) {
+			case GENERAL:
+				local = UtilityProperties.getSettings();
+				break;
 			case ECONOMY:
 				local = UtilityProperties.getEconomySettings();
 				break;
 			case MOB:
 				local = UtilityProperties.getMobSettings();
 				break;
-			case SETTINGS:
-				local = UtilityProperties.getSettings();
-				break;
 			default:
 				local = UtilityProperties.getSettings();
 				break;
 			}
-			for (Constant constant : config.get()) {
-				if (!local.keyExists(constant.getPath())) {
-					Messaging.log("Writing default setting "
-							+ constant.getPath() + ".");
-					local.setRaw(constant.getPath(), constant.getValue());
+			// Load our non-type-specific settings
+			loadSettings();
+
+			// Only load settings for loaded NPC types
+			for (String t : Citizens.loadedTypes) {
+				nodes.add(new Node(SettingsType.ECONOMY, "prices." + t
+						+ ".creation", 100));
+				for (Node node : CitizensNPCManager.getType(t).getNodes()) {
+					nodes.add(node);
+				}
+			}
+			for (Node node : nodes) {
+				if (!local.keyExists(node.getPath())) {
+					Messaging.log("Writing default setting " + node.getPath()
+							+ ".");
+					local.setRaw(node.getPath(), node.getValue());
 					found = true;
 				} else {
-					constant.set(local.getRaw(constant.getPath()));
+					node.set(local.getRaw(node.getPath()));
 				}
+				loadedNodes.put(node.getPath(), node.getValue());
 			}
 		}
 		if (found) {
@@ -227,17 +173,57 @@ public class SettingsManager {
 		}
 	}
 
-	private static HashMap<String, Object> writeEconomySettings() {
-		HashMap<String, Object> nodes = new HashMap<String, Object>();
-		nodes.put("economy.use-economy", true);
-		nodes.put("economy.use-econplugin", false);
-		for (String type : Citizens.loadedTypes) {
-			nodes.put("prices." + type + ".creation", 100);
-			for (Entry<String, Object> entry : CitizensNPCManager.getType(type)
-					.getDefaultSettings().entrySet()) {
-				nodes.put(entry.getKey(), entry.getValue());
-			}
-		}
-		return nodes;
+	private static void loadSettings() {
+		// citizens.yml
+		nodes.add(new Node(SettingsType.GENERAL,
+				"ticks.pathing.max-stationary", -1));
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.pathing.max-pathing",
+				-1));
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.delay", 72000));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"ticks.waypoints.right-click-pause", 70));
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.general.delay", 1));
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.delay", 72000));
+		nodes.add(new Node(SettingsType.GENERAL, "range.basic.look", 5));
+		nodes.add(new Node(SettingsType.GENERAL, "range.guards.pathfinding",
+				16F));
+		nodes.add(new Node(SettingsType.GENERAL, "general.chat.format",
+				"[%name%]: "));
+		nodes.add(new Node(
+				SettingsType.GENERAL,
+				"general.chat.default-text",
+				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"));
+		nodes.add(new Node(SettingsType.GENERAL, "general.colors.npc-colour",
+				"f"));
+		nodes.add(new Node(SettingsType.GENERAL, "items.basic.talk-items",
+				"340,"));
+		nodes.add(new Node(SettingsType.GENERAL, "items.basic.select-items",
+				"*"));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.chat.selection-message",
+				"<g>You selected <y><npc><g> (ID <y><npcid><g>)."));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.chat.creation-message",
+				"<g>The NPC <y><npc><g> was born!"));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.defaults.enable-following", true));
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.save-often",
+				true));
+		nodes.add(new Node(SettingsType.GENERAL, "items.item-list-on", true));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.colors.use-npc-colours", true));
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.use-task", true));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.selection.quick-select", false));
+		nodes.add(new Node(SettingsType.GENERAL, "general.debug-mode", false));
+		nodes.add(new Node(SettingsType.GENERAL, "general.notify-updates", true));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.chat.slashes-to-spaces", true));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.defaults.talk-when-close", false));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.use-bukkit-permissions", false));
+		// economy.yml
+		nodes.add(new Node(SettingsType.ECONOMY, "economy.use-economy", true));
 	}
 }

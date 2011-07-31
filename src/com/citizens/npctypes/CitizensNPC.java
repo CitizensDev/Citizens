@@ -1,12 +1,13 @@
 package com.citizens.npctypes;
 
-import java.util.Map;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
+import com.citizens.Node;
 import com.citizens.commands.CommandHandler;
 import com.citizens.interfaces.Saveable;
 import com.citizens.resources.npclib.HumanNPC;
@@ -35,11 +36,11 @@ public abstract class CitizensNPC {
 	public abstract CommandHandler getCommands();
 
 	/**
-	 * Get the default settings for an NPC type to register on start-up
+	 * Get a list of configuration nodes for an NPC type
 	 * 
-	 * @return map of settings
+	 * @return list of configuration nodes
 	 */
-	public abstract Map<String, Object> getDefaultSettings();
+	public abstract List<Node> getNodes();
 
 	/**
 	 * Left-clicking an NPC.
