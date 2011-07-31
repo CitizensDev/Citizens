@@ -216,6 +216,8 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	private void saveWaypoints(int UID, List<Waypoint> list) {
+		profiles.removeKey(UID + this.waypoints); // clear old waypoints.
+
 		int count = 0, innercount = 0;
 		String path = "", root = "";
 		for (Waypoint waypoint : list) {
