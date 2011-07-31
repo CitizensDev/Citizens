@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Citizens;
 import com.citizens.Permission;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCSpawnEvent;
 import com.citizens.properties.PropertyManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCList;
 import com.citizens.resources.npclib.NPCSpawner;
@@ -36,7 +36,7 @@ public class NPCManager {
 		ChatColor colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
-		if (Constant.ConvertSlashes.toBoolean()) {
+		if (SettingsManager.getBoolean("general.chat.slashes-to-spaces")) {
 			name = name.replace(Citizens.separatorChar, " ");
 		}
 		String npcName = name;
@@ -81,10 +81,14 @@ public class NPCManager {
 	public static int register(String name, Location loc, String owner) {
 		int UID = PropertyManager.getBasic().getNewNpcID();
 		PropertyManager.getBasic().saveLocation(loc, UID);
-		PropertyManager.getBasic().saveLookWhenClose(UID,
-				Constant.DefaultFollowingEnabled.toBoolean());
+		PropertyManager
+				.getBasic()
+				.saveLookWhenClose(
+						UID,
+						SettingsManager
+								.getBoolean("general.defaults.enable-following"));
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
-				Constant.DefaultTalkWhenClose.toBoolean());
+				SettingsManager.getBoolean("general.defaults.talk-when-close"));
 		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner);
 		return UID;

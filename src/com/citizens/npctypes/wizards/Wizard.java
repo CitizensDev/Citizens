@@ -1,7 +1,7 @@
 package com.citizens.npctypes.wizards;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,12 +11,14 @@ import org.bukkit.entity.Player;
 
 import com.citizens.Citizens;
 import com.citizens.Permission;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.WizardCommands;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.wizards.WizardManager.WizardMode;
+import com.citizens.properties.Node;
+import com.citizens.properties.SettingsManager;
+import com.citizens.properties.SettingsManager.SettingsType;
 import com.citizens.properties.properties.WizardProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.InventoryUtils;
@@ -283,8 +285,8 @@ public class Wizard extends CitizensNPC {
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
-			if (player.getItemInHand().getTypeId() == Constant.WizardInteractItem
-					.toInt()) {
+			if (player.getItemInHand().getTypeId() == SettingsManager
+					.getInt("items.wizards.interact-item")) {
 				Wizard wizard = npc.getType("wizard");
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
@@ -351,17 +353,18 @@ public class Wizard extends CitizensNPC {
 							+ "No valid mode selected.");
 					break;
 				}
-			} else if (player.getItemInHand().getTypeId() == Constant.WizardManaRegenItem
-					.toInt()) {
+			} else if (player.getItemInHand().getTypeId() == SettingsManager
+					.getInt("items.wizards.mana-regen-item")) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
-				if (wizard.getMana() + 10 < Constant.MaxWizardMana.toInt()) {
+				if (wizard.getMana() + 10 < SettingsManager
+						.getInt("general.wizards.max-mana")) {
 					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
-				} else if (wizard.getMana() + 10 == Constant.MaxWizardMana
-						.toInt()) {
-					mana = Constant.MaxWizardMana.toInt();
+				} else if (wizard.getMana() + 10 == SettingsManager
+						.getInt("general.wizards.max-mana")) {
+					mana = SettingsManager.getInt("general.wizards.max-mana");
 					msg += " mana has been fully replenished.";
 				} else {
 					msg += " mana cannot be regenerated with that item any further.";
@@ -387,12 +390,26 @@ public class Wizard extends CitizensNPC {
 	}
 
 	@Override
-	public Map<String, Object> getDefaultSettings() {
-		Map<String, Object> nodes = new HashMap<String, Object>();
-		nodes.put("prices.wizard.teleport", 100);
-		nodes.put("prices.wizard.changetime", 100);
-		nodes.put("prices.wizard.spawnmob", 100);
-		nodes.put("prices.wizard.togglestorm", 100);
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.teleport", 100));
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.changetime",
+				100));
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.spawnmob", 100));
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.togglestorm",
+				100));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.wizards.wizard-max-locations", 10));
+		nodes.add(new Node(SettingsType.GENERAL, "general.wizards.max-mana",
+				100));
+		nodes.add(new Node(SettingsType.GENERAL, "items.wizards.interact-item",
+				288));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"items.wizards.mana-regen-item", 348));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"ticks.wizards.mana-regen-rate", 6000));
+		nodes.add(new Node(SettingsType.GENERAL, "general.wizards.regen-mana",
+				true));
 		return nodes;
 	}
 }

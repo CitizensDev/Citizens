@@ -17,13 +17,13 @@ import org.bukkit.plugin.PluginManager;
 import com.citizens.Citizens;
 import com.citizens.CreatureTask;
 import com.citizens.Permission;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCTargetEvent;
 import com.citizens.interfaces.Listener;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.guards.GuardTask;
 import com.citizens.npctypes.questers.quests.QuestManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.ConversationUtils;
 import com.citizens.utils.ServerUtils;
@@ -54,7 +54,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if (Permission.generic(event.getPlayer(), "citizens.admin")
-				&& Constant.NotifyUpdates.toBoolean()) {
+				&& SettingsManager.getBoolean("general.notify-updates")) {
 			ServerUtils.checkForUpdates(event.getPlayer());
 		}
 	}

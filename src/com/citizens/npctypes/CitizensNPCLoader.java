@@ -48,8 +48,8 @@ public class CitizensNPCLoader {
 					throw new InvalidNPCTypeException(type.getType()
 							+ " is missing a valid Properties class.");
 				}
-				if (type.getNodes() == null || type.getNodes().isEmpty()) {
-					throw new InvalidNPCTypeException(type.getType()
+				if (type.getNodes() == null) {
+					Messaging.log(type.getType()
 							+ " did not register any default settings.");
 				}
 				if (type.getCommands() == null) {

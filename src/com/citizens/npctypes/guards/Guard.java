@@ -1,6 +1,7 @@
 package com.citizens.npctypes.guards;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.TickTask;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.GuardCommands;
@@ -20,6 +20,9 @@ import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
+import com.citizens.properties.Node;
+import com.citizens.properties.SettingsManager;
+import com.citizens.properties.SettingsManager.SettingsType;
 import com.citizens.properties.properties.GuardProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
@@ -201,14 +204,15 @@ public class Guard extends CitizensNPC {
 					+ " died.");
 		}
 		event.getDrops().clear();
-		TickTask.scheduleRespawn(npc, Constant.GuardRespawnDelay.toInt());
+		TickTask.scheduleRespawn(npc,
+				SettingsManager.getInt("ticks.guards.respawn-delay"));
 	}
 
 	public void target(LivingEntity entity, HumanNPC npc) {
 		npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
-				Constant.PathfindingRange.toDouble());
+				SettingsManager.getDouble("range.pathfinding"));
 	}
 
 	@Override
@@ -222,8 +226,12 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public Map<String, Object> getDefaultSettings() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node(SettingsType.GENERAL, "ticks.guards.respawn-delay",
+				100));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"range.guards.default-bouncer-protection-radius", 10));
+		return nodes;
 	}
 }

@@ -13,13 +13,13 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.Citizens;
 import com.citizens.Permission;
-import com.citizens.SettingsManager;
 import com.citizens.commands.CommandHandler;
 import com.citizens.economy.EconomyManager;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.properties.PropertyManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.sk89q.Command;

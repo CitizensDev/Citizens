@@ -2,15 +2,15 @@ package com.citizens.npctypes.healers;
 
 import java.util.Map.Entry;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.npcs.NPCManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 
 public class HealerTask implements Runnable {
 	@Override
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
-			if (Constant.RegenHealerHealth.toBoolean()) {
+			if (SettingsManager.getBoolean("general.healers.regen-health")) {
 				regenerateHealth(entry.getValue());
 			}
 		}
@@ -36,12 +36,13 @@ public class HealerTask implements Runnable {
 	 * @return
 	 */
 	public static int getHealthRegenRate() {
-		int delay = Constant.HealerHealthRegenIncrement.toInt();
+		int delay = SettingsManager
+				.getInt("ticks.healers.health-regen-increment");
 		if (!NPCManager.getList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 					.entrySet()) {
 				if (entry.getValue().isType("healer")) {
-					delay = Constant.HealerHealthRegenIncrement.toInt()
+					delay = delay
 							* (11 - ((Healer) (entry.getValue()
 									.getType("healer"))).getLevel());
 				}

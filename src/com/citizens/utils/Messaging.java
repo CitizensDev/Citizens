@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 
 public class Messaging {
@@ -63,13 +63,13 @@ public class Messaging {
 	}
 
 	public static void debug(Object message) {
-		if (Constant.DebugMode.toBoolean()) {
+		if (SettingsManager.getBoolean("general.debug-mode")) {
 			log(message);
 		}
 	}
 
 	public static void debug(Object... messages) {
-		if (Constant.DebugMode.toBoolean()) {
+		if (SettingsManager.getBoolean("general.debug-mode")) {
 			log(messages);
 		}
 	}

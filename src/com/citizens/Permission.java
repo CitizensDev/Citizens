@@ -7,7 +7,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.Messaging;
 import com.nijiko.permissions.Group;
@@ -28,7 +28,7 @@ public class Permission {
 	}
 
 	public static void initialize(Server server) {
-		if (Constant.UseSuperPerms.toBoolean()) {
+		if (SettingsManager.getBoolean("general.use-bukkit-permissions")) {
 			Plugin test = server.getPluginManager().getPlugin(
 					"PermissionsBukkit");
 			if (test != null) {

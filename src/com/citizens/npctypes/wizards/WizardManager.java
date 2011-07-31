@@ -3,8 +3,8 @@ package com.citizens.npctypes.wizards;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
@@ -116,7 +116,8 @@ public class WizardManager {
 	public static void increaseMana(HumanNPC npc, int mana) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard != null
-				&& wizard.getMana() + mana < Constant.MaxWizardMana.toInt()) {
+				&& wizard.getMana() + mana < SettingsManager
+						.getInt("general.wizards.max-mana")) {
 			wizard.setMana(wizard.getMana() + mana);
 		}
 	}

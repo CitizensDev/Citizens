@@ -33,10 +33,11 @@ public class SettingsTree {
 	}
 
 	public void set(String path, String value) {
-		if (!path.equals(value))
+		if (!path.equals(value)) {
 			tree.put(path, value);
-		else
+		} else {
 			Messaging.debug(path, "was set to an illegal value of", value);
+		}
 		populate(path);
 	}
 

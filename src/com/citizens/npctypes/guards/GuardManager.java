@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
 
@@ -56,6 +56,6 @@ public class GuardManager {
 			}
 		}
 		PathUtils.createPath(npc, loc, -1, -1,
-				Constant.PathfindingRange.toDouble());
+				SettingsManager.getDouble("range.pathfinding"));
 	}
 }

@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.citizens.Node;
 import com.citizens.Permission;
-import com.citizens.SettingsManager.SettingsType;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.BlacksmithCommands;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.CitizensNPC;
+import com.citizens.properties.Node;
+import com.citizens.properties.SettingsManager.SettingsType;
 import com.citizens.properties.properties.BlacksmithProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;

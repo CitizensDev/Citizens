@@ -1,7 +1,7 @@
 package com.citizens.npctypes.questers;
 
 import java.util.ArrayDeque;
-import java.util.Map;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,6 +12,7 @@ import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.questers.rewards.QuestReward;
+import com.citizens.properties.Node;
 import com.citizens.properties.properties.QuesterProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PageUtils;
@@ -140,8 +141,7 @@ public class Quester extends CitizensNPC {
 	}
 
 	@Override
-	public Map<String, Object> getDefaultSettings() {
-		// TODO Auto-generated method stub
+	public List<Node> getNodes() {
 		return null;
 	}
 }

@@ -7,9 +7,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import com.citizens.Node;
 import com.citizens.commands.CommandHandler;
 import com.citizens.interfaces.Saveable;
+import com.citizens.properties.Node;
 import com.citizens.resources.npclib.HumanNPC;
 
 public abstract class CitizensNPC {

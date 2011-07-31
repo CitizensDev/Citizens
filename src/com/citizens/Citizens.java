@@ -20,7 +20,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.Commands;
 import com.citizens.listeners.EntityListen;
 import com.citizens.listeners.PlayerListen;
@@ -35,6 +34,7 @@ import com.citizens.npctypes.healers.HealerTask;
 import com.citizens.npctypes.questers.quests.QuestManager;
 import com.citizens.npctypes.wizards.WizardTask;
 import com.citizens.properties.PropertyManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.register.payment.Method;
@@ -73,6 +73,9 @@ public class Citizens extends JavaPlugin {
 		// Load NPC types.
 		loadNPCTypes();
 
+		// Load settings.
+		SettingsManager.setupVariables();
+
 		// Register our commands.
 		Commands.registerCommands();
 
@@ -82,19 +85,14 @@ public class Citizens extends JavaPlugin {
 		new ServerListen().registerEvents();
 		new PlayerListen().registerEvents();
 
-		// Register files.
-		PropertyManager.registerProperties();
-
 		// Initialize Permissions.
 		Permission.initialize(Bukkit.getServer());
 
-		// Load settings.
-		SettingsManager.setupVariables();
-
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new CreatureTask(), Constant.SpawnTaskDelay.toInt(),
-				Constant.SpawnTaskDelay.toInt());
+				new CreatureTask(),
+				SettingsManager.getInt("general.spawn.delay"),
+				SettingsManager.getInt("general.spawn.delay"));
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
 
@@ -114,12 +112,17 @@ public class Citizens extends JavaPlugin {
 
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(), Constant.TickDelay.toInt(),
-				Constant.TickDelay.toInt());
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new GuardTask(), Constant.TickDelay.toInt(),
-				Constant.TickDelay.toInt());
-		if (Constant.UseSaveTask.toBoolean()) {
+				new TickTask(), SettingsManager.getInt("ticks.general.delay"),
+				SettingsManager.getInt("ticks.general.delay"));
+		// TODO temporary workaround, should genericify tasks so we can register
+		// them per type on start-up
+		if (loadedTypes.contains("guard")) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new GuardTask(),
+					SettingsManager.getInt("ticks.general.delay"),
+					SettingsManager.getInt("ticks.general.delay"));
+		}
+		if (SettingsManager.getBoolean("ticks.saving.use-task")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
 						@Override
@@ -128,7 +131,8 @@ public class Citizens extends JavaPlugin {
 							PropertyManager.saveState();
 							Messaging.log("Saved.");
 						}
-					}, Constant.SaveDelay.toInt(), Constant.SaveDelay.toInt());
+					}, SettingsManager.getInt("ticks.saving.delay"),
+					SettingsManager.getInt("ticks.saving.delay"));
 		}
 
 		QuestManager.initialize();
@@ -281,12 +285,17 @@ public class Citizens extends JavaPlugin {
 			}
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new HealerTask(), HealerTask.getHealthRegenRate(),
-				HealerTask.getHealthRegenRate());
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new WizardTask(), Constant.WizardManaRegenRate.toInt(),
-				Constant.WizardManaRegenRate.toInt());
+		if (loadedTypes.contains("healer")) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new HealerTask(), HealerTask.getHealthRegenRate(),
+					HealerTask.getHealthRegenRate());
+		}
+		if (loadedTypes.contains("wizard")) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new WizardTask(),
+					SettingsManager.getInt("ticks.wizards.mana-regen-rate"),
+					SettingsManager.getInt("ticks.wizards.mana-regen-rate"));
+		}
 		initialized = true;
 	}
 
@@ -315,25 +324,22 @@ public class Citizens extends JavaPlugin {
 	 * @return Whether the ID is used for a tool.
 	 */
 	public static boolean validateTool(String key, int type, boolean sneaking) {
-		if (Constant.UseItemList.toBoolean()) {
-			String[] items = UtilityProperties.getSettings().getString(key)
-					.split(",");
-			List<String> item = Arrays.asList(items);
-			if (item.contains("*")) {
+		String[] items = UtilityProperties.getSettings().getString(key)
+				.split(",");
+		List<String> item = Arrays.asList(items);
+		if (item.contains("*")) {
+			return true;
+		}
+		boolean isShift;
+		for (String s : item) {
+			isShift = false;
+			if (s.contains("SHIFT-")) {
+				s = s.replace("SHIFT-", "");
+				isShift = true;
+			}
+			if (Integer.parseInt(s) == type && isShift == sneaking) {
 				return true;
 			}
-			boolean isShift;
-			for (String s : item) {
-				isShift = false;
-				if (s.contains("SHIFT-")) {
-					s = s.replace("SHIFT-", "");
-					isShift = true;
-				}
-				if (Integer.parseInt(s) == type && isShift == sneaking) {
-					return true;
-				}
-			}
-			return false;
 		}
 		return true;
 	}

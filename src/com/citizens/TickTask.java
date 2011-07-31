@@ -5,10 +5,10 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.misc.ActionManager;
 import com.citizens.misc.ActionManager.CachedAction;
 import com.citizens.npcs.NPCManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCSpawner;
 import com.citizens.utils.LocationUtils;
@@ -38,7 +38,8 @@ public class TickTask implements Runnable {
 							|| npc.getNPCData().isTalkClose()) {
 						// If the player is within 'seeing' range
 						if (LocationUtils.withinRange(npc.getLocation(),
-								p.getLocation(), Constant.NPCRange.toDouble())) {
+								p.getLocation(),
+								SettingsManager.getDouble("range.basic.look"))) {
 							if (npc.getHandle().pathFinished()
 									&& npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
@@ -71,7 +72,8 @@ public class TickTask implements Runnable {
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
 					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
-							-1, -1, Constant.PathfindingRange.toDouble());
+							-1, -1,
+							SettingsManager.getDouble("range.pathfinding"));
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {

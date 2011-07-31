@@ -1,14 +1,13 @@
-package com.citizens;
+package com.citizens.properties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
+import com.citizens.Citizens;
 import com.citizens.interfaces.Storage;
 import com.citizens.npctypes.CitizensNPCManager;
-import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.Messaging;
 
 public class SettingsManager {
@@ -28,73 +27,6 @@ public class SettingsManager {
 		 * mobs.yml
 		 */
 		MOB;
-	}
-
-	public enum Constant {
-		// citizens.yml
-		GuardRespawnDelay(Config.SETTINGS, "ticks.guards.respawn-delay", 100),
-		HealerGiveHealthItem(
-				Config.SETTINGS,
-				"items.healers.give-health-item",
-				35), HealerTakeHealthItem(
-				Config.SETTINGS,
-				"items.healers.take-health-item",
-				278), HealerHealthRegenIncrement(
-				Config.SETTINGS,
-				"ticks.healers.health-regen-increment",
-				12000), MaxWizardMana(
-				Config.SETTINGS,
-				"general.wizards.max-mana",
-				100), WizardMaxLocations(
-				Config.SETTINGS,
-				"general.wizards.wizard-max-locations",
-				10), WizardInteractItem(
-				Config.SETTINGS,
-				"items.wizards.interact-item",
-				288), WizardManaRegenItem(
-				Config.SETTINGS,
-				"items.wizards.mana-regen-item",
-				348), WizardManaRegenRate(
-				Config.SETTINGS,
-				"ticks.wizards.mana-regen-rate",
-				6000), DefaultBouncerProtectionRadius(
-				Config.SETTINGS,
-				"range.guards.default-bouncer-protection-radius",
-				10), PayForHealerHeal(
-				Config.SETTINGS,
-				"general.healers.pay-for-heal",
-				true), RegenHealerHealth(
-				Config.SETTINGS,
-				"general.healers.regen-health",
-				true), RegenWizardMana(
-				Config.SETTINGS,
-				"general.wizards.regen-mana",
-				true),
-		// mobs.yml
-		EvilNPCTameItem(Config.MOB, "evil.items.tame-item", 354),
-		EvilNPCTameChance(Config.MOB, "evil.misc.tame-chance", 5),
-		MaxEvils(Config.MOB, "evil.spawn.max", 2),
-		MaxPirates(Config.MOB, "pirates.spawn.max", 2),
-		SpawnTaskDelay(Config.MOB, "general.spawn.delay", 200),
-		EvilNames(
-				Config.MOB,
-				"evil.misc.names",
-				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,"),
-		PirateNames(
-				Config.MOB,
-				"pirates.misc.names",
-				"Pirate_Pete,Piratebay,Jack_Sparrow,"),
-		FailureToTameMessages(
-				Config.MOB,
-				"evil.misc.failed-tame-messages",
-				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;"),
-		PirateStealMessages(
-				Config.MOB,
-				"pirates.misc.steal-messages",
-				"I stole yer booty.;Aaargh.;"),
-		EvilDrops(Config.MOB, "evil.items.drops", "260,357,2256,"),
-		SpawnEvils(Config.MOB, "evil.spawn.spawn", false),
-		SpawnPirates(Config.MOB, "pirates.spawn.spawn", false);
 	}
 
 	public static boolean getBoolean(String path) {
@@ -123,54 +55,32 @@ public class SettingsManager {
 	 * Sets up miscellaneous variables, mostly reading from property files.
 	 */
 	public static void setupVariables() {
-		Messaging.debug("Loading settings");
+		Messaging.log("Loading settings...");
+		PropertyManager.registerProperties();
 		Storage local = null;
-		boolean found = false;
-		for (SettingsType type : SettingsType.values()) {
-			if (local != null && found) {
-				local.save();
-				found = false;
-			}
-			switch (type) {
-			case GENERAL:
-				local = UtilityProperties.getSettings();
-				break;
-			case ECONOMY:
-				local = UtilityProperties.getEconomySettings();
-				break;
-			case MOB:
-				local = UtilityProperties.getMobSettings();
-				break;
-			default:
-				local = UtilityProperties.getSettings();
-				break;
-			}
-			// Load our non-type-specific settings
-			loadSettings();
-
-			// Only load settings for loaded NPC types
-			for (String t : Citizens.loadedTypes) {
-				nodes.add(new Node(SettingsType.ECONOMY, "prices." + t
-						+ ".creation", 100));
-				for (Node node : CitizensNPCManager.getType(t).getNodes()) {
-					nodes.add(node);
-				}
-			}
-			for (Node node : nodes) {
-				if (!local.keyExists(node.getPath())) {
-					Messaging.log("Writing default setting " + node.getPath()
-							+ ".");
-					local.setRaw(node.getPath(), node.getValue());
-					found = true;
-				} else {
-					node.set(local.getRaw(node.getPath()));
-				}
-				loadedNodes.put(node.getPath(), node.getValue());
+		// Load our non-type-specific settings
+		loadSettings();
+		// Only load settings for loaded NPC types
+		for (String t : Citizens.loadedTypes) {
+			nodes.add(new Node(SettingsType.ECONOMY, "prices." + t
+					+ ".creation", 100));
+			for (Node node : CitizensNPCManager.getType(t).getNodes()) {
+				nodes.add(node);
 			}
 		}
-		if (found) {
+		for (Node node : nodes) {
+			local = node.getFile();
+			if (!local.keyExists(node.getPath())) {
+				Messaging
+						.log("Writing default setting " + node.getPath() + ".");
+				local.setRaw(node.getPath(), node.getValue());
+			} else {
+				node.set(node.getFile().getRaw(node.getPath()));
+			}
+			loadedNodes.put(node.getPath(), node.getValue());
 			local.save();
 		}
+		// local.save();
 	}
 
 	private static void loadSettings() {
@@ -185,8 +95,6 @@ public class SettingsManager {
 		nodes.add(new Node(SettingsType.GENERAL, "ticks.general.delay", 1));
 		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.delay", 72000));
 		nodes.add(new Node(SettingsType.GENERAL, "range.basic.look", 5));
-		nodes.add(new Node(SettingsType.GENERAL, "range.guards.pathfinding",
-				16F));
 		nodes.add(new Node(SettingsType.GENERAL, "general.chat.format",
 				"[%name%]: "));
 		nodes.add(new Node(
@@ -209,7 +117,6 @@ public class SettingsManager {
 				"general.defaults.enable-following", true));
 		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.save-often",
 				true));
-		nodes.add(new Node(SettingsType.GENERAL, "items.item-list-on", true));
 		nodes.add(new Node(SettingsType.GENERAL,
 				"general.colors.use-npc-colours", true));
 		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.use-task", true));
@@ -223,7 +130,21 @@ public class SettingsManager {
 				"general.defaults.talk-when-close", false));
 		nodes.add(new Node(SettingsType.GENERAL,
 				"general.use-bukkit-permissions", false));
+		nodes.add(new Node(SettingsType.GENERAL, "range.pathfinding", 16F));
 		// economy.yml
 		nodes.add(new Node(SettingsType.ECONOMY, "economy.use-economy", true));
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.basic.creation", 100));
+		// mobs.yml
+		nodes.add(new Node(SettingsType.MOB, "general.spawn.delay", 200));
+		nodes.add(new Node(SettingsType.MOB, "evil.items.tame-item", 354));
+		nodes.add(new Node(SettingsType.MOB, "evil.misc.tame-chance", 5));
+		nodes.add(new Node(SettingsType.MOB, "evil.spawn.max", 2));
+		nodes.add(new Node(SettingsType.MOB, "evil.misc.names",
+				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,"));
+		nodes.add(new Node(SettingsType.MOB, "evil.items.drops",
+				"260,357,2256,"));
+		nodes.add(new Node(SettingsType.MOB, "evil.spawn.spawn", false));
+		nodes.add(new Node(SettingsType.MOB, "evil.misc.failed-tame-messages",
+				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;"));
 	}
 }

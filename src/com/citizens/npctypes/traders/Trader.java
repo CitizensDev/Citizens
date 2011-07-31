@@ -1,7 +1,7 @@
 package com.citizens.npctypes.traders;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -16,6 +16,7 @@ import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.CitizensNPC;
 import com.citizens.npctypes.traders.TraderManager.Mode;
+import com.citizens.properties.Node;
 import com.citizens.properties.properties.TraderProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.InventoryUtils;
@@ -178,8 +179,7 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public Map<String, Object> getDefaultSettings() {
-		// TODO Auto-generated method stub
+	public List<Node> getNodes() {
 		return null;
 	}
 }

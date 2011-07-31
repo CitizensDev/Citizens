@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.citizens.CreatureTask;
 import com.citizens.Permission;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.npcs.NPCManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.utils.InventoryUtils;
 import com.citizens.utils.MessageUtils;
@@ -48,8 +48,8 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void onDeath() {
 		ItemStack item;
-		if ((item = UtilityProperties.getRandomDrop(Constant.EvilDrops
-				.getString())) != null) {
+		if ((item = UtilityProperties.getRandomDrop(SettingsManager
+				.getString("evil.items.drops"))) != null) {
 			this.getEntity().getWorld()
 					.dropItemNaturally(this.getLocation(), item);
 		}
@@ -70,9 +70,10 @@ public class EvilCreatureNPC extends CreatureNPC {
 			return;
 		}
 		if (npc.getHandle() instanceof CreatureNPC
-				&& player.getItemInHand().getTypeId() == Constant.EvilNPCTameItem
-						.toInt()) {
-			if (new Random().nextInt(100) <= Constant.EvilNPCTameChance.toInt()) {
+				&& player.getItemInHand().getTypeId() == SettingsManager
+						.getInt("evil.items.tame-item")) {
+			if (new Random().nextInt(100) <= SettingsManager
+					.getInt("evil.misc.tame-chance")) {
 				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
 				CreatureTask.despawn(this);
@@ -85,13 +86,14 @@ public class EvilCreatureNPC extends CreatureNPC {
 				Messaging
 						.send(player,
 								this.npc,
-								StringUtils.colourise(Constant.ChatFormat
-										.getString().replace("%name%",
+								StringUtils.colourise(SettingsManager
+										.getString("general.chat.format")
+										.replace("%name%",
 												npc.getStrippedName()))
 										+ ChatColor.WHITE
 										+ MessageUtils
-												.getRandomMessage(Constant.FailureToTameMessages
-														.getString()));
+												.getRandomMessage(SettingsManager
+														.getString("evil.misc.failed-tame-messages")));
 			}
 		}
 	}

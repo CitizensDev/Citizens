@@ -1,19 +1,21 @@
 package com.citizens.npctypes.healers;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.citizens.Permission;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.HealerCommands;
 import com.citizens.economy.EconomyManager;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.CitizensNPC;
+import com.citizens.properties.Node;
+import com.citizens.properties.SettingsManager;
+import com.citizens.properties.SettingsManager.SettingsType;
 import com.citizens.properties.properties.HealerProperties;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
@@ -113,20 +115,11 @@ public class Healer extends CitizensNPC {
 		int playerHealth = player.getHealth();
 		int healerHealth = healer.getHealth();
 		if (Permission.generic(player, "citizens.healer.use.heal")) {
-			if (player.getItemInHand().getTypeId() == Constant.HealerTakeHealthItem
-					.toInt()) {
+			if (player.getItemInHand().getTypeId() == SettingsManager
+					.getInt("items.healers.take-health-item")) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
-						if (Constant.PayForHealerHeal.toBoolean()) {
-							buyHeal(player, npc, true);
-						} else {
-							player.setHealth(playerHealth + 1);
-							healer.setHealth(healerHealth - 1);
-							player.sendMessage(ChatColor.GREEN
-									+ "You drained health from the healer "
-									+ StringUtils.wrap(npc.getStrippedName())
-									+ ".");
-						}
+						buyHeal(player, npc, true);
 					} else {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName())
@@ -136,8 +129,8 @@ public class Healer extends CitizensNPC {
 					player.sendMessage(ChatColor.GREEN
 							+ "You are fully healed.");
 				}
-			} else if (player.getItemInHand().getTypeId() == Constant.HealerGiveHealthItem
-					.toInt()) {
+			} else if (player.getItemInHand().getTypeId() == SettingsManager
+					.getInt("items.healers.give-health-item")) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
 						player.setHealth(playerHealth - 1);
@@ -180,10 +173,18 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public Map<String, Object> getDefaultSettings() {
-		Map<String, Object> nodes = new HashMap<String, Object>();
-		nodes.put("prices.healer.levelup", 100);
-		nodes.put("prices.healer.heal", 100);
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.healer.levelup", 100));
+		nodes.add(new Node(SettingsType.ECONOMY, "prices.healer.heal", 100));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"items.healers.give-health-item", 35));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"items.healers.take-health-item", 278));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"ticks.healers.health-regen-increment", 12000));
+		nodes.add(new Node(SettingsType.GENERAL,
+				"general.healers.regen-health", true));
 		return nodes;
 	}
 }

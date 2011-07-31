@@ -9,12 +9,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.economy.EconomyManager;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.traders.ItemPrice;
 import com.citizens.npctypes.traders.Stockable;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PageUtils.PageInstance;
@@ -67,18 +67,23 @@ public class MessageUtils {
 			NPCDataManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
-			text = getRandomMessage(Constant.DefaultText.getString());
+			text = getRandomMessage(SettingsManager
+					.getString("general.chat.default-text"));
 		}
 		if (!text.isEmpty()) {
-			if (Constant.UseNPCColours.toBoolean()) {
-				text = StringUtils.colourise(Constant.ChatFormat.getString()
-						.replace("%name%", npc.getStrippedName())) + text;
+			if (SettingsManager.getBoolean("general.colors.use-npc-colours")) {
+				text = StringUtils.colourise(SettingsManager.getString(
+						"general.chat.format").replace("%name%",
+						npc.getStrippedName()))
+						+ text;
 			} else {
-				text = StringUtils.colourise(Constant.ChatFormat.getString()
-						.replace(
-								"%name%",
-								"&" + Constant.NPCColour.getString() + name
-										+ ChatColor.WHITE))
+				text = StringUtils.colourise(SettingsManager.getString(
+						"general.chat.format").replace(
+						"%name%",
+						"&"
+								+ SettingsManager
+										.getString("general.colors.npc-colour")
+								+ name + ChatColor.WHITE))
 						+ text;
 			}
 			return text;
@@ -213,7 +218,7 @@ public class MessageUtils {
 	public static String getRandomMessage(String messages) {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
-		if (text.equals(Constant.DefaultText.getString())) {
+		if (text.equals(SettingsManager.getString("general.chat.default-text"))) {
 			return text.replace('&', '§');
 		}
 		return text;

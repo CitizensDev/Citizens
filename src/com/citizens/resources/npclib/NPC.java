@@ -3,7 +3,7 @@ package com.citizens.resources.npclib;
 import org.bukkit.ChatColor;
 
 import com.citizens.Citizens;
-import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.SettingsManager;
 
 public class NPC {
 
@@ -20,7 +20,7 @@ public class NPC {
 	}
 
 	public String getName() {
-		if (Constant.ConvertSlashes.toBoolean()) {
+		if (SettingsManager.getBoolean("general.chat.slashes-to-spaces")) {
 			String returnName = "";
 			String[] brokenName = this.name.split(" ");
 			for (int i = 0; i < brokenName.length; i++) {

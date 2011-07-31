@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Storage;
 import com.citizens.utils.Messaging;
 
@@ -30,7 +29,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void load() {
-		config.load();
+		this.config.load();
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void removeKey(String path) {
 		this.config.removeProperty(path);
-		if (Constant.SaveOften.toBoolean()) {
+		if (SettingsManager.getBoolean("ticks.saving.save-often")) {
 			save();
 		}
 	}
@@ -106,7 +105,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setString(String path, String value) {
 		this.config.setProperty(path, value);
-		if (Constant.SaveOften.toBoolean()) {
+		if (SettingsManager.getBoolean("ticks.saving.save-often")) {
 			save();
 		}
 	}
@@ -142,7 +141,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setInt(String path, int value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.toBoolean()) {
+		if (SettingsManager.getBoolean("ticks.saving.save-often")) {
 			save();
 		}
 	}
@@ -178,7 +177,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setDouble(String path, double value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.toBoolean()) {
+		if (SettingsManager.getBoolean("ticks.saving.save-often")) {
 			save();
 		}
 	}
@@ -214,7 +213,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setLong(String path, long value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.toBoolean()) {
+		if (SettingsManager.getBoolean("ticks.saving.save-often")) {
 			save();
 		}
 	}
@@ -248,7 +247,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setBoolean(String path, boolean value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (Constant.SaveOften.toBoolean()) {
+		if (SettingsManager.getBoolean("ticks.saving.save-often")) {
 			save();
 		}
 	}

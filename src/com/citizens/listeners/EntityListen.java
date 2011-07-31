@@ -13,7 +13,6 @@ import org.bukkit.plugin.PluginManager;
 
 import com.citizens.Citizens;
 import com.citizens.CreatureTask;
-import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCDisplayTextEvent;
 import com.citizens.events.NPCRightClickEvent;
 import com.citizens.events.NPCTargetEvent;
@@ -22,6 +21,7 @@ import com.citizens.npcs.NPCDataManager;
 import com.citizens.npcs.NPCManager;
 import com.citizens.npctypes.questers.Quester;
 import com.citizens.npctypes.questers.quests.QuestManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.Messaging;
@@ -88,9 +88,10 @@ public class EntityListen extends EntityListener implements Listener {
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
-					Messaging.send(player, npc,
-							Constant.SelectionMessage.getString());
-					if (!Constant.QuickSelect.toBoolean()) {
+					Messaging.send(player, npc, SettingsManager
+							.getString("general.chat.selection-message"));
+					if (!SettingsManager
+							.getBoolean("general.selection.quick-select")) {
 						return;
 					}
 				}
@@ -117,9 +118,12 @@ public class EntityListen extends EntityListener implements Listener {
 			if (!rightClickEvent.isCancelled()) {
 				if (npc.getWaypoints().isStarted()
 						&& npc.getWaypoints().current() != null) {
-					npc.getWaypoints().scheduleDelay(npc,
-							npc.getWaypoints().current().getLocation(),
-							Constant.RightClickPause.toInt());
+					npc.getWaypoints()
+							.scheduleDelay(
+									npc,
+									npc.getWaypoints().current().getLocation(),
+									SettingsManager
+											.getInt("ticks.waypoints.right-click-pause"));
 				}
 				npc.callRightClick(player, rightClickEvent.getNPC());
 			}

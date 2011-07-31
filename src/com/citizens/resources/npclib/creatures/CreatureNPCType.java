@@ -1,18 +1,16 @@
 package com.citizens.resources.npclib.creatures;
 
-import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Range;
 import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Type;
 
 public enum CreatureNPCType {
-	EVIL(EvilCreatureNPC.class, Constant.MaxEvils.toInt(), Constant.EvilNames
-			.getString(), new SpawnValidator(Type.JUST, 0), new SpawnValidator(
-			Range.DEFAULT, false)), PIRATE(
-			PirateCreatureNPC.class,
-			Constant.MaxPirates.toInt(),
-			Constant.PirateNames.getString(),
+	EVIL(
+			EvilCreatureNPC.class,
+			SettingsManager.getInt("evil.spawn.max"),
+			SettingsManager.getString("evil.misc.names"),
 			new SpawnValidator(Type.JUST, 0),
-			new SpawnValidator(Type.INCLUDING, 8, 9));
+			new SpawnValidator(Range.DEFAULT, false));
 	private final int max;
 	private final String possible;
 	private final Class<? extends CreatureNPC> instance;

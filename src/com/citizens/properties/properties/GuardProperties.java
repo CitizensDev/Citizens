@@ -1,6 +1,5 @@
 package com.citizens.properties.properties;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npctypes.guards.FlagInfo;
 import com.citizens.npctypes.guards.FlagList;
@@ -8,6 +7,7 @@ import com.citizens.npctypes.guards.FlagList.FlagType;
 import com.citizens.npctypes.guards.Guard;
 import com.citizens.npctypes.guards.GuardManager.GuardType;
 import com.citizens.properties.PropertyManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 
 public class GuardProperties extends PropertyManager implements Saveable {
@@ -22,8 +22,8 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	}
 
 	private double getProtectionRadius(int UID) {
-		return profiles.getDouble(UID + radius,
-				Constant.DefaultBouncerProtectionRadius.toDouble());
+		return profiles.getDouble(UID + radius, SettingsManager
+				.getDouble("range.guards.default-bouncer-protection-radius"));
 	}
 
 	private void saveAggressive(int UID, boolean aggro) {

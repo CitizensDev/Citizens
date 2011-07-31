@@ -16,11 +16,11 @@ import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCData;
 import com.citizens.npcs.NPCDataManager;
 import com.citizens.properties.PropertyManager;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.LocationUtils;
 import com.citizens.utils.Messaging;
@@ -190,8 +190,9 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	public boolean isLookWhenClose(int UID) {
-		return profiles.getBoolean(UID + lookWhenClose,
-				Constant.DefaultFollowingEnabled.toBoolean());
+		return profiles
+				.getBoolean(UID + lookWhenClose, SettingsManager
+						.getBoolean("general.defaults.enable-following"));
 	}
 
 	public void saveLookWhenClose(int UID, boolean value) {
@@ -200,7 +201,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 
 	public boolean isTalkWhenClose(int UID) {
 		return profiles.getBoolean(UID + talkWhenClose,
-				Constant.DefaultTalkWhenClose.toBoolean());
+				SettingsManager.getBoolean("general.defaults.talk-when-close"));
 	}
 
 	public void saveTalkWhenClose(int UID, boolean value) {

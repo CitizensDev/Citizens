@@ -9,8 +9,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
-import com.citizens.SettingsManager.Constant;
 import com.citizens.events.NPCCreatureSpawnEvent;
+import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.resources.npclib.NPCSpawner;
@@ -79,10 +79,7 @@ public class DefaultSpawner implements Spawner {
 		boolean spawn = false;
 		switch (type) {
 		case EVIL:
-			spawn = Constant.SpawnEvils.toBoolean();
-			break;
-		case PIRATE:
-			spawn = Constant.SpawnPirates.toBoolean();
+			spawn = SettingsManager.getBoolean("evil.spawn.spawn");
 			break;
 		}
 		return spawn;

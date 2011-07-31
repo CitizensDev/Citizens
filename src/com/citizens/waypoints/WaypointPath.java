@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import com.citizens.Citizens;
-import com.citizens.SettingsManager.Constant;
+import com.citizens.properties.SettingsManager;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PathUtils;
 
@@ -120,7 +120,7 @@ public class WaypointPath {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, target, -1, -1,
-					Constant.PathfindingRange.toDouble());
+					SettingsManager.getDouble("range.pathfinding"));
 		}
 	}
 
@@ -136,7 +136,7 @@ public class WaypointPath {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, point, -1, -1,
-					Constant.PathfindingRange.toDouble());
+					SettingsManager.getDouble("range.pathfinding"));
 			npc.setPaused(false);
 		}
 	}
