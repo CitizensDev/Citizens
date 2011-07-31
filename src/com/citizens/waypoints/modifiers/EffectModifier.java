@@ -129,13 +129,14 @@ public class EffectModifier extends WaypointModifier {
 								StringUtils.format(Material.getMaterial(data))));
 						break;
 					case RECORD_PLAY:
-						if (message.getMessage().equalsIgnoreCase("green"))
+						if (message.getMessage().equalsIgnoreCase("green")) {
 							data = 2257;
-						else if (message.getMessage()
-								.equalsIgnoreCase("yellow"))
+						} else if (message.getMessage().equalsIgnoreCase(
+								"yellow")) {
 							data = 2256;
-						else
+						} else {
 							data = -1;
+						}
 						if (data != 2256 && data != 2257) {
 							player.sendMessage(ChatColor.GRAY
 									+ "Not a valid record type.");

@@ -17,6 +17,10 @@ public class Messaging {
 			"dteal", "dred", "purple", "gold", "gray", "dgray", "blue",
 			"bgreen", "teal", "red", "pink", "yellow", "white" };
 
+	public static void send(Player player, String message) {
+		player.sendMessage(message);
+	}
+
 	public static void send(Player player, HumanNPC npc, String message) {
 		message = colourise(StringUtils.colourise(message));
 		message = message.replace("<h>", "" + player.getHealth());

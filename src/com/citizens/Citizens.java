@@ -37,7 +37,7 @@ import com.citizens.npctypes.wizards.WizardTask;
 import com.citizens.properties.PropertyManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
-import com.citizens.resources.register.Method;
+import com.citizens.resources.register.payment.Method;
 import com.citizens.resources.sk89q.CitizensCommandsManager;
 import com.citizens.resources.sk89q.CommandPermissionsException;
 import com.citizens.resources.sk89q.CommandUsageException;
@@ -58,7 +58,6 @@ public class Citizens extends JavaPlugin {
 	public static Method economy;
 	public static final String separatorChar = "/";
 
-	private static final String codename = "Simplicity";
 	private static final String version = "1.1";
 
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
@@ -133,8 +132,7 @@ public class Citizens extends JavaPlugin {
 		}
 
 		QuestManager.initialize();
-		Messaging.log("version [" + getVersion() + "] (" + codename
-				+ ") loaded");
+		Messaging.log("version [" + getVersion() + "] loaded.");
 	}
 
 	@Override
@@ -144,8 +142,7 @@ public class Citizens extends JavaPlugin {
 		NPCManager.despawnAll();
 		CreatureTask.despawnAll();
 
-		Messaging.log("version [" + getVersion() + "] (" + codename
-				+ ") disabled");
+		Messaging.log("version [" + getVersion() + "] disabled.");
 	}
 
 	@Override

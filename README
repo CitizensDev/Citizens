@@ -8,7 +8,7 @@ Supports:
 -PermissionsBukkit 1.x
 -iConomy 4, 5, & 6
 -BOSEconomy 6 & 7
--EssentialsEco 2.4.x
+-EssentialsEco 2.5.x
 -MultiCurrency
 
 Licensing:
@@ -16,7 +16,7 @@ Read the LICENSE file for the Citizens license.
 
 Wiki:
 You can find tons of information on Citizens permissions nodes, commands, and more on our wiki.
-URL: www.wiki.apunch.net
+URL: www.wiki.citizensnpcs.net
 
 Reporting Bugs:
 You can report bugs on the Bukkit forum thread. However, it is more likely to get noticed

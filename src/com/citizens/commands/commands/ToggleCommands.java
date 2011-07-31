@@ -65,7 +65,7 @@ public class ToggleCommands implements CommandHandler {
 	public static void toggle(CommandContext args, Player player, HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
 		if (!CitizensNPCManager.validType(type)) {
-			player.sendMessage(ChatColor.GRAY + "Invalid toggle type.");
+			Messaging.sendError(player, "Invalid toggle type.");
 			return;
 		}
 		if (!PropertyManager.npcHasType(npc, type)) {
@@ -135,7 +135,6 @@ public class ToggleCommands implements CommandHandler {
 			if (paid > 0) {
 				Messaging.send(
 						player,
-						npc,
 						MessageUtils.getPaidMessage(player, toggle, toggle
 								+ ".creation", npc.getStrippedName(), true));
 			}

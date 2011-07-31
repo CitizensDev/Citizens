@@ -10,7 +10,7 @@ import com.citizens.npctypes.questers.objectives.Objective;
 import com.citizens.npctypes.questers.objectives.Objectives;
 import com.citizens.npctypes.questers.objectives.Objectives.ObjectiveCycler;
 import com.citizens.resources.npclib.HumanNPC;
-import com.iConomy.util.Messaging;
+import com.citizens.utils.Messaging;
 
 public class QuestProgress {
 	private final List<QuestIncrementer> incrementers = new ArrayList<QuestIncrementer>();

@@ -10,7 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import com.citizens.Citizens;
 import com.citizens.economy.EconomyManager;
 import com.citizens.interfaces.Listener;
-import com.citizens.resources.register.Methods;
+import com.citizens.resources.register.payment.Methods;
 import com.citizens.utils.Messaging;
 
 public class ServerListen extends ServerListener implements Listener {

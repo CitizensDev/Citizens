@@ -43,10 +43,11 @@ public class GuardManager {
 		Location loc;
 		if (guard.isBodyguard()) {
 			Player owner = Bukkit.getServer().getPlayer(npc.getOwner());
-			if (owner != null)
+			if (owner != null) {
 				loc = owner.getLocation();
-			else
+			} else {
 				return;
+			}
 		} else {
 			if (npc.getWaypoints().size() > 0) {
 				loc = npc.getWaypoints().current().getLocation();

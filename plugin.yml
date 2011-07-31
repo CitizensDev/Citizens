@@ -127,8 +127,8 @@ permissions:
             citizens.basic.modify.settext: true
             citizens.basic.modify.addtext: true
             citizens.basic.modify.resettext: true
-            citizens.basic.modify,item: true
             citizens.basic.modify.armor: true
+            citizens.basic.modify.item: true
             citizens.basic.modify.lookat: true
             citizens.basic.modify.talkclose: true
             citizens.basic.modify.setowner: true
@@ -147,11 +147,11 @@ permissions:
     citizens.guard.use.*:
         children:
             citizens.guard.use.help: true
-            citizens.guard.use.blacklist: true
+            citizens.guard.use.flags: true
     citizens.guard.modify.*:
         children:
             citizens.guard.modify.type: true
-            citizens.guard.modify.blacklist: true
+            citizens.guard.modify.flags: true
             citizens.guard.modify.radius: true
             citizens.guard.modify.aggro: true
     citizens.healer.*:

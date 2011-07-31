@@ -18,7 +18,7 @@ import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.LocationUtils;
 import com.citizens.utils.MessageUtils;
 import com.citizens.utils.StringUtils;
-import com.iConomy.util.Messaging;
+import com.citizens.utils.Messaging;
 
 public class PirateTask implements Runnable {
 	public enum LootType {
@@ -107,6 +107,7 @@ public class PirateTask implements Runnable {
 					player.getInventory().setItem(randomSlot, null);
 					Messaging
 							.send(player,
+									npc,
 									StringUtils.colourise(Constant.ChatFormat
 											.getString().replace("%name%",
 													npc.getStrippedName()))

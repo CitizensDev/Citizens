@@ -78,8 +78,9 @@ public class GuardTask implements Runnable {
 	}
 
 	private void handleTarget(Player player, HumanNPC npc, Guard guard) {
-		if (!guard.isAggressive())
+		if (!guard.isAggressive()) {
 			return;
+		}
 		FlagList flags = guard.getFlags();
 		flags.processEntities(player.getLocation(), getNearby(player, guard));
 		if (flags.getResult() != null) {

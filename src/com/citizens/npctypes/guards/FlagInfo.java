@@ -1,6 +1,5 @@
 package com.citizens.npctypes.guards;
 
-
 public class FlagInfo {
 	private final int priority;
 	private final String name;

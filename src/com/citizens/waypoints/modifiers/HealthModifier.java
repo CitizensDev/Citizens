@@ -24,10 +24,11 @@ public class HealthModifier extends WaypointModifier {
 	public void onReach(HumanNPC npc) {
 		int health = npc.getPlayer().getHealth();
 		health = take ? health - amount : health + amount;
-		if (health > 20)
+		if (health > 20) {
 			health = 20;
-		else if (health < 0)
+		} else if (health < 0) {
 			health = 0;
+		}
 		npc.getPlayer().setHealth(health);
 	}
 
@@ -69,10 +70,11 @@ public class HealthModifier extends WaypointModifier {
 			break;
 		case TAKE:
 			String bool = message.getString(0);
-			if (bool.equals("off"))
+			if (bool.equals("off")) {
 				take = false;
-			else
+			} else {
 				take = true;
+			}
 			player.sendMessage(ChatColor.GREEN
 					+ (take ? "Taking health." : "Not taking health."));
 		default:

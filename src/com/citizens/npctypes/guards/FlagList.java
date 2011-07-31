@@ -52,9 +52,9 @@ public class FlagList {
 	}
 
 	public void addFlag(FlagType type, FlagInfo info) {
-		if (type == FlagType.GROUP)
+		if (type == FlagType.GROUP) {
 			predicates.updateGroup(info);
-
+		}
 		getFlags(type).put(info.getName(), info);
 	}
 
@@ -77,5 +77,4 @@ public class FlagList {
 			addFlag(type, info);
 		}
 	}
-
 }

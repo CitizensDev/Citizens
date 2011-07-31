@@ -188,8 +188,9 @@ public class HelpUtils {
 		header(sender, "Guard", 1, 1);
 		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		format(sender, "guard", "blacklist (add|remove) (-g) (entry)",
-				"control a guard's blacklist");
+		format(sender, "guard", "flags", "view a guard's flags");
+		format(sender, "guard", "addflag [target] (-a -g -m (-p [priority]))",
+				"add a flag to a guard");
 		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		format(sender, "guard", "aggro", "toggle aggro");

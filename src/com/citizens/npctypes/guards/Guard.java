@@ -177,8 +177,9 @@ public class Guard extends CitizensNPC {
 		}
 		if (isAggressive() && event.getCause() == DamageCause.ENTITY_ATTACK) {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-			if (!isOwner(ev.getDamager(), npc))
+			if (!isOwner(ev.getDamager(), npc)) {
 				target((LivingEntity) ev.getDamager(), npc);
+			}
 		}
 	}
 

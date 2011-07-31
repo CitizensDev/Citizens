@@ -17,7 +17,7 @@ import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.PageUtils;
 import com.citizens.utils.PageUtils.PageInstance;
 import com.citizens.utils.StringUtils;
-import com.iConomy.util.Messaging;
+import com.citizens.utils.Messaging;
 
 public class Quester extends CitizensNPC {
 	private PageInstance display;
@@ -60,7 +60,7 @@ public class Quester extends CitizensNPC {
 					&& profile.getProgress().getQuesterUID() == npc.getUID()) {
 				Quest quest = QuestManager.getQuest(profile.getProgress()
 						.getQuestName());
-				Messaging.send(quest.getCompletedText());
+				Messaging.send(player, quest.getCompletedText());
 				for (Reward reward : quest.getRewards()) {
 					if (reward instanceof QuestReward)
 						((QuestReward) reward).grantQuest(player, npc);

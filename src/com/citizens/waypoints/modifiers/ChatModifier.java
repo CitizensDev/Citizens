@@ -35,8 +35,9 @@ public class ChatModifier extends WaypointModifier {
 	@Override
 	public void parse(Storage storage, String root) {
 		for (String string : Splitter.on(",").split(
-				storage.getString(root + ".messages")))
+				storage.getString(root + ".messages"))) {
 			messages.add(string);
+		}
 	}
 
 	@Override

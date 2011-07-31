@@ -81,14 +81,26 @@ public class GuardCommands implements CommandHandler {
 
 	@Command(
 			aliases = "guard",
+			usage = "flags",
+			desc = "view a guard's flags",
+			modifiers = "flags",
+			min = 1,
+			max = 1)
+	@CommandPermissions("guard.use.flags")
+	public static void flags(CommandContext args, Player player, HumanNPC npc) {
+		// TODO display a guard's current flags
+	}
+
+	@Command(
+			aliases = "guard",
 			usage = "addflag [target] (-a -g -m (-p [priority]))",
-			desc = "control a guard's blacklist",
+			desc = "add a flag to a guard",
 			modifiers = { "addflag", "addf", "addfl" },
 			flags = "agmp",
-			min = 1,
+			min = 2,
 			max = 3)
-	public static void controlFlags(CommandContext args, Player player,
-			HumanNPC npc) {
+	@CommandPermissions("guard.modify.flags")
+	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
 		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')) {
 			player.sendMessage("No type flags specified.");
 			return;

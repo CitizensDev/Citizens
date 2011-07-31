@@ -145,8 +145,9 @@ public class FlagSorter {
 				retrieved = getByType(MOBS).get(
 						EntityUtils.getMonsterName(entity));
 			}
-			if (retrieved.priority() == lowestFound)
+			if (retrieved.priority() == lowestFound) {
 				processed.add(entity);
+			}
 		}
 		reset();
 		return processed;
@@ -176,17 +177,19 @@ public class FlagSorter {
 			Collection<String> toProcess) {
 		List<FlagInfo> processed = new ArrayList<FlagInfo>();
 		for (String string : toProcess) {
-			if (source.get(string) == null)
+			if (source.get(string) == null) {
 				throw new IllegalArgumentException(
 						"source didn't contain a corresponding flag");
+			}
 			processed.add(source.get(string));
 		}
 		return getSortedFlags(processed);
 	}
 
 	static boolean isTargetable(Map<String, FlagInfo> search, String key) {
-		if (search.containsKey("all"))
+		if (search.containsKey("all")) {
 			return !search.get("all").isSafe();
+		}
 		return search.containsKey(key) && !search.get(key).isSafe();
 	}
 
@@ -214,5 +217,4 @@ public class FlagSorter {
 				groupMap.put(name, info);
 		}
 	}
-
 }
