@@ -1,6 +1,5 @@
 package com.citizens.npctypes.wizards;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -51,7 +50,7 @@ public class WizardManager {
 	 * @param npc
 	 */
 	public static boolean teleportPlayer(Player player, HumanNPC npc) {
-		WizardNPC wizard = npc.getType("wizard");
+		Wizard wizard = npc.getType("wizard");
 		if (wizard.getNumberOfLocations() > 0) {
 			if (decreaseMana(player, npc, 5)) {
 				player.teleport(wizard.getCurrentLocation());
@@ -126,8 +125,9 @@ public class WizardManager {
 	 */
 	public static boolean executeCommand(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
-			Bukkit.getServer().dispatchCommand(player,
-					((Wizard) npc.getType("wizard")).getCommand());
+			// use the player as command sender - their permissions get used.
+			return player.performCommand(((Wizard) npc.getType("wizard"))
+					.getCommand());
 		}
 		return false;
 	}

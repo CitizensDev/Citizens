@@ -1,5 +1,6 @@
 package com.citizens.npctypes.traders;
 
+
 public class Check {
 	private int itemID;
 	private short dataValue;

@@ -307,9 +307,8 @@ public class Wizard extends CitizensNPC {
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardInteractItem")) {
 				Wizard wizard = npc.getType("wizard");
-				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
-				switch (mode) {
+				switch (wizard.getMode()) {
 				case EXECUTE_COMMAND:
 					return;
 				case TELEPORT:
@@ -326,8 +325,8 @@ public class Wizard extends CitizensNPC {
 				case SPAWN_MOB:
 					wizard.cycle(npc, WizardMode.SPAWN_MOB);
 					msg += "Mob to spawn set to "
-							+ StringUtils.wrap(wizard.getMob().name()
-									.toLowerCase().replace("_", " "));
+							+ StringUtils.wrap(StringUtils.format(wizard
+									.getMob()));
 					break;
 				case CHANGE_TIME:
 					wizard.cycle(npc, WizardMode.CHANGE_TIME);
@@ -354,9 +353,7 @@ public class Wizard extends CitizensNPC {
 			if (Citizens.validateTool("items.wizards.interact-item", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				WizardManager.buy(player, npc,
-						"wizard."
-								+ wizard.getMode().toString().toLowerCase()
-										.replace("_", ""));
+						"wizard." + StringUtils.format(wizard.getMode()));
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardManaRegenItem")) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");

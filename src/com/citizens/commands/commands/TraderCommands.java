@@ -369,6 +369,11 @@ public class TraderCommands implements CommandHandler {
 		if (!econPlugin) {
 			itemPrice = new ItemPrice(cost);
 		} else {
+			if (Double.parseDouble(price) < 0) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Negative prices are not allowed.");
+				return null;
+			}
 			itemPrice = new ItemPrice(Double.parseDouble(price));
 		}
 		itemPrice.setEconPlugin(econPlugin);
