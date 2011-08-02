@@ -98,16 +98,11 @@ public class WizardCommands implements CommandHandler {
 	@CommandPermissions("wizard.modify.addloc")
 	public static void addLocation(CommandContext args, Player player,
 			HumanNPC npc) {
-		Wizard wizard = npc.getType("wizard");
-		if (wizard.getMode() == WizardMode.TELEPORT) {
-			player.sendMessage(ChatColor.GREEN + "Added current location to "
-					+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
-					+ " as " + StringUtils.wrap(args.getString(1)) + ".");
-			wizard.addLocation(player.getLocation(), args.getString(1));
-		} else {
-			player.sendMessage(ChatColor.RED + npc.getStrippedName()
-					+ " cannot perform that action in this mode.");
-		}
+		player.sendMessage(ChatColor.GREEN + "Added current location to "
+				+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
+				+ " as " + StringUtils.wrap(args.getString(1)) + ".");
+		((Wizard) npc.getType("wizard")).addLocation(player.getLocation(),
+				args.getString(1));
 	}
 
 	@Command(
@@ -121,26 +116,21 @@ public class WizardCommands implements CommandHandler {
 	public static void removeLocation(CommandContext args, Player player,
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
-		if (wizard.getMode() == WizardMode.TELEPORT) {
-			String locations[] = wizard.getLocations().split(":");
-			String newLoc = "";
-			String removedName = "";
-			for (int i = 0; i < locations.length; i++) {
-				if (i + 1 != Integer.parseInt(args.getString(1))) {
-					newLoc = newLoc + locations[i];
-				} else {
-					removedName = locations[i].split(",")[0].replace("(", "");
-				}
+		String locations[] = wizard.getLocations().split(":");
+		String newLoc = "";
+		String removedName = "";
+		for (int i = 0; i < locations.length; i++) {
+			if (i + 1 != Integer.parseInt(args.getString(1))) {
+				newLoc = newLoc + locations[i];
+			} else {
+				removedName = locations[i].split(",")[0].replace("(", "");
 			}
-			wizard.cycle(npc, WizardMode.TELEPORT);
-			wizard.setLocations(newLoc);
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " has amnesia and forgot about "
-					+ StringUtils.wrap(removedName) + ".");
-		} else {
-			player.sendMessage(ChatColor.RED + npc.getStrippedName()
-					+ " cannot perform that action in this mode.");
 		}
+		wizard.cycle(npc, WizardMode.TELEPORT);
+		wizard.setLocations(newLoc);
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+				+ " has amnesia and forgot about "
+				+ StringUtils.wrap(removedName) + ".");
 	}
 
 	@Command(
@@ -154,19 +144,14 @@ public class WizardCommands implements CommandHandler {
 	public static void locations(CommandContext args, Player player,
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
-		if (wizard.getMode() == WizardMode.TELEPORT) {
-			player.sendMessage(ChatColor.GREEN
-					+ StringUtils.listify(StringUtils.wrap(npc
-							.getStrippedName() + "'s Wizard Locations")));
-			String locations[] = wizard.getLocations().split(":");
-			for (int i = 0; i < locations.length; i++) {
-				player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
-						+ ChatColor.GREEN + ": "
-						+ locations[i].split(",")[0].replace("(", ""));
-			}
-		} else {
-			player.sendMessage(ChatColor.RED + npc.getStrippedName()
-					+ " cannot perform that action in this mode.");
+		player.sendMessage(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
+						+ "'s Wizard Locations")));
+		String locations[] = wizard.getLocations().split(":");
+		for (int i = 0; i < locations.length; i++) {
+			player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
+					+ ChatColor.GREEN + ": "
+					+ locations[i].split(",")[0].replace("(", ""));
 		}
 	}
 
@@ -189,5 +174,19 @@ public class WizardCommands implements CommandHandler {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " no longer has unlimited mana.");
 		}
+	}
+
+	@Command(
+			aliases = "wizard",
+			usage = "command [command] (args)",
+			desc = "set a wizard's command",
+			modifiers = { "command", "cmd" },
+			min = 2)
+	@CommandPermissions("wizard.modify.command")
+	public static void command(CommandContext args, Player player, HumanNPC npc) {
+		String command = args.getJoinedStrings(1);
+		((Wizard) npc.getType("wizard")).setCommand(command);
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+				+ " command was set to " + StringUtils.wrap(command) + ".");
 	}
 }

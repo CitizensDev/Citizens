@@ -35,6 +35,7 @@ public class Wizard extends CitizensNPC {
 	private String time = "morning";
 	private CreatureType mob = CreatureType.CHICKEN;
 	private boolean unlimitedMana = false;
+	private String command = "";
 
 	/**
 	 * Addds a location to the main location sting.
@@ -91,7 +92,7 @@ public class Wizard extends CitizensNPC {
 				currentLocation = 0;
 			}
 			break;
-		case SPAWN:
+		case SPAWN_MOB:
 			CreatureType type = wizard.getMob();
 			CreatureType newType = null;
 			switch (type) {
@@ -137,7 +138,7 @@ public class Wizard extends CitizensNPC {
 			}
 			wizard.setMob(newType);
 			break;
-		case TIME:
+		case CHANGE_TIME:
 			String time = wizard.getTime();
 			String newTime = "";
 			if (time.equals("day")) {
@@ -277,6 +278,24 @@ public class Wizard extends CitizensNPC {
 		this.unlimitedMana = unlimitedMana;
 	}
 
+	/**
+	 * Get a wizard's current command to execute
+	 * 
+	 * @return
+	 */
+	public String getCommand() {
+		return command;
+	}
+
+	/**
+	 * Set the command for a wizard to execute
+	 * 
+	 * @param command
+	 */
+	public void setCommand(String command) {
+		this.command = command;
+	}
+
 	@Override
 	public String getType() {
 		return "wizard";
@@ -291,6 +310,8 @@ public class Wizard extends CitizensNPC {
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
 				switch (mode) {
+				case EXECUTE_COMMAND:
+					return;
 				case TELEPORT:
 					if (wizard.getNumberOfLocations() > 0) {
 						wizard.cycle(npc, WizardMode.TELEPORT);
@@ -302,18 +323,18 @@ public class Wizard extends CitizensNPC {
 								+ " has no locations.";
 					}
 					break;
-				case SPAWN:
-					wizard.cycle(npc, WizardMode.SPAWN);
+				case SPAWN_MOB:
+					wizard.cycle(npc, WizardMode.SPAWN_MOB);
 					msg += "Mob to spawn set to "
 							+ StringUtils.wrap(wizard.getMob().name()
 									.toLowerCase().replace("_", " "));
 					break;
-				case TIME:
-					wizard.cycle(npc, WizardMode.TIME);
+				case CHANGE_TIME:
+					wizard.cycle(npc, WizardMode.CHANGE_TIME);
 					msg += "Time setting set to "
 							+ StringUtils.wrap(wizard.getTime());
 					break;
-				case WEATHER:
+				case TOGGLE_STORM:
 					return;
 				default:
 					msg = ChatColor.RED + "No valid mode selected.";
@@ -332,27 +353,10 @@ public class Wizard extends CitizensNPC {
 			Wizard wizard = npc.getType("wizard");
 			if (Citizens.validateTool("items.wizards.interact-item", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
-				WizardMode mode = wizard.getMode();
-				switch (mode) {
-				case TELEPORT:
-					if (wizard.getNumberOfLocations() > 0) {
-						WizardManager.buy(player, npc, "wizard.teleport");
-					}
-					break;
-				case SPAWN:
-					WizardManager.buy(player, npc, "wizard.spawnmob");
-					break;
-				case TIME:
-					WizardManager.buy(player, npc, "wizard.changetime");
-					break;
-				case WEATHER:
-					WizardManager.buy(player, npc, "wizard.togglestorm");
-					break;
-				default:
-					player.sendMessage(ChatColor.RED
-							+ "No valid mode selected.");
-					break;
-				}
+				WizardManager.buy(player, npc,
+						"wizard."
+								+ wizard.getMode().toString().toLowerCase()
+										.replace("_", ""));
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardManaRegenItem")) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
@@ -400,6 +404,8 @@ public class Wizard extends CitizensNPC {
 				100));
 		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.wizard.togglestorm", 100));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.wizard.executecommand", 100));
 		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
 				"general.wizards.wizard-max-locations", 10));
 		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,

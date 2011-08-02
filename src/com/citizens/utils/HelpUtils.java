@@ -151,6 +151,8 @@ public class HelpUtils {
 		format(sender, "wizard", "status", "display the status of a wizard");
 		format(sender, "wizard", "unlimited",
 				"toggle a wizard's mana as unlimited");
+		format(sender, "wizard", "command [command] (args)",
+				"set a wizard's command");
 		footer(sender);
 	}
 

@@ -1,5 +1,6 @@
 package com.citizens.npctypes.wizards;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -8,10 +9,15 @@ import com.citizens.properties.SettingsManager;
 import com.citizens.properties.properties.UtilityProperties;
 import com.citizens.resources.npclib.HumanNPC;
 import com.citizens.utils.MessageUtils;
+import com.citizens.utils.Messaging;
 import com.citizens.utils.StringUtils;
 
 public class WizardManager {
 	public enum WizardMode {
+		/**
+		 * Executes commands
+		 */
+		EXECUTE_COMMAND,
 		/**
 		 * Teleports players
 		 */
@@ -19,15 +25,15 @@ public class WizardManager {
 		/**
 		 * Changes the time of the world
 		 */
-		TIME,
+		CHANGE_TIME,
 		/**
 		 * Spawns mobs into the world
 		 */
-		SPAWN,
+		SPAWN_MOB,
 		/**
 		 * Strikes lightning/makes it rain
 		 */
-		WEATHER;
+		TOGGLE_STORM;
 
 		public static WizardMode parse(String string) {
 			try {
@@ -45,11 +51,16 @@ public class WizardManager {
 	 * @param npc
 	 */
 	public static boolean teleportPlayer(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc, 5)) {
-			player.teleport(((Wizard) npc.getType("wizard"))
-					.getCurrentLocation());
-			return true;
+		WizardNPC wizard = npc.getType("wizard");
+		if (wizard.getNumberOfLocations() > 0) {
+			if (decreaseMana(player, npc, 5)) {
+				player.teleport(wizard.getCurrentLocation());
+				return true;
+			}
+			return false;
 		}
+		Messaging.sendError(player, npc.getStrippedName()
+				+ " has no locations.");
 		return false;
 	}
 
@@ -103,6 +114,20 @@ public class WizardManager {
 		if (decreaseMana(player, npc, 5)) {
 			player.getWorld().setStorm(!player.getWorld().hasStorm());
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Executes a command
+	 * 
+	 * @param player
+	 * @param npc
+	 */
+	public static boolean executeCommand(Player player, HumanNPC npc) {
+		if (decreaseMana(player, npc, 5)) {
+			Bukkit.getServer().dispatchCommand(player,
+					((Wizard) npc.getType("wizard")).getCommand());
 		}
 		return false;
 	}
@@ -185,6 +210,12 @@ public class WizardManager {
 				msg += " to toggle a thunderstorm in the world "
 						+ StringUtils.wrap(player.getWorld().getName()) + ".";
 				if (toggleStorm(player, npc)) {
+					canSend = true;
+				}
+			} else if (op.equals("wizard.executecommand")) {
+				msg += " to execute the command "
+						+ StringUtils.wrap(wizard.getCommand()) + ".";
+				if (executeCommand(player, npc)) {
 					canSend = true;
 				}
 			} else {
