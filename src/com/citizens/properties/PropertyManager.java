@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.citizens.interfaces.Saveable;
 import com.citizens.npcs.NPCManager;
-import com.citizens.npctypes.questers.PlayerProfile;
 import com.citizens.properties.properties.BasicProperties;
 import com.citizens.properties.properties.QuestProperties;
 import com.citizens.properties.properties.UtilityProperties;
@@ -27,10 +26,6 @@ public class PropertyManager {
 
 	public static CachedYAMLHandler getNPCProfiles() {
 		return profiles;
-	}
-
-	public static PlayerProfile getPlayerProfile(String name) {
-		return new PlayerProfile(name);
 	}
 
 	public static boolean npcHasType(HumanNPC npc, String type) {

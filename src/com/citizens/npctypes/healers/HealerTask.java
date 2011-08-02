@@ -10,7 +10,7 @@ public class HealerTask implements Runnable {
 	@Override
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
-			if (SettingsManager.getBoolean("general.healers.regen-health")) {
+			if (SettingsManager.getBoolean("RegenHealerHealth")) {
 				regenerateHealth(entry.getValue());
 			}
 		}
@@ -36,8 +36,7 @@ public class HealerTask implements Runnable {
 	 * @return
 	 */
 	public static int getHealthRegenRate() {
-		int delay = SettingsManager
-				.getInt("ticks.healers.health-regen-increment");
+		int delay = SettingsManager.getInt("HealerHealthRegenIncrement");
 		if (!NPCManager.getList().isEmpty()) {
 			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
 					.entrySet()) {

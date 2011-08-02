@@ -16,17 +16,16 @@ public class PathUtils {
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,
 			int stationaryTicks) {
 		return createPath(npc, loc, pathTicks, stationaryTicks,
-				SettingsManager.getDouble("range.pathfinding"));
+				SettingsManager.getDouble("PathfindingRange"));
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks) {
 		return createPath(npc, loc, pathTicks,
-				SettingsManager.getInt("ticks.pathing.max-stationary"));
+				SettingsManager.getInt("MaxStationaryTicks"));
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc) {
-		return createPath(npc, loc,
-				SettingsManager.getInt("ticks.pathing.max-pathing"));
+		return createPath(npc, loc, SettingsManager.getInt("MaxPathingTicks"));
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
@@ -38,18 +37,17 @@ public class PathUtils {
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks, int stationaryTicks) {
 		target(npc, entity, aggro, pathTicks, stationaryTicks,
-				SettingsManager.getDouble("range.pathfinding"));
+				SettingsManager.getDouble("PathfindingRange"));
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks) {
 		target(npc, entity, aggro, pathTicks,
-				SettingsManager.getInt("ticks.pathing.max-stationary"));
+				SettingsManager.getInt("MaxStationaryTicks"));
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro) {
-		target(npc, entity, aggro,
-				SettingsManager.getInt("ticks.pathing.max-pathing"));
+		target(npc, entity, aggro, SettingsManager.getInt("MaxPathingTicks"));
 	}
 
 	public static boolean pathFinished(HumanNPC npc) {

@@ -16,7 +16,7 @@ public class WizardTask implements Runnable {
 				return;
 			}
 			Wizard wizard = npc.getType("wizard");
-			if (SettingsManager.getBoolean("general.wizards.regen-mana")
+			if (SettingsManager.getBoolean("RegenWizardMana")
 					&& !wizard.hasUnlimitedMana()) {
 				WizardManager.increaseMana(npc, 1);
 			}

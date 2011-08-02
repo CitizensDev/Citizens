@@ -7,8 +7,8 @@ import com.citizens.resources.npclib.creatures.SpawnValidator.Spawn.Type;
 public enum CreatureNPCType {
 	EVIL(
 			EvilCreatureNPC.class,
-			SettingsManager.getInt("evil.spawn.max"),
-			SettingsManager.getString("evil.misc.names"),
+			SettingsManager.getInt("MaxEvils"),
+			SettingsManager.getString("EvilNames"),
 			new SpawnValidator(Type.JUST, 0),
 			new SpawnValidator(Range.DEFAULT, false));
 	private final int max;

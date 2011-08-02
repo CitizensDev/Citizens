@@ -28,7 +28,7 @@ public class Permission {
 	}
 
 	public static void initialize(Server server) {
-		if (SettingsManager.getBoolean("general.use-bukkit-permissions")) {
+		if (SettingsManager.getBoolean("UseSuperPerms")) {
 			Plugin test = server.getPluginManager().getPlugin(
 					"PermissionsBukkit");
 			if (test != null) {

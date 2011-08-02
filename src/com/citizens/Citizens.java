@@ -91,8 +91,8 @@ public class Citizens extends JavaPlugin {
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask(),
-				SettingsManager.getInt("general.spawn.delay"),
-				SettingsManager.getInt("general.spawn.delay"));
+				SettingsManager.getInt("CreatureNPCSpawnDelay"),
+				SettingsManager.getInt("CreatureNPCSpawnDelay"));
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
 
@@ -112,17 +112,16 @@ public class Citizens extends JavaPlugin {
 
 		// Schedule tasks TODO - Genericify
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(), SettingsManager.getInt("ticks.general.delay"),
-				SettingsManager.getInt("ticks.general.delay"));
+				new TickTask(), SettingsManager.getInt("TickDelay"),
+				SettingsManager.getInt("TickDelay"));
 		// TODO temporary workaround, should genericify tasks so we can register
 		// them per type on start-up
 		if (loadedTypes.contains("guard")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new GuardTask(),
-					SettingsManager.getInt("ticks.general.delay"),
-					SettingsManager.getInt("ticks.general.delay"));
+					new GuardTask(), SettingsManager.getInt("TickDelay"),
+					SettingsManager.getInt("TickDelay"));
 		}
-		if (SettingsManager.getBoolean("ticks.saving.use-task")) {
+		if (SettingsManager.getBoolean("UseSaveTask")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
 						@Override
@@ -131,8 +130,8 @@ public class Citizens extends JavaPlugin {
 							PropertyManager.saveState();
 							Messaging.log("Saved.");
 						}
-					}, SettingsManager.getInt("ticks.saving.delay"),
-					SettingsManager.getInt("ticks.saving.delay"));
+					}, SettingsManager.getInt("SavingDelay"),
+					SettingsManager.getInt("SavingDelay"));
 		}
 
 		QuestManager.initialize();
@@ -293,8 +292,8 @@ public class Citizens extends JavaPlugin {
 		if (loadedTypes.contains("wizard")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new WizardTask(),
-					SettingsManager.getInt("ticks.wizards.mana-regen-rate"),
-					SettingsManager.getInt("ticks.wizards.mana-regen-rate"));
+					SettingsManager.getInt("WizardManaRegenRate"),
+					SettingsManager.getInt("WizardManaRegenRate"));
 		}
 		initialized = true;
 	}

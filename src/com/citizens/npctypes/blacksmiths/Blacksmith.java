@@ -53,27 +53,27 @@ public class Blacksmith extends CitizensNPC {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.armorrepair.leather", 0.25));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.armorrepair.gold", 0.50));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.armorrepair.chainmail", 0.75));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.armorrepair.iron", 1));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.armorrepair.diamond", 1.25));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.toolrepair.wood", 0.25));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.toolrepair.gold", 0.50));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.toolrepair.stone", 0.75));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.toolrepair.iron", 1));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.toolrepair.diamond", 1.25));
-		nodes.add(new Node(SettingsType.ECONOMY,
+		nodes.add(new Node("", SettingsType.ECONOMY,
 				"prices.blacksmith.toolrepair.misc", 0.50));
 		return nodes;
 	}

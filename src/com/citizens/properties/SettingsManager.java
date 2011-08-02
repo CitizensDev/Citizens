@@ -29,25 +29,49 @@ public class SettingsManager {
 		MOB;
 	}
 
-	public static boolean getBoolean(String path) {
-		return (Boolean) loadedNodes.get(path);
+	public static boolean getBoolean(String name) {
+		try {
+			return (Boolean) loadedNodes.get(name);
+		} catch (NullPointerException e) {
+			Messaging.log("REPORT THIS ERROR TO FULLWALL OR APUNCH ASAP.");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-	public static int getInt(String path) {
-		return (Integer) loadedNodes.get(path);
+	public static int getInt(String name) {
+		try {
+			return (Integer) loadedNodes.get(name);
+		} catch (NullPointerException e) {
+			Messaging.log("REPORT THIS ERROR TO FULLWALL OR APUNCH ASAP.");
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
-	public static String getString(String path) {
-		return (String) loadedNodes.get(path);
+	public static String getString(String name) {
+		try {
+			return (String) loadedNodes.get(name);
+		} catch (NullPointerException e) {
+			Messaging.log("REPORT THIS ERROR TO FULLWALL OR APUNCH ASAP.");
+			e.printStackTrace();
+			return "";
+		}
 	}
 
-	public static double getDouble(String path) {
-		if (loadedNodes.get(path) instanceof Float) {
-			return (Float) loadedNodes.get(path);
-		} else if (loadedNodes.get(path) instanceof Double) {
-			return (Double) loadedNodes.get(path);
-		} else {
-			return (Integer) loadedNodes.get(path);
+	public static double getDouble(String name) {
+		try {
+			if (loadedNodes.get(name) instanceof Float) {
+				return (Float) loadedNodes.get(name);
+			} else if (loadedNodes.get(name) instanceof Double) {
+				return (Double) loadedNodes.get(name);
+			} else {
+				return (Integer) loadedNodes.get(name);
+			}
+		} catch (NullPointerException e) {
+			Messaging.log("REPORT THIS ERROR TO FULLWALL OR APUNCH ASAP.");
+			e.printStackTrace();
+			return 0;
 		}
 	}
 
@@ -62,7 +86,7 @@ public class SettingsManager {
 		loadSettings();
 		// Only load settings for loaded NPC types
 		for (String t : Citizens.loadedTypes) {
-			nodes.add(new Node(SettingsType.ECONOMY, "prices." + t
+			nodes.add(new Node("", SettingsType.ECONOMY, "prices." + t
 					+ ".creation", 100));
 			for (Node node : CitizensNPCManager.getType(t).getNodes()) {
 				nodes.add(node);
@@ -77,7 +101,7 @@ public class SettingsManager {
 			} else {
 				node.set(node.getFile().getRaw(node.getPath()));
 			}
-			loadedNodes.put(node.getPath(), node.getValue());
+			loadedNodes.put(node.getName(), node.getValue());
 			local.save();
 		}
 		// local.save();
@@ -85,66 +109,82 @@ public class SettingsManager {
 
 	private static void loadSettings() {
 		// citizens.yml
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("MaxStationaryTicks", SettingsType.GENERAL,
 				"ticks.pathing.max-stationary", -1));
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.pathing.max-pathing",
-				-1));
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.delay", 72000));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("MaxPathingTicks", SettingsType.GENERAL,
+				"ticks.pathing.max-pathing", -1));
+		nodes.add(new Node("SavingDelay", SettingsType.GENERAL,
+				"ticks.saving.delay", 72000));
+		nodes.add(new Node("RightClickPause", SettingsType.GENERAL,
 				"ticks.waypoints.right-click-pause", 70));
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.general.delay", 1));
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.delay", 72000));
-		nodes.add(new Node(SettingsType.GENERAL, "range.basic.look", 5));
-		nodes.add(new Node(SettingsType.GENERAL, "general.chat.format",
-				"[%name%]: "));
+		nodes.add(new Node("TickDelay", SettingsType.GENERAL,
+				"ticks.general.delay", 1));
+		nodes.add(new Node("SavingDelay", SettingsType.GENERAL,
+				"ticks.saving.delay", 72000));
+		nodes.add(new Node("NPCRange", SettingsType.GENERAL,
+				"range.basic.look", 5));
+		nodes.add(new Node("ChatFormat", SettingsType.GENERAL,
+				"general.chat.format", "[%name%]: "));
 		nodes.add(new Node(
+				"DefaultText",
 				SettingsType.GENERAL,
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"));
-		nodes.add(new Node(SettingsType.GENERAL, "general.colors.npc-colour",
-				"f"));
-		nodes.add(new Node(SettingsType.GENERAL, "items.basic.talk-items",
-				"340,"));
-		nodes.add(new Node(SettingsType.GENERAL, "items.basic.select-items",
-				"*"));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("NPCColor", SettingsType.GENERAL,
+				"general.colors.npc-colour", "f"));
+		nodes.add(new Node("TalkItems", SettingsType.GENERAL,
+				"items.basic.talk-items", "340,"));
+		nodes.add(new Node("SelectItems", SettingsType.GENERAL,
+				"items.basic.select-items", "*"));
+		nodes.add(new Node("SelectionMessage", SettingsType.GENERAL,
 				"general.chat.selection-message",
 				"<g>You selected <y><npc><g> (ID <y><npcid><g>)."));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("CreationMessage", SettingsType.GENERAL,
 				"general.chat.creation-message",
 				"<g>The NPC <y><npc><g> was born!"));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("DefaultLookAt", SettingsType.GENERAL,
 				"general.defaults.enable-following", true));
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.save-often",
-				true));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("SaveOften", SettingsType.GENERAL,
+				"ticks.saving.save-often", true));
+		nodes.add(new Node("UseNPCColors", SettingsType.GENERAL,
 				"general.colors.use-npc-colours", true));
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.saving.use-task", true));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("UseSaveTask", SettingsType.GENERAL,
+				"ticks.saving.use-task", true));
+		nodes.add(new Node("QuickSelect", SettingsType.GENERAL,
 				"general.selection.quick-select", false));
-		nodes.add(new Node(SettingsType.GENERAL, "general.debug-mode", false));
-		nodes.add(new Node(SettingsType.GENERAL, "general.notify-updates", true));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("DebugMode", SettingsType.GENERAL,
+				"general.debug-mode", false));
+		nodes.add(new Node("NotifyUpdates", SettingsType.GENERAL,
+				"general.notify-updates", true));
+		nodes.add(new Node("ConvertSlashes", SettingsType.GENERAL,
 				"general.chat.slashes-to-spaces", true));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("DefaultTalkClose", SettingsType.GENERAL,
 				"general.defaults.talk-when-close", false));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("UseSuperPerms", SettingsType.GENERAL,
 				"general.use-bukkit-permissions", false));
-		nodes.add(new Node(SettingsType.GENERAL, "range.pathfinding", 16F));
+		nodes.add(new Node("PathfindingRange", SettingsType.GENERAL,
+				"range.pathfinding", 16F));
 		// economy.yml
-		nodes.add(new Node(SettingsType.ECONOMY, "economy.use-economy", true));
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.basic.creation", 100));
+		nodes.add(new Node("UseEconomy", SettingsType.ECONOMY,
+				"economy.use-economy", true));
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.basic.creation",
+				100));
 		// mobs.yml
-		nodes.add(new Node(SettingsType.MOB, "general.spawn.delay", 200));
-		nodes.add(new Node(SettingsType.MOB, "evil.items.tame-item", 354));
-		nodes.add(new Node(SettingsType.MOB, "evil.misc.tame-chance", 5));
-		nodes.add(new Node(SettingsType.MOB, "evil.spawn.max", 2));
-		nodes.add(new Node(SettingsType.MOB, "evil.misc.names",
+		nodes.add(new Node("CreatureNPCSpawnDelay", SettingsType.MOB,
+				"general.spawn.delay", 200));
+		nodes.add(new Node("EvilTameItem", SettingsType.MOB,
+				"evil.items.tame-item", 354));
+		nodes.add(new Node("EvilTameChance", SettingsType.MOB,
+				"evil.misc.tame-chance", 5));
+		nodes.add(new Node("MaxEvils", SettingsType.MOB, "evil.spawn.max", 2));
+		nodes.add(new Node("EvilNames", SettingsType.MOB, "evil.misc.names",
 				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,"));
-		nodes.add(new Node(SettingsType.MOB, "evil.items.drops",
+		nodes.add(new Node("EvilDrops", SettingsType.MOB, "evil.items.drops",
 				"260,357,2256,"));
-		nodes.add(new Node(SettingsType.MOB, "evil.spawn.spawn", false));
-		nodes.add(new Node(SettingsType.MOB, "evil.misc.failed-tame-messages",
+		nodes.add(new Node("SpawnEvils", SettingsType.MOB, "evil.spawn.spawn",
+				false));
+		nodes.add(new Node("EvilFailedTameMessages", SettingsType.MOB,
+				"evil.misc.failed-tame-messages",
 				"Ha! You can't tame me!;Nice try, <name>!;Muahahaha, I am evil!;"));
 	}
 }

@@ -49,7 +49,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 	public void onDeath() {
 		ItemStack item;
 		if ((item = UtilityProperties.getRandomDrop(SettingsManager
-				.getString("evil.items.drops"))) != null) {
+				.getString("EvilDrops"))) != null) {
 			this.getEntity().getWorld()
 					.dropItemNaturally(this.getLocation(), item);
 		}
@@ -71,9 +71,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 		}
 		if (npc.getHandle() instanceof CreatureNPC
 				&& player.getItemInHand().getTypeId() == SettingsManager
-						.getInt("evil.items.tame-item")) {
+						.getInt("EvilTameItem")) {
 			if (new Random().nextInt(100) <= SettingsManager
-					.getInt("evil.misc.tame-chance")) {
+					.getInt("EvilTameChance")) {
 				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
 				CreatureTask.despawn(this);
@@ -83,17 +83,15 @@ public class EvilCreatureNPC extends CreatureNPC {
 						+ StringUtils.wrap(npc.getStrippedName())
 						+ "! You can now toggle it to be any type.");
 			} else {
-				Messaging
-						.send(player,
-								this.npc,
-								StringUtils.colourise(SettingsManager
-										.getString("general.chat.format")
-										.replace("%name%",
-												npc.getStrippedName()))
-										+ ChatColor.WHITE
-										+ MessageUtils
-												.getRandomMessage(SettingsManager
-														.getString("evil.misc.failed-tame-messages")));
+				Messaging.send(
+						player,
+						this.npc,
+						StringUtils.colourise(SettingsManager.getString(
+								"ChatFormat").replace("%name%",
+								npc.getStrippedName()))
+								+ ChatColor.WHITE
+								+ MessageUtils.getRandomMessage(SettingsManager
+										.getString("EvilFailedTameMessages")));
 			}
 		}
 	}

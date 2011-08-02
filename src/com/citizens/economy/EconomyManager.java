@@ -10,7 +10,7 @@ import com.citizens.properties.properties.UtilityProperties;
 public class EconomyManager {
 	private static boolean serverEconomyEnabled = false;
 	private static boolean useEconPlugin = SettingsManager
-			.getBoolean("economy.use-economy");
+			.getBoolean("UseEconomy");
 	public static final String addendum = ".econplugin";
 
 	public static final String[] materialAddendums = { ".misc", ".wood",

@@ -190,9 +190,8 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	public boolean isLookWhenClose(int UID) {
-		return profiles
-				.getBoolean(UID + lookWhenClose, SettingsManager
-						.getBoolean("general.defaults.enable-following"));
+		return profiles.getBoolean(UID + lookWhenClose,
+				SettingsManager.getBoolean("DefaultLookAt"));
 	}
 
 	public void saveLookWhenClose(int UID, boolean value) {
@@ -201,7 +200,7 @@ public class BasicProperties extends PropertyManager implements Saveable {
 
 	public boolean isTalkWhenClose(int UID) {
 		return profiles.getBoolean(UID + talkWhenClose,
-				SettingsManager.getBoolean("general.defaults.talk-when-close"));
+				SettingsManager.getBoolean("DefaultTalkClose"));
 	}
 
 	public void saveTalkWhenClose(int UID, boolean value) {

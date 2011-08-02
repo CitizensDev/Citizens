@@ -116,7 +116,7 @@ public class Healer extends CitizensNPC {
 		int healerHealth = healer.getHealth();
 		if (Permission.generic(player, "citizens.healer.use.heal")) {
 			if (player.getItemInHand().getTypeId() == SettingsManager
-					.getInt("items.healers.take-health-item")) {
+					.getInt("HealerTakeHealthItem")) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
 						buyHeal(player, npc, true);
@@ -130,7 +130,7 @@ public class Healer extends CitizensNPC {
 							+ "You are fully healed.");
 				}
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
-					.getInt("items.healers.give-health-item")) {
+					.getInt("HealerGiveHealthItem")) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
 						player.setHealth(playerHealth - 1);
@@ -175,15 +175,16 @@ public class Healer extends CitizensNPC {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.healer.levelup", 100));
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.healer.heal", 100));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.healer.levelup",
+				100));
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.healer.heal", 100));
+		nodes.add(new Node("HealerGiveHealthItem", SettingsType.GENERAL,
 				"items.healers.give-health-item", 35));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("HealerTakeHealthItem", SettingsType.GENERAL,
 				"items.healers.take-health-item", 278));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("HealerRegenIncrement", SettingsType.GENERAL,
 				"ticks.healers.health-regen-increment", 12000));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("RegenHealerHealth", SettingsType.GENERAL,
 				"general.healers.regen-health", true));
 		return nodes;
 	}

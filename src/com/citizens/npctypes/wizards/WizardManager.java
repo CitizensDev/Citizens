@@ -117,7 +117,7 @@ public class WizardManager {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard != null
 				&& wizard.getMana() + mana < SettingsManager
-						.getInt("general.wizards.max-mana")) {
+						.getInt("WizardMaxMana")) {
 			wizard.setMana(wizard.getMana() + mana);
 		}
 	}
@@ -137,7 +137,7 @@ public class WizardManager {
 		if (wizard.getMana() - mana >= 0) {
 			wizard.setMana(wizard.getMana() - mana);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " has lost 5 mana.");
+					+ " has lost " + mana + " mana.");
 			return true;
 		}
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())

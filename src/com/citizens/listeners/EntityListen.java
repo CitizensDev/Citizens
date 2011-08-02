@@ -88,10 +88,9 @@ public class EntityListen extends EntityListener implements Listener {
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
-					Messaging.send(player, npc, SettingsManager
-							.getString("general.chat.selection-message"));
-					if (!SettingsManager
-							.getBoolean("general.selection.quick-select")) {
+					Messaging.send(player, npc,
+							SettingsManager.getString("SelectionMessage"));
+					if (!SettingsManager.getBoolean("QuickSelect")) {
 						return;
 					}
 				}
@@ -118,12 +117,9 @@ public class EntityListen extends EntityListener implements Listener {
 			if (!rightClickEvent.isCancelled()) {
 				if (npc.getWaypoints().isStarted()
 						&& npc.getWaypoints().current() != null) {
-					npc.getWaypoints()
-							.scheduleDelay(
-									npc,
-									npc.getWaypoints().current().getLocation(),
-									SettingsManager
-											.getInt("ticks.waypoints.right-click-pause"));
+					npc.getWaypoints().scheduleDelay(npc,
+							npc.getWaypoints().current().getLocation(),
+							SettingsManager.getInt("RightClickPause"));
 				}
 				npc.callRightClick(player, rightClickEvent.getNPC());
 			}

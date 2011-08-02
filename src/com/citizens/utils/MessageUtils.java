@@ -67,23 +67,19 @@ public class MessageUtils {
 			NPCDataManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
-			text = getRandomMessage(SettingsManager
-					.getString("general.chat.default-text"));
+			text = getRandomMessage(SettingsManager.getString("DefaultText"));
 		}
 		if (!text.isEmpty()) {
-			if (SettingsManager.getBoolean("general.colors.use-npc-colours")) {
+			if (SettingsManager.getBoolean("UseNPCColors")) {
 				text = StringUtils.colourise(SettingsManager.getString(
-						"general.chat.format").replace("%name%",
-						npc.getStrippedName()))
+						"ChatFormat").replace("%name%", npc.getStrippedName()))
 						+ text;
 			} else {
 				text = StringUtils.colourise(SettingsManager.getString(
-						"general.chat.format").replace(
+						"ChatFormat").replace(
 						"%name%",
-						"&"
-								+ SettingsManager
-										.getString("general.colors.npc-colour")
-								+ name + ChatColor.WHITE))
+						"&" + SettingsManager.getString("NPCColor") + name
+								+ ChatColor.WHITE))
 						+ text;
 			}
 			return text;
@@ -218,7 +214,7 @@ public class MessageUtils {
 	public static String getRandomMessage(String messages) {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
-		if (text.equals(SettingsManager.getString("general.chat.default-text"))) {
+		if (text.equals(SettingsManager.getString("DefaultText"))) {
 			return text.replace('&', '§');
 		}
 		return text;

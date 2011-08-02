@@ -69,3 +69,4 @@ By fullwall, aPunch, and NeonMaster
 -now supports MultiCurrency, BOSEconomy7, and iConomy6
 -removed unneeded 'items.item-list-on' and 'general.healers.pay-for-heal' configuration nodes
 -fixed saving bug with waypoints
+-changed 'range.guards.pathfinding' node to 'range.pathfinding'

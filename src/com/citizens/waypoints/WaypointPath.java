@@ -120,7 +120,7 @@ public class WaypointPath {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, target, -1, -1,
-					SettingsManager.getDouble("range.pathfinding"));
+					SettingsManager.getDouble("PathfindingRange"));
 		}
 	}
 
@@ -136,7 +136,7 @@ public class WaypointPath {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, point, -1, -1,
-					SettingsManager.getDouble("range.pathfinding"));
+					SettingsManager.getDouble("PathfindingRange"));
 			npc.setPaused(false);
 		}
 	}

@@ -52,7 +52,9 @@ public class WizardCommands implements CommandHandler {
 				player.sendMessage(StringUtils.wrap(npc.getStrippedName()
 						+ "'s")
 						+ " mode was set to "
-						+ StringUtils.wrap(wizardMode + "") + ".");
+						+ StringUtils
+								.wrap(wizardMode.name().toLowerCase() + "")
+						+ ".");
 			} else {
 				player.sendMessage(ChatColor.RED + npc.getStrippedName()
 						+ " is already that mode.");

@@ -136,7 +136,7 @@ public class BasicCommands implements CommandHandler {
 	@CommandPermissions("admin.debug")
 	public static void debug(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		boolean debug = SettingsManager.getBoolean("general.debug-mode");
+		boolean debug = SettingsManager.getBoolean("DebugMode");
 		UtilityProperties.getSettings()
 				.setBoolean("general.debug-mode", !debug);
 		debug = !debug;
@@ -219,8 +219,6 @@ public class BasicCommands implements CommandHandler {
 					+ "The name of this NPC will be truncated - max name length is 16.");
 			firstArg = args.getString(1).substring(0, 16);
 		}
-		int UID = NPCManager.register(firstArg, player.getLocation(),
-				player.getName());
 		if (EconomyManager.useEconPlugin()) {
 			if (EconomyManager.hasEnough(player,
 					UtilityProperties.getPrice("basic.creation"))) {
@@ -228,8 +226,8 @@ public class BasicCommands implements CommandHandler {
 						UtilityProperties.getPrice("basic.creation"));
 				if (paid > 0) {
 					player.sendMessage(MessageUtils.getPaidMessage(player,
-							"basic", "basic.creation", NPCManager.get(UID)
-									.getStrippedName(), false));
+							"basic", "basic.creation",
+							firstArg.replace("/", " "), false));
 				}
 			} else {
 				player.sendMessage(MessageUtils.getNoMoneyMessage(player,
@@ -237,16 +235,18 @@ public class BasicCommands implements CommandHandler {
 				return;
 			}
 		}
+		int UID = NPCManager.register(firstArg, player.getLocation(),
+				player.getName());
 		NPCDataManager.setText(UID, texts);
 
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
 		Messaging.send(player, created,
-				SettingsManager.getString("general.chat.creation-message"));
+				SettingsManager.getString("CreationMessage"));
 
 		NPCDataManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created,
-				SettingsManager.getString("general.chat.selection-message"));
+				SettingsManager.getString("CreationMessage"));
 	}
 
 	@Command(
@@ -592,9 +592,8 @@ public class BasicCommands implements CommandHandler {
 					+ " exists.");
 		} else {
 			NPCDataManager.selectNPC(player, npc);
-			Messaging
-					.send(player, npc, SettingsManager
-							.getString("general.chat.selection-message"));
+			Messaging.send(player, npc,
+					SettingsManager.getString("SelectionMessage"));
 		}
 	}
 

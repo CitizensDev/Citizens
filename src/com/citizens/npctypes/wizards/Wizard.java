@@ -286,7 +286,7 @@ public class Wizard extends CitizensNPC {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == SettingsManager
-					.getInt("items.wizards.interact-item")) {
+					.getInt("WizardInteractItem")) {
 				Wizard wizard = npc.getType("wizard");
 				WizardMode mode = wizard.getMode();
 				String msg = ChatColor.GREEN + "";
@@ -354,17 +354,17 @@ public class Wizard extends CitizensNPC {
 					break;
 				}
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
-					.getInt("items.wizards.mana-regen-item")) {
+					.getInt("WizardManaRegenItem")) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
 				if (wizard.getMana() + 10 < SettingsManager
-						.getInt("general.wizards.max-mana")) {
+						.getInt("WizardMaxMana")) {
 					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
 				} else if (wizard.getMana() + 10 == SettingsManager
-						.getInt("general.wizards.max-mana")) {
-					mana = SettingsManager.getInt("general.wizards.max-mana");
+						.getInt("WizardMaxMana")) {
+					mana = SettingsManager.getInt("WizardMaxMana");
 					msg += " mana has been fully replenished.";
 				} else {
 					msg += " mana cannot be regenerated with that item any further.";
@@ -392,24 +392,26 @@ public class Wizard extends CitizensNPC {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.teleport", 100));
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.changetime",
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.teleport",
 				100));
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.spawnmob", 100));
-		nodes.add(new Node(SettingsType.ECONOMY, "prices.wizard.togglestorm",
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.wizard.changetime", 100));
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.spawnmob",
 				100));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.wizard.togglestorm", 100));
+		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
 				"general.wizards.wizard-max-locations", 10));
-		nodes.add(new Node(SettingsType.GENERAL, "general.wizards.max-mana",
-				100));
-		nodes.add(new Node(SettingsType.GENERAL, "items.wizards.interact-item",
-				288));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,
+				"general.wizards.max-mana", 100));
+		nodes.add(new Node("WizardInteractItem", SettingsType.GENERAL,
+				"items.wizards.interact-item", 288));
+		nodes.add(new Node("WizardManaRegenItem", SettingsType.GENERAL,
 				"items.wizards.mana-regen-item", 348));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("WizardManaRegenRate", SettingsType.GENERAL,
 				"ticks.wizards.mana-regen-rate", 6000));
-		nodes.add(new Node(SettingsType.GENERAL, "general.wizards.regen-mana",
-				true));
+		nodes.add(new Node("RegenWizardMana", SettingsType.GENERAL,
+				"general.wizards.regen-mana", true));
 		return nodes;
 	}
 }

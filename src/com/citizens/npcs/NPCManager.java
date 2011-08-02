@@ -36,7 +36,7 @@ public class NPCManager {
 		ChatColor colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
-		if (SettingsManager.getBoolean("general.chat.slashes-to-spaces")) {
+		if (SettingsManager.getBoolean("ConvertSlashes")) {
 			name = name.replace(Citizens.separatorChar, " ");
 		}
 		String npcName = name;
@@ -81,14 +81,10 @@ public class NPCManager {
 	public static int register(String name, Location loc, String owner) {
 		int UID = PropertyManager.getBasic().getNewNpcID();
 		PropertyManager.getBasic().saveLocation(loc, UID);
-		PropertyManager
-				.getBasic()
-				.saveLookWhenClose(
-						UID,
-						SettingsManager
-								.getBoolean("general.defaults.enable-following"));
+		PropertyManager.getBasic().saveLookWhenClose(UID,
+				SettingsManager.getBoolean("DefaultLookAt"));
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
-				SettingsManager.getBoolean("general.defaults.talk-when-close"));
+				SettingsManager.getBoolean("DefaultTalkClose"));
 		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner);
 		return UID;

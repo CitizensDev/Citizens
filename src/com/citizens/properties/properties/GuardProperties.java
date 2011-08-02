@@ -22,8 +22,8 @@ public class GuardProperties extends PropertyManager implements Saveable {
 	}
 
 	private double getProtectionRadius(int UID) {
-		return profiles.getDouble(UID + radius, SettingsManager
-				.getDouble("range.guards.default-bouncer-protection-radius"));
+		return profiles.getDouble(UID + radius,
+				SettingsManager.getDouble("DefaultBouncerProtectionRadius"));
 	}
 
 	private void saveAggressive(int UID, boolean aggro) {

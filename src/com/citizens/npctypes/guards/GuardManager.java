@@ -56,6 +56,6 @@ public class GuardManager {
 			}
 		}
 		PathUtils.createPath(npc, loc, -1, -1,
-				SettingsManager.getDouble("range.pathfinding"));
+				SettingsManager.getDouble("PathfindingRange"));
 	}
 }

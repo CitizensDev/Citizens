@@ -20,7 +20,7 @@ public class NPC {
 	}
 
 	public String getName() {
-		if (SettingsManager.getBoolean("general.chat.slashes-to-spaces")) {
+		if (SettingsManager.getBoolean("ConvertSlashes")) {
 			String returnName = "";
 			String[] brokenName = this.name.split(" ");
 			for (int i = 0; i < brokenName.length; i++) {

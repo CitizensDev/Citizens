@@ -52,12 +52,12 @@ public class NPCDataManager {
 				if (npc.getWaypoints().size() > 0
 						&& npc.getWaypoints().getLast().getLocation()
 								.distance(loc) > SettingsManager
-								.getDouble("range.pathfinding")) {
+								.getDouble("PathfindingRange")) {
 					event.getPlayer().sendMessage(
 							ChatColor.GRAY
 									+ "Points can't be more than "
 									+ StringUtils.wrap(SettingsManager
-											.getDouble("range.pathfinding"),
+											.getDouble("PathfindingRange"),
 											ChatColor.GRAY)
 									+ " blocks away from each other.");
 					break;

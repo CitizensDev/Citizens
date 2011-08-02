@@ -63,13 +63,13 @@ public class Messaging {
 	}
 
 	public static void debug(Object message) {
-		if (SettingsManager.getBoolean("general.debug-mode")) {
+		if (SettingsManager.getBoolean("DebugMode")) {
 			log(message);
 		}
 	}
 
 	public static void debug(Object... messages) {
-		if (SettingsManager.getBoolean("general.debug-mode")) {
+		if (SettingsManager.getBoolean("DebugMode")) {
 			log(messages);
 		}
 	}

@@ -79,7 +79,7 @@ public class DefaultSpawner implements Spawner {
 		boolean spawn = false;
 		switch (type) {
 		case EVIL:
-			spawn = SettingsManager.getBoolean("evil.spawn.spawn");
+			spawn = SettingsManager.getBoolean("SpawnEvils");
 			break;
 		}
 		return spawn;
@@ -97,5 +97,4 @@ public class DefaultSpawner implements Spawner {
 		}
 		return true;
 	}
-
 }

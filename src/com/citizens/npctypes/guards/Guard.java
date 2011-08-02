@@ -205,14 +205,14 @@ public class Guard extends CitizensNPC {
 		}
 		event.getDrops().clear();
 		TickTask.scheduleRespawn(npc,
-				SettingsManager.getInt("ticks.guards.respawn-delay"));
+				SettingsManager.getInt("GuardRespawnDelay"));
 	}
 
 	public void target(LivingEntity entity, HumanNPC npc) {
 		npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
-				SettingsManager.getDouble("range.pathfinding"));
+				SettingsManager.getDouble("PathfindingRange"));
 	}
 
 	@Override
@@ -228,9 +228,10 @@ public class Guard extends CitizensNPC {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(SettingsType.GENERAL, "ticks.guards.respawn-delay",
-				100));
-		nodes.add(new Node(SettingsType.GENERAL,
+		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
+				"ticks.guards.respawn-delay", 100));
+		nodes.add(new Node("DefaultBouncerProtectionRadius",
+				SettingsType.GENERAL,
 				"range.guards.default-bouncer-protection-radius", 10));
 		return nodes;
 	}
