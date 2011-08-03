@@ -3,7 +3,6 @@ package com.citizens.npctypes;
 import java.util.Map;
 
 import com.citizens.Citizens;
-import com.citizens.commands.CommandHandler;
 import com.citizens.properties.PropertyManager;
 import com.google.common.collect.Maps;
 
@@ -12,6 +11,8 @@ public class CitizensNPCManager {
 
 	public static CitizensNPC registerType(CitizensNPC type) {
 		types.put(type.getType(), type);
+		PropertyManager.add(type.getType(), type.getProperties());
+		Citizens.commands.register(type.getCommands().getClass());
 		return type;
 	}
 
@@ -23,18 +24,7 @@ public class CitizensNPCManager {
 		return types.get(type);
 	}
 
-	public static CitizensNPC registerType(CitizensNPC type, boolean autosave) {
-		if (autosave) {
-			PropertyManager.add(type.getType(), type.getProperties());
-		}
-		return registerType(type);
-	}
-
 	public static Map<String, CitizensNPC> getTypes() {
 		return types;
-	}
-
-	public void registerCommands(Class<? extends CommandHandler> commands) {
-		Citizens.commands.register(commands);
 	}
 }

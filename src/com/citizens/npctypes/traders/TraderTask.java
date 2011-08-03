@@ -161,7 +161,7 @@ public class TraderTask implements Runnable {
 		// stocking is 1 stone
 		// price is 5 stone
 		ItemStack buying = stockable.getStocking().clone();
-		// TODO replace old Payment code with EconomyOperation code
+		// TODO replace Payment code
 		// EconomyManager.pay(new Payment(stockable.getPrice()), player, -1);
 		if (mode != Mode.INFINITE) {
 			// EconomyManager.pay(new Payment(buying), npc, slot);

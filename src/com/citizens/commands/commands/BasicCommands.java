@@ -246,7 +246,7 @@ public class BasicCommands implements CommandHandler {
 
 		NPCDataManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created,
-				SettingsManager.getString("CreationMessage"));
+				SettingsManager.getString("SelectionMessage"));
 	}
 
 	@Command(

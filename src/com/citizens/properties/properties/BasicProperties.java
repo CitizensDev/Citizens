@@ -322,10 +322,6 @@ public class BasicProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public void register(HumanNPC npc) {
-	}
-
-	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
 	}
 

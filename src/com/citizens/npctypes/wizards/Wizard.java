@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
-import com.citizens.Citizens;
 import com.citizens.Permission;
 import com.citizens.commands.CommandHandler;
 import com.citizens.commands.commands.WizardCommands;
@@ -92,7 +91,7 @@ public class Wizard extends CitizensNPC {
 				currentLocation = 0;
 			}
 			break;
-		case SPAWN_MOB:
+		case SPAWN:
 			CreatureType type = wizard.getMob();
 			CreatureType newType = null;
 			switch (type) {
@@ -138,7 +137,7 @@ public class Wizard extends CitizensNPC {
 			}
 			wizard.setMob(newType);
 			break;
-		case CHANGE_TIME:
+		case TIME:
 			String time = wizard.getTime();
 			String newTime = "";
 			if (time.equals("day")) {
@@ -309,7 +308,7 @@ public class Wizard extends CitizensNPC {
 				Wizard wizard = npc.getType("wizard");
 				String msg = ChatColor.GREEN + "";
 				switch (wizard.getMode()) {
-				case EXECUTE_COMMAND:
+				case COMMAND:
 					return;
 				case TELEPORT:
 					if (wizard.getNumberOfLocations() > 0) {
@@ -322,18 +321,18 @@ public class Wizard extends CitizensNPC {
 								+ " has no locations.";
 					}
 					break;
-				case SPAWN_MOB:
-					wizard.cycle(npc, WizardMode.SPAWN_MOB);
+				case SPAWN:
+					wizard.cycle(npc, WizardMode.SPAWN);
 					msg += "Mob to spawn set to "
 							+ StringUtils.wrap(StringUtils.format(wizard
 									.getMob()));
 					break;
-				case CHANGE_TIME:
-					wizard.cycle(npc, WizardMode.CHANGE_TIME);
+				case TIME:
+					wizard.cycle(npc, WizardMode.TIME);
 					msg += "Time setting set to "
 							+ StringUtils.wrap(wizard.getTime());
 					break;
-				case TOGGLE_STORM:
+				case WEATHER:
 					return;
 				default:
 					msg = ChatColor.RED + "No valid mode selected.";
@@ -350,10 +349,27 @@ public class Wizard extends CitizensNPC {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (Permission.generic(player, "citizens.wizard.use.interact")) {
 			Wizard wizard = npc.getType("wizard");
-			if (Citizens.validateTool("items.wizards.interact-item", player
-					.getItemInHand().getTypeId(), player.isSneaking())) {
-				WizardManager.buy(player, npc,
-						"wizard." + StringUtils.format(wizard.getMode()));
+			if (player.getItemInHand().getTypeId() == SettingsManager
+					.getInt("WizardInteractItem")) {
+				String op = "";
+				switch (wizard.getMode()) {
+				case COMMAND:
+					op = "executecommand";
+					break;
+				case TELEPORT:
+					op = "teleport";
+					break;
+				case TIME:
+					op = "changetime";
+					break;
+				case SPAWN:
+					op = "spawnmob";
+					break;
+				case WEATHER:
+					op = "togglestorm";
+					break;
+				}
+				WizardManager.buy(player, npc, "wizard." + op);
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardManaRegenItem")) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");

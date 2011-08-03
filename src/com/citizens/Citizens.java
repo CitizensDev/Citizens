@@ -114,7 +114,7 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(), SettingsManager.getInt("TickDelay"),
 				SettingsManager.getInt("TickDelay"));
-		// TODO temporary workaround, should genericify tasks so we can register
+		// TODO temporary workaround, we should genericify tasks so we can register
 		// them per type on start-up
 		if (loadedTypes.contains("guard")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,

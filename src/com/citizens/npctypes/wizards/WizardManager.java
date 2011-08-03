@@ -16,7 +16,7 @@ public class WizardManager {
 		/**
 		 * Executes commands
 		 */
-		EXECUTE_COMMAND,
+		COMMAND,
 		/**
 		 * Teleports players
 		 */
@@ -24,15 +24,15 @@ public class WizardManager {
 		/**
 		 * Changes the time of the world
 		 */
-		CHANGE_TIME,
+		TIME,
 		/**
 		 * Spawns mobs into the world
 		 */
-		SPAWN_MOB,
+		SPAWN,
 		/**
 		 * Strikes lightning/makes it rain
 		 */
-		TOGGLE_STORM;
+		WEATHER;
 
 		public static WizardMode parse(String string) {
 			try {
@@ -124,10 +124,9 @@ public class WizardManager {
 	 * @param npc
 	 */
 	public static boolean executeCommand(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc, 5)) {
-			// use the player as command sender - their permissions get used.
-			return player.performCommand(((Wizard) npc.getType("wizard"))
-					.getCommand());
+		if (player
+				.performCommand(((Wizard) npc.getType("wizard")).getCommand())) {
+			return decreaseMana(player, npc, 5);
 		}
 		return false;
 	}
@@ -214,7 +213,7 @@ public class WizardManager {
 				}
 			} else if (op.equals("wizard.executecommand")) {
 				msg += " to execute the command "
-						+ StringUtils.wrap(wizard.getCommand()) + ".";
+						+ StringUtils.wrap("/" + wizard.getCommand()) + ".";
 				if (executeCommand(player, npc)) {
 					canSend = true;
 				}

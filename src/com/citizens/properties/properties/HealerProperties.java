@@ -51,11 +51,6 @@ public class HealerProperties extends PropertyManager implements Saveable {
 	}
 
 	@Override
-	public void register(HumanNPC npc) {
-		setEnabled(npc, true);
-	}
-
-	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
 		profiles.setBoolean(npc.getUID() + isHealer, value);
 	}

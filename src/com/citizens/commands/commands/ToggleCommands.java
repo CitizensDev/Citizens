@@ -1,5 +1,7 @@
 package com.citizens.commands.commands;
 
+import java.util.Map.Entry;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -71,7 +73,7 @@ public class ToggleCommands implements CommandHandler {
 		if (!PropertyManager.npcHasType(npc, type)) {
 			buyState(player, npc, CitizensNPCManager.getType(type));
 		} else {
-			toggleState(player, npc, CitizensNPCManager.getType(type), false);
+			toggleState(player, npc, CitizensNPCManager.getType(type));
 		}
 	}
 
@@ -97,19 +99,19 @@ public class ToggleCommands implements CommandHandler {
 	 * Toggles an NPC state.
 	 * 
 	 * @param player
+	 * @param npc
+	 * @param type
 	 * @param register
-	 * @param toggleable
 	 */
 	private static void toggleState(Player player, HumanNPC npc,
-			CitizensNPC type, boolean register) {
-		if (register) {
-			PropertyManager.get(type.getType());
-		}
+			CitizensNPC type) {
 		if (!npc.isType(type.getType())) {
+			PropertyManager.get(type.getType()).setEnabled(npc, true);
 			npc.addType(type.getType());
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now a " + type.getType() + "!");
 		} else {
+			PropertyManager.get(type.getType()).setEnabled(npc, false);
 			npc.removeType(type.getType());
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " has stopped being a " + type.getType() + ".");
@@ -120,7 +122,8 @@ public class ToggleCommands implements CommandHandler {
 	 * Buys an NPC state.
 	 * 
 	 * @param player
-	 * @param toggleable
+	 * @param npc
+	 * @param type
 	 */
 	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
 		String toggle = type.getType();
@@ -138,7 +141,7 @@ public class ToggleCommands implements CommandHandler {
 						MessageUtils.getPaidMessage(player, toggle, toggle
 								+ ".creation", npc.getStrippedName(), true));
 			}
-			toggleState(player, npc, type, true);
+			toggleState(player, npc, type);
 		} else {
 			Messaging.send(player, npc, MessageUtils.getNoMoneyMessage(player,
 					toggle + ".creation"));
@@ -154,14 +157,16 @@ public class ToggleCommands implements CommandHandler {
 	 */
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
-			for (CitizensNPC type : npc.types()) {
-				if (!npc.isType(type.getType())) {
-					toggleState(player, npc, type, false);
+			for (Entry<String, CitizensNPC> entry : CitizensNPCManager
+					.getTypes().entrySet()) {
+				if (!npc.isType(entry.getValue().getType())) {
+					toggleState(player, npc, entry.getValue());
 				}
 			}
 		} else {
-			for (CitizensNPC type : npc.types()) {
-				toggleState(player, npc, type, false);
+			for (Entry<String, CitizensNPC> entry : CitizensNPCManager
+					.getTypes().entrySet()) {
+				toggleState(player, npc, entry.getValue());
 			}
 		}
 	}

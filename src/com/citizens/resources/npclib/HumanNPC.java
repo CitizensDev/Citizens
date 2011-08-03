@@ -13,6 +13,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.citizens.npcs.NPCData;
 import com.citizens.npctypes.CitizensNPC;
+import com.citizens.npctypes.CitizensNPCManager;
 import com.citizens.properties.PropertyManager;
 import com.citizens.resources.npclib.NPCAnimator.Animation;
 import com.citizens.waypoints.WaypointPath;
@@ -48,8 +49,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void registerType(String type) {
-		CitizensNPC t = getType(type);
-		this.types.put(type, t);
+		this.types.put(type, CitizensNPCManager.getType(type));
 	}
 
 	@SuppressWarnings("unchecked")

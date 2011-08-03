@@ -18,13 +18,6 @@ public interface Saveable {
 	public abstract void loadState(HumanNPC npc);
 
 	/**
-	 * Register an NPC
-	 * 
-	 * @param npc
-	 */
-	public abstract void register(HumanNPC npc);
-
-	/**
 	 * Set the state of an NPC
 	 * 
 	 * @param npc

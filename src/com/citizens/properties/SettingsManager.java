@@ -79,7 +79,6 @@ public class SettingsManager {
 	 * Sets up miscellaneous variables, mostly reading from property files.
 	 */
 	public static void setupVariables() {
-		Messaging.log("Loading settings...");
 		PropertyManager.registerProperties();
 		Storage local = null;
 		// Load our non-type-specific settings
@@ -104,7 +103,6 @@ public class SettingsManager {
 			loadedNodes.put(node.getName(), node.getValue());
 			local.save();
 		}
-		// local.save();
 	}
 
 	private static void loadSettings() {
