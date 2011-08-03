@@ -7,63 +7,57 @@ commands:
     npc:
         description: Performs various NPC-related commands.
         usage: |
-                    The command was not recognised. Was it typed in correctly?
-                    See /basic help for a list of commands.   
-    basic:
-        description: Basic NPC help menu.
-        usage: |
-                    The command was not recognised. Was it typed in correctly?
-                    See /basic help for a list of commands.
+                    The command was not recognized.
+                    See /npc help for a list of commands.
     blacksmith:
         description: Performs various Blacksmith NPC-related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /blacksmith help for a list of commands.           
     trader:
         description: Performs various Trader NPC-related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /trader help for a list of commands.
     guard:
         description: Performs various Guard NPC-related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /guard help for a list of commands.
     healer:
         description: Performs various Healer NPC-related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /healer help for a list of commands.
     wizard:
         description: Performs various Wizard NPC-related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /wizard help for a list of commands.
     quests:
         description: Performs player-quest related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /citizens help for a list of commands.
     quester:
         description: Performs various Quester NPC-related commands.
         usage: |
-                        The command was not recognised. Was it typed in correctly?
+                        The command was not recognized.
                         See /quester help for a list of commands.
     toggle:
         description: Toggles between various NPC states.
         aliases: [t, tog]
         usage: |
-                        The command was not recognised. The correct syntax is
-                        /<command> [type]
+                        The command was not recognized.
     citizens:
         description: Performs Citizens-related commands.
         usage: |
-                    You typed the command incorrectly. It should be /<command> help.
+                        The command was not recognized.
     waypoint:
         aliases: [wp, waypoints]
         description: Modifies waypoints.
         usage: |
-                    The command was not recognised.
+                        The command was not recognized.
                     
 permissions:
     citizens.admin:

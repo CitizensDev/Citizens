@@ -70,3 +70,6 @@ By fullwall, aPunch, and NeonMaster
 -removed unneeded 'items.item-list-on' and 'general.healers.pay-for-heal' configuration nodes
 -fixed saving bug with waypoints
 -changed 'range.guards.pathfinding' node to 'range.pathfinding'
+-you can no longer set '*' as a wizard's interact-item
+-added new wizard mode "command", '/wizard command [command] (args)' sets a wizard's command, right-clicking it
+ with the interact-item executes that command

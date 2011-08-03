@@ -11,8 +11,8 @@ Supports:
 -EssentialsEco 2.5.x
 -MultiCurrency
 
-Licensing:
-Read the LICENSE file for the Citizens license.
+Download:
+You can download the full Citizens package or a customized JAR file at www.citizensnpcs.net/download
 
 Wiki:
 You can find tons of information on Citizens permissions nodes, commands, and more on our wiki.
@@ -29,3 +29,6 @@ It is also imperative that you follow these guidelines if you don't want your bu
 -Read the last page or two of the thread to see if your question/bug has already been answered/reported
 -Provide as much information as possible (Minecraft version, CraftBukkit version, Citizens version, and 
  the version of any other plugin (if applicable))
+ 
+Licensing:
+Read the LICENSE file for the Citizens license.
