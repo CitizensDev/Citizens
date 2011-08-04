@@ -1,11 +1,14 @@
 package net.citizensnpcs.properties.properties;
 
+import java.util.List;
+
 import net.citizensnpcs.npctypes.questers.Quester;
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
-public class QuesterProperties extends PropertyManager implements Saveable {
+public class QuesterProperties extends PropertyManager implements Properties {
 	private static final String isQuester = ".quester.toggle";
 	private static final String quests = ".quester.quests";
 
@@ -67,5 +70,10 @@ public class QuesterProperties extends PropertyManager implements Saveable {
 			profiles.setString(nextUID + quests,
 					profiles.getString(UID + quests));
 		}
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		return null;
 	}
 }

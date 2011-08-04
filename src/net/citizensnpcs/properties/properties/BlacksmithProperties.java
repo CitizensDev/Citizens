@@ -1,10 +1,15 @@
 package net.citizensnpcs.properties.properties;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
+import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
-public class BlacksmithProperties extends PropertyManager implements Saveable {
+public class BlacksmithProperties extends PropertyManager implements Properties {
 	private final String isBlacksmith = ".blacksmith.toggle";
 
 	@Override
@@ -38,5 +43,33 @@ public class BlacksmithProperties extends PropertyManager implements Saveable {
 			profiles.setString(nextUID + isBlacksmith,
 					profiles.getString(UID + isBlacksmith));
 		}
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.armorrepair.leather", 0.25));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.armorrepair.gold", 0.50));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.armorrepair.chainmail", 0.75));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.armorrepair.iron", 1));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.armorrepair.diamond", 1.25));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.toolrepair.wood", 0.25));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.toolrepair.gold", 0.50));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.toolrepair.stone", 0.75));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.toolrepair.iron", 1));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.toolrepair.diamond", 1.25));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.blacksmith.toolrepair.misc", 0.50));
+		return nodes;
 	}
 }

@@ -1,10 +1,7 @@
 package net.citizensnpcs.npctypes;
 
-import java.util.List;
-
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
@@ -26,7 +23,7 @@ public abstract class CitizensNPC {
 	 * 
 	 * @return NPC type's properties object
 	 */
-	public abstract Saveable getProperties();
+	public abstract Properties getProperties();
 
 	/**
 	 * Get the commands for an NPC type
@@ -36,11 +33,12 @@ public abstract class CitizensNPC {
 	public abstract CommandHandler getCommands();
 
 	/**
-	 * Get a list of configuration nodes for an NPC type
+	 * Called in main class onEnable, can be used to schedule tasks, etc..
 	 * 
-	 * @return list of configuration nodes
+	 * @return
 	 */
-	public abstract List<Node> getNodes();
+	public void onEnable() {
+	}
 
 	/**
 	 * Left-clicking an NPC.

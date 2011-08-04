@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-
 public class BlacksmithManager {
 
 	/**
@@ -53,13 +52,7 @@ public class BlacksmithManager {
 			if (item.getDurability() > 0) {
 				double paid = EconomyManager.pay(player,
 						getBlacksmithPrice(player, repairType));
-				if (paid > 0
-						|| EconomyManager
-								.isFree("blacksmith."
-										+ repairType
-										+ "."
-										+ EconomyManager.materialAddendums[EconomyManager
-												.getBlacksmithIndex(item)])) {
+				if (paid >= 0) {
 					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 							+ " has repaired your item for "
 							+ StringUtils.wrap(EconomyManager.format(paid))

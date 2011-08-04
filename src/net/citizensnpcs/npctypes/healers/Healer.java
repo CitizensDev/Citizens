@@ -1,17 +1,13 @@
 package net.citizensnpcs.npctypes.healers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Permission;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.commands.commands.HealerCommands;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.SettingsManager;
-import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.properties.properties.HealerProperties;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -19,6 +15,7 @@ import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -67,47 +64,6 @@ public class Healer extends CitizensNPC {
 		return "healer";
 	}
 
-	/**
-	 * Purchase a heal from a healer
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param op
-	 */
-	private void buyHeal(Player player, HumanNPC npc, boolean healPlayer) {
-		Healer healer = npc.getType("healer");
-		if (EconomyManager.hasEnough(player,
-				UtilityProperties.getPrice("healer.heal"))
-				|| !EconomyManager.useEconPlugin()) {
-			double paid = EconomyManager.pay(player,
-					UtilityProperties.getPrice("healer.heal"));
-			if (paid > 0 || EconomyManager.isFree("healer.heal")) {
-				int playerHealth = 0;
-				int healerHealth = 0;
-				String msg = StringUtils.wrap(npc.getStrippedName());
-				if (healPlayer) {
-					playerHealth = player.getHealth() + 1;
-					healerHealth = healer.getHealth() - 1;
-					msg += " healed you for "
-							+ StringUtils.wrap(EconomyManager.format(paid))
-							+ ".";
-				} else {
-					playerHealth = player.getHealth();
-					healerHealth = healer.getHealth() + 1;
-					msg += " has been healed for "
-							+ StringUtils.wrap(EconomyManager.format(paid))
-							+ ".";
-				}
-				player.setHealth(playerHealth);
-				healer.setHealth(healerHealth);
-				player.sendMessage(msg);
-			}
-		} else {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(player,
-					"healer.heal"));
-		}
-	}
-
 	// TODO Make this less ugly to look at
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
@@ -119,7 +75,31 @@ public class Healer extends CitizensNPC {
 					.getInt("HealerTakeHealthItem")) {
 				if (playerHealth < 20) {
 					if (healerHealth > 0) {
-						buyHeal(player, npc, true);
+						if (EconomyManager.useEconPlugin()) {
+							if (EconomyManager.hasEnough(player,
+									UtilityProperties.getPrice("healer.heal"))) {
+								double paid = EconomyManager.pay(player,
+										UtilityProperties
+												.getPrice("healer.heal"));
+								if (paid >= 0) {
+									player.sendMessage(StringUtils.wrap(npc
+											.getStrippedName())
+											+ " has healed you for "
+											+ StringUtils.wrap(EconomyManager
+													.format(paid)) + ".");
+								}
+							} else {
+								player.sendMessage(MessageUtils
+										.getNoMoneyMessage(player,
+												"healer.heal"));
+								return;
+							}
+						} else {
+							player.sendMessage(StringUtils.wrap(npc
+									.getStrippedName()) + " has healed you.");
+						}
+						player.setHealth(player.getHealth() + 1);
+						healer.setHealth(healer.getHealth() - 1);
 					} else {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName())
@@ -163,7 +143,7 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public Saveable getProperties() {
+	public Properties getProperties() {
 		return new HealerProperties();
 	}
 
@@ -173,19 +153,11 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public List<Node> getNodes() {
-		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.healer.levelup",
-				100));
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.healer.heal", 100));
-		nodes.add(new Node("HealerGiveHealthItem", SettingsType.GENERAL,
-				"items.healers.give-health-item", 35));
-		nodes.add(new Node("HealerTakeHealthItem", SettingsType.GENERAL,
-				"items.healers.take-health-item", 278));
-		nodes.add(new Node("HealerRegenIncrement", SettingsType.GENERAL,
-				"ticks.healers.health-regen-increment", 12000));
-		nodes.add(new Node("RegenHealerHealth", SettingsType.GENERAL,
-				"general.healers.regen-health", true));
-		return nodes;
+	public void onEnable() {
+		Bukkit.getServer()
+				.getScheduler()
+				.scheduleSyncRepeatingTask(Citizens.plugin, new HealerTask(),
+						HealerTask.getHealthRegenRate(),
+						HealerTask.getHealthRegenRate());
 	}
 }

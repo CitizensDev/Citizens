@@ -4,13 +4,6 @@ import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 
-import com.citizens.events.NPCCreatureSpawnEvent;
-import com.citizens.events.NPCDisplayTextEvent;
-import com.citizens.events.NPCInventoryOpenEvent;
-import com.citizens.events.NPCRightClickEvent;
-import com.citizens.events.NPCSpawnEvent;
-import com.citizens.events.NPCTargetEvent;
-
 public class NPCListener extends CustomEventListener implements Listener {
 
 	public void onNPCCreatureSpawn(NPCCreatureSpawnEvent event) {

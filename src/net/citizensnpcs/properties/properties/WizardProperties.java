@@ -1,14 +1,19 @@
 package net.citizensnpcs.properties.properties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.citizensnpcs.npctypes.wizards.Wizard;
 import net.citizensnpcs.npctypes.wizards.WizardManager.WizardMode;
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
+import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.CreatureType;
 
-public class WizardProperties extends PropertyManager implements Saveable {
+public class WizardProperties extends PropertyManager implements Properties {
 	private static final String isWizard = ".wizard.toggle";
 	private static final String locations = ".wizard.locations";
 	private static final String mana = ".wizard.mana";
@@ -162,5 +167,33 @@ public class WizardProperties extends PropertyManager implements Saveable {
 			profiles.setString(nextUID + command,
 					profiles.getString(UID + command));
 		}
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.teleport",
+				100));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.wizard.changetime", 100));
+		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.spawnmob",
+				100));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.wizard.togglestorm", 100));
+		nodes.add(new Node("", SettingsType.ECONOMY,
+				"prices.wizard.executecommand", 100));
+		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
+				"general.wizards.wizard-max-locations", 10));
+		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,
+				"general.wizards.max-mana", 100));
+		nodes.add(new Node("WizardInteractItem", SettingsType.GENERAL,
+				"items.wizards.interact-item", 288));
+		nodes.add(new Node("WizardManaRegenItem", SettingsType.GENERAL,
+				"items.wizards.mana-regen-item", 348));
+		nodes.add(new Node("WizardManaRegenRate", SettingsType.GENERAL,
+				"ticks.wizards.mana-regen-rate", 6000));
+		nodes.add(new Node("RegenWizardMana", SettingsType.GENERAL,
+				"general.wizards.regen-mana", true));
+		return nodes;
 	}
 }

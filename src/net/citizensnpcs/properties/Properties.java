@@ -1,8 +1,10 @@
 package net.citizensnpcs.properties;
 
+import java.util.List;
+
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
-public interface Saveable {
+public interface Properties {
 	/**
 	 * Save the state of an NPC
 	 * 
@@ -18,7 +20,7 @@ public interface Saveable {
 	public abstract void loadState(HumanNPC npc);
 
 	/**
-	 * Set the state of an NPC
+	 * Set the state of an NPC as a given type
 	 * 
 	 * @param npc
 	 * @param value
@@ -29,7 +31,7 @@ public interface Saveable {
 	 * Get the state of an NPC
 	 * 
 	 * @param npc
-	 * @return
+	 * @return true if the given NPC is the type
 	 */
 	public abstract boolean getEnabled(HumanNPC npc);
 
@@ -40,4 +42,11 @@ public interface Saveable {
 	 * @param nextUID
 	 */
 	public abstract void copy(int UID, int nextUID);
+
+	/**
+	 * Get a list of configuration nodes for an NPC type
+	 * 
+	 * @return list of configuration nodes
+	 */
+	public abstract List<Node> getNodes();
 }

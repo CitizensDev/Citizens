@@ -101,7 +101,6 @@ public class ToggleCommands implements CommandHandler {
 	 * @param player
 	 * @param npc
 	 * @param type
-	 * @param register
 	 */
 	private static void toggleState(Player player, HumanNPC npc,
 			CitizensNPC type) {
@@ -164,9 +163,8 @@ public class ToggleCommands implements CommandHandler {
 				}
 			}
 		} else {
-			for (Entry<String, CitizensNPC> entry : CitizensNPCManager
-					.getTypes().entrySet()) {
-				toggleState(player, npc, entry.getValue());
+			for (CitizensNPC type : npc.types()) {
+				toggleState(player, npc, type);
 			}
 		}
 	}

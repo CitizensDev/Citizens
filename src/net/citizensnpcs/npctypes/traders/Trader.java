@@ -1,7 +1,6 @@
 package net.citizensnpcs.npctypes.traders;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
@@ -11,8 +10,7 @@ import net.citizensnpcs.commands.commands.TraderCommands;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.traders.TraderManager.Mode;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.properties.TraderProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -169,17 +167,12 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public Saveable getProperties() {
+	public Properties getProperties() {
 		return new TraderProperties();
 	}
 
 	@Override
 	public CommandHandler getCommands() {
 		return new TraderCommands();
-	}
-
-	@Override
-	public List<Node> getNodes() {
-		return null;
 	}
 }

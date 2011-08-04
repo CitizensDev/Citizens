@@ -1,20 +1,22 @@
 package net.citizensnpcs.properties.properties;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.npctypes.traders.Check;
 import net.citizensnpcs.npctypes.traders.ItemPrice;
 import net.citizensnpcs.npctypes.traders.Stockable;
 import net.citizensnpcs.npctypes.traders.Trader;
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.base.Joiner;
 
-public class TraderProperties extends PropertyManager implements Saveable {
+public class TraderProperties extends PropertyManager implements Properties {
 	private final String isTrader = ".trader.toggle";
 	private final String stock = ".trader.stock";
 	private final String unlimited = ".trader.unlimited";
@@ -161,5 +163,10 @@ public class TraderProperties extends PropertyManager implements Saveable {
 		if (profiles.pathExists(UID + balance)) {
 			profiles.setString(nextUID + balance, UID + balance);
 		}
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		return null;
 	}
 }

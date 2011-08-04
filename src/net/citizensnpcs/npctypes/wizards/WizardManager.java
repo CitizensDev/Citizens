@@ -176,56 +176,58 @@ public class WizardManager {
 	 * @param wizard
 	 * @param op
 	 */
-	public static void buy(Player player, HumanNPC npc, String op) {
-		if (EconomyManager.hasEnough(player, UtilityProperties.getPrice(op))
-				|| !EconomyManager.useEconPlugin()) {
-			boolean canSend = false;
-			Wizard wizard = npc.getType("wizard");
-			String msg = ChatColor.GREEN
-					+ "Paid "
-					+ StringUtils.wrap(EconomyManager.format(EconomyManager
-							.pay(player, UtilityProperties.getPrice(op))));
-			if (op.equals("wizard.teleport")) {
-				msg += " for a teleport to "
-						+ StringUtils.wrap(wizard.getCurrentLocationName())
-						+ ".";
-				if (teleportPlayer(player, npc)) {
-					canSend = true;
-				}
-			} else if (op.equals("wizard.spawnmob")) {
-				msg += " to spawn a "
-						+ StringUtils.wrap(wizard.getMob().name().toLowerCase()
-								.replace("_", " ")) + ".";
-				if (spawnMob(player, npc)) {
-					canSend = true;
-				}
-			} else if (op.equals("wizard.changetime")) {
-				msg += " to change the time to "
-						+ StringUtils.wrap(wizard.getTime()) + ".";
-				if (changeTime(player, npc)) {
-					canSend = true;
-				}
-			} else if (op.equals("wizard.togglestorm")) {
-				msg += " to toggle a thunderstorm in the world "
-						+ StringUtils.wrap(player.getWorld().getName()) + ".";
-				if (toggleStorm(player, npc)) {
-					canSend = true;
-				}
-			} else if (op.equals("wizard.executecommand")) {
-				msg += " to execute the command "
-						+ StringUtils.wrap("/" + wizard.getCommand()) + ".";
-				if (executeCommand(player, npc)) {
-					canSend = true;
+	public static void handleRightClick(Player player, HumanNPC npc, String op) {
+		Wizard wizard = npc.getType("wizard");
+		String econMsg = "";
+		if (EconomyManager.useEconPlugin()) {
+			if (EconomyManager
+					.hasEnough(player, UtilityProperties.getPrice(op))) {
+				double paid = EconomyManager.pay(player,
+						UtilityProperties.getPrice(op));
+				if (paid >= 0) {
+					econMsg = ChatColor.GREEN + "Paid "
+							+ StringUtils.wrap(EconomyManager.format(paid))
+							+ ":";
 				}
 			} else {
-				msg = ChatColor.RED + "No valid mode selected.";
-				canSend = true;
+				player.sendMessage(MessageUtils.getNoMoneyMessage(player, op));
+				return;
 			}
-			if (canSend) {
-				player.sendMessage(msg);
-			}
-		} else {
-			player.sendMessage(MessageUtils.getNoMoneyMessage(player, op));
 		}
+		String msg = StringUtils.wrap(npc.getStrippedName());
+		if (op.equals("wizard.teleport")) {
+			msg += " teleported you to "
+					+ StringUtils.wrap(wizard.getCurrentLocationName()) + ".";
+			if (!teleportPlayer(player, npc)) {
+				return;
+			}
+		} else if (op.equals("wizard.spawnmob")) {
+			msg += " spawned a "
+					+ StringUtils.wrap(wizard.getMob().name().toLowerCase()
+							.replace("_", " ")) + ".";
+			if (!spawnMob(player, npc)) {
+				return;
+			}
+		} else if (op.equals("wizard.changetime")) {
+			msg += " changed the time to " + StringUtils.wrap(wizard.getTime())
+					+ ".";
+			if (!changeTime(player, npc)) {
+				return;
+			}
+		} else if (op.equals("wizard.togglestorm")) {
+			msg += " toggled a thunderstorm in the world "
+					+ StringUtils.wrap(player.getWorld().getName()) + ".";
+			if (!toggleStorm(player, npc)) {
+				return;
+			}
+		} else if (op.equals("wizard.executecommand")) {
+			msg += " executed the command "
+					+ StringUtils.wrap("/" + wizard.getCommand()) + ".";
+			if (!executeCommand(player, npc)) {
+				return;
+			}
+		}
+		player.sendMessage(econMsg);
+		player.sendMessage(msg);
 	}
 }

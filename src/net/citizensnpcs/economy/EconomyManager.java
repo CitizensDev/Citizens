@@ -2,7 +2,6 @@ package net.citizensnpcs.economy;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.properties.SettingsManager;
-import net.citizensnpcs.properties.properties.UtilityProperties;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -194,15 +193,5 @@ public class EconomyManager {
 	 */
 	public static void subtract(String name, double price) {
 		Citizens.economy.getAccount(name).subtract(price);
-	}
-
-	/**
-	 * Get whether or not an operation is free
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public static boolean isFree(String path) {
-		return UtilityProperties.getPrice(path) <= 0;
 	}
 }

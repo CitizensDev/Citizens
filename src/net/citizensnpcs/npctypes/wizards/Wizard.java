@@ -1,17 +1,13 @@
 package net.citizensnpcs.npctypes.wizards;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Permission;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.commands.commands.WizardCommands;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.wizards.WizardManager.WizardMode;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.SettingsManager;
-import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.properties.properties.WizardProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -369,7 +365,7 @@ public class Wizard extends CitizensNPC {
 					op = "togglestorm";
 					break;
 				}
-				WizardManager.buy(player, npc, "wizard." + op);
+				WizardManager.handleRightClick(player, npc, "wizard." + op);
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardManaRegenItem")) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
@@ -397,7 +393,7 @@ public class Wizard extends CitizensNPC {
 	}
 
 	@Override
-	public Saveable getProperties() {
+	public Properties getProperties() {
 		return new WizardProperties();
 	}
 
@@ -407,30 +403,11 @@ public class Wizard extends CitizensNPC {
 	}
 
 	@Override
-	public List<Node> getNodes() {
-		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.teleport",
-				100));
-		nodes.add(new Node("", SettingsType.ECONOMY,
-				"prices.wizard.changetime", 100));
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.spawnmob",
-				100));
-		nodes.add(new Node("", SettingsType.ECONOMY,
-				"prices.wizard.togglestorm", 100));
-		nodes.add(new Node("", SettingsType.ECONOMY,
-				"prices.wizard.executecommand", 100));
-		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
-				"general.wizards.wizard-max-locations", 10));
-		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,
-				"general.wizards.max-mana", 100));
-		nodes.add(new Node("WizardInteractItem", SettingsType.GENERAL,
-				"items.wizards.interact-item", 288));
-		nodes.add(new Node("WizardManaRegenItem", SettingsType.GENERAL,
-				"items.wizards.mana-regen-item", 348));
-		nodes.add(new Node("WizardManaRegenRate", SettingsType.GENERAL,
-				"ticks.wizards.mana-regen-rate", 6000));
-		nodes.add(new Node("RegenWizardMana", SettingsType.GENERAL,
-				"general.wizards.regen-mana", true));
-		return nodes;
+	public void onEnable() {
+		Bukkit.getServer()
+				.getScheduler()
+				.scheduleSyncRepeatingTask(Citizens.plugin, new WizardTask(),
+						SettingsManager.getInt("WizardManaRegenRate"),
+						SettingsManager.getInt("WizardManaRegenRate"));
 	}
 }

@@ -7,8 +7,9 @@ import java.util.List;
 
 import net.citizensnpcs.npcs.NPCData;
 import net.citizensnpcs.npcs.NPCDataManager;
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
@@ -31,7 +32,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 
-public class BasicProperties extends PropertyManager implements Saveable {
+public class BasicProperties extends PropertyManager implements Properties {
 	private final String name = ".basic.name";
 	private final String color = ".basic.color";
 	private final String items = ".basic.items";
@@ -370,5 +371,10 @@ public class BasicProperties extends PropertyManager implements Saveable {
 		while (profiles.pathExists(count))
 			++count;
 		return count;
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		return null;
 	}
 }

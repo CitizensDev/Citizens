@@ -1,16 +1,21 @@
 package net.citizensnpcs.properties.properties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.citizensnpcs.npctypes.guards.FlagInfo;
 import net.citizensnpcs.npctypes.guards.FlagList;
 import net.citizensnpcs.npctypes.guards.Guard;
 import net.citizensnpcs.npctypes.guards.FlagList.FlagType;
 import net.citizensnpcs.npctypes.guards.GuardManager.GuardType;
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
-public class GuardProperties extends PropertyManager implements Saveable {
+public class GuardProperties extends PropertyManager implements Properties {
 	private static final String isGuard = ".guard.toggle";
 	private static final String type = ".guard.type";
 	private static final String radius = ".guard.radius";
@@ -129,5 +134,16 @@ public class GuardProperties extends PropertyManager implements Saveable {
 			profiles.setString(nextUID + aggressive,
 					profiles.getString(UID + aggressive));
 		}
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
+				"ticks.guards.respawn-delay", 100));
+		nodes.add(new Node("DefaultBouncerProtectionRadius",
+				SettingsType.GENERAL,
+				"range.guards.default-bouncer-protection-radius", 10));
+		return nodes;
 	}
 }

@@ -9,7 +9,7 @@ import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class PropertyManager {
-	private static final HashMap<String, Saveable> properties = new HashMap<String, Saveable>();
+	private static final HashMap<String, Properties> properties = new HashMap<String, Properties>();
 	protected static final CachedYAMLHandler profiles = new CachedYAMLHandler(
 			"plugins/Citizens/npc-profiles.yml");
 
@@ -19,7 +19,7 @@ public class PropertyManager {
 		QuestProperties.initialize();
 	}
 
-	public static void add(String type, Saveable saveable) {
+	public static void add(String type, Properties saveable) {
 		properties.put(type, saveable);
 	}
 
@@ -40,7 +40,7 @@ public class PropertyManager {
 	}
 
 	public static void load(HumanNPC npc) {
-		for (Saveable saveable : properties.values()) {
+		for (Properties saveable : properties.values()) {
 			if (exists(npc) && saveable.getEnabled(npc)) {
 				saveable.loadState(npc);
 			}
@@ -54,7 +54,7 @@ public class PropertyManager {
 	}
 
 	public static void save(HumanNPC npc) {
-		for (Saveable saveable : properties.values()) {
+		for (Properties saveable : properties.values()) {
 			if (saveable.getEnabled(npc)) {
 				saveable.saveState(npc);
 			}
@@ -71,12 +71,12 @@ public class PropertyManager {
 		profiles.removeKey(npc.getUID());
 	}
 
-	public static Saveable get(String string) {
+	public static Properties get(String string) {
 		return properties.get(string);
 	}
 
 	public static void copyNPCs(int UID, int newUID) {
-		for (Saveable saveable : properties.values()) {
+		for (Properties saveable : properties.values()) {
 			saveable.copy(UID, newUID);
 		}
 	}

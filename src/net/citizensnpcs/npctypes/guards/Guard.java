@@ -1,18 +1,14 @@
 package net.citizensnpcs.npctypes.guards;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.commands.commands.GuardCommands;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.guards.GuardManager.GuardType;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.SettingsManager;
-import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.properties.properties.GuardProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
@@ -216,7 +212,7 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public Saveable getProperties() {
+	public Properties getProperties() {
 		return new GuardProperties();
 	}
 
@@ -226,13 +222,11 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public List<Node> getNodes() {
-		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
-				"ticks.guards.respawn-delay", 100));
-		nodes.add(new Node("DefaultBouncerProtectionRadius",
-				SettingsType.GENERAL,
-				"range.guards.default-bouncer-protection-radius", 10));
-		return nodes;
+	public void onEnable() {
+		Bukkit.getServer()
+				.getScheduler()
+				.scheduleSyncRepeatingTask(Citizens.plugin, new GuardTask(),
+						SettingsManager.getInt("TickDelay"),
+						SettingsManager.getInt("TickDelay"));
 	}
 }

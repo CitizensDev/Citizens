@@ -86,7 +86,8 @@ public class SettingsManager {
 		for (String t : Citizens.loadedTypes) {
 			nodes.add(new Node("", SettingsType.ECONOMY, "prices." + t
 					+ ".creation", 100));
-			for (Node node : CitizensNPCManager.getType(t).getNodes()) {
+			for (Node node : CitizensNPCManager.getType(t).getProperties()
+					.getNodes()) {
 				nodes.add(node);
 			}
 		}

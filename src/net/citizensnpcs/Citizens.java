@@ -21,10 +21,7 @@ import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
-import net.citizensnpcs.npctypes.guards.GuardTask;
-import net.citizensnpcs.npctypes.healers.HealerTask;
-import net.citizensnpcs.npctypes.questers.quests.QuestManager;
-import net.citizensnpcs.npctypes.wizards.WizardTask;
+import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -110,18 +107,6 @@ public class Citizens extends JavaPlugin {
 			setupNPCs();
 		}
 
-		// Schedule tasks TODO - Genericify
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new TickTask(), SettingsManager.getInt("TickDelay"),
-				SettingsManager.getInt("TickDelay"));
-		// TODO temporary workaround, we should genericify tasks so we can
-		// register
-		// them per type on start-up
-		if (loadedTypes.contains("guard")) {
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new GuardTask(), SettingsManager.getInt("TickDelay"),
-					SettingsManager.getInt("TickDelay"));
-		}
 		if (SettingsManager.getBoolean("UseSaveTask")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
@@ -134,8 +119,11 @@ public class Citizens extends JavaPlugin {
 					}, SettingsManager.getInt("SavingDelay"),
 					SettingsManager.getInt("SavingDelay"));
 		}
+		// Call each NPC type's onEnable method
+		for (String type : loadedTypes) {
+			CitizensNPCManager.getType(type).onEnable();
+		}
 
-		QuestManager.initialize();
 		Messaging.log("version [" + getVersion() + "] loaded.");
 	}
 
@@ -285,17 +273,6 @@ public class Citizens extends JavaPlugin {
 			}
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
-		if (loadedTypes.contains("healer")) {
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new HealerTask(), HealerTask.getHealthRegenRate(),
-					HealerTask.getHealthRegenRate());
-		}
-		if (loadedTypes.contains("wizard")) {
-			getServer().getScheduler().scheduleSyncRepeatingTask(this,
-					new WizardTask(),
-					SettingsManager.getInt("WizardManaRegenRate"),
-					SettingsManager.getInt("WizardManaRegenRate"));
-		}
 		initialized = true;
 	}
 

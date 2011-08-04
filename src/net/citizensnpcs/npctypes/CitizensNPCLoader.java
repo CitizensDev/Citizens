@@ -20,8 +20,7 @@ public class CitizensNPCLoader {
 			Enumeration<JarEntry> entries = jarFile.entries();
 			String mainClass = null;
 			// register type in npctype.info file like so:
-			// main-class: com.citizens.Blacksmith.Blacksmith
-			// main-class: my.npc.type.Awesome
+			// main-class: net.citizensnpcs.Blacksmith.Blacksmith
 			while (entries.hasMoreElements()) {
 				JarEntry element = entries.nextElement();
 				if (element.getName().equalsIgnoreCase("npctype.info")) {
@@ -47,10 +46,6 @@ public class CitizensNPCLoader {
 				if (type.getProperties() == null) {
 					throw new InvalidNPCTypeException(type.getType()
 							+ " is missing a valid Properties class.");
-				}
-				if (type.getNodes() == null) {
-					Messaging.log(type.getType()
-							+ " did not register any default settings.");
 				}
 				if (type.getCommands() == null) {
 					throw new InvalidNPCTypeException(type.getType()

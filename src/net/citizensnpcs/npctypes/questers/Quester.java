@@ -1,15 +1,13 @@
 package net.citizensnpcs.npctypes.questers;
 
 import java.util.ArrayDeque;
-import java.util.List;
 
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.commands.commands.QuesterCommands;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.questers.quests.QuestManager;
 import net.citizensnpcs.npctypes.questers.rewards.QuestReward;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Saveable;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.properties.QuesterProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
@@ -131,7 +129,7 @@ public class Quester extends CitizensNPC {
 	}
 
 	@Override
-	public Saveable getProperties() {
+	public Properties getProperties() {
 		return new QuesterProperties();
 	}
 
@@ -141,7 +139,7 @@ public class Quester extends CitizensNPC {
 	}
 
 	@Override
-	public List<Node> getNodes() {
-		return null;
+	public void onEnable() {
+		QuestManager.initialize();
 	}
 }

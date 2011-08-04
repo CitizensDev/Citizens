@@ -7,6 +7,7 @@ import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class HealerTask implements Runnable {
+
 	@Override
 	public void run() {
 		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {

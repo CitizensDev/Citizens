@@ -1,5 +1,5 @@
 name: Citizens
-main: com.citizens.Citizens
+main: net.citizensnpcs.Citizens
 version: 1.1
 authors: [fullwall, aPunch, NeonMaster]
 softdepend: [Permissions]
