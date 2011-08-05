@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.commands.commands.QuesterCommands;
 import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.npctypes.questers.quests.QuestManager;
 import net.citizensnpcs.npctypes.questers.rewards.QuestReward;
 import net.citizensnpcs.properties.Properties;
@@ -141,5 +142,11 @@ public class Quester extends CitizensNPC {
 	@Override
 	public void onEnable() {
 		QuestManager.initialize();
+	}
+
+	@Override
+	public void addListeners() {
+		CitizensNPCManager.addListener(new QuesterBlockListen());
+		CitizensNPCManager.addListener(new QuesterPlayerListen());
 	}
 }

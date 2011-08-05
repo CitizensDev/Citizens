@@ -6,24 +6,18 @@ import net.citizensnpcs.Permission;
 import net.citizensnpcs.events.NPCTargetEvent;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.npctypes.guards.GuardTask;
-import net.citizensnpcs.npctypes.questers.quests.QuestManager;
 import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.ConversationUtils;
 import net.citizensnpcs.utils.ServerUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
@@ -37,12 +31,6 @@ public class PlayerListen extends PlayerListener implements Listener {
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, this, Event.Priority.Normal,
 				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_MOVE, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_PICKUP_ITEM, this,
-				Event.Priority.Normal, Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
 				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this,
 				Event.Priority.Normal, Citizens.plugin);
@@ -60,32 +48,13 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerLogin(PlayerLoginEvent event) {
-		QuestManager.load(event.getPlayer());
-		GuardTask.checkRespawn(event.getPlayer());
 		CreatureTask.setDirty();
 	}
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		NPCDataManager.pathEditors.remove(event.getPlayer().getName());
-		QuestManager.unload(event.getPlayer());
 		CreatureTask.setDirty();
-		ConversationUtils.verify();
-	}
-
-	@Override
-	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		QuestManager.incrementQuest(event.getPlayer(), event);
-	}
-
-	@Override
-	public void onPlayerMove(PlayerMoveEvent event) {
-		QuestManager.incrementQuest(event.getPlayer(), event);
-	}
-
-	@Override
-	public void onPlayerChat(PlayerChatEvent event) {
-		ConversationUtils.onChat(event);
 	}
 
 	@Override

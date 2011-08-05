@@ -90,4 +90,12 @@ public abstract class CitizensNPC {
 	 */
 	public void onDeath(EntityDeathEvent event) {
 	}
+
+	/**
+	 * Register event listeners for an NPC type
+	 * 
+	 * @return
+	 */
+	public void addListeners() {
+	}
 }

@@ -6,6 +6,7 @@ import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.commands.commands.GuardCommands;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.npctypes.guards.GuardManager.GuardType;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.SettingsManager;
@@ -228,5 +229,10 @@ public class Guard extends CitizensNPC {
 				.scheduleSyncRepeatingTask(Citizens.plugin, new GuardTask(),
 						SettingsManager.getInt("TickDelay"),
 						SettingsManager.getInt("TickDelay"));
+	}
+
+	@Override
+	public void addListeners() {
+		CitizensNPCManager.addListener(new GuardPlayerListen());
 	}
 }

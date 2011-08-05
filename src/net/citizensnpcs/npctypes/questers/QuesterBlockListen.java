@@ -1,6 +1,7 @@
-package net.citizensnpcs.listeners;
+package net.citizensnpcs.npctypes.questers;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.listeners.Listener;
 import net.citizensnpcs.npctypes.questers.quests.QuestManager;
 
 import org.bukkit.Bukkit;
@@ -10,7 +11,7 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.PluginManager;
 
-public class BlockListen extends BlockListener implements Listener {
+public class QuesterBlockListen extends BlockListener implements Listener {
 
 	@Override
 	public void registerEvents() {

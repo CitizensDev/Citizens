@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import net.citizensnpcs.commands.Commands;
 import net.citizensnpcs.listeners.EntityListen;
+import net.citizensnpcs.listeners.Listener;
 import net.citizensnpcs.listeners.PlayerListen;
 import net.citizensnpcs.listeners.ServerListen;
 import net.citizensnpcs.listeners.WorldListen;
@@ -120,8 +121,14 @@ public class Citizens extends JavaPlugin {
 					SettingsManager.getInt("SavingDelay"));
 		}
 		// Call each NPC type's onEnable method
-		for (String type : loadedTypes) {
-			CitizensNPCManager.getType(type).onEnable();
+		for (String loaded : loadedTypes) {
+			CitizensNPC type = CitizensNPCManager.getType(loaded);
+			type.onEnable();
+			// Register event listener per-type
+			type.addListeners();
+			for (Listener listener : CitizensNPCManager.getListeners()) {
+				listener.registerEvents();
+			}
 		}
 
 		Messaging.log("version [" + getVersion() + "] loaded.");
