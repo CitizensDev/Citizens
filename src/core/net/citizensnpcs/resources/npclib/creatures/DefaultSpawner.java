@@ -16,23 +16,36 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
 public class DefaultSpawner implements Spawner {
+	public static final DefaultSpawner INSTANCE = new DefaultSpawner();
+
+	private DefaultSpawner() {
+
+	}
+
 	private final Random random = new Random(System.currentTimeMillis());
 
 	@Override
 	public HumanNPC spawn(CreatureNPCType type, Location loc) {
-		int offsetX = 0, offsetZ = 0, offset = 25;
-		offsetX += offset * getRandomInt(random, 2);
-		offsetZ += offset * getRandomInt(random, 2);
-
-		int startX = loc.getBlockX() + offsetX;
-		int startZ = loc.getBlockZ() + offsetZ;
+		if (random.nextInt(100) < type.getSpawnChance())
+			return null;
+		// TODO: Make this more random.
+		int offset = 25 * getRandomInt(random, 1);
+		int offsetX = loc.getBlockX() + offset, offsetZ = loc.getBlockZ()
+				+ offset;
+		if (offset < 0) {
+			offsetX -= getRandomInt(random, offset);
+			offsetZ -= getRandomInt(random, offset);
+		} else {
+			offsetX += getRandomInt(random, offset);
+			offsetZ += getRandomInt(random, offset);
+		}
 		int searchY = 3, searchXZ = 4, shiftedX = 0, shiftedZ = 0;
 
 		World world = loc.getWorld();
 		Chunk last = null;
 		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
-			for (int x = startX - searchXZ; x <= startX + searchXZ; ++x) {
-				for (int z = startZ - searchXZ; z <= startZ + searchXZ; ++z) {
+			for (int x = offsetX - searchXZ; x <= offsetX + searchXZ; ++x) {
+				for (int z = offsetZ - searchXZ; z <= offsetZ + searchXZ; ++z) {
 					shiftedX = x >> 4;
 					shiftedZ = z >> 4;
 					if (world.isChunkLoaded(shiftedX, shiftedZ)) {

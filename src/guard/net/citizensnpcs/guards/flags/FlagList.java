@@ -1,14 +1,16 @@
-package net.citizensnpcs.guards;
+package net.citizensnpcs.guards.flags;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class FlagList {
@@ -67,13 +69,32 @@ public class FlagList {
 	}
 
 	public enum FlagType {
-		GROUP,
-		MOB,
-		PLAYER;
+		GROUP('g'),
+		MOB('m'),
+		PLAYER('p');
+		private final Character flag;
+
+		FlagType(Character flag) {
+			this.flag = flag;
+		}
+
+		public boolean isWithin(Set<Character> flags) {
+			return flags.contains(flag);
+		}
 	}
 
-	public void addToAll(FlagInfo info) {
-		for (FlagType type : FlagType.values()) {
+	public void addToAll(Set<Character> set, FlagInfo info) {
+		List<FlagType> toAdd = Lists.newArrayList();
+		if (set.size() == 1) {
+			for (FlagType type : FlagType.values())
+				toAdd.add(type);
+		} else {
+			for (FlagType type : FlagType.values()) {
+				if (type.isWithin(set))
+					toAdd.add(type);
+			}
+		}
+		for (FlagType type : toAdd) {
 			addFlag(type, info);
 		}
 	}

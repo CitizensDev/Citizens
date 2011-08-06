@@ -175,6 +175,8 @@ public class SettingsManager {
 		nodes.add(new Node("EvilTameChance", SettingsType.MOB,
 				"evil.misc.tame-chance", 5));
 		nodes.add(new Node("MaxEvils", SettingsType.MOB, "evil.spawn.max", 2));
+		nodes.add(new Node("EvilSpawnChance", SettingsType.MOB,
+				"evil.spawn.chance", 100));
 		nodes.add(new Node("EvilNames", SettingsType.MOB, "evil.misc.names",
 				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,"));
 		nodes.add(new Node("EvilDrops", SettingsType.MOB, "evil.items.drops",

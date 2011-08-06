@@ -1,4 +1,4 @@
-package net.citizensnpcs.guards;
+package net.citizensnpcs.guards.flags;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 import net.citizensnpcs.CreatureTask;
 import net.citizensnpcs.Permission;
-import net.citizensnpcs.guards.FlagList.FlagType;
+import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.StringUtils;
 

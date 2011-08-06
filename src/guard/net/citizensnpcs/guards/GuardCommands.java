@@ -2,7 +2,8 @@ package net.citizensnpcs.guards;
 
 import net.citizensnpcs.Permission;
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.guards.FlagList.FlagType;
+import net.citizensnpcs.guards.flags.FlagInfo;
+import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -92,9 +93,9 @@ public class GuardCommands implements CommandHandler {
 
 	@Command(
 			aliases = "guard",
-			usage = "addflag [target] (-a -g -m (-p [priority]))",
+			usage = "addflag (-p [priority]) [target] (-a -g -m)",
 			desc = "add a flag to a guard",
-			modifiers = { "addflag", "addf", "addfl" },
+			modifiers = { "addflag", "af", },
 			flags = "agmp",
 			min = 2,
 			max = 3)
@@ -106,36 +107,26 @@ public class GuardCommands implements CommandHandler {
 		}
 
 		Guard guard = npc.getType("guard");
-		if (args.hasFlag('p') && args.argsLength() != 3) {
-			player.sendMessage(ChatColor.GRAY
-					+ "Priority flag given without specifying a priority.");
-			return;
-		}
-
-		boolean isSafe = args.getString(1).charAt(0) == '-';
-		int priorityOffset = args.argsLength() == 2 ? 1
-				: args.argsLength() == 3 ? 2 : -1;
+		int flagOffset = 1;
 		int priority = 1;
 		if (args.hasFlag('p')) {
-			if (priorityOffset == -1) {
-				player.sendMessage(ChatColor.GRAY
-						+ "Priority flag given without specifying a priority.");
-				return;
-			}
-			priority = args.getInteger(priorityOffset);
+			flagOffset = 2;
+			priority = args.getInteger(1);
 		}
+		boolean isSafe = args.getString(flagOffset).charAt(0) == '-';
 		if (args.hasFlag('a')) {
-			guard.getFlags().addToAll(
+			guard.getFlags().addToAll(args.getFlags(),
 					FlagInfo.newInstance("all", priority, isSafe));
 		} else if (args.argsLength() == 1) {
 			player.sendMessage(ChatColor.GRAY + "No name given.");
 			return;
 		}
 
-		String name = isSafe ? args.getString(1).replaceFirst("-", "") : args
-				.getString(1);
+		String name = isSafe ? args.getJoinedStrings(flagOffset).replaceFirst(
+				"-", "") : args.getJoinedStrings(flagOffset);
 		name = name.toLowerCase();
 
+		FlagType type = FlagType.PLAYER;
 		if (args.hasFlag('g')) {
 			if (!Permission.useSuperPerms()) {
 				player.sendMessage(ChatColor.GRAY
@@ -147,19 +138,17 @@ public class GuardCommands implements CommandHandler {
 				player.sendMessage(ChatColor.GRAY + "Group not recognised.");
 				return;
 			}
+			type = FlagType.GROUP;
 		}
 		if (args.hasFlag('m')) {
 			if (!EntityUtils.validType(name, true)) {
 				player.sendMessage(ChatColor.GRAY + "Mob type not recognised.");
 				return;
 			}
+			type = FlagType.MOB;
 		}
-		for (Character character : args.getFlags()) {
-			FlagType type = character == 'g' ? FlagType.GROUP
-					: character == 'p' ? FlagType.PLAYER : FlagType.MOB;
-			guard.getFlags().addFlag(type,
-					FlagInfo.newInstance(name, priority, isSafe));
-		}
+		guard.getFlags().addFlag(type,
+				FlagInfo.newInstance(name, priority, isSafe));
 	}
 
 	@Command(

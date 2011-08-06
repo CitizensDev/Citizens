@@ -4,6 +4,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.GuardManager.GuardType;
+import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCManager;

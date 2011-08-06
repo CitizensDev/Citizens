@@ -3,8 +3,10 @@ package net.citizensnpcs.guards;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.guards.FlagList.FlagType;
 import net.citizensnpcs.guards.GuardManager.GuardType;
+import net.citizensnpcs.guards.flags.FlagInfo;
+import net.citizensnpcs.guards.flags.FlagList;
+import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;

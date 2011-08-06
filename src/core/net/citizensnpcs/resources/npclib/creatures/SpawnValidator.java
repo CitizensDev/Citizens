@@ -5,6 +5,9 @@ import net.citizensnpcs.resources.npclib.creatures.SpawnValidator.Spawn.Type;
 
 public class SpawnValidator {
 	private final byte[] flags = new byte[64];
+	public static final SpawnValidator DEFAULT_SPAWNIN = new SpawnValidator(
+			Type.JUST, 0), DEFAULT_SPAWNON = new SpawnValidator(Range.DEFAULT,
+			false);
 
 	public SpawnValidator() {
 	}
@@ -130,11 +133,19 @@ public class SpawnValidator {
 
 	public static class Spawn {
 		public enum Range {
-			ALL, DEFAULT, LIQUIDS;
+			ALL,
+			DEFAULT,
+			LIQUIDS;
 		}
 
 		public enum Type {
-			ALL, ALL_EXCEPT, BETWEEN, INCLUDING, JUST, NOT, NOT_BETWEEN;
+			ALL,
+			ALL_EXCEPT,
+			BETWEEN,
+			INCLUDING,
+			JUST,
+			NOT,
+			NOT_BETWEEN;
 		}
 	}
 }

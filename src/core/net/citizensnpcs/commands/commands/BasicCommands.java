@@ -13,7 +13,9 @@ import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
+import net.citizensnpcs.resources.npclib.CraftNPC;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
 import net.citizensnpcs.resources.sk89q.CommandPermissions;
@@ -30,7 +32,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -51,6 +56,32 @@ public class BasicCommands implements CommandHandler {
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
 		sender.sendMessage(ChatColor.YELLOW + "      - NeonMaster");
+	}
+
+	@Command(
+			aliases = "citizens",
+			desc = "view Citizens info",
+			modifiers = "clean",
+			max = 0)
+	@ServerCommand()
+	@CommandPermissions("admin.clean")
+	@CommandRequirements()
+	public static void cleanUp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		sender.sendMessage(ChatColor.GRAY + "Cleaning up...");
+		for (World world : Bukkit.getServer().getWorlds()) {
+			for (LivingEntity entity : world.getLivingEntities()) {
+				net.minecraft.server.Entity mcEntity = ((CraftLivingEntity) entity)
+						.getHandle();
+				if (mcEntity instanceof CraftNPC
+						&& !(mcEntity instanceof CreatureNPC)) {
+					HumanNPC found = ((CraftNPC) mcEntity).npc;
+					if (NPCManager.getList().get(found.getUID()) != found)
+						found.getPlayer().remove();
+				}
+			}
+		}
+		sender.sendMessage(ChatColor.GREEN + "Done.");
 	}
 
 	@Command(

@@ -1,4 +1,4 @@
-package net.citizensnpcs.guards;
+package net.citizensnpcs.guards.flags;
 
 public class FlagInfo {
 	private final int priority;
