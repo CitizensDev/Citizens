@@ -55,8 +55,12 @@ public enum CreatureNPCType {
 	}
 
 	public static CreatureNPCType fromName(String mob) {
-		return CreatureNPCType.valueOf(mob.toUpperCase().replace("CREATURENPC",
-				""));
+		try {
+			return CreatureNPCType.valueOf(mob.toUpperCase().replace(
+					"CREATURENPC", ""));
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 
 	public int getSpawnChance() {

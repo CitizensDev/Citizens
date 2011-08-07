@@ -102,6 +102,7 @@ public class GuardCommands implements CommandHandler {
 			min = 1)
 	@CommandPermissions("guard.modify.flags")
 	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
+		Messaging.log(args.getJoinedStrings(0));
 		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')
 				&& !args.hasFlag('p')) {
 			player.sendMessage(ChatColor.GRAY + "No type flags specified.");

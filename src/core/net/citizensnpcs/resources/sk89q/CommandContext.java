@@ -31,6 +31,7 @@ public class CommandContext {
 
 	public CommandContext(String[] args) {
 		int i = 1, flagCount = 1;
+		// TODO: Bugged, needs fixing.
 		for (; i < args.length; i++) {
 			if (args[i].length() == 0) {
 				// Ignore this

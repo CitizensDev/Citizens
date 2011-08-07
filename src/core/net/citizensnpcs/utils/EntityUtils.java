@@ -92,7 +92,10 @@ public class EntityUtils {
 	}
 
 	public static boolean validType(String name, boolean both) {
-		String formatted = name.toUpperCase().replace(" ", "_");
+		String formatted = StringUtils.capitalise(name.toLowerCase()).replace(
+				" ", "");
+		if (formatted.equals("Pigzombie"))
+			formatted = "PigZombie";
 		return CreatureType.fromName(formatted) != null
 				|| (both && CreatureNPCType.fromName(formatted) != null);
 	}
