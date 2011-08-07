@@ -99,26 +99,26 @@ public class GuardCommands implements CommandHandler {
 			desc = "add a flag to a guard",
 			modifiers = { "addflag", "af", },
 			flags = "agmpi",
-			min = 2)
+			min = 1)
 	@CommandPermissions("guard.modify.flags")
 	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
-		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')) {
-			player.sendMessage("No type flags specified.");
+		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')
+				&& !args.hasFlag('p')) {
+			player.sendMessage(ChatColor.GRAY + "No type flags specified.");
 			return;
 		}
 
 		Guard guard = npc.getType("guard");
-		int flagOffset = 1;
-		int priority = 1;
+		int flagOffset = 1, priority = 1;
 		if (args.hasFlag('i')) {
-			flagOffset = 2;
+			++flagOffset;
 			priority = args.getInteger(1);
 		}
 		boolean isSafe = args.getString(flagOffset).charAt(0) == '-';
 		if (args.hasFlag('a')) {
 			guard.getFlags().addToAll(args.getFlags(),
 					FlagInfo.newInstance("all", priority, isSafe));
-		} else if (args.argsLength() == 1) {
+		} else if (args.argsLength() == 1 || flagOffset == 2) {
 			player.sendMessage(ChatColor.GRAY + "No name given.");
 			return;
 		}
@@ -166,8 +166,9 @@ public class GuardCommands implements CommandHandler {
 	@CommandPermissions("guard.modify.flags")
 	public static void deleteFlag(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')) {
-			player.sendMessage("No type flags specified.");
+		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')
+				&& !args.hasFlag('p')) {
+			player.sendMessage(ChatColor.GRAY + "No type flags specified.");
 			return;
 		}
 		Guard guard = npc.getType("guard");

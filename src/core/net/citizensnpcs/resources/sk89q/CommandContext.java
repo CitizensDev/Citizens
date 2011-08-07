@@ -30,7 +30,7 @@ public class CommandContext {
 	}
 
 	public CommandContext(String[] args) {
-		int i = 1;
+		int i = 1, flagCount = 1;
 		for (; i < args.length; i++) {
 			if (args[i].length() == 0) {
 				// Ignore this
@@ -38,15 +38,17 @@ public class CommandContext {
 					&& args[i].matches("^-[a-zA-Z]+$")) {
 				for (int k = 1; k < args[i].length(); k++) {
 					flags.add(args[i].charAt(k));
+					++flagCount;
 				}
+				args[i] = "";
 			} else {
-				break;
+				continue;
 			}
 		}
 
-		String[] newArgs = new String[args.length - i + 1];
+		String[] newArgs = new String[args.length - flagCount + 1];
 
-		System.arraycopy(args, i, newArgs, 1, args.length - i);
+		System.arraycopy(args, flagCount, newArgs, 1, args.length - flagCount);
 		newArgs[0] = args[0];
 
 		this.args = newArgs;

@@ -14,10 +14,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class FlagList {
-	private final Map<FlagType, HashMap<String, FlagInfo>> flags = Maps
-			.newEnumMap(FlagType.class);
+	private final Map<FlagType, Map<String, FlagInfo>> flags = getPopulatedMap();
 	final FlagSorter predicates = new FlagSorter(this);
 	private LivingEntity result;
+
+	private Map<FlagType, Map<String, FlagInfo>> getPopulatedMap() {
+		Map<FlagType, Map<String, FlagInfo>> populated = Maps
+				.newEnumMap(FlagType.class);
+		for (FlagType type : FlagType.values()) {
+			populated.put(type, new HashMap<String, FlagInfo>());
+		}
+		return populated;
+	}
 
 	public boolean process(Location base, List<LivingEntity> toProcess) {
 		Iterable<LivingEntity> filtered = Iterables.filter(toProcess,

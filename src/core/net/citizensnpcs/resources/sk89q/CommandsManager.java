@@ -282,8 +282,9 @@ public abstract class CommandsManager<T extends Player> {
 			command.append(args[i] + " ");
 		}
 
-		command.append(cmd.flags().length() > 0 ? "[-" + cmd.flags() + "] "
-				: "");
+		// command.append(cmd.flags().length() > 0 ? "[-" + cmd.flags() + "] "
+		// : "");
+		// removed arbitrary positioning of flags.
 		command.append(cmd.usage());
 
 		return command.toString();

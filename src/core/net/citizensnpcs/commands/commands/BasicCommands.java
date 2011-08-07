@@ -62,7 +62,7 @@ public class BasicCommands implements CommandHandler {
 			aliases = "citizens",
 			desc = "view Citizens info",
 			modifiers = "clean",
-			max = 0)
+			max = 1)
 	@ServerCommand()
 	@CommandPermissions("admin.clean")
 	@CommandRequirements()
