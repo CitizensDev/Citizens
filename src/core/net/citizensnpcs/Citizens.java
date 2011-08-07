@@ -48,6 +48,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.base.Joiner;
+
 /**
  * Citizens - NPCs for Bukkit
  */
@@ -67,12 +69,11 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
+		// Load settings.
+		SettingsManager.setupVariables();
 
 		// Load NPC types.
 		loadNPCTypes();
-
-		// Load settings.
-		SettingsManager.setupVariables();
 
 		// Register our commands.
 		Commands.registerCommands();
@@ -333,8 +334,7 @@ public class Citizens extends JavaPlugin {
 	 */
 	public void loadNPCTypes() {
 		File dir = new File(getDataFolder(), "types");
-		if (!dir.exists())
-			dir.mkdir();
+		dir.mkdir();
 		for (String f : dir.list()) {
 			if (f.contains(".jar")) {
 				CitizensNPC type = CitizensNPCLoader.loadNPCType(new File(dir,
@@ -344,6 +344,6 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
-		Messaging.log("NPC types loaded: " + loadedTypes.toString());
+		Messaging.log("NPC types loaded: " + Joiner.on(", ").join(loadedTypes));
 	}
 }
