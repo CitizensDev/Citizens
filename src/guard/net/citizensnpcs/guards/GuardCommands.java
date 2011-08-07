@@ -1,5 +1,7 @@
 package net.citizensnpcs.guards;
 
+import java.util.Set;
+
 import net.citizensnpcs.Permission;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
@@ -93,12 +95,11 @@ public class GuardCommands implements CommandHandler {
 
 	@Command(
 			aliases = "guard",
-			usage = "addflag (-p [priority]) [target] (-a -g -m)",
+			usage = "addflag (-i [priority]) [target] (-a -g -m -p)",
 			desc = "add a flag to a guard",
 			modifiers = { "addflag", "af", },
-			flags = "agmp",
-			min = 2,
-			max = 3)
+			flags = "agmpi",
+			min = 2)
 	@CommandPermissions("guard.modify.flags")
 	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
 		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')) {
@@ -109,7 +110,7 @@ public class GuardCommands implements CommandHandler {
 		Guard guard = npc.getType("guard");
 		int flagOffset = 1;
 		int priority = 1;
-		if (args.hasFlag('p')) {
+		if (args.hasFlag('i')) {
 			flagOffset = 2;
 			priority = args.getInteger(1);
 		}
@@ -147,8 +148,57 @@ public class GuardCommands implements CommandHandler {
 			}
 			type = FlagType.MOB;
 		}
+		String prefix = guard.getFlags().contains(type, name) ? "Updated"
+				: "Added";
 		guard.getFlags().addFlag(type,
 				FlagInfo.newInstance(name, priority, isSafe));
+		player.sendMessage(ChatColor.GREEN + prefix + " flag entry for "
+				+ StringUtils.wrap(name) + ".");
+	}
+
+	@Command(
+			aliases = "guard",
+			usage = "delflag [name] [-p, -m, -g] (-a)",
+			desc = "deletes a flag from a guard",
+			modifiers = { "delflag", "df", },
+			flags = "agmp",
+			min = 1)
+	@CommandPermissions("guard.modify.flags")
+	public static void deleteFlag(CommandContext args, Player player,
+			HumanNPC npc) {
+		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')) {
+			player.sendMessage("No type flags specified.");
+			return;
+		}
+		Guard guard = npc.getType("guard");
+		Set<Character> flags = args.getFlags();
+		if (flags.contains('a') && flags.size() == 1) {
+			guard.getFlags().clear();
+			player.sendMessage(ChatColor.GREEN + "All flags cleared.");
+			return;
+		} else if (flags.contains('a')) {
+			for (Character character : flags) {
+				guard.getFlags().getFlags(FlagType.fromCharacter(character))
+						.clear();
+			}
+			player.sendMessage(ChatColor.GREEN
+					+ "All flags from specified types cleared.");
+			return;
+		}
+		if (args.argsLength() == 1) {
+			player.sendMessage(ChatColor.GRAY + "No flag specified.");
+			return;
+		}
+		FlagType type = flags.contains('g') ? FlagType.GROUP : flags
+				.contains('m') ? FlagType.MOB : FlagType.PLAYER;
+
+		if (!guard.getFlags().contains(type, args.getJoinedStrings(1))) {
+			player.sendMessage(ChatColor.GRAY + "Specified flag not found.");
+			return;
+		}
+		guard.getFlags().getFlags(type).remove(args.getJoinedStrings(1));
+		player.sendMessage(StringUtils.wrap(args.getJoinedStrings(1))
+				+ " removed.");
 	}
 
 	@Command(

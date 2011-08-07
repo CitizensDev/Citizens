@@ -333,7 +333,8 @@ public class Citizens extends JavaPlugin {
 	 */
 	public void loadNPCTypes() {
 		File dir = new File(getDataFolder(), "types");
-		dir.mkdir();
+		if (!dir.exists())
+			dir.mkdir();
 		for (String f : dir.list()) {
 			if (f.contains(".jar")) {
 				CitizensNPC type = CitizensNPCLoader.loadNPCType(new File(dir,

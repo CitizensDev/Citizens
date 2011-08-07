@@ -126,6 +126,8 @@ public class FlagSorter {
 		}
 
 		private FlagInfo get(Map<String, FlagInfo> source, String name) {
+			if (!source.containsKey(name))
+				return source.get("all");
 			return source.get(name);
 		}
 	};

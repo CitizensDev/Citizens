@@ -68,21 +68,6 @@ public class FlagList {
 		return flags.get(type);
 	}
 
-	public enum FlagType {
-		GROUP('g'),
-		MOB('m'),
-		PLAYER('p');
-		private final Character flag;
-
-		FlagType(Character flag) {
-			this.flag = flag;
-		}
-
-		public boolean isWithin(Set<Character> flags) {
-			return flags.contains(flag);
-		}
-	}
-
 	public void addToAll(Set<Character> set, FlagInfo info) {
 		List<FlagType> toAdd = Lists.newArrayList();
 		if (set.size() == 1) {
@@ -96,6 +81,43 @@ public class FlagList {
 		}
 		for (FlagType type : toAdd) {
 			addFlag(type, info);
+		}
+	}
+
+	public boolean contains(FlagType type, String name) {
+		return getFlags(type).get(name) != null;
+	}
+
+	public void clear() {
+		for (FlagType type : FlagType.values()) {
+			getFlags(type).clear();
+		}
+	}
+
+	public enum FlagType {
+		GROUP('g'),
+		MOB('m'),
+		PLAYER('p');
+		private final char flag;
+
+		FlagType(char flag) {
+			this.flag = flag;
+		}
+
+		public char getCharacter() {
+			return this.flag;
+		}
+
+		public boolean isWithin(Set<Character> flags) {
+			return flags.contains(flag);
+		}
+
+		public static FlagType fromCharacter(char character) {
+			for (FlagType type : FlagType.values()) {
+				if (type.getCharacter() == character)
+					return type;
+			}
+			return null;
 		}
 	}
 }
