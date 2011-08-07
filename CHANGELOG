@@ -64,6 +64,7 @@ By fullwall, aPunch, and NeonMaster
 --- v1.1 ---
 -Citizens is now modular! You can download the full package or a customized ZIP file at 
  www.citizensnpcs.net/download
+-added Guard NPCs, see wiki for detailed documentation
 -item economy removed; now if 'economy.use-economy' is true and an economy plugin is detected, Citizens will use
  that plugin, otherwise everything is free
 -now supports MultiCurrency, BOSEconomy7, and iConomy6
@@ -73,3 +74,5 @@ By fullwall, aPunch, and NeonMaster
 -you can no longer set '*' as a wizard's interact-item
 -added new wizard mode "command", '/wizard command [command] (args)' sets a wizard's command, right-clicking it
  with the interact-item executes that command
+-added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs"
+-added 'evil.spawn.chance' node in mobs.yml

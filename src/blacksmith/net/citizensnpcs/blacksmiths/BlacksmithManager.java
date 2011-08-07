@@ -1,4 +1,4 @@
-package net.citizensnpcs.npctypes.blacksmiths;
+package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;

@@ -1,8 +1,7 @@
-package net.citizensnpcs.commands.commands;
+package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.npctypes.blacksmiths.BlacksmithManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;

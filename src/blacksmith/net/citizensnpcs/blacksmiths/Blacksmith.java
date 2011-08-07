@@ -1,11 +1,9 @@
-package net.citizensnpcs.npctypes.blacksmiths;
+package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.Permission;
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.commands.commands.BlacksmithCommands;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
-import net.citizensnpcs.properties.properties.BlacksmithProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
 

@@ -23,7 +23,7 @@ public class CitizensNPCLoader {
 			// main-class: net.citizensnpcs.Blacksmith.Blacksmith
 			while (entries.hasMoreElements()) {
 				JarEntry element = entries.nextElement();
-				if (element.getName().equalsIgnoreCase("npctype.info")) {
+				if (element.getName().equalsIgnoreCase("type.info")) {
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(
 									jarFile.getInputStream(element)));

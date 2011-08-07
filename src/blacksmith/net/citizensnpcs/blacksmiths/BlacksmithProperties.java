@@ -1,4 +1,4 @@
-package net.citizensnpcs.properties.properties;
+package net.citizensnpcs.blacksmiths;
 
 import java.util.ArrayList;
 import java.util.List;
