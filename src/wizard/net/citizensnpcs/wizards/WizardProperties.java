@@ -22,73 +22,65 @@ public class WizardProperties extends PropertyManager implements Properties {
 	private static final String unlimitedMana = ".wizard.unlimited-mana";
 	private static final String command = ".wizard.command";
 
-	public static void setEnabled(int UID, boolean enabled) {
-		profiles.setBoolean(UID + isWizard, enabled);
-	}
-
-	public static boolean getEnabled(int UID) {
-		return profiles.getBoolean(UID + isWizard);
-	}
-
-	public static void saveLocations(int UID, String locationString) {
+	private void saveLocations(int UID, String locationString) {
 		profiles.setString(UID + locations, locationString.replace(")(", "):("));
 	}
 
-	public static String getLocations(int UID) {
+	private String getLocations(int UID) {
 		return profiles.getString(UID + locations).replace(")(", "):(");
 	}
 
-	public static void saveMana(int UID, int manaLevel) {
+	private void saveMana(int UID, int manaLevel) {
 		profiles.setInt(UID + mana, manaLevel);
 	}
 
-	public static int getMana(int UID) {
+	private int getMana(int UID) {
 		return profiles.getInt(UID + mana, 10);
 	}
 
-	public static void saveMode(int UID, WizardMode wizardMode) {
+	private void saveMode(int UID, WizardMode wizardMode) {
 		profiles.setString(UID + mode, wizardMode.toString());
 	}
 
-	public static WizardMode getMode(int UID) {
+	private WizardMode getMode(int UID) {
 		if (profiles.pathExists(UID + mode)) {
 			return WizardMode.parse(profiles.getString(UID + mode));
 		}
 		return WizardMode.TELEPORT;
 	}
 
-	public static void saveTime(int UID, String worldTime) {
+	private void saveTime(int UID, String worldTime) {
 		profiles.setString(UID + time, worldTime);
 	}
 
-	public static String getTime(int UID) {
+	private String getTime(int UID) {
 		return profiles.getString(UID + time, "morning");
 	}
 
-	public static void saveMob(int UID, CreatureType type) {
+	private void saveMob(int UID, CreatureType type) {
 		profiles.setString(UID + mob, type.getName());
 	}
 
-	public static CreatureType getMob(int UID) {
+	private CreatureType getMob(int UID) {
 		if (CreatureType.fromName(profiles.getString(UID + mob)) != null) {
 			return CreatureType.fromName(profiles.getString(UID + mob));
 		}
 		return CreatureType.CREEPER;
 	}
 
-	public static void saveUnlimitedMana(int UID, boolean unlimited) {
+	private void saveUnlimitedMana(int UID, boolean unlimited) {
 		profiles.setBoolean(UID + unlimitedMana, unlimited);
 	}
 
-	public static boolean hasUnlimitedMana(int UID) {
+	private boolean hasUnlimitedMana(int UID) {
 		return profiles.getBoolean(UID + unlimitedMana);
 	}
 
-	public static void saveCommand(int UID, String cmd) {
+	private void saveCommand(int UID, String cmd) {
 		profiles.setString(UID + command, cmd);
 	}
 
-	public static String getCommand(int UID) {
+	private String getCommand(int UID) {
 		return profiles.getString(UID + command);
 	}
 
