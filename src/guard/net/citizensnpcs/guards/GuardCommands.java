@@ -95,14 +95,13 @@ public class GuardCommands implements CommandHandler {
 
 	@Command(
 			aliases = "guard",
-			usage = "addflag (-i [priority]) [target] (-a -g -m -p)",
+			usage = "addflag (-i [priority]) [target] (-a,g,m,p)",
 			desc = "add a flag to a guard",
 			modifiers = { "addflag", "af", },
 			flags = "agmpi",
 			min = 1)
 	@CommandPermissions("guard.modify.flags")
 	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
-		Messaging.log(args.getJoinedStrings(0));
 		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')
 				&& !args.hasFlag('p')) {
 			player.sendMessage(ChatColor.GRAY + "No type flags specified.");

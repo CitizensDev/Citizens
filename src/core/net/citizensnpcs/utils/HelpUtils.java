@@ -191,7 +191,7 @@ public class HelpUtils {
 		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
 		format(sender, "guard", "flags", "view a guard's flags");
-		format(sender, "guard", "addflag [target] (-a -g -m (-p [priority]))",
+		format(sender, "guard", "addflag (-i [priority]) [target] (-a,g,m,p)",
 				"add a flag to a guard");
 		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");

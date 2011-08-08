@@ -21,6 +21,10 @@ package net.citizensnpcs.resources.sk89q;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+
 public class CommandContext {
 	protected String[] args;
 	protected Set<Character> flags = new HashSet<Character>();
@@ -46,13 +50,8 @@ public class CommandContext {
 				continue;
 			}
 		}
-
-		String[] newArgs = new String[args.length - flagCount + 1];
-
-		System.arraycopy(args, flagCount, newArgs, 1, args.length - flagCount);
-		newArgs[0] = args[0];
-
-		this.args = newArgs;
+		this.args = Iterables.toArray(Splitter.on(" ").omitEmptyStrings()
+				.split(Joiner.on(" ").skipNulls().join(args)), String.class);
 	}
 
 	public String getCommand() {
