@@ -1,5 +1,6 @@
 package net.citizensnpcs.wizards;
 
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -187,5 +188,18 @@ public class WizardCommands implements CommandHandler {
 		((Wizard) npc.getType("wizard")).setCommand(command);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
 				+ " command was set to " + StringUtils.wrap(command) + ".");
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("wizard.use.help");
+		PermissionManager.addPerm("wizard.modify.mode");
+		PermissionManager.addPerm("wizard.use.status");
+		PermissionManager.addPerm("wizard.modify.addloc");
+		PermissionManager.addPerm("wizard.modify.removeloc");
+		PermissionManager.addPerm("wizard.use.locations");
+		PermissionManager.addPerm("wizard.modify.unlimited");
+		PermissionManager.addPerm("wizard.modify.command");
+		PermissionManager.addPerm("wizard.use.interact");
 	}
 }

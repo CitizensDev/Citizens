@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.CreatureTask;
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -95,7 +95,7 @@ public class FlagSorter {
 					updateLowest(get(getByType(PLAYERS), name));
 					return true;
 				} else {
-					if (!Permission.useSuperPerms()) {
+					if (!PermissionManager.useSuperPerms()) {
 						return false;
 					}
 					if (groupMap.get(name) != null) {
@@ -103,7 +103,7 @@ public class FlagSorter {
 					}
 					List<String> transformed = ImmutableList.copyOf(Iterables
 							.transform(Iterables.filter(
-									Permission.getGroups(player), groupSorter),
+									PermissionManager.getGroups(player), groupSorter),
 									groupToString));
 					TreeMultiset<FlagInfo> sorted = getSortedFlags(
 							getByType(GROUPS), transformed);
@@ -214,7 +214,7 @@ public class FlagSorter {
 	}
 
 	public void updateGroup(FlagInfo info) {
-		Group group = Permission.getGroup(info.getName());
+		Group group = PermissionManager.getGroup(info.getName());
 		for (String name : group.getPlayers()) {
 			if (groupMap.containsKey(name))
 				groupMap.put(name, info);

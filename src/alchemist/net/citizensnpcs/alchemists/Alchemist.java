@@ -5,10 +5,14 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.InventoryUtils;
+import net.citizensnpcs.utils.MessageUtils;
+import net.citizensnpcs.utils.Messaging;
 
 public class Alchemist extends CitizensNPC {
 	// ItemStack = result, String = recipe
@@ -39,6 +43,11 @@ public class Alchemist extends CitizensNPC {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		// TODO open crafting GUI
+		if (!PermissionManager.generic(player,
+				"citizens.alchemist.use.interact")) {
+			Messaging.sendError(player, MessageUtils.noPermissionsMessage);
+			return;
+		}
+		InventoryUtils.showInventory(npc, player);
 	}
 }

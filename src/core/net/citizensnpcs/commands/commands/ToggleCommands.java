@@ -2,7 +2,8 @@ package net.citizensnpcs.commands.commands;
 
 import java.util.Map.Entry;
 
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.Citizens;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
@@ -67,7 +68,7 @@ public class ToggleCommands implements CommandHandler {
 	public static void toggle(CommandContext args, Player player, HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
 		if (!CitizensNPCManager.validType(type)) {
-			Messaging.sendError(player, "Invalid toggle type.");
+			Messaging.sendError(player, MessageUtils.invalidNPCTypeMessage);
 			return;
 		}
 		if (!PropertyManager.npcHasType(npc, type)) {
@@ -126,7 +127,7 @@ public class ToggleCommands implements CommandHandler {
 	 */
 	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
 		String toggle = type.getType();
-		if (!Permission.generic(player, "citizens.toggle." + toggle)) {
+		if (!PermissionManager.generic(player, "citizens.toggle." + toggle)) {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
 		}
@@ -166,6 +167,15 @@ public class ToggleCommands implements CommandHandler {
 			for (CitizensNPC type : npc.types()) {
 				toggleState(player, npc, type);
 			}
+		}
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("toggle.help");
+		PermissionManager.addPerm("admin.toggleall");
+		for (String type : Citizens.loadedTypes) {
+			PermissionManager.addPerm("toggle." + type);
 		}
 	}
 }

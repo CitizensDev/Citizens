@@ -2,7 +2,7 @@ package net.citizensnpcs.guards;
 
 import java.util.Set;
 
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -129,12 +129,12 @@ public class GuardCommands implements CommandHandler {
 
 		FlagType type = FlagType.PLAYER;
 		if (args.hasFlag('g')) {
-			if (!Permission.useSuperPerms()) {
+			if (!PermissionManager.useSuperPerms()) {
 				player.sendMessage(ChatColor.GRAY
 						+ "Group flags require bukkit's permission system to be used.");
 				return;
 			}
-			Group group = Permission.getGroup(name);
+			Group group = PermissionManager.getGroup(name);
 			if (group == null) {
 				player.sendMessage(ChatColor.GRAY + "Group not recognised.");
 				return;
@@ -241,5 +241,15 @@ public class GuardCommands implements CommandHandler {
 			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has stopped being aggressive.");
 		}
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("guard.use.help");
+		PermissionManager.addPerm("guard.modify.type");
+		PermissionManager.addPerm("guard.use.flags");
+		PermissionManager.addPerm("guard.modify.flags");
+		PermissionManager.addPerm("guard.modify.aggro");
+		PermissionManager.addPerm("guard.modify.radius");
 	}
 }

@@ -1,6 +1,6 @@
 package net.citizensnpcs.blacksmiths;
 
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
@@ -18,7 +18,7 @@ public class Blacksmith extends CitizensNPC {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (Permission.generic(player, "citizens.blacksmith.use.repair")) {
+		if (PermissionManager.generic(player, "citizens.blacksmith.use.repair")) {
 			String repairType = "";
 			if (BlacksmithManager.validateTool(player.getItemInHand())) {
 				repairType = "blacksmith-toolrepair";

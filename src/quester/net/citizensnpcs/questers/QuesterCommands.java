@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers;
 
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.questers.quests.QuestManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -77,5 +78,24 @@ public class QuesterCommands implements CommandHandler {
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
+	}
+
+	@Command(
+			aliases = "quests",
+			usage = "edit",
+			desc = "modify server quests",
+			modifiers = "edit",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.modify.questedit")
+	public static void edit(CommandContext args, Player player, HumanNPC npc) {
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("quester.use.help");
+		PermissionManager.addPerm("quester.modify.assignquest");
+		PermissionManager.addPerm("quester.modify.removequest");
+		PermissionManager.addPerm("quester.modify.questedit");
 	}
 }

@@ -1,14 +1,22 @@
 package net.citizensnpcs;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.citizensnpcs.commands.commands.BasicCommands;
+import net.citizensnpcs.commands.commands.ToggleCommands;
+import net.citizensnpcs.commands.commands.WaypointCommands;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.Messaging;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 
 import com.nijiko.permissions.Group;
@@ -17,11 +25,13 @@ import com.nijiko.permissions.User;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.platymuus.bukkit.permissions.PermissionsPlugin;
 
-public class Permission {
+public class PermissionManager {
 	private static boolean useSuperperms;
 	private static boolean permissionsEnabled = false;
 	private static PermissionHandler handler;
 	private static PermissionsPlugin superperms;
+
+	private static List<String> permissions = new ArrayList<String>();
 
 	private static boolean hasPermission(Player player, String string) {
 		return useSuperperms ? player.hasPermission(string) : handler.has(
@@ -36,6 +46,7 @@ public class Permission {
 				useSuperperms = true;
 				permissionsEnabled = true;
 				superperms = (PermissionsPlugin) test;
+				addPermissions();
 				Messaging.log("Permissions enabled.");
 			} else {
 				Messaging
@@ -141,5 +152,25 @@ public class Permission {
 
 	public static boolean useSuperPerms() {
 		return useSuperperms;
+	}
+
+	public static void addPerm(String perm) {
+		permissions.add(perm);
+	}
+
+	private static void addPermissions() {
+		new BasicCommands().addPermissions();
+		new ToggleCommands().addPermissions();
+		new WaypointCommands().addPermissions();
+		for (String loaded : Citizens.loadedTypes) {
+			CitizensNPC type = CitizensNPCManager.getType(loaded);
+			if (type != null) {
+				type.getCommands().addPermissions();
+			}
+		}
+		for (String permission : permissions) {
+			Bukkit.getServer().getPluginManager()
+					.addPermission(new Permission("citizens." + permission));
+		}
 	}
 }

@@ -1,7 +1,7 @@
 package net.citizensnpcs.wizards;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
@@ -296,7 +296,7 @@ public class Wizard extends CitizensNPC {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		if (Permission.generic(player, "citizens.wizard.use.interact")) {
+		if (PermissionManager.generic(player, "citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardInteractItem")) {
 				Wizard wizard = npc.getType("wizard");
@@ -341,7 +341,7 @@ public class Wizard extends CitizensNPC {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (Permission.generic(player, "citizens.wizard.use.interact")) {
+		if (PermissionManager.generic(player, "citizens.wizard.use.interact")) {
 			Wizard wizard = npc.getType("wizard");
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardInteractItem")) {

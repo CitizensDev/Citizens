@@ -1,5 +1,6 @@
 package net.citizensnpcs.healers;
 
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -99,5 +100,13 @@ public class HealerCommands implements CommandHandler {
 			player.sendMessage(ChatColor.GRAY
 					+ "Your server has not turned economy on for Citizens.");
 		}
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("healer.use.help");
+		PermissionManager.addPerm("healer.use.status");
+		PermissionManager.addPerm("healer.modify.levelup");
+		PermissionManager.addPerm("healer.use.heal");
 	}
 }

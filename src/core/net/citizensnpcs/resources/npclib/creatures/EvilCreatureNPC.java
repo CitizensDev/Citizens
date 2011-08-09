@@ -3,7 +3,7 @@ package net.citizensnpcs.resources.npclib.creatures;
 import java.util.Random;
 
 import net.citizensnpcs.CreatureTask;
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -61,7 +61,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onRightClick(Player player) {
-		if (!Permission.canCreate(player)) {
+		if (!PermissionManager.canCreate(player)) {
 			Messaging
 					.sendError(
 							player,

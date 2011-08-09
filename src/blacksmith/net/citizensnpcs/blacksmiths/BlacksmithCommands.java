@@ -1,5 +1,6 @@
 package net.citizensnpcs.blacksmiths;
 
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -76,5 +77,12 @@ public class BlacksmithCommands implements CommandHandler {
 			Messaging.sendError(player,
 					"This server is not using an economy system.");
 		}
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("blacksmith.use.help");
+		PermissionManager.addPerm("blacksmith.use.status");
+		PermissionManager.addPerm("blacksmith.use.repair");
 	}
 }

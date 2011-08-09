@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.quests.QuestManager.RewardType;
 
@@ -18,9 +18,9 @@ public class PermissionReward implements Reward {
 	@Override
 	public void grant(Player player) {
 		if (take)
-			Permission.givePermission(player, reward, true);
+			PermissionManager.givePermission(player, reward, true);
 		else
-			Permission.givePermission(player, reward, false);
+			PermissionManager.givePermission(player, reward, false);
 	}
 
 	@Override
@@ -40,6 +40,6 @@ public class PermissionReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take ? Permission.generic(player, reward) : true;
+		return take ? PermissionManager.generic(player, reward) : true;
 	}
 }

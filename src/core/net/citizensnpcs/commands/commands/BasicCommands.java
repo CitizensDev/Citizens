@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npcs.NPCDataManager;
@@ -236,7 +236,7 @@ public class BasicCommands implements CommandHandler {
 			min = 2)
 	@CommandPermissions("basic.create")
 	public static void create(CommandContext args, Player player, HumanNPC npc) {
-		if (!Permission.canCreate(player)) {
+		if (!PermissionManager.canCreate(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -345,7 +345,7 @@ public class BasicCommands implements CommandHandler {
 			max = 1)
 	@CommandPermissions("basic.modify.copy")
 	public static void copy(CommandContext args, Player player, HumanNPC npc) {
-		if (!Permission.canCreate(player)) {
+		if (!PermissionManager.canCreate(player)) {
 			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
@@ -369,7 +369,7 @@ public class BasicCommands implements CommandHandler {
 	@CommandPermissions("basic.modify.remove")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
-			if (Permission.generic(player, "citizens.admin.removeall")) {
+			if (PermissionManager.generic(player, "citizens.admin.removeall")) {
 				NPCManager.removeAll();
 				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
@@ -725,5 +725,36 @@ public class BasicCommands implements CommandHandler {
 			}
 			break;
 		}
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("admin.info");
+		PermissionManager.addPerm("admin.clean");
+		PermissionManager.addPerm("basic.use.help");
+		PermissionManager.addPerm("admin.save");
+		PermissionManager.addPerm("admin.debug");
+		PermissionManager.addPerm("admin.reload");
+		PermissionManager.addPerm("basic.modify.move");
+		PermissionManager.addPerm("basic.create");
+		PermissionManager.addPerm("basic.use.info");
+		PermissionManager.addPerm("basic.modify.moveto");
+		PermissionManager.addPerm("basic.modify.copy");
+		PermissionManager.addPerm("basic.modify.remove");
+		PermissionManager.addPerm("admin.removeall");
+		PermissionManager.addPerm("basic.modify.rename");
+		PermissionManager.addPerm("basic.modify.color");
+		PermissionManager.addPerm("basic.modify.addtext");
+		PermissionManager.addPerm("basic.modify.resettext");
+		PermissionManager.addPerm("basic.modify.settext");
+		PermissionManager.addPerm("basic.modify.item");
+		PermissionManager.addPerm("basic.modify.armor");
+		PermissionManager.addPerm("basic.use.teleport");
+		PermissionManager.addPerm("basic.modify.talkclose");
+		PermissionManager.addPerm("basic.modify.lookat");
+		PermissionManager.addPerm("basic.use.select");
+		PermissionManager.addPerm("basic.modify.setowner");
+		PermissionManager.addPerm("waypoints.edit");
+		PermissionManager.addPerm("basic.use.list");
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.events.NPCSpawnEvent;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.SettingsManager;
@@ -256,7 +256,7 @@ public class NPCManager {
 	 */
 	public static boolean validateOwnership(Player player, int UID,
 			boolean checkAdmin) {
-		return (checkAdmin && Permission.generic(player, "citizens.admin"))
+		return (checkAdmin && PermissionManager.generic(player, "citizens.admin"))
 				|| get(UID).getOwner().equals(player.getName());
 	}
 

@@ -2,7 +2,7 @@ package net.citizensnpcs.traders;
 
 import java.util.ArrayList;
 
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -65,7 +65,8 @@ public class TraderCommands implements CommandHandler {
 		}
 		switch (args.argsLength()) {
 		case 1:
-			if (Permission.generic(player, "citizens.trader.use.showmoney")) {
+			if (PermissionManager.generic(player,
+					"citizens.trader.use.showmoney")) {
 				player.sendMessage(StringUtils.wrap(npc.getName())
 						+ " has "
 						+ StringUtils.wrap(EconomyManager.format(npc
@@ -75,7 +76,8 @@ public class TraderCommands implements CommandHandler {
 			}
 			break;
 		case 3:
-			if (!Permission.generic(player, "citizens.trader.modify.money")) {
+			if (!PermissionManager.generic(player,
+					"citizens.trader.modify.money")) {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 				return;
 			}
@@ -429,5 +431,17 @@ public class TraderCommands implements CommandHandler {
 		} catch (NumberFormatException ex) {
 			return null;
 		}
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPerm("trader.use.help");
+		PermissionManager.addPerm("trader.use.showmoney");
+		PermissionManager.addPerm("trader.modify.money");
+		PermissionManager.addPerm("trader.use.list");
+		PermissionManager.addPerm("trader.modify.unlimited");
+		PermissionManager.addPerm("trader.modify.clearstock");
+		PermissionManager.addPerm("trader.modify.stock");
+		PermissionManager.addPerm("trader.use.trade");
 	}
 }

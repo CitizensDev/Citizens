@@ -1,7 +1,7 @@
 package net.citizensnpcs.healers;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
@@ -68,7 +68,7 @@ public class Healer extends CitizensNPC {
 		Healer healer = npc.getType("healer");
 		int playerHealth = player.getHealth();
 		int healerHealth = healer.getHealth();
-		if (Permission.generic(player, "citizens.healer.use.heal")) {
+		if (PermissionManager.generic(player, "citizens.healer.use.heal")) {
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("HealerTakeHealthItem")) {
 				if (playerHealth < 20) {

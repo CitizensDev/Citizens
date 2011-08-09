@@ -86,7 +86,7 @@ public class Citizens extends JavaPlugin {
 		new PlayerListen().registerEvents();
 
 		// Initialize Permissions.
-		Permission.initialize(Bukkit.getServer());
+		PermissionManager.initialize(Bukkit.getServer());
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,

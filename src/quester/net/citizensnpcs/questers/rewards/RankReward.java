@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.Permission;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.quests.QuestManager.RewardType;
 
@@ -16,7 +16,7 @@ public class RankReward implements Reward {
 	@Override
 	public void grant(Player player) {
 		// TODO - look into 3.0 API and finish grantRank()
-		Permission.grantRank(player, reward);
+		PermissionManager.grantRank(player, reward);
 	}
 
 	@Override
