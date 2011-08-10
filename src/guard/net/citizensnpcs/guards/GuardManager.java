@@ -55,6 +55,9 @@ public class GuardManager {
 				loc = npc.getNPCData().getLocation();
 			}
 		}
+		if (npc.getLocation().distance(loc) > SettingsManager
+				.getDouble("PathfindingRange"))
+			npc.teleport(loc);
 		PathUtils.createPath(npc, loc, -1, -1,
 				SettingsManager.getDouble("PathfindingRange"));
 	}

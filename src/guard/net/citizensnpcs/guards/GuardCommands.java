@@ -114,14 +114,22 @@ public class GuardCommands implements CommandHandler {
 			++flagOffset;
 			priority = args.getInteger(1);
 		}
-		boolean isSafe = args.getString(flagOffset).charAt(0) == '-';
 		if (args.hasFlag('a')) {
-			guard.getFlags().addToAll(args.getFlags(),
-					FlagInfo.newInstance("all", priority, isSafe));
+			guard.getFlags().addToAll(
+					args.getFlags(),
+					FlagInfo.newInstance(
+							"all",
+							priority,
+							args.argsLength() > flagOffset ? args.getString(
+									flagOffset).charAt(0) == '-' : false));
+			player.sendMessage(ChatColor.GREEN
+					+ "Added specified flags to specified types.");
+			return;
 		} else if (args.argsLength() == 1 || flagOffset == 2) {
 			player.sendMessage(ChatColor.GRAY + "No name given.");
 			return;
 		}
+		boolean isSafe = args.getString(flagOffset).charAt(0) == '-';
 
 		String name = isSafe ? args.getJoinedStrings(flagOffset).replaceFirst(
 				"-", "") : args.getJoinedStrings(flagOffset);

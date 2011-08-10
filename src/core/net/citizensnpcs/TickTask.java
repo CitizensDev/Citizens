@@ -41,6 +41,7 @@ public class TickTask implements Runnable {
 								p.getLocation(),
 								SettingsManager.getDouble("NPCRange"))) {
 							if (npc.getHandle().pathFinished()
+									&& !npc.getHandle().hasTarget()
 									&& npc.getNPCData().isLookClose()) {
 								NPCManager.facePlayer(npc, p);
 							}

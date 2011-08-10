@@ -102,22 +102,18 @@ public class PathNPC extends EntityPlayer {
 				resetTarget();
 			}
 			if (targetEntity != null && targetAggro) {
-				double distanceToEntity = distance(this, this.targetEntity);
 				// If a direct line of sight exists.
 				if (this.e(this.targetEntity)) {
-					if (isWithinAttackRange(this.targetEntity, distanceToEntity)) {
+					if (isWithinAttackRange(
+							this.targetEntity,
+							this.bukkitEntity.getLocation().distance(
+									this.targetEntity.getBukkitEntity()
+											.getLocation()))) {
 						this.attackEntity(this.targetEntity);
 					}
 				}
 			}
 		}
-	}
-
-	private double distance(Entity first, Entity second) {
-		double diffX = first.locX - second.locX;
-		double diffY = first.locY - second.locY;
-		double diffZ = first.locZ - second.locZ;
-		return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
 	}
 
 	private void updatePathingState() {
@@ -140,8 +136,8 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getPathVector() {
 		Vec3D vec3d = path.a(this);
-		double length = (this.length * 1.85F);
-		// 2.0 -> 1.85 - closer to destination before stopping.
+		double length = (this.length * 1.82F);
+		// 2.0 -> 1.82 - closer to destination before stopping.
 		while (vec3d != null
 				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
 			this.path.a(); // Increment path index.

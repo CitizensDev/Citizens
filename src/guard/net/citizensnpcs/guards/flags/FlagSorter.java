@@ -57,6 +57,8 @@ public class FlagSorter {
 		@Override
 		public boolean apply(Group group) {
 			String name = group.getName().toLowerCase();
+			if (!getByType(GROUPS).containsKey(name))
+				name = "all";
 			return getByType(GROUPS).containsKey(name)
 					&& !getByType(GROUPS).get(name).isSafe();
 		}
@@ -103,8 +105,8 @@ public class FlagSorter {
 					}
 					List<String> transformed = ImmutableList.copyOf(Iterables
 							.transform(Iterables.filter(
-									PermissionManager.getGroups(player), groupSorter),
-									groupToString));
+									PermissionManager.getGroups(player),
+									groupSorter), groupToString));
 					TreeMultiset<FlagInfo> sorted = getSortedFlags(
 							getByType(GROUPS), transformed);
 					if (sorted.size() > 0) {
@@ -125,27 +127,27 @@ public class FlagSorter {
 			}
 		}
 
-		private FlagInfo get(Map<String, FlagInfo> source, String name) {
-			if (!source.containsKey(name))
-				return source.get("all");
-			return source.get(name);
-		}
 	};
+
+	private FlagInfo get(Map<String, FlagInfo> source, String name) {
+		if (!source.containsKey(name))
+			name = "all";
+		return source.get(name);
+	}
 
 	List<LivingEntity> getPossible(Iterable<LivingEntity> toProcess) {
 		List<LivingEntity> processed = Lists.newArrayList();
 		FlagInfo retrieved = null;
 		for (LivingEntity entity : toProcess) {
 			if (CreatureTask.getCreature(entity) != null) {
-				retrieved = getByType(MOBS).get(
-						StringUtils.format(CreatureTask.getCreature(entity)
-								.getType(), false));
+				retrieved = get(getByType(MOBS), StringUtils.format(
+						CreatureTask.getCreature(entity).getType(), false));
 			} else if (entity instanceof Player) {
 				String name = ((Player) entity).getName().toLowerCase();
-				retrieved = getByType(PLAYERS).get(name) == null ? groupMap
-						.get(name) : getByType(PLAYERS).get(name);
+				retrieved = get(getByType(PLAYERS), name) == null ? groupMap
+						.get(name) : get(getByType(PLAYERS), name);
 			} else {
-				retrieved = getByType(MOBS).get(
+				retrieved = get(getByType(MOBS),
 						EntityUtils.getMonsterName(entity));
 			}
 			if (retrieved.priority() == lowestFound) {
@@ -190,8 +192,8 @@ public class FlagSorter {
 	}
 
 	static boolean isTargetable(Map<String, FlagInfo> search, String key) {
-		if (search.containsKey("all")) {
-			return !search.get("all").isSafe();
+		if (!search.containsKey(key)) {
+			key = "all";
 		}
 		return search.containsKey(key) && !search.get(key).isSafe();
 	}

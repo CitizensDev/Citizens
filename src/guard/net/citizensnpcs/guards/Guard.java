@@ -50,9 +50,9 @@ public class Guard extends CitizensNPC {
 	}
 
 	/**
-	 * Get whether a guard NPC is a bouncer
+	 * Set whether a guard NPC is a bodyguard
 	 * 
-	 * @return
+	 * @param state
 	 */
 	public boolean isBouncer() {
 		return guardType == GuardType.BOUNCER;

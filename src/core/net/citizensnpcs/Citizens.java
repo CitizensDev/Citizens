@@ -95,6 +95,9 @@ public class Citizens extends JavaPlugin {
 				SettingsManager.getInt("CreatureNPCSpawnDelay"));
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new CreatureTask.CreatureTick(), 0, 1);
+		getServer().getScheduler().scheduleSyncRepeatingTask(this,
+				new TickTask(), SettingsManager.getInt("TickDelay"),
+				SettingsManager.getInt("TickDelay"));
 
 		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
