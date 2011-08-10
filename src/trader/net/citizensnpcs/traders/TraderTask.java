@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.traders.TraderManager.Mode;
+import net.citizensnpcs.traders.TraderManager.TraderMode;
+import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 import net.minecraft.server.EntityPlayer;
@@ -27,7 +28,7 @@ public class TraderTask implements Runnable {
 	private int prevPlayerSlot = -1;
 	private final PlayerInventory previousTraderInv;
 	private final PlayerInventory previousPlayerInv;
-	private final Mode mode;
+	private final TraderMode mode;
 	private boolean stop;
 	private boolean said;
 
@@ -36,10 +37,9 @@ public class TraderTask implements Runnable {
 	 * 
 	 * @param npc
 	 * @param player
-	 * @param plugin
 	 * @param mode
 	 */
-	public TraderTask(HumanNPC npc, Player player, Mode mode) {
+	public TraderTask(HumanNPC npc, Player player, TraderMode mode) {
 		this.npc = npc;
 		this.player = (CraftPlayer) player;
 		// Create the inventory objects
@@ -66,7 +66,7 @@ public class TraderTask implements Runnable {
 			kill();
 			return;
 		}
-		if (mode == Mode.STOCK) {
+		if (mode == TraderMode.STOCK) {
 			return;
 		}
 		stop = true;
@@ -162,7 +162,7 @@ public class TraderTask implements Runnable {
 		ItemStack buying = stockable.getStocking().clone();
 		// TODO replace Payment code
 		// EconomyManager.pay(new Payment(stockable.getPrice()), player, -1);
-		if (mode != Mode.INFINITE) {
+		if (mode != TraderMode.INFINITE) {
 			// EconomyManager.pay(new Payment(buying), npc, slot);
 		}
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
@@ -174,7 +174,7 @@ public class TraderTask implements Runnable {
 					+ MessageUtils.getStackString(buying, ChatColor.RED) + ".");
 			return;
 		}
-		if (!stockable.isEconPlugin() && mode != Mode.INFINITE) {
+		if (!stockable.isEconPlugin() && mode != TraderMode.INFINITE) {
 			ItemStack temp = stockable.getPrice().getItemStack().clone();
 			unbought = npc.getInventory().addItem(temp);
 			if (unbought.size() >= 1) {
@@ -213,12 +213,12 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		ItemStack selling = stockable.getStocking().clone();
-		if (mode != Mode.INFINITE) {
+		if (mode != TraderMode.INFINITE) {
 			// EconomyManager.pay(new Payment(stockable.getPrice()), npc, -1);
 		}
 		// EconomyManager.pay(new Payment(selling), player, slot);
 		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
-		if (mode != Mode.INFINITE) {
+		if (mode != TraderMode.INFINITE) {
 			unsold = npc.getInventory().addItem(selling);
 		}
 		if (unsold.size() >= 1) {
@@ -296,7 +296,7 @@ public class TraderTask implements Runnable {
 			boolean selling) {
 		// durability needs to be reset to 0 for tools / weapons / armor
 		short durability = item.getDurability();
-		if (isTool(item.getTypeId())) {
+		if (InventoryUtils.isTool(item) || InventoryUtils.isArmor(item)) {
 			durability = 0;
 		}
 		Trader trader = npc.getType("trader");
@@ -365,17 +365,5 @@ public class TraderTask implements Runnable {
 		target.setChestplate(cloneItemStack(source.getChestplate()));
 		target.setLeggings(cloneItemStack(source.getLeggings()));
 		target.setBoots(cloneItemStack(source.getBoots()));
-	}
-
-	/**
-	 * Determines if the passed itemId is a tool, weapon, or armor. (ie. has
-	 * durability)
-	 * 
-	 * @param itemId
-	 */
-	private boolean isTool(int id) {
-		return ((id >= 256 && id <= 259) || (id >= 267 && id <= 279)
-				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
-				|| (id >= 298 && id <= 317) || id == 346);
 	}
 }

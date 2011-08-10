@@ -5,6 +5,7 @@ import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 
 import org.bukkit.entity.Player;
@@ -20,9 +21,9 @@ public class Blacksmith extends CitizensNPC {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (PermissionManager.generic(player, "citizens.blacksmith.use.repair")) {
 			String repairType = "";
-			if (BlacksmithManager.validateTool(player.getItemInHand())) {
+			if (InventoryUtils.isTool(player.getItemInHand())) {
 				repairType = "blacksmith-toolrepair";
-			} else if (BlacksmithManager.validateArmor(player.getItemInHand())) {
+			} else if (InventoryUtils.isArmor(player.getItemInHand())) {
 				repairType = "blacksmith-armorrepair";
 			}
 			if (!repairType.isEmpty()) {

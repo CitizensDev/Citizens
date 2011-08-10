@@ -14,30 +14,6 @@ import org.bukkit.inventory.ItemStack;
 public class BlacksmithManager {
 
 	/**
-	 * Validate that an item has a durability and can be repaired
-	 * 
-	 * @param item
-	 * @return
-	 */
-	public static boolean validateTool(ItemStack item) {
-		int id = item.getTypeId();
-		return (id >= 256 && id <= 259) || (id >= 267 && id <= 279)
-				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
-				|| id == 346 || id == 359;
-	}
-
-	/**
-	 * Validate that the item to repair is armor
-	 * 
-	 * @param armor
-	 * @return
-	 */
-	public static boolean validateArmor(ItemStack armor) {
-		int id = armor.getTypeId();
-		return id >= 298 && id <= 317;
-	}
-
-	/**
 	 * Purchase an item repair
 	 * 
 	 * @param player

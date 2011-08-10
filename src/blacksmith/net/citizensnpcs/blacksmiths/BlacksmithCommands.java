@@ -10,6 +10,7 @@ import net.citizensnpcs.resources.sk89q.CommandPermissions;
 import net.citizensnpcs.resources.sk89q.CommandRequirements;
 import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.HelpUtils;
+import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
@@ -49,9 +50,9 @@ public class BlacksmithCommands implements CommandHandler {
 	public static void cost(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
 		String repairType = "";
-		if (BlacksmithManager.validateArmor(item)) {
+		if (InventoryUtils.isArmor(item)) {
 			repairType = "armorrepair";
-		} else if (BlacksmithManager.validateTool(item)) {
+		} else if (InventoryUtils.isTool(item)) {
 			repairType = "toolrepair";
 		}
 		if (repairType.isEmpty()) {

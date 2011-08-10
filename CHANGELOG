@@ -76,3 +76,4 @@ By fullwall, aPunch, and NeonMaster
  with the interact-item executes that command
 -added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs"
 -added 'evil.spawn.chance' node in mobs.yml
+-fixed compatibility with Bukkit permissions

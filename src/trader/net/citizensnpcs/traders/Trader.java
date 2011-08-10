@@ -10,7 +10,7 @@ import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.traders.TraderManager.Mode;
+import net.citizensnpcs.traders.TraderManager.TraderMode;
 import net.citizensnpcs.utils.InventoryUtils;
 
 import org.bukkit.Bukkit;
@@ -134,19 +134,19 @@ public class Trader extends CitizensNPC {
 	public void onRightClick(Player player, HumanNPC npc) {
 		Trader trader = npc.getType("trader");
 		if (trader.isFree()) {
-			Mode mode;
+			TraderMode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID(), false)) {
 				if (!PermissionManager.generic(player, "citizens.trader.modify.stock")) {
 					return;
 				}
-				mode = Mode.STOCK;
+				mode = TraderMode.STOCK;
 			} else if (trader.isUnlimited()) {
-				mode = Mode.INFINITE;
+				mode = TraderMode.INFINITE;
 				if (!PermissionManager.generic(player, "citizens.trader.use.trade")) {
 					return;
 				}
 			} else {
-				mode = Mode.NORMAL;
+				mode = TraderMode.NORMAL;
 				if (!PermissionManager.generic(player, "citizens.trader.use.trade")) {
 					return;
 				}
