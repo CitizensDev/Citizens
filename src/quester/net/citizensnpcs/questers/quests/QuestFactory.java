@@ -103,8 +103,9 @@ public class QuestFactory {
 			if (quests.pathExists(path)) {
 				for (Object step : quests.getKeys(path)) {
 					QuestStep tempStep = new QuestStep();
+					tempPath = questName + ".objectives." + step;
 					for (Object objective : quests.getKeys(path + "." + step)) {
-						path = tempPath + objective;
+						path = tempPath + "." + objective;
 						QuestType type = QuestType.getType(quests
 								.getString(path + ".type"));
 						if (type == null) {
