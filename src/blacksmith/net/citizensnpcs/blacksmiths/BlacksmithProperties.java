@@ -6,7 +6,7 @@ import java.util.List;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.Properties;
-import net.citizensnpcs.properties.SettingsManager.SettingsType;
+import net.citizensnpcs.SettingsManager.SettingsType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class BlacksmithProperties extends PropertyManager implements Properties {
