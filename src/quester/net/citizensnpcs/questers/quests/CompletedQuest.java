@@ -1,4 +1,5 @@
-package net.citizensnpcs.questers;
+package net.citizensnpcs.questers.quests;
+
 
 public class CompletedQuest {
 	private final String npcName;

@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 import net.citizensnpcs.misc.ActionManager;
 import net.citizensnpcs.misc.ActionManager.CachedAction;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
 import net.citizensnpcs.utils.LocationUtils;

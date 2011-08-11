@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Map;
 
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;

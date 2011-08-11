@@ -1,10 +1,9 @@
-package net.citizensnpcs.questers;
+package net.citizensnpcs.questers.quests;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.questers.objectives.Objectives;
-import net.citizensnpcs.questers.objectives.QuestStep;
+import net.citizensnpcs.questers.Reward;
 
 public class Quest {
 	private String questName = "";

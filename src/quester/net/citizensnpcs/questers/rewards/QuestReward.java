@@ -41,4 +41,9 @@ public class QuestReward implements Reward {
 	public boolean canTake(Player player) {
 		return true;
 	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		return "";
+	}
 }

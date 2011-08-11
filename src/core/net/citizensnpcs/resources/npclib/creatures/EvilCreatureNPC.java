@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.citizensnpcs.CreatureTask;
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;

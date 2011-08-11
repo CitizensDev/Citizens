@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.npcs.NPCData;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.Properties;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;

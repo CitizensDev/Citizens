@@ -1,6 +1,7 @@
 package net.citizensnpcs.questers;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
+import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.QuestFactory;
 
 public class QuestProperties {

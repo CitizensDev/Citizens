@@ -1,22 +1,18 @@
 package net.citizensnpcs.questers.quests;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
-import net.citizensnpcs.questers.Quest;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.objectives.Objective;
-import net.citizensnpcs.questers.objectives.Objectives;
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
-import net.citizensnpcs.questers.objectives.QuestStep;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestManager.QuestType;
 import net.citizensnpcs.questers.quests.QuestManager.RewardType;
-import net.citizensnpcs.questers.questtypes.BuildQuest;
-import net.citizensnpcs.questers.questtypes.CollectQuest;
-import net.citizensnpcs.questers.questtypes.CombatQuest;
-import net.citizensnpcs.questers.questtypes.DeliveryQuest;
-import net.citizensnpcs.questers.questtypes.DestroyQuest;
-import net.citizensnpcs.questers.questtypes.DistanceQuest;
-import net.citizensnpcs.questers.questtypes.HuntQuest;
-import net.citizensnpcs.questers.questtypes.LocationQuest;
+import net.citizensnpcs.questers.quests.types.BuildQuest;
+import net.citizensnpcs.questers.quests.types.CollectQuest;
+import net.citizensnpcs.questers.quests.types.CombatQuest;
+import net.citizensnpcs.questers.quests.types.DeliveryQuest;
+import net.citizensnpcs.questers.quests.types.DestroyQuest;
+import net.citizensnpcs.questers.quests.types.DistanceQuest;
+import net.citizensnpcs.questers.quests.types.HuntQuest;
+import net.citizensnpcs.questers.quests.types.LocationQuest;
 import net.citizensnpcs.questers.rewards.EconpluginReward;
 import net.citizensnpcs.questers.rewards.HealthReward;
 import net.citizensnpcs.questers.rewards.ItemReward;
@@ -24,10 +20,9 @@ import net.citizensnpcs.questers.rewards.PermissionReward;
 import net.citizensnpcs.questers.rewards.QuestReward;
 import net.citizensnpcs.questers.rewards.RankReward;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -118,11 +113,11 @@ public class QuestFactory {
 									+ ") - incorrect type specified.");
 							continue;
 						}
-						Objective obj = new Objective(type);
+						Objective.Builder obj = new Objective.Builder(type);
 						if (quests.pathExists(path + ".amount"))
-							obj.setAmount(quests.getInt(path + ".amount"));
+							obj.amount(quests.getInt(path + ".amount"));
 						if (quests.pathExists(path + ".npcdestination"))
-							obj.setDestination(quests.getInt(path
+							obj.destination(quests.getInt(path
 									+ ".npcdestination"));
 						if (quests.pathExists(path + ".item")) {
 							int id = quests.getInt(path + ".item.id");
@@ -133,31 +128,21 @@ public class QuestFactory {
 										.getInt(path + ".item.data");
 							ItemStack stack = new ItemStack(id, amount);
 							stack.setData(new MaterialData(id, data));
-							obj.setItem(stack);
+							obj.item(stack);
 						}
 						if (quests.pathExists(path + ".location")) {
-							String world = quests.getString(path
-									+ ".location.world");
-							double x = quests.getDouble(path + ".location.x");
-							double y = quests.getDouble(path + ".location.y");
-							double z = quests.getDouble(path + ".location.z");
-							float yaw = (float) quests.getDouble(path
-									+ ".location.yaw");
-							float pitch = (float) quests.getDouble(path
-									+ ".location.pitch");
-							Location loc = new Location(Bukkit.getServer()
-									.getWorld(world), x, y, z, yaw, pitch);
-							obj.setLocation(loc);
+							obj.location(LocationUtils.loadLocation(quests,
+									path, false));
 						}
 						if (quests.pathExists(path + ".message")) {
-							obj.setMessage(quests.getString(path + ".message"));
+							obj.message(quests.getString(path + ".message"));
 						}
 						if (quests.pathExists(path + ".materialid")) {
 							if (quests.getInt(path + ".materialid") != 0)
-								obj.setMaterial(Material.getMaterial(quests
+								obj.material(Material.getMaterial(quests
 										.getInt(path + ".materialid")));
 						}
-						tempStep.add(obj);
+						tempStep.add(obj.build());
 					}
 					objectives.add(tempStep);
 				}
@@ -239,14 +224,8 @@ public class QuestFactory {
 									.getData());
 				}
 				if (objective.getLocation() != null) {
-					Location loc = objective.getLocation();
-					quests.setString(path + ".location.world", loc.getWorld()
-							.getName());
-					quests.setDouble(path + ".location.x", loc.getX());
-					quests.setDouble(path + ".location.y", loc.getY());
-					quests.setDouble(path + ".location.z", loc.getZ());
-					quests.setDouble(path + ".location.yaw", loc.getYaw());
-					quests.setDouble(path + ".location.pitch", loc.getPitch());
+					LocationUtils.saveLocation(quests, objective.getLocation(),
+							path, false);
 				}
 				if (objective.getMaterial() != null) {
 					quests.setInt(path + ".materialid", objective.getMaterial()

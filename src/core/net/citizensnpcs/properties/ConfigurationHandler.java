@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.util.config.Configuration;

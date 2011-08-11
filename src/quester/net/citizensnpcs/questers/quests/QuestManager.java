@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.questers.PlayerProfile;
-import net.citizensnpcs.questers.Quest;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;

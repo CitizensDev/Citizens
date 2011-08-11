@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.citizensnpcs.SettingsManager.SettingsType;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.SettingsManager.SettingsType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 

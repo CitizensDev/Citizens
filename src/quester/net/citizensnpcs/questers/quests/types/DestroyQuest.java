@@ -1,25 +1,25 @@
-package net.citizensnpcs.questers.questtypes;
+package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestIncrementer;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 
-public class BuildQuest extends QuestIncrementer {
-	public BuildQuest(HumanNPC npc, Player player, String questName,
+public class DestroyQuest extends QuestIncrementer {
+	public DestroyQuest(HumanNPC npc, Player player, String questName,
 			ObjectiveCycler objectives) {
 		super(npc, player, questName, objectives);
 	}
 
 	@Override
 	public void updateProgress(Event event) {
-		if (event instanceof BlockPlaceEvent) {
-			if (((BlockPlaceEvent) event).getBlockPlaced().getType() == this.objective
-					.getMaterial()) {
+		if (event instanceof BlockBreakEvent) {
+			BlockBreakEvent ev = (BlockBreakEvent) event;
+			if (ev.getBlock().getType() == this.objective.getMaterial()) {
 				this.getProgress().incrementCompleted(1);
 			}
 		}
@@ -32,7 +32,6 @@ public class BuildQuest extends QuestIncrementer {
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.BLOCK_PLACE };
+		return new Type[] { Type.BLOCK_BREAK };
 	}
-
 }

@@ -5,9 +5,9 @@ import java.util.Map;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.events.NPCSpawnEvent;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCList;
 import net.citizensnpcs.resources.npclib.NPCSpawner;

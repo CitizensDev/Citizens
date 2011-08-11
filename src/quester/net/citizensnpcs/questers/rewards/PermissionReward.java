@@ -4,6 +4,7 @@ import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.quests.QuestManager.RewardType;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class PermissionReward implements Reward {
@@ -41,5 +42,10 @@ public class PermissionReward implements Reward {
 	@Override
 	public boolean canTake(Player player) {
 		return take ? PermissionManager.generic(player, reward) : true;
+	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		return ChatColor.GRAY + "You don't have the necessary permissions.";
 	}
 }

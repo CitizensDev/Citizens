@@ -1,4 +1,4 @@
-package net.citizensnpcs.questers.objectives;
+package net.citizensnpcs.questers.quests;
 
 import java.util.ArrayDeque;
 import java.util.Collections;

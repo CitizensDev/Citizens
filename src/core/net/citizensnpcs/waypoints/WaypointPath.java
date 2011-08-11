@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
 

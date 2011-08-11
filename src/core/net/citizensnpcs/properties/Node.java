@@ -1,6 +1,6 @@
 package net.citizensnpcs.properties;
 
-import net.citizensnpcs.properties.SettingsManager.SettingsType;
+import net.citizensnpcs.SettingsManager.SettingsType;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
 public class Node {

@@ -3,7 +3,9 @@ package net.citizensnpcs.questers.rewards;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.quests.QuestManager.RewardType;
+import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class EconpluginReward implements Reward {
@@ -46,5 +48,15 @@ public class EconpluginReward implements Reward {
 	public boolean canTake(Player player) {
 		return take ? EconomyManager.getBalance(player.getName()) - reward >= 0
 				: true;
+	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		return ChatColor.GRAY
+				+ "You need "
+				+ StringUtils.wrap(
+						EconomyManager.format(EconomyManager.getBalance(player
+								.getName()) - reward), ChatColor.GRAY)
+				+ " more.";
 	}
 }

@@ -1,7 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 
 import org.bukkit.ChatColor;
 

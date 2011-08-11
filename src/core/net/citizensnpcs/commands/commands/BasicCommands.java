@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.CraftNPC;
 import net.citizensnpcs.resources.npclib.HumanNPC;

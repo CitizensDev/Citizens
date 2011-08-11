@@ -1,7 +1,7 @@
 package net.citizensnpcs.wizards;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;

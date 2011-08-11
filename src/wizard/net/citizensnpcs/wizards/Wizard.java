@@ -2,10 +2,10 @@ package net.citizensnpcs.wizards;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.properties.Properties;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;

@@ -1,7 +1,7 @@
-package net.citizensnpcs.questers.questtypes;
+package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestIncrementer;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
 

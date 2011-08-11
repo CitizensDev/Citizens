@@ -1,6 +1,6 @@
 package net.citizensnpcs.utils;
 
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Location;

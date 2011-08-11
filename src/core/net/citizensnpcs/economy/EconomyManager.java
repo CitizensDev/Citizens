@@ -1,7 +1,7 @@
 package net.citizensnpcs.economy;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

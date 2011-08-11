@@ -1,8 +1,8 @@
-package net.citizensnpcs.questers.questtypes;
+package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.events.NPCTargetEvent;
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestIncrementer;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package net.citizensnpcs.questers;
+package net.citizensnpcs.questers.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.listeners.Listener;

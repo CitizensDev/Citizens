@@ -1,6 +1,6 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 
 public enum CreatureNPCType {
 	EVIL(EvilCreatureNPC.class, SettingsManager.getInt("MaxEvils"),

@@ -1,19 +1,16 @@
-package net.citizensnpcs.questers.questtypes;
+package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestIncrementer;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-
-public class HuntQuest extends QuestIncrementer {
-	public HuntQuest(HumanNPC npc, Player player, String questName,
+public class CombatQuest extends QuestIncrementer {
+	public CombatQuest(HumanNPC npc, Player player, String questName,
 			ObjectiveCycler objectives) {
 		super(npc, player, questName, objectives);
 	}
@@ -22,8 +19,7 @@ public class HuntQuest extends QuestIncrementer {
 	public void updateProgress(Event event) {
 		if (event instanceof EntityDeathEvent) {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
-			if (ev.getEntity() instanceof Monster
-					|| ev.getEntity() instanceof Creature) {
+			if (ev.getEntity() instanceof Player) {
 				this.getProgress().incrementCompleted(1);
 			}
 		}

@@ -2,12 +2,12 @@ package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.CreatureTask;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.events.NPCDisplayTextEvent;
 import net.citizensnpcs.events.NPCRightClickEvent;
 import net.citizensnpcs.events.NPCTargetEvent;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
