@@ -144,7 +144,7 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new QuesterProperties();
+		return QuesterProperties.INSTANCE;
 	}
 
 	@Override

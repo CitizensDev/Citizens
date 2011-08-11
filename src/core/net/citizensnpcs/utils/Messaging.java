@@ -3,7 +3,7 @@ package net.citizensnpcs.utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.citizensnpcs.properties.SettingsManager;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;

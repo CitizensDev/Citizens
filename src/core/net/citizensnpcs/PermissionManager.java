@@ -9,7 +9,6 @@ import net.citizensnpcs.commands.commands.ToggleCommands;
 import net.citizensnpcs.commands.commands.WaypointCommands;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.Messaging;
 

@@ -24,7 +24,6 @@ import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.register.payment.Method;

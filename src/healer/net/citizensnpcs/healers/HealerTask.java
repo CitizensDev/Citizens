@@ -2,8 +2,8 @@ package net.citizensnpcs.healers;
 
 import java.util.Map.Entry;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class HealerTask implements Runnable {

@@ -1,6 +1,7 @@
 package net.citizensnpcs.guards;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.GuardManager.GuardType;
@@ -9,7 +10,6 @@ import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.Properties;
-import net.citizensnpcs.properties.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;

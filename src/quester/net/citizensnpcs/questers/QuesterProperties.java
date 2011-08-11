@@ -8,6 +8,12 @@ import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class QuesterProperties extends PropertyManager implements Properties {
+	public static final QuesterProperties INSTANCE = new QuesterProperties();
+
+	private QuesterProperties() {
+
+	}
+
 	private static final String isQuester = ".quester.toggle";
 	private static final String quests = ".quester.quests";
 
