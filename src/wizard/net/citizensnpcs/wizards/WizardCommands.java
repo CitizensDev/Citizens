@@ -12,13 +12,14 @@ import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.wizards.WizardManager.WizardMode;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandRequirements(
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "wizard")
-public class WizardCommands implements CommandHandler {
+public class WizardCommands extends CommandHandler {
 
 	@CommandRequirements()
 	@Command(
@@ -29,9 +30,9 @@ public class WizardCommands implements CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("wizard.use.help")
-	public static void wizardHelp(CommandContext args, Player player,
+	public static void wizardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendWizardHelp(player);
+		HelpUtils.sendHelp((Wizard) npc.getType("wizard"), sender, 1);
 	}
 
 	@Command(
@@ -201,5 +202,25 @@ public class WizardCommands implements CommandHandler {
 		PermissionManager.addPerm("wizard.modify.unlimited");
 		PermissionManager.addPerm("wizard.modify.command");
 		PermissionManager.addPerm("wizard.use.interact");
+	}
+
+	@Override
+	public void sendHelp(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Wizard", 1, 1);
+		HelpUtils.format(sender, "wizard", "locations",
+				"view the tp locations of a wizard");
+		HelpUtils.format(sender, "wizard", "addloc [name]",
+				"add a tp location to the wizard");
+		HelpUtils.format(sender, "wizard", "removeloc [id]",
+				"remove the tp location");
+		HelpUtils.format(sender, "wizard", "mode [mode]",
+				"change the mode of a wizard");
+		HelpUtils.format(sender, "wizard", "status",
+				"display the status of a wizard");
+		HelpUtils.format(sender, "wizard", "unlimited",
+				"toggle a wizard's mana as unlimited");
+		HelpUtils.format(sender, "wizard", "command [command] (args)",
+				"set a wizard's command");
+		HelpUtils.footer(sender);
 	}
 }

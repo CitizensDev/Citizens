@@ -28,7 +28,7 @@ import com.platymuus.bukkit.permissions.Group;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "guard")
-public class GuardCommands implements CommandHandler {
+public class GuardCommands extends CommandHandler {
 
 	@CommandRequirements()
 	@ServerCommand()
@@ -42,7 +42,7 @@ public class GuardCommands implements CommandHandler {
 	@CommandPermissions("guard.use.help")
 	public static void guardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendGuardHelp(sender);
+		HelpUtils.sendHelp((Guard) npc.getType("guard"), sender, 1);
 	}
 
 	@Command(
@@ -259,5 +259,20 @@ public class GuardCommands implements CommandHandler {
 		PermissionManager.addPerm("guard.modify.flags");
 		PermissionManager.addPerm("guard.modify.aggro");
 		PermissionManager.addPerm("guard.modify.radius");
+	}
+
+	@Override
+	public void sendHelp(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Guard", 1, 1);
+		HelpUtils.format(sender, "guard", "[type]",
+				"toggle the type of guard that an NPC is");
+		HelpUtils.format(sender, "guard", "flags", "view a guard's flags");
+		HelpUtils.format(sender, "guard",
+				"addflag (-i [priority]) [target] (-a,g,m,p)",
+				"add a flag to a guard");
+		HelpUtils.format(sender, "guard", "radius [amount]",
+				"set the radius of a bouncer's zone");
+		HelpUtils.format(sender, "guard", "aggro", "toggle aggro");
+		HelpUtils.footer(sender);
 	}
 }

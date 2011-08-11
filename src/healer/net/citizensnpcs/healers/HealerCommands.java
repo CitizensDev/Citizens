@@ -13,13 +13,14 @@ import net.citizensnpcs.utils.HelpUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandRequirements(
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "healer")
-public class HealerCommands implements CommandHandler {
+public class HealerCommands extends CommandHandler {
 
 	@CommandRequirements()
 	@Command(
@@ -30,9 +31,9 @@ public class HealerCommands implements CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("healer.use.help")
-	public static void healerHelp(CommandContext args, Player player,
+	public static void healerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendHealerHelp(player);
+		HelpUtils.sendHelp((Healer) npc.getType("healer"), sender, 1);
 	}
 
 	@Command(
@@ -108,5 +109,15 @@ public class HealerCommands implements CommandHandler {
 		PermissionManager.addPerm("healer.use.status");
 		PermissionManager.addPerm("healer.modify.levelup");
 		PermissionManager.addPerm("healer.use.heal");
+	}
+
+	@Override
+	public void sendHelp(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Healer", 1, 1);
+		HelpUtils.format(sender, "healer", "status",
+				"view the health and level of a healer");
+		HelpUtils.format(sender, "healer", "level-up (levels)",
+				"level-up a healer");
+		HelpUtils.footer(sender);
 	}
 }

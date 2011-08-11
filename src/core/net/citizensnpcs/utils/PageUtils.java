@@ -36,21 +36,23 @@ public class PageUtils {
 
 		public int maxPages() {
 			int pages = lines.size() / 9;
-			if (lines.size() % 9 != 0)
+			if (lines.size() % 9 != 0) {
 				pages += 1;
-			if (pages == 0)
+			}
+			if (pages == 0) {
 				pages = 1;
+			}
 			return pages;
 		}
 
 		public void process(int page) {
-			if (!hasDisplayed)
+			if (!hasDisplayed) {
 				hasDisplayed = true;
+			}
 			String tempHeader = header;
-			int pages = maxPages();
 
 			if (!(hasDisplayed && smoothTransition)) {
-				tempHeader = header.replace("%x/%y", page + "/" + pages);
+				tempHeader = header.replace("%x/%y", page + "/" + maxPages());
 				send(tempHeader);
 			}
 

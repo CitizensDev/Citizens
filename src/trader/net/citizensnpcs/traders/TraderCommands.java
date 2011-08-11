@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "trader")
-public class TraderCommands implements CommandHandler {
+public class TraderCommands extends CommandHandler {
 
 	@CommandRequirements()
 	@Command(
@@ -42,7 +42,7 @@ public class TraderCommands implements CommandHandler {
 	@ServerCommand()
 	public static void traderHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendTraderHelp(sender);
+		HelpUtils.sendHelp((Trader) npc.getType("trader"), sender, 1);
 	}
 
 	/**
@@ -443,5 +443,29 @@ public class TraderCommands implements CommandHandler {
 		PermissionManager.addPerm("trader.modify.clearstock");
 		PermissionManager.addPerm("trader.modify.stock");
 		PermissionManager.addPerm("trader.use.trade");
+	}
+
+	@Override
+	public void sendHelp(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Trader", 1, 1);
+		HelpUtils.format(sender, "trader", "list [buy|sell] (page)",
+				"list a trader's buy/sell list");
+		HelpUtils.format(sender, "trader",
+				"[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]",
+				"add an item to a trader's stock");
+		HelpUtils.format(sender, "trader", "[buy|sell] remove [itemID:data]",
+				"remove item from a trader's stock");
+		HelpUtils
+				.format(sender,
+						"trader",
+						"[buy|sell] edit [itemID(:amount:data)] [itemID(:amount:data)]",
+						"edit a trader's stock");
+		HelpUtils.format(sender, "trader", "unlimited [true|false]",
+				"set whether a trader has unlimited stock");
+		HelpUtils.format(sender, "trader", "money [give|take] (amount)",
+				"control a trader's money");
+		HelpUtils.format(sender, "trader", "clear [buy|sell]",
+				"clear a trader's stock");
+		HelpUtils.footer(sender);
 	}
 }

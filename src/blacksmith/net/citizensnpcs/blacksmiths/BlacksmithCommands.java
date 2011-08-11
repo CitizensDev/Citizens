@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @CommandRequirements(requiredType = "blacksmith")
-public class BlacksmithCommands implements CommandHandler {
+public class BlacksmithCommands extends CommandHandler {
 
 	@CommandRequirements()
 	@Command(
@@ -36,7 +36,7 @@ public class BlacksmithCommands implements CommandHandler {
 	@ServerCommand()
 	public static void blacksmithHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		HelpUtils.sendBlacksmithHelp(sender);
+		HelpUtils.sendHelp((Blacksmith) npc.getType("blacksmith"), sender, 1);
 	}
 
 	@Command(
@@ -85,5 +85,13 @@ public class BlacksmithCommands implements CommandHandler {
 		PermissionManager.addPerm("blacksmith.use.help");
 		PermissionManager.addPerm("blacksmith.use.status");
 		PermissionManager.addPerm("blacksmith.use.repair");
+	}
+
+	@Override
+	public void sendHelp(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Blacksmith", 1, 1);
+		HelpUtils.format(sender, "blacksmith", "status",
+				"view the status of your in-hand item");
+		HelpUtils.footer(sender);
 	}
 }
