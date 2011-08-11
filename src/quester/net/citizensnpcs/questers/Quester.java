@@ -6,6 +6,10 @@ import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.Properties;
+import net.citizensnpcs.questers.listeners.QuesterBlockListen;
+import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
+import net.citizensnpcs.questers.quests.CompletedQuest;
+import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.QuestManager;
 import net.citizensnpcs.questers.rewards.QuestReward;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -86,9 +90,18 @@ public class Quester extends CitizensNPC {
 							+ "Right click to accept.");
 				}
 			} else {
+				Quest quest = getQuest(quests.peek());
+				for (Reward requirement : quest.getRequirements()) {
+					if (!requirement.canTake(player)) {
+						player.sendMessage(ChatColor.GRAY
+								+ "Missing requirement. "
+								+ requirement.getRequiredText(player));
+						return;
+					}
+				}
+
 				QuestManager.assignQuest(npc, player, quests.peek());
-				Messaging.send(player, getQuest(quests.peek())
-						.getAcceptanceText());
+				Messaging.send(player, quest.getAcceptanceText());
 			}
 		}
 	}
@@ -100,10 +113,12 @@ public class Quester extends CitizensNPC {
 		}
 		quests.addLast(quests.pop());
 		Quest quest = getQuest(quests.peek());
+
 		display = PageUtils.newInstance(player);
 		display.setSmoothTransition(true);
-		display.header(ChatColor.GREEN + "======= Quest %x/%y - "
-				+ StringUtils.wrap(quest.getName()) + " =======");
+		display.header(ChatColor.GREEN
+				+ StringUtils.listify("Quest %x/%y - "
+						+ StringUtils.wrap(quest.getName())));
 		for (String push : quest.getDescription().split("<br>")) {
 			display.push(push);
 			if (display.elements() % 8 == 0 && display.maxPages() == 1) {

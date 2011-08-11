@@ -6,10 +6,11 @@ import java.util.List;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.questers.objectives.Objective.Progress;
+import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.QuestIncrementer;
 import net.citizensnpcs.questers.quests.QuestManager;
 import net.citizensnpcs.questers.quests.QuestProgress;
+import net.citizensnpcs.questers.quests.Objective.Progress;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

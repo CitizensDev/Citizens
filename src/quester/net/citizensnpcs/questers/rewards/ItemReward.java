@@ -45,4 +45,10 @@ public class ItemReward implements Reward {
 		// return take ? ItemInterface.hasEnough(new Payment(reward), player)
 		// : true;
 	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

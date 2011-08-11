@@ -3,9 +3,7 @@ package net.citizensnpcs.questers.quests;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.questers.objectives.Objective;
-import net.citizensnpcs.questers.objectives.Objectives;
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 
@@ -23,13 +21,13 @@ public class QuestProgress {
 	public QuestProgress(HumanNPC npc, Player player, String questName) {
 		this.npc = npc;
 		this.player = player;
-		this.setStartTime(System.currentTimeMillis());
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
 		for (Objective objective : objectives.current().all()) {
 			this.incrementers.add(QuestFactory.createIncrementer(npc, player,
 					questName, objective.getType(), objectives));
 		}
+		this.setStartTime(System.currentTimeMillis());
 	}
 
 	public void cycle() {

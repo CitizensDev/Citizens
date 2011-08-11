@@ -9,9 +9,11 @@ public interface Reward {
 
 	public boolean canTake(Player player);
 
+	public String getRequiredText(Player player);
+
+	public boolean isTake();
+
 	public RewardType getType();
 
 	public Object getReward();
-
-	public boolean isTake();
 }

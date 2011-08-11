@@ -1,8 +1,7 @@
 package net.citizensnpcs.questers.quests;
 
-import net.citizensnpcs.questers.objectives.Objective;
-import net.citizensnpcs.questers.objectives.Objective.Progress;
-import net.citizensnpcs.questers.objectives.Objectives.ObjectiveCycler;
+import net.citizensnpcs.questers.quests.Objective.Progress;
+import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
