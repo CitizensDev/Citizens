@@ -8,19 +8,22 @@ import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
 import net.citizensnpcs.resources.sk89q.CommandPermissions;
 import net.citizensnpcs.resources.sk89q.CommandRequirements;
+import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.HelpUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandRequirements(
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "quester")
-public class QuesterCommands implements CommandHandler {
+public class QuesterCommands extends CommandHandler {
 
 	@CommandRequirements()
+	@ServerCommand()
 	@Command(
 			aliases = "quester",
 			usage = "help",
@@ -29,9 +32,9 @@ public class QuesterCommands implements CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("quester.use.help")
-	public static void questerHelp(CommandContext args, Player player,
+	public static void questerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendQuesterHelp(player);
+		HelpUtils.sendHelp((Quester) npc.getType("quester"), sender, 1);
 	}
 
 	@Command(
@@ -97,5 +100,15 @@ public class QuesterCommands implements CommandHandler {
 		PermissionManager.addPerm("quester.modify.assignquest");
 		PermissionManager.addPerm("quester.modify.removequest");
 		PermissionManager.addPerm("quester.modify.questedit");
+	}
+
+	@Override
+	public void sendHelp(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Quester", 1, 1);
+		HelpUtils.format(sender, "quester", "assign [quest]",
+				"assign a quest to an NPC");
+		HelpUtils.format(sender, "quester", "remove [quest]",
+				"remove a quest from an NPC");
+		HelpUtils.footer(sender);
 	}
 }
