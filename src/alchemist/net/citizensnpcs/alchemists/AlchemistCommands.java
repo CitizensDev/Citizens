@@ -46,11 +46,11 @@ public class AlchemistCommands extends CommandHandler {
 
 	@Command(
 			aliases = { "alchemist", "alch" },
-			usage = "recipes",
+			usage = "recipes (page)",
 			desc = "view an alchemist's recipes",
 			modifiers = "recipes",
 			min = 1,
-			max = 1)
+			max = 2)
 	@CommandPermissions("alchemist.use.recipes")
 	public static void recipes(CommandContext args, Player player, HumanNPC npc) {
 		PageInstance instance = PageUtils.newInstance(player);
@@ -74,8 +74,9 @@ public class AlchemistCommands extends CommandHandler {
 				items += MessageUtils.getStackString(AlchemistManager
 						.getStackByString(str)) + ", ";
 			}
-			instance.push(MessageUtils.getMaterialName(entry.getKey()) + ": "
-					+ items);
+			instance.push(ChatColor.GRAY + " - "
+					+ MessageUtils.getMaterialName(entry.getKey()) + " (ID: "
+					+ entry.getKey() + ")");
 		}
 		instance.process(page);
 	}
@@ -89,13 +90,11 @@ public class AlchemistCommands extends CommandHandler {
 			max = 3)
 	@CommandPermissions("alchemist.modify.recipes")
 	public static void add(CommandContext args, Player player, HumanNPC npc) {
-		Alchemist alchemist = npc.getType("alchemist");
-		int itemID = args.getInteger(1);
-		if (Material.getMaterial(itemID) == null) {
-			Messaging
-					.sendError(player, "You cannot use that as a recipe item.");
+		if (!AlchemistManager.checkValidID(player, args.getString(1))) {
 			return;
 		}
+		int itemID = args.getInteger(1);
+		Alchemist alchemist = npc.getType("alchemist");
 		String recipe = args.getString(2);
 		String[] items = recipe.split(",");
 		for (String item : items) {
@@ -107,9 +106,34 @@ public class AlchemistCommands extends CommandHandler {
 				return;
 			}
 		}
-		alchemist.addRecipe(args.getInteger(1), recipe);
+		alchemist.addRecipe(itemID, recipe);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " has changed the recipe for "
+				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
+	}
+
+	@Command(
+			aliases = { "alchemist", "alch" },
+			usage = "select [itemID]",
+			desc = "select a recipe",
+			modifiers = "select",
+			min = 2,
+			max = 2)
+	@CommandPermissions("alchemist.use.interact")
+	public static void select(CommandContext args, Player player, HumanNPC npc) {
+		if (!AlchemistManager.checkValidID(player, args.getString(1))) {
+			return;
+		}
+		int itemID = args.getInteger(1);
+		Alchemist alchemist = npc.getType("alchemist");
+		if (alchemist.getRecipe(itemID) == null) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " does not have that recipe.");
+			return;
+		}
+		alchemist.setCurrentRecipeID(itemID);
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+				+ " recipe has been set to "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}
 
@@ -128,6 +152,8 @@ public class AlchemistCommands extends CommandHandler {
 				"view an alchemist's recipes");
 		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
 				"add a custom recipe to an alchemist");
+		HelpUtils.format(sender, "alchemist", "select [itemID]",
+				"select a recipe");
 		HelpUtils.footer(sender);
 	}
 }

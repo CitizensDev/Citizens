@@ -15,6 +15,7 @@ import net.citizensnpcs.utils.Messaging;
 
 public class Alchemist extends CitizensNPC {
 	private HashMap<Integer, String> recipes = new HashMap<Integer, String>();
+	private int currentRecipeID = 0;
 
 	public HashMap<Integer, String> getRecipes() {
 		return recipes;
@@ -30,6 +31,14 @@ public class Alchemist extends CitizensNPC {
 
 	public void addRecipe(int itemID, String recipe) {
 		this.recipes.put(itemID, recipe);
+	}
+
+	public int getCurrentRecipeID() {
+		return this.currentRecipeID;
+	}
+
+	public void setCurrentRecipeID(int currentRecipeID) {
+		this.currentRecipeID = currentRecipeID;
 	}
 
 	@Override

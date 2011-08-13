@@ -1,7 +1,7 @@
 name: Citizens
 main: net.citizensnpcs.Citizens
 version: 1.1
-authors: [fullwall, aPunch, NeonMaster]
+authors: [fullwall, aPunch]
 softdepend: [Permissions]
 commands:
     npc:
@@ -60,15 +60,10 @@ commands:
                         The command was not recognized.
                     
 permissions:
-    citizens.admin:
+    citizens.*:
         default: false
         children:
-            citizens.admin.info: true
-            citizens.admin.reload: true
-            citizens.admin.save: true
-            citizens.admin.debug: true
-            citizens.admin.removeall: true
-            citizens.admin.toggleall: true
+            citizens.admin.*: true
             citizens.toggle.*: true
             citizens.trader.*: true
             citizens.basic.*: true
@@ -79,6 +74,14 @@ permissions:
             citizens.quester.*: true
             citizens.waypoints.*: true
             citizens.npccount.unlimited: true
+    citizens.admin.*:
+        children:
+            citizens.admin.info: true
+            citizens.admin.reload: true
+            citizens.admin.save: true
+            citizens.admin.debug: true
+            citizens.admin.removeall: true
+            citizens.admin.toggleall: true
     citizens.toggle.*:
         children:
             citizens.toggle.help: true
