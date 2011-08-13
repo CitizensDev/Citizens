@@ -24,12 +24,16 @@ public class ObjectiveProgress {
 		this.quester = npc;
 		this.player = player;
 		this.questName = questName;
-		this.objective = objectives.current().current();
+		this.objective = objectives.nextObjective();
 		this.questtype = objective.getType().getInstance();
 	}
 
 	public boolean update(Event event) {
 		return questtype.update(event, this);
+	}
+
+	public boolean isCompleted() {
+		return questtype.isCompleted(this);
 	}
 
 	public HumanNPC getQuester() {
@@ -75,4 +79,5 @@ public class ObjectiveProgress {
 	public String getQuestName() {
 		return questName;
 	}
+
 }

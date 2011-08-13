@@ -88,8 +88,8 @@ public class QuestManager {
 		RANK;
 	}
 
-	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
-	private static final HashMap<String, Quest> quests = new HashMap<String, Quest>();
+	private static final Map<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
+	private static final Map<String, Quest> quests = new HashMap<String, Quest>();
 
 	public static void load(Player player) {
 		PlayerProfile profile = new PlayerProfile(player.getName());
@@ -111,7 +111,8 @@ public class QuestManager {
 			if (completed) {
 				QuestProgress progress = getProfile(player.getName())
 						.getProgress();
-				progress.cycle();
+				if (progress.stepCompleted())
+					progress.cycle();
 			}
 		}
 	}
@@ -123,8 +124,7 @@ public class QuestManager {
 	}
 
 	public static boolean hasQuest(Player player) {
-		return getProfile(player.getName()) == null ? false : getProfile(
-				player.getName()).hasQuest();
+		return getProfile(player.getName()).hasQuest();
 	}
 
 	public static PlayerProfile getProfile(String name) {
@@ -138,7 +138,6 @@ public class QuestManager {
 	public static void assignQuest(HumanNPC npc, Player player, String quest) {
 		PlayerProfile profile = getProfile(player.getName());
 		profile.setProgress(new QuestProgress(npc, player, quest));
-		setProfile(player.getName(), profile);
 	}
 
 	public static void setProfile(String name, PlayerProfile profile) {

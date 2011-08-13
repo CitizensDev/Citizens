@@ -17,12 +17,17 @@ public class BuildQuest implements QuestObjective {
 				progress.incrementCompleted(1);
 			}
 		}
-		return progress.getAmount() >= progress.getAmount();
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return new Type[] { Type.BLOCK_PLACE };
+	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 }

@@ -76,7 +76,7 @@ public class PageUtils {
 		}
 
 		private void send(String line) {
-			Messaging.send(sender, null, line);
+			Messaging.send(sender, line);
 		}
 
 		private String colour(String line) {

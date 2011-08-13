@@ -26,4 +26,9 @@ public class CollectQuest implements QuestObjective {
 	public Type[] getEventTypes() {
 		return new Type[] { Type.PLAYER_PICKUP_ITEM };
 	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return progress.getAmount() >= progress.getObjective().getAmount();
+	}
 }

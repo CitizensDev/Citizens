@@ -32,4 +32,9 @@ public class DistanceQuest implements QuestObjective {
 	public Type[] getEventTypes() {
 		return new Type[] { Type.PLAYER_MOVE };
 	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return progress.getAmount() >= progress.getObjective().getAmount();
+	}
 }

@@ -17,8 +17,8 @@ public class Messaging {
 			"dteal", "dred", "purple", "gold", "gray", "dgray", "blue",
 			"bgreen", "teal", "red", "pink", "yellow", "white" };
 
-	public static void send(Player player, String message) {
-		player.sendMessage(message);
+	public static void send(CommandSender sender, String message) {
+		send(sender, null, message);
 	}
 
 	public static void send(Player player, HumanNPC npc, String message) {
@@ -31,6 +31,7 @@ public class Messaging {
 			message = message.replace("<npcid>", "" + npc.getUID());
 		}
 		player.sendMessage(message);
+		Messaging.log(message);
 	}
 
 	public static void send(CommandSender sender, HumanNPC npc, String message) {
@@ -43,7 +44,6 @@ public class Messaging {
 			message = message.replace("<npc>", npc.getStrippedName());
 			message = message.replace("<npcid>", "" + npc.getUID());
 		}
-		sender.sendMessage(message);
 	}
 
 	public static void log(Object... messages) {
@@ -90,15 +90,16 @@ public class Messaging {
 	}
 
 	private static String colourise(String message) {
+		String format = "<%s>";
 		byte index = 0;
 		for (String colour : colours) {
-			message = message.replaceAll("<" + colour + ">",
-					"" + ChatColor.getByCode(index));
+			message = message.replaceAll(String.format(format, colour), ""
+					+ ChatColor.getByCode(index));
 			++index;
 		}
 		for (int colour = 0; colour <= 16; ++colour) {
-			message = message.replaceAll("<" + colour + ">",
-					"" + ChatColor.getByCode(colour));
+			message = message.replaceAll(String.format(format, colour), ""
+					+ ChatColor.getByCode(colour));
 		}
 		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
 		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);

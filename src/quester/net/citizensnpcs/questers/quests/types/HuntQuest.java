@@ -27,4 +27,9 @@ public class HuntQuest implements QuestObjective {
 	public Type[] getEventTypes() {
 		return new Type[] { Type.ENTITY_DEATH };
 	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return progress.getAmount() >= progress.getObjective().getAmount();
+	}
 }

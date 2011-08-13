@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
@@ -16,10 +15,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
+import com.google.common.collect.Maps;
+
 public class PlayerProfile {
 	private final ConfigurationHandler profile;
-	private int rank;
-	private final List<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
+	private final Map<String, CompletedQuest> completedQuests = Maps
+			.newHashMap();
 	private QuestProgress progress;
 	private final String name;
 
@@ -28,15 +29,14 @@ public class PlayerProfile {
 				+ name + ".yml");
 		this.name = name;
 		this.load();
-		rank = 1;
 	}
 
-	public List<CompletedQuest> getCompletedQuests() {
+	public Map<String, CompletedQuest> getCompletedQuests() {
 		return completedQuests;
 	}
 
 	public void addCompletedQuest(CompletedQuest quest) {
-		completedQuests.add(quest);
+		completedQuests.put(quest.getName(), quest);
 	}
 
 	public QuestProgress getProgress() {
@@ -48,14 +48,6 @@ public class PlayerProfile {
 		if (this.profile.pathExists("quests.current")) {
 			this.profile.removeKey("quests.current");
 		}
-	}
-
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
-	public int getRank() {
-		return rank;
 	}
 
 	public boolean hasQuest() {
@@ -126,5 +118,10 @@ public class PlayerProfile {
 				}
 			}
 		}
+	}
+
+	public boolean hasCompleted(String peek) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

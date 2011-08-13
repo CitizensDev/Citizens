@@ -19,8 +19,8 @@ import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PageUtils;
-import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

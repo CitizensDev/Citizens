@@ -20,11 +20,17 @@ public class LocationQuest implements QuestObjective {
 				progress.setLastLocation(ev.getPlayer().getLocation());
 		}
 		return LocationUtils.withinRange(progress.getObjective().getLocation(),
-				progress.getLastLocation(), 0);
+				progress.getLastLocation());
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return new Type[] { Type.PLAYER_MOVE };
+	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return LocationUtils.withinRange(progress.getObjective().getLocation(),
+				progress.getLastLocation());
 	}
 }

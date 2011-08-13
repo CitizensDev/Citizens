@@ -5,7 +5,6 @@ import java.util.List;
 
 public class QuestStep {
 	private final List<Objective> objectives = new ArrayList<Objective>();
-	private int index = 0;
 
 	public List<Objective> all() {
 		return objectives;
@@ -15,7 +14,7 @@ public class QuestStep {
 		objectives.add(obj);
 	}
 
-	public Objective current() {
-		return objectives.get(index++);
+	public Objective get(int index) {
+		return objectives.get(index);
 	}
 }

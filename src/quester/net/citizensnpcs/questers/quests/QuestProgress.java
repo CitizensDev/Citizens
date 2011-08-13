@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class QuestProgress {
-	private final List<ObjectiveProgress> progresss = new ArrayList<ObjectiveProgress>();
+	private final List<ObjectiveProgress> progress = new ArrayList<ObjectiveProgress>();
 	private final String questName;
 	private final ObjectiveCycler objectives;
 	private long startTime;
@@ -24,7 +24,7 @@ public class QuestProgress {
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
 		for (int i = 0; i != objectives.current().all().size(); ++i) {
-			this.progresss.add(new ObjectiveProgress(npc, player, questName,
+			this.progress.add(new ObjectiveProgress(npc, player, questName,
 					objectives));
 		}
 		this.setStartTime(System.currentTimeMillis());
@@ -44,7 +44,7 @@ public class QuestProgress {
 	private void next() {
 		this.objectives.cycle();
 		for (int i = 0; i != objectives.current().all().size(); ++i) {
-			this.progresss.add(new ObjectiveProgress(npc, player, questName,
+			this.progress.add(new ObjectiveProgress(npc, player, questName,
 					objectives));
 		}
 	}
@@ -63,18 +63,23 @@ public class QuestProgress {
 		return QuestManager.getQuest(this.getQuestName()).getObjectives();
 	}
 
-	public boolean fullyCompleted() {
-		return this.objectives.isCompleted();
+	public boolean stepCompleted() {
+		for (ObjectiveProgress prog : progress) {
+			if (!prog.isCompleted()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	public int getQuesterUID() {
-		return npc.getUID();
+	public boolean fullyCompleted() {
+		return stepCompleted() && this.objectives.isCompleted();
 	}
 
 	public boolean updateProgress(Event event) {
 		boolean completed = true;
-		if (progresss.size() > 0) {
-			for (ObjectiveProgress progress : this.progresss) {
+		if (progress.size() > 0) {
+			for (ObjectiveProgress progress : this.progress) {
 				if (!progress.update(event))
 					completed = false;
 			}
@@ -82,23 +87,28 @@ public class QuestProgress {
 		return completed;
 	}
 
-	public String getQuestName() {
-		return questName;
+	public int getQuesterUID() {
+		return this.npc.getUID();
 	}
 
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
+	public String getQuestName() {
+		return questName;
 	}
 
 	public long getStartTime() {
 		return startTime;
 	}
 
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
 	public List<ObjectiveProgress> getProgress() {
-		return progresss;
+		return progress;
 	}
 
 	public ObjectiveProgress getProgress(int count) {
-		return progresss.get(count);
+		return progress.get(count);
 	}
+
 }

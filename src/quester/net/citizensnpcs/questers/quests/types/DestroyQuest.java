@@ -25,4 +25,9 @@ public class DestroyQuest implements QuestObjective {
 	public Type[] getEventTypes() {
 		return new Type[] { Type.BLOCK_BREAK };
 	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return progress.getAmount() >= progress.getObjective().getAmount();
+	}
 }

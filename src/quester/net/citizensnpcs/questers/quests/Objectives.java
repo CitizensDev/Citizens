@@ -2,6 +2,7 @@ package net.citizensnpcs.questers.quests;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 
 public class Objectives {
 	private final ArrayDeque<QuestStep> objectives = new ArrayDeque<QuestStep>();
@@ -23,7 +24,8 @@ public class Objectives {
 	}
 
 	public static class ObjectiveCycler {
-		private ArrayDeque<QuestStep> objectives = new ArrayDeque<QuestStep>();
+		private Deque<QuestStep> objectives = new ArrayDeque<QuestStep>();
+		private int index = 0;
 
 		private ObjectiveCycler(Objectives objectives) {
 			this.objectives = objectives.all();
@@ -33,7 +35,12 @@ public class Objectives {
 			return this.objectives.peek();
 		}
 
+		public Objective nextObjective() {
+			return current().get(index++);
+		}
+
 		public void cycle() {
+			index = 0;
 			this.objectives.pop();
 		}
 
