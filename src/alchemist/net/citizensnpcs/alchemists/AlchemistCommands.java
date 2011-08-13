@@ -2,13 +2,6 @@ package net.citizensnpcs.alchemists;
 
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.citizens.utils.Messaging;
-
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -19,9 +12,15 @@ import net.citizensnpcs.resources.sk89q.CommandRequirements;
 import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.HelpUtils;
 import net.citizensnpcs.utils.MessageUtils;
+import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PageUtils;
-import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
+import net.citizensnpcs.utils.StringUtils;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 @CommandRequirements(
 		requireSelected = true,

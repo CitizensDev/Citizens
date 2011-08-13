@@ -1,24 +1,17 @@
 package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.quests.QuestIncrementer;
-import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.questers.quests.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.QuestObjective;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class DistanceQuest extends QuestIncrementer {
+public class DistanceQuest implements QuestObjective {
 	private double traveled = 0;
 
-	public DistanceQuest(HumanNPC npc, Player player, String questName,
-			ObjectiveCycler objectives) {
-		super(npc, player, questName, objectives);
-	}
-
 	@Override
-	public void updateProgress(Event event) {
+	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			// Considering doing this a different way.
@@ -32,11 +25,7 @@ public class DistanceQuest extends QuestIncrementer {
 
 			}// Kilometres if (m> 0.5D) ; // Metres else ; // Centimetres
 		}
-	}
-
-	@Override
-	public boolean isCompleted() {
-		return this.getProgress().getAmount() >= this.objective.getAmount();
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override

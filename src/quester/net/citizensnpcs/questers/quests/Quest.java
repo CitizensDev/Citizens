@@ -10,10 +10,10 @@ public class Quest {
 	private String completionText = "";
 	private String description = "";
 	private String acceptanceText = "";
-	private boolean repeatable = false;
 	private final List<Reward> rewards = new ArrayList<Reward>();
 	private final List<Reward> requirements = new ArrayList<Reward>();
 	private Objectives objectives;
+	private boolean repeatable = false; // perhaps change this to an integer.
 
 	public Quest(String name) {
 		this.questName = name;

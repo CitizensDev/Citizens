@@ -25,14 +25,12 @@ public class Objectives {
 	public static class ObjectiveCycler {
 		private ArrayDeque<QuestStep> objectives = new ArrayDeque<QuestStep>();
 
-		public ObjectiveCycler(Objectives objectives) {
+		private ObjectiveCycler(Objectives objectives) {
 			this.objectives = objectives.all();
 		}
 
 		public QuestStep current() {
-			if (this.objectives.size() > 0)
-				return this.objectives.peek();
-			return null;
+			return this.objectives.peek();
 		}
 
 		public void cycle() {
@@ -44,7 +42,9 @@ public class Objectives {
 		}
 
 		public boolean isCompleted() {
-			return this.objectives.size() == 0;
+			return this.objectives.size() - 1 == 0;
+			// Current quest is kept in deque, so we check if the size minus the
+			// loaded step (1) would equal 0 (completed).
 		}
 	}
 }

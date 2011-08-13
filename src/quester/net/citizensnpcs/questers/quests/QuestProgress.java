@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class QuestProgress {
-	private final List<QuestIncrementer> incrementers = new ArrayList<QuestIncrementer>();
+	private final List<ObjectiveProgress> progresss = new ArrayList<ObjectiveProgress>();
 	private final String questName;
 	private final ObjectiveCycler objectives;
 	private long startTime;
@@ -23,9 +23,9 @@ public class QuestProgress {
 		this.player = player;
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
-		for (Objective objective : objectives.current().all()) {
-			this.incrementers.add(QuestFactory.createIncrementer(npc, player,
-					questName, objective.getType(), objectives));
+		for (int i = 0; i != objectives.current().all().size(); ++i) {
+			this.progresss.add(new ObjectiveProgress(npc, player, questName,
+					objectives));
 		}
 		this.setStartTime(System.currentTimeMillis());
 	}
@@ -43,9 +43,9 @@ public class QuestProgress {
 
 	private void next() {
 		this.objectives.cycle();
-		for (Objective objective : objectives.current().all()) {
-			this.incrementers.add(QuestFactory.createIncrementer(npc, player,
-					questName, objective.getType(), objectives));
+		for (int i = 0; i != objectives.current().all().size(); ++i) {
+			this.progresss.add(new ObjectiveProgress(npc, player, questName,
+					objectives));
 		}
 	}
 
@@ -73,10 +73,9 @@ public class QuestProgress {
 
 	public boolean updateProgress(Event event) {
 		boolean completed = true;
-		if (incrementers.size() > 0) {
-			for (QuestIncrementer incrementer : this.incrementers) {
-				incrementer.updateProgress(event);
-				if (!incrementer.isCompleted())
+		if (progresss.size() > 0) {
+			for (ObjectiveProgress progress : this.progresss) {
+				if (!progress.update(event))
 					completed = false;
 			}
 		}
@@ -95,11 +94,11 @@ public class QuestProgress {
 		return startTime;
 	}
 
-	public List<QuestIncrementer> getIncrementers() {
-		return incrementers;
+	public List<ObjectiveProgress> getProgress() {
+		return progresss;
 	}
 
-	public QuestIncrementer getIncrementer(int count) {
-		return incrementers.get(count);
+	public ObjectiveProgress getProgress(int count) {
+		return progresss.get(count);
 	}
 }

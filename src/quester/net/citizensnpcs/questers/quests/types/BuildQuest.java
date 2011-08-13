@@ -1,33 +1,23 @@
 package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.quests.QuestIncrementer;
-import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.questers.quests.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.QuestObjective;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public class BuildQuest extends QuestIncrementer {
-	public BuildQuest(HumanNPC npc, Player player, String questName,
-			ObjectiveCycler objectives) {
-		super(npc, player, questName, objectives);
-	}
+public class BuildQuest implements QuestObjective {
 
 	@Override
-	public void updateProgress(Event event) {
+	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof BlockPlaceEvent) {
-			if (((BlockPlaceEvent) event).getBlockPlaced().getType() == this.objective
-					.getMaterial()) {
-				this.getProgress().incrementCompleted(1);
+			if (((BlockPlaceEvent) event).getBlockPlaced().getType() == progress
+					.getObjective().getMaterial()) {
+				progress.incrementCompleted(1);
 			}
 		}
-	}
-
-	@Override
-	public boolean isCompleted() {
-		return this.getProgress().getAmount() >= this.objective.getAmount();
+		return progress.getAmount() >= progress.getAmount();
 	}
 
 	@Override

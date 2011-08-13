@@ -2,59 +2,22 @@ package net.citizensnpcs.questers.quests;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestManager.QuestType;
 import net.citizensnpcs.questers.quests.QuestManager.RewardType;
-import net.citizensnpcs.questers.quests.types.BuildQuest;
-import net.citizensnpcs.questers.quests.types.CollectQuest;
-import net.citizensnpcs.questers.quests.types.CombatQuest;
-import net.citizensnpcs.questers.quests.types.DeliveryQuest;
-import net.citizensnpcs.questers.quests.types.DestroyQuest;
-import net.citizensnpcs.questers.quests.types.DistanceQuest;
-import net.citizensnpcs.questers.quests.types.HuntQuest;
-import net.citizensnpcs.questers.quests.types.LocationQuest;
 import net.citizensnpcs.questers.rewards.EconpluginReward;
 import net.citizensnpcs.questers.rewards.HealthReward;
 import net.citizensnpcs.questers.rewards.ItemReward;
 import net.citizensnpcs.questers.rewards.PermissionReward;
 import net.citizensnpcs.questers.rewards.QuestReward;
 import net.citizensnpcs.questers.rewards.RankReward;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 public class QuestFactory {
-
-	public static QuestIncrementer createIncrementer(HumanNPC npc,
-			Player player, String questName, QuestType type,
-			ObjectiveCycler objectives) {
-		switch (type) {
-		case BUILD:
-			return new BuildQuest(npc, player, questName, objectives);
-		case COLLECT:
-			return new CollectQuest(npc, player, questName, objectives);
-		case DELIVERY:
-			return new DeliveryQuest(npc, player, questName, objectives);
-		case DESTROY_BLOCK:
-			return new DestroyQuest(npc, player, questName, objectives);
-		case HUNT:
-			return new HuntQuest(npc, player, questName, objectives);
-		case MOVE_DISTANCE:
-			return new DistanceQuest(npc, player, questName, objectives);
-		case MOVE_LOCATION:
-			return new LocationQuest(npc, player, questName, objectives);
-		case PLAYER_COMBAT:
-			return new CombatQuest(npc, player, questName, objectives);
-		default:
-			return null;
-		}
-	}
-
 	public static void instantiateQuests(ConfigurationHandler quests) {
 		int questCount = 0;
 		for (String questName : quests.getKeys(null)) {

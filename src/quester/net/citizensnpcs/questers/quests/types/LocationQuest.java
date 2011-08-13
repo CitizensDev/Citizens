@@ -1,37 +1,26 @@
 package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.quests.QuestIncrementer;
-import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.questers.quests.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.QuestObjective;
 import net.citizensnpcs.utils.LocationUtils;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class LocationQuest extends QuestIncrementer {
-	public LocationQuest(HumanNPC npc, Player player, String questName,
-			ObjectiveCycler objectives) {
-		super(npc, player, questName, objectives);
-	}
+public class LocationQuest implements QuestObjective {
 
 	@Override
-	public void updateProgress(Event event) {
+	public boolean update(Event event, ObjectiveProgress progress) {
 		// Possibility for a distance away parameter.
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			if (LocationUtils.withinRange(ev.getPlayer().getLocation(),
-					this.objective.getLocation(), 0))
-				this.getProgress()
-						.setLastLocation(ev.getPlayer().getLocation());
+					progress.getObjective().getLocation(), 0))
+				progress.setLastLocation(ev.getPlayer().getLocation());
 		}
-	}
-
-	@Override
-	public boolean isCompleted() {
-		return LocationUtils.withinRange(this.objective.getLocation(), this
-				.getProgress().getLastLocation(), 0);
+		return LocationUtils.withinRange(progress.getObjective().getLocation(),
+				progress.getLastLocation(), 0);
 	}
 
 	@Override
