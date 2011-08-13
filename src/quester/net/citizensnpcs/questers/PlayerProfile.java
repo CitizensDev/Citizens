@@ -1,26 +1,26 @@
 package net.citizensnpcs.questers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.quests.CompletedQuest;
-import net.citizensnpcs.questers.quests.QuestIncrementer;
+import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestManager;
 import net.citizensnpcs.questers.quests.QuestProgress;
-import net.citizensnpcs.questers.quests.Objective.Progress;
+import net.citizensnpcs.utils.LocationUtils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
+import com.google.common.collect.Maps;
+
 public class PlayerProfile {
 	private final ConfigurationHandler profile;
-	private int rank;
-	private final List<CompletedQuest> completedQuests = new ArrayList<CompletedQuest>();
+	private final Map<String, CompletedQuest> completedQuests = Maps
+			.newHashMap();
 	private QuestProgress progress;
 	private final String name;
 
@@ -29,15 +29,14 @@ public class PlayerProfile {
 				+ name + ".yml");
 		this.name = name;
 		this.load();
-		rank = 1;
 	}
 
-	public List<CompletedQuest> getCompletedQuests() {
+	public Map<String, CompletedQuest> getCompletedQuests() {
 		return completedQuests;
 	}
 
 	public void addCompletedQuest(CompletedQuest quest) {
-		completedQuests.add(quest);
+		completedQuests.put(quest.getName(), quest);
 	}
 
 	public QuestProgress getProgress() {
@@ -51,14 +50,6 @@ public class PlayerProfile {
 		}
 	}
 
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
-	public int getRank() {
-		return rank;
-	}
-
 	public boolean hasQuest() {
 		return progress != null;
 	}
@@ -69,41 +60,30 @@ public class PlayerProfile {
 
 	public void save() {
 		if (progress != null) {
-			String path = "quests.current.";
-			String oldPath = path;
+			String path = "quests.current.", oldPath = path;
 			int count = 0;
-			for (QuestIncrementer incrementer : progress.getIncrementers()) {
-				path = oldPath + count;
-				profile.setString(path + "name", progress.getQuestName());
-				profile.setInt(path + "step", progress.getStep());
-				profile.setLong(path + "start-time", progress.getStartTime());
-				profile.setInt(path + "giver", progress.getQuesterUID());
-				Progress questProgress = incrementer.getProgress();
-				profile.setInt(path + "progress.amount",
-						questProgress.getAmount());
-				if (questProgress.getLastItem() != null) {
-					profile.setInt(path + "progress.item.id", questProgress
-							.getLastItem().getTypeId());
-					profile.setInt(path + "progress.item.amount", questProgress
-							.getLastItem().getAmount());
-					profile.setInt(path + "progress.item.id", questProgress
-							.getLastItem().getData() == null ? 0
-							: questProgress.getLastItem().getData().getData());
+
+			profile.setString(path + "name", progress.getQuestName());
+			profile.setInt(path + "step", progress.getStep());
+			profile.setLong(path + "start-time", progress.getStartTime());
+			profile.setInt(path + "giver", progress.getQuesterUID());
+
+			for (ObjectiveProgress current : progress.getProgress()) {
+				path = oldPath + count + ".progress";
+				profile.setInt(path + ".amount", current.getAmount());
+				if (current.getLastItem() != null) {
+					profile.setInt(path + ".item.id", current.getLastItem()
+							.getTypeId());
+					profile.setInt(path + ".item.amount", current.getLastItem()
+							.getAmount());
+					profile.setInt(path + ".item.id", current.getLastItem()
+							.getData() == null ? 0 : current.getLastItem()
+							.getData().getData());
 				}
-				if (questProgress.getLastLocation() != null) {
-					profile.setString(path + "progress.location.world",
-							questProgress.getLastLocation().getWorld()
-									.getName());
-					profile.setDouble(path + "progress.location.x",
-							questProgress.getLastLocation().getX());
-					profile.setDouble(path + "progress.location.y",
-							questProgress.getLastLocation().getY());
-					profile.setDouble(path + "progress.location.z",
-							questProgress.getLastLocation().getZ());
-					profile.setDouble(path + "progress.location.yaw",
-							questProgress.getLastLocation().getYaw());
-					profile.setDouble(path + "progress.location.pitch",
-							questProgress.getLastLocation().getPitch());
+				if (current.getLastLocation() != null) {
+					LocationUtils
+							.saveLocation(profile, current.getLastLocation(),
+									path + ".location", true);
 				}
 				++count;
 			}
@@ -119,9 +99,8 @@ public class PlayerProfile {
 					.getString(path + "name"));
 			progress.setStartTime(profile.getInt(path + "start-time"));
 			progress.setStep(profile.getInt(path + "step"));
-			for (int count = 0; count <= progress.getIncrementers().size(); ++count) {
-				Progress questProgress = progress.getIncrementer(count)
-						.getProgress();
+
+			for (ObjectiveProgress questProgress : progress.getProgress()) {
 				questProgress.setAmountCompleted(this.profile.getInt(path
 						+ "progress.amount"));
 				int itemID = profile.getInt(path + "progress.item.id");
@@ -133,22 +112,16 @@ public class PlayerProfile {
 							.getInt(path + "progress.item.data")));
 					questProgress.setLastItem(item);
 				}
-				String name = profile.getString(path
-						+ "progress.location.world");
-				if (!name.isEmpty()) {
-					Location loc = null;
-					double x = profile.getDouble(path + "progress.location.x");
-					double y = profile.getDouble(path + "progress.location.y");
-					double z = profile.getDouble(path + "progress.location.z");
-					float yaw = (float) profile.getDouble(path
-							+ "progress.location.yaw");
-					float pitch = (float) profile.getDouble(path
-							+ "progress.location.pitch");
-					loc = new Location(Bukkit.getServer().getWorld(name), x, y,
-							z, yaw, pitch);
-					questProgress.setLastLocation(loc);
+				if (profile.pathExists("progress.location")) {
+					questProgress.setLastLocation(LocationUtils.loadLocation(
+							profile, path + "progress.location", true));
 				}
 			}
 		}
+	}
+
+	public boolean hasCompleted(String peek) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

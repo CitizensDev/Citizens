@@ -4,6 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.questers.PlayerProfile;
+import net.citizensnpcs.questers.quests.types.BuildQuest;
+import net.citizensnpcs.questers.quests.types.CollectQuest;
+import net.citizensnpcs.questers.quests.types.CombatQuest;
+import net.citizensnpcs.questers.quests.types.DeliveryQuest;
+import net.citizensnpcs.questers.quests.types.DestroyQuest;
+import net.citizensnpcs.questers.quests.types.DistanceQuest;
+import net.citizensnpcs.questers.quests.types.HuntQuest;
+import net.citizensnpcs.questers.quests.types.LocationQuest;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
@@ -16,35 +24,41 @@ public class QuestManager {
 		/**
 		 * Place blocks
 		 */
-		BUILD,
+		BUILD(new BuildQuest()),
 		/**
 		 * Collect item(s)/blocks(s)
 		 */
-		COLLECT,
+		COLLECT(new CollectQuest()),
 		/**
 		 * Deliver item(s) to an NPC
 		 */
-		DELIVERY,
+		DELIVERY(new DeliveryQuest()),
 		/**
 		 * Break blocks
 		 */
-		DESTROY_BLOCK,
+		DESTROY_BLOCK(new DestroyQuest()),
 		/**
 		 * Kill mobs
 		 */
-		HUNT,
+		HUNT(new HuntQuest()),
 		/**
 		 * Travel a distance
 		 */
-		MOVE_DISTANCE,
+		MOVE_DISTANCE(new DistanceQuest()),
 		/**
 		 * Travel to a location
 		 */
-		MOVE_LOCATION,
+		MOVE_LOCATION(new LocationQuest()),
 		/**
 		 * Kill players
 		 */
-		PLAYER_COMBAT;
+		PLAYER_COMBAT(new CombatQuest());
+		private final QuestObjective instance;
+
+		QuestType(QuestObjective instance) {
+			this.instance = instance;
+		}
+
 		private final static Map<String, QuestType> lookupNames = new HashMap<String, QuestType>();
 		static {
 			for (QuestType type : QuestType.values()) {
@@ -59,6 +73,10 @@ public class QuestManager {
 			result = lookupNames.get(filtered);
 			return result;
 		}
+
+		public QuestObjective getInstance() {
+			return instance;
+		}
 	}
 
 	public enum RewardType {
@@ -70,8 +88,8 @@ public class QuestManager {
 		RANK;
 	}
 
-	private static final HashMap<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
-	private static final HashMap<String, Quest> quests = new HashMap<String, Quest>();
+	private static final Map<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();
+	private static final Map<String, Quest> quests = new HashMap<String, Quest>();
 
 	public static void load(Player player) {
 		PlayerProfile profile = new PlayerProfile(player.getName());
@@ -93,7 +111,8 @@ public class QuestManager {
 			if (completed) {
 				QuestProgress progress = getProfile(player.getName())
 						.getProgress();
-				progress.cycle();
+				if (progress.stepCompleted())
+					progress.cycle();
 			}
 		}
 	}
@@ -105,8 +124,7 @@ public class QuestManager {
 	}
 
 	public static boolean hasQuest(Player player) {
-		return getProfile(player.getName()) == null ? false : getProfile(
-				player.getName()).hasQuest();
+		return getProfile(player.getName()).hasQuest();
 	}
 
 	public static PlayerProfile getProfile(String name) {
@@ -120,7 +138,6 @@ public class QuestManager {
 	public static void assignQuest(HumanNPC npc, Player player, String quest) {
 		PlayerProfile profile = getProfile(player.getName());
 		profile.setProgress(new QuestProgress(npc, player, quest));
-		setProfile(player.getName(), profile);
 	}
 
 	public static void setProfile(String name, PlayerProfile profile) {

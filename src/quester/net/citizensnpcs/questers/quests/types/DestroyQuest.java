@@ -1,37 +1,33 @@
 package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.questers.quests.QuestIncrementer;
-import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.questers.quests.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.QuestObjective;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class DestroyQuest extends QuestIncrementer {
-	public DestroyQuest(HumanNPC npc, Player player, String questName,
-			ObjectiveCycler objectives) {
-		super(npc, player, questName, objectives);
-	}
+public class DestroyQuest implements QuestObjective {
 
 	@Override
-	public void updateProgress(Event event) {
+	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof BlockBreakEvent) {
 			BlockBreakEvent ev = (BlockBreakEvent) event;
-			if (ev.getBlock().getType() == this.objective.getMaterial()) {
-				this.getProgress().incrementCompleted(1);
+			if (ev.getBlock().getType() == progress.getObjective()
+					.getMaterial()) {
+				progress.incrementCompleted(1);
 			}
 		}
-	}
-
-	@Override
-	public boolean isCompleted() {
-		return this.getProgress().getAmount() >= this.objective.getAmount();
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return new Type[] { Type.BLOCK_BREAK };
+	}
+
+	@Override
+	public boolean isCompleted(ObjectiveProgress progress) {
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 }

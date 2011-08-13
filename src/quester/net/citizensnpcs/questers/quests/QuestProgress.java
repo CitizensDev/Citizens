@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class QuestProgress {
-	private final List<QuestIncrementer> incrementers = new ArrayList<QuestIncrementer>();
+	private final List<ObjectiveProgress> progress = new ArrayList<ObjectiveProgress>();
 	private final String questName;
 	private final ObjectiveCycler objectives;
 	private long startTime;
@@ -23,9 +23,9 @@ public class QuestProgress {
 		this.player = player;
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
-		for (Objective objective : objectives.current().all()) {
-			this.incrementers.add(QuestFactory.createIncrementer(npc, player,
-					questName, objective.getType(), objectives));
+		for (int i = 0; i != objectives.current().all().size(); ++i) {
+			this.progress.add(new ObjectiveProgress(npc, player, questName,
+					objectives));
 		}
 		this.setStartTime(System.currentTimeMillis());
 	}
@@ -43,9 +43,9 @@ public class QuestProgress {
 
 	private void next() {
 		this.objectives.cycle();
-		for (Objective objective : objectives.current().all()) {
-			this.incrementers.add(QuestFactory.createIncrementer(npc, player,
-					questName, objective.getType(), objectives));
+		for (int i = 0; i != objectives.current().all().size(); ++i) {
+			this.progress.add(new ObjectiveProgress(npc, player, questName,
+					objectives));
 		}
 	}
 
@@ -63,43 +63,52 @@ public class QuestProgress {
 		return QuestManager.getQuest(this.getQuestName()).getObjectives();
 	}
 
-	public boolean fullyCompleted() {
-		return this.objectives.isCompleted();
+	public boolean stepCompleted() {
+		for (ObjectiveProgress prog : progress) {
+			if (!prog.isCompleted()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	public int getQuesterUID() {
-		return npc.getUID();
+	public boolean fullyCompleted() {
+		return stepCompleted() && this.objectives.isCompleted();
 	}
 
 	public boolean updateProgress(Event event) {
 		boolean completed = true;
-		if (incrementers.size() > 0) {
-			for (QuestIncrementer incrementer : this.incrementers) {
-				incrementer.updateProgress(event);
-				if (!incrementer.isCompleted())
+		if (progress.size() > 0) {
+			for (ObjectiveProgress progress : this.progress) {
+				if (!progress.update(event))
 					completed = false;
 			}
 		}
 		return completed;
 	}
 
-	public String getQuestName() {
-		return questName;
+	public int getQuesterUID() {
+		return this.npc.getUID();
 	}
 
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
+	public String getQuestName() {
+		return questName;
 	}
 
 	public long getStartTime() {
 		return startTime;
 	}
 
-	public List<QuestIncrementer> getIncrementers() {
-		return incrementers;
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 
-	public QuestIncrementer getIncrementer(int count) {
-		return incrementers.get(count);
+	public List<ObjectiveProgress> getProgress() {
+		return progress;
 	}
+
+	public ObjectiveProgress getProgress(int count) {
+		return progress.get(count);
+	}
+
 }
