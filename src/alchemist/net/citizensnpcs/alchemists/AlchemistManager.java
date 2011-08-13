@@ -2,16 +2,15 @@ package net.citizensnpcs.alchemists;
 
 import java.util.HashMap;
 
+import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.MessageUtils;
+import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.StringUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.citizens.utils.Messaging;
-
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.MessageUtils;
-import net.citizensnpcs.utils.StringUtils;
 
 public class AlchemistManager {
 

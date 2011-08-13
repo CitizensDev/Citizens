@@ -20,24 +20,24 @@ import org.bukkit.util.Vector;
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity path;
-	protected Entity targetEntity;
-	protected final NPCAnimator animations = new NPCAnimator(this);
 
+	protected final NPCAnimator animations = new NPCAnimator(this);
+	protected Entity targetEntity;
 	protected boolean targetAggro = false;
-	private boolean hasAttacked = false;
 	protected boolean jumping = false;
 	protected boolean randomPather = false;
+	protected boolean autoPathToTarget = true;
+	protected float pathingRange = 16;
+
+	private boolean hasAttacked = false;
 	private int pathTicks = 0;
 	private int pathTickLimit = -1;
 	private int stationaryTicks = 0;
 	private int stationaryTickLimit = -1;
 	private int attackTimes = 0;
 	private int attackTimesLimit = -1;
-	private int prevX;
-	private int prevY;
-	private int prevZ;
-	protected float pathingRange = 16;
-	private static final double jumpFactor = 0.05D;
+	private int prevX, prevY, prevZ;
+	private static final double JUMP_FACTOR = 0.05D;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -93,7 +93,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void updateTarget() {
-		if (!this.hasAttacked && this.targetEntity != null) {
+		if (!this.hasAttacked && this.targetEntity != null && autoPathToTarget) {
 			this.path = this.world.findPath(this, this.targetEntity,
 					pathingRange);
 		}
@@ -183,7 +183,7 @@ public class PathNPC extends EntityPlayer {
 		if (inWater || inLava) {
 			this.motY += 0.03999999910593033D;
 		} else if (this.onGround) {
-			this.motY = 0.41999998688697815D + jumpFactor;
+			this.motY = 0.41999998688697815D + JUMP_FACTOR;
 			// Augment defaults to actually get over a block.
 		}
 	}
@@ -198,11 +198,9 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void reset() {
-		this.pathTicks = 0;
-		this.stationaryTicks = 0;
 		this.path = null;
-		this.pathTickLimit = -1;
-		this.stationaryTickLimit = -1;
+		this.pathTicks = this.stationaryTicks = 0;
+		this.pathTickLimit = this.stationaryTickLimit = -1;
 		this.pathingRange = 16;
 	}
 
@@ -222,9 +220,9 @@ public class PathNPC extends EntityPlayer {
 	private boolean isWithinAttackRange(Entity entity, double distanceToEntity) {
 		// Bow distance from EntitySkeleton.
 		// Other from EntityCreature.
-		return (isHoldingBow() && distanceToEntity < 10)
-				|| (this.attackTicks <= 0 && distanceToEntity < 1.5F
-						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e);
+		return this.attackTicks <= 0
+				&& ((isHoldingBow() && distanceToEntity < 10) || (distanceToEntity < 1.5F
+						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e));
 	}
 
 	private void attackEntity(Entity entity) {
