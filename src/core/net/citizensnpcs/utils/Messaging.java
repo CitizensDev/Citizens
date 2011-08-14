@@ -11,6 +11,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Splitter;
+
 public class Messaging {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private final static String[] colours = { "black", "dblue", "dgreen",
@@ -21,27 +23,21 @@ public class Messaging {
 		send(sender, null, message);
 	}
 
-	public static void send(Player player, HumanNPC npc, String message) {
-		message = colourise(StringUtils.colourise(message));
-		message = message.replace("<h>", "" + player.getHealth());
-		message = message.replace("<name>", player.getName());
-		message = message.replace("<world>", player.getWorld().getName());
-		if (npc != null) {
-			message = message.replace("<npc>", npc.getStrippedName());
-			message = message.replace("<npcid>", "" + npc.getUID());
-		}
-		player.sendMessage(message);
-	}
-
-	public static void send(CommandSender sender, HumanNPC npc, String message) {
-		if (sender instanceof Player) {
-			send((Player) sender, npc, message);
-			return;
-		}
-		message = colourise(StringUtils.colourise(message));
-		if (npc != null) {
-			message = message.replace("<npc>", npc.getStrippedName());
-			message = message.replace("<npcid>", "" + npc.getUID());
+	public static void send(CommandSender sender, HumanNPC npc, String messages) {
+		for (String message : Splitter.on("<br>").omitEmptyStrings()
+				.split(messages)) {
+			if (sender instanceof Player) {
+				Player player = ((Player) sender);
+				message = message.replace("<h>", "" + player.getHealth());
+				message = message.replace("<name>", player.getName());
+				message = message.replace("<world>", player.getWorld()
+						.getName());
+			}
+			message = colourise(StringUtils.colourise(message));
+			if (npc != null) {
+				message = message.replace("<npc>", npc.getStrippedName());
+				message = message.replace("<npcid>", "" + npc.getUID());
+			}
 		}
 	}
 
