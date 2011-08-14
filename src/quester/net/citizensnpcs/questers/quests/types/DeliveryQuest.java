@@ -11,6 +11,8 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public class DeliveryQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.ENTITY_TARGET };
+
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof EntityTargetEvent
@@ -28,12 +30,12 @@ public class DeliveryQuest implements QuestObjective {
 				}
 			}
 		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		return isCompleted(progress);
 	}
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.ENTITY_TARGET };
+		return EVENTS;
 	}
 
 	@Override

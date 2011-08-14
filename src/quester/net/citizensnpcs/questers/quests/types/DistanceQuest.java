@@ -8,6 +8,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class DistanceQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.PLAYER_MOVE };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
@@ -19,12 +20,12 @@ public class DistanceQuest implements QuestObjective {
 			progress.incrementCompleted(x + y + z);
 
 		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		return isCompleted(progress);
 	}
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.PLAYER_MOVE };
+		return EVENTS;
 	}
 
 	@Override

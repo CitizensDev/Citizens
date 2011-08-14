@@ -9,6 +9,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class CombatQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
@@ -18,12 +19,12 @@ public class CombatQuest implements QuestObjective {
 				progress.incrementCompleted(1);
 			}
 		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		return isCompleted(progress);
 	}
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.ENTITY_DEATH };
+		return EVENTS;
 	}
 
 	@Override

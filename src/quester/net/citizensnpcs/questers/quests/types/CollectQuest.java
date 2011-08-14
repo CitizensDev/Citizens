@@ -8,6 +8,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class CollectQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.PLAYER_PICKUP_ITEM };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
@@ -19,12 +20,12 @@ public class CollectQuest implements QuestObjective {
 						.getAmount());
 			}
 		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		return isCompleted(progress);
 	}
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.PLAYER_PICKUP_ITEM };
+		return EVENTS;
 	}
 
 	@Override

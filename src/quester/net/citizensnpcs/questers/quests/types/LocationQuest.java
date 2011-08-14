@@ -9,23 +9,22 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class LocationQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.PLAYER_MOVE };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
-		// Possibility for a distance away parameter.
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			if (LocationUtils.withinRange(ev.getPlayer().getLocation(),
 					progress.getObjective().getLocation(), 0))
 				progress.setLastLocation(ev.getPlayer().getLocation());
 		}
-		return LocationUtils.withinRange(progress.getObjective().getLocation(),
-				progress.getLastLocation());
+		return isCompleted(progress);
 	}
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.PLAYER_MOVE };
+		return EVENTS;
 	}
 
 	@Override

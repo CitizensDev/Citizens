@@ -8,6 +8,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BuildQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.BLOCK_PLACE };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
@@ -17,12 +18,12 @@ public class BuildQuest implements QuestObjective {
 				progress.incrementCompleted(1);
 			}
 		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		return isCompleted(progress);
 	}
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.BLOCK_PLACE };
+		return EVENTS;
 	}
 
 	@Override

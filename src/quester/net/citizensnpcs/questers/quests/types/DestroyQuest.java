@@ -8,6 +8,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class DestroyQuest implements QuestObjective {
+	private static final Type[] EVENTS = new Type[] { Type.BLOCK_BREAK };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
@@ -23,7 +24,7 @@ public class DestroyQuest implements QuestObjective {
 
 	@Override
 	public Type[] getEventTypes() {
-		return new Type[] { Type.BLOCK_BREAK };
+		return EVENTS;
 	}
 
 	@Override
