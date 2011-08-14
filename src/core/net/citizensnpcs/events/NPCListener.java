@@ -9,7 +9,7 @@ public class NPCListener extends CustomEventListener implements Listener {
 	public void onNPCCreatureSpawn(NPCCreatureSpawnEvent event) {
 	}
 
-	public void onNPCDisplayText(NPCDisplayTextEvent event) {
+	public void onNPCDisplayText(NPCTalkEvent event) {
 	}
 
 	public void onNPCInventoryOpen(NPCInventoryOpenEvent event) {
@@ -28,8 +28,8 @@ public class NPCListener extends CustomEventListener implements Listener {
 	public void onCustomEvent(Event event) {
 		if (event instanceof NPCCreatureSpawnEvent) {
 			onNPCCreatureSpawn((NPCCreatureSpawnEvent) event);
-		} else if (event instanceof NPCDisplayTextEvent) {
-			onNPCDisplayText((NPCDisplayTextEvent) event);
+		} else if (event instanceof NPCTalkEvent) {
+			onNPCDisplayText((NPCTalkEvent) event);
 		} else if (event instanceof NPCInventoryOpenEvent) {
 			onNPCInventoryOpen((NPCInventoryOpenEvent) event);
 		} else if (event instanceof NPCRightClickEvent) {

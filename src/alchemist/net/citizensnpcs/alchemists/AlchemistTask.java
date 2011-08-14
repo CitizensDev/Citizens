@@ -27,28 +27,26 @@ public class AlchemistTask implements Runnable {
 				.split(",")) {
 			required.add(AlchemistManager.getStackByString(item));
 		}
-		ArrayList<ItemStack> npcInvContents = new ArrayList<ItemStack>();
 		PlayerInventory npcInv = npc.getInventory();
-		for (ItemStack i : npcInv.getContents()) {
-			npcInvContents.add(i);
-		}
-		if (npcInvContents.containsAll(required)) {
-			// clear all ingredients from the inventory
-			npcInv.clear();
-			// add the resulting item into the inventory
-			if (new Random().nextInt(100) <= SettingsManager
-					.getInt("AlchemistFailedCraftChance")) {
-				npcInv.addItem(new ItemStack(alchemist.getCurrentRecipeID()));
-			} else {
-				npcInv.addItem(new ItemStack(SettingsManager
-						.getInt("AlchemistFailedCraftItem")));
+		for (ItemStack i : required) {
+			if (!npcInv.contains(i)) {
+				return;
 			}
-			npc.getPlayer().updateInventory();
-			kill();
 		}
-		// make sure lists are clear for next iteration
-		required.clear();
+		// clear all ingredients from the inventory
 		npcInv.clear();
+		// make sure list is clear for next iteration
+		required.clear();
+		// add the resulting item into the inventory
+		if (new Random().nextInt(100) <= SettingsManager
+				.getInt("AlchemistFailedCraftChance")) {
+			npcInv.addItem(new ItemStack(alchemist.getCurrentRecipeID(), 1));
+		} else {
+			npcInv.addItem(new ItemStack(SettingsManager
+					.getInt("AlchemistFailedCraftItem"), 1));
+		}
+		npc.getPlayer().updateInventory();
+		kill();
 	}
 
 	public void addID(int id) {

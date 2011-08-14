@@ -72,7 +72,7 @@ public class AlchemistCommands implements CommandHandler {
 		}
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
-						+ "'s Recipes " + ChatColor.GREEN + "<%x/%y>")));
+						+ "'s Recipes " + ChatColor.WHITE + "<%x/%y>")));
 		for (Entry<Integer, String> entry : recipes.entrySet()) {
 			instance.push(" - "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(entry
@@ -142,6 +142,7 @@ public class AlchemistCommands implements CommandHandler {
 			}
 		}
 		alchemist.addRecipe(itemID, recipe);
+		alchemist.setCurrentRecipeID(itemID);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " has changed the recipe for "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");

@@ -3,7 +3,7 @@ package net.citizensnpcs.listeners;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.CreatureTask;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.events.NPCDisplayTextEvent;
+import net.citizensnpcs.events.NPCTalkEvent;
 import net.citizensnpcs.events.NPCRightClickEvent;
 import net.citizensnpcs.events.NPCTargetEvent;
 import net.citizensnpcs.npcs.NPCDataManager;
@@ -73,6 +73,9 @@ public class EntityListen extends EntityListener implements Listener {
 		HumanNPC npc = NPCManager.get(e.getEntity());
 		if (npc != null && event.getTarget() instanceof Player) {
 			Player player = (Player) event.getTarget();
+			if (npc.getNPCData().isLookClose()) {
+				NPCManager.facePlayer(npc, player);
+			}
 			if (Citizens.validateTool("items.basic.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
@@ -84,18 +87,17 @@ public class EntityListen extends EntityListener implements Listener {
 					}
 				}
 			}
-			// Call text-display event
+			// Call NPC talk event
 			if (Citizens.validateTool("items.basic.talk-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				Player target = (Player) e.getTarget();
-				NPCDisplayTextEvent textEvent = new NPCDisplayTextEvent(npc,
-						target, MessageUtils.getText(npc, target));
-				Bukkit.getServer().getPluginManager().callEvent(textEvent);
-				if (textEvent.isCancelled()) {
-				} else if (!textEvent.getNPC().getNPCData().isLookClose()) {
-					NPCManager.facePlayer(npc, target);
-				} else if (!textEvent.getText().isEmpty()) {
-					Messaging.send(target, npc, textEvent.getText());
+				NPCTalkEvent talkEvent = new NPCTalkEvent(npc, target,
+						MessageUtils.getText(npc, target));
+				Bukkit.getServer().getPluginManager().callEvent(talkEvent);
+				if (!talkEvent.isCancelled()) {
+					if (!talkEvent.getText().isEmpty()) {
+						Messaging.send(target, npc, talkEvent.getText());
+					}
 				}
 			}
 			NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(npc,

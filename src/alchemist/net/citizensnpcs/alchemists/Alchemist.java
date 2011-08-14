@@ -73,11 +73,13 @@ public class Alchemist extends CitizensNPC {
 						+ " has no recipes.");
 				return;
 			}
-			AlchemistManager.sendRecipeMessage(player, npc, 1);
-			player.sendMessage(ChatColor.GREEN + "Type "
-					+ StringUtils.wrap("/alchemist view (page)")
-					+ " to view more ingredients for the selected recipe.");
-			player.sendMessage(ChatColor.GREEN + "Right-click again to craft.");
+			if (AlchemistManager.sendRecipeMessage(player, npc, 1)) {
+				player.sendMessage(ChatColor.GREEN + "Type "
+						+ StringUtils.wrap("/alchemist view (page)")
+						+ " to view more ingredients for the selected recipe.");
+				player.sendMessage(ChatColor.GREEN
+						+ "Right-click again to craft.");
+			}
 			AlchemistManager.setClickedOnce(player.getName(), true);
 			return;
 		}
