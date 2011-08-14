@@ -1,9 +1,10 @@
-package net.citizensnpcs.questers.quests;
+package net.citizensnpcs.questers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.questers.PlayerProfile;
+import net.citizensnpcs.questers.quests.Quest;
+import net.citizensnpcs.questers.quests.QuestProgress;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
@@ -39,13 +40,10 @@ public class QuestManager {
 		if (event instanceof Cancellable && ((Cancellable) event).isCancelled())
 			return;
 		if (hasQuest(player)) {
-			boolean completed = getProfile(player.getName()).getProgress()
-					.updateProgress(event);
-			if (completed) {
-				QuestProgress progress = getProfile(player.getName())
-						.getProgress();
-				if (progress.stepCompleted())
-					progress.cycle();
+			QuestProgress progress = getProfile(player.getName()).getProgress();
+			progress.updateProgress(event);
+			if (progress.stepCompleted()) {
+				progress.cycle();
 			}
 		}
 	}

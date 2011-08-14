@@ -1,6 +1,7 @@
 package net.citizensnpcs.questers.quests;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
+import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;

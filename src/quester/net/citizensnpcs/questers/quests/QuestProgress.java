@@ -3,6 +3,7 @@ package net.citizensnpcs.questers.quests;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
@@ -76,15 +77,21 @@ public class QuestProgress {
 		return stepCompleted() && this.objectives.isCompleted();
 	}
 
-	public boolean updateProgress(Event event) {
-		boolean completed = true;
+	public void updateProgress(Event event) {
 		if (progress.size() > 0) {
 			for (ObjectiveProgress progress : this.progress) {
-				if (!progress.update(event))
-					completed = false;
+				boolean cont = true;
+				for (Event.Type type : progress.getEventTypes()) {
+					if (type == event.getType()) {
+						cont = false;
+						break;
+					}
+				}
+				if (cont)
+					continue;
+				progress.update(event);
 			}
 		}
-		return completed;
 	}
 
 	public int getQuesterUID() {

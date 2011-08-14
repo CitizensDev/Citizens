@@ -1,9 +1,9 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.RewardBuilder;
-import net.citizensnpcs.questers.quests.QuestManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;

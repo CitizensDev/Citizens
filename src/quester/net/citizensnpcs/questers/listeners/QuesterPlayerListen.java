@@ -2,7 +2,7 @@ package net.citizensnpcs.questers.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.listeners.Listener;
-import net.citizensnpcs.questers.quests.QuestManager;
+import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.utils.ConversationUtils;
 
 import org.bukkit.Bukkit;

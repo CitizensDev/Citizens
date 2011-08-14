@@ -7,7 +7,6 @@ import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestManager;
 import net.citizensnpcs.questers.quests.QuestProgress;
 import net.citizensnpcs.utils.LocationUtils;
 

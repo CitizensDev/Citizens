@@ -80,4 +80,8 @@ public class ObjectiveProgress {
 		return questName;
 	}
 
+	public Event.Type[] getEventTypes() {
+		return questtype.getEventTypes();
+	}
+
 }
