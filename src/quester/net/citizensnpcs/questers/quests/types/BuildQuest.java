@@ -29,5 +29,4 @@ public class BuildQuest implements QuestObjective {
 	public boolean isCompleted(ObjectiveProgress progress) {
 		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
-
 }

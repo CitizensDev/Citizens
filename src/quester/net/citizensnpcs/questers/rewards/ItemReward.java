@@ -2,6 +2,7 @@ package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
+import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -93,5 +94,17 @@ public class ItemReward implements Reward {
 		storage.setInt(root + ".id", reward.getTypeId());
 		storage.setInt(root + ".amount", reward.getAmount());
 		storage.setInt(root + ".data", reward.getDurability());
+	}
+
+	public static class ItemRewardBuilder implements RewardBuilder {
+		@Override
+		public Reward build(Storage storage, String root, boolean take) {
+			int id = storage.getInt(root + ".id");
+			int amount = storage.getInt(root + ".amount");
+			short data = 0;
+			if (storage.keyExists(root + ".data"))
+				data = (short) storage.getInt(root + ".data");
+			return new ItemReward(new ItemStack(id, amount, data), take);
+		}
 	}
 }

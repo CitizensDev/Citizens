@@ -3,6 +3,7 @@ package net.citizensnpcs.questers.rewards;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
+import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
@@ -38,5 +39,12 @@ public class RankReward implements Reward {
 	@Override
 	public void save(Storage storage, String root) {
 		storage.setString(root + ".rank", reward);
+	}
+
+	public static class RankRewardBuilder implements RewardBuilder {
+		@Override
+		public Reward build(Storage storage, String root, boolean take) {
+			return new RankReward(storage.getString(root + ".rank"));
+		}
 	}
 }

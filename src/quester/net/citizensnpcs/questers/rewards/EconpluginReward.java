@@ -3,6 +3,7 @@ package net.citizensnpcs.questers.rewards;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
+import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -53,5 +54,13 @@ public class EconpluginReward implements Reward {
 	@Override
 	public void save(Storage storage, String root) {
 		storage.setDouble(root + ".amount", reward);
+	}
+
+	public static class EconpluginRewardBuilder implements RewardBuilder {
+		@Override
+		public Reward build(Storage storage, String root, boolean take) {
+			return new EconpluginReward(storage.getDouble(root + ".money"),
+					take);
+		}
 	}
 }

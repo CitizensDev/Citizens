@@ -2,18 +2,11 @@ package net.citizensnpcs.questers.quests;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.rewards.EconpluginReward;
-import net.citizensnpcs.questers.rewards.HealthReward;
-import net.citizensnpcs.questers.rewards.ItemReward;
-import net.citizensnpcs.questers.rewards.PermissionReward;
-import net.citizensnpcs.questers.rewards.QuestReward;
-import net.citizensnpcs.questers.rewards.RankReward;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 public class QuestFactory {
 	public static void instantiateQuests(ConfigurationHandler quests) {
@@ -27,37 +20,12 @@ public class QuestFactory {
 			quest.setRepeatable(quests.getBoolean(path + ".repeatable"));
 			String tempPath = path;
 			if (quests.pathExists(path + "rewards")) {
-				// TODO: abstract this out per-class - perhaps a class that maps
-				// rewards to 'RewardBuilder's?
 				for (String reward : quests.getKeys(path + "rewards")) {
-					path = tempPath + "rewards." + reward + ".";
+					path = tempPath + "rewards." + reward;
 					String type = quests.getString(path + "type");
 					boolean take = quests.getBoolean(path + "take");
-					if (type.equals("health")) {
-						int amount = quests.getInt(path + "amount");
-						quest.addReward(new HealthReward(amount, take));
-					} else if (type.equals("item")) {
-						int id = quests.getInt(path + "id");
-						int amount = quests.getInt(path + "amount");
-						byte data = 0;
-						if (quests.pathExists(path + "data"))
-							data = (byte) quests.getInt(path + "data");
-						quest.addReward(new ItemReward(new ItemStack(id,
-								amount, data), take));
-					} else if (type.equals("money")) {
-						double amount = quests.getDouble(path + "amount");
-						quest.addReward(new EconpluginReward(amount, take));
-					} else if (type.equals("permission")) {
-						String permission = quests.getString(path
-								+ "permission");
-						quest.addReward(new PermissionReward(permission, take));
-					} else if (type.equals("quest")) {
-						String questToGive = quests.getString(path + "quest");
-						quest.addReward(new QuestReward(questToGive));
-					} else if (type.equals("rank")) {
-						String rank = quests.getString(path + "rank");
-						quest.addReward(new RankReward(rank));
-					}
+					quest.addReward(QuestAPI.getBuilder(type).build(quests,
+							type, take));
 				}
 			}
 			path = tempPath = questName + ".objectives";
@@ -84,13 +52,11 @@ public class QuestFactory {
 						if (quests.pathExists(path + ".item")) {
 							int id = quests.getInt(path + ".item.id");
 							int amount = quests.getInt(path + ".item.amount");
-							byte data = 0;
+							short data = 0;
 							if (quests.pathExists(path + ".item.data"))
-								data = (byte) quests
-										.getInt(path + ".item.data");
-							ItemStack stack = new ItemStack(id, amount);
-							stack.setData(new MaterialData(id, data));
-							obj.item(stack);
+								data = (short) quests.getInt(path
+										+ ".item.data");
+							obj.item(new ItemStack(id, amount, data));
 						}
 						if (quests.pathExists(path + ".location")) {
 							obj.location(LocationUtils.loadLocation(quests,
