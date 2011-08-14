@@ -1,8 +1,9 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -18,7 +19,7 @@ public class EconpluginReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player) {
+	public void grant(Player player, HumanNPC npc) {
 		if (EconomyManager.useEconPlugin()) {
 			if (this.take) {
 				EconomyManager.subtract(player.getName(), reward);
@@ -26,17 +27,6 @@ public class EconpluginReward implements Reward {
 				EconomyManager.add(player.getName(), reward);
 			}
 		}
-
-	}
-
-	@Override
-	public RewardType getType() {
-		return RewardType.MONEY;
-	}
-
-	@Override
-	public Object getReward() {
-		return reward;
 	}
 
 	@Override
@@ -58,5 +48,10 @@ public class EconpluginReward implements Reward {
 						EconomyManager.format(EconomyManager.getBalance(player
 								.getName()) - reward), ChatColor.GRAY)
 				+ " more.";
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		storage.setDouble(root + ".amount", reward);
 	}
 }

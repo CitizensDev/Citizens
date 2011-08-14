@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.commands.CommandHandler;
@@ -13,7 +12,6 @@ import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.QuestManager;
-import net.citizensnpcs.questers.rewards.QuestReward;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PageUtils;
@@ -23,11 +21,13 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class Quester extends CitizensNPC {
 	private final Map<Player, PageInstance> displays = Maps.newHashMap();
-	private final Deque<String> quests = new ArrayDeque<String>();
+	private final Map<Player, Integer> queue = Maps.newHashMap();
+	private final List<String> quests = Lists.newArrayList();
 
 	// TODO - make this queue per-player.
 
@@ -37,14 +37,14 @@ public class Quester extends CitizensNPC {
 	 * @param quest
 	 */
 	public void addQuest(String quest) {
-		quests.push(quest);
+		quests.add(quest);
 	}
 
 	public void removeQuest(String quest) {
-		quests.removeFirstOccurrence(quest);
+		quests.remove(quests.indexOf(quest));
 	}
 
-	public Deque<String> getQuests() {
+	public List<String> getQuests() {
 		return quests;
 	}
 
@@ -61,31 +61,7 @@ public class Quester extends CitizensNPC {
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (QuestManager.hasQuest(player)) {
-			PlayerProfile profile = QuestManager.getProfile(player.getName());
-			if (profile.getProgress().getQuesterUID() == npc.getUID()) {
-				if (profile.getProgress().fullyCompleted()) {
-					Quest quest = QuestManager.getQuest(profile.getProgress()
-							.getQuestName());
-					Messaging.send(player, quest.getCompletedText());
-					for (Reward reward : quest.getRewards()) {
-						if (reward instanceof QuestReward)
-							((QuestReward) reward).grantQuest(player, npc);
-						else
-							reward.grant(player);
-					}
-					long elapsed = System.currentTimeMillis()
-							- profile.getProgress().getStartTime();
-					profile.setProgress(null);
-					profile.addCompletedQuest(new CompletedQuest(quest, npc
-							.getStrippedName(), elapsed));
-				} else {
-					player.sendMessage(ChatColor.GRAY
-							+ "The quest isn't completed yet.");
-				}
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "You already have a quest from another NPC.");
-			}
+			checkCompletion(player, npc);
 		} else {
 			if (displays.get(player) == null) {
 				cycle(player);
@@ -98,29 +74,58 @@ public class Quester extends CitizensNPC {
 							+ "Right click again to accept.");
 				}
 			} else {
-				Quest quest = getQuest(quests.peek());
-				if (QuestManager.getProfile(player.getName()).hasCompleted(
-						quests.peek())
-						&& !quest.isRepeatable()) {
-					player.sendMessage(ChatColor.GRAY
-							+ "You are not allowed to repeat this quest.");
-					return;
-				}
-				for (Reward requirement : quest.getRequirements()) {
-					if (!requirement.canTake(player)) {
-						player.sendMessage(ChatColor.GRAY
-								+ "Missing requirement. "
-								+ requirement.getRequiredText(player));
-						return;
-					}
-				}
-
-				QuestManager.assignQuest(npc, player, quests.peek());
-				Messaging.send(player, quest.getAcceptanceText());
-
-				displays.remove(player);
+				attemptAssign(player, npc);
 			}
 		}
+	}
+
+	private void checkCompletion(Player player, HumanNPC npc) {
+		PlayerProfile profile = QuestManager.getProfile(player.getName());
+		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
+			if (profile.getProgress().fullyCompleted()) {
+				Quest quest = QuestManager.getQuest(profile.getProgress()
+						.getQuestName());
+				Messaging.send(player, quest.getCompletedText());
+				for (Reward reward : quest.getRewards()) {
+					reward.grant(player, npc);
+				}
+				long elapsed = System.currentTimeMillis()
+						- profile.getProgress().getStartTime();
+				profile.setProgress(null);
+				profile.addCompletedQuest(new CompletedQuest(quest, npc
+						.getStrippedName(), elapsed));
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "The quest isn't completed yet.");
+			}
+		} else {
+			player.sendMessage(ChatColor.GRAY
+					+ "You already have a quest from another NPC.");
+		}
+	}
+
+	private void attemptAssign(Player player, HumanNPC npc) {
+		Quest quest = getQuest(fetchFromList(player));
+		if (QuestManager.getProfile(player.getName()).hasCompleted(
+				fetchFromList(player))
+				&& !quest.isRepeatable()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You are not allowed to repeat this quest.");
+			return;
+		}
+		for (Reward requirement : quest.getRequirements()) {
+			if (!requirement.canTake(player)) {
+				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
+						+ requirement.getRequiredText(player));
+				return;
+			}
+		}
+
+		QuestManager.assignQuest(npc, player, fetchFromList(player));
+		Messaging.send(player, quest.getAcceptanceText());
+
+		displays.remove(player);
+
 	}
 
 	private void cycle(Player player) {
@@ -133,12 +138,16 @@ public class Quester extends CitizensNPC {
 			player.sendMessage(ChatColor.GRAY + "No quests available.");
 			return;
 		}
-		quests.addLast(quests.pop());
+		if (queue.get(player) == null) {
+			queue.put(player, 0);
+		} else {
+			queue.put(player, queue.get(player) + 1);
+		}
 		updateDescription(player);
 	}
 
 	private void updateDescription(Player player) {
-		Quest quest = getQuest(quests.peek());
+		Quest quest = getQuest(fetchFromList(player));
 		PageInstance display = PageUtils.newInstance(player);
 		display.setSmoothTransition(true);
 		display.header(ChatColor.GREEN
@@ -160,6 +169,10 @@ public class Quester extends CitizensNPC {
 
 	private Quest getQuest(String name) {
 		return QuestManager.getQuest(name);
+	}
+
+	private String fetchFromList(Player player) {
+		return quests.get(queue.get(player));
 	}
 
 	public boolean hasQuests() {

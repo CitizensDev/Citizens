@@ -1,8 +1,9 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,21 +18,11 @@ public class PermissionReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player) {
+	public void grant(Player player, HumanNPC npc) {
 		if (take)
 			PermissionManager.givePermission(player, reward, true);
 		else
 			PermissionManager.givePermission(player, reward, false);
-	}
-
-	@Override
-	public RewardType getType() {
-		return RewardType.PERMISSION;
-	}
-
-	@Override
-	public Object getReward() {
-		return reward;
 	}
 
 	@Override
@@ -47,5 +38,10 @@ public class PermissionReward implements Reward {
 	@Override
 	public String getRequiredText(Player player) {
 		return ChatColor.GRAY + "You don't have the necessary permissions.";
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		storage.setString(root + ".permission", reward);
 	}
 }

@@ -1,8 +1,11 @@
 package net.citizensnpcs.questers.rewards;
 
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
+import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,22 +19,52 @@ public class ItemReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player) {
+	public void grant(Player player, HumanNPC npc) {
 		if (this.take) {
-			// dostuff
+			removeItems(player);
 		} else {
 			player.getWorld().dropItemNaturally(player.getLocation(), reward);
 		}
 	}
 
-	@Override
-	public RewardType getType() {
-		return RewardType.ITEM;
+	private void removeItems(Player player) {
+		int remaining = reward.getAmount();
+		ItemStack[] contents = player.getInventory().getContents();
+		for (int i = 0; i != contents.length; ++i) {
+			ItemStack item = contents[i];
+			if (item.getType() == reward.getType()) {
+				if (remaining - item.getAmount() < 0) {
+					item.setAmount(item.getAmount() - remaining);
+					remaining = 0;
+				} else {
+					remaining -= item.getAmount();
+					item = null;
+				}
+				if (item.getAmount() == 0)
+					item = null;
+				contents[i] = item;
+				if (remaining <= 0)
+					break;
+			}
+		}
+		player.getInventory().setContents(contents);
 	}
 
-	@Override
-	public Object getReward() {
-		return reward;
+	private int getRemainder(Player player) {
+		int remaining = reward.getAmount();
+		for (ItemStack item : player.getInventory().getContents()) {
+			if (item.getType() == reward.getType()) {
+				if (remaining - item.getAmount() < 0) {
+					item.setAmount(item.getAmount() - remaining);
+					remaining = 0;
+				} else {
+					remaining -= item.getAmount();
+				}
+				if (remaining <= 0)
+					break;
+			}
+		}
+		return remaining;
 	}
 
 	@Override
@@ -41,14 +74,24 @@ public class ItemReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take;
-		// return take ? ItemInterface.hasEnough(new Payment(reward), player)
-		// : true;
+		return take ? getRemainder(player) <= 0 : true;
 	}
 
 	@Override
 	public String getRequiredText(Player player) {
-		// TODO Auto-generated method stub
-		return null;
+		int remainder = getRemainder(player);
+		return ChatColor.GRAY
+				+ "You need "
+				+ StringUtils.wrap(remainder, ChatColor.GRAY)
+				+ " more "
+				+ StringUtils.pluralise(StringUtils.format(reward.getType()),
+						remainder) + ".";
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		storage.setInt(root + ".id", reward.getTypeId());
+		storage.setInt(root + ".amount", reward.getAmount());
+		storage.setInt(root + ".data", reward.getDurability());
 	}
 }

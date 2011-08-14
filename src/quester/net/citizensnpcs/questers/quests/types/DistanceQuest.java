@@ -8,22 +8,16 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class DistanceQuest implements QuestObjective {
-	private double traveled = 0;
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
-			// Considering doing this a different way.
-			// Object for distance type? DistanceType?
-			double x = ev.getTo().getX() - ev.getFrom().getX();
-			double z = ev.getTo().getZ() - ev.getFrom().getZ();
-			traveled = Math.round(Math.sqrt(x * x + z * z) * 100);
-			double m = traveled / 100D;
-			double km = m / 1000D;
-			if (km > 0.5D) {
+			int x = Math.abs(ev.getTo().getBlockX() - ev.getFrom().getBlockX());
+			int y = Math.abs(ev.getTo().getBlockY() - ev.getFrom().getBlockY());
+			int z = Math.abs(ev.getTo().getBlockZ() - ev.getFrom().getBlockZ());
+			progress.incrementCompleted(x + y + z);
 
-			}// Kilometres if (m> 0.5D) ; // Metres else ; // Centimetres
 		}
 		return progress.getAmount() >= progress.getObjective().getAmount();
 	}

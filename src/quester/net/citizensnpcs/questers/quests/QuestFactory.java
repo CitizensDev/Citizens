@@ -2,8 +2,6 @@ package net.citizensnpcs.questers.quests;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.quests.QuestManager.QuestType;
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
 import net.citizensnpcs.questers.rewards.EconpluginReward;
 import net.citizensnpcs.questers.rewards.HealthReward;
 import net.citizensnpcs.questers.rewards.ItemReward;
@@ -29,6 +27,8 @@ public class QuestFactory {
 			quest.setRepeatable(quests.getBoolean(path + ".repeatable"));
 			String tempPath = path;
 			if (quests.pathExists(path + "rewards")) {
+				// TODO: abstract this out per-class - perhaps a class that maps
+				// rewards to 'RewardBuilder's?
 				for (String reward : quests.getKeys(path + "rewards")) {
 					path = tempPath + "rewards." + reward + ".";
 					String type = quests.getString(path + "type");
@@ -42,9 +42,8 @@ public class QuestFactory {
 						byte data = 0;
 						if (quests.pathExists(path + "data"))
 							data = (byte) quests.getInt(path + "data");
-						ItemStack stack = new ItemStack(id, amount);
-						stack.setData(new MaterialData(id, data));
-						quest.addReward(new ItemReward(stack, take));
+						quest.addReward(new ItemReward(new ItemStack(id,
+								amount, data), take));
 					} else if (type.equals("money")) {
 						double amount = quests.getDouble(path + "amount");
 						quest.addReward(new EconpluginReward(amount, take));
@@ -69,8 +68,7 @@ public class QuestFactory {
 					tempPath = questName + ".objectives." + step;
 					for (Object objective : quests.getKeys(path + "." + step)) {
 						path = tempPath + "." + objective;
-						QuestType type = QuestType.getType(quests
-								.getString(path + ".type"));
+						String type = quests.getString(path + ".type");
 						if (type == null) {
 							Messaging.log("Invalid quest objective (quest "
 									+ (questCount + 1)
@@ -134,34 +132,8 @@ public class QuestFactory {
 		int count = 0;
 		for (Reward reward : quest.getRewards()) {
 			path = temp + count;
-			if (reward.getType() != RewardType.QUEST
-					&& reward.getType() != RewardType.RANK)
-				quests.setBoolean(path + ".take", reward.isTake());
-			switch (reward.getType()) {
-			case HEALTH:
-				quests.setInt(path + ".amount", (Integer) reward.getReward());
-				break;
-			case ITEM:
-				ItemStack item = (ItemStack) reward.getReward();
-				quests.setInt(path + ".id", item.getTypeId());
-				quests.setInt(path + ".amount", item.getAmount());
-				quests.setInt(path + ".data", item.getData() == null ? 0 : item
-						.getData().getData());
-				break;
-			case MONEY:
-				quests.setDouble(path + ".amount", (Double) reward.getReward());
-				break;
-			case PERMISSION:
-				quests.setString(path + ".permission",
-						(String) reward.getReward());
-				break;
-			case QUEST:
-				quests.setString(path + ".quest", (String) reward.getReward());
-				break;
-			case RANK:
-				quests.setString(path + ".rank", (String) reward.getReward());
-				break;
-			}
+			quests.setBoolean(path + ".take", reward.isTake());
+			reward.save(quests, path);
 			++count;
 		}
 		count = 0;
@@ -170,8 +142,7 @@ public class QuestFactory {
 		for (QuestStep step : quest.getObjectives().all()) {
 			for (Objective objective : step.all()) {
 				temp = path + "." + stepCount + "." + count;
-				quests.setString(path + ".type", objective.getType().name()
-						.toLowerCase());
+				quests.setString(path + ".type", objective.getType());
 				if (objective.getAmount() != -1)
 					quests.setInt(path + ".amount", objective.getAmount());
 				if (objective.getDestinationNPCID() != -1)
@@ -183,9 +154,7 @@ public class QuestFactory {
 					ItemStack item = objective.getItem();
 					quests.setInt(path + ".item.id", item.getTypeId());
 					quests.setInt(path + ".item.amount", item.getAmount());
-					quests.setInt(path + ".item.data",
-							item.getData() == null ? 0 : item.getData()
-									.getData());
+					quests.setInt(path + ".item.data", item.getDurability());
 				}
 				if (objective.getLocation() != null) {
 					LocationUtils.saveLocation(quests, objective.getLocation(),

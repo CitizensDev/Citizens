@@ -1,7 +1,5 @@
 package net.citizensnpcs.questers.quests;
 
-import net.citizensnpcs.questers.quests.QuestManager.QuestType;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -26,11 +24,11 @@ public class Objective {
 	private final Location location;
 	private final String message;
 	private final Material material;
-	private final QuestType type;
+	private final String questType;
 
-	private Objective(QuestType type, int amount, int destination,
-			ItemStack item, String message, Material material, Location location) {
-		this.type = type;
+	private Objective(String type, int amount, int destination, ItemStack item,
+			String message, Material material, Location location) {
+		this.questType = type;
 		this.amount = amount;
 		this.destination = destination;
 		this.item = item;
@@ -39,8 +37,8 @@ public class Objective {
 		this.location = location;
 	}
 
-	public QuestType getType() {
-		return type;
+	public String getType() {
+		return questType;
 	}
 
 	public int getDestinationNPCID() {
@@ -75,9 +73,9 @@ public class Objective {
 		private Location location = null;
 		private String message = "";
 		private Material material = null;
-		private final QuestType type;
+		private final String type;
 
-		public Builder(QuestType type) {
+		public Builder(String type) {
 			this.type = type;
 		}
 

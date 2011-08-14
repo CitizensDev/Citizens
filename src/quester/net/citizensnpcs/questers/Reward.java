@@ -1,19 +1,18 @@
 package net.citizensnpcs.questers;
 
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
+import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
 
 public interface Reward {
-	public void grant(Player player);
+	public void grant(Player player, HumanNPC npc);
 
 	public boolean canTake(Player player);
 
-	public String getRequiredText(Player player);
-
 	public boolean isTake();
 
-	public RewardType getType();
+	public String getRequiredText(Player player);
 
-	public Object getReward();
+	public void save(Storage storage, String root);
 }

@@ -1,7 +1,8 @@
 package net.citizensnpcs.questers.rewards;
 
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -17,21 +18,11 @@ public class HealthReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player) {
+	public void grant(Player player, HumanNPC npc) {
 		if (this.take)
 			player.setHealth(player.getHealth() - reward);
 		else
 			player.setHealth(player.getHealth() + reward);
-	}
-
-	@Override
-	public RewardType getType() {
-		return RewardType.HEALTH;
-	}
-
-	@Override
-	public Object getReward() {
-		return reward;
 	}
 
 	@Override
@@ -49,5 +40,10 @@ public class HealthReward implements Reward {
 		return ChatColor.GRAY + "You need "
 				+ StringUtils.wrap(player.getHealth() - reward, ChatColor.GRAY)
 				+ " more health.";
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		storage.setInt(root + ".amount", reward);
 	}
 }

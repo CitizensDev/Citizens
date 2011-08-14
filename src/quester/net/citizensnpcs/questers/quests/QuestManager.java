@@ -4,14 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.questers.PlayerProfile;
-import net.citizensnpcs.questers.quests.types.BuildQuest;
-import net.citizensnpcs.questers.quests.types.CollectQuest;
-import net.citizensnpcs.questers.quests.types.CombatQuest;
-import net.citizensnpcs.questers.quests.types.DeliveryQuest;
-import net.citizensnpcs.questers.quests.types.DestroyQuest;
-import net.citizensnpcs.questers.quests.types.DistanceQuest;
-import net.citizensnpcs.questers.quests.types.HuntQuest;
-import net.citizensnpcs.questers.quests.types.LocationQuest;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
@@ -20,65 +12,6 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 public class QuestManager {
-	public enum QuestType {
-		/**
-		 * Place blocks
-		 */
-		BUILD(new BuildQuest()),
-		/**
-		 * Collect item(s)/blocks(s)
-		 */
-		COLLECT(new CollectQuest()),
-		/**
-		 * Deliver item(s) to an NPC
-		 */
-		DELIVERY(new DeliveryQuest()),
-		/**
-		 * Break blocks
-		 */
-		DESTROY_BLOCK(new DestroyQuest()),
-		/**
-		 * Kill mobs
-		 */
-		HUNT(new HuntQuest()),
-		/**
-		 * Travel a distance
-		 */
-		MOVE_DISTANCE(new DistanceQuest()),
-		/**
-		 * Travel to a location
-		 */
-		MOVE_LOCATION(new LocationQuest()),
-		/**
-		 * Kill players
-		 */
-		PLAYER_COMBAT(new CombatQuest());
-		private final QuestObjective instance;
-
-		QuestType(QuestObjective instance) {
-			this.instance = instance;
-		}
-
-		private final static Map<String, QuestType> lookupNames = new HashMap<String, QuestType>();
-		static {
-			for (QuestType type : QuestType.values()) {
-				lookupNames.put(type.name(), type);
-			}
-		}
-
-		public static QuestType getType(String string) {
-			QuestType result = null;
-			String filtered = string.trim().toUpperCase();
-			filtered = filtered.replaceAll("\\s+", "_").replaceAll("\\W", "");
-			result = lookupNames.get(filtered);
-			return result;
-		}
-
-		public QuestObjective getInstance() {
-			return instance;
-		}
-	}
-
 	public enum RewardType {
 		HEALTH,
 		ITEM,

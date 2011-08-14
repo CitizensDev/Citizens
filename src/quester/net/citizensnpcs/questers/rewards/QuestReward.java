@@ -1,8 +1,8 @@
 package net.citizensnpcs.questers.rewards;
 
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.quests.QuestManager;
-import net.citizensnpcs.questers.quests.QuestManager.RewardType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
@@ -14,22 +14,9 @@ public class QuestReward implements Reward {
 		this.reward = quest;
 	}
 
-	public void grantQuest(Player player, HumanNPC npc) {
+	@Override
+	public void grant(Player player, HumanNPC npc) {
 		QuestManager.assignQuest(npc, player, reward);
-	}
-
-	@Override
-	public void grant(Player player) {
-	}
-
-	@Override
-	public RewardType getType() {
-		return RewardType.QUEST;
-	}
-
-	@Override
-	public Object getReward() {
-		return reward;
 	}
 
 	@Override
@@ -45,5 +32,10 @@ public class QuestReward implements Reward {
 	@Override
 	public String getRequiredText(Player player) {
 		return "";
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		storage.setString(root + ".quest", reward);
 	}
 }

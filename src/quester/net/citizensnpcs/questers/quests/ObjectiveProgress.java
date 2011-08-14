@@ -25,7 +25,7 @@ public class ObjectiveProgress {
 		this.player = player;
 		this.questName = questName;
 		this.objective = objectives.nextObjective();
-		this.questtype = objective.getType().getInstance();
+		this.questtype = QuestAPI.getObjective(objective.getType());
 	}
 
 	public boolean update(Event event) {
