@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "quester")
-public class QuesterCommands extends CommandHandler {
+public class QuesterCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@ServerCommand()
@@ -34,7 +34,7 @@ public class QuesterCommands extends CommandHandler {
 	@CommandPermissions("quester.use.help")
 	public static void questerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendHelp((Quester) npc.getType("quester"), sender, 1);
+		HelpUtils.sendQuesterHelp(sender);
 	}
 
 	@Command(
@@ -100,15 +100,5 @@ public class QuesterCommands extends CommandHandler {
 		PermissionManager.addPerm("quester.modify.assignquest");
 		PermissionManager.addPerm("quester.modify.removequest");
 		PermissionManager.addPerm("quester.modify.questedit");
-	}
-
-	@Override
-	public void sendHelp(CommandSender sender, int page) {
-		HelpUtils.header(sender, "Quester", 1, 1);
-		HelpUtils.format(sender, "quester", "assign [quest]",
-				"assign a quest to an NPC");
-		HelpUtils.format(sender, "quester", "remove [quest]",
-				"remove a quest from an NPC");
-		HelpUtils.footer(sender);
 	}
 }

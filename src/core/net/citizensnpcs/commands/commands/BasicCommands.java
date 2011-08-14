@@ -40,7 +40,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
-public class BasicCommands extends CommandHandler {
+public class BasicCommands implements CommandHandler {
 
 	@Command(aliases = "citizens", desc = "view Citizens info", max = 0)
 	@ServerCommand()

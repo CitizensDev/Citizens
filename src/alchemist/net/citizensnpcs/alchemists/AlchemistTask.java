@@ -1,10 +1,13 @@
 package net.citizensnpcs.alchemists;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class AlchemistTask implements Runnable {
@@ -24,13 +27,22 @@ public class AlchemistTask implements Runnable {
 				.split(",")) {
 			required.add(AlchemistManager.getStackByString(item));
 		}
-		ArrayList<ItemStack> npcInv = new ArrayList<ItemStack>();
-		for (ItemStack i : npc.getInventory().getContents()) {
-			npcInv.add(i);
+		ArrayList<ItemStack> npcInvContents = new ArrayList<ItemStack>();
+		PlayerInventory npcInv = npc.getInventory();
+		for (ItemStack i : npcInv.getContents()) {
+			npcInvContents.add(i);
 		}
-		if (npcInv.containsAll(required)) {
-			npc.getInventory().addItem(
-					new ItemStack(alchemist.getCurrentRecipeID()));
+		if (npcInvContents.containsAll(required)) {
+			// clear all ingredients from the inventory
+			npcInv.clear();
+			// add the resulting item into the inventory
+			if (new Random().nextInt(100) <= SettingsManager
+					.getInt("AlchemistFailedCraftChance")) {
+				npcInv.addItem(new ItemStack(alchemist.getCurrentRecipeID()));
+			} else {
+				npcInv.addItem(new ItemStack(SettingsManager
+						.getInt("AlchemistFailedCraftItem")));
+			}
 			npc.getPlayer().updateInventory();
 			kill();
 		}

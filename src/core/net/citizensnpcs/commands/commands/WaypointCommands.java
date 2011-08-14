@@ -17,7 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
-public class WaypointCommands extends CommandHandler {
+public class WaypointCommands implements CommandHandler {
 
 	@Command(
 			aliases = { "wp", "waypoint" },

@@ -35,6 +35,9 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 
 	private HashMap<Integer, String> getRecipes(int UID) {
 		HashMap<Integer, String> recipeMap = new HashMap<Integer, String>();
+		if (profiles.getKeys(UID + recipes) == null) {
+			return recipeMap;
+		}
 		for (String key : profiles.getKeys(UID + recipes)) {
 			int itemID;
 			try {
@@ -42,7 +45,7 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 			} catch (NumberFormatException e) {
 				Messaging.log("Number expected at path: " + (UID + recipes)
 						+ ". Make sure it is a number.");
-				return null;
+				return recipeMap;
 			}
 			recipeMap.put(itemID,
 					profiles.getString(UID + recipes + "." + itemID));

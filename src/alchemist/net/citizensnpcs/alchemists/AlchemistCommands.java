@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "alchemist")
-public class AlchemistCommands extends CommandHandler {
+public class AlchemistCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@ServerCommand()
@@ -41,7 +41,7 @@ public class AlchemistCommands extends CommandHandler {
 	@CommandPermissions("alchemist.use.help")
 	public static void alchemistHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendHelp((Alchemist) npc.getType("alchemist"), sender, 1);
+		HelpUtils.sendAlchemistHelp(sender);
 	}
 
 	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
@@ -72,11 +72,11 @@ public class AlchemistCommands extends CommandHandler {
 		}
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
-						+ "'s Recipes <%x/%y>")));
+						+ "'s Recipes " + ChatColor.GREEN + "<%x/%y>")));
 		for (Entry<Integer, String> entry : recipes.entrySet()) {
-			instance.push(ChatColor.GRAY + " - "
-					+ MessageUtils.getMaterialName(entry.getKey()) + " (ID: "
-					+ entry.getKey() + ")");
+			instance.push(" - "
+					+ StringUtils.wrap(MessageUtils.getMaterialName(entry
+							.getKey())) + " (ID: " + entry.getKey() + ")");
 		}
 		instance.push(ChatColor.GREEN + "Type "
 				+ StringUtils.wrap("/alchemist select [itemID]")
@@ -105,8 +105,7 @@ public class AlchemistCommands extends CommandHandler {
 			}
 			page = args.getInteger(1);
 		}
-		AlchemistManager.sendRecipeMessage(player,
-				(Alchemist) npc.getType("alchemist"), page);
+		AlchemistManager.sendRecipeMessage(player, npc, page);
 	}
 
 	@Command(
@@ -127,11 +126,19 @@ public class AlchemistCommands extends CommandHandler {
 		String[] items = recipe.split(",");
 		for (String item : items) {
 			String[] split = item.split(":");
-			if (Material.getMaterial(StringUtils.parse(split[0])) == null
-					|| (split[1].isEmpty() && !StringUtils.isNumber(split[1]))) {
-				Messaging.sendError(player,
-						"Could not read recipe. Did you use proper item IDs?");
-				return;
+			switch (split.length) {
+			case 1:
+				if (Material.getMaterial(StringUtils.parse(split[0])) == null) {
+					Messaging.sendError(player,
+							MessageUtils.invalidItemIDMessage);
+				}
+				break;
+			case 2:
+				if (!StringUtils.isNumber(split[1])) {
+					Messaging.sendError(player,
+							"The amount specified is not a proper number.");
+				}
+				break;
 			}
 		}
 		alchemist.addRecipe(itemID, recipe);
@@ -173,19 +180,5 @@ public class AlchemistCommands extends CommandHandler {
 		PermissionManager.addPerm("alchemist.use.recipes.view");
 		PermissionManager.addPerm("alchemist.modify.recipes");
 		PermissionManager.addPerm("alchemist.use.interact");
-	}
-
-	@Override
-	public void sendHelp(CommandSender sender, int page) {
-		HelpUtils.header(sender, "Alchemist", 1, 1);
-		HelpUtils.format(sender, "alchemist", "recipes",
-				"view all of an alchemist's recipes");
-		HelpUtils.format(sender, "alchemist", "select [itemID]",
-				"select a recipe");
-		HelpUtils.format(sender, "alchemist", "view (page)",
-				"view an alchemist's selected recipe");
-		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
-				"add a recipe to an alchemist");
-		HelpUtils.footer(sender);
 	}
 }

@@ -31,7 +31,6 @@ public class Messaging {
 			message = message.replace("<npcid>", "" + npc.getUID());
 		}
 		player.sendMessage(message);
-		Messaging.log(message);
 	}
 
 	public static void send(CommandSender sender, HumanNPC npc, String message) {

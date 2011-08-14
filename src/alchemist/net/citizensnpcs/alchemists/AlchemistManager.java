@@ -2,6 +2,7 @@ package net.citizensnpcs.alchemists;
 
 import java.util.HashMap;
 
+import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
@@ -19,21 +20,27 @@ public class AlchemistManager {
 	private static HashMap<String, Boolean> hasClickedOnce = new HashMap<String, Boolean>();
 
 	public static boolean hasClickedOnce(String name) {
-		return hasClickedOnce.get(name);
+		return hasClickedOnce.get(name) == null ? false : hasClickedOnce
+				.get(name);
 	}
 
 	public static void setClickedOnce(String name, boolean clickedOnce) {
 		hasClickedOnce.put(name, clickedOnce);
 	}
 
-	public static void sendRecipeMessage(Player player, Alchemist alchemist,
-			int page) {
+	public static void sendRecipeMessage(Player player, HumanNPC npc, int page) {
+		Alchemist alchemist = npc.getType("alchemist");
 		int currentRecipe = alchemist.getCurrentRecipeID();
 		PageInstance instance = PageUtils.newInstance(player);
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap("Ingredients for "
 						+ MessageUtils.getMaterialName(currentRecipe)
 						+ ChatColor.WHITE + " <%x/%y>")));
+		if (alchemist.getRecipe(currentRecipe) == null) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " has no recipes.");
+			return;
+		}
 		for (String item : alchemist.getRecipe(currentRecipe).split(",")) {
 			instance.push(" - " + ChatColor.GREEN
 					+ MessageUtils.getStackString(getStackByString(item)));

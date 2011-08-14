@@ -10,7 +10,7 @@ import net.citizensnpcs.resources.sk89q.CommandRequirements;
 
 import org.bukkit.entity.Player;
 
-public class MobCommands extends CommandHandler {
+public class MobCommands implements CommandHandler {
 	@CommandRequirements()
 	@Command(
 			aliases = "npcspawn",

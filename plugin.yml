@@ -9,6 +9,12 @@ commands:
         usage: |
                     The command was not recognized.
                     See /npc help for a list of commands.
+    alchemist:
+        description: Performs various Alchemist NPC-related commands.
+        aliases: [alch]
+        usage: |
+                        The command was not recognized.
+                        See /alchemist help for a list of commands.    
     blacksmith:
         description: Performs various Blacksmith NPC-related commands.
         usage: |
@@ -129,6 +135,22 @@ permissions:
             citizens.basic.modify.lookat: true
             citizens.basic.modify.talkclose: true
             citizens.basic.modify.setowner: true
+    citizens.alchemist.*:
+        children:
+            citizens.alchemist.use.*: true
+            citizens.alchemist.modify.*: true
+    citizens.alchemist.use.*:
+        children:
+            citizens.alchemist.use.interact: true
+            citizens.alchemist.use.help: true
+            citizens.alchemist.use.recipes.*: true
+    citizens.alchemist.recipes.*:
+        children:
+            citizens.alchemist.use.recipes.select: true
+            citizens.alchemist.use.recipes.view: true
+    citizens.alchemist.modify.*:
+        children:
+            citizens.alchemist.modify.recipes: true
     citizens.blacksmith.*:
         children:
             citizens.blacksmith.use.*: true

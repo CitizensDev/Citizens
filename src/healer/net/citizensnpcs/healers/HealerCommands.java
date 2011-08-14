@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "healer")
-public class HealerCommands extends CommandHandler {
+public class HealerCommands implements CommandHandler {
 
 	@CommandRequirements()
 	@Command(
@@ -33,7 +33,7 @@ public class HealerCommands extends CommandHandler {
 	@CommandPermissions("healer.use.help")
 	public static void healerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendHelp((Healer) npc.getType("healer"), sender, 1);
+		HelpUtils.sendHealerHelp(sender);
 	}
 
 	@Command(
@@ -109,15 +109,5 @@ public class HealerCommands extends CommandHandler {
 		PermissionManager.addPerm("healer.use.status");
 		PermissionManager.addPerm("healer.modify.levelup");
 		PermissionManager.addPerm("healer.use.heal");
-	}
-
-	@Override
-	public void sendHelp(CommandSender sender, int page) {
-		HelpUtils.header(sender, "Healer", 1, 1);
-		HelpUtils.format(sender, "healer", "status",
-				"view the health and level of a healer");
-		HelpUtils.format(sender, "healer", "level-up (levels)",
-				"level-up a healer");
-		HelpUtils.footer(sender);
 	}
 }
