@@ -1,5 +1,6 @@
 package net.citizensnpcs.alchemists;
 
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.PermissionManager;
@@ -43,41 +44,69 @@ public class AlchemistCommands extends CommandHandler {
 		HelpUtils.sendHelp((Alchemist) npc.getType("alchemist"), sender, 1);
 	}
 
+	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
 	@Command(
 			aliases = { "alchemist", "alch" },
 			usage = "recipes (page)",
-			desc = "view an alchemist's recipes",
+			desc = "view an alchemist's list of recipes",
 			modifiers = "recipes",
 			min = 1,
 			max = 2)
 	@CommandPermissions("alchemist.use.recipes")
 	public static void recipes(CommandContext args, Player player, HumanNPC npc) {
+		HashMap<Integer, String> recipes = ((Alchemist) npc
+				.getType("alchemist")).getRecipes();
+		if (recipes.size() == 0) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " has no recipes.");
+			return;
+		}
 		PageInstance instance = PageUtils.newInstance(player);
 		int page = 1;
 		if (args.argsLength() == 2) {
+			if (!StringUtils.isNumber(args.getString(1))) {
+				Messaging.sendError(player, "That is not a valid number.");
+				return;
+			}
 			page = args.getInteger(1);
 		}
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
 						+ "'s Recipes <%x/%y>")));
-		for (Entry<Integer, String> entry : ((Alchemist) npc
-				.getType("alchemist")).getRecipes().entrySet()) {
-			String recipe = entry.getValue();
-			if (recipe.isEmpty()) {
-				Messaging.sendError(player, npc.getStrippedName()
-						+ " has no recipes.");
-				return;
-			}
-			String items = "";
-			for (String str : recipe.split(",")) {
-				items += MessageUtils.getStackString(AlchemistManager
-						.getStackByString(str)) + ", ";
-			}
+		for (Entry<Integer, String> entry : recipes.entrySet()) {
 			instance.push(ChatColor.GRAY + " - "
 					+ MessageUtils.getMaterialName(entry.getKey()) + " (ID: "
 					+ entry.getKey() + ")");
 		}
+		instance.push(ChatColor.GREEN + "Type "
+				+ StringUtils.wrap("/alchemist select [itemID]")
+				+ " to select a recipe.");
+		instance.push(ChatColor.GREEN + "Type "
+				+ StringUtils.wrap("/alchemist view")
+				+ " to view ingredients for the recipe.");
 		instance.process(page);
+	}
+
+	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
+	@Command(
+			aliases = { "alchemist", "alch" },
+			usage = "view (page)",
+			desc = "view the selected alchemist recipe",
+			modifiers = "view",
+			min = 1,
+			max = 2)
+	@CommandPermissions("alchemist.use.recipes")
+	public static void view(CommandContext args, Player player, HumanNPC npc) {
+		int page = 1;
+		if (args.argsLength() == 2) {
+			if (!StringUtils.isNumber(args.getString(1))) {
+				Messaging.sendError(player, "That is not a valid number.");
+				return;
+			}
+			page = args.getInteger(1);
+		}
+		AlchemistManager.sendRecipeMessage(player,
+				(Alchemist) npc.getType("alchemist"), page);
 	}
 
 	@Command(
@@ -111,6 +140,7 @@ public class AlchemistCommands extends CommandHandler {
 				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}
 
+	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
 	@Command(
 			aliases = { "alchemist", "alch" },
 			usage = "select [itemID]",
@@ -118,7 +148,7 @@ public class AlchemistCommands extends CommandHandler {
 			modifiers = "select",
 			min = 2,
 			max = 2)
-	@CommandPermissions("alchemist.use.interact")
+	@CommandPermissions("alchemist.use.recipes.select")
 	public static void select(CommandContext args, Player player, HumanNPC npc) {
 		if (!AlchemistManager.checkValidID(player, args.getString(1))) {
 			return;
@@ -139,7 +169,8 @@ public class AlchemistCommands extends CommandHandler {
 	@Override
 	public void addPermissions() {
 		PermissionManager.addPerm("alchemist.use.help");
-		PermissionManager.addPerm("alchemist.use.recipes");
+		PermissionManager.addPerm("alchemist.use.recipes.select");
+		PermissionManager.addPerm("alchemist.use.recipes.view");
 		PermissionManager.addPerm("alchemist.modify.recipes");
 		PermissionManager.addPerm("alchemist.use.interact");
 	}
@@ -148,11 +179,13 @@ public class AlchemistCommands extends CommandHandler {
 	public void sendHelp(CommandSender sender, int page) {
 		HelpUtils.header(sender, "Alchemist", 1, 1);
 		HelpUtils.format(sender, "alchemist", "recipes",
-				"view an alchemist's recipes");
-		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
-				"add a custom recipe to an alchemist");
+				"view all of an alchemist's recipes");
 		HelpUtils.format(sender, "alchemist", "select [itemID]",
 				"select a recipe");
+		HelpUtils.format(sender, "alchemist", "view (page)",
+				"view an alchemist's selected recipe");
+		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
+				"add a recipe to an alchemist");
 		HelpUtils.footer(sender);
 	}
 }

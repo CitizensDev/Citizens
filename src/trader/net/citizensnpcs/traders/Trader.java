@@ -136,18 +136,21 @@ public class Trader extends CitizensNPC {
 		if (trader.isFree()) {
 			TraderMode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID(), false)) {
-				if (!PermissionManager.generic(player, "citizens.trader.modify.stock")) {
+				if (!PermissionManager.generic(player,
+						"citizens.trader.modify.stock")) {
 					return;
 				}
 				mode = TraderMode.STOCK;
 			} else if (trader.isUnlimited()) {
 				mode = TraderMode.INFINITE;
-				if (!PermissionManager.generic(player, "citizens.trader.use.trade")) {
+				if (!PermissionManager.generic(player,
+						"citizens.trader.use.trade")) {
 					return;
 				}
 			} else {
 				mode = TraderMode.NORMAL;
-				if (!PermissionManager.generic(player, "citizens.trader.use.trade")) {
+				if (!PermissionManager.generic(player,
+						"citizens.trader.use.trade")) {
 					return;
 				}
 			}

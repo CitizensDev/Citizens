@@ -55,7 +55,6 @@ public class BasicCommands extends CommandHandler {
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
-		sender.sendMessage(ChatColor.YELLOW + "      - NeonMaster");
 	}
 
 	@Command(
@@ -290,7 +289,7 @@ public class BasicCommands extends CommandHandler {
 	@CommandPermissions("basic.modify.move")
 	public static void move(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-				+ " is enroute to your location!");
+				+ " is en route to your location!");
 		npc.teleport(player.getLocation());
 		npc.getNPCData().setLocation(player.getLocation());
 	}
@@ -334,6 +333,10 @@ public class BasicCommands extends CommandHandler {
 		}
 		npc.teleport(new Location(Bukkit.getServer().getWorld(world), x, y, z,
 				pitch, yaw));
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+				+ " moved to the coordinates " + StringUtils.wrap(x) + ", "
+				+ StringUtils.wrap(y) + ", " + StringUtils.wrap(z)
+				+ " in the world " + StringUtils.wrap(world) + ".");
 	}
 
 	@Command(

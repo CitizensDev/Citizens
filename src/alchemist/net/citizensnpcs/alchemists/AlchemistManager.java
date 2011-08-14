@@ -7,10 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.citizens.utils.Messaging;
-
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
+import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.PageUtils;
+import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.StringUtils;
 
 public class AlchemistManager {
@@ -25,16 +25,19 @@ public class AlchemistManager {
 		hasClickedOnce.put(name, clickedOnce);
 	}
 
-	public static void sendRecipeMessage(Player player, HumanNPC npc) {
-		Alchemist alchemist = npc.getType("alchemist");
-		player.sendMessage(ChatColor.GREEN
-				+ "Current Recipe: "
-				+ StringUtils.wrap(MessageUtils.getMaterialName(alchemist
-						.getCurrentRecipeID())));
-		player.sendMessage(ChatColor.GREEN + "Type "
-				+ StringUtils.wrap("/alchemist select [itemID]")
-				+ " to select a different recipe.");
-		player.sendMessage(ChatColor.GREEN + "Right-click again to craft.");
+	public static void sendRecipeMessage(Player player, Alchemist alchemist,
+			int page) {
+		int currentRecipe = alchemist.getCurrentRecipeID();
+		PageInstance instance = PageUtils.newInstance(player);
+		instance.header(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap("Ingredients for "
+						+ MessageUtils.getMaterialName(currentRecipe)
+						+ ChatColor.WHITE + " <%x/%y>")));
+		for (String item : alchemist.getRecipe(currentRecipe).split(",")) {
+			instance.push(" - " + ChatColor.GREEN
+					+ MessageUtils.getStackString(getStackByString(item)));
+		}
+		instance.process(page);
 	}
 
 	public static ItemStack getStackByString(String string) {
@@ -48,14 +51,13 @@ public class AlchemistManager {
 	}
 
 	public static boolean checkValidID(Player player, String itemID) {
-		int id;
-		try {
-			id = Integer.parseInt(itemID);
-		} catch (NumberFormatException e) {
+		if (!StringUtils.isNumber(itemID)) {
 			Messaging.sendError(player, "That is not a valid number.");
 			return false;
 		}
-		if (Material.getMaterial(id) == null) {
+		int id = Integer.parseInt(itemID);
+		if (Material.getMaterial(id) == null
+				|| Material.getMaterial(id) == Material.AIR) {
 			Messaging.sendError(player, MessageUtils.invalidItemIDMessage);
 			return false;
 		}

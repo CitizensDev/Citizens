@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
@@ -15,6 +16,15 @@ import net.citizensnpcs.utils.Messaging;
 public class AlchemistProperties extends PropertyManager implements Properties {
 	private static final String isAlchemist = ".alchemist.toggle";
 	private static final String recipes = ".alchemist.recipes";
+	private static final String currentRecipe = recipes + ".current";
+
+	private void saveCurrentRecipe(int UID, int currentRecipeID) {
+		profiles.setInt(UID + currentRecipe, currentRecipeID);
+	}
+
+	private int getCurrentRecipe(int UID) {
+		return profiles.getInt(UID + currentRecipe);
+	}
 
 	private void saveRecipes(int UID, HashMap<Integer, String> recipeMap) {
 		for (Entry<Integer, String> entry : recipeMap.entrySet()) {
@@ -48,6 +58,7 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 			if (is) {
 				Alchemist alchemist = npc.getType("alchemist");
 				saveRecipes(npc.getUID(), alchemist.getRecipes());
+				saveCurrentRecipe(npc.getUID(), alchemist.getCurrentRecipeID());
 			}
 		}
 	}
@@ -58,6 +69,7 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 			npc.registerType("alchemist");
 			Alchemist alchemist = npc.getType("alchemist");
 			alchemist.setRecipes(getRecipes(npc.getUID()));
+			alchemist.setCurrentRecipeID(getCurrentRecipe(npc.getUID()));
 		}
 		saveState(npc);
 	}
@@ -78,13 +90,24 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 			profiles.setString(nextUID + isAlchemist,
 					profiles.getString(UID + isAlchemist));
 		}
+		if (profiles.pathExists(UID + recipes)) {
+			saveRecipes(nextUID,
+					((Alchemist) NPCManager.get(UID).getType("alchemist"))
+							.getRecipes());
+		}
+		if (profiles.pathExists(UID + currentRecipe)) {
+			profiles.setInt(nextUID + currentRecipe,
+					profiles.getInt(UID + currentRecipe));
+		}
 	}
 
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("", SettingsType.GENERAL, "alchemist.temp.node",
-				true));
+		nodes.add(new Node("AlchemistFailedCraftChance", SettingsType.GENERAL,
+				"general.alchemists.failed-craft-chance", 10));
+		nodes.add(new Node("AlchemistFailedCraftItem", SettingsType.GENERAL,
+				"items.alchemists.failed-craft-item", 263));
 		return nodes;
 	}
 }

@@ -2,8 +2,11 @@ package net.citizensnpcs.alchemists;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
@@ -12,6 +15,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.StringUtils;
 
 public class Alchemist extends CitizensNPC {
 	private HashMap<Integer, String> recipes = new HashMap<Integer, String>();
@@ -63,16 +67,25 @@ public class Alchemist extends CitizensNPC {
 			Messaging.sendError(player, MessageUtils.noPermissionsMessage);
 			return;
 		}
-		if (recipes == null) {
+		if (recipes.size() == 0) {
 			Messaging.sendError(player, npc.getStrippedName()
 					+ " has no recipes.");
 			return;
 		}
+		;
 		if (!AlchemistManager.hasClickedOnce(player.getName())) {
-			AlchemistManager.sendRecipeMessage(player, npc);
+			AlchemistManager.sendRecipeMessage(player,
+					(Alchemist) npc.getType("alchemist"), 1);
+			player.sendMessage(ChatColor.GREEN + "Type "
+					+ StringUtils.wrap("/alchemist view [itemID]")
+					+ " to view more ingredients.");
+			player.sendMessage(ChatColor.GREEN + "Right-click again to craft.");
 			AlchemistManager.setClickedOnce(player.getName(), true);
 			return;
 		}
+		AlchemistTask task = new AlchemistTask(npc);
+		task.addID(Bukkit.getServer().getScheduler()
+				.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 1));
 		InventoryUtils.showInventory(npc, player);
 		AlchemistManager.setClickedOnce(player.getName(), false);
 	}
