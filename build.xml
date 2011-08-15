@@ -39,8 +39,11 @@
     
   </target>
 
+<<<<<<< HEAD
 <!-- Compile the code -->
 
+=======
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
   <target name="core" depends="init" description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
     <javac srcdir="${src}/${core}" destdir="${build}" encoding="Cp1252" >
@@ -60,7 +63,10 @@
     </javac>
   </target>
   
+<<<<<<< HEAD
   
+=======
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
   <target name="alchemist" depends="init" description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
     <javac srcdir="${src}/${alchemist}" destdir="${alchemist}" encoding="Cp1252" />
@@ -90,47 +96,79 @@
     <javac srcdir="${src}/${wizard}" destdir="${wizard}" encoding="Cp1252" />
   </target>
   
+<<<<<<< HEAD
   
   <!-- Generate the jars -->
   
   <target name="dist" depends="core" description="generate the distribution" >
+=======
+  <target name="corejar" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <!-- Create the distribution directory -->
     <!-- Put everything in ${build} into the Citizens-${DSTAMP}.jar file -->
     <jar jarfile="Citizens.jar" basedir="${build}" encoding="Cp1252">
     <zipfileset dir="." includes="*.yml"/>s
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="distalchemist" depends="alchemist" description="generate the distribution" >
+=======
+  <target name="distalchemist" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/alchemist.jar" basedir="${alchemist}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="distblacksmith" depends="blacksmith" description="generate the distribution" >
+=======
+  <target name="distblacksmith" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="distguard" depends="guard" description="generate the distribution" >
+=======
+  <target name="distguard" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/guard.jar" basedir="${guard}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="disthealer" depends="healer" description="generate the distribution" >
+=======
+  <target name="disthealer" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/healer.jar" basedir="${healer}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="distquester" depends="quester" description="generate the distribution" >
+=======
+  <target name="distquester" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/quester.jar" basedir="${quester}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="disttrader" depends="trader" description="generate the distribution" >
+=======
+  <target name="disttrader" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/trader.jar" basedir="${trader}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
+<<<<<<< HEAD
   <target name="distwizard" depends="wizard" description="generate the distribution" >
+=======
+  <target name="distwizard" depends="compile" description="generate the distribution" >
+>>>>>>> 5b682290f5289679206dbe1e2955c90657947d84
     <jar jarfile="types/wizard.jar" basedir="${wizard}" encoding="Cp1252">
     <zipfileset dir="." includes="*.info"/>
     </jar>
