@@ -34,17 +34,20 @@ public class AlchemistTask implements Runnable {
 			}
 		}
 		// clear all ingredients from the inventory
-		npcInv.clear();
+		for (ItemStack toRemove : required) {
+			npcInv.remove(toRemove);
+		}
 		// make sure list is clear for next iteration
 		required.clear();
 		// add the resulting item into the inventory
+		int result;
 		if (new Random().nextInt(100) <= SettingsManager
 				.getInt("AlchemistFailedCraftChance")) {
-			npcInv.addItem(new ItemStack(alchemist.getCurrentRecipeID(), 1));
+			result = alchemist.getCurrentRecipeID();
 		} else {
-			npcInv.addItem(new ItemStack(SettingsManager
-					.getInt("AlchemistFailedCraftItem"), 1));
+			result = SettingsManager.getInt("AlchemistFailedCraftItem");
 		}
+		npcInv.setItem(npcInv.first(result), new ItemStack(result, 1));
 		npc.getPlayer().updateInventory();
 		kill();
 	}

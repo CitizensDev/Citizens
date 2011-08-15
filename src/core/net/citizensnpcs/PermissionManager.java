@@ -161,6 +161,7 @@ public class PermissionManager {
 		new BasicCommands().addPermissions();
 		new ToggleCommands().addPermissions();
 		new WaypointCommands().addPermissions();
+		addPerm("citizens.evils.immune");
 		for (String loaded : Citizens.loadedTypes) {
 			CitizensNPC type = CitizensNPCManager.getType(loaded);
 			if (type != null) {

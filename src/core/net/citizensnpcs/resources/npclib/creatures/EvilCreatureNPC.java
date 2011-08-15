@@ -11,6 +11,7 @@ import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
@@ -37,8 +38,13 @@ public class EvilCreatureNPC extends CreatureNPC {
 	@Override
 	public void doTick() {
 		if (!isTame) {
-			if (!hasTarget() && getClosestPlayer(this.range) != null) {
-				targetClosestPlayer(true, this.range);
+			EntityHuman closest = getClosestPlayer(this.range);
+			if (!hasTarget() && closest != null) {
+				if (!PermissionManager.generic(
+						(Player) closest.getBukkitEntity(),
+						"citizens.evils.immune")) {
+					targetClosestPlayer(true, this.range);
+				}
 			}
 			super.doTick();
 		}

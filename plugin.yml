@@ -159,6 +159,9 @@ permissions:
             citizens.blacksmith.use.status: true
             citizens.blacksmith.use.help: true
             citizens.blacksmith.use.repair: true
+    citizens.evils.*:
+        children:
+            citizens.evils.immune: true
     citizens.guard.*:
         children:
             citizens.guard.use.*: true
