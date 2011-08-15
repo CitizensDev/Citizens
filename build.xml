@@ -5,7 +5,22 @@
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="build" location="build"/>
+  <property name="core" location="build/core">
+  <property name="alchemist" location="build/alchemist">
+  <property name="blacksmith" location="build/blacksmith">
+  <property name="guard" location="build/guard">
+  <property name="healer" location="build/healer">
+  <property name="quester" location="build/quester">
+  <property name="trader" location="build/trader">s
+  <property name="wizard" location="build/wizard">
   <property name="dist"  location="dist"/>
+  <property name="alchemist" location="dist/alchemist">
+  <property name="blacksmith" location="dist/blacksmith">
+  <property name="guard" location="dist/guard">
+  <property name="healer" location="dist/healer">
+  <property name="quester" location="dist/quester">
+  <property name="trader" location="dist/trader">
+  <property name="wizard" location="dist/wizard">
   <property name="libs" location="libs"/>
   <property name="releases" location="releases"/>
   <target name="init">
@@ -13,11 +28,20 @@
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}"/>
+    <mkdir dir="${core}"/>
+    <mkdir dir="${alchemist}"/>
+    <mkdir dir="${blacksmith}"/>
+    <mkdir dir="${guard}"/>
+    <mkdir dir="${healer}"/>
+    <mkdir dir="${quester}"/>
+    <mkdir dir="${trader}"/>
+    <mkdir dir="${wizard}"/>
+    
   </target>
 
-  <target name="compile" depends="init" description="compile the source">
+  <target name="core" depends="init" description="compile the source">
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" encoding="Cp1252" >
+    <javac srcdir="${src}/${core}" destdir="${build}" encoding="Cp1252" >
  	   <classpath>
             <pathelement path="${libs}"/>
             <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -33,13 +57,76 @@
  	    </classpath>
     </javac>
   </target>
-
-  <target name="dist" depends="compile"
-        description="generate the distribution" >
+  
+  <target name="alchemist" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${alchemist}" destdir="${alchemist}" encoding="Cp1252" />
+  </target>
+  <target name="blacksmith" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${blacksmith}" destdir="${blacksmith}" encoding="Cp1252" />
+  </target>
+  <target name="guard" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${guard}" destdir="${guard}" encoding="Cp1252" />
+  </target>
+  <target name="healer" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${healer}" destdir="${healer}" encoding="Cp1252" />
+  </target>
+  <target name="quester" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${questert}" destdir="${quester}" encoding="Cp1252" />
+  </target>
+  <target name="trader" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${trader}" destdir="${trader}" encoding="Cp1252" />
+  </target>
+  <target name="wizard" depends="init" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}/${wizard}" destdir="${wizard}" encoding="Cp1252" />
+  </target>
+  
+  <target name="corejar" depends="compile" description="generate the distribution" >
     <!-- Create the distribution directory -->
     <!-- Put everything in ${build} into the Citizens-${DSTAMP}.jar file -->
     <jar jarfile="Citizens.jar" basedir="${build}" encoding="Cp1252">
-    <zipfileset dir="." includes="*.yml"/>
+    <zipfileset dir="." includes="*.yml"/>s
+    </jar>
+  </target>
+  <target name="distalchemist" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/alchemist.jar" basedir="${alchemist}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
+    </jar>
+  </target>
+  <target name="distblacksmith" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
+    </jar>
+  </target>
+  <target name="distguard" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/guard.jar" basedir="${guard}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
+    </jar>
+  </target>
+  <target name="disthealer" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/healer.jar" basedir="${healer}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
+    </jar>
+  </target>
+  <target name="distquester" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/quester.jar" basedir="${quester}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
+    </jar>
+  </target>
+  <target name="disttrader" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/trader.jar" basedir="${trader}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
+    </jar>
+  </target>
+  <target name="distwizard" depends="compile" description="generate the distribution" >
+    <jar jarfile="types/wizard.jar" basedir="${wizard}" encoding="Cp1252">
+    <zipfileset dir="." includes="*.info"/>
     </jar>
   </target>
 
