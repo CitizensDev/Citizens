@@ -2,3 +2,8 @@
 /bin
 .project
 .classpath
+\types
+/types
+\build
+/build
+Citizens.jar

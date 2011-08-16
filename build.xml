@@ -27,6 +27,7 @@
         <mkdir dir="${quester}"/>
         <mkdir dir="${trader}"/>
         <mkdir dir="${wizard}"/>
+      	<mkdir dir="types"/>
        
       </target>
      
@@ -186,43 +187,43 @@
         <antcall target="distalchemist"/>
       </target>
       <target name="distalchemist" depends="alchemist" description="generate the distribution" >
-        <jar jarfile="types/alchemist.jar" basedir="${alchemist}" encoding="Cp1252">
+        <jar jarfile="types/Alchemist.jar" basedir="${alchemist}" encoding="Cp1252">
         <zipfileset dir="${src}/alchemist" includes="*.info"/>
         </jar>
         <antcall target="distblacksmith"/>
       </target>
       <target name="distblacksmith" depends="blacksmith" description="generate the distribution" >
-        <jar jarfile="types/blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
+        <jar jarfile="types/Blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
         <zipfileset dir="${src}/blacksmith" includes="*.info"/>
         </jar>
         <antcall target="distguard"/>
       </target>
       <target name="distguard" depends="guard" description="generate the distribution" >
-        <jar jarfile="types/guard.jar" basedir="${guard}" encoding="Cp1252">
+        <jar jarfile="types/Guard.jar" basedir="${guard}" encoding="Cp1252">
         <zipfileset dir="${src}/guard" includes="*.info"/>
         </jar>
         <antcall target="disthealer"/>
       </target>
       <target name="disthealer" depends="healer" description="generate the distribution" >
-        <jar jarfile="types/healer.jar" basedir="${healer}" encoding="Cp1252">
+        <jar jarfile="types/Healer.jar" basedir="${healer}" encoding="Cp1252">
         <zipfileset dir="${src}/healer" includes="*.info"/>
         </jar>
         <antcall target="distquester"/>
       </target>
       <target name="distquester" depends="quester" description="generate the distribution" >
-        <jar jarfile="types/quester.jar" basedir="${quester}" encoding="Cp1252">
+        <jar jarfile="types/Quester.jar" basedir="${quester}" encoding="Cp1252">
         <zipfileset dir="${src}/quester" includes="*.info"/>
         </jar>
         <antcall target="disttrader"/>
       </target>
       <target name="disttrader" depends="trader" description="generate the distribution" >
-        <jar jarfile="types/trader.jar" basedir="${trader}" encoding="Cp1252">
+        <jar jarfile="types/Trader.jar" basedir="${trader}" encoding="Cp1252">
         <zipfileset dir="${src}/trader" includes="*.info"/>
         </jar>
         <antcall target="distwizard"/>
       </target>
       <target name="distwizard" depends="wizard" description="generate the distribution" >
-        <jar jarfile="types/wizard.jar" basedir="${wizard}" encoding="Cp1252">
+        <jar jarfile="types/Wizard.jar" basedir="${wizard}" encoding="Cp1252">
         <zipfileset dir="${src}/wizard" includes="*.info"/>
         </jar>
       </target>
