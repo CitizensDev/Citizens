@@ -97,7 +97,7 @@ public class GuardCommands implements CommandHandler {
 			aliases = "guard",
 			usage = "addflag (-i [priority]) [target] (-a,g,m,p)",
 			desc = "add a flag to a guard",
-			modifiers = { "addflag", "af", },
+			modifiers = { "addflag", "af" },
 			flags = "agmpi",
 			min = 1)
 	@CommandPermissions("guard.modify.flags")
@@ -168,7 +168,7 @@ public class GuardCommands implements CommandHandler {
 			aliases = "guard",
 			usage = "delflag [name] [-p, -m, -g] (-a)",
 			desc = "deletes a flag from a guard",
-			modifiers = { "delflag", "df", },
+			modifiers = { "delflag", "df" },
 			flags = "agmp",
 			min = 1)
 	@CommandPermissions("guard.modify.flags")

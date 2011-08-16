@@ -6,20 +6,20 @@
       <property name="src" location="src"/>
       <property name="build" location="build"/>
       <property name="core" location="build/core"/>
-      <property name="alchemist" location="buildtypes/alchemist"/>
-      <property name="blacksmith" location="buildtypes/blacksmith"/>
-      <property name="guard" location="buildtypes/guard"/>
-      <property name="healer" location="buildtypes/healer"/>
-      <property name="quester" location="buildtypes/quester"/>
-      <property name="trader" location="buildtypes/trader"/>
-      <property name="wizard" location="buildtypes/wizard"/>
+      <property name="alchemist" location="build/types/alchemist"/>
+      <property name="blacksmith" location="build/types/blacksmith"/>
+      <property name="guard" location="build/types/guard"/>
+      <property name="healer" location="build/types/healer"/>
+      <property name="quester" location="build/types/quester"/>
+      <property name="trader" location="build/types/trader"/>
+      <property name="wizard" location="build/types/wizard"/>
       <property name="dist"  location="dist"/>
       <property name="libs" location="libs"/>
       <property name="releases" location="releases"/>
       <target name="init">
         <!-- Create neccesary folders -->
         <mkdir dir="${build}"/>
-	<mkdir dir="buildtypes"/>
+	    <mkdir dir="build/types"/>
         <mkdir dir="${alchemist}"/>
         <mkdir dir="${blacksmith}"/>
         <mkdir dir="${guard}"/>
