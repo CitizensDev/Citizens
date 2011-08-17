@@ -22,11 +22,6 @@ public class Healer extends CitizensNPC {
 	private int health = 10;
 	private int level = 1;
 	
-	@Override
-	public String getVersion() {
-		return "1.1";
-	}
-	
 	public int getHealth() {
 		return health;
 	}

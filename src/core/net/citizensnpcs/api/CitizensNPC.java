@@ -10,13 +10,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public abstract class CitizensNPC {
 
 	/**
-	 * Get the version of the NPC type
-	 * 
-	 * @return Version of NPC type
-	 */
-	public abstract String getVersion();
-
-	/**
 	 * Get an NPC's type
 	 * 
 	 * @return NPC's type, use lowercase

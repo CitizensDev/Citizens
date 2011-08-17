@@ -30,11 +30,6 @@ public class Wizard extends CitizensNPC {
 	private boolean unlimitedMana = false;
 	private String command = "";
 
-	@Override
-	public String getVersion() {
-		return "1.1";
-	}
-	
 	// Adds a location to the main location sting.
 	public void addLocation(Location location, String locName) {
 		String addedLoc = "";

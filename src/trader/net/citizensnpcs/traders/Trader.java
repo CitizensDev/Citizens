@@ -25,11 +25,6 @@ public class Trader extends CitizensNPC {
 	public ConcurrentHashMap<Check, Stockable> getStocking() {
 		return stocking;
 	}
-	
-	@Override
-	public String getVersion() {
-		return "1.1";
-	}
 
 	public void setStocking(ConcurrentHashMap<Check, Stockable> stocking) {
 		this.stocking = stocking;

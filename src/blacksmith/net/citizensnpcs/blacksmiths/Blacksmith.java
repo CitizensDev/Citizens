@@ -11,12 +11,7 @@ import net.citizensnpcs.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 public class Blacksmith extends CitizensNPC {
-	
-	@Override
-	public String getVersion() {
-		return "1.1";
-	}
-	
+
 	@Override
 	public String getType() {
 		return "blacksmith";

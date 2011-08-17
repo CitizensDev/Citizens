@@ -78,3 +78,4 @@ By fullwall, aPunch, and NeonMaster
 -added 'evil.spawn.chance' node in mobs.yml
 -fixed compatibility with Bukkit permissions
 -added 'citizens.evils.immune' node, those with this node will not be attacked by Evil NPCs
+-added ability to have an NPC say multiple lines of text at once using the <br> tag

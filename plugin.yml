@@ -78,6 +78,7 @@ permissions:
             citizens.healer.*: true
             citizens.wizard.*: true
             citizens.quester.*: true
+            citizens.alchemist.*: true
             citizens.waypoints.*: true
             citizens.npccount.unlimited: true
     citizens.admin.*:
