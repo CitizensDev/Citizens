@@ -162,8 +162,6 @@ public class SettingsManager {
 				"general.chat.slashes-to-spaces", true));
 		nodes.add(new Node("DefaultTalkClose", SettingsType.GENERAL,
 				"general.defaults.talk-when-close", false));
-		nodes.add(new Node("UseSuperPerms", SettingsType.GENERAL,
-				"general.use-bukkit-permissions", false));
 		nodes.add(new Node("PathfindingRange", SettingsType.GENERAL,
 				"range.pathfinding", 16F));
 		// economy.yml

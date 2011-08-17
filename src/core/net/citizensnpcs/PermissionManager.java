@@ -18,23 +18,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 
-import com.nijiko.permissions.Group;
-import com.nijiko.permissions.PermissionHandler;
-import com.nijiko.permissions.User;
-import com.nijikokun.bukkit.Permissions.Permissions;
 import com.platymuus.bukkit.permissions.PermissionsPlugin;
 
 public class PermissionManager {
-	private static boolean useSuperperms;
 	private static boolean permissionsEnabled = false;
-	private static PermissionHandler handler;
 	private static PermissionsPlugin superperms;
 
 	private static List<String> permissions = new ArrayList<String>();
 
 	private static boolean hasPermission(Player player, String string) {
-		return useSuperperms ? player.hasPermission(string) : handler.has(
-				player, string);
+		return player.hasPermission(string);
 	}
 
 	public static void initialize(Server server) {
@@ -42,33 +35,20 @@ public class PermissionManager {
 			Plugin test = server.getPluginManager().getPlugin(
 					"PermissionsBukkit");
 			if (test != null) {
-				useSuperperms = true;
 				permissionsEnabled = true;
 				superperms = (PermissionsPlugin) test;
 				addPermissions();
 				Messaging.log("Permissions enabled.");
 			} else {
 				Messaging
-						.log("PermissionsBukkit isn't loaded, commands can only be used by ops.");
+						.log("PermissionsBukkit isn't loaded, some features are unavailable.");
 			}
 			return;
-		}
-		Plugin test = server.getPluginManager().getPlugin("Permissions");
-		if (test != null) {
-			permissionsEnabled = true;
-			handler = ((Permissions) test).getHandler();
-			Messaging.log("Permissions enabled.");
-		} else {
-			Messaging
-					.log("A Permissions plugin isn't loaded, commands can only be used by ops.");
 		}
 	}
 
 	public static boolean generic(Player player, String string) {
-		if (permissionsEnabled) {
-			return hasPermission(player, string);
-		}
-		return player.isOp();
+		return hasPermission(player, string);
 	}
 
 	public static boolean canCreate(Player player) {
@@ -88,85 +68,48 @@ public class PermissionManager {
 
 	public static void grantRank(Player player, String rank, boolean take) {
 		if (permissionsEnabled) {
-			if (useSuperperms) {
-				if (take)
-					superperms.getPlayerInfo(player.getName()).getGroups()
-							.remove(superperms.getGroup(rank));
-				else
-					superperms.getPlayerInfo(player.getName()).getGroups()
-							.add(superperms.getGroup(rank));
-			} else {
-				User user = handler.getUserObject(player.getWorld().getName(),
-						player.getName());
-				Group group = handler.getGroupObject(player.getWorld()
-						.getName(), rank);
-				if (group == null || user == null) {
-					return;
-				}
-				if (take)
-					user.removeParent(group);
-				else
-					user.addParent(group);
-			}
+			if (take)
+				superperms.getPlayerInfo(player.getName()).getGroups()
+						.remove(superperms.getGroup(rank));
+			else
+				superperms.getPlayerInfo(player.getName()).getGroups()
+						.add(superperms.getGroup(rank));
+
 		}
 	}
 
 	public static boolean hasRank(Player player, String rank) {
 		if (permissionsEnabled) {
-			if (useSuperperms) {
-				return superperms.getPlayerInfo(player.getName()).getGroups()
-						.contains(rank);
-			} else {
-				return handler.getGroups(player.getName()).contains(rank);
-			}
+			return superperms.getPlayerInfo(player.getName()).getGroups()
+					.contains(rank);
 		}
 		return false;
 	}
 
 	public static void givePermission(Player player, String reward, boolean take) {
 		if (permissionsEnabled) {
-			if (useSuperperms) {
-				Map<String, Boolean> permissions = superperms.getPlayerInfo(
-						player.getName()).getPermissions();
-				if (take)
-					permissions.remove(reward);
-				else
-					permissions.put(reward, true);
-			} else {
-				User user = handler.getUserObject(player.getWorld().getName(),
-						player.getName());
-				if (user == null) {
-					return;
-				}
-				if (take)
-					user.removePermission(reward);
-				else
-					user.addPermission(reward);
-			}
+			Map<String, Boolean> permissions = superperms.getPlayerInfo(
+					player.getName()).getPermissions();
+			if (take)
+				permissions.remove(reward);
+			else
+				permissions.put(reward, true);
 		}
 	}
 
 	public static List<com.platymuus.bukkit.permissions.Group> getGroups(
 			Player player) {
 		if (permissionsEnabled) {
-			if (useSuperperms) {
-				return superperms.getPlayerInfo(player.getName()).getGroups();
-			}
+			return superperms.getPlayerInfo(player.getName()).getGroups();
 		}
 		return null;
 	}
 
 	public static com.platymuus.bukkit.permissions.Group getGroup(String name) {
 		if (permissionsEnabled) {
-			if (useSuperperms) {
-				return superperms.getGroup(name);
-			}
+			return superperms.getGroup(name);
 		}
 		return null;
-	}
-
-	public static boolean useSuperPerms() {
-		return useSuperperms;
 	}
 
 	public static void addPerm(String perm) {
@@ -188,5 +131,9 @@ public class PermissionManager {
 			Bukkit.getServer().getPluginManager()
 					.addPermission(new Permission("citizens." + permission));
 		}
+	}
+
+	public static boolean superPermsEnabled() {
+		return superperms != null;
 	}
 }

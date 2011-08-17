@@ -141,7 +141,7 @@ public class GuardCommands implements CommandHandler {
 
 		FlagType type = FlagType.PLAYER;
 		if (args.hasFlag('g')) {
-			if (!PermissionManager.useSuperPerms()) {
+			if (!PermissionManager.superPermsEnabled()) {
 				player.sendMessage(ChatColor.GRAY
 						+ "Group flags require bukkit's permission system to be used.");
 				return;

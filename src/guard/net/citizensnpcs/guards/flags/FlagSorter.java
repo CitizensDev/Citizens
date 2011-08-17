@@ -97,7 +97,7 @@ public class FlagSorter {
 					updateLowest(get(getByType(PLAYERS), name));
 					return true;
 				} else {
-					if (!PermissionManager.useSuperPerms()) {
+					if (!PermissionManager.superPermsEnabled()) {
 						return false;
 					}
 					if (groupMap.get(name) != null) {
@@ -217,6 +217,8 @@ public class FlagSorter {
 
 	public void updateGroup(FlagInfo info) {
 		Group group = PermissionManager.getGroup(info.getName());
+		if (group == null)
+			return;
 		for (String name : group.getPlayers()) {
 			if (groupMap.containsKey(name))
 				groupMap.put(name, info);
