@@ -22,16 +22,18 @@ public class Objective {
 
 	private final ItemStack item;
 	private final Location location;
+	private final String string;
 	private final String message;
 	private final Material material;
 	private final String questType;
 
 	private Objective(String type, int amount, int destination, ItemStack item,
-			String message, Material material, Location location) {
+			String message, String string, Material material, Location location) {
 		this.questType = type;
 		this.amount = amount;
 		this.destination = destination;
 		this.item = item;
+		this.string = string;
 		this.message = message;
 		this.material = material;
 		this.location = location;
@@ -65,6 +67,10 @@ public class Objective {
 		return material;
 	}
 
+	public String getString() {
+		return string;
+	}
+
 	public static class Builder {
 		private int amount = -1;
 		private int destination = -1;
@@ -74,6 +80,7 @@ public class Objective {
 		private String message = "";
 		private Material material = null;
 		private final String type;
+		private String string = "";
 
 		public Builder(String type) {
 			this.type = type;
@@ -81,6 +88,11 @@ public class Objective {
 
 		public Builder amount(int amount) {
 			this.amount = amount;
+			return this;
+		}
+
+		public Builder string(String string) {
+			this.string = string;
 			return this;
 		}
 
@@ -111,7 +123,7 @@ public class Objective {
 
 		public Objective build() {
 			return new Objective(type, amount, destination, item, message,
-					material, location);
+					string, material, location);
 		}
 	}
 }

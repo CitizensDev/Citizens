@@ -16,7 +16,8 @@ public class LocationQuest implements QuestObjective {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			if (LocationUtils.withinRange(ev.getPlayer().getLocation(),
-					progress.getObjective().getLocation(), 0))
+					progress.getObjective().getLocation(), progress
+							.getObjective().getAmount()))
 				progress.setLastLocation(ev.getPlayer().getLocation());
 		}
 		return isCompleted(progress);
@@ -29,7 +30,8 @@ public class LocationQuest implements QuestObjective {
 
 	@Override
 	public boolean isCompleted(ObjectiveProgress progress) {
-		return LocationUtils.withinRange(progress.getObjective().getLocation(),
-				progress.getLastLocation());
+		return LocationUtils
+				.withinRange(progress.getObjective().getLocation(), progress
+						.getLastLocation(), progress.getObjective().getAmount());
 	}
 }

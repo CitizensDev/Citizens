@@ -86,25 +86,41 @@ public class PermissionManager {
 		return 0;
 	}
 
-	public static void grantRank(Player player, String rank) {
+	public static void grantRank(Player player, String rank, boolean take) {
 		if (permissionsEnabled) {
 			if (useSuperperms) {
-				superperms.getPlayerInfo(player.getName()).getGroups()
-						.add(superperms.getGroup(rank));
+				if (take)
+					superperms.getPlayerInfo(player.getName()).getGroups()
+							.remove(superperms.getGroup(rank));
+				else
+					superperms.getPlayerInfo(player.getName()).getGroups()
+							.add(superperms.getGroup(rank));
 			} else {
 				User user = handler.getUserObject(player.getWorld().getName(),
 						player.getName());
-				if (user == null) {
-					return;
-				}
 				Group group = handler.getGroupObject(player.getWorld()
 						.getName(), rank);
-				if (group == null) {
+				if (group == null || user == null) {
 					return;
 				}
-				user.addParent(group);
+				if (take)
+					user.removeParent(group);
+				else
+					user.addParent(group);
 			}
 		}
+	}
+
+	public static boolean hasRank(Player player, String rank) {
+		if (permissionsEnabled) {
+			if (useSuperperms) {
+				return superperms.getPlayerInfo(player.getName()).getGroups()
+						.contains(rank);
+			} else {
+				return handler.getGroups(player.getName()).contains(rank);
+			}
+		}
+		return false;
 	}
 
 	public static void givePermission(Player player, String reward, boolean take) {

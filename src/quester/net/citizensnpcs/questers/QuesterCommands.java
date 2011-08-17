@@ -1,5 +1,7 @@
 package net.citizensnpcs.questers;
 
+import java.util.concurrent.TimeUnit;
+
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -61,6 +63,30 @@ public class QuesterCommands implements CommandHandler {
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
+	}
+
+	@Command(
+			aliases = "quest",
+			usage = "",
+			desc = "view the current quest",
+			modifiers = "",
+			min = 0,
+			max = 0)
+	@CommandPermissions("quester.use.queststatus")
+	public static void questStatus(CommandContext args, Player player,
+			HumanNPC npc) {
+		PlayerProfile profile = QuestManager.getProfile(player.getName());
+		if (!profile.hasQuest()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You don't have a quest at the moment.");
+		} else {
+			player.sendMessage(ChatColor.GREEN
+					+ "Currently in the middle of "
+					+ StringUtils.wrap(profile.getProgress().getQuestName())
+					+ ". You have been on this quest for "
+					+ TimeUnit.HOURS.convert(profile.getProgress()
+							.getStartTime(), TimeUnit.MILLISECONDS) + " hours.");
+		}
 	}
 
 	@Command(

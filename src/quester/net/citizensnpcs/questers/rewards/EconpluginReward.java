@@ -53,7 +53,7 @@ public class EconpluginReward implements Reward {
 
 	@Override
 	public void save(Storage storage, String root) {
-		storage.setDouble(root + ".amount", reward);
+		storage.setDouble(root + ".money", reward);
 	}
 
 	public static class EconpluginRewardBuilder implements RewardBuilder {

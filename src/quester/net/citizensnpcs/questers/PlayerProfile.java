@@ -53,6 +53,10 @@ public class PlayerProfile {
 		return progress != null;
 	}
 
+	public boolean hasCompleted(String reward) {
+		return completedQuests.containsKey(reward);
+	}
+
 	public Storage getStorage() {
 		return profile;
 	}
@@ -117,10 +121,5 @@ public class PlayerProfile {
 				}
 			}
 		}
-	}
-
-	public boolean hasCompleted(String peek) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

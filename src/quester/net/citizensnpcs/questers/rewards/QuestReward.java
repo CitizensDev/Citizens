@@ -5,7 +5,9 @@ import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class QuestReward implements Reward {
@@ -27,12 +29,13 @@ public class QuestReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return true;
+		return QuestManager.getProfile(player.getName()).hasCompleted(reward);
 	}
 
 	@Override
 	public String getRequiredText(Player player) {
-		return "";
+		return ChatColor.GRAY + "You must have completed the quest "
+				+ StringUtils.wrap(reward) + ".";
 	}
 
 	@Override
