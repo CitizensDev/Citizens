@@ -96,6 +96,7 @@ public class EntityUtils {
 				" ", "");
 		if (formatted.equals("Pigzombie"))
 			formatted = "PigZombie";
+		Messaging.log(formatted);
 		return CreatureType.fromName(formatted) != null
 				|| (both && CreatureNPCType.fromName(formatted) != null);
 	}

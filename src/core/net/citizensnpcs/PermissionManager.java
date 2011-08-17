@@ -31,24 +31,23 @@ public class PermissionManager {
 	}
 
 	public static void initialize(Server server) {
-		if (SettingsManager.getBoolean("UseSuperPerms")) {
-			Plugin test = server.getPluginManager().getPlugin(
-					"PermissionsBukkit");
-			if (test != null) {
-				permissionsEnabled = true;
-				superperms = (PermissionsPlugin) test;
-				addPermissions();
-				Messaging.log("Permissions enabled.");
-			} else {
-				Messaging
-						.log("PermissionsBukkit isn't loaded, some features are unavailable.");
-			}
-			return;
+		Plugin test = server.getPluginManager().getPlugin("PermissionsBukkit");
+		if (test != null) {
+			permissionsEnabled = true;
+			superperms = (PermissionsPlugin) test;
+			addPermissions();
+			Messaging.log("Permissions enabled.");
+		} else {
+			Messaging
+					.log("PermissionsBukkit isn't loaded, some features are unavailable.");
 		}
+		return;
 	}
 
 	public static boolean generic(Player player, String string) {
-		return hasPermission(player, string);
+		if (permissionsEnabled)
+			return hasPermission(player, string);
+		return player.isOp();
 	}
 
 	public static boolean canCreate(Player player) {

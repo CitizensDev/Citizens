@@ -109,7 +109,7 @@ public class PlayerProfile {
 			progress = new QuestProgress(NPCManager.get(profile.getInt(path
 					+ "giver")), Bukkit.getServer().getPlayer(name),
 					profile.getString(path + "name"));
-			progress.setStartTime(profile.getInt(path + "start-time"));
+			progress.setStartTime(profile.getLong(path + "start-time"));
 			progress.setStep(profile.getInt(path + "step"));
 
 			for (ObjectiveProgress questProgress : progress.getProgress()) {

@@ -160,6 +160,10 @@ public class GuardCommands implements CommandHandler {
 			}
 			type = FlagType.MOB;
 		}
+		if (args.hasFlag('p') && player.getName().equals(name)) {
+			player.sendMessage(ChatColor.GRAY + "You can't flag yourself!");
+			return;
+		}
 		String prefix = guard.getFlags().contains(type, name) ? "Updated"
 				: "Added";
 		guard.getFlags().addFlag(type,

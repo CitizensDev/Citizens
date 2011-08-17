@@ -167,19 +167,18 @@ public class BasicCommands implements CommandHandler {
 	public static void debug(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		boolean debug = SettingsManager.getBoolean("DebugMode");
-		UtilityProperties.getSettings()
-				.setBoolean("general.debug-mode", !debug);
+		UtilityProperties.getSettings().setRaw("general.debug-mode", !debug);
 		debug = !debug;
 		if (debug) {
 			Messaging.log("Debug mode is now on.");
 			if (sender instanceof Player) {
-				Messaging.send((Player) sender, npc, "Debug mode is now "
+				Messaging.send(sender, npc, "Debug mode is now "
 						+ ChatColor.GREEN + "on");
 			}
 		} else {
 			Messaging.log("Debug mode is now off.");
 			if (sender instanceof Player) {
-				Messaging.send((Player) sender, npc, "Debug mode is now "
+				Messaging.send(sender, npc, "Debug mode is now "
 						+ ChatColor.RED + "off");
 			}
 		}
