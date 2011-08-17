@@ -36,17 +36,17 @@ public class PermissionManager {
 			permissionsEnabled = true;
 			superperms = (PermissionsPlugin) test;
 			addPermissions();
-			Messaging.log("Permissions enabled.");
+			Messaging.log("Hooked into PermissionsBukkit.");
 		} else {
 			Messaging
 					.log("PermissionsBukkit isn't loaded, some features are unavailable.");
 		}
-		return;
 	}
 
 	public static boolean generic(Player player, String string) {
-		if (permissionsEnabled)
+		if (permissionsEnabled) {
 			return hasPermission(player, string);
+		}
 		return player.isOp();
 	}
 
@@ -67,13 +67,13 @@ public class PermissionManager {
 
 	public static void grantRank(Player player, String rank, boolean take) {
 		if (permissionsEnabled) {
-			if (take)
+			if (take) {
 				superperms.getPlayerInfo(player.getName()).getGroups()
 						.remove(superperms.getGroup(rank));
-			else
+			} else {
 				superperms.getPlayerInfo(player.getName()).getGroups()
 						.add(superperms.getGroup(rank));
-
+			}
 		}
 	}
 
@@ -89,10 +89,11 @@ public class PermissionManager {
 		if (permissionsEnabled) {
 			Map<String, Boolean> permissions = superperms.getPlayerInfo(
 					player.getName()).getPermissions();
-			if (take)
+			if (take) {
 				permissions.remove(reward);
-			else
+			} else {
 				permissions.put(reward, true);
+			}
 		}
 	}
 

@@ -119,6 +119,7 @@ permissions:
             citizens.basic.use.select: true
             citizens.basic.use.list: true
             citizens.basic.use.teleport: true
+            citizens.basic.use.info: true
     citizens.basic.modify.*:
         children:
             citizens.basic.modify.move: true
@@ -232,3 +233,4 @@ permissions:
             citizens.wizard.modify.addloc: true
             citizens.wizard.modify.removeloc: true
             citizens.wizard.modify.unlimited: true
+            citizens.wizard.modify.command: true

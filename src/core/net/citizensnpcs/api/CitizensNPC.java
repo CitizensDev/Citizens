@@ -10,9 +10,9 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public abstract class CitizensNPC {
 
 	/**
-	 * Check if an NPC type is loaded
+	 * Get the version of the NPC type
 	 * 
-	 * @return if the NPC type is loaded
+	 * @return Version of NPC type
 	 */
 	public abstract String getVersion();
 
