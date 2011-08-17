@@ -55,6 +55,7 @@ public class BasicCommands implements CommandHandler {
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
+		sender.sendMessage(ChatColor.YELLOW + "      - NeonMaster");
 	}
 
 	@Command(

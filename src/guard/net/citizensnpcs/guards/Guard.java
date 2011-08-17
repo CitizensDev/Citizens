@@ -30,6 +30,11 @@ public class Guard extends CitizensNPC {
 	private GuardType guardType = GuardType.NULL;
 	private final FlagList flags = new FlagList();
 	private double radius = 10;
+	
+	@Override
+	public String getVersion() {
+		return "1.1";
+	}
 
 	// Get whether a guard NPC is a bodyguard
 	public boolean isBodyguard() {

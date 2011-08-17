@@ -338,4 +338,7 @@ public class Citizens extends JavaPlugin {
 			Messaging.log("No NPC types loaded.");
 		}
 	}
+	public boolean checkLoaded(String type){
+		return loadedTypes.contains(type);
+	}
 }

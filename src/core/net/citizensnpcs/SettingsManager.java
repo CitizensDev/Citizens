@@ -34,7 +34,7 @@ public class SettingsManager {
 		try {
 			return (Boolean) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall or aPunch ASAP.");
+			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return false;
 		}
@@ -44,7 +44,7 @@ public class SettingsManager {
 		try {
 			return (Integer) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall or aPunch ASAP.");
+			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return 0;
 		}
@@ -54,7 +54,7 @@ public class SettingsManager {
 		try {
 			return (String) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall or aPunch ASAP.");
+			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return "";
 		}
@@ -70,7 +70,7 @@ public class SettingsManager {
 				return (Integer) loadedNodes.get(name);
 			}
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall or aPunch ASAP.");
+			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return 0;
 		}
