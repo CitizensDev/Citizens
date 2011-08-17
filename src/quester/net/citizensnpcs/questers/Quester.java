@@ -32,6 +32,11 @@ public class Quester extends CitizensNPC {
 	private final Set<Player> pending = Sets.newHashSet();
 	private final List<String> quests = Lists.newArrayList();
 
+	@Override
+	public String getVersion() {
+		return "1.1";
+	}
+	
 	// Add a quest
 	public void addQuest(String quest) {
 		quests.add(quest);

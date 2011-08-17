@@ -24,6 +24,11 @@ public class Alchemist extends CitizensNPC {
 	public HashMap<Integer, String> getRecipes() {
 		return recipes;
 	}
+	
+	@Override
+	public String getVersion() {
+		return "1.1";
+	}
 
 	public void setRecipes(HashMap<Integer, String> recipes) {
 		this.recipes = recipes;

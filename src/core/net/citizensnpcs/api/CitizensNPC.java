@@ -10,6 +10,13 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public abstract class CitizensNPC {
 
 	/**
+	 * Check if an NPC type is loaded
+	 * 
+	 * @return if the NPC type is loaded
+	 */
+	public abstract String getVersion();
+
+	/**
 	 * Get an NPC's type
 	 * 
 	 * @return NPC's type, use lowercase
