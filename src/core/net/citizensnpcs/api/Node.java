@@ -1,8 +1,15 @@
-package net.citizensnpcs.properties;
+package net.citizensnpcs.api;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
+/**
+ * A Node of Citizens is a property value that can be generated in citizens.yml
+ * or economy.yml. For nodes with the type ECONOMY, give them an empty string
+ * for a name
+ * 
+ */
 public class Node {
 	private String name;
 	private SettingsType type;
@@ -16,12 +23,6 @@ public class Node {
 		this.value = value;
 	}
 
-	/**
-	 * Helper method that uses a node's type to determine which file it should
-	 * be written to
-	 * 
-	 * @return file a node is written to
-	 */
 	public Storage getFile() {
 		switch (this.getType()) {
 		case GENERAL:
@@ -38,7 +39,7 @@ public class Node {
 	 * Used for identification, this should never need to be changed, unlike the
 	 * path
 	 * 
-	 * @return name
+	 * @return name Name of a node
 	 */
 	public String getName() {
 		return this.name;
@@ -48,7 +49,7 @@ public class Node {
 	 * Get the type of the node, which determines which file the node is written
 	 * to
 	 * 
-	 * @return type
+	 * @return type Type of a node
 	 */
 	public SettingsType getType() {
 		return this.type;
@@ -57,7 +58,7 @@ public class Node {
 	/**
 	 * Get the path of the node
 	 * 
-	 * @return path
+	 * @return path Path of a node
 	 */
 	public String getPath() {
 		return this.path;
@@ -66,17 +67,12 @@ public class Node {
 	/**
 	 * Get the value of the node
 	 * 
-	 * @return value
+	 * @return value Value of a node
 	 */
 	public Object getValue() {
 		return this.value;
 	}
 
-	/**
-	 * Set the value of the node
-	 * 
-	 * @param value
-	 */
 	public void set(Object value) {
 		this.value = value;
 	}

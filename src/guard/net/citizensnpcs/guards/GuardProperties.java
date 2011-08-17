@@ -5,12 +5,12 @@ import java.util.List;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.api.Node;
+import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.guards.GuardManager.GuardType;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 

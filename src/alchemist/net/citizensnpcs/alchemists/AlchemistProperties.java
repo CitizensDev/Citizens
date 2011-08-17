@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.api.Node;
+import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.properties.Node;
-import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;

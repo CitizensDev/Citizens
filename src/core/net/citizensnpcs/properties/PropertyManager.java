@@ -2,6 +2,7 @@ package net.citizensnpcs.properties;
 
 import java.util.HashMap;
 
+import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.properties.BasicProperties;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -16,10 +17,10 @@ public class PropertyManager {
 		add("basic", new BasicProperties());
 		UtilityProperties.initialize();
 		/*
-		if (((LivingEntity) e.getEntity()).getHealth() - e.getDamage() <= 0) {
-			QuestManager.incrementQuest((Player) e.getDamager(),
-					new EntityDeathEvent(e.getEntity(), null));
-		}*/
+		 * if (((LivingEntity) e.getEntity()).getHealth() - e.getDamage() <= 0)
+		 * { QuestManager.incrementQuest((Player) e.getDamager(), new
+		 * EntityDeathEvent(e.getEntity(), null)); }
+		 */
 	}
 
 	public static void add(String type, Properties saveable) {

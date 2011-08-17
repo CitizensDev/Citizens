@@ -3,8 +3,8 @@ package net.citizensnpcs.resources.npclib;
 import java.util.Collection;
 import java.util.Map;
 
+import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.npcs.NPCData;
-import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;

@@ -38,6 +38,7 @@ public class Messaging {
 				message = message.replace("<npc>", npc.getStrippedName());
 				message = message.replace("<npcid>", "" + npc.getUID());
 			}
+			sender.sendMessage(message);
 		}
 	}
 

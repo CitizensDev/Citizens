@@ -3,10 +3,10 @@ package net.citizensnpcs.questers;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
-import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.questers.listeners.QuesterBlockListen;
 import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 import net.citizensnpcs.questers.quests.CompletedQuest;

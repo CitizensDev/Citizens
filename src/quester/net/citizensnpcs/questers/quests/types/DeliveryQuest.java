@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.events.NPCTargetEvent;
+import net.citizensnpcs.api.events.NPCTargetEvent;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestObjective;
 import net.citizensnpcs.resources.npclib.HumanNPC;

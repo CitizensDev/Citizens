@@ -1,7 +1,7 @@
 package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -47,7 +47,7 @@ public class BlacksmithCommands implements CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("blacksmith.use.status")
-	public static void cost(CommandContext args, Player player, HumanNPC npc) {
+	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
 		String repairType = "";
 		if (InventoryUtils.isArmor(item)) {
@@ -61,23 +61,20 @@ public class BlacksmithCommands implements CommandHandler {
 							+ " is not a repairable item.");
 			return;
 		}
+		player.sendMessage(ChatColor.GREEN
+				+ "Item: "
+				+ StringUtils.wrap(MessageUtils.getMaterialName(item
+						.getTypeId())));
 		if (EconomyManager.useEconPlugin()) {
-			double price = BlacksmithManager.getBlacksmithPrice(player,
-					repairType);
 			player.sendMessage(ChatColor.GREEN
-					+ "Item: "
-					+ StringUtils.wrap(MessageUtils.getMaterialName(item
-							.getTypeId())));
-			player.sendMessage(ChatColor.GREEN + "Cost: "
-					+ StringUtils.wrap(EconomyManager.format(price)));
-			player.sendMessage(ChatColor.GREEN
-					+ "Durability Remaining: "
-					+ StringUtils.wrap(Material.getMaterial(item.getTypeId())
-							.getMaxDurability() - item.getDurability()));
-		} else {
-			Messaging.sendError(player,
-					"This server is not using an economy system.");
+					+ "Cost: "
+					+ StringUtils.wrap(EconomyManager.format(BlacksmithManager
+							.getBlacksmithPrice(player, repairType))));
 		}
+		player.sendMessage(ChatColor.GREEN
+				+ "Durability Remaining: "
+				+ StringUtils.wrap(Material.getMaterial(item.getTypeId())
+						.getMaxDurability() - item.getDurability()));
 	}
 
 	@Override

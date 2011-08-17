@@ -1,4 +1,4 @@
-package net.citizensnpcs.events;
+package net.citizensnpcs.api.events;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
 

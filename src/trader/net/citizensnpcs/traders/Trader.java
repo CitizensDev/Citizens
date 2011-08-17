@@ -5,10 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.npctypes.CitizensNPC;
-import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.traders.TraderManager.TraderMode;
 import net.citizensnpcs.utils.InventoryUtils;

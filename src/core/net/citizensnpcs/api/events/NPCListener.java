@@ -1,4 +1,4 @@
-package net.citizensnpcs.events;
+package net.citizensnpcs.api.events;
 
 import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;

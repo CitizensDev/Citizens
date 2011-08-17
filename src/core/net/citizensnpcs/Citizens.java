@@ -12,7 +12,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.citizensnpcs.commands.Commands;
+import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.commands.BasicCommands;
+import net.citizensnpcs.commands.ToggleCommands;
+import net.citizensnpcs.commands.WaypointCommands;
 import net.citizensnpcs.listeners.EntityListen;
 import net.citizensnpcs.listeners.Listener;
 import net.citizensnpcs.listeners.PlayerListen;
@@ -20,7 +23,6 @@ import net.citizensnpcs.listeners.ServerListen;
 import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
-import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
@@ -76,7 +78,9 @@ public class Citizens extends JavaPlugin {
 		SettingsManager.setupVariables();
 
 		// Register our commands.
-		Commands.registerCommands();
+		Citizens.commands.register(BasicCommands.class);
+		Citizens.commands.register(ToggleCommands.class);
+		Citizens.commands.register(WaypointCommands.class);
 
 		// Register our events.
 		new EntityListen().registerEvents();
@@ -332,9 +336,7 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	/**
-	 * Load NPC types in the plugins/Citizens/types directory
-	 */
+	// Load NPC types in the plugins/Citizens/types directory
 	public void loadNPCTypes() {
 		File dir = new File(getDataFolder(), "types");
 		dir.mkdirs();
@@ -347,6 +349,11 @@ public class Citizens extends JavaPlugin {
 				}
 			}
 		}
-		Messaging.log("NPC types loaded: " + Joiner.on(", ").join(loadedTypes));
+		if (loadedTypes.size() > 0) {
+			Messaging.log("NPC types loaded: "
+					+ Joiner.on(", ").join(loadedTypes));
+		} else {
+			Messaging.log("No NPC types loaded.");
+		}
 	}
 }

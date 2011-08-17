@@ -1,9 +1,9 @@
 package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.npctypes.CitizensNPC;
-import net.citizensnpcs.properties.Properties;
+import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -22,12 +22,12 @@ public class Blacksmith extends CitizensNPC {
 		if (PermissionManager.generic(player, "citizens.blacksmith.use.repair")) {
 			String repairType = "";
 			if (InventoryUtils.isTool(player.getItemInHand())) {
-				repairType = "blacksmith-toolrepair";
+				repairType = "toolrepair";
 			} else if (InventoryUtils.isArmor(player.getItemInHand())) {
-				repairType = "blacksmith-armorrepair";
+				repairType = "armorrepair";
 			}
 			if (!repairType.isEmpty()) {
-				BlacksmithManager.buyRepair(player, npc, repairType);
+				BlacksmithManager.repairItem(player, npc, repairType);
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);

@@ -1,7 +1,5 @@
-package net.citizensnpcs.npctypes;
+package net.citizensnpcs.api;
 
-import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
@@ -34,8 +32,6 @@ public abstract class CitizensNPC {
 
 	/**
 	 * Called in main class onEnable, can be used to schedule tasks, etc..
-	 * 
-	 * @return
 	 */
 	public void onEnable() {
 	}
@@ -93,8 +89,6 @@ public abstract class CitizensNPC {
 
 	/**
 	 * Register event listeners for an NPC type
-	 * 
-	 * @return
 	 */
 	public void addListeners() {
 	}

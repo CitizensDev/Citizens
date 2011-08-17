@@ -103,9 +103,7 @@ public class FlagList {
 	}
 
 	public enum FlagType {
-		GROUP('g'),
-		MOB('m'),
-		PLAYER('p');
+		GROUP('g'), MOB('m'), PLAYER('p');
 		private final char flag;
 
 		FlagType(char flag) {

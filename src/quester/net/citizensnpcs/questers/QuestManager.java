@@ -14,12 +14,7 @@ import org.bukkit.event.Event;
 
 public class QuestManager {
 	public enum RewardType {
-		HEALTH,
-		ITEM,
-		MONEY,
-		PERMISSION,
-		QUEST,
-		RANK;
+		HEALTH, ITEM, MONEY, PERMISSION, QUEST, RANK;
 	}
 
 	private static final Map<String, PlayerProfile> cachedProfiles = new HashMap<String, PlayerProfile>();

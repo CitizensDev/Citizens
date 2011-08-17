@@ -1,12 +1,12 @@
-package net.citizensnpcs.commands.commands;
+package net.citizensnpcs.commands;
 
 import java.util.Map.Entry;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;

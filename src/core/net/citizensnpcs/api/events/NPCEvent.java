@@ -1,9 +1,8 @@
-package net.citizensnpcs.events;
+package net.citizensnpcs.api.events;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.event.Event;
-
 
 public class NPCEvent extends Event {
 	private static final long serialVersionUID = 1L;

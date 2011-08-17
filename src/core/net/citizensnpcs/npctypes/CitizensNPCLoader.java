@@ -10,6 +10,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.utils.Messaging;
 
 public class CitizensNPCLoader {
@@ -19,8 +20,6 @@ public class CitizensNPCLoader {
 			JarFile jarFile = new JarFile(file);
 			Enumeration<JarEntry> entries = jarFile.entries();
 			String mainClass = null;
-			// register type in npctype.info file like so:
-			// main-class: net.citizensnpcs.Blacksmith.Blacksmith
 			while (entries.hasMoreElements()) {
 				JarEntry element = entries.nextElement();
 				if (element.getName().equalsIgnoreCase("type.info")) {
@@ -59,7 +58,6 @@ public class CitizensNPCLoader {
 			}
 		} catch (InvalidNPCTypeException ex) {
 			Messaging.log(ex.getMessage());
-			ex.printStackTrace();
 			return null;
 		} catch (Exception ex) {
 			ex.printStackTrace();

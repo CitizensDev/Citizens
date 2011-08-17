@@ -3,9 +3,12 @@ package net.citizensnpcs.resources.npclib.creatures;
 import net.citizensnpcs.SettingsManager;
 
 public enum CreatureNPCType {
-	EVIL(EvilCreatureNPC.class, SettingsManager.getInt("MaxEvils"),
-			SettingsManager.getInt("EvilSpawnChance"), SettingsManager
-					.getString("EvilNames"), SpawnValidator.DEFAULT_SPAWNIN,
+	EVIL(
+			EvilCreatureNPC.class,
+			SettingsManager.getInt("MaxEvils"),
+			SettingsManager.getInt("EvilSpawnChance"),
+			SettingsManager.getString("EvilNames"),
+			SpawnValidator.DEFAULT_SPAWNIN,
 			SpawnValidator.DEFAULT_SPAWNON);
 	private final int max;
 	private final int spawnChance;

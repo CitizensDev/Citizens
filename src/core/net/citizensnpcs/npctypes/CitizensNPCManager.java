@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.listeners.Listener;
 import net.citizensnpcs.properties.PropertyManager;
 

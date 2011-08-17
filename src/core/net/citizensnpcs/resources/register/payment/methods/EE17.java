@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * Essentials 17 Implementation of Method
- *
+ * 
  * @author Nijikokun <nijikokun@shortmail.com> (@nijikokun)
  * @author Snowleo
  * @author Acrobot
@@ -20,191 +20,226 @@ import org.bukkit.plugin.Plugin;
  * @license AOL license <http://aol.nexua.org>
  */
 public class EE17 implements Method {
-    private Essentials Essentials;
+	private Essentials Essentials;
 
-    public Essentials getPlugin() {
-        return this.Essentials;
-    }
+	public Essentials getPlugin() {
+		return this.Essentials;
+	}
 
-    public String getName() {
-        return "Essentials";
-    }
+	public String getName() {
+		return "Essentials";
+	}
 
-    public String getVersion() {
-        return "2.2";
-    }
+	public String getVersion() {
+		return "2.2";
+	}
 
-    public String format(double amount) {
-        return Economy.format(amount);
-    }
+	public String format(double amount) {
+		return Economy.format(amount);
+	}
 
-    public boolean hasBanks() {
-        return false;
-    }
+	public boolean hasBanks() {
+		return false;
+	}
 
-    public boolean hasBank(String bank) {
-        return false;
-    }
+	public boolean hasBank(String bank) {
+		return false;
+	}
 
-    public boolean hasAccount(String name) {
-        return Economy.playerExists(name);
-    }
+	public boolean hasAccount(String name) {
+		return Economy.playerExists(name);
+	}
 
-    public boolean hasBankAccount(String bank, String name) {
-        return false;
-    }
+	public boolean hasBankAccount(String bank, String name) {
+		return false;
+	}
 
-    public MethodAccount getAccount(String name) {
-        if(!hasAccount(name)) return null;
-        return new EEcoAccount(name);
-    }
+	public MethodAccount getAccount(String name) {
+		if (!hasAccount(name))
+			return null;
+		return new EEcoAccount(name);
+	}
 
-    public MethodBankAccount getBankAccount(String bank, String name) {
-        return null;
-    }
-	
-    public boolean isCompatible(Plugin plugin) {
-        try { Class.forName("com.earth2me.essentials.api.Economy"); }
-        catch(Exception e) { return false; }
+	public MethodBankAccount getBankAccount(String bank, String name) {
+		return null;
+	}
 
-        return plugin.getDescription().getName().equalsIgnoreCase("essentials") && plugin instanceof Essentials;
-    }
+	public boolean isCompatible(Plugin plugin) {
+		try {
+			Class.forName("com.earth2me.essentials.api.Economy");
+		} catch (Exception e) {
+			return false;
+		}
 
-    public void setPlugin(Plugin plugin) {
-        Essentials = (Essentials)plugin;
-    }
+		return plugin.getDescription().getName().equalsIgnoreCase("essentials")
+				&& plugin instanceof Essentials;
+	}
 
-    public class EEcoAccount implements MethodAccount {
-        private String name;
+	public void setPlugin(Plugin plugin) {
+		Essentials = (Essentials) plugin;
+	}
 
-        public EEcoAccount(String name) {
-            this.name = name;
-        }
+	public class EEcoAccount implements MethodAccount {
+		private String name;
 
-        public double balance() {
-            Double balance = 0.0;
+		public EEcoAccount(String name) {
+			this.name = name;
+		}
 
-            try {
-                balance = Economy.getMoney(this.name);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] Failed to grab balance in Essentials Economy: " + ex.getMessage());
-            }
+		public double balance() {
+			Double balance = 0.0;
 
-            return balance;
-        }
+			try {
+				balance = Economy.getMoney(this.name);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] Failed to grab balance in Essentials Economy: "
+								+ ex.getMessage());
+			}
 
-        public boolean set(double amount) {
-            try {
-                Economy.setMoney(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-                return false;
-            } catch (NoLoanPermittedException ex) {
-                System.out.println("[REGISTER] No loan permitted in Essentials Economy: " + ex.getMessage());
-                return false;
-            }
+			return balance;
+		}
 
-            return true;
-        }
+		public boolean set(double amount) {
+			try {
+				Economy.setMoney(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
 
-        public boolean add(double amount) {
-            try {
-                Economy.add(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-                return false;
-            } catch (NoLoanPermittedException ex) {
-                System.out.println("[REGISTER] No loan permitted in Essentials Economy: " + ex.getMessage());
-                return false;
-            }
+			return true;
+		}
 
-            return true;
-        }
+		public boolean add(double amount) {
+			try {
+				Economy.add(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
 
-        public boolean subtract(double amount) {
-            try {
-                Economy.subtract(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-                return false;
-            } catch (NoLoanPermittedException ex) {
-                System.out.println("[REGISTER] No loan permitted in Essentials Economy: " + ex.getMessage());
-                return false;
-            }
+			return true;
+		}
 
-            return true;
-        }
+		public boolean subtract(double amount) {
+			try {
+				Economy.subtract(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
 
-        public boolean multiply(double amount) {
-            try {
-                Economy.multiply(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-                return false;
-            } catch (NoLoanPermittedException ex) {
-                System.out.println("[REGISTER] No loan permitted in Essentials Economy: " + ex.getMessage());
-                return false;
-            }
+			return true;
+		}
 
-            return true;
-        }
+		public boolean multiply(double amount) {
+			try {
+				Economy.multiply(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
 
-        public boolean divide(double amount) {
-            try {
-                Economy.divide(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-                return false;
-            } catch (NoLoanPermittedException ex) {
-                System.out.println("[REGISTER] No loan permitted in Essentials Economy: " + ex.getMessage());
-                return false;
-            }
+			return true;
+		}
 
-            return true;
-        }
+		public boolean divide(double amount) {
+			try {
+				Economy.divide(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
 
-        public boolean hasEnough(double amount) {
-            try {
-                return Economy.hasEnough(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-            }
+			return true;
+		}
 
-            return false;
-        }
+		public boolean hasEnough(double amount) {
+			try {
+				return Economy.hasEnough(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+			}
 
-        public boolean hasOver(double amount) {
-            try {
-                return Economy.hasMore(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-            }
+			return false;
+		}
 
-            return false;
-        }
+		public boolean hasOver(double amount) {
+			try {
+				return Economy.hasMore(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+			}
 
-        public boolean hasUnder(double amount) {
-            try {
-                return Economy.hasLess(name, amount);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-            }
+			return false;
+		}
 
-            return false;
-        }
+		public boolean hasUnder(double amount) {
+			try {
+				return Economy.hasLess(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+			}
 
-        public boolean isNegative() {
-            try {
-                return Economy.isNegative(name);
-            } catch (UserDoesNotExistException ex) {
-                System.out.println("[REGISTER] User does not exist in Essentials Economy: " + ex.getMessage());
-            }
+			return false;
+		}
 
-            return false;
-        }
+		public boolean isNegative() {
+			try {
+				return Economy.isNegative(name);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+			}
 
-        public boolean remove() {
-            return false;
-        }
-    }
+			return false;
+		}
+
+		public boolean remove() {
+			return false;
+		}
+	}
 }
