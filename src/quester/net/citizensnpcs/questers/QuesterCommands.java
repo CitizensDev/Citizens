@@ -75,7 +75,7 @@ public class QuesterCommands implements CommandHandler {
 	@CommandPermissions("quester.use.queststatus")
 	public static void questStatus(CommandContext args, Player player,
 			HumanNPC npc) {
-		PlayerProfile profile = QuestManager.getProfile(player.getName());
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You don't have a quest at the moment.");

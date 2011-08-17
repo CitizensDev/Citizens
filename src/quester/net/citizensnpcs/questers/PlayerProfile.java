@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.npcs.NPCManager;
@@ -23,15 +24,23 @@ public class PlayerProfile {
 	private QuestProgress progress;
 	private final String name;
 
+	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
+
+	public static PlayerProfile getProfile(String name) {
+		if (profiles.get(name) == null)
+			profiles.put(name, new PlayerProfile(name));
+		return profiles.get(name);
+	}
+
+	public static void setProfile(String name, PlayerProfile profile) {
+		profiles.put(name, profile);
+	}
+
 	public PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
 				+ name + ".yml");
 		this.name = name;
 		this.load();
-	}
-
-	public Map<String, CompletedQuest> getCompletedQuests() {
-		return completedQuests;
 	}
 
 	public void addCompletedQuest(CompletedQuest quest) {
@@ -97,9 +106,9 @@ public class PlayerProfile {
 	private void load() {
 		String path = "quests.current.";
 		if (!profile.getString(path + "name").isEmpty()) {
-			QuestManager.assignQuest(NPCManager.get(profile.getInt(path
-					+ "giver")), Bukkit.getServer().getPlayer(name), profile
-					.getString(path + "name"));
+			progress = new QuestProgress(NPCManager.get(profile.getInt(path
+					+ "giver")), Bukkit.getServer().getPlayer(name),
+					profile.getString(path + "name"));
 			progress.setStartTime(profile.getInt(path + "start-time"));
 			progress.setStep(profile.getInt(path + "step"));
 

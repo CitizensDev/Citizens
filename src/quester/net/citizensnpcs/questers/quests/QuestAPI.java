@@ -6,6 +6,7 @@ import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.questers.quests.types.BuildQuest;
 import net.citizensnpcs.questers.quests.types.CollectQuest;
 import net.citizensnpcs.questers.quests.types.CombatQuest;
+import net.citizensnpcs.questers.quests.types.DeliveryQuest;
 import net.citizensnpcs.questers.quests.types.DestroyQuest;
 import net.citizensnpcs.questers.quests.types.DistanceQuest;
 import net.citizensnpcs.questers.quests.types.HuntQuest;
@@ -27,6 +28,7 @@ public class QuestAPI {
 		questTypes.put("build", new BuildQuest());
 		questTypes.put("collect", new CollectQuest());
 		questTypes.put("destroy block", new DestroyQuest());
+		questTypes.put("delivery", new DeliveryQuest());
 		questTypes.put("hunt", new HuntQuest());
 		questTypes.put("move distance", new DistanceQuest());
 		questTypes.put("move location", new LocationQuest());

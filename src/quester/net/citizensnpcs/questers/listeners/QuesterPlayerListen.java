@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -20,8 +19,6 @@ public class QuesterPlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, this, Event.Priority.Normal,
-				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
 				Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, this, Event.Priority.Normal,
@@ -30,11 +27,6 @@ public class QuesterPlayerListen extends PlayerListener implements Listener {
 				Event.Priority.Normal, Citizens.plugin);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this, Event.Priority.Normal,
 				Citizens.plugin);
-	}
-
-	@Override
-	public void onPlayerLogin(PlayerLoginEvent event) {
-		QuestManager.load(event.getPlayer());
 	}
 
 	@Override

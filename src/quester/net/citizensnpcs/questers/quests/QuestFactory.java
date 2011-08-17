@@ -13,18 +13,19 @@ public class QuestFactory {
 	public static void instantiateQuests(ConfigurationHandler quests) {
 		int questCount = 0;
 		for (String questName : quests.getKeys(null)) {
-			String path = questName + ".";
+			String path = questName;
 			Quest quest = new Quest(questName);
-			quest.setDescription(quests.getString(path + "texts.description"));
-			quest.setCompletedText(quests.getString(path + "texts.completion"));
-			quest.setAcceptanceText(quests.getString(path + "texts.acceptance"));
+			quest.setDescription(quests.getString(path + ".texts.description"));
+			quest.setCompletedText(quests.getString(path + ".texts.completion"));
+			quest.setAcceptanceText(quests
+					.getString(path + ".texts.acceptance"));
 			quest.setRepeatable(quests.getBoolean(path + ".repeatable"));
 			String tempPath = path;
-			if (quests.pathExists(path + "rewards")) {
-				for (String reward : quests.getKeys(path + "rewards")) {
-					path = tempPath + "rewards." + reward;
-					String type = quests.getString(path + "type");
-					boolean take = quests.getBoolean(path + "take");
+			if (quests.pathExists(path + ".rewards")) {
+				for (String reward : quests.getKeys(path + ".rewards")) {
+					path = tempPath + ".rewards." + reward;
+					String type = quests.getString(path + ".type");
+					boolean take = quests.getBoolean(path + ".take");
 					quest.addReward(QuestAPI.getBuilder(type).build(quests,
 							type, take));
 				}
