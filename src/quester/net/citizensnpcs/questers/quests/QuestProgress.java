@@ -117,5 +117,4 @@ public class QuestProgress {
 	public ObjectiveProgress getProgress(int count) {
 		return progress.get(count);
 	}
-
 }

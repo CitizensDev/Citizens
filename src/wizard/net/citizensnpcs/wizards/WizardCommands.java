@@ -20,6 +20,10 @@ import org.bukkit.entity.Player;
 		requireOwnership = true,
 		requiredType = "wizard")
 public class WizardCommands implements CommandHandler {
+	public static final WizardCommands INSTANCE = new WizardCommands();
+
+	private WizardCommands() {
+	}
 
 	@CommandRequirements()
 	@Command(

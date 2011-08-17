@@ -12,6 +12,11 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 public class BlacksmithProperties extends PropertyManager implements Properties {
 	private final String isBlacksmith = ".blacksmith.toggle";
 
+	public static final BlacksmithProperties INSTANCE = new BlacksmithProperties();
+
+	private BlacksmithProperties() {
+	}
+
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {

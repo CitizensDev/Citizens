@@ -169,11 +169,11 @@ public class Trader extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new TraderProperties();
+		return TraderProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return new TraderCommands();
+		return TraderCommands.INSTANCE;
 	}
 }

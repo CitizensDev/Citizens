@@ -29,6 +29,10 @@ import com.platymuus.bukkit.permissions.Group;
 		requireOwnership = true,
 		requiredType = "guard")
 public class GuardCommands implements CommandHandler {
+	public static final GuardCommands INSTANCE = new GuardCommands();
+
+	private GuardCommands() {
+	}
 
 	@CommandRequirements()
 	@ServerCommand()

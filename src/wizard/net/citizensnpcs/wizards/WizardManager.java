@@ -1,6 +1,5 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -43,13 +42,8 @@ public class WizardManager {
 		}
 	}
 
-	/**
-	 * Teleport a player to one of a wizard's locations
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	public static boolean teleportPlayer(Player player, HumanNPC npc) {
+	// Teleport a player to one of a wizard's locations
+	private static boolean teleportPlayer(Player player, HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getNumberOfLocations() > 0) {
 			if (decreaseMana(player, npc, 5)) {
@@ -63,13 +57,8 @@ public class WizardManager {
 		return false;
 	}
 
-	/**
-	 * Change the time in the player's world
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	public static boolean changeTime(Player player, HumanNPC npc) {
+	// Change the time in the player's world
+	private static boolean changeTime(Player player, HumanNPC npc) {
 		long time = 0;
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getTime().equals("day")) {
@@ -88,13 +77,8 @@ public class WizardManager {
 		return false;
 	}
 
-	/**
-	 * Spawn mob(s) at the specified location
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	public static boolean spawnMob(Player player, HumanNPC npc) {
+	// Spawn mob(s) at the specified location
+	private static boolean spawnMob(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
 			player.getWorld().spawnCreature(player.getLocation(),
 					((Wizard) npc.getType("wizard")).getMob());
@@ -103,13 +87,8 @@ public class WizardManager {
 		return false;
 	}
 
-	/**
-	 * Toggle a storm in the player's world
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	public static boolean toggleStorm(Player player, HumanNPC npc) {
+	// Toggle a storm in the player's world
+	private static boolean toggleStorm(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc, 5)) {
 			player.getWorld().setStorm(!player.getWorld().hasStorm());
 			return true;
@@ -117,13 +96,8 @@ public class WizardManager {
 		return false;
 	}
 
-	/**
-	 * Executes a command
-	 * 
-	 * @param player
-	 * @param npc
-	 */
-	public static boolean executeCommand(Player player, HumanNPC npc) {
+	// Executes a command
+	private static boolean executeCommand(Player player, HumanNPC npc) {
 		if (player
 				.performCommand(((Wizard) npc.getType("wizard")).getCommand())) {
 			return decreaseMana(player, npc, 5);
@@ -131,29 +105,8 @@ public class WizardManager {
 		return false;
 	}
 
-	/**
-	 * Increase the mana of a wizard
-	 * 
-	 * @param npc
-	 * @param mana
-	 */
-	public static void increaseMana(HumanNPC npc, int mana) {
-		Wizard wizard = npc.getType("wizard");
-		if (wizard != null
-				&& wizard.getMana() + mana < SettingsManager
-						.getInt("WizardMaxMana")) {
-			wizard.setMana(wizard.getMana() + mana);
-		}
-	}
-
-	/**
-	 * Decrease the mana of a wizard
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param mana
-	 */
-	public static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
+	// Decrease the mana of a wizard
+	private static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.hasUnlimitedMana()) {
 			return true;
@@ -169,13 +122,7 @@ public class WizardManager {
 		return false;
 	}
 
-	/**
-	 * Purchase a teleport
-	 * 
-	 * @param player
-	 * @param wizard
-	 * @param op
-	 */
+	// Handle the right-clicking of a wizard
 	public static void handleRightClick(Player player, HumanNPC npc, String op) {
 		Wizard wizard = npc.getType("wizard");
 		String econMsg = "";

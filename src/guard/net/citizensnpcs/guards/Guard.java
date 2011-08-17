@@ -31,38 +31,22 @@ public class Guard extends CitizensNPC {
 	private final FlagList flags = new FlagList();
 	private double radius = 10;
 
-	/**
-	 * Get whether a guard NPC is a bodyguard
-	 * 
-	 * @return
-	 */
+	// Get whether a guard NPC is a bodyguard
 	public boolean isBodyguard() {
 		return guardType == GuardType.BODYGUARD;
 	}
 
-	/**
-	 * Set whether a guard NPC is a bodyguard
-	 * 
-	 * @param state
-	 */
+	// Set whether a guard NPC is a bodyguard
 	public void setBodyguard() {
 		guardType = GuardType.BODYGUARD;
 	}
 
-	/**
-	 * Set whether a guard NPC is a bodyguard
-	 * 
-	 * @param state
-	 */
+	// Set whether a guard NPC is a bodyguard
 	public boolean isBouncer() {
 		return guardType == GuardType.BOUNCER;
 	}
 
-	/**
-	 * Set whether a guard NPC is a bouncer
-	 * 
-	 * @param state
-	 */
+	// Set whether a guard NPC is a bouncer
 	public void setBouncer() {
 		guardType = GuardType.BOUNCER;
 	}
@@ -71,75 +55,42 @@ public class Guard extends CitizensNPC {
 		guardType = GuardType.NULL;
 	}
 
-	/**
-	 * Get whether a bodyguard NPC kills on sight
-	 * 
-	 * @return
-	 */
-
+	// Get whether a bodyguard NPC kills on sight
 	public boolean isAggressive() {
 		return isAggressive;
 	}
 
-	/**
-	 * Set whether a bodyguard kills on sight
-	 * 
-	 * @param state
-	 */
+	// Set whether a bodyguard kills on sight
 	public void setAggressive(boolean state) {
 		this.isAggressive = state;
 	}
 
-	/**
-	 * Get the type of guard that a guard NPC is
-	 * 
-	 * @return
-	 */
+	// Get the type of guard that a guard NPC is
 	public GuardType getGuardType() {
 		return guardType;
 	}
 
-	/**
-	 * Set the type of a guard that a guard NPC is
-	 * 
-	 * @param guardType
-	 */
+	// Set the type of a guard that a guard NPC is
 	public void setGuardType(GuardType guardType) {
 		this.guardType = guardType;
 	}
 
-	/**
-	 * Get a guard's blacklist
-	 * 
-	 * @return
-	 */
+	// Get a guard's blacklist
 	public FlagList getFlags() {
 		return flags;
 	}
 
-	/**
-	 * Get the protection radius for a bouncer
-	 * 
-	 * @return
-	 */
+	// Get the protection radius for a bouncer
 	public double getProtectionRadius() {
 		return radius;
 	}
 
-	/**
-	 * Get the halved protection radius for a bouncer
-	 * 
-	 * @return
-	 */
+	// Get the halved protection radius for a bouncer
 	public double getHalvedProtectionRadius() {
 		return this.radius / 2;
 	}
 
-	/**
-	 * Set the protection radius for a bouncer
-	 * 
-	 * @param radius
-	 */
+	// Set the protection radius for a bouncer
 	public void setProtectionRadius(double radius) {
 		this.radius = radius;
 	}
@@ -213,12 +164,12 @@ public class Guard extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new GuardProperties();
+		return GuardProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return new GuardCommands();
+		return GuardCommands.INSTANCE;
 	}
 
 	@Override

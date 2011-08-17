@@ -32,13 +32,7 @@ public class TraderTask implements Runnable {
 	private boolean stop;
 	private boolean said;
 
-	/**
-	 * Gets run every tick, checks the inventory for changes.
-	 * 
-	 * @param npc
-	 * @param player
-	 * @param mode
-	 */
+	// Gets run every tick, checks the inventory for changes.
 	public TraderTask(HumanNPC npc, Player player, TraderMode mode) {
 		this.npc = npc;
 		this.player = (CraftPlayer) player;
@@ -349,12 +343,7 @@ public class TraderTask implements Runnable {
 						.getData().getData() : null));
 	}
 
-	/**
-	 * Clones the first passed PlayerInventory object to the second one.
-	 * 
-	 * @param source
-	 * @param target
-	 */
+	// Clones the first passed PlayerInventory object to the second one.
 	private void clonePlayerInventory(PlayerInventory source,
 			PlayerInventory target) {
 		ItemStack[] contents = new ItemStack[source.getContents().length];

@@ -36,11 +36,11 @@ public class Blacksmith extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new BlacksmithProperties();
+		return BlacksmithProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return new BlacksmithCommands();
+		return BlacksmithCommands.INSTANCE;
 	}
 }

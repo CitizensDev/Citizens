@@ -17,11 +17,7 @@ public class HealerTask implements Runnable {
 		}
 	}
 
-	/**
-	 * Regenerate a healer's health
-	 * 
-	 * @param npc
-	 */
+	// Regenerate a healer's health
 	private void regenerateHealth(HumanNPC npc) {
 		if (npc.isType("healer")) {
 			Healer healer = npc.getType("healer");
@@ -31,11 +27,7 @@ public class HealerTask implements Runnable {
 		}
 	}
 
-	/**
-	 * Get the health regeneration rate for a healer based on its level
-	 * 
-	 * @return
-	 */
+	// Get the health regeneration rate for a healer based on its level
 	public static int getHealthRegenRate() {
 		int delay = SettingsManager.getInt("HealerHealthRegenIncrement");
 		if (!NPCManager.getList().isEmpty()) {

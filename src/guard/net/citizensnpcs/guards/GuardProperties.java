@@ -21,6 +21,11 @@ public class GuardProperties extends PropertyManager implements Properties {
 	private static final String blacklist = ".guard.blacklist";
 	private static final String aggressive = ".guard.aggressive";
 
+	public static final GuardProperties INSTANCE = new GuardProperties();
+
+	private GuardProperties() {
+	}
+
 	private void saveProtectionRadius(int UID, double rad) {
 		profiles.setDouble(UID + radius, rad);
 	}

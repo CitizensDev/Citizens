@@ -23,6 +23,10 @@ import org.bukkit.inventory.ItemStack;
 
 @CommandRequirements(requiredType = "blacksmith")
 public class BlacksmithCommands implements CommandHandler {
+	public static final BlacksmithCommands INSTANCE = new BlacksmithCommands();
+
+	private BlacksmithCommands() {
+	}
 
 	@CommandRequirements()
 	@Command(

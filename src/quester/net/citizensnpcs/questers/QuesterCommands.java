@@ -20,6 +20,10 @@ import org.bukkit.entity.Player;
 		requireOwnership = true,
 		requiredType = "quester")
 public class QuesterCommands implements CommandHandler {
+	public static final QuesterCommands INSTANCE = new QuesterCommands();
+
+	private QuesterCommands() {
+	}
 
 	@CommandRequirements()
 	@ServerCommand()

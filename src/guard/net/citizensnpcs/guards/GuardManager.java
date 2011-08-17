@@ -32,13 +32,7 @@ public class GuardManager {
 		}
 	}
 
-	/**
-	 * Return a bouncer to its original position
-	 * 
-	 * @param guard
-	 * 
-	 * @param npc
-	 */
+	// Return a bouncer to its original position
 	public static void returnToBase(Guard guard, HumanNPC npc) {
 		Location loc;
 		if (guard.isBodyguard()) {
@@ -56,8 +50,9 @@ public class GuardManager {
 			}
 		}
 		if (npc.getLocation().distance(loc) > SettingsManager
-				.getDouble("PathfindingRange"))
+				.getDouble("PathfindingRange")) {
 			npc.teleport(loc);
+		}
 		PathUtils.createPath(npc, loc, -1, -1,
 				SettingsManager.getDouble("PathfindingRange"));
 	}

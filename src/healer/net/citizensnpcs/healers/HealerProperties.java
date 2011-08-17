@@ -14,6 +14,11 @@ public class HealerProperties extends PropertyManager implements Properties {
 	private final String health = ".healer.health";
 	private final String level = ".healer.level";
 
+	public static final HealerProperties INSTANCE = new HealerProperties();
+
+	private HealerProperties() {
+	}
+
 	private void saveHealth(int UID, int healPower) {
 		profiles.setInt(UID + health, healPower);
 	}

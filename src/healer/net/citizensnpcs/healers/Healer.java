@@ -30,29 +30,17 @@ public class Healer extends CitizensNPC {
 		this.health = health;
 	}
 
-	/**
-	 * Get the maximum health of a healer NPC
-	 * 
-	 * @return
-	 */
+	// Get the maximum health of a healer NPC
 	public int getMaxHealth() {
 		return level * 10;
 	}
 
-	/**
-	 * Get the level of a healer NPC
-	 * 
-	 * @return
-	 */
+	// Get the level of a healer NPC
 	public int getLevel() {
 		return level;
 	}
 
-	/**
-	 * Set the level of a healer NPC
-	 * 
-	 * @param level
-	 */
+	// Set the level of a healer NPC
 	public void setLevel(int level) {
 		this.level = level;
 	}
@@ -142,12 +130,12 @@ public class Healer extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new HealerProperties();
+		return HealerProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return new HealerCommands();
+		return HealerCommands.INSTANCE;
 	}
 
 	@Override

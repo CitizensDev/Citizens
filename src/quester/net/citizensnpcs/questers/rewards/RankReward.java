@@ -17,7 +17,6 @@ public class RankReward implements Reward {
 
 	@Override
 	public void grant(Player player, HumanNPC npc) {
-		// TODO - look into 3.0 API and finish grantRank()
 		PermissionManager.grantRank(player, reward);
 	}
 

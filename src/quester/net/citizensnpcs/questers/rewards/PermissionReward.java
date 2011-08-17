@@ -20,10 +20,11 @@ public class PermissionReward implements Reward {
 
 	@Override
 	public void grant(Player player, HumanNPC npc) {
-		if (take)
+		if (take) {
 			PermissionManager.givePermission(player, reward, true);
-		else
+		} else {
 			PermissionManager.givePermission(player, reward, false);
+		}
 	}
 
 	@Override

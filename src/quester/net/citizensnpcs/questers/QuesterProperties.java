@@ -11,7 +11,6 @@ public class QuesterProperties extends PropertyManager implements Properties {
 	public static final QuesterProperties INSTANCE = new QuesterProperties();
 
 	private QuesterProperties() {
-
 	}
 
 	private static final String isQuester = ".quester.toggle";

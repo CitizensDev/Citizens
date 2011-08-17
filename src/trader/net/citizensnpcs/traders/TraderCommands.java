@@ -29,6 +29,10 @@ import org.bukkit.inventory.ItemStack;
 		requireOwnership = true,
 		requiredType = "trader")
 public class TraderCommands implements CommandHandler {
+	public static final TraderCommands INSTANCE = new TraderCommands();
+
+	private TraderCommands() {
+	}
 
 	@CommandRequirements()
 	@Command(
@@ -45,12 +49,6 @@ public class TraderCommands implements CommandHandler {
 		HelpUtils.sendTraderHelp(sender);
 	}
 
-	/**
-	 * Display a trader's balance
-	 * 
-	 * @param player
-	 * @param npc
-	 */
 	@Command(
 			aliases = "trader",
 			usage = "money (give|take) (amount)",
@@ -130,14 +128,6 @@ public class TraderCommands implements CommandHandler {
 		}
 	}
 
-	/**
-	 * Displays a list of buying/selling items for the selected trader npc.
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param args
-	 * @param selling
-	 */
 	@CommandRequirements(requiredType = "trader", requireSelected = true)
 	@Command(
 			aliases = "trader",
@@ -189,13 +179,6 @@ public class TraderCommands implements CommandHandler {
 		}
 	}
 
-	/**
-	 * Sets whether the selected trader will have unlimited stock or not.
-	 * 
-	 * @param npc
-	 * @param sender
-	 * @param unlimited
-	 */
 	@Command(
 			aliases = "trader",
 			usage = "unlimited",
@@ -217,15 +200,6 @@ public class TraderCommands implements CommandHandler {
 		}
 	}
 
-	/**
-	 * Adds an item to be stocked by the selected trader.
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param item
-	 * @param price
-	 * @param selling
-	 */
 	@Command(
 			aliases = "trader",
 			usage = "buy/sell [item] [price]",
@@ -400,12 +374,7 @@ public class TraderCommands implements CommandHandler {
 		return stack;
 	}
 
-	/**
-	 * Creates an ItemStack from the given string ItemStack format.
-	 * 
-	 * @param split
-	 * @return
-	 */
+	// Creates an ItemStack from the given string ItemStack format.
 	private static ItemStack parseItemStack(String[] split) {
 		try {
 			int amount = 1;

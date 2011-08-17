@@ -79,12 +79,14 @@ public class FlagList {
 	public void addToAll(Set<Character> set, FlagInfo info) {
 		List<FlagType> toAdd = Lists.newArrayList();
 		if (set.size() == 1) {
-			for (FlagType type : FlagType.values())
+			for (FlagType type : FlagType.values()) {
 				toAdd.add(type);
+			}
 		} else {
 			for (FlagType type : FlagType.values()) {
-				if (type.isWithin(set))
+				if (type.isWithin(set)) {
 					toAdd.add(type);
+				}
 			}
 		}
 		for (FlagType type : toAdd) {
@@ -120,8 +122,9 @@ public class FlagList {
 
 		public static FlagType fromCharacter(char character) {
 			for (FlagType type : FlagType.values()) {
-				if (type.getCharacter() == character)
+				if (type.getCharacter() == character) {
 					return type;
+				}
 			}
 			return null;
 		}

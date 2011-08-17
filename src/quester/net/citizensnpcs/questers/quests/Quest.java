@@ -19,29 +19,17 @@ public class Quest {
 		this.questName = name;
 	}
 
-	/**
-	 * Get the name of a quest
-	 * 
-	 * @return
-	 */
+	// Get the name of a quest
 	public String getName() {
 		return questName;
 	}
 
-	/**
-	 * Add a reward
-	 * 
-	 * @param reward
-	 */
+	// Add a reward
 	public void addReward(Reward reward) {
 		rewards.add(reward);
 	}
 
-	/**
-	 * Set the name of a quest
-	 * 
-	 * @param questName
-	 */
+	// Set the name of a quest
 	public void setName(String questName) {
 		this.questName = questName;
 	}
@@ -50,11 +38,7 @@ public class Quest {
 		return this.rewards;
 	}
 
-	/**
-	 * Get the description of a quest
-	 * 
-	 * @return
-	 */
+	// Get the description of a quest
 	public String getDescription() {
 		return description;
 	}
@@ -63,11 +47,7 @@ public class Quest {
 		this.description = description;
 	}
 
-	/**
-	 * Get the text to be outputted on completion of a quest
-	 * 
-	 * @return
-	 */
+	// Get the text to be outputted on completion of a quest
 	public String getCompletedText() {
 		return completionText;
 	}

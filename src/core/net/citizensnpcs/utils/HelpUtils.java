@@ -156,7 +156,7 @@ public class HelpUtils {
 				"trader",
 				"[buy|sell] edit [itemID(:amount:data)] [itemID(:amount:data)]",
 				"edit a trader's stock");
-		format(sender, "trader", "unlimited [true|false]",
+		format(sender, "trader", "unlimited",
 				"set whether a trader has unlimited stock");
 		format(sender, "trader", "money [give|take] (amount)",
 				"control a trader's money");

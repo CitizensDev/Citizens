@@ -20,10 +20,11 @@ public class HealthReward implements Reward {
 
 	@Override
 	public void grant(Player player, HumanNPC npc) {
-		if (this.take)
+		if (this.take) {
 			player.setHealth(player.getHealth() - reward);
-		else
+		} else {
 			player.setHealth(player.getHealth() + reward);
+		}
 	}
 
 	@Override

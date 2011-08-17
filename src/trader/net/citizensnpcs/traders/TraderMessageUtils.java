@@ -6,12 +6,7 @@ import org.bukkit.ChatColor;
 
 public class TraderMessageUtils {
 
-	/**
-	 * Formats the price message for an ItemPrice.
-	 * 
-	 * @param price
-	 * @return
-	 */
+	// Formats the price message for an ItemPrice.
 	public static String getPriceMessage(ItemPrice price, ChatColor colour) {
 		String message = "";
 		// message += colour
@@ -22,13 +17,7 @@ public class TraderMessageUtils {
 		return message;
 	}
 
-	/**
-	 * Formats the ItemStack contained in a stockable to a string.
-	 * 
-	 * @param s
-	 * @param colour
-	 * @return
-	 */
+	// Formats the ItemStack contained in a stockable to a string.
 	public static String getStockableMessage(Stockable s, ChatColor colour) {
 		return MessageUtils.getStackString(s.getStocking(), colour) + " for "
 				+ getPriceMessage(s.getPrice(), colour);

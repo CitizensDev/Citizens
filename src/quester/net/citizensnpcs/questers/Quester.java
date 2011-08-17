@@ -30,11 +30,7 @@ public class Quester extends CitizensNPC {
 
 	// TODO - make this queue per-player.
 
-	/**
-	 * Add a quest
-	 * 
-	 * @param quest
-	 */
+	// Add a quest
 	public void addQuest(String quest) {
 		quests.add(quest);
 	}
@@ -185,7 +181,7 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public CommandHandler getCommands() {
-		return new QuesterCommands();
+		return QuesterCommands.INSTANCE;
 	}
 
 	@Override

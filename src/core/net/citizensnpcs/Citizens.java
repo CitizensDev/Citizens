@@ -215,11 +215,7 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	/**
-	 * Get the current version of Citizens
-	 * 
-	 * @return
-	 */
+// Get the current version of Citizens
 	public static String getVersion() {
 		return version;
 	}
@@ -291,13 +287,7 @@ public class Citizens extends JavaPlugin {
 		initialized = true;
 	}
 
-	/**
-	 * A method used for iConomy support.
-	 * 
-	 * @param iConomy
-	 *            plugin
-	 * @return
-	 */
+	// A method used for iConomy support.
 	public static boolean setMethod(Method method) {
 		if (economy == null) {
 			economy = method;
@@ -306,15 +296,7 @@ public class Citizens extends JavaPlugin {
 		return false;
 	}
 
-	/**
-	 * Returns whether the given item ID is usable as a tool.
-	 * 
-	 * @param key
-	 * @param type
-	 * @param sneaking
-	 * 
-	 * @return Whether the ID is used for a tool.
-	 */
+	// Returns whether the given item ID is usable as a tool.
 	public static boolean validateTool(String key, int type, boolean sneaking) {
 		String[] items = UtilityProperties.getSettings().getString(key)
 				.split(",");
@@ -333,7 +315,7 @@ public class Citizens extends JavaPlugin {
 				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	// Load NPC types in the plugins/Citizens/types directory

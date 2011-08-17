@@ -18,6 +18,11 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 	private static final String recipes = ".alchemist.recipes";
 	private static final String currentRecipe = recipes + ".current";
 
+	public static final AlchemistProperties INSTANCE = new AlchemistProperties();
+
+	private AlchemistProperties() {
+	}
+
 	private void saveCurrentRecipe(int UID, int currentRecipeID) {
 		profiles.setInt(UID + currentRecipe, currentRecipeID);
 	}

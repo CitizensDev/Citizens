@@ -14,11 +14,18 @@ public class WizardTask implements Runnable {
 			if (!entry.getValue().isType("wizard")) {
 				return;
 			}
-			HumanNPC npc = entry.getValue();
+			Wizard wizard = entry.getValue().getType("wizard");
 			if (SettingsManager.getBoolean("RegenWizardMana")
-					&& !((Wizard) npc.getType("wizard")).hasUnlimitedMana()) {
-				WizardManager.increaseMana(npc, 1);
+					&& !wizard.hasUnlimitedMana()) {
+				increaseMana(wizard, 1);
 			}
+		}
+	}
+
+	// Increase the mana of a wizard
+	private void increaseMana(Wizard wizard, int mana) {
+		if (wizard.getMana() + mana < SettingsManager.getInt("WizardMaxMana")) {
+			wizard.setMana(wizard.getMana() + mana);
 		}
 	}
 }

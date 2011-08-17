@@ -10,25 +10,15 @@ public class ItemPrice {
 	private double price = 0;
 	private ItemStack item;
 
-	/**
-	 * Represents a price, which can be iConomy or an item. This constructs an
-	 * iConomy price.
-	 * 
-	 * @param price
-	 */
+	// Represents a price, which can be iConomy or an item. This constructs an
+	// iConomy price.
 	public ItemPrice(double price) {
 		this.setPrice(price);
 		this.setEconPlugin(true);
 	}
 
-	/**
-	 * Represents a price, which can be iConomy or an item. This constructs an
-	 * item price.
-	 * 
-	 * @param price
-	 * @param itemID
-	 * @param data
-	 */
+	// Represents a price, which can be iConomy or an item. This constructs an
+	// item price.
 	public ItemPrice(ItemStack item) {
 		this.item = item;
 		this.setEconPlugin(false);

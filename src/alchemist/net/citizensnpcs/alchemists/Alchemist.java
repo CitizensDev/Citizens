@@ -52,12 +52,12 @@ public class Alchemist extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new AlchemistProperties();
+		return AlchemistProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return new AlchemistCommands();
+		return AlchemistCommands.INSTANCE;
 	}
 
 	@Override

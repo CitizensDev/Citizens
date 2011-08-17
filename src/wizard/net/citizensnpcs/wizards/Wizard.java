@@ -30,12 +30,7 @@ public class Wizard extends CitizensNPC {
 	private boolean unlimitedMana = false;
 	private String command = "";
 
-	/**
-	 * Addds a location to the main location sting.
-	 * 
-	 * @param location
-	 * @param locName
-	 */
+	// Adds a location to the main location sting.
 	public void addLocation(Location location, String locName) {
 		String addedLoc = "";
 		addedLoc = "(" + locName + "," + location.getWorld().getName() + ","
@@ -49,20 +44,12 @@ public class Wizard extends CitizensNPC {
 		}
 	}
 
-	/**
-	 * Returns the main location string.
-	 * 
-	 * @return
-	 */
+	// Returns the main location string
 	public String getLocations() {
 		return locations;
 	}
 
-	/**
-	 * Sets all the locations of the wizard (one big combined string)
-	 * 
-	 * @param locationsinc
-	 */
+	// Sets all the locations of the wizard (one big combined string)
 	public void setLocations(String locationsinc) {
 		locations = locationsinc;
 		numberOfLocations = locations.split(":").length;
@@ -71,11 +58,7 @@ public class Wizard extends CitizensNPC {
 		}
 	}
 
-	/**
-	 * Sets the next location in the list as active.
-	 * 
-	 * @return
-	 */
+	// Sets the next location in the list as active.
 	public void cycle(HumanNPC npc, WizardMode mode) {
 		Wizard wizard = npc.getType("wizard");
 		switch (mode) {
@@ -148,20 +131,12 @@ public class Wizard extends CitizensNPC {
 		}
 	}
 
-	/**
-	 * Returns the total amount of locations bound to the wizard.
-	 * 
-	 * @return
-	 */
+	// Returns the total amount of locations bound to the wizard.
 	public int getNumberOfLocations() {
 		return numberOfLocations;
 	}
 
-	/**
-	 * Return the current active teleport location for the wizard.
-	 * 
-	 * @return
-	 */
+	// Return the current active teleport location for the wizard.
 	public Location getCurrentLocation() {
 		String locs[] = locations.split(":")[currentLocation].split(",");
 		this.currentLoc = new Location(Bukkit.getServer().getWorld(locs[1]),
@@ -171,120 +146,68 @@ public class Wizard extends CitizensNPC {
 		return this.currentLoc;
 	}
 
-	/**
-	 * Return the current active teleport location name for the wizard.
-	 * 
-	 * @return
-	 */
+	// Return the current active teleport location name for the wizard.
 	public String getCurrentLocationName() {
 		String locs[] = locations.split(":")[currentLocation].split(",");
 		return locs[0].replace("(", "");
 	}
 
-	/**
-	 * Get the mana that a wizard NPC has remaining
-	 * 
-	 * @return
-	 */
+	// Get the mana that a wizard NPC has remaining
 	public int getMana() {
 		return mana;
 	}
 
-	/**
-	 * Set the mana of a wizard NPC
-	 * 
-	 * @param mana
-	 */
+	// Set the mana of a wizard NPC
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
 
-	/**
-	 * Get the mode of a wizard
-	 * 
-	 * @return
-	 */
+	// Get the mode of a wizard
 	public WizardMode getMode() {
 		return mode;
 	}
 
-	/**
-	 * Set the mode of a wizard
-	 * 
-	 * @param mode
-	 */
+	// Set the mode of a wizard
 	public void setMode(WizardMode mode) {
 		this.mode = mode;
 	}
 
-	/**
-	 * Get the time setting of a wizard
-	 * 
-	 * @return
-	 */
+	// Get the time setting of a wizard
 	public String getTime() {
 		return time;
 	}
 
-	/**
-	 * Set the time setting for a wizard
-	 * 
-	 * @param time
-	 */
+	// Set the time setting for a wizard
 	public void setTime(String time) {
 		this.time = time;
 	}
 
-	/**
-	 * Get the mob that a wizard will spawn
-	 * 
-	 * @return
-	 */
+	// Get the mob that a wizard will spawn
 	public CreatureType getMob() {
 		return mob;
 	}
 
-	/**
-	 * Set the mob that a wizard will spawn
-	 * 
-	 * @param mob
-	 */
+	// Set the mob that a wizard will spawn
 	public void setMob(CreatureType mob) {
 		this.mob = mob;
 	}
 
-	/**
-	 * Get whether a wizard has unlimited mana
-	 * 
-	 * @return
-	 */
+	// Get whether a wizard has unlimited mana
 	public boolean hasUnlimitedMana() {
 		return unlimitedMana;
 	}
 
-	/**
-	 * Set whether a wizard has unlimited mana
-	 * 
-	 * @param unlimitedMana
-	 */
+	// Set whether a wizard has unlimited mana
 	public void setUnlimitedMana(boolean unlimitedMana) {
 		this.unlimitedMana = unlimitedMana;
 	}
 
-	/**
-	 * Get a wizard's current command to execute
-	 * 
-	 * @return
-	 */
+	// Get a wizard's current command to execute
 	public String getCommand() {
 		return command;
 	}
 
-	/**
-	 * Set the command for a wizard to execute
-	 * 
-	 * @param command
-	 */
+	// Set the command for a wizard to execute
 	public void setCommand(String command) {
 		this.command = command;
 	}
@@ -392,12 +315,12 @@ public class Wizard extends CitizensNPC {
 
 	@Override
 	public Properties getProperties() {
-		return new WizardProperties();
+		return WizardProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return new WizardCommands();
+		return WizardCommands.INSTANCE;
 	}
 
 	@Override

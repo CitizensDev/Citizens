@@ -28,6 +28,10 @@ import org.bukkit.entity.Player;
 		requireOwnership = true,
 		requiredType = "alchemist")
 public class AlchemistCommands implements CommandHandler {
+	public static final AlchemistCommands INSTANCE = new AlchemistCommands();
+
+	private AlchemistCommands() {
+	}
 
 	@CommandRequirements()
 	@ServerCommand()

@@ -5,13 +5,7 @@ public class Check {
 	private short dataValue;
 	private boolean selling;
 
-	/**
-	 * Used to distinguish between stockables in a hashmap.
-	 * 
-	 * @param itemID
-	 * @param dataValue
-	 * @param selling
-	 */
+	// Used to distinguish between stockables in a hashmap.
 	public Check(int itemID, short dataValue, boolean selling) {
 		this.setItemID(itemID);
 		this.setDataValue(dataValue);
@@ -39,12 +33,6 @@ public class Check {
 		result = prime * result + (selling ? 1231 : 1237);
 		return result;
 	}
-
-	/*
-	 * Alternate hashCode() suggested by <kuraiou> in #citizens public int
-	 * hashCode() { return (itemId * 1000) + (dataValue * 10) + (selling ? 1 :
-	 * 2); }
-	 */
 
 	@Override
 	public boolean equals(Object obj) {

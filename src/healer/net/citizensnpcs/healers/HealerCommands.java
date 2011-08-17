@@ -21,6 +21,10 @@ import org.bukkit.entity.Player;
 		requireOwnership = true,
 		requiredType = "healer")
 public class HealerCommands implements CommandHandler {
+	public static final HealerCommands INSTANCE = new HealerCommands();
+
+	private HealerCommands() {
+	}
 
 	@CommandRequirements()
 	@Command(

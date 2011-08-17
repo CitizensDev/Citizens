@@ -18,6 +18,11 @@ public class TraderProperties extends PropertyManager implements Properties {
 	private final String unlimited = ".trader.unlimited";
 	private final String balance = ".trader.balance";
 
+	public static final TraderProperties INSTANCE = new TraderProperties();
+
+	private TraderProperties() {
+	}
+
 	private void saveBalance(int UID, double traderBalance) {
 		profiles.setDouble(UID + balance, traderBalance);
 	}

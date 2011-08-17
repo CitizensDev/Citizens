@@ -22,6 +22,11 @@ public class WizardProperties extends PropertyManager implements Properties {
 	private static final String unlimitedMana = ".wizard.unlimited-mana";
 	private static final String command = ".wizard.command";
 
+	public static final WizardProperties INSTANCE = new WizardProperties();
+
+	private WizardProperties() {
+	}
+
 	private void saveLocations(int UID, String locationString) {
 		profiles.setString(UID + locations, locationString.replace(")(", "):("));
 	}
