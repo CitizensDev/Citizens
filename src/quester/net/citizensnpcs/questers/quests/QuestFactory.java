@@ -19,7 +19,7 @@ public class QuestFactory {
 			quest.setCompletedText(quests.getString(path + ".texts.completion"));
 			quest.setAcceptanceText(quests
 					.getString(path + ".texts.acceptance"));
-			quest.setRepeatable(quests.getBoolean(path + ".repeatable"));
+			quest.setRepeatLimit(quests.getInt(path + ".repeats"));
 			String tempPath = path;
 			if (quests.pathExists(path + ".rewards")) {
 				for (String reward : quests.getKeys(path + ".rewards")) {
@@ -98,7 +98,7 @@ public class QuestFactory {
 		quests.setString(path + ".texts.description", quest.getDescription());
 		quests.setString(path + ".texts.completion", quest.getCompletedText());
 		quests.setString(path + ".texts.acceptance", quest.getCompletedText());
-		quests.setBoolean(path + ".repeatable", quest.isRepeatable());
+		quests.setInt(path + ".repeats", quest.getRepeatLimit());
 		String temp = path + ".rewards.";
 		int count = 0;
 		for (Reward reward : quest.getRewards()) {
@@ -116,9 +116,9 @@ public class QuestFactory {
 				quests.setString(path + ".type", objective.getType());
 				if (objective.getAmount() != -1)
 					quests.setInt(path + ".amount", objective.getAmount());
-				if (objective.getDestinationNPCID() != -1)
+				if (objective.getDestNPCID() != -1)
 					quests.setInt(path + ".npcdestination",
-							objective.getDestinationNPCID());
+							objective.getDestNPCID());
 				if (!objective.getMessage().isEmpty())
 					quests.setString(path + ".message", objective.getMessage());
 				if (objective.getItem() != null) {

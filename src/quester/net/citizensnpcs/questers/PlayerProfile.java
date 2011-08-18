@@ -47,6 +47,14 @@ public class PlayerProfile {
 		completedQuests.put(quest.getName(), quest);
 	}
 
+	public CompletedQuest getCompletedQuest(String name) {
+		return completedQuests.get(name);
+	}
+
+	public boolean hasCompleted(String reward) {
+		return completedQuests.containsKey(reward);
+	}
+
 	public QuestProgress getProgress() {
 		return progress;
 	}
@@ -60,10 +68,6 @@ public class PlayerProfile {
 
 	public boolean hasQuest() {
 		return progress != null;
-	}
-
-	public boolean hasCompleted(String reward) {
-		return completedQuests.containsKey(reward);
 	}
 
 	public Storage getStorage() {
@@ -100,6 +104,13 @@ public class PlayerProfile {
 				++count;
 			}
 		}
+		String path = "quests.completed.", temp;
+		for (CompletedQuest quest : this.completedQuests.values()) {
+			temp = path + quest.getName();
+			profile.setInt(temp + ".completed", quest.getTimesCompleted());
+			profile.setLong(temp + ".elapsed", quest.getElapsed());
+			profile.setInt(temp + ".quester", quest.getQuesterUID());
+		}
 		profile.save();
 	}
 
@@ -129,6 +140,15 @@ public class PlayerProfile {
 							profile, path + "progress.location", true));
 				}
 			}
+		}
+		for (String key : profile.getKeys("quest.completed")) {
+			path = "quest.completed." + key;
+			completedQuests.put(
+					key,
+					new CompletedQuest(key,
+							profile.getInt(path + ".completed"), profile
+									.getInt(path + ".quester"), profile
+									.getLong(path + ".elapsed")));
 		}
 	}
 }

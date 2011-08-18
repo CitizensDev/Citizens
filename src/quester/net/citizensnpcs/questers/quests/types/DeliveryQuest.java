@@ -1,10 +1,13 @@
 package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.api.events.NPCTargetEvent;
+import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestObjective;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
@@ -21,7 +24,7 @@ public class DeliveryQuest implements QuestObjective {
 			if (e.getTarget().getEntityId() == progress.getPlayer()
 					.getEntityId()) {
 				if (((HumanNPC) e.getEntity()).getUID() == progress
-						.getObjective().getDestinationNPCID()) {
+						.getObjective().getDestNPCID()) {
 					Player player = (Player) e.getTarget();
 					if (player.getItemInHand().getType() == progress
 							.getObjective().getMaterial()) {
@@ -41,5 +44,20 @@ public class DeliveryQuest implements QuestObjective {
 	@Override
 	public boolean isCompleted(ObjectiveProgress progress) {
 		return progress.getAmount() >= progress.getObjective().getAmount();
+	}
+
+	@Override
+	public String getStatus(ObjectiveProgress progress) {
+		int amount = progress.getAmount();
+		return ChatColor.GREEN
+				+ "Delivering "
+				+ StringUtils.wrap(amount)
+				+ " "
+				+ StringUtils.formatter(progress.getObjective().getMaterial())
+						.plural(amount)
+				+ " to "
+				+ StringUtils.wrap(NPCManager.get(
+						progress.getObjective().getDestNPCID()).getName())
+				+ ".";
 	}
 }

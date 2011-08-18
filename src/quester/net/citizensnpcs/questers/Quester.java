@@ -89,8 +89,11 @@ public class Quester extends CitizensNPC {
 				long elapsed = System.currentTimeMillis()
 						- profile.getProgress().getStartTime();
 				profile.setProgress(null);
-				profile.addCompletedQuest(new CompletedQuest(quest, npc
-						.getStrippedName(), elapsed));
+				int completed = profile.hasCompleted(quest.getName()) ? profile
+						.getCompletedQuest(quest.getName()).getTimesCompleted()
+						: 1;
+				profile.addCompletedQuest(new CompletedQuest(quest.getName(),
+						npc.getUID(), completed, elapsed));
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "The quest isn't completed yet.");
@@ -103,9 +106,11 @@ public class Quester extends CitizensNPC {
 
 	private void attemptAssign(Player player, HumanNPC npc) {
 		Quest quest = getQuest(fetchFromList(player));
-		if (PlayerProfile.getProfile(player.getName()).hasCompleted(
-				fetchFromList(player))
-				&& !quest.isRepeatable()) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (profile.hasCompleted(quest.getName())
+				&& (quest.getRepeatLimit() != -1 && profile.getCompletedQuest(
+						quest.getName()).getTimesCompleted() >= quest
+						.getRepeatLimit())) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You are not allowed to repeat this quest.");
 			return;

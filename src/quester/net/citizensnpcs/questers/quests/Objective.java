@@ -43,7 +43,7 @@ public class Objective {
 		return questType;
 	}
 
-	public int getDestinationNPCID() {
+	public int getDestNPCID() {
 		return destination;
 	}
 

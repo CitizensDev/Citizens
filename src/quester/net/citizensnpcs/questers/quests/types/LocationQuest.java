@@ -3,7 +3,9 @@ package net.citizensnpcs.questers.quests.types;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestObjective;
 import net.citizensnpcs.utils.LocationUtils;
+import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -33,5 +35,17 @@ public class LocationQuest implements QuestObjective {
 		return LocationUtils
 				.withinRange(progress.getObjective().getLocation(), progress
 						.getLastLocation(), progress.getObjective().getAmount());
+	}
+
+	@Override
+	public String getStatus(ObjectiveProgress progress) {
+		int amount = progress.getObjective().getAmount();
+		return ChatColor.GREEN
+				+ "Moving to "
+				+ StringUtils.format(progress.getObjective().getLocation())
+				+ " "
+				+ StringUtils.bracketize(StringUtils.wrap(amount)
+						+ StringUtils.formatter(" block").plural(amount)
+						+ " leeway", true);
 	}
 }

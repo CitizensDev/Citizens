@@ -13,7 +13,7 @@ public class Quest {
 	private final List<Reward> rewards = new ArrayList<Reward>();
 	private final List<Reward> requirements = new ArrayList<Reward>();
 	private Objectives objectives;
-	private boolean repeatable = false; // perhaps change this to an integer.
+	private int repeatLimit = -1;
 
 	public Quest(String name) {
 		this.questName = name;
@@ -84,11 +84,11 @@ public class Quest {
 		this.acceptanceText = text;
 	}
 
-	public void setRepeatable(boolean repeatable) {
-		this.repeatable = repeatable;
+	public void setRepeatLimit(int repeatLimit) {
+		this.repeatLimit = repeatLimit;
 	}
 
-	public boolean isRepeatable() {
-		return repeatable;
+	public int getRepeatLimit() {
+		return this.repeatLimit;
 	}
 }
