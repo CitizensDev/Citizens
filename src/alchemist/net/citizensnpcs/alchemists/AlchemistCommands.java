@@ -56,7 +56,7 @@ public class AlchemistCommands implements CommandHandler {
 			modifiers = "recipes",
 			min = 1,
 			max = 2)
-	@CommandPermissions("alchemist.use.recipes")
+	@CommandPermissions("alchemist.use.recipes.view")
 	public static void recipes(CommandContext args, Player player, HumanNPC npc) {
 		HashMap<Integer, String> recipes = ((Alchemist) npc
 				.getType("alchemist")).getRecipes();
@@ -99,7 +99,7 @@ public class AlchemistCommands implements CommandHandler {
 			modifiers = "view",
 			min = 1,
 			max = 2)
-	@CommandPermissions("alchemist.use.recipes")
+	@CommandPermissions("alchemist.use.recipes.view")
 	public static void view(CommandContext args, Player player, HumanNPC npc) {
 		int page = 1;
 		if (args.argsLength() == 2) {
@@ -119,7 +119,7 @@ public class AlchemistCommands implements CommandHandler {
 			modifiers = "add",
 			min = 3,
 			max = 3)
-	@CommandPermissions("alchemist.modify.recipes")
+	@CommandPermissions("alchemist.modify.recipes.add")
 	public static void add(CommandContext args, Player player, HumanNPC npc) {
 		if (!AlchemistManager.checkValidID(player, args.getString(1))) {
 			return;

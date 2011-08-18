@@ -147,13 +147,16 @@ permissions:
             citizens.alchemist.use.interact: true
             citizens.alchemist.use.help: true
             citizens.alchemist.use.recipes.*: true
-    citizens.alchemist.recipes.*:
+    citizens.alchemist.use.recipes.*:
         children:
             citizens.alchemist.use.recipes.select: true
             citizens.alchemist.use.recipes.view: true
+    citizens.alchemist.modify.recipes.*:
+        children:
+            citizens.alchemist.modify.recipes.add: true
     citizens.alchemist.modify.*:
         children:
-            citizens.alchemist.modify.recipes: true
+            citizens.alchemist.modify.recipes.*: true
     citizens.blacksmith.*:
         children:
             citizens.blacksmith.use.*: true

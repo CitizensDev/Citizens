@@ -76,7 +76,7 @@ public class Alchemist extends CitizensNPC {
 			if (AlchemistManager.sendRecipeMessage(player, npc, 1)) {
 				player.sendMessage(ChatColor.GREEN + "Type "
 						+ StringUtils.wrap("/alchemist view (page)")
-						+ " to view more ingredients for the selected recipe.");
+						+ " for more ingredients.");
 				player.sendMessage(ChatColor.GREEN
 						+ "Right-click again to craft.");
 			}
@@ -84,9 +84,10 @@ public class Alchemist extends CitizensNPC {
 			return;
 		}
 		AlchemistTask task = new AlchemistTask(npc);
-		task.addID(Bukkit.getServer().getScheduler()
-				.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 1));
+		Bukkit.getServer().getScheduler()
+				.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 1);
 		InventoryUtils.showInventory(npc, player);
 		AlchemistManager.setClickedOnce(player.getName(), false);
+		// TODO requires inventory events to cancel tasks when inventory closes
 	}
 }

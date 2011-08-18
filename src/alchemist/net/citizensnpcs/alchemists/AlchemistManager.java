@@ -42,9 +42,8 @@ public class AlchemistManager {
 						+ MessageUtils.getMaterialName(currentRecipe)
 						+ ChatColor.WHITE + " <%x/%y>")));
 		if (alchemist.getRecipe(currentRecipe) == null) {
-			Messaging.log("Current recipe ID: " + currentRecipe
-					+ "doesn't exist.");
-			return false;
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " has no recipes.");
 		}
 		for (String item : alchemist.getRecipe(currentRecipe).split(",")) {
 			instance.push(" - " + ChatColor.GREEN

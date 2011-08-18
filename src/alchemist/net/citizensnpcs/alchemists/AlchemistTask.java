@@ -3,7 +3,6 @@ package net.citizensnpcs.alchemists;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -12,7 +11,6 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class AlchemistTask implements Runnable {
 	private HumanNPC npc;
-	private int id;
 
 	public AlchemistTask(HumanNPC npc) {
 		this.npc = npc;
@@ -37,7 +35,7 @@ public class AlchemistTask implements Runnable {
 		for (ItemStack toRemove : required) {
 			npcInv.remove(toRemove);
 		}
-		// make sure list is clear for next iteration
+		// make sure list is empty for next iteration
 		required.clear();
 		// add the resulting item into the inventory
 		int result;
@@ -47,17 +45,7 @@ public class AlchemistTask implements Runnable {
 		} else {
 			result = SettingsManager.getInt("AlchemistFailedCraftItem");
 		}
-		npcInv.setItem(npcInv.first(result), new ItemStack(result, 1));
+		npcInv.addItem(new ItemStack(result, 1));
 		npc.getPlayer().updateInventory();
-		kill();
-	}
-
-	public void addID(int id) {
-		this.id = id;
-	}
-
-	private void kill() {
-		run();
-		Bukkit.getServer().getScheduler().cancelTask(id);
 	}
 }
