@@ -116,9 +116,9 @@ public class QuestFactory {
 				quests.setString(path + ".type", objective.getType());
 				if (objective.getAmount() != -1)
 					quests.setInt(path + ".amount", objective.getAmount());
-				if (objective.getDestinationNPCID() != -1)
+				if (objective.getDestNPCID() != -1)
 					quests.setInt(path + ".npcdestination",
-							objective.getDestinationNPCID());
+							objective.getDestNPCID());
 				if (!objective.getMessage().isEmpty())
 					quests.setString(path + ".message", objective.getMessage());
 				if (objective.getItem() != null) {

@@ -8,4 +8,6 @@ public interface QuestObjective {
 	public boolean update(Event event, ObjectiveProgress progress);
 
 	public boolean isCompleted(ObjectiveProgress progress);
+
+	public String getStatus(ObjectiveProgress progress);
 }

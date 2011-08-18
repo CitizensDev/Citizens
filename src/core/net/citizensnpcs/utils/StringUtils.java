@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import com.google.common.base.Joiner;
@@ -29,6 +30,10 @@ public class StringUtils {
 
 	public static String bracketize(String string) {
 		return "[" + string + "]";
+	}
+
+	public static String bracketize(String string, boolean soft) {
+		return soft ? '(' + string + ')' : bracketize(string);
 	}
 
 	public static String listify(String string) {
@@ -241,5 +246,75 @@ public class StringUtils {
 		if (capitalise)
 			split[0] = capitalise(split[0]);
 		return Joiner.on(" ").join(split);
+	}
+
+	public static String format(Location location) {
+		return join(location.getBlockX(), location.getBlockY(),
+				location.getBlockZ())
+				+ bracketize("world " + location.getWorld(), true);
+	}
+
+	public static String join(Object... parts) {
+		return Joiner.on(" ").join(parts);
+	}
+
+	public static Formatter formatter(Object string) {
+		return new Formatter(string.toString());
+	}
+
+	public static Formatter formatter() {
+		return new Formatter("");
+	}
+
+	public static Formatter formatter(Enum<?> toFormat) {
+		return formatter(format(toFormat));
+	}
+
+	public static class Formatter {
+		private final String format;
+
+		public Formatter(String string) {
+			this.format = string;
+		}
+
+		public Formatter reset() {
+			return new Formatter("");
+		}
+
+		public Formatter add(String other) {
+			return new Formatter(format + " " + other);
+		}
+
+		public Formatter wrap() {
+			return new Formatter(StringUtils.wrap(format));
+		}
+
+		public Formatter wrap(ChatColor end) {
+			return new Formatter(StringUtils.wrap(format, end));
+		}
+
+		public Formatter plural(int amount) {
+			return new Formatter(StringUtils.pluralise(format, amount));
+		}
+
+		public Formatter capital() {
+			return new Formatter(StringUtils.capitalise(format));
+		}
+
+		public Formatter bracket() {
+			return new Formatter(StringUtils.bracketize(format));
+		}
+
+		public Formatter colour() {
+			return new Formatter(StringUtils.colourise(format));
+		}
+
+		public Formatter list() {
+			return new Formatter(StringUtils.listify(format));
+		}
+
+		public Formatter slice(int start, int end) {
+			return new Formatter(format.substring(start, end));
+		}
 	}
 }
