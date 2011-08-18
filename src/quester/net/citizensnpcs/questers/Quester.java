@@ -89,8 +89,11 @@ public class Quester extends CitizensNPC {
 				long elapsed = System.currentTimeMillis()
 						- profile.getProgress().getStartTime();
 				profile.setProgress(null);
-				profile.addCompletedQuest(new CompletedQuest(quest, npc
-						.getStrippedName(), elapsed));
+				int completed = profile.hasCompleted(quest.getName()) ? profile
+						.getCompletedQuest(quest.getName()).getTimesCompleted()
+						: 1;
+				profile.addCompletedQuest(new CompletedQuest(quest.getName(),
+						npc.getUID(), completed, elapsed));
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "The quest isn't completed yet.");

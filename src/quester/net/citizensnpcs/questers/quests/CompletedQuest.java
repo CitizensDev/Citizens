@@ -1,26 +1,29 @@
 package net.citizensnpcs.questers.quests;
 
-public class CompletedQuest {
-	private final String npcName;
-	private final String name;
-	private final long seconds, minutes, hours;
-	private final boolean repeatable;
+import java.util.concurrent.TimeUnit;
 
-	public CompletedQuest(Quest quest, String npcName, long elapsed) {
-		this.minutes = elapsed / 60000;
-		this.seconds = elapsed / 1000;
-		this.hours = elapsed / 3600000;
-		this.name = quest.getName();
-		this.repeatable = quest.isRepeatable();
-		this.npcName = npcName;
+public class CompletedQuest {
+	private final int npcID;
+	private final String name;
+	private final long elapsed, seconds, minutes, hours;
+	private int timesCompleted;
+
+	public CompletedQuest(String quest, int npcID, int completed, long elapsed) {
+		this.elapsed = elapsed;
+		this.timesCompleted = completed;
+		this.minutes = TimeUnit.MINUTES.convert(elapsed, TimeUnit.MILLISECONDS);
+		this.seconds = TimeUnit.SECONDS.convert(elapsed, TimeUnit.MILLISECONDS);
+		this.hours = TimeUnit.HOURS.convert(elapsed, TimeUnit.MILLISECONDS);
+		this.name = quest;
+		this.npcID = npcID;
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public String getQuesterName() {
-		return npcName;
+	public int getQuesterUID() {
+		return npcID;
 	}
 
 	public long getSeconds() {
@@ -35,7 +38,15 @@ public class CompletedQuest {
 		return hours;
 	}
 
-	public boolean isRepeatable() {
-		return repeatable;
+	public long getElapsed() {
+		return elapsed;
+	}
+
+	public int getTimesCompleted() {
+		return timesCompleted;
+	}
+
+	public void setTimeCompleted(int completed) {
+		this.timesCompleted = completed;
 	}
 }
