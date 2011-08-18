@@ -12,12 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class UtilityProperties {
-	private static ConfigurationHandler economy;
 	private static ConfigurationHandler settings;
 	private static ConfigurationHandler mobs;
 
 	public static void initialize() {
-		economy = new ConfigurationHandler("plugins/Citizens/economy.yml");
 		settings = new ConfigurationHandler("plugins/Citizens/citizens.yml");
 		mobs = new ConfigurationHandler("plugins/Citizens/mobs.yml");
 	}
@@ -26,20 +24,16 @@ public class UtilityProperties {
 		return settings;
 	}
 
-	public static Storage getEconomySettings() {
-		return economy;
-	}
-
 	public static Storage getMobSettings() {
 		return mobs;
 	}
 
 	public static double getPrice(String path) {
-		return economy.getDouble("prices." + path);
+		return settings.getDouble("economy.prices." + path);
 	}
 
 	public static int getCurrencyID(String string) {
-		int ID = economy.getInt(string);
+		int ID = settings.getInt(string);
 		return ID == -1 ? 1 : ID;
 	}
 

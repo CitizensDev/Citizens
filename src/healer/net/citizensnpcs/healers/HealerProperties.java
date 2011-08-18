@@ -87,9 +87,10 @@ public class HealerProperties extends PropertyManager implements Properties {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.healer.levelup",
-				100));
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.healer.heal", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.healer.levelup", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.healer.heal", 100));
 		nodes.add(new Node("HealerGiveHealthItem", SettingsType.GENERAL,
 				"items.healers.give-health-item", 35));
 		nodes.add(new Node("HealerTakeHealthItem", SettingsType.GENERAL,

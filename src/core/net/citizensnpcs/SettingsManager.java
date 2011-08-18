@@ -21,10 +21,6 @@ public class SettingsManager {
 		 */
 		GENERAL,
 		/**
-		 * economy.yml
-		 */
-		ECONOMY,
-		/**
 		 * mobs.yml
 		 */
 		MOB;
@@ -34,7 +30,8 @@ public class SettingsManager {
 		try {
 			return (Boolean) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging
+					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return false;
 		}
@@ -44,7 +41,8 @@ public class SettingsManager {
 		try {
 			return (Integer) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging
+					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return 0;
 		}
@@ -54,7 +52,8 @@ public class SettingsManager {
 		try {
 			return (String) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging
+					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return "";
 		}
@@ -70,7 +69,8 @@ public class SettingsManager {
 				return (Integer) loadedNodes.get(name);
 			}
 		} catch (NullPointerException e) {
-			Messaging.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging
+					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
 			e.printStackTrace();
 			return 0;
 		}
@@ -86,10 +86,11 @@ public class SettingsManager {
 		loadSettings();
 		// Only load settings for loaded NPC types
 		for (String t : Citizens.loadedTypes) {
-			nodes.add(new Node("", SettingsType.ECONOMY, "prices." + t
+			nodes.add(new Node("", SettingsType.GENERAL, "economy.prices." + t
 					+ ".creation", 100));
-			if (CitizensNPCManager.getType(t).getProperties().getNodes() == null)
+			if (CitizensNPCManager.getType(t).getProperties().getNodes() == null) {
 				continue;
+			}
 			for (Node node : CitizensNPCManager.getType(t).getProperties()
 					.getNodes()) {
 				nodes.add(node);
@@ -164,11 +165,10 @@ public class SettingsManager {
 				"general.defaults.talk-when-close", false));
 		nodes.add(new Node("PathfindingRange", SettingsType.GENERAL,
 				"range.pathfinding", 16F));
-		// economy.yml
-		nodes.add(new Node("UseEconomy", SettingsType.ECONOMY,
+		nodes.add(new Node("UseEconomy", SettingsType.GENERAL,
 				"economy.use-economy", true));
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.basic.creation",
-				100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.basic.creation", 100));
 		// mobs.yml
 		nodes.add(new Node("CreatureNPCSpawnDelay", SettingsType.MOB,
 				"general.spawn.delay", 200));

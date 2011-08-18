@@ -27,8 +27,6 @@ public class Node {
 		switch (this.getType()) {
 		case GENERAL:
 			return UtilityProperties.getSettings();
-		case ECONOMY:
-			return UtilityProperties.getEconomySettings();
 		case MOB:
 			return UtilityProperties.getMobSettings();
 		}

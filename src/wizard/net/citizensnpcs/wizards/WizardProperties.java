@@ -168,16 +168,16 @@ public class WizardProperties extends PropertyManager implements Properties {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.teleport",
-				100));
-		nodes.add(new Node("", SettingsType.ECONOMY,
-				"prices.wizard.changetime", 100));
-		nodes.add(new Node("", SettingsType.ECONOMY, "prices.wizard.spawnmob",
-				100));
-		nodes.add(new Node("", SettingsType.ECONOMY,
-				"prices.wizard.togglestorm", 100));
-		nodes.add(new Node("", SettingsType.ECONOMY,
-				"prices.wizard.executecommand", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.wizard.teleport", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.wizard.changetime", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.wizard.spawnmob", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.wizard.togglestorm", 100));
+		nodes.add(new Node("", SettingsType.GENERAL,
+				"economy.prices.wizard.executecommand", 100));
 		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
 				"general.wizards.wizard-max-locations", 10));
 		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,

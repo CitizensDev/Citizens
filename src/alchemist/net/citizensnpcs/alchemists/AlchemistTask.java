@@ -19,6 +19,9 @@ public class AlchemistTask implements Runnable {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
+		if (!npc.isType("alchemist")) {
+			return;
+		}
 		Alchemist alchemist = npc.getType("alchemist");
 		ArrayList<ItemStack> required = new ArrayList<ItemStack>();
 		for (String item : alchemist.getRecipe(alchemist.getCurrentRecipeID())
