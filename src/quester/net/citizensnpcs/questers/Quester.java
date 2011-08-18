@@ -106,9 +106,11 @@ public class Quester extends CitizensNPC {
 
 	private void attemptAssign(Player player, HumanNPC npc) {
 		Quest quest = getQuest(fetchFromList(player));
-		if (PlayerProfile.getProfile(player.getName()).hasCompleted(
-				fetchFromList(player))
-				&& !quest.isRepeatable()) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (profile.hasCompleted(quest.getName())
+				&& (quest.getRepeatLimit() != -1 && profile.getCompletedQuest(
+						quest.getName()).getTimesCompleted() >= quest
+						.getRepeatLimit())) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You are not allowed to repeat this quest.");
 			return;
