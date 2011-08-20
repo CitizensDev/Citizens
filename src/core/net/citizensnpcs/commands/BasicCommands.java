@@ -55,7 +55,6 @@ public class BasicCommands implements CommandHandler {
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
-		sender.sendMessage(ChatColor.YELLOW + "      - NeonMaster");
 	}
 
 	@Command(
@@ -372,13 +371,18 @@ public class BasicCommands implements CommandHandler {
 	@CommandPermissions("basic.modify.remove")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
-			if (PermissionManager.generic(player, "citizens.admin.removeall")) {
+			if (PermissionManager.generic(player,
+					"citizens.basic.modify.remove.all")) {
 				NPCManager.removeAll();
 				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			}
+			return;
+		}
+		if (!PermissionManager.generic(player, "citizens.basic.modify.remove")) {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
 			return;
 		}
 		NPCManager.remove(npc.getUID());
@@ -744,7 +748,7 @@ public class BasicCommands implements CommandHandler {
 		PermissionManager.addPerm("basic.modify.moveto");
 		PermissionManager.addPerm("basic.modify.copy");
 		PermissionManager.addPerm("basic.modify.remove");
-		PermissionManager.addPerm("admin.removeall");
+		PermissionManager.addPerm("basic.modify.remove.all");
 		PermissionManager.addPerm("basic.modify.rename");
 		PermissionManager.addPerm("basic.modify.color");
 		PermissionManager.addPerm("basic.modify.addtext");

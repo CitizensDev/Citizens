@@ -6,7 +6,7 @@ import java.util.Map;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCSpawnEvent;
+import net.citizensnpcs.api.events.NPCCreateEvent;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCList;
@@ -48,7 +48,7 @@ public class NPCManager {
 				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 
-		NPCSpawnEvent event = new NPCSpawnEvent(npc);
+		NPCCreateEvent event = new NPCCreateEvent(npc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 			NPCSpawner.despawnNPC(npc);

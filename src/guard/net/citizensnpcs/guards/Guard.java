@@ -1,6 +1,5 @@
 package net.citizensnpcs.guards;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.api.CitizensNPC;
@@ -8,6 +7,8 @@ import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.guards.GuardManager.GuardType;
 import net.citizensnpcs.guards.flags.FlagList;
+import net.citizensnpcs.guards.listeners.GuardCitizensListen;
+import net.citizensnpcs.guards.listeners.GuardPlayerListen;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -19,6 +20,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -173,16 +175,10 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public void onEnable() {
-		Bukkit.getServer()
-				.getScheduler()
-				.scheduleSyncRepeatingTask(Citizens.plugin, new GuardTask(),
-						SettingsManager.getInt("TickDelay"),
-						SettingsManager.getInt("TickDelay"));
-	}
-
-	@Override
-	public void addListeners() {
-		CitizensNPCManager.addListener(new GuardPlayerListen());
+	public void registerEvents() {
+		CitizensNPCManager.registerEvent(Type.PLAYER_LOGIN,
+				new GuardPlayerListen());
+		CitizensNPCManager.registerEvent(Type.CUSTOM_EVENT,
+				new GuardCitizensListen());
 	}
 }

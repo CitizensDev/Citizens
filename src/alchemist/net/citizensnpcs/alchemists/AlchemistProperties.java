@@ -40,7 +40,7 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 
 	private HashMap<Integer, String> getRecipes(int UID) {
 		HashMap<Integer, String> recipeMap = new HashMap<Integer, String>();
-		if (profiles.getKeys(UID + recipes) == null) {
+		if (profiles.getKeys(UID + recipes).size() == 0) {
 			return recipeMap;
 		}
 		for (String key : profiles.getKeys(UID + recipes)) {

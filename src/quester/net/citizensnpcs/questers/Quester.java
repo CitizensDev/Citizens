@@ -20,6 +20,7 @@ import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Type;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -196,13 +197,16 @@ public class Quester extends CitizensNPC {
 	}
 
 	@Override
-	public void onEnable() {
-		QuestProperties.initialize();
-	}
-
-	@Override
-	public void addListeners() {
-		CitizensNPCManager.addListener(new QuesterBlockListen());
-		CitizensNPCManager.addListener(new QuesterPlayerListen());
+	public void registerEvents() {
+		// block events
+		QuesterBlockListen bl = new QuesterBlockListen();
+		CitizensNPCManager.registerEvent(Type.BLOCK_BREAK, bl);
+		CitizensNPCManager.registerEvent(Type.BLOCK_PLACE, bl);
+		// player events
+		QuesterPlayerListen pl = new QuesterPlayerListen();
+		CitizensNPCManager.registerEvent(Type.PLAYER_QUIT, pl);
+		CitizensNPCManager.registerEvent(Type.PLAYER_MOVE, pl);
+		CitizensNPCManager.registerEvent(Type.PLAYER_PICKUP_ITEM, pl);
+		CitizensNPCManager.registerEvent(Type.PLAYER_CHAT, pl);
 	}
 }

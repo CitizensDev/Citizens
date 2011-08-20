@@ -12,7 +12,8 @@ import net.citizensnpcs.utils.ConversationUtils;
 import net.citizensnpcs.utils.ServerUtils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -26,18 +27,14 @@ import org.bukkit.plugin.PluginManager;
 public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
-	public void registerEvents() {
+	public void registerEvents(Citizens plugin) {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_JOIN, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this,
-				Event.Priority.Normal, Citizens.plugin);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, this,
-				Event.Priority.Normal, Citizens.plugin);
+		pm.registerEvent(Type.PLAYER_JOIN, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_LOGIN, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_QUIT, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_INTERACT, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_INTERACT_ENTITY, this, Priority.Normal,
+				plugin);
 	}
 
 	@Override

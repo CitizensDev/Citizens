@@ -14,7 +14,8 @@ import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -25,14 +26,11 @@ import org.bukkit.plugin.PluginManager;
 public class EntityListen extends EntityListener implements Listener {
 
 	@Override
-	public void registerEvents() {
+	public void registerEvents(Citizens plugin) {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.ENTITY_TARGET, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, this, Event.Priority.Normal,
-				Citizens.plugin);
+		pm.registerEvent(Type.ENTITY_DAMAGE, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.ENTITY_TARGET, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.ENTITY_DEATH, this, Priority.Normal, plugin);
 	}
 
 	@Override

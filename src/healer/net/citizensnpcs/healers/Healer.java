@@ -1,27 +1,28 @@
 package net.citizensnpcs.healers;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.healers.listeners.HealerCitizensListen;
+import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Type;
 
 public class Healer extends CitizensNPC {
 	private int health = 10;
 	private int level = 1;
-	
+
 	public int getHealth() {
 		return health;
 	}
@@ -139,11 +140,8 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public void onEnable() {
-		Bukkit.getServer()
-				.getScheduler()
-				.scheduleSyncRepeatingTask(Citizens.plugin, new HealerTask(),
-						HealerTask.getHealthRegenRate(),
-						HealerTask.getHealthRegenRate());
+	public void registerEvents() {
+		CitizensNPCManager.registerEvent(Type.CUSTOM_EVENT,
+				new HealerCitizensListen());
 	}
 }

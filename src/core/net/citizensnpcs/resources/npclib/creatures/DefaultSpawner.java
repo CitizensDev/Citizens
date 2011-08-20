@@ -3,7 +3,7 @@ package net.citizensnpcs.resources.npclib.creatures;
 import java.util.Random;
 
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCCreatureSpawnEvent;
+import net.citizensnpcs.api.events.NPCSpawnEvent;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
@@ -65,7 +65,7 @@ public class DefaultSpawner implements Spawner {
 													.getWorld(), x, y, z,
 											random.nextInt(360), 0, type);
 									// call NPC creature-spawning event
-									NPCCreatureSpawnEvent spawnEvent = new NPCCreatureSpawnEvent(
+									NPCSpawnEvent spawnEvent = new NPCSpawnEvent(
 											npc, loc);
 									Bukkit.getServer().getPluginManager()
 											.callEvent(spawnEvent);

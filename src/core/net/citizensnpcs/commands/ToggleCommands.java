@@ -86,7 +86,7 @@ public class ToggleCommands implements CommandHandler {
 			modifiers = "all",
 			min = 2,
 			max = 2)
-	@CommandPermissions("admin.toggleall")
+	@CommandPermissions("toggle.all")
 	public static void toggleAll(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.getString(1).equalsIgnoreCase("on")) {
@@ -96,13 +96,7 @@ public class ToggleCommands implements CommandHandler {
 		}
 	}
 
-	/**
-	 * Toggles an NPC state.
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param type
-	 */
+	// Toggles an NPC state.
 	private static void toggleState(Player player, HumanNPC npc,
 			CitizensNPC type) {
 		if (!npc.isType(type.getType())) {
@@ -118,13 +112,7 @@ public class ToggleCommands implements CommandHandler {
 		}
 	}
 
-	/**
-	 * Buys an NPC state.
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param type
-	 */
+	// Buys an NPC state.
 	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
 		String toggle = type.getType();
 		if (!PermissionManager.generic(player, "citizens.toggle." + toggle)) {
@@ -148,13 +136,7 @@ public class ToggleCommands implements CommandHandler {
 		}
 	}
 
-	/**
-	 * Toggles all types of NPCs
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param on
-	 */
+	// Toggles all types of NPCs
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
 			for (Entry<String, CitizensNPC> entry : CitizensNPCManager
@@ -173,7 +155,7 @@ public class ToggleCommands implements CommandHandler {
 	@Override
 	public void addPermissions() {
 		PermissionManager.addPerm("toggle.help");
-		PermissionManager.addPerm("admin.toggleall");
+		PermissionManager.addPerm("toggle.all");
 		for (String type : Citizens.loadedTypes) {
 			PermissionManager.addPerm("toggle." + type);
 		}

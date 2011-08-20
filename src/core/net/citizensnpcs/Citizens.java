@@ -13,18 +13,17 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.events.CitizensEnableEvent;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
 import net.citizensnpcs.listeners.EntityListen;
-import net.citizensnpcs.listeners.Listener;
 import net.citizensnpcs.listeners.PlayerListen;
 import net.citizensnpcs.listeners.ServerListen;
 import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
-import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -74,6 +73,13 @@ public class Citizens extends JavaPlugin {
 		// Load NPC types. Must be loaded before settings.
 		loadNPCTypes();
 
+		// Call enable event, used for scheduling tasks per type, initializing properties, etc.
+		CitizensEnableEvent enableEvent = new CitizensEnableEvent();
+		Bukkit.getServer().getPluginManager().callEvent(enableEvent);
+		if (enableEvent.isCancelled()) {
+			return;
+		}
+
 		// Load settings.
 		SettingsManager.setupVariables();
 
@@ -83,13 +89,13 @@ public class Citizens extends JavaPlugin {
 		Citizens.commands.register(WaypointCommands.class);
 
 		// Register our events.
-		new EntityListen().registerEvents();
-		new WorldListen().registerEvents();
-		new ServerListen().registerEvents();
-		new PlayerListen().registerEvents();
+		new EntityListen().registerEvents(this);
+		new WorldListen().registerEvents(this);
+		new ServerListen().registerEvents(this);
+		new PlayerListen().registerEvents(this);
 
 		// Initialize Permissions.
-		PermissionManager.initialize(Bukkit.getServer());
+		PermissionManager.initialize(getServer());
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
@@ -127,16 +133,6 @@ public class Citizens extends JavaPlugin {
 						}
 					}, SettingsManager.getInt("SavingDelay"),
 					SettingsManager.getInt("SavingDelay"));
-		}
-		// Call each NPC type's onEnable method
-		for (String loaded : loadedTypes) {
-			CitizensNPC type = CitizensNPCManager.getType(loaded);
-			type.onEnable();
-			// Register event listener per-type
-			type.addListeners();
-			for (Listener listener : CitizensNPCManager.getListeners()) {
-				listener.registerEvents();
-			}
 		}
 
 		Messaging.log("version [" + getVersion() + "] loaded.");
@@ -215,7 +211,7 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-// Get the current version of Citizens
+	// Get the current version of Citizens
 	public static String getVersion() {
 		return version;
 	}
@@ -328,6 +324,7 @@ public class Citizens extends JavaPlugin {
 						f), this);
 				if (type != null) {
 					loadedTypes.add(type.getType());
+					type.registerEvents();
 				}
 			}
 		}
@@ -338,7 +335,8 @@ public class Citizens extends JavaPlugin {
 			Messaging.log("No NPC types loaded.");
 		}
 	}
-	public boolean checkLoaded(String type){
+
+	public boolean checkLoaded(String type) {
 		return loadedTypes.contains(type);
 	}
 }

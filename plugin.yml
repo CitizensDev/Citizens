@@ -87,11 +87,10 @@ permissions:
             citizens.admin.reload: true
             citizens.admin.save: true
             citizens.admin.debug: true
-            citizens.admin.removeall: true
-            citizens.admin.toggleall: true
     citizens.toggle.*:
         children:
             citizens.toggle.help: true
+            citizens.toggle.all: true
             citizens.toggle.alchemist: true
             citizens.toggle.blacksmith: true
             citizens.toggle.guard: true
@@ -138,6 +137,11 @@ permissions:
             citizens.basic.modify.lookat: true
             citizens.basic.modify.talkclose: true
             citizens.basic.modify.setowner: true
+            citizens.basic.modify.remove.*: true
+    citizens.basic.modify.remove.*:
+        children:
+            citizens.basic.modify.remove: true
+            citizens.basic.modify.remove.all: true
     citizens.alchemist.*:
         children:
             citizens.alchemist.use.*: true

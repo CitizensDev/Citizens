@@ -11,7 +11,8 @@ import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldListener;
@@ -24,12 +25,10 @@ public class WorldListen extends WorldListener implements Listener {
 			.makeMap();
 
 	@Override
-	public void registerEvents() {
+	public void registerEvents(Citizens plugin) {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.CHUNK_UNLOAD, this, Event.Priority.Normal,
-				Citizens.plugin);
-		pm.registerEvent(Event.Type.CHUNK_LOAD, this, Event.Priority.Normal,
-				Citizens.plugin);
+		pm.registerEvent(Type.CHUNK_UNLOAD, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.CHUNK_LOAD, this, Priority.Normal, plugin);
 	}
 
 	@Override

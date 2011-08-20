@@ -31,12 +31,6 @@ public abstract class CitizensNPC {
 	public abstract CommandHandler getCommands();
 
 	/**
-	 * Called in main class onEnable, can be used to schedule tasks, etc..
-	 */
-	public void onEnable() {
-	}
-
-	/**
 	 * Left-clicking an NPC.
 	 * 
 	 * @param player
@@ -88,8 +82,9 @@ public abstract class CitizensNPC {
 	}
 
 	/**
-	 * Register event listeners for an NPC type
+	 * Register event listeners for an NPC type. Use
+	 * CitizensNPCManager.registerEvent
 	 */
-	public void addListeners() {
+	public void registerEvents() {
 	}
 }
