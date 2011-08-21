@@ -116,8 +116,6 @@ public class SettingsManager {
 				"ticks.saving.delay", 72000));
 		nodes.add(new Node("RightClickPause", SettingsType.GENERAL,
 				"ticks.waypoints.right-click-pause", 70));
-		nodes.add(new Node("TickDelay", SettingsType.GENERAL,
-				"ticks.general.delay", 1));
 		nodes.add(new Node("SavingDelay", SettingsType.GENERAL,
 				"ticks.saving.delay", 72000));
 		nodes.add(new Node("NPCRange", SettingsType.GENERAL, "range.look", 5));

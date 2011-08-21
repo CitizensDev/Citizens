@@ -27,7 +27,7 @@ public class WaypointCommands implements CommandHandler {
 			min = 2,
 			max = 2)
 	public static void modifier(CommandContext args, Player player, HumanNPC npc) {
-		if (NPCDataManager.pathEditors.get(player.getName()) == null) {
+		if (!NPCDataManager.pathEditors.containsKey(player.getName())) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You must be editing your NPC's path.");
 			return;

@@ -316,5 +316,10 @@ public class StringUtils {
 		public Formatter slice(int start, int end) {
 			return new Formatter(format.substring(start, end));
 		}
+
+		@Override
+		public String toString() {
+			return format;
+		}
 	}
 }
