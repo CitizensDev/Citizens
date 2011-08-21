@@ -3,7 +3,7 @@ package net.citizensnpcs.questers.quests.types;
 import net.citizensnpcs.api.events.NPCTargetEvent;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestObjective;
+import net.citizensnpcs.questers.quests.QuestUpdater;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -13,7 +13,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-public class DeliveryQuest implements QuestObjective {
+public class DeliveryQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.ENTITY_TARGET };
 
 	@Override

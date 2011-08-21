@@ -2,7 +2,7 @@ package net.citizensnpcs.questers.quests;
 
 import org.bukkit.event.Event;
 
-public interface QuestObjective {
+public interface QuestUpdater {
 	public Event.Type[] getEventTypes();
 
 	public boolean update(Event event, ObjectiveProgress progress);

@@ -12,7 +12,7 @@ public class ObjectiveProgress {
 	private final HumanNPC quester;
 	private final Objective objective;
 	private final Player player;
-	private final QuestObjective questtype;
+	private final QuestUpdater questtype;
 	private final String questName;
 
 	private int amountCompleted = 0;
@@ -29,11 +29,11 @@ public class ObjectiveProgress {
 	}
 
 	public boolean update(Event event) {
-		return questtype.update(event, this);
+		return getQuestUpdater().update(event, this);
 	}
 
 	public boolean isCompleted() {
-		return questtype.isCompleted(this);
+		return getQuestUpdater().isCompleted(this);
 	}
 
 	public HumanNPC getQuester() {
@@ -81,7 +81,11 @@ public class ObjectiveProgress {
 	}
 
 	public Event.Type[] getEventTypes() {
-		return questtype.getEventTypes();
+		return getQuestUpdater().getEventTypes();
+	}
+
+	public QuestUpdater getQuestUpdater() {
+		return questtype;
 	}
 
 }

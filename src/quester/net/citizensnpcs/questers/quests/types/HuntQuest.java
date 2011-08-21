@@ -2,7 +2,7 @@ package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestObjective;
+import net.citizensnpcs.questers.quests.QuestUpdater;
 
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Monster;
@@ -10,7 +10,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class HuntQuest implements QuestObjective {
+public class HuntQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
 
 	@Override

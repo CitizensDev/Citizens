@@ -2,14 +2,14 @@ package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestObjective;
+import net.citizensnpcs.questers.quests.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public class BuildQuest implements QuestObjective {
+public class BuildQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.BLOCK_PLACE };
 
 	@Override

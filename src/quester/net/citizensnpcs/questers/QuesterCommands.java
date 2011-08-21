@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -16,6 +17,8 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.iConomy.util.Messaging;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -84,8 +87,16 @@ public class QuesterCommands implements CommandHandler {
 					+ "Currently in the middle of "
 					+ StringUtils.wrap(profile.getProgress().getQuestName())
 					+ ". You have been on this quest for "
-					+ TimeUnit.HOURS.convert(profile.getProgress()
-							.getStartTime(), TimeUnit.MILLISECONDS) + " hours.");
+					+ TimeUnit.HOURS.convert(System.currentTimeMillis()
+							- profile.getProgress().getStartTime(),
+							TimeUnit.MILLISECONDS) + " hours.");
+			player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
+					+ " Progress report " + ChatColor.GREEN + "-");
+			for (ObjectiveProgress progress : profile.getProgress()
+					.getProgress()) {
+				Messaging.send(player,
+						progress.getQuestUpdater().getStatus(progress));
+			}
 		}
 	}
 

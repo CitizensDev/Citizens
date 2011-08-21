@@ -1,7 +1,7 @@
 package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestObjective;
+import net.citizensnpcs.questers.quests.QuestUpdater;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -10,7 +10,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class LocationQuest implements QuestObjective {
+public class LocationQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.PLAYER_MOVE };
 
 	@Override

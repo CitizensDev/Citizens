@@ -21,7 +21,7 @@ import net.citizensnpcs.questers.rewards.RankReward.RankRewardBuilder;
 import com.google.common.collect.Maps;
 
 public class QuestAPI {
-	private final static Map<String, QuestObjective> questTypes = Maps
+	private final static Map<String, QuestUpdater> questTypes = Maps
 			.newHashMap();
 	private final static Map<String, RewardBuilder> rewards = Maps.newHashMap();
 	static {
@@ -42,11 +42,11 @@ public class QuestAPI {
 		rewards.put("rank", new RankRewardBuilder());
 	}
 
-	public static void addQuestType(String identifier, QuestObjective instance) {
+	public static void addQuestType(String identifier, QuestUpdater instance) {
 		questTypes.put(identifier, instance);
 	}
 
-	public static QuestObjective getObjective(String identifier) {
+	public static QuestUpdater getObjective(String identifier) {
 		return questTypes.get(identifier.toLowerCase());
 	}
 
