@@ -74,7 +74,7 @@ public class EntityListen extends EntityListener implements Listener {
 			if (npc.getNPCData().isLookClose()) {
 				NPCManager.facePlayer(npc, player);
 			}
-			if (Citizens.validateTool("items.basic.select-items", player
+			if (Citizens.validateTool("items.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
@@ -86,7 +86,7 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 			}
 			// Call NPC talk event
-			if (Citizens.validateTool("items.basic.talk-items", player
+			if (Citizens.validateTool("items.talk-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				Player target = (Player) e.getTarget();
 				NPCTalkEvent talkEvent = new NPCTalkEvent(npc, target,

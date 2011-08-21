@@ -24,6 +24,7 @@ import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
+import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -73,26 +74,29 @@ public class Citizens extends JavaPlugin {
 		// Load NPC types. Must be loaded before settings.
 		loadNPCTypes();
 
-		// Call enable event, used for scheduling tasks per type, initializing properties, etc.
-		CitizensEnableEvent enableEvent = new CitizensEnableEvent();
-		Bukkit.getServer().getPluginManager().callEvent(enableEvent);
-		if (enableEvent.isCancelled()) {
-			return;
-		}
-
 		// Load settings.
 		SettingsManager.setupVariables();
 
-		// Register our commands.
-		Citizens.commands.register(BasicCommands.class);
-		Citizens.commands.register(ToggleCommands.class);
-		Citizens.commands.register(WaypointCommands.class);
+		// Call enable event, used for scheduling tasks per type, initializing
+		// properties, etc.
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new CitizensEnableEvent());
+
+		// Register events per type
+		for (String loaded : loadedTypes) {
+			CitizensNPCManager.getType(loaded).registerEvents();
+		}
 
 		// Register our events.
 		new EntityListen().registerEvents(this);
 		new WorldListen().registerEvents(this);
 		new ServerListen().registerEvents(this);
 		new PlayerListen().registerEvents(this);
+
+		// Register our commands.
+		Citizens.commands.register(BasicCommands.class);
+		Citizens.commands.register(ToggleCommands.class);
+		Citizens.commands.register(WaypointCommands.class);
 
 		// Initialize Permissions.
 		PermissionManager.initialize(getServer());
@@ -315,7 +319,7 @@ public class Citizens extends JavaPlugin {
 	}
 
 	// Load NPC types in the plugins/Citizens/types directory
-	public void loadNPCTypes() {
+	private void loadNPCTypes() {
 		File dir = new File(getDataFolder(), "types");
 		dir.mkdirs();
 		for (String f : dir.list()) {
@@ -324,7 +328,6 @@ public class Citizens extends JavaPlugin {
 						f), this);
 				if (type != null) {
 					loadedTypes.add(type.getType());
-					type.registerEvents();
 				}
 			}
 		}
@@ -334,9 +337,5 @@ public class Citizens extends JavaPlugin {
 		} else {
 			Messaging.log("No NPC types loaded.");
 		}
-	}
-
-	public boolean checkLoaded(String type) {
-		return loadedTypes.contains(type);
 	}
 }

@@ -179,17 +179,17 @@ public class WizardProperties extends PropertyManager implements Properties {
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.wizard.executecommand", 100));
 		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
-				"general.wizards.wizard-max-locations", 10));
+				"wizards.max-locations", 10));
 		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,
-				"general.wizards.max-mana", 100));
+				"wizards.max-mana", 100));
 		nodes.add(new Node("WizardInteractItem", SettingsType.GENERAL,
-				"items.wizards.interact-item", 288));
+				"wizards.interact-item", 288));
 		nodes.add(new Node("WizardManaRegenItem", SettingsType.GENERAL,
-				"items.wizards.mana-regen-item", 348));
+				"wizards.mana-regen-item", 348));
 		nodes.add(new Node("WizardManaRegenRate", SettingsType.GENERAL,
-				"ticks.wizards.mana-regen-rate", 6000));
+				"wizards.mana-regen-rate", 6000));
 		nodes.add(new Node("RegenWizardMana", SettingsType.GENERAL,
-				"general.wizards.regen-mana", true));
+				"wizards.regen-mana", true));
 		return nodes;
 	}
 }

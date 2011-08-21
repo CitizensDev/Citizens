@@ -30,8 +30,7 @@ public class SettingsManager {
 		try {
 			return (Boolean) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging
-					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
 			return false;
 		}
@@ -41,8 +40,7 @@ public class SettingsManager {
 		try {
 			return (Integer) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging
-					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
 			return 0;
 		}
@@ -52,8 +50,7 @@ public class SettingsManager {
 		try {
 			return (String) loadedNodes.get(name);
 		} catch (NullPointerException e) {
-			Messaging
-					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
 			return "";
 		}
@@ -69,8 +66,7 @@ public class SettingsManager {
 				return (Integer) loadedNodes.get(name);
 			}
 		} catch (NullPointerException e) {
-			Messaging
-					.log("Report this error to fullwall, aPunch or NeonMaster ASAP.");
+			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
 			return 0;
 		}
@@ -124,8 +120,7 @@ public class SettingsManager {
 				"ticks.general.delay", 1));
 		nodes.add(new Node("SavingDelay", SettingsType.GENERAL,
 				"ticks.saving.delay", 72000));
-		nodes.add(new Node("NPCRange", SettingsType.GENERAL,
-				"range.basic.look", 5));
+		nodes.add(new Node("NPCRange", SettingsType.GENERAL, "range.look", 5));
 		nodes.add(new Node("ChatFormat", SettingsType.GENERAL,
 				"general.chat.format", "[%name%]: "));
 		nodes.add(new Node(
@@ -136,9 +131,9 @@ public class SettingsManager {
 		nodes.add(new Node("NPCColor", SettingsType.GENERAL,
 				"general.colors.npc-colour", "f"));
 		nodes.add(new Node("TalkItems", SettingsType.GENERAL,
-				"items.basic.talk-items", "340,"));
+				"items.talk-items", "340,"));
 		nodes.add(new Node("SelectItems", SettingsType.GENERAL,
-				"items.basic.select-items", "*"));
+				"items.select-items", "*"));
 		nodes.add(new Node("SelectionMessage", SettingsType.GENERAL,
 				"general.chat.selection-message",
 				"<g>You selected <y><npc><g> (ID <y><npcid><g>)."));
@@ -154,7 +149,7 @@ public class SettingsManager {
 		nodes.add(new Node("UseSaveTask", SettingsType.GENERAL,
 				"ticks.saving.use-task", true));
 		nodes.add(new Node("QuickSelect", SettingsType.GENERAL,
-				"general.selection.quick-select", false));
+				"general.quick-select", false));
 		nodes.add(new Node("DebugMode", SettingsType.GENERAL,
 				"general.debug-mode", false));
 		nodes.add(new Node("NotifyUpdates", SettingsType.GENERAL,

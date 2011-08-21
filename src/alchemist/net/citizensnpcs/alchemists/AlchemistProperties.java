@@ -113,9 +113,9 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node("AlchemistFailedCraftChance", SettingsType.GENERAL,
-				"general.alchemists.failed-craft-chance", 10));
+				"alchemists.failed-craft-chance", 10));
 		nodes.add(new Node("AlchemistFailedCraftItem", SettingsType.GENERAL,
-				"items.alchemists.failed-craft-item", 263));
+				"alchemists.failed-craft-item", 263));
 		return nodes;
 	}
 }

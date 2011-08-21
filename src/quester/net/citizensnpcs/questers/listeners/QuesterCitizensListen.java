@@ -1,9 +1,8 @@
 package net.citizensnpcs.questers.listeners;
 
-import com.citizens.properties.properties.QuestProperties;
-
 import net.citizensnpcs.api.events.CitizensEnableEvent;
 import net.citizensnpcs.api.events.CitizensListener;
+import net.citizensnpcs.questers.QuestProperties;
 
 public class QuesterCitizensListen extends CitizensListener {
 

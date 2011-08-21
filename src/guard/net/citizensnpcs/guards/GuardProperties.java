@@ -144,10 +144,10 @@ public class GuardProperties extends PropertyManager implements Properties {
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
-				"ticks.guards.respawn-delay", 100));
+				"guards.respawn-delay", 100));
 		nodes.add(new Node("DefaultBouncerProtectionRadius",
 				SettingsType.GENERAL,
-				"range.guards.default-bouncer-protection-radius", 10));
+				"guards.default-bouncer-protection-radius", 10));
 		return nodes;
 	}
 }

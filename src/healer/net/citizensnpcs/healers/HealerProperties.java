@@ -92,13 +92,13 @@ public class HealerProperties extends PropertyManager implements Properties {
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.healer.heal", 100));
 		nodes.add(new Node("HealerGiveHealthItem", SettingsType.GENERAL,
-				"items.healers.give-health-item", 35));
+				"healers.give-health-item", 35));
 		nodes.add(new Node("HealerTakeHealthItem", SettingsType.GENERAL,
-				"items.healers.take-health-item", 276));
+				"healers.take-health-item", 276));
 		nodes.add(new Node("HealerHealthRegenIncrement", SettingsType.GENERAL,
-				"ticks.healers.health-regen-increment", 12000));
+				"healers.health-regen-increment", 12000));
 		nodes.add(new Node("RegenHealerHealth", SettingsType.GENERAL,
-				"general.healers.regen-health", true));
+				"healers.regen-health", true));
 		return nodes;
 	}
 }

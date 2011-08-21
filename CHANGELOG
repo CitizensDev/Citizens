@@ -68,16 +68,17 @@ By fullwall and aPunch
 -item economy removed; now if 'economy.use-economy' is true and an economy plugin is detected, Citizens will use
  that plugin, otherwise everything is free
 -now supports MultiCurrency, BOSEconomy7, and iConomy6
--removed unneeded 'items.item-list-on' and 'general.healers.pay-for-heal' configuration nodes
+-made lots of changes to configuration settings; delete all config files and let them regenerate (if you fail
+ to do so there will be issues)
 -fixed saving bug with waypoints
--changed 'range.guards.pathfinding' node to 'range.pathfinding'
 -you can no longer set '*' as a wizard's interact-item
 -added new wizard mode "command", '/wizard command [command] (args)' sets a wizard's command, right-clicking it
  with the interact-item executes that command
 -added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs"
 -added 'evil.spawn.chance' node in mobs.yml
 -fixed compatibility with Bukkit permissions
--added 'citizens.evils.immune' node, those with this node will not be attacked by Evil NPCs
+-added 'citizens.evils.immune' permission node, those with this node will not be attacked by Evil NPCs
 -added ability to have an NPC say multiple lines of text at once using the <br> tag
 -removed support for Permissions 2.7.x/3.x
 -moved economy settings from economy.yml to citizens.yml
+-added CitizensEnableEvent for developers, see jd.citizensnpcs.net for more API documentation
