@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -12,13 +13,14 @@ import net.citizensnpcs.resources.sk89q.CommandPermissions;
 import net.citizensnpcs.resources.sk89q.CommandRequirements;
 import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.HelpUtils;
+import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.PageUtils;
+import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.iConomy.util.Messaging;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -70,11 +72,11 @@ public class QuesterCommands implements CommandHandler {
 
 	@Command(
 			aliases = "quest",
-			usage = "",
-			desc = "view the current quest",
-			modifiers = "",
-			min = 0,
-			max = 0)
+			usage = "status",
+			desc = "view current quest status",
+			modifiers = "status",
+			min = 1,
+			max = 1)
 	@CommandPermissions("quester.use.queststatus")
 	public static void questStatus(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -98,6 +100,40 @@ public class QuesterCommands implements CommandHandler {
 						progress.getQuestUpdater().getStatus(progress));
 			}
 		}
+	}
+
+	@Command(
+			aliases = "quest",
+			usage = "completed (page)",
+			desc = "view completed quests",
+			modifiers = "completed",
+			min = 1,
+			max = 2)
+	@CommandPermissions("quester.use.queststatus")
+	public static void completedQuests(CommandContext args, Player player,
+			HumanNPC npc) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
+		if (page < 0)
+			page = 1;
+		PageInstance instance = PageUtils.newInstance(player);
+		instance.header(ChatColor.GREEN
+				+ StringUtils.listify("Completed Quests " + ChatColor.WHITE
+						+ "<%x/%y>" + ChatColor.GREEN));
+		for (CompletedQuest quest : profile.getAllCompleted()) {
+			if (instance.maxPages() > page)
+				break;
+			instance.push(StringUtils.wrap(quest.getName()) + " - taking "
+					+ StringUtils.wrap(quest.getHours()) + " hours. Completed "
+					+ StringUtils.wrap(quest.getTimesCompleted()) + " times.");
+		}
+		if (page > instance.maxPages()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Invalid page entered. There are only "
+					+ instance.maxPages() + " pages.");
+			return;
+		}
+		instance.process(page);
 	}
 
 	@Command(

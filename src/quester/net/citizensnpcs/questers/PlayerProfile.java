@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,10 @@ public class PlayerProfile {
 
 	public CompletedQuest getCompletedQuest(String name) {
 		return completedQuests.get(name);
+	}
+
+	public Collection<CompletedQuest> getAllCompleted() {
+		return completedQuests.values();
 	}
 
 	public boolean hasCompleted(String reward) {
