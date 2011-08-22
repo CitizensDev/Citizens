@@ -7,6 +7,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.events.NPCCreateEvent;
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCList;
@@ -51,7 +52,7 @@ public class NPCManager {
 		NPCCreateEvent event = new NPCCreateEvent(npc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
-			NPCSpawner.despawnNPC(npc);
+			NPCSpawner.despawnNPC(npc, NPCRemoveReason.OTHER);
 			return;
 		}
 
@@ -153,17 +154,17 @@ public class NPCManager {
 	 * 
 	 * @param UID
 	 */
-	public static void despawn(int UID) {
+	public static void despawn(int UID, NPCRemoveReason reason) {
 		GlobalUIDs.remove(UID);
-		NPCSpawner.despawnNPC(list.remove(UID));
+		NPCSpawner.despawnNPC(list.remove(UID), reason);
 	}
 
 	/**
 	 * Despawns all npcs.
 	 */
-	public static void despawnAll() {
+	public static void despawnAll(NPCRemoveReason reason) {
 		for (Integer i : GlobalUIDs.keySet()) {
-			despawn(i);
+			despawn(i, reason);
 		}
 	}
 
@@ -171,16 +172,17 @@ public class NPCManager {
 	 * Removes an npc.
 	 * 
 	 * @param UID
+	 * @param reason
 	 */
-	public static void remove(int UID) {
+	public static void remove(int UID, NPCRemoveReason reason) {
 		PropertyManager.remove(get(UID));
-		NPCSpawner.despawnNPC(list.remove(UID));
+		NPCSpawner.despawnNPC(list.remove(UID), reason);
 		GlobalUIDs.remove(UID);
 	}
 
-	public static void removeAll() {
+	public static void removeAll(NPCRemoveReason reason) {
 		for (Integer i : GlobalUIDs.keySet()) {
-			remove(i);
+			remove(i, reason);
 		}
 	}
 
@@ -191,7 +193,7 @@ public class NPCManager {
 	 */
 	public static void removeForRespawn(int UID) {
 		PropertyManager.save(list.get(UID));
-		despawn(UID);
+		despawn(UID, NPCRemoveReason.UNLOAD);
 	}
 
 	/**
@@ -287,6 +289,6 @@ public class NPCManager {
 	}
 
 	public static void safeDespawn(HumanNPC npc) {
-		NPCSpawner.despawnNPC(npc);
+		NPCSpawner.despawnNPC(npc, NPCRemoveReason.UNLOAD);
 	}
 }

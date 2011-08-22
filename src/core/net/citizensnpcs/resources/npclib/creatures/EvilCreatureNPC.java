@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -80,7 +81,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 					.getInt("EvilTameChance")) {
 				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
-				CreatureTask.despawn(this);
+				CreatureTask.despawn(this, NPCRemoveReason.OTHER);
 				NPCManager.register(npc.getName(), player.getLocation(),
 						player.getName());
 				player.sendMessage(ChatColor.GREEN + "You have tamed "

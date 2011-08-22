@@ -23,6 +23,9 @@ public class NPCListener extends CustomEventListener {
 	public void onNPCTarget(NPCTargetEvent event) {
 	}
 
+	public void onNPCRemove(NPCRemoveEvent event) {
+	}
+
 	@Override
 	public void onCustomEvent(Event event) {
 		if (event instanceof NPCSpawnEvent) {
@@ -37,6 +40,8 @@ public class NPCListener extends CustomEventListener {
 			onNPCCreate((NPCCreateEvent) event);
 		} else if (event instanceof NPCTargetEvent) {
 			onNPCTarget((NPCTargetEvent) event);
+		} else if (event instanceof NPCRemoveEvent) {
+			onNPCRemove((NPCRemoveEvent) event);
 		}
 	}
 }

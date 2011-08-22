@@ -1,6 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.api.events.NPCRemoveEvent;
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -75,14 +76,14 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static void despawnNPC(HumanNPC npc) {
-		despawnNPC(npc.getHandle());
+	public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
+		despawnNPC(npc.getHandle(), reason);
 	}
 
-	public static void despawnNPC(CraftNPC npc) {
+	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
 		try {
 			Bukkit.getServer().getPluginManager()
-					.callEvent(new NPCRemoveEvent(npc.npc));
+					.callEvent(new NPCRemoveEvent(npc.npc, reason));
 			npc.world.removeEntity(npc);
 		} catch (Exception e) {
 			e.printStackTrace();

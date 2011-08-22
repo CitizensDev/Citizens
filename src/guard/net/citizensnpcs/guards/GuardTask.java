@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.misc.NPCLocation;
 import net.citizensnpcs.npcs.NPCManager;
@@ -67,7 +68,8 @@ public class GuardTask implements Runnable {
 									npc.getOwner(),
 									new NPCLocation(npc.getLocation(), npc
 											.getUID(), npc.getOwner()));
-							NPCManager.despawn(npc.getUID());
+							NPCManager.despawn(npc.getUID(),
+									NPCRemoveReason.DEATH);
 						}
 					}
 				}

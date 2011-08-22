@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
 
@@ -60,15 +61,15 @@ public class CreatureTask implements Runnable {
 		dirty = true;
 	}
 
-	public static void despawnAll() {
+	public static void despawnAll(NPCRemoveReason reason) {
 		for (CreatureNPC creature : creatureNPCs.values()) {
-			NPCSpawner.despawnNPC(creature);
+			NPCSpawner.despawnNPC(creature, reason);
 		}
 	}
 
-	public static void despawn(CreatureNPC npc) {
+	public static void despawn(CreatureNPC npc, NPCRemoveReason reason) {
 		removeFromMaps(npc);
-		NPCSpawner.despawnNPC(npc);
+		NPCSpawner.despawnNPC(npc, reason);
 	}
 
 	public static void removeFromMaps(CreatureNPC npc) {
@@ -87,7 +88,7 @@ public class CreatureTask implements Runnable {
 			CreatureNPC creatureNPC = creatureNPCs.get(entity.getEntityId());
 			creatureNPC.onDeath();
 			removeFromMaps(creatureNPC);
-			NPCSpawner.despawnNPC(creatureNPC);
+			NPCSpawner.despawnNPC(creatureNPC, NPCRemoveReason.DEATH);
 		}
 	}
 

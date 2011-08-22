@@ -8,6 +8,7 @@ import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
@@ -373,7 +374,7 @@ public class BasicCommands implements CommandHandler {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
 			if (PermissionManager.generic(player,
 					"citizens.basic.modify.remove.all")) {
-				NPCManager.removeAll();
+				NPCManager.removeAll(NPCRemoveReason.COMMAND);
 				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			} else {
@@ -385,7 +386,7 @@ public class BasicCommands implements CommandHandler {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 			return;
 		}
-		NPCManager.remove(npc.getUID());
+		NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
 		NPCDataManager.deselectNPC(player);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
 				ChatColor.GRAY) + " disappeared.");

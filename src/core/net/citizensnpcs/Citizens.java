@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.events.CitizensEnableEvent;
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
@@ -146,8 +147,8 @@ public class Citizens extends JavaPlugin {
 	public void onDisable() {
 		// Save the local copy of our files to disk.
 		PropertyManager.saveState();
-		NPCManager.despawnAll();
-		CreatureTask.despawnAll();
+		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
+		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
 
 		Messaging.log("version [" + getVersion() + "] disabled.");
 	}

@@ -3,6 +3,7 @@ package net.citizensnpcs.listeners;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.misc.NPCLocation;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -50,7 +51,7 @@ public class WorldListen extends WorldListener implements Listener {
 		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
 			if (entry.getBukkitEntity().getLocation().getBlock().getChunk()
 					.equals(event.getChunk())) {
-				CreatureTask.despawn(entry);
+				CreatureTask.despawn(entry, NPCRemoveReason.UNLOAD);
 			}
 		}
 	}
