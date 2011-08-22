@@ -46,7 +46,7 @@ public class QuestManager {
 
 	public static void assignQuest(HumanNPC npc, Player player, String quest) {
 		getProfile(player.getName()).setProgress(
-				new QuestProgress(npc, player, quest));
+				new QuestProgress(npc.getUID(), player, quest));
 	}
 
 	public static boolean validQuest(String quest) {

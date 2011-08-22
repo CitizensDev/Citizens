@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers.quests;
 
 import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,7 +8,7 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 public class ObjectiveProgress {
-	private final HumanNPC quester;
+	private final int UID;
 	private final Objective objective;
 	private final Player player;
 	private final QuestUpdater questtype;
@@ -19,9 +18,9 @@ public class ObjectiveProgress {
 	private ItemStack lastItem;
 	private Location lastLocation;
 
-	public ObjectiveProgress(HumanNPC npc, Player player, String questName,
+	public ObjectiveProgress(int UID, Player player, String questName,
 			ObjectiveCycler objectives) {
-		this.quester = npc;
+		this.UID = UID;
 		this.player = player;
 		this.questName = questName;
 		this.objective = objectives.nextObjective();
@@ -36,8 +35,8 @@ public class ObjectiveProgress {
 		return getQuestUpdater().isCompleted(this);
 	}
 
-	public HumanNPC getQuester() {
-		return quester;
+	public int getQuesterUID() {
+		return UID;
 	}
 
 	public Player getPlayer() {

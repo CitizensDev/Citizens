@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.quests.CompletedQuest;
@@ -122,9 +121,9 @@ public class PlayerProfile {
 	private void load() {
 		String path = "quests.current.";
 		if (!profile.getString(path + "name").isEmpty()) {
-			progress = new QuestProgress(NPCManager.get(profile.getInt(path
-					+ "giver")), Bukkit.getServer().getPlayer(name),
-					profile.getString(path + "name"));
+			progress = new QuestProgress(profile.getInt(path + "giver"), Bukkit
+					.getServer().getPlayer(name), profile.getString(path
+					+ "name"));
 			progress.setStartTime(profile.getLong(path + "start-time"));
 			progress.setStep(profile.getInt(path + "step"));
 

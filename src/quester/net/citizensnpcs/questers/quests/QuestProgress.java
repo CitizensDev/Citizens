@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.entity.Player;
@@ -16,16 +15,16 @@ public class QuestProgress {
 	private final String questName;
 	private final ObjectiveCycler objectives;
 	private long startTime;
-	private final HumanNPC npc;
+	private final int UID;
 	private final Player player;
 
-	public QuestProgress(HumanNPC npc, Player player, String questName) {
-		this.npc = npc;
+	public QuestProgress(int UID, Player player, String questName) {
+		this.UID = UID;
 		this.player = player;
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
 		for (int i = 0; i != objectives.current().all().size(); ++i) {
-			this.progress.add(new ObjectiveProgress(npc, player, questName,
+			this.progress.add(new ObjectiveProgress(UID, player, questName,
 					objectives));
 		}
 		this.setStartTime(System.currentTimeMillis());
@@ -45,7 +44,7 @@ public class QuestProgress {
 	private void next() {
 		this.objectives.cycle();
 		for (int i = 0; i != objectives.current().all().size(); ++i) {
-			this.progress.add(new ObjectiveProgress(npc, player, questName,
+			this.progress.add(new ObjectiveProgress(UID, player, questName,
 					objectives));
 		}
 	}
@@ -95,7 +94,7 @@ public class QuestProgress {
 	}
 
 	public int getQuesterUID() {
-		return this.npc.getUID();
+		return this.UID;
 	}
 
 	public String getQuestName() {
