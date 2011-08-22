@@ -2,6 +2,7 @@ package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.api.events.NPCRemoveEvent;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -29,34 +30,27 @@ public class NPCSpawner {
 		return null;
 	}
 
-	public static HumanNPC spawnNPC(int UID, String name, World world,
-			double x, double y, double z, float yaw, float pitch) {
-		try {
-			WorldServer ws = getWorldServer(world);
-			MinecraftServer ms = getMinecraftServer(ws.getServer());
-			CraftNPC eh = new CraftNPC(ms, ws, name, new ItemInWorldManager(ws));
-			eh.setLocation(x, y, z, yaw, pitch);
-			ws.addEntity(eh);
-			ws.players.remove(eh);
-			return new HumanNPC(eh, UID, name);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static HumanNPC spawnNPC(int UID, String name, Location loc) {
+		WorldServer ws = getWorldServer(loc.getWorld());
+		CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws,
+				name, new ItemInWorldManager(ws));
+		ws.addEntity(eh);
+		ws.players.remove(eh);
+		eh.getBukkitEntity().teleport(loc);
+		return new HumanNPC(eh, UID, name);
 	}
 
-	public static HumanNPC spawnNPC(int UID, String name, World world,
-			double x, double y, double z, float yaw, float pitch,
-			CreatureNPCType type) {
+	public static HumanNPC spawnNPC(Location loc, CreatureNPCType type) {
 		try {
-			WorldServer ws = getWorldServer(world);
-			MinecraftServer ms = getMinecraftServer(ws.getServer());
-			CraftNPC eh = (CraftNPC) type.getEntityClass().getConstructors()[0]
-					.newInstance(ms, ws, name, new ItemInWorldManager(ws));
+			String name = UtilityProperties.getRandomName(type);
+			WorldServer ws = getWorldServer(loc.getWorld());
+			CraftNPC eh = type.getEntityConstructor().newInstance(
+					getMinecraftServer(ws.getServer()), ws, name,
+					new ItemInWorldManager(ws));
 			ws.addEntity(eh);
-			eh.setLocation(x, y, z, yaw, pitch);
+			eh.getBukkitEntity().teleport(loc);
 			ws.players.remove(eh);
-			return new HumanNPC(eh, UID, name);
+			return new HumanNPC(eh, -1, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,16 +58,10 @@ public class NPCSpawner {
 	}
 
 	public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
-		try {
-			WorldServer ws = getWorldServer(loc.getWorld());
-			ws.addEntity(npc.getHandle());
-			npc.teleport(loc);
-			ws.players.remove(npc.getHandle());
-			return npc;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		WorldServer ws = getWorldServer(loc.getWorld());
+		ws.addEntity(npc.getHandle());
+		npc.teleport(loc);
+		return npc;
 	}
 
 	public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
@@ -81,13 +69,9 @@ public class NPCSpawner {
 	}
 
 	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
-		try {
-			Bukkit.getServer().getPluginManager()
-					.callEvent(new NPCRemoveEvent(npc.npc, reason));
-			npc.world.removeEntity(npc);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new NPCRemoveEvent(npc.npc, reason));
+		npc.world.removeEntity(npc);
 	}
 
 	public static void removeNPCFromPlayerList(HumanNPC npc) {
