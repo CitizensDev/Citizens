@@ -62,14 +62,15 @@ public class DefaultSpawner implements Spawner {
 											new Location(loc.getWorld(), x, y,
 													z, random.nextInt(360),
 													random.nextInt(360)), type);
-									// call NPC creature-spawning event
-									NPCCreateEvent createEvent = new NPCCreateEvent(
-											npc, NPCCreateReason.SPAWN, loc);
-									Bukkit.getServer().getPluginManager()
-											.callEvent(createEvent);
-									if (createEvent.isCancelled()) {
-										return null;
-									}
+									// call NPC creation event with reason of
+									// SPAWN
+									Bukkit.getServer()
+											.getPluginManager()
+											.callEvent(
+													new NPCCreateEvent(
+															npc,
+															NPCCreateReason.SPAWN,
+															loc));
 									return npc;
 								}
 							}
