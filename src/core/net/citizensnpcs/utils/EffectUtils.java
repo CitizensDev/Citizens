@@ -33,8 +33,9 @@ public class EffectUtils {
 
 		public static IEffect getByIdentifier(int identifier) {
 			for (IEffect effect : names.values()) {
-				if (effect.getIdentifier() == identifier)
+				if (effect.getIdentifier() == identifier) {
 					return effect;
+				}
 			}
 			return null;
 		}
@@ -50,17 +51,17 @@ public class EffectUtils {
 		}
 
 		public enum Effect implements IEffect {
-			/**
+			/*
 			 * Creates the particles that appear when dispenser is used, data is
 			 * used as direction (up to 9).
 			 */
 			DISPENSER_PARTICLE_SPAWN(2000),
-			/**
+			/*
 			 * Creates dig effects, uses the data as the block ID of the sound
 			 * to play.
 			 */
 			DIG(2001),
-			/**
+			/*
 			 * Plays a record, uses data as the item ID of the record to play
 			 */
 			RECORD_PLAY(1005);
@@ -84,23 +85,23 @@ public class EffectUtils {
 		}
 
 		public enum Sound implements IEffect {
-			/**
+			/*
 			 * Plays the sound when dispensers are fired
 			 */
 			DISPENSER_FIRE(1000),
-			/**
+			/*
 			 * Plays the sound when an empty dispenser attempts to fire
 			 */
 			DISPENSER_FIRE_EMPTY(1001),
-			/**
+			/*
 			 * Plays the open/close door sound (50/50)
 			 */
 			DOOR_SOUND(1003),
-			/**
+			/*
 			 * Plays the sound when a fire is extinguished
 			 */
 			FIRE_EXTINGUISH(1004),
-			/**
+			/*
 			 * Plays the fired arrow sound
 			 */
 			PROJECTILE_FIRE(1002);

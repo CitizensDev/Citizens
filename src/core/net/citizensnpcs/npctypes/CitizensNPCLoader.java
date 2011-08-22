@@ -11,6 +11,7 @@ import java.util.jar.JarFile;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.utils.Messaging;
 
 public class CitizensNPCLoader {
@@ -26,7 +27,7 @@ public class CitizensNPCLoader {
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(
 									jarFile.getInputStream(element)));
-					mainClass = reader.readLine().substring(12);
+					mainClass = reader.readLine().substring(6);
 					break;
 				}
 			}

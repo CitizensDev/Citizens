@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
-import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.questers.listeners.QuesterBlockListen;
 import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 import net.citizensnpcs.questers.quests.CompletedQuest;

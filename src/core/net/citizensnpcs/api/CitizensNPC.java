@@ -31,7 +31,8 @@ public abstract class CitizensNPC {
 	public abstract CommandHandler getCommands();
 
 	/**
-	 * Left-clicking an NPC.
+	 * Called when a player left clicks the NPC - this can cause a damage event
+	 * as well.
 	 * 
 	 * @param player
 	 *            Player doing the clicking
@@ -42,7 +43,7 @@ public abstract class CitizensNPC {
 	}
 
 	/**
-	 * Right-clicking an NPC.
+	 * Called when a player right-clicks an NPC.
 	 * 
 	 * @param player
 	 *            Player doing the clicking

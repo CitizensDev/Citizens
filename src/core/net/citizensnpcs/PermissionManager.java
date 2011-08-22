@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
-import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.Messaging;
 

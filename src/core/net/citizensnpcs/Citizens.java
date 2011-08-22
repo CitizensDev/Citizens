@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.events.CitizensEnableEvent;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
@@ -24,7 +25,6 @@ import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
-import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;

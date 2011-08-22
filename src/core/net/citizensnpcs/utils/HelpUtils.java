@@ -5,12 +5,7 @@ import org.bukkit.command.CommandSender;
 
 public class HelpUtils {
 
-	/**
-	 * Sends the help page for /citizens help
-	 * 
-	 * @param sender
-	 * @param page
-	 */
+	// Sends the help page for /citizens help
 	public static void sendHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:
@@ -42,12 +37,7 @@ public class HelpUtils {
 		}
 	}
 
-	/**
-	 * Sends the help page for the basic npc type
-	 * 
-	 * @param sender
-	 * @param page
-	 */
+	// Sends the help page for the basic npc type
 	public static void sendBasicHelpPage(CommandSender sender, int page) {
 		switch (page) {
 		case 1:

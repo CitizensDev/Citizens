@@ -30,7 +30,6 @@ public abstract class DirectionUtils {
 			if (map == null) {
 				map = new HashMap<Integer, CompassDirection>();
 			}
-
 			map.put(type, name);
 		}
 
@@ -61,10 +60,12 @@ public abstract class DirectionUtils {
 	}
 
 	public static CompassDirection getDirectionFromRotation(double degrees) {
-		while (degrees < 0D)
+		while (degrees < 0D) {
 			degrees += 360D;
-		while (degrees > 360D)
+		}
+		while (degrees > 360D) {
 			degrees -= 360D;
+		}
 		if (isFacingNorth(degrees, 0)) {
 			return CompassDirection.NORTH;
 		}
@@ -83,14 +84,18 @@ public abstract class DirectionUtils {
 	public static Block getBlockBehind(Location loc, CompassDirection facing) {
 		World w = loc.getWorld();
 		int x = loc.getBlockX(), y = loc.getBlockY(), z = loc.getBlockZ();
-		if (facing == CompassDirection.NORTH)
+		if (facing == CompassDirection.NORTH) {
 			return w.getBlockAt(x + 1, y, z);
-		if (facing == CompassDirection.EAST)
+		}
+		if (facing == CompassDirection.EAST) {
 			return w.getBlockAt(x, y, z + 1);
-		if (facing == CompassDirection.SOUTH)
+		}
+		if (facing == CompassDirection.SOUTH) {
 			return w.getBlockAt(x - 1, y, z);
-		if (facing == CompassDirection.WEST)
+		}
+		if (facing == CompassDirection.WEST) {
 			return w.getBlockAt(x, y, z - 1);
+		}
 		return null;
 	}
 }

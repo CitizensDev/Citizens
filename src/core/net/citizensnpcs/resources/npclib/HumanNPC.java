@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.npcs.NPCData;
-import net.citizensnpcs.npctypes.CitizensNPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.waypoints.WaypointPath;
@@ -147,14 +147,14 @@ public class HumanNPC extends NPC {
 	}
 
 	public void callLeftClick(Player player, HumanNPC npc) {
-		for (CitizensNPC t : types.values()) {
-			t.onLeftClick(player, npc);
+		for (CitizensNPC type : types.values()) {
+			type.onLeftClick(player, npc);
 		}
 	}
 
 	public void callRightClick(Player player, HumanNPC npc) {
-		for (CitizensNPC t : types.values()) {
-			t.onRightClick(player, npc);
+		for (CitizensNPC type : types.values()) {
+			type.onRightClick(player, npc);
 		}
 	}
 
@@ -164,8 +164,8 @@ public class HumanNPC extends NPC {
 
 	public boolean callDamageEvent(EntityDamageEvent event) {
 		boolean found = false;
-		for (CitizensNPC t : types.values()) {
-			t.onDamage(event);
+		for (CitizensNPC type : types.values()) {
+			type.onDamage(event);
 			if (!found) {
 				found = true;
 			}
@@ -174,15 +174,15 @@ public class HumanNPC extends NPC {
 	}
 
 	public void callDeathEvent(EntityDeathEvent event) {
-		for (CitizensNPC t : types.values()) {
-			t.onDeath(event);
+		for (CitizensNPC type : types.values()) {
+			type.onDeath(event);
 		}
 	}
 
 	public boolean callTargetEvent(EntityTargetEvent event) {
 		boolean found = false;
-		for (CitizensNPC t : types.values()) {
-			t.onTarget(event);
+		for (CitizensNPC type : types.values()) {
+			type.onTarget(event);
 			if (!found) {
 				found = true;
 			}

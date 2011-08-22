@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public abstract class CreatureNPC extends CraftNPC {
 	protected final double range = 25;
-	protected final Integer[] weapons = { 267, 268, 272, 276, 283 };
+	protected final Integer[] weapons = { 267, 268, 272, 283 };
 
 	public CreatureNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -90,17 +90,17 @@ public abstract class CreatureNPC extends CraftNPC {
 	}
 
 	/**
-	 * Called when a player right clicks the entity.
+	 * Called when a player right clicks the NPC.
 	 * 
 	 * @param player
 	 */
 	public abstract void onRightClick(Player player);
 
 	/**
-	 * Called when a player left clicks the entity - this can cause a damage
-	 * event as well.
+	 * Called when a player left clicks the NPC - this can cause a damage event
+	 * as well.
 	 * 
-	 * @param target
+	 * @param player
 	 */
 	public abstract void onLeftClick(Player player);
 }
