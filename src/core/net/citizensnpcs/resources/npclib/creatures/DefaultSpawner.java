@@ -2,9 +2,7 @@ package net.citizensnpcs.resources.npclib.creatures;
 
 import java.util.Random;
 
-import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.events.NPCSpawnEvent;
-import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
 
@@ -53,17 +51,16 @@ public class DefaultSpawner implements Spawner {
 							last = world.getChunkAt(shiftedX, shiftedZ);
 						if (type.spawnOn().isValid(
 								world.getBlockTypeIdAt(x, y - 1, z))
-								& type.spawnIn().isValid(
+								&& type.spawnIn().isValid(
 										world.getBlockTypeIdAt(x, y, z))
 								&& type.spawnIn().isValid(
 										world.getBlockTypeIdAt(x, y + 1, z))) {
 							if (areEntitiesOnBlock(last, x, y, z)) {
-								if (canSpawn(type)) {
-									HumanNPC npc = NPCSpawner.spawnNPC(-1,
-											UtilityProperties
-													.getRandomName(type), loc
-													.getWorld(), x, y, z,
-											random.nextInt(360), 0, type);
+								if (type.isSpawn()) {
+									HumanNPC npc = NPCSpawner.spawnNPC(
+											new Location(loc.getWorld(), x, y,
+													z, random.nextInt(360),
+													random.nextInt(360)), type);
 									// call NPC creature-spawning event
 									NPCSpawnEvent spawnEvent = new NPCSpawnEvent(
 											npc, loc);
@@ -86,16 +83,6 @@ public class DefaultSpawner implements Spawner {
 	private int getRandomInt(Random random, int max) {
 		int ran = random.nextInt(max);
 		return random.nextBoolean() ? -ran : ran;
-	}
-
-	private boolean canSpawn(CreatureNPCType type) {
-		boolean spawn = false;
-		switch (type) {
-		case EVIL:
-			spawn = SettingsManager.getBoolean("SpawnEvils");
-			break;
-		}
-		return spawn;
 	}
 
 	private boolean areEntitiesOnBlock(Chunk chunk, int x, int y, int z) {

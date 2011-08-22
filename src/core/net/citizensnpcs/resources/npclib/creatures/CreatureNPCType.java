@@ -1,30 +1,37 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
+import java.lang.reflect.Constructor;
+
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.utils.StringUtils;
+import net.minecraft.server.ItemInWorldManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.World;
 
 public enum CreatureNPCType {
-	EVIL(
-			EvilCreatureNPC.class,
-			SettingsManager.getInt("MaxEvils"),
-			SettingsManager.getInt("EvilSpawnChance"),
-			SettingsManager.getString("EvilNames"),
-			SpawnValidator.DEFAULT_SPAWNIN,
+	EVIL(EvilCreatureNPC.class, "evil", SpawnValidator.DEFAULT_SPAWNIN,
 			SpawnValidator.DEFAULT_SPAWNON);
 	private final int max;
 	private final int spawnChance;
 	private final String possible;
-	private final Class<? extends CreatureNPC> instance;
+	private final boolean spawn;
+	private Constructor<? extends CreatureNPC> instance;
 	private final SpawnValidator spawnIn;
 	private final SpawnValidator spawnOn;
 	private Spawner spawner = DefaultSpawner.INSTANCE;
 
-	CreatureNPCType(Class<? extends CreatureNPC> instance, int max,
-			int spawnChance, String possibleNames, SpawnValidator spawnIn,
-			SpawnValidator spawnOn) {
-		this.instance = instance;
-		this.max = max;
-		this.spawnChance = spawnChance;
-		this.possible = possibleNames;
+	CreatureNPCType(Class<? extends CreatureNPC> instance, String name,
+			SpawnValidator spawnIn, SpawnValidator spawnOn) {
+		name = StringUtils.capitalise(name.toLowerCase());
+		try {
+			this.instance = instance.getConstructor(MinecraftServer.class,
+					World.class, String.class, ItemInWorldManager.class);
+		} catch (Exception ex) {
+		}
+		this.spawn = SettingsManager.getBoolean("Spawn" + name);
+		this.max = SettingsManager.getInt("Max" + name);
+		this.spawnChance = SettingsManager.getInt(name + "SpawnChance");
+		this.possible = SettingsManager.getString(name + "Names");
 		this.spawnIn = spawnIn;
 		this.spawnOn = spawnOn;
 	}
@@ -37,7 +44,7 @@ public enum CreatureNPCType {
 		return possible;
 	}
 
-	public Class<? extends CreatureNPC> getEntityClass() {
+	public Constructor<? extends CreatureNPC> getEntityConstructor() {
 		return instance;
 	}
 
@@ -68,5 +75,9 @@ public enum CreatureNPCType {
 
 	public int getSpawnChance() {
 		return this.spawnChance;
+	}
+
+	public boolean isSpawn() {
+		return spawn;
 	}
 }

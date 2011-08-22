@@ -45,9 +45,7 @@ public class NPCManager {
 		if (colour != ChatColor.WHITE) {
 			npcName = colour + name;
 		}
-		HumanNPC npc = NPCSpawner.spawnNPC(UID, npcName, loc.getWorld(),
-				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
-		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
+		HumanNPC npc = NPCSpawner.spawnNPC(UID, npcName, loc);
 
 		NPCCreateEvent event = new NPCCreateEvent(npc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
