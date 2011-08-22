@@ -84,7 +84,7 @@ public class WizardCommands implements CommandHandler {
 						+ "'s Wizard Status" + ChatColor.YELLOW));
 		Wizard wizard = npc.getType("wizard");
 		player.sendMessage(ChatColor.GREEN + "    Mode: "
-				+ StringUtils.wrap(wizard.getMode()));
+				+ StringUtils.wrap(wizard.getMode().name().toLowerCase()));
 		String mana = "" + wizard.getMana();
 		if (wizard.hasUnlimitedMana()) {
 			mana = "unlimited";

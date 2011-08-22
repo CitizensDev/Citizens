@@ -20,12 +20,16 @@ public class BlacksmithManager {
 	public static void repairItem(Player player, HumanNPC npc, String repairType) {
 		ItemStack item = player.getItemInHand();
 		if (item.getDurability() > 0) {
+			String noPaymentMsg = StringUtils.wrap(npc.getStrippedName())
+					+ " has repaired your "
+					+ StringUtils.wrap(MessageUtils.getMaterialName(item
+							.getTypeId()) + ".");
 			if (EconomyManager.useEconPlugin()) {
 				if (EconomyManager.hasEnough(player,
 						getBlacksmithPrice(player, repairType))) {
 					double paid = EconomyManager.pay(player,
 							getBlacksmithPrice(player, repairType));
-					if (paid >= 0) {
+					if (paid > 0) {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName())
 								+ " has repaired your "
@@ -34,6 +38,8 @@ public class BlacksmithManager {
 								+ " for "
 								+ StringUtils.wrap(EconomyManager.format(paid))
 								+ ".");
+					} else if (paid == 0) {
+						player.sendMessage(noPaymentMsg);
 					}
 				} else {
 					Messaging.sendError(
@@ -44,10 +50,7 @@ public class BlacksmithManager {
 					return;
 				}
 			} else {
-				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-						+ " has repaired your "
-						+ StringUtils.wrap(MessageUtils.getMaterialName(item
-								.getTypeId()) + "."));
+				player.sendMessage(noPaymentMsg);
 			}
 			item.setDurability((short) 0);
 			player.setItemInHand(item);

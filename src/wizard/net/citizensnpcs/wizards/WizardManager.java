@@ -131,7 +131,7 @@ public class WizardManager {
 					.hasEnough(player, UtilityProperties.getPrice(op))) {
 				double paid = EconomyManager.pay(player,
 						UtilityProperties.getPrice(op));
-				if (paid >= 0) {
+				if (paid > 0) {
 					econMsg = ChatColor.GREEN + "Paid "
 							+ StringUtils.wrap(EconomyManager.format(paid))
 							+ ":";
@@ -174,7 +174,9 @@ public class WizardManager {
 				return;
 			}
 		}
-		player.sendMessage(econMsg);
+		if(EconomyManager.useEconPlugin()) {
+			player.sendMessage(econMsg);
+		}
 		player.sendMessage(msg);
 	}
 }

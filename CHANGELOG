@@ -82,3 +82,4 @@ By fullwall and aPunch
 -removed support for Permissions 2.7.x/3.x
 -moved economy settings from economy.yml to citizens.yml
 -added CitizensEnableEvent for developers, see jd.citizensnpcs.net for more API documentation
+-Evil NPCs no longer drop diamond swords
