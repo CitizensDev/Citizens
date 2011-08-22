@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.misc.NPCLocation;
@@ -96,7 +97,8 @@ public class GuardTask implements Runnable {
 	public static void checkRespawn(Player player) {
 		String owner = player.getName();
 		if (toRespawn.containsKey(owner)) {
-			NPCManager.register(toRespawn.get(owner).getUID(), owner);
+			NPCManager.register(toRespawn.get(owner).getUID(), owner,
+					NPCCreateReason.RESPAWN);
 			NPCManager.get(toRespawn.get(owner).getUID()).teleport(
 					player.getLocation());
 		}

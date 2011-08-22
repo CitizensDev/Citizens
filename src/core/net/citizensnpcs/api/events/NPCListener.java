@@ -5,9 +5,6 @@ import org.bukkit.event.Event;
 
 public class NPCListener extends CustomEventListener {
 
-	public void onNPCSpawn(NPCSpawnEvent event) {
-	}
-
 	public void onNPCDisplayText(NPCTalkEvent event) {
 	}
 
@@ -28,9 +25,7 @@ public class NPCListener extends CustomEventListener {
 
 	@Override
 	public void onCustomEvent(Event event) {
-		if (event instanceof NPCSpawnEvent) {
-			onNPCSpawn((NPCSpawnEvent) event);
-		} else if (event instanceof NPCTalkEvent) {
+		if (event instanceof NPCTalkEvent) {
 			onNPCDisplayText((NPCTalkEvent) event);
 		} else if (event instanceof NPCInventoryOpenEvent) {
 			onNPCInventoryOpen((NPCInventoryOpenEvent) event);

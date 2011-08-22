@@ -83,4 +83,5 @@ By fullwall and aPunch
 -moved economy settings from economy.yml to citizens.yml
 -added CitizensEnableEvent for developers, see jd.citizensnpcs.net for more API documentation
 -added NPCRemoveEvent for developers, called when an NPC is manually or naturally removed from a world
+-merged NPCSpawnEvent and NPCCreateEvent for developers
 -Evil NPCs no longer drop diamond swords

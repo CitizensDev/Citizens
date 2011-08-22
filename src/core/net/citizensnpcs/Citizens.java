@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.events.CitizensEnableEvent;
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
@@ -275,7 +276,7 @@ public class Citizens extends JavaPlugin {
 				Location loc = PropertyManager.getBasic().getLocation(UID);
 				if (loc != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
-							.getOwner(UID));
+							.getOwner(UID), NPCCreateReason.RESPAWN);
 					ArrayDeque<String> text = PropertyManager.getBasic()
 							.getText(UID);
 					if (text != null) {

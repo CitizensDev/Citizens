@@ -8,6 +8,7 @@ import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npcs.NPCDataManager;
@@ -266,7 +267,7 @@ public class BasicCommands implements CommandHandler {
 			}
 		}
 		int UID = NPCManager.register(firstArg, player.getLocation(),
-				player.getName());
+				player.getName(), NPCCreateReason.COMMAND);
 		NPCDataManager.setText(UID, texts);
 
 		HumanNPC created = NPCManager.get(UID);
@@ -354,7 +355,7 @@ public class BasicCommands implements CommandHandler {
 		}
 		PropertyManager.save(npc);
 		int newUID = NPCManager.register(npc.getName(), player.getLocation(),
-				player.getName());
+				player.getName(), NPCCreateReason.COMMAND);
 		HumanNPC newNPC = NPCManager.get(newUID);
 		newNPC.teleport(player.getLocation());
 		newNPC.getNPCData().setLocation(player.getLocation());
@@ -552,7 +553,8 @@ public class BasicCommands implements CommandHandler {
 
 		// Despawn the old NPC, register our new one.
 		NPCManager.removeForRespawn(npc.getUID());
-		NPCManager.register(npc.getUID(), npc.getOwner());
+		NPCManager.register(npc.getUID(), npc.getOwner(),
+				NPCCreateReason.RESPAWN);
 
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ "'s armor was set to "

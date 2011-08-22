@@ -3,6 +3,7 @@ package net.citizensnpcs.listeners;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.misc.NPCLocation;
 import net.citizensnpcs.npcs.NPCManager;
@@ -65,7 +66,8 @@ public class WorldListen extends WorldListener implements Listener {
 				if (NPCManager.get(tempLoc.getUID()) != null) {
 					Messaging.debug("Reloaded", tempLoc.getUID(), "at",
 							tempLoc.getChunkX(), tempLoc.getChunkZ());
-					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner());
+					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner(),
+							NPCCreateReason.RESPAWN);
 				}
 				toRespawn.remove(tempLoc);
 			}

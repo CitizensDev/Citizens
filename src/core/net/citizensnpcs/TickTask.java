@@ -2,6 +2,7 @@ package net.citizensnpcs;
 
 import java.util.Map.Entry;
 
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.misc.ActionManager;
 import net.citizensnpcs.misc.ActionManager.CachedAction;
 import net.citizensnpcs.npcs.NPCManager;
@@ -131,7 +132,7 @@ public class TickTask implements Runnable {
 
 		@Override
 		public void run() {
-			NPCManager.register(UID, owner);
+			NPCManager.register(UID, owner, NPCCreateReason.RESPAWN);
 			Messaging.sendUncertain(owner,
 					StringUtils.wrap(NPCManager.get(UID).getName())
 							+ " has respawned.");

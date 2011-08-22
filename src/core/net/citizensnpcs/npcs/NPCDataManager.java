@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -180,7 +181,7 @@ public class NPCDataManager {
 
 		if ((olditem != 0 && items.get(0) == 0)) {
 			NPCManager.removeForRespawn(npc.getUID());
-			NPCManager.register(npc.getUID(), npc.getOwner());
+			NPCManager.register(npc.getUID(), npc.getOwner(), NPCCreateReason.RESPAWN);
 		}
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ "'s in-hand item was set to "

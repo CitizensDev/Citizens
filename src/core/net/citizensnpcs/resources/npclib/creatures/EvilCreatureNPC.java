@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -83,7 +84,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 				isTame = true;
 				CreatureTask.despawn(this, NPCRemoveReason.OTHER);
 				NPCManager.register(npc.getName(), player.getLocation(),
-						player.getName());
+						player.getName(), NPCCreateReason.RESPAWN);
 				player.sendMessage(ChatColor.GREEN + "You have tamed "
 						+ StringUtils.wrap(npc.getStrippedName())
 						+ "! You can now toggle it to be any type.");

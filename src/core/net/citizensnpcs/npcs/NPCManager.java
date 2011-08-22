@@ -7,6 +7,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.events.NPCCreateEvent;
+import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -32,7 +33,7 @@ public class NPCManager {
 	 * @param UID
 	 * @param owner
 	 */
-	public static void register(int UID, String owner) {
+	public static void register(int UID, String owner, NPCCreateReason reason) {
 		Location loc = PropertyManager.getBasic().getLocation(UID);
 
 		ChatColor colour = PropertyManager.getBasic().getColour(UID);
@@ -49,7 +50,7 @@ public class NPCManager {
 				loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0F);
 
-		NPCCreateEvent event = new NPCCreateEvent(npc);
+		NPCCreateEvent event = new NPCCreateEvent(npc, reason, loc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 			NPCSpawner.despawnNPC(npc, NPCRemoveReason.OTHER);
@@ -80,7 +81,8 @@ public class NPCManager {
 	 * @param owner
 	 * @return
 	 */
-	public static int register(String name, Location loc, String owner) {
+	public static int register(String name, Location loc, String owner,
+			NPCCreateReason reason) {
 		int UID = PropertyManager.getBasic().getNewNpcID();
 		PropertyManager.getBasic().saveLocation(loc, UID);
 		PropertyManager.getBasic().saveLookWhenClose(UID,
@@ -88,7 +90,7 @@ public class NPCManager {
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
 				SettingsManager.getBoolean("DefaultTalkClose"));
 		PropertyManager.getBasic().saveName(UID, name);
-		register(UID, owner);
+		register(UID, owner, reason);
 		return UID;
 	}
 
@@ -274,7 +276,7 @@ public class NPCManager {
 		HumanNPC npc = get(UID);
 		npc.getNPCData().setName(changeTo);
 		removeForRespawn(UID);
-		register(UID, owner);
+		register(UID, owner, NPCCreateReason.RESPAWN);
 	}
 
 	/**
@@ -285,7 +287,7 @@ public class NPCManager {
 	 */
 	public static void setColour(int UID, String owner) {
 		removeForRespawn(UID);
-		register(UID, owner);
+		register(UID, owner, NPCCreateReason.RESPAWN);
 	}
 
 	public static void safeDespawn(HumanNPC npc) {
