@@ -1,10 +1,12 @@
 package net.citizensnpcs.resources.npclib;
 
+import net.citizensnpcs.api.events.NPCRemoveEvent;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldServer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -79,6 +81,8 @@ public class NPCSpawner {
 
 	public static void despawnNPC(CraftNPC npc) {
 		try {
+			Bukkit.getServer().getPluginManager()
+					.callEvent(new NPCRemoveEvent(npc.npc));
 			npc.world.removeEntity(npc);
 		} catch (Exception e) {
 			e.printStackTrace();

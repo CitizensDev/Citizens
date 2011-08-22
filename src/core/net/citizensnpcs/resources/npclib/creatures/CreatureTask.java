@@ -1,4 +1,4 @@
-package net.citizensnpcs;
+package net.citizensnpcs.resources.npclib.creatures;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -6,8 +6,6 @@ import java.util.Random;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,8 +32,6 @@ public class CreatureTask implements Runnable {
 		}
 		if (online != null && online.length > 0) {
 			Player player = online[random.nextInt(online.length)];
-			// TODO - work out best method of getting creature type to spawn
-			// (perhaps randomly?).
 			CreatureNPCType type = CreatureNPCType.values()[random
 					.nextInt(CreatureNPCType.values().length)];
 			spawnCreature(type, player.getLocation());

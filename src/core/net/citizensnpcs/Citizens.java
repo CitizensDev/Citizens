@@ -28,6 +28,7 @@ import net.citizensnpcs.npctypes.CitizensNPCLoader;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.resources.register.payment.Method;
 import net.citizensnpcs.resources.sk89q.CitizensCommandsManager;
 import net.citizensnpcs.resources.sk89q.CommandPermissionsException;

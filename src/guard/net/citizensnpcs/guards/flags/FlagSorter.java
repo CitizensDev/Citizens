@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.CreatureTask;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
+import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.StringUtils;
 

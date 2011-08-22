@@ -2,7 +2,6 @@ package net.citizensnpcs.resources.npclib.creatures;
 
 import java.util.Random;
 
-import net.citizensnpcs.CreatureTask;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.npcs.NPCManager;

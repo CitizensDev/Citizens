@@ -3,11 +3,11 @@ package net.citizensnpcs.listeners;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.CreatureTask;
 import net.citizensnpcs.misc.NPCLocation;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
+import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
