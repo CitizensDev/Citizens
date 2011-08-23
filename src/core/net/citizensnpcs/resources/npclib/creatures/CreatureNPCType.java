@@ -9,7 +9,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
 public enum CreatureNPCType {
-	EVIL(EvilCreatureNPC.class, "evil", SpawnValidator.DEFAULT_SPAWNIN,
+	EVIL(
+			EvilCreatureNPC.class,
+			"Evil",
+			SpawnValidator.DEFAULT_SPAWNIN,
 			SpawnValidator.DEFAULT_SPAWNON);
 	private final int max;
 	private final int spawnChance;
@@ -28,8 +31,8 @@ public enum CreatureNPCType {
 					World.class, String.class, ItemInWorldManager.class);
 		} catch (Exception ex) {
 		}
-		this.spawn = SettingsManager.getBoolean("Spawn" + name);
-		this.max = SettingsManager.getInt("Max" + name);
+		this.spawn = SettingsManager.getBoolean("Spawn" + name + "s");
+		this.max = SettingsManager.getInt("Max" + name + "s");
 		this.spawnChance = SettingsManager.getInt(name + "SpawnChance");
 		this.possible = SettingsManager.getString(name + "Names");
 		this.spawnIn = spawnIn;

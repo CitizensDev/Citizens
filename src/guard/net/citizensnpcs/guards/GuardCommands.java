@@ -3,6 +3,7 @@ package net.citizensnpcs.guards;
 import java.util.Set;
 
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -261,11 +262,11 @@ public class GuardCommands implements CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		PermissionManager.addPerm("guard.use.help");
-		PermissionManager.addPerm("guard.modify.type");
-		PermissionManager.addPerm("guard.use.flags");
-		PermissionManager.addPerm("guard.modify.flags");
-		PermissionManager.addPerm("guard.modify.aggro");
-		PermissionManager.addPerm("guard.modify.radius");
+		CitizensManager.addPermission("guard.use.help");
+		CitizensManager.addPermission("guard.modify.type");
+		CitizensManager.addPermission("guard.use.flags");
+		CitizensManager.addPermission("guard.modify.flags");
+		CitizensManager.addPermission("guard.modify.aggro");
+		CitizensManager.addPermission("guard.modify.radius");
 	}
 }

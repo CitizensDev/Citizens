@@ -1,7 +1,7 @@
 package net.citizensnpcs.questers.quests.types;
 
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.events.NPCTargetEvent;
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestUpdater;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -56,7 +56,7 @@ public class DeliveryQuest implements QuestUpdater {
 				+ StringUtils.formatter(progress.getObjective().getMaterial())
 						.plural(amount)
 				+ " to "
-				+ StringUtils.wrap(NPCManager.get(
+				+ StringUtils.wrap(CitizensManager.getNPC(
 						progress.getObjective().getDestNPCID()).getName())
 				+ ".";
 	}

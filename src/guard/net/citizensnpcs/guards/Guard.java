@@ -2,8 +2,8 @@ package net.citizensnpcs.guards;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.TickTask;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.guards.GuardManager.GuardType;
@@ -176,9 +176,9 @@ public class Guard extends CitizensNPC {
 
 	@Override
 	public void registerEvents() {
-		CitizensNPCManager.registerEvent(Type.PLAYER_LOGIN,
+		CitizensManager.registerEvent(Type.PLAYER_LOGIN,
 				new GuardPlayerListen());
-		CitizensNPCManager.registerEvent(Type.CUSTOM_EVENT,
+		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
 				new GuardCitizensListen());
 	}
 }

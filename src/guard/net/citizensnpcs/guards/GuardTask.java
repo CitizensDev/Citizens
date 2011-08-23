@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.guards.flags.FlagList;
@@ -23,7 +24,7 @@ public class GuardTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
+		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList().entrySet()) {
 			HumanNPC npc = entry.getValue();
 			if (npc.isType("guard")) {
 				Guard guard = npc.getType("guard");
@@ -64,7 +65,7 @@ public class GuardTask implements Runnable {
 							npc.teleport(p.getLocation());
 						}
 					} else {
-						if (NPCManager.get(npc.getUID()) != null) {
+						if (CitizensManager.getNPC(npc.getUID()) != null) {
 							toRespawn.put(
 									npc.getOwner(),
 									new NPCLocation(npc.getLocation(), npc
@@ -99,7 +100,7 @@ public class GuardTask implements Runnable {
 		if (toRespawn.containsKey(owner)) {
 			NPCManager.register(toRespawn.get(owner).getUID(), owner,
 					NPCCreateReason.RESPAWN);
-			NPCManager.get(toRespawn.get(owner).getUID()).teleport(
+			CitizensManager.getNPC(toRespawn.get(owner).getUID()).teleport(
 					player.getLocation());
 		}
 	}

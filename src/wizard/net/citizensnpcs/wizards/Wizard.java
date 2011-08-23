@@ -2,8 +2,8 @@ package net.citizensnpcs.wizards;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -327,7 +327,7 @@ public class Wizard extends CitizensNPC {
 
 	@Override
 	public void registerEvents() {
-		CitizensNPCManager.registerEvent(Type.CUSTOM_EVENT,
+		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
 				new WizardCitizensListen());
 	}
 }

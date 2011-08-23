@@ -1,6 +1,7 @@
 package net.citizensnpcs.commands;
 
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -55,7 +56,7 @@ public class WaypointCommands implements CommandHandler {
 	@Override
 	public void addPermissions() {
 		for (WaypointModifierType modifier : WaypointModifierType.values()) {
-			PermissionManager.addPerm("waypoints.modifier."
+			CitizensManager.addPermission("waypoints.modifier."
 					+ modifier.name().toLowerCase());
 		}
 	}

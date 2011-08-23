@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
@@ -739,32 +740,32 @@ public class BasicCommands implements CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		PermissionManager.addPerm("admin.info");
-		PermissionManager.addPerm("admin.clean");
-		PermissionManager.addPerm("basic.use.help");
-		PermissionManager.addPerm("admin.save");
-		PermissionManager.addPerm("admin.debug");
-		PermissionManager.addPerm("admin.reload");
-		PermissionManager.addPerm("basic.modify.move");
-		PermissionManager.addPerm("basic.create");
-		PermissionManager.addPerm("basic.use.info");
-		PermissionManager.addPerm("basic.modify.moveto");
-		PermissionManager.addPerm("basic.modify.copy");
-		PermissionManager.addPerm("basic.modify.remove");
-		PermissionManager.addPerm("basic.modify.remove.all");
-		PermissionManager.addPerm("basic.modify.rename");
-		PermissionManager.addPerm("basic.modify.color");
-		PermissionManager.addPerm("basic.modify.addtext");
-		PermissionManager.addPerm("basic.modify.resettext");
-		PermissionManager.addPerm("basic.modify.settext");
-		PermissionManager.addPerm("basic.modify.item");
-		PermissionManager.addPerm("basic.modify.armor");
-		PermissionManager.addPerm("basic.use.teleport");
-		PermissionManager.addPerm("basic.modify.talkclose");
-		PermissionManager.addPerm("basic.modify.lookat");
-		PermissionManager.addPerm("basic.use.select");
-		PermissionManager.addPerm("basic.modify.setowner");
-		PermissionManager.addPerm("waypoints.edit");
-		PermissionManager.addPerm("basic.use.list");
+		CitizensManager.addPermission("admin.info");
+		CitizensManager.addPermission("admin.clean");
+		CitizensManager.addPermission("basic.use.help");
+		CitizensManager.addPermission("admin.save");
+		CitizensManager.addPermission("admin.debug");
+		CitizensManager.addPermission("admin.reload");
+		CitizensManager.addPermission("basic.modify.move");
+		CitizensManager.addPermission("basic.create");
+		CitizensManager.addPermission("basic.use.info");
+		CitizensManager.addPermission("basic.modify.moveto");
+		CitizensManager.addPermission("basic.modify.copy");
+		CitizensManager.addPermission("basic.modify.remove");
+		CitizensManager.addPermission("basic.modify.remove.all");
+		CitizensManager.addPermission("basic.modify.rename");
+		CitizensManager.addPermission("basic.modify.color");
+		CitizensManager.addPermission("basic.modify.addtext");
+		CitizensManager.addPermission("basic.modify.resettext");
+		CitizensManager.addPermission("basic.modify.settext");
+		CitizensManager.addPermission("basic.modify.item");
+		CitizensManager.addPermission("basic.modify.armor");
+		CitizensManager.addPermission("basic.use.teleport");
+		CitizensManager.addPermission("basic.modify.talkclose");
+		CitizensManager.addPermission("basic.modify.lookat");
+		CitizensManager.addPermission("basic.use.select");
+		CitizensManager.addPermission("basic.modify.setowner");
+		CitizensManager.addPermission("waypoints.edit");
+		CitizensManager.addPermission("basic.use.list");
 	}
 }

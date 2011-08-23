@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.Messaging;
 
@@ -112,7 +112,7 @@ public class PermissionManager {
 		return null;
 	}
 
-	public static void addPerm(String perm) {
+	public static void addPermission(String perm) {
 		permissions.add(perm);
 	}
 
@@ -120,9 +120,9 @@ public class PermissionManager {
 		new BasicCommands().addPermissions();
 		new ToggleCommands().addPermissions();
 		new WaypointCommands().addPermissions();
-		addPerm("citizens.evils.immune");
+		addPermission("citizens.evils.immune");
 		for (String loaded : Citizens.loadedTypes) {
-			CitizensNPC type = CitizensNPCManager.getType(loaded);
+			CitizensNPC type = NPCTypeManager.getType(loaded);
 			if (type != null) {
 				type.getCommands().addPermissions();
 			}

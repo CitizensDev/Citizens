@@ -3,14 +3,15 @@ package net.citizensnpcs.wizards;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.npcs.NPCManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class WizardTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
+		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
+				.entrySet()) {
 			if (!entry.getValue().isType("wizard")) {
 				return;
 			}

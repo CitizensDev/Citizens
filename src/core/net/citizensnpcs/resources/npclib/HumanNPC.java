@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.npcs.NPCData;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.waypoints.WaypointPath;
@@ -50,7 +50,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void registerType(String type) {
-		this.types.put(type, CitizensNPCManager.getType(type));
+		this.types.put(type, NPCTypeManager.getType(type));
 	}
 
 	@SuppressWarnings("unchecked")

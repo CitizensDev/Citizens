@@ -2,7 +2,7 @@ package net.citizensnpcs.questers;
 
 import java.util.concurrent.TimeUnit;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
@@ -172,9 +172,9 @@ public class QuesterCommands implements CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		PermissionManager.addPerm("quester.use.help");
-		PermissionManager.addPerm("quester.modify.assignquest");
-		PermissionManager.addPerm("quester.modify.removequest");
-		PermissionManager.addPerm("quester.modify.questedit");
+		CitizensManager.addPermission("quester.use.help");
+		CitizensManager.addPermission("quester.modify.assignquest");
+		CitizensManager.addPermission("quester.modify.removequest");
+		CitizensManager.addPermission("quester.modify.questedit");
 	}
 }

@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.events.CitizensEnableEvent;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
@@ -27,6 +26,7 @@ import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -87,7 +87,7 @@ public class Citizens extends JavaPlugin {
 
 		// Register events per type
 		for (String loaded : loadedTypes) {
-			CitizensNPCManager.getType(loaded).registerEvents();
+			NPCTypeManager.getType(loaded).registerEvents();
 		}
 
 		// Register our events.

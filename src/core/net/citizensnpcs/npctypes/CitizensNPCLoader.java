@@ -11,7 +11,6 @@ import java.util.jar.JarFile;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.utils.Messaging;
 
 public class CitizensNPCLoader {
@@ -51,7 +50,7 @@ public class CitizensNPCLoader {
 					throw new InvalidNPCTypeException(type.getType()
 							+ " is missing a valid Commands class.");
 				}
-				return CitizensNPCManager.registerType(type);
+				return NPCTypeManager.registerType(type);
 			} else {
 				throw new InvalidNPCTypeException("Failed to load "
 						+ file.getName()

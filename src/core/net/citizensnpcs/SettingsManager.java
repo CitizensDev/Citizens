@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.Node;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.Messaging;
@@ -84,10 +84,10 @@ public class SettingsManager {
 		for (String t : Citizens.loadedTypes) {
 			nodes.add(new Node("", SettingsType.GENERAL, "economy.prices." + t
 					+ ".creation", 100));
-			if (CitizensNPCManager.getType(t).getProperties().getNodes() == null) {
+			if (NPCTypeManager.getType(t).getProperties().getNodes() == null) {
 				continue;
 			}
-			for (Node node : CitizensNPCManager.getType(t).getProperties()
+			for (Node node : NPCTypeManager.getType(t).getProperties()
 					.getNodes()) {
 				nodes.add(node);
 			}

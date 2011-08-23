@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.questers.listeners.QuesterBlockListen;
@@ -200,13 +200,13 @@ public class Quester extends CitizensNPC {
 	public void registerEvents() {
 		// block events
 		QuesterBlockListen bl = new QuesterBlockListen();
-		CitizensNPCManager.registerEvent(Type.BLOCK_BREAK, bl);
-		CitizensNPCManager.registerEvent(Type.BLOCK_PLACE, bl);
+		CitizensManager.registerEvent(Type.BLOCK_BREAK, bl);
+		CitizensManager.registerEvent(Type.BLOCK_PLACE, bl);
 		// player events
 		QuesterPlayerListen pl = new QuesterPlayerListen();
-		CitizensNPCManager.registerEvent(Type.PLAYER_QUIT, pl);
-		CitizensNPCManager.registerEvent(Type.PLAYER_MOVE, pl);
-		CitizensNPCManager.registerEvent(Type.PLAYER_PICKUP_ITEM, pl);
-		CitizensNPCManager.registerEvent(Type.PLAYER_CHAT, pl);
+		CitizensManager.registerEvent(Type.PLAYER_QUIT, pl);
+		CitizensManager.registerEvent(Type.PLAYER_MOVE, pl);
+		CitizensManager.registerEvent(Type.PLAYER_PICKUP_ITEM, pl);
+		CitizensManager.registerEvent(Type.PLAYER_CHAT, pl);
 	}
 }

@@ -181,7 +181,8 @@ public class NPCDataManager {
 
 		if ((olditem != 0 && items.get(0) == 0)) {
 			NPCManager.removeForRespawn(npc.getUID());
-			NPCManager.register(npc.getUID(), npc.getOwner(), NPCCreateReason.RESPAWN);
+			NPCManager.register(npc.getUID(), npc.getOwner(),
+					NPCCreateReason.RESPAWN);
 		}
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ "'s in-hand item was set to "

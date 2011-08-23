@@ -6,9 +6,6 @@ import net.citizensnpcs.properties.properties.UtilityProperties;
 
 /**
  * A Node of Citizens is a property value that can be generated in citizens.yml
- * or economy.yml. For nodes with the type ECONOMY, give them an empty string
- * for a name
- * 
  */
 public class Node {
 	private String name;

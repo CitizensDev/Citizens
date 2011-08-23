@@ -4,10 +4,11 @@ import java.util.Map.Entry;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -48,7 +49,7 @@ public class ToggleCommands implements CommandHandler {
 		instance.header(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN
 						+ "NPC Toggle List <%x/%y>" + ChatColor.YELLOW));
-		for (String type : CitizensNPCManager.getTypes().keySet()) {
+		for (String type : NPCTypeManager.getTypes().keySet()) {
 			instance.push(ChatColor.GREEN
 					+ "    - "
 					+ StringUtils.wrap(StringUtils.capitalise(type
@@ -67,14 +68,14 @@ public class ToggleCommands implements CommandHandler {
 			max = 1)
 	public static void toggle(CommandContext args, Player player, HumanNPC npc) {
 		String type = args.getString(0).toLowerCase();
-		if (!CitizensNPCManager.validType(type)) {
+		if (!NPCTypeManager.validType(type)) {
 			Messaging.sendError(player, MessageUtils.invalidNPCTypeMessage);
 			return;
 		}
 		if (!PropertyManager.npcHasType(npc, type)) {
-			buyState(player, npc, CitizensNPCManager.getType(type));
+			buyState(player, npc, NPCTypeManager.getType(type));
 		} else {
-			toggleState(player, npc, CitizensNPCManager.getType(type));
+			toggleState(player, npc, NPCTypeManager.getType(type));
 		}
 	}
 
@@ -139,8 +140,8 @@ public class ToggleCommands implements CommandHandler {
 	// Toggles all types of NPCs
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
-			for (Entry<String, CitizensNPC> entry : CitizensNPCManager
-					.getTypes().entrySet()) {
+			for (Entry<String, CitizensNPC> entry : NPCTypeManager.getTypes()
+					.entrySet()) {
 				if (!npc.isType(entry.getValue().getType())) {
 					toggleState(player, npc, entry.getValue());
 				}
@@ -154,10 +155,10 @@ public class ToggleCommands implements CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		PermissionManager.addPerm("toggle.help");
-		PermissionManager.addPerm("toggle.all");
+		CitizensManager.addPermission("toggle.help");
+		CitizensManager.addPermission("toggle.all");
 		for (String type : Citizens.loadedTypes) {
-			PermissionManager.addPerm("toggle." + type);
+			CitizensManager.addPermission("toggle." + type);
 		}
 	}
 }

@@ -27,24 +27,10 @@ public class NPCManager {
 			.makeMap();
 	private static NPCList list = new NPCList();
 
-	/**
-	 * Gets an NPC from a UID.
-	 * 
-	 * @param UID
-	 *            UID of an NPC
-	 * @return NPC with the given ID, null if an NPC wasn't found
-	 */
 	public static HumanNPC get(int UID) {
 		return list.get(UID);
 	}
 
-	/**
-	 * Gets an NPC from an entity.
-	 * 
-	 * @param entity
-	 *            Bukkit Entity
-	 * @return NPC, null if an NPC wasn't found
-	 */
 	public static HumanNPC get(Entity entity) {
 		return list.getNPC(entity);
 	}

@@ -3,7 +3,7 @@ package net.citizensnpcs.alchemists;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -180,10 +180,10 @@ public class AlchemistCommands implements CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		PermissionManager.addPerm("alchemist.use.help");
-		PermissionManager.addPerm("alchemist.use.recipes.select");
-		PermissionManager.addPerm("alchemist.use.recipes.view");
-		PermissionManager.addPerm("alchemist.modify.recipes");
-		PermissionManager.addPerm("alchemist.use.interact");
+		CitizensManager.addPermission("alchemist.use.help");
+		CitizensManager.addPermission("alchemist.use.recipes.select");
+		CitizensManager.addPermission("alchemist.use.recipes.view");
+		CitizensManager.addPermission("alchemist.modify.recipes");
+		CitizensManager.addPermission("alchemist.use.interact");
 	}
 }

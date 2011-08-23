@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.Node;
 import net.citizensnpcs.api.Properties;
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
@@ -99,9 +99,8 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 					profiles.getString(UID + isAlchemist));
 		}
 		if (profiles.pathExists(UID + recipes)) {
-			saveRecipes(nextUID,
-					((Alchemist) NPCManager.get(UID).getType("alchemist"))
-							.getRecipes());
+			saveRecipes(nextUID, ((Alchemist) CitizensManager.getNPC(UID)
+					.getType("alchemist")).getRecipes());
 		}
 		if (profiles.pathExists(UID + currentRecipe)) {
 			profiles.setInt(nextUID + currentRecipe,

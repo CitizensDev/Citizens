@@ -16,11 +16,6 @@ public class PropertyManager {
 	public static void registerProperties() {
 		add("basic", new BasicProperties());
 		UtilityProperties.initialize();
-		/*
-		 * if (((LivingEntity) e.getEntity()).getHealth() - e.getDamage() <= 0)
-		 * { QuestManager.incrementQuest((Player) e.getDamager(), new
-		 * EntityDeathEvent(e.getEntity(), null)); }
-		 */
 	}
 
 	public static void add(String type, Properties saveable) {

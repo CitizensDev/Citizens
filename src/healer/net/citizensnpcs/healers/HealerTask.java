@@ -3,14 +3,15 @@ package net.citizensnpcs.healers;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.npcs.NPCManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class HealerTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
+		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
+				.entrySet()) {
 			if (SettingsManager.getBoolean("RegenHealerHealth")) {
 				regenerateHealth(entry.getValue());
 			}
@@ -30,8 +31,8 @@ public class HealerTask implements Runnable {
 	// Get the health regeneration rate for a healer based on its level
 	public static int getHealthRegenRate() {
 		int delay = SettingsManager.getInt("HealerHealthRegenIncrement");
-		if (!NPCManager.getList().isEmpty()) {
-			for (Entry<Integer, HumanNPC> entry : NPCManager.getList()
+		if (!CitizensManager.getList().isEmpty()) {
+			for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
 					.entrySet()) {
 				if (entry.getValue().isType("healer")) {
 					delay = delay

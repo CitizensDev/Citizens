@@ -3,6 +3,7 @@ package net.citizensnpcs.traders;
 import java.util.ArrayList;
 
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -404,13 +405,13 @@ public class TraderCommands implements CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		PermissionManager.addPerm("trader.use.help");
-		PermissionManager.addPerm("trader.use.showmoney");
-		PermissionManager.addPerm("trader.modify.money");
-		PermissionManager.addPerm("trader.use.list");
-		PermissionManager.addPerm("trader.modify.unlimited");
-		PermissionManager.addPerm("trader.modify.clearstock");
-		PermissionManager.addPerm("trader.modify.stock");
-		PermissionManager.addPerm("trader.use.trade");
+		CitizensManager.addPermission("trader.use.help");
+		CitizensManager.addPermission("trader.use.showmoney");
+		CitizensManager.addPermission("trader.modify.money");
+		CitizensManager.addPermission("trader.use.list");
+		CitizensManager.addPermission("trader.modify.unlimited");
+		CitizensManager.addPermission("trader.modify.clearstock");
+		CitizensManager.addPermission("trader.modify.stock");
+		CitizensManager.addPermission("trader.use.trade");
 	}
 }

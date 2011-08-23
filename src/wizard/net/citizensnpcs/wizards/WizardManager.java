@@ -174,7 +174,7 @@ public class WizardManager {
 				return;
 			}
 		}
-		if(EconomyManager.useEconPlugin()) {
+		if (EconomyManager.useEconPlugin()) {
 			player.sendMessage(econMsg);
 		}
 		player.sendMessage(msg);
