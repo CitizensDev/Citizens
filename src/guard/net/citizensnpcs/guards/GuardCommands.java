@@ -1,11 +1,14 @@
 package net.citizensnpcs.guards;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
+import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -16,6 +19,8 @@ import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.HelpUtils;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.PageUtils;
+import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -88,14 +93,54 @@ public class GuardCommands implements CommandHandler {
 
 	@Command(
 			aliases = "guard",
-			usage = "flags",
+			usage = "flags [-g,m,p] (page)",
 			desc = "view a guard's flags",
 			modifiers = "flags",
+			flags = "gmp",
 			min = 1,
-			max = 1)
+			max = 2)
 	@CommandPermissions("guard.use.flags")
 	public static void flags(CommandContext args, Player player, HumanNPC npc) {
-		// TODO display a guard's current flags
+		int page = 1;
+		if (args.argsLength() == 2) {
+			if (!StringUtils.isNumber(args.getString(1))) {
+				Messaging.sendError(player, "That is not a valid number.");
+				return;
+			}
+			page = args.getInteger(1);
+		}
+		if (args.getFlags().isEmpty()) {
+			Messaging
+					.sendError(
+							player,
+							"No flag specified. Use -g for group flags, -m for mob flags, and -p for player flags.");
+			return;
+		}
+		Guard guard = npc.getType("guard");
+		FlagList flagList = guard.getFlags();
+		Map<String, FlagInfo> flags;
+		String header = npc.getStrippedName() + "'s ";
+		if (args.hasFlag('g')) {
+			flags = flagList.getFlags(FlagType.GROUP);
+			header += "Group Flags";
+		} else if (args.hasFlag('m')) {
+			flags = flagList.getFlags(FlagType.MOB);
+			header += "Mob Flags";
+		} else if (args.hasFlag('p')) {
+			flags = flagList.getFlags(FlagType.PLAYER);
+			header += "Player Flags";
+		} else {
+			Messaging.sendError(player, "Specified flag not found.");
+			return;
+		}
+		PageInstance instance = PageUtils.newInstance(player);
+		instance.header(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap(header + ChatColor.WHITE
+						+ " <%x/%y>")));
+		for (Entry<String, FlagInfo> entry : flags.entrySet()) {
+			instance.push(StringUtils.wrap("  - ") + entry.getKey());
+		}
+		instance.process(page);
 	}
 
 	@Command(
@@ -144,19 +189,19 @@ public class GuardCommands implements CommandHandler {
 		if (args.hasFlag('g')) {
 			if (!PermissionManager.superPermsEnabled()) {
 				player.sendMessage(ChatColor.GRAY
-						+ "Group flags require bukkit's permission system to be used.");
+						+ "Group flags require Bukkit's permission system to be used.");
 				return;
 			}
 			Group group = PermissionManager.getGroup(name);
 			if (group == null) {
-				player.sendMessage(ChatColor.GRAY + "Group not recognised.");
+				player.sendMessage(ChatColor.GRAY + "Group not recognized.");
 				return;
 			}
 			type = FlagType.GROUP;
 		}
 		if (args.hasFlag('m')) {
 			if (!EntityUtils.validType(name, true)) {
-				player.sendMessage(ChatColor.GRAY + "Mob type not recognised.");
+				player.sendMessage(ChatColor.GRAY + "Mob type not recognized.");
 				return;
 			}
 			type = FlagType.MOB;

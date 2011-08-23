@@ -108,7 +108,7 @@ public class HelpUtils {
 		header(sender, "Guard", 1, 1);
 		format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
-		format(sender, "guard", "flags", "view a guard's flags");
+		format(sender, "guard", "flags [-g,m,p] (page)", "view a guard's flags");
 		format(sender, "guard", "addflag (-i [priority]) [target] (-a,g,m,p)",
 				"add a flag to a guard");
 		format(sender, "guard", "radius [amount]",

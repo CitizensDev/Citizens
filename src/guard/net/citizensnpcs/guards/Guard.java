@@ -102,14 +102,6 @@ public class Guard extends CitizensNPC {
 		return "guard";
 	}
 
-	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {
-	}
-
-	@Override
-	public void onRightClick(Player player, HumanNPC npc) {
-	}
-
 	public void setAttacking(boolean attacking) {
 		this.isAttacking = attacking;
 	}
