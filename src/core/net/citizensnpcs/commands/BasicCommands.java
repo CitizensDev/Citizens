@@ -301,8 +301,8 @@ public class BasicCommands implements CommandHandler {
 			usage = "moveto [x y z](world pitch yaw)",
 			desc = "move an NPC to a location",
 			modifiers = "moveto",
-			min = 3,
-			max = 6)
+			min = 4,
+			max = 7)
 	@CommandPermissions("basic.modify.moveto")
 	public static void moveTo(CommandContext args, Player player, HumanNPC npc) {
 		int index = args.argsLength() - 1;
@@ -359,9 +359,10 @@ public class BasicCommands implements CommandHandler {
 				player.getName(), NPCCreateReason.COMMAND);
 		HumanNPC newNPC = NPCManager.get(newUID);
 		newNPC.teleport(player.getLocation());
-		newNPC.getNPCData().setLocation(player.getLocation());
 		PropertyManager.copyNPCs(npc.getUID(), newUID);
 		PropertyManager.load(newNPC);
+		newNPC.getNPCData().setLocation(player.getLocation());
+		PropertyManager.save(newNPC);
 	}
 
 	@Command(
