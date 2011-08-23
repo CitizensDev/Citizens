@@ -2,6 +2,7 @@ package net.citizensnpcs.economy;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
 
@@ -158,5 +159,13 @@ public class EconomyManager {
 	 */
 	public static void subtract(String name, double price) {
 		Citizens.economy.getAccount(name).subtract(price);
+	}
+
+	public static void pay(HumanNPC npc, double amount) {
+		npc.setBalance(npc.getBalance() - amount);
+	}
+
+	public static boolean hasEnough(HumanNPC npc, double amount) {
+		return npc.getBalance() - amount >= 0;
 	}
 }

@@ -46,10 +46,6 @@ public class Stockable {
 		return selling;
 	}
 
-	public boolean isEconPlugin() {
-		return price.isEconPlugin();
-	}
-
 	public String getString(ChatColor colour) {
 		return StringUtils.wrap(getStocking().getAmount() + " "
 				+ getStocking().getType().name(), colour)

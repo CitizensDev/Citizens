@@ -1,6 +1,6 @@
 package net.citizensnpcs.traders;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
@@ -88,40 +88,49 @@ public class TraderCommands implements CommandHandler {
 						+ "Invalid balance change amount entered.");
 				return;
 			}
-			/*
-			 * if (args.getString(1).contains("g")) { if
-			 * (EconomyManager.canBuy(new Payment(amount, true), player)) {
-			 * EconomyManager.pay(new Payment(-amount, true), npc, -1);
-			 * EconomyManager.pay(new Payment(amount, true), player, -1);
-			 * player.sendMessage(ChatColor.GREEN + "Gave " +
-			 * StringUtils.wrap(ServerEconomyInterface .format(amount)) + " to "
-			 * + StringUtils.wrap(npc.getStrippedName()) +
-			 * ". Your balance is now " +
-			 * StringUtils.wrap(ServerEconomyInterface
-			 * .getFormattedBalance(player.getName()), ChatColor.GREEN) + ".");
-			 * } else { player.sendMessage(ChatColor.RED +
-			 * "You don't have enough money for that! Need " +
-			 * StringUtils.wrap(ServerEconomyInterface .format(amount -
-			 * ServerEconomyInterface .getBalance(player .getName())),
-			 * ChatColor.RED) + " more."); } } else if
-			 * (args.getString(1).contains("t")) { if (EconomyManager.canBuy(new
-			 * Payment(amount, true), npc)) { EconomyManager.pay(new
-			 * Payment(amount, true), npc, -1); EconomyManager.pay(new
-			 * Payment(-amount, true), player, -1);
-			 * player.sendMessage(ChatColor.GREEN + "Took " +
-			 * StringUtils.wrap(ServerEconomyInterface .format(amount)) +
-			 * " from " + StringUtils.wrap(npc.getStrippedName()) +
-			 * ". Your balance is now " +
-			 * StringUtils.wrap(ServerEconomyInterface
-			 * .getFormattedBalance(player.getName())) + "."); } else {
-			 * player.sendMessage(ChatColor.RED +
-			 * "The trader doesn't have enough money for that! It needs " +
-			 * StringUtils.wrap( ServerEconomyInterface.format(amount -
-			 * npc.getBalance()), ChatColor.RED) + " more in its balance."); } }
-			 * else { player.sendMessage(ChatColor.RED +
-			 * "Invalid argument type " + StringUtils.wrap(args.getString(1),
-			 * ChatColor.RED) + "."); }
-			 */
+			String keyword = "Took ";
+			if (args.getString(1).contains("g")) {
+				if (EconomyManager.hasEnough(player, amount)) {
+					keyword = "Gave ";
+					EconomyManager.pay(npc, -amount);
+					EconomyManager.pay(player, amount);
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "You don't have enough money for that! Need "
+							+ StringUtils.wrap(
+									EconomyManager.format(amount
+											- EconomyManager.getBalance(player
+													.getName())), ChatColor.RED)
+							+ " more.");
+					return;
+				}
+			} else if (args.getString(1).contains("t")) {
+				if (EconomyManager.hasEnough(npc, amount)) {
+					EconomyManager.pay(npc, amount);
+					EconomyManager.pay(player, -amount);
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "The trader doesn't have enough money for that! It needs "
+							+ StringUtils.wrap(
+									EconomyManager.format(amount
+											- npc.getBalance()), ChatColor.RED)
+							+ " more in its balance.");
+					return;
+				}
+			} else {
+				player.sendMessage(ChatColor.RED + "Invalid argument type "
+						+ StringUtils.wrap(args.getString(1), ChatColor.RED)
+						+ ".");
+				return;
+			}
+			player.sendMessage(ChatColor.GREEN
+					+ keyword
+					+ StringUtils.wrap(EconomyManager.format(amount))
+					+ " to "
+					+ StringUtils.wrap(npc.getStrippedName())
+					+ ". Your balance is now "
+					+ StringUtils.wrap(EconomyManager
+							.getFormattedBalance(player.getName())) + ".");
 			break;
 		default:
 			Messaging.sendError(player, "Incorrect syntax. See /trader help");
@@ -146,7 +155,7 @@ public class TraderCommands implements CommandHandler {
 		}
 		boolean selling = args.getString(1).contains("s");
 		Trader trader = npc.getType("trader");
-		ArrayList<Stockable> stock = trader.getStockables(!selling);
+		List<Stockable> stock = trader.getStockables(!selling);
 		int page = 1;
 		if (args.argsLength() == 3)
 			page = args.getInteger(2);
@@ -211,8 +220,7 @@ public class TraderCommands implements CommandHandler {
 	@CommandPermissions("trader.modify.stock")
 	public static void stock(CommandContext args, Player player, HumanNPC npc) {
 		// TODO this is horrible, clean it up
-		String item = args.getString(1);
-		String price = args.getString(2);
+		String item = args.getString(1), price = args.getString(2);
 		boolean selling = args.getString(0).contains("bu");
 		Trader trader = npc.getType("trader");
 		String keyword = "buying";
@@ -220,8 +228,8 @@ public class TraderCommands implements CommandHandler {
 			keyword = "selling";
 		}
 
-		if (args.length() == 4 && item.contains("edit")) {
-			ItemStack stack = parseItemStack(player, price, false);
+		if (args.argsLength() == 3 && item.contains("edit")) {
+			ItemStack stack = parseItemStack(player, price.split(":"));
 			if (stack == null)
 				return;
 			if (trader.getStockable(stack.getTypeId(), stack.getDurability(),
@@ -242,7 +250,7 @@ public class TraderCommands implements CommandHandler {
 			return;
 		}
 		if (item.contains("rem")) {
-			ItemStack stack = parseItemStack(player, price, false);
+			ItemStack stack = parseItemStack(player, price.split(":"));
 			if (stack == null)
 				return;
 			if (trader.getStockable(stack.getTypeId(), stack.getDurability(),
@@ -276,7 +284,7 @@ public class TraderCommands implements CommandHandler {
 			return;
 		}
 		selling = !selling;
-		ItemStack stack = parseItemStack(player, item, false);
+		ItemStack stack = parseItemStack(player, item.split(":"));
 		if (stack == null)
 			return;
 		ItemPrice itemPrice = createItemPrice(player, price);
@@ -334,54 +342,22 @@ public class TraderCommands implements CommandHandler {
 	}
 
 	private static ItemPrice createItemPrice(Player player, String price) {
-		ItemStack cost = parseItemStack(player, price, true);
-		boolean econPlugin = false;
-		if (cost == null) {
-			econPlugin = true;
-		}
-		ItemPrice itemPrice;
-		if (!econPlugin) {
-			itemPrice = new ItemPrice(cost);
-		} else {
-			if (Double.parseDouble(price) < 0) {
-				player.sendMessage(ChatColor.GRAY
-						+ "Negative prices are not allowed.");
-				return null;
-			}
-			itemPrice = new ItemPrice(Double.parseDouble(price));
-		}
-		itemPrice.setEconPlugin(econPlugin);
-		return itemPrice;
-	}
-
-	private static ItemStack parseItemStack(Player player, String item,
-			boolean price) {
-		String[] split = item.split(":");
-		ItemStack stack = null;
-		if ((price && split.length != 1) || !price) {
-			stack = parseItemStack(split);
-			if (!price && stack == null) {
-				player.sendMessage(ChatColor.RED
-						+ "Invalid item ID or name specified.");
-			}
-		}
-		if (price && stack == null && !EconomyManager.useEconPlugin()) {
+		if (Double.parseDouble(price) < 0) {
 			player.sendMessage(ChatColor.GRAY
-					+ "This server is not using an economy plugin, so the price cannot be "
-					+ "that kind of value. If you meant to use an item as currency, "
-					+ "please format it like so: item ID:amount(:data).");
+					+ "Negative prices are not allowed.");
 			return null;
 		}
-		return stack;
+		return new ItemPrice(Double.parseDouble(price));
 	}
 
-	// Creates an ItemStack from the given string ItemStack format.
-	private static ItemStack parseItemStack(String[] split) {
+	private static ItemStack parseItemStack(Player player, String[] split) {
 		try {
 			int amount = 1;
 			short data = 0;
 			Material mat = StringUtils.parseMaterial(split[0]);
 			if (mat == null) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Invalid material ID or name specified.");
 				return null;
 			}
 			switch (split.length) {
@@ -390,6 +366,8 @@ public class TraderCommands implements CommandHandler {
 			case 2:
 				amount = Integer.parseInt(split[1]);
 				if (amount <= 0 || amount > 64) {
+					player.sendMessage(ChatColor.GRAY
+							+ "You entered an invalid amount.");
 					return null;
 				}
 			default:

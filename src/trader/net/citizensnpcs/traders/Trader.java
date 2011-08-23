@@ -1,6 +1,8 @@
 package net.citizensnpcs.traders;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
@@ -20,13 +22,13 @@ import org.bukkit.entity.Player;
 public class Trader extends CitizensNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
-	private ConcurrentHashMap<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
+	private Map<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
 
-	public ConcurrentHashMap<Check, Stockable> getStocking() {
+	public Map<Check, Stockable> getStocking() {
 		return stocking;
 	}
 
-	public void setStocking(ConcurrentHashMap<Check, Stockable> stocking) {
+	public void setStocking(Map<Check, Stockable> stocking) {
 		this.stocking = stocking;
 	}
 
@@ -52,8 +54,8 @@ public class Trader extends CitizensNPC {
 				s.isSelling());
 	}
 
-	public ArrayList<Stockable> getStockables(int itemID, boolean selling) {
-		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
+	public List<Stockable> getStockables(int itemID, boolean selling) {
+		List<Stockable> stockables = new ArrayList<Stockable>();
 		if (checkStockingIntegrity()) {
 			for (Stockable s : stocking.values())
 				if (itemID == s.getStockingId() && selling == s.isSelling()) {
@@ -63,7 +65,7 @@ public class Trader extends CitizensNPC {
 		return stockables;
 	}
 
-	public ArrayList<Stockable> getStockables(boolean selling) {
+	public List<Stockable> getStockables(boolean selling) {
 		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
 		if (checkStockingIntegrity()) {
 			for (Stockable s : stocking.values())
@@ -99,12 +101,6 @@ public class Trader extends CitizensNPC {
 				s.isSelling());
 	}
 
-	/*
-	 * private boolean checkData(Stockable stockable, MaterialData second) {
-	 * MaterialData first = stockable.getStocking().getData(); int data = 0; int
-	 * data2 = 0; if (first != null) { data = first.getData(); } if (second !=
-	 * null) { data2 = second.getData(); } return data == data2; }
-	 */
 	public boolean checkStockingIntegrity() {
 		return !(this.stocking == null || this.stocking.isEmpty());
 	}

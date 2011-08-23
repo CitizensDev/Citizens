@@ -1,6 +1,7 @@
 package net.citizensnpcs.traders;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -150,14 +151,10 @@ public class TraderTask implements Runnable {
 		if (checkMiscellaneous(npcInv, stockable, true)) {
 			return;
 		}
-		// /trader sell 1:1 1:5
-		// stocking is 1 stone
-		// price is 5 stone
 		ItemStack buying = stockable.getStocking().clone();
-		// TODO replace Payment code
-		// EconomyManager.pay(new Payment(stockable.getPrice()), player, -1);
+		EconomyManager.pay(player, stockable.getPrice().getPrice());
 		if (mode != TraderMode.INFINITE) {
-			// EconomyManager.pay(new Payment(buying), npc, slot);
+			InventoryUtils.removeItems(npc.getPlayer(), buying, slot);
 		}
 		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
 				buying);
@@ -168,21 +165,8 @@ public class TraderTask implements Runnable {
 					+ MessageUtils.getStackString(buying, ChatColor.RED) + ".");
 			return;
 		}
-		if (!stockable.isEconPlugin() && mode != TraderMode.INFINITE) {
-			ItemStack temp = stockable.getPrice().getItemStack().clone();
-			unbought = npc.getInventory().addItem(temp);
-			if (unbought.size() >= 1) {
-				rewind();
-				player.sendMessage(ChatColor.RED
-						+ "Not enough room in the npc's inventory to add "
-						+ MessageUtils.getStackString(stockable.getPrice()
-								.getItemStack(), ChatColor.RED) + ".");
-				return;
-			}
-		} else {
-			double price = stockable.getPrice().getPrice();
-			npc.setBalance(npc.getBalance() + price);
-		}
+		double price = stockable.getPrice().getPrice();
+		npc.setBalance(npc.getBalance() + price);
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
@@ -208,10 +192,10 @@ public class TraderTask implements Runnable {
 		}
 		ItemStack selling = stockable.getStocking().clone();
 		if (mode != TraderMode.INFINITE) {
-			// EconomyManager.pay(new Payment(stockable.getPrice()), npc, -1);
+			EconomyManager.pay(npc, stockable.getPrice().getPrice());
 		}
-		// EconomyManager.pay(new Payment(selling), player, slot);
-		HashMap<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
+		InventoryUtils.removeItems(player, selling, slot);
+		Map<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
 		if (mode != TraderMode.INFINITE) {
 			unsold = npc.getInventory().addItem(selling);
 		}
@@ -223,21 +207,8 @@ public class TraderTask implements Runnable {
 					+ " to the trader's stock.");
 			return;
 		}
-		if (!stockable.isEconPlugin()) {
-			ItemStack temp = stockable.getPrice().getItemStack().clone();
-			unsold = player.getInventory().addItem(temp);
-			if (unsold.size() >= 1) {
-				rewind();
-				player.sendMessage(ChatColor.RED
-						+ "Not enough room in your inventory to add "
-						+ MessageUtils.getStackString(stockable.getPrice()
-								.getItemStack(), ChatColor.RED) + ".");
-				return;
-			}
-		} else {
-			double price = stockable.getPrice().getPrice();
-			EconomyManager.add(player.getName(), price);
-		}
+		double price = stockable.getPrice().getPrice();
+		EconomyManager.add(player.getName(), price);
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
@@ -254,16 +225,28 @@ public class TraderTask implements Runnable {
 	private boolean checkMiscellaneous(PlayerInventory inv,
 			Stockable stockable, boolean buying) {
 		ItemStack stocking = stockable.getStocking();
-		/*
-		 * if (buying) { if (!EconomyManager.canBuy(new Payment(stocking), npc))
-		 * { sendNoMoneyMessage(stocking, true); return true; } if
-		 * (!EconomyManager.canBuy(new Payment(stockable.getPrice()), player)) {
-		 * sendNoMoneyMessage(stocking, false); return true; } } else { if
-		 * (!EconomyManager.canBuy(new Payment(stocking), player)) {
-		 * sendNoMoneyMessage(stocking, true); return true; } if
-		 * (!EconomyManager.canBuy(new Payment(stockable.getPrice()), npc)) {
-		 * sendNoMoneyMessage(stocking, false); return true; } }
-		 */
+
+		if (buying) {
+			if (!InventoryUtils.has(npc.getPlayer(), stocking)) {
+				sendNoMoneyMessage(stocking, true);
+				return true;
+			}
+			if (!EconomyManager.hasEnough(player, stockable.getPrice()
+					.getPrice())) {
+				sendNoMoneyMessage(stocking, false);
+				return true;
+			}
+		} else {
+			if (!InventoryUtils.has(player, stocking)) {
+				sendNoMoneyMessage(stocking, true);
+				return true;
+			}
+			if (!EconomyManager.hasEnough(npc, stockable.getPrice().getPrice())) {
+				sendNoMoneyMessage(stocking, false);
+				return true;
+			}
+		}
+
 		return false;
 	}
 

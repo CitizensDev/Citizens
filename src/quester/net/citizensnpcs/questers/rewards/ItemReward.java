@@ -4,6 +4,7 @@ import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.Reward;
 import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -22,50 +23,10 @@ public class ItemReward implements Reward {
 	@Override
 	public void grant(Player player, HumanNPC npc) {
 		if (this.take) {
-			removeItems(player);
+			InventoryUtils.removeItems(player, reward);
 		} else {
 			player.getWorld().dropItemNaturally(player.getLocation(), reward);
 		}
-	}
-
-	private void removeItems(Player player) {
-		int remaining = reward.getAmount();
-		ItemStack[] contents = player.getInventory().getContents();
-		for (int i = 0; i != contents.length; ++i) {
-			ItemStack item = contents[i];
-			if (item.getType() == reward.getType()) {
-				if (remaining - item.getAmount() < 0) {
-					item.setAmount(item.getAmount() - remaining);
-					remaining = 0;
-				} else {
-					remaining -= item.getAmount();
-					item = null;
-				}
-				if (item.getAmount() == 0)
-					item = null;
-				contents[i] = item;
-				if (remaining <= 0)
-					break;
-			}
-		}
-		player.getInventory().setContents(contents);
-	}
-
-	private int getRemainder(Player player) {
-		int remaining = reward.getAmount();
-		for (ItemStack item : player.getInventory().getContents()) {
-			if (item.getType() == reward.getType()) {
-				if (remaining - item.getAmount() < 0) {
-					item.setAmount(item.getAmount() - remaining);
-					remaining = 0;
-				} else {
-					remaining -= item.getAmount();
-				}
-				if (remaining <= 0)
-					break;
-			}
-		}
-		return remaining;
 	}
 
 	@Override
@@ -75,12 +36,12 @@ public class ItemReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take ? getRemainder(player) <= 0 : true;
+		return take ? InventoryUtils.getRemainder(player, reward) <= 0 : true;
 	}
 
 	@Override
 	public String getRequiredText(Player player) {
-		int remainder = getRemainder(player);
+		int remainder = InventoryUtils.getRemainder(player, reward);
 		return ChatColor.GRAY
 				+ "You need "
 				+ StringUtils.wrap(remainder, ChatColor.GRAY)

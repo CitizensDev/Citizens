@@ -1,6 +1,7 @@
 package net.citizensnpcs.traders;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.api.Node;
@@ -43,28 +44,14 @@ public class TraderProperties extends PropertyManager implements Properties {
 		profiles.setString(UID + stock, set);
 	}
 
-	@SuppressWarnings("unused")
-	private void removeStockable(int UID, Stockable s) {
-		String write = "";
-		write += s.toString() + ";";
-		String read = profiles.getString(UID + stock).replace(write, "");
-		profiles.setString(UID + stock, read);
-	}
-
-	private void saveStockables(int UID,
-			ConcurrentHashMap<Check, Stockable> stockables) {
-		/*
-		 * for (Stockable entry : stockables.values()) { if
-		 * (!string.contains(entry.toString())) string += (entry.toString() +
-		 * ";"); count += 1; }
-		 */
+	private void saveStockables(int UID, Map<Check, Stockable> stockables) {
 		setStockables(UID, Joiner.on(";").join(stockables.values()));
 	}
 
-	private ConcurrentHashMap<Check, Stockable> getStockables(int UID) {
-		ConcurrentHashMap<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
+	private Map<Check, Stockable> getStockables(int UID) {
+		Map<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
 		int i = 0;
-		for (String s : profiles.getString(UID + stock).split(";")) {
+		label: for (String s : profiles.getString(UID + stock).split(";")) {
 			if (s.isEmpty()) {
 				continue;
 			}
@@ -85,13 +72,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 					String[] parts = main.split("/");
 					if (parts.length == 2) {
 						price = new ItemPrice(Double.parseDouble(parts[0]));
-						price.setEconPlugin(Boolean.parseBoolean(parts[1]));
-					} else {
-						price = new ItemPrice(createItemStack(
-								Integer.parseInt(parts[0]),
-								Integer.parseInt(parts[1]),
-								Integer.parseInt(parts[2])));
-						price.setEconPlugin(Boolean.parseBoolean(parts[3]));
+					} else {// Ignore old prices.
+						continue label;
 					}
 					break;
 				case 2:
@@ -104,12 +86,6 @@ public class TraderProperties extends PropertyManager implements Properties {
 			stockables.put(stock.createCheck(), stock);
 		}
 		return stockables;
-	}
-
-	private ItemStack createItemStack(int amount, int itemID, int data) {
-		ItemStack item = new ItemStack(itemID, amount);
-		item.setDurability((short) data);
-		return item;
 	}
 
 	@Override

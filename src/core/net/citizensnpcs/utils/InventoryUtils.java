@@ -66,4 +66,86 @@ public class InventoryUtils {
 		int id = armor.getTypeId();
 		return id >= 298 && id <= 317;
 	}
+
+	public static void removeItems(Player player, ItemStack stack) {
+		int remaining = stack.getAmount();
+		ItemStack[] contents = player.getInventory().getContents();
+		for (int i = 0; i != contents.length; ++i) {
+			ItemStack item = contents[i];
+			if (item.getType() == stack.getType()) {
+				if (remaining - item.getAmount() < 0) {
+					item.setAmount(item.getAmount() - remaining);
+					remaining = 0;
+				} else {
+					remaining -= item.getAmount();
+					item = null;
+				}
+				if (item.getAmount() == 0)
+					item = null;
+				contents[i] = item;
+				if (remaining <= 0)
+					break;
+			}
+		}
+		player.getInventory().setContents(contents);
+	}
+
+	public static void removeItems(Player player, ItemStack stack, int slot) {
+		int remaining = stack.getAmount();
+		ItemStack[] contents = player.getInventory().getContents();
+		ItemStack item = contents[slot];
+		if (item.getType() == stack.getType()) {
+			if (remaining - item.getAmount() < 0) {
+				item.setAmount(item.getAmount() - remaining);
+				remaining = 0;
+			} else {
+				remaining -= item.getAmount();
+				item = null;
+			}
+			if (item.getAmount() == 0)
+				item = null;
+			contents[slot] = item;
+		}
+		if (remaining > 0) {
+			for (int i = 0; i != contents.length; ++i) {
+				item = contents[i];
+				if (item.getType() == stack.getType()) {
+					if (remaining - item.getAmount() < 0) {
+						item.setAmount(item.getAmount() - remaining);
+						remaining = 0;
+					} else {
+						remaining -= item.getAmount();
+						item = null;
+					}
+					if (item.getAmount() == 0)
+						item = null;
+					contents[i] = item;
+					if (remaining <= 0)
+						break;
+				}
+			}
+		}
+		player.getInventory().setContents(contents);
+	}
+
+	public static int getRemainder(Player player, ItemStack stack) {
+		int remaining = stack.getAmount();
+		for (ItemStack item : player.getInventory().getContents()) {
+			if (item.getType() == stack.getType()) {
+				if (remaining - item.getAmount() < 0) {
+					item.setAmount(item.getAmount() - remaining);
+					remaining = 0;
+				} else {
+					remaining -= item.getAmount();
+				}
+				if (remaining <= 0)
+					break;
+			}
+		}
+		return remaining;
+	}
+
+	public static boolean has(Player player, ItemStack stack) {
+		return getRemainder(player, stack) <= 0;
+	}
 }
