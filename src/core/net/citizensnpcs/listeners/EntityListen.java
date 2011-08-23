@@ -2,6 +2,7 @@ package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.api.events.NPCRightClickEvent;
 import net.citizensnpcs.api.events.NPCTalkEvent;
 import net.citizensnpcs.api.events.NPCTargetEvent;
 import net.citizensnpcs.npcs.NPCDataManager;
@@ -97,13 +98,18 @@ public class EntityListen extends EntityListener implements Listener {
 					}
 				}
 			}
-			if (npc.getWaypoints().isStarted()
-					&& npc.getWaypoints().current() != null) {
-				npc.getWaypoints().scheduleDelay(npc,
-						npc.getWaypoints().current().getLocation(),
-						SettingsManager.getInt("RightClickPause"));
+			NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(npc,
+					player);
+			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
+			if (!rightClickEvent.isCancelled()) {
+				if (npc.getWaypoints().isStarted()
+						&& npc.getWaypoints().current() != null) {
+					npc.getWaypoints().scheduleDelay(npc,
+							npc.getWaypoints().current().getLocation(),
+							SettingsManager.getInt("RightClickPause"));
+				}
+				npc.callRightClick(player, npc);
 			}
-			npc.callRightClick(player, npc);
 		}
 	}
 
