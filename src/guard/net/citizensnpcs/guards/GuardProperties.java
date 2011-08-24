@@ -57,12 +57,10 @@ public class GuardProperties extends PropertyManager implements Properties {
 			return;
 		}
 		FlagList flags = guard.getFlags();
-		boolean isSafe;
-		int priority;
 		for (String key : profiles.getKeys(root)) {
 			path = root + "." + key;
-			isSafe = profiles.getBoolean(path + ".safe");
-			priority = profiles.getInt(path + ".priority");
+			boolean isSafe = profiles.getBoolean(path + ".safe");
+			int priority = profiles.getInt(path + ".priority");
 			flags.addFlag(FlagType.parse(profiles.getString(path + ".type")),
 					FlagInfo.newInstance(key, priority, isSafe));
 		}

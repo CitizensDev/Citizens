@@ -62,6 +62,8 @@ public class FlagList {
 	}
 
 	public void addFlag(FlagType type, FlagInfo info) {
+		if (info == null)
+			throw new IllegalArgumentException("Info should not be null");
 		if (type == FlagType.GROUP) {
 			predicates.updateGroup(info);
 		}
@@ -105,7 +107,9 @@ public class FlagList {
 	}
 
 	public enum FlagType {
-		GROUP('g'), MOB('m'), PLAYER('p');
+		GROUP('g'),
+		MOB('m'),
+		PLAYER('p');
 		private final char flag;
 
 		FlagType(char flag) {
