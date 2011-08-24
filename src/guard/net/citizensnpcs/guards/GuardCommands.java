@@ -113,7 +113,7 @@ public class GuardCommands implements CommandHandler {
 			Messaging
 					.sendError(
 							player,
-							"No flag specified. Use -g for group flags, -m for mob flags, and -p for player flags.");
+							"No flag specified.");
 			return;
 		}
 		Guard guard = npc.getType("guard");
