@@ -110,10 +110,7 @@ public class GuardCommands implements CommandHandler {
 			page = args.getInteger(1);
 		}
 		if (args.getFlags().isEmpty()) {
-			Messaging
-					.sendError(
-							player,
-							"No flag specified.");
+			Messaging.sendError(player, "No flag specified.");
 			return;
 		}
 		Guard guard = npc.getType("guard");

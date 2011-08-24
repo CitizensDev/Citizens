@@ -17,8 +17,8 @@ public class NPCTypeManager {
 	private static final Map<String, CitizensNPC> types = Maps.newHashMap();
 
 	public static CitizensNPC registerType(CitizensNPC type) {
-		types.put(type.getType(), type);
-		PropertyManager.add(type.getType(), type.getProperties());
+		types.put(type.getName(), type);
+		PropertyManager.add(type.getName(), type.getProperties());
 		Citizens.commands.register(type.getCommands().getClass());
 		return type;
 	}

@@ -43,11 +43,11 @@ public class CitizensNPCLoader {
 						.asSubclass(CitizensNPC.class);
 				CitizensNPC type = typeClass.newInstance();
 				if (type.getProperties() == null) {
-					throw new InvalidNPCTypeException(type.getType()
+					throw new InvalidNPCTypeException(type.getName()
 							+ " is missing a valid Properties class.");
 				}
 				if (type.getCommands() == null) {
-					throw new InvalidNPCTypeException(type.getType()
+					throw new InvalidNPCTypeException(type.getName()
 							+ " is missing a valid Commands class.");
 				}
 				return NPCTypeManager.registerType(type);

@@ -46,7 +46,7 @@ public class Quester extends CitizensNPC {
 	}
 
 	@Override
-	public String getType() {
+	public String getName() {
 		return "quester";
 	}
 

@@ -10,11 +10,11 @@ import org.bukkit.event.entity.EntityTargetEvent;
 public abstract class CitizensNPC {
 
 	/**
-	 * Get an NPC's type
+	 * Get an NPC type's name
 	 * 
-	 * @return NPC's type, use lowercase
+	 * @return NPC type's name, use lowercase
 	 */
-	public abstract String getType();
+	public abstract String getName();
 
 	/**
 	 * Get an NPC's property handler

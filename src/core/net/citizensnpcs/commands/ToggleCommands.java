@@ -100,22 +100,22 @@ public class ToggleCommands implements CommandHandler {
 	// Toggles an NPC state.
 	private static void toggleState(Player player, HumanNPC npc,
 			CitizensNPC type) {
-		if (!npc.isType(type.getType())) {
-			PropertyManager.get(type.getType()).setEnabled(npc, true);
-			npc.addType(type.getType());
+		if (!npc.isType(type.getName())) {
+			PropertyManager.get(type.getName()).setEnabled(npc, true);
+			npc.addType(type.getName());
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " is now a " + type.getType() + "!");
+					+ " is now a " + type.getName() + "!");
 		} else {
-			PropertyManager.get(type.getType()).setEnabled(npc, false);
-			npc.removeType(type.getType());
+			PropertyManager.get(type.getName()).setEnabled(npc, false);
+			npc.removeType(type.getName());
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " has stopped being a " + type.getType() + ".");
+					+ " has stopped being a " + type.getName() + ".");
 		}
 	}
 
 	// Buys an NPC state.
 	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
-		String toggle = type.getType();
+		String toggle = type.getName();
 		if (!PermissionManager.generic(player, "citizens.toggle." + toggle)) {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
@@ -142,7 +142,7 @@ public class ToggleCommands implements CommandHandler {
 		if (on) {
 			for (Entry<String, CitizensNPC> entry : NPCTypeManager.getTypes()
 					.entrySet()) {
-				if (!npc.isType(entry.getValue().getType())) {
+				if (!npc.isType(entry.getValue().getName())) {
 					toggleState(player, npc, entry.getValue());
 				}
 			}

@@ -329,7 +329,7 @@ public class Citizens extends JavaPlugin {
 				CitizensNPC type = CitizensNPCLoader.loadNPCType(new File(dir,
 						f), this);
 				if (type != null) {
-					loadedTypes.add(type.getType());
+					loadedTypes.add(type.getName());
 				}
 			}
 		}

@@ -46,7 +46,7 @@ public class Alchemist extends CitizensNPC {
 	}
 
 	@Override
-	public String getType() {
+	public String getName() {
 		return "alchemist";
 	}
 

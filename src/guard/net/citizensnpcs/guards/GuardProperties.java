@@ -53,8 +53,9 @@ public class GuardProperties extends PropertyManager implements Properties {
 
 	private void loadFlags(Guard guard, int UID) {
 		String root = UID + blacklist, path = root;
-		if (!profiles.pathExists(root))
+		if (!profiles.pathExists(root)) {
 			return;
+		}
 		FlagList flags = guard.getFlags();
 		boolean isSafe;
 		int priority;
@@ -62,7 +63,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 			path = root + "." + key;
 			isSafe = profiles.getBoolean(path + ".safe");
 			priority = profiles.getInt(path + ".priority");
-			flags.addFlag(FlagType.valueOf(profiles.getString(path + ".type")),
+			flags.addFlag(FlagType.parse(profiles.getString(path + ".type")),
 					FlagInfo.newInstance(key, priority, isSafe));
 		}
 	}

@@ -98,7 +98,7 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public String getType() {
+	public String getName() {
 		return "guard";
 	}
 

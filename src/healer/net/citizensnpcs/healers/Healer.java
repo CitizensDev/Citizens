@@ -47,7 +47,7 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public String getType() {
+	public String getName() {
 		return "healer";
 	}
 

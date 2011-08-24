@@ -24,7 +24,8 @@ public class GuardTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList().entrySet()) {
+		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
+				.entrySet()) {
 			HumanNPC npc = entry.getValue();
 			if (npc.isType("guard")) {
 				Guard guard = npc.getType("guard");

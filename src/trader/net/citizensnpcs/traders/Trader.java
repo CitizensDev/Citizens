@@ -122,7 +122,7 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public String getType() {
+	public String getName() {
 		return "trader";
 	}
 

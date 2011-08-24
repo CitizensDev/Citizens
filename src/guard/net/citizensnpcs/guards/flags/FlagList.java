@@ -128,5 +128,13 @@ public class FlagList {
 			}
 			return null;
 		}
+
+		public static FlagType parse(String passed) {
+			try {
+				return FlagType.valueOf(passed.toUpperCase());
+			} catch (Exception ex) {
+				return null;
+			}
+		}
 	}
 }

@@ -68,7 +68,7 @@ public class BasicCommands implements CommandHandler {
 	@ServerCommand()
 	@CommandPermissions("admin.clean")
 	@CommandRequirements()
-	public static void cleanUp(CommandContext args, CommandSender sender,
+	public static void clean(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		sender.sendMessage(ChatColor.GRAY + "Cleaning up...");
 		for (World world : Bukkit.getServer().getWorlds()) {
@@ -222,9 +222,9 @@ public class BasicCommands implements CommandHandler {
 			sender.sendMessage(ChatColor.RED + "None");
 			return;
 		}
-		for (CitizensNPC t : npc.types()) {
+		for (CitizensNPC type : npc.types()) {
 			sender.sendMessage(ChatColor.GRAY + "    - "
-					+ StringUtils.wrap(t.getType()));
+					+ StringUtils.wrap(type.getName()));
 		}
 	}
 
@@ -363,8 +363,11 @@ public class BasicCommands implements CommandHandler {
 		PropertyManager.load(newNPC);
 		newNPC.getNPCData().setLocation(player.getLocation());
 		PropertyManager.save(newNPC);
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+				+ " has been copied at your location.");
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "npc",
 			usage = "remove (all)",
@@ -372,7 +375,6 @@ public class BasicCommands implements CommandHandler {
 			modifiers = "remove",
 			min = 1,
 			max = 2)
-	@CommandPermissions("basic.modify.remove")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
 			if (PermissionManager.generic(player,
@@ -387,6 +389,10 @@ public class BasicCommands implements CommandHandler {
 		}
 		if (!PermissionManager.generic(player, "citizens.basic.modify.remove")) {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
+			return;
+		}
+		if (npc == null) {
+			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			return;
 		}
 		NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);

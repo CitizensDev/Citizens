@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class Blacksmith extends CitizensNPC {
 
 	@Override
-	public String getType() {
+	public String getName() {
 		return "blacksmith";
 	}
 
