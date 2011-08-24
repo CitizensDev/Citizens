@@ -199,8 +199,8 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public void registerEvents() {
-		QuesterCitizensListen cl = new QuesterCitizensListen();
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT, cl);
+		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
+				new QuesterCitizensListen());
 		// block events
 		QuesterBlockListen bl = new QuesterBlockListen();
 		CitizensManager.registerEvent(Type.BLOCK_BREAK, bl);
