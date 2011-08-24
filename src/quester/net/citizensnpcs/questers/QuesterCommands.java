@@ -56,10 +56,15 @@ public class QuesterCommands implements CommandHandler {
 			max = 2)
 	@CommandPermissions("quester.modify.assignquest")
 	public static void assign(CommandContext args, Player player, HumanNPC npc) {
-		Quester quester = npc.getType("quester");
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
+			return;
+		}
+		Quester quester = npc.getType("quester");
+		if (quester.hasQuest(args.getString(1))) {
+			player.sendMessage(ChatColor.GRAY
+					+ "The quester already has that quest.");
 			return;
 		}
 		quester.addQuest(args.getString(1));

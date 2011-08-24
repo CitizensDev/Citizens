@@ -118,7 +118,7 @@ public class Quester extends CitizensNPC {
 						quest.getName()).getTimesCompleted() >= quest
 						.getRepeatLimit())) {
 			player.sendMessage(ChatColor.GRAY
-					+ "You are not allowed to repeat this quest.");
+					+ "You are not allowed to repeat this quest again.");
 			return;
 		}
 		for (Reward requirement : quest.getRequirements()) {
@@ -151,6 +151,7 @@ public class Quester extends CitizensNPC {
 		} else {
 			queue.put(player, queue.get(player) + 1);
 		}
+		pending.remove(player);
 		updateDescription(player);
 	}
 
@@ -170,11 +171,12 @@ public class Quester extends CitizensNPC {
 					|| display.elements() % 9 == 0) {
 				display.push(ChatColor.GOLD
 						+ "Right click to continue description.");
-				pending.add(player);
 			}
 		}
-		if (display.maxPages() == 1)
+		if (display.maxPages() == 1) {
 			player.sendMessage(ChatColor.GOLD + "Right click again to accept.");
+			pending.add(player);
+		}
 		display.process(1);
 		displays.put(player, display);
 	}
