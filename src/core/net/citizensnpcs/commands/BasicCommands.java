@@ -360,6 +360,7 @@ public class BasicCommands implements CommandHandler {
 		HumanNPC newNPC = NPCManager.get(newUID);
 		newNPC.teleport(player.getLocation());
 		PropertyManager.copyNPCs(npc.getUID(), newUID);
+		PropertyManager.save(newNPC);
 		PropertyManager.load(newNPC);
 		newNPC.getNPCData().setLocation(player.getLocation());
 		PropertyManager.save(newNPC);

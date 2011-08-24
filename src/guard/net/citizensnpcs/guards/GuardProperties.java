@@ -18,7 +18,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 	private static final String isGuard = ".guard.toggle";
 	private static final String type = ".guard.type";
 	private static final String radius = ".guard.radius";
-	private static final String blacklist = ".guard.blacklist";
+	private static final String flag = ".guard.flags";
 	private static final String aggressive = ".guard.aggressive";
 
 	public static final GuardProperties INSTANCE = new GuardProperties();
@@ -52,7 +52,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 	}
 
 	private void loadFlags(Guard guard, int UID) {
-		String root = UID + blacklist, path = root;
+		String root = UID + flag, path = root;
 		if (!profiles.pathExists(root)) {
 			return;
 		}
@@ -67,7 +67,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 	}
 
 	private void saveFlags(int UID, FlagList flags) {
-		String root = UID + blacklist, path = root;
+		String root = UID + flag, path = root;
 		for (FlagType type : FlagType.values()) {
 			for (FlagInfo info : flags.getFlags(type).values()) {
 				path = root + "." + info.getName();
@@ -125,9 +125,8 @@ public class GuardProperties extends PropertyManager implements Properties {
 		if (profiles.pathExists(UID + type)) {
 			profiles.setString(nextUID + type, profiles.getString(UID + type));
 		}
-		if (profiles.pathExists(UID + blacklist)) {
-			profiles.setString(nextUID + blacklist,
-					profiles.getString(UID + blacklist));
+		if (profiles.pathExists(UID + flag)) {
+			profiles.setString(nextUID + flag, profiles.getString(UID + flag));
 		}
 		if (profiles.pathExists(UID + radius)) {
 			profiles.setString(nextUID + radius,

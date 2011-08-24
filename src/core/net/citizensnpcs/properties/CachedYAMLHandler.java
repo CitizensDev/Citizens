@@ -298,8 +298,8 @@ public class CachedYAMLHandler implements Storage {
 
 	public List<Integer> getIntegerKeys(String path) {
 		load();
-		ArrayList<Integer> ret = new ArrayList<Integer>();
-		for (String str : this.config.getKeys(path)) {
+		List<Integer> ret = new ArrayList<Integer>();
+		for (String str : getKeys(path)) {
 			try {
 				ret.add(Integer.parseInt(str.replace("'", "")));
 			} catch (NumberFormatException ex) {
