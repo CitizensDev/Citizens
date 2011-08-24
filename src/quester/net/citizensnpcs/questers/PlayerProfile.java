@@ -145,6 +145,8 @@ public class PlayerProfile {
 				}
 			}
 		}
+		if (!profile.pathExists("quest.completed"))
+			return;
 		for (String key : profile.getKeys("quest.completed")) {
 			path = "quest.completed." + key;
 			completedQuests.put(
