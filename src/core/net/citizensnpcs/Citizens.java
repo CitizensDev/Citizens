@@ -85,12 +85,6 @@ public class Citizens extends JavaPlugin {
 			NPCTypeManager.getType(loaded).registerEvents();
 		}
 
-		// Call enable event, used for scheduling tasks per type, initializing
-		// properties, etc. Must be after the type event registering to allow
-		// types to use this event.
-		Bukkit.getServer().getPluginManager()
-				.callEvent(new CitizensEnableEvent());
-
 		// Register our events.
 		new EntityListen().registerEvents(this);
 		new WorldListen().registerEvents(this);
@@ -141,6 +135,11 @@ public class Citizens extends JavaPlugin {
 					}, SettingsManager.getInt("SavingDelay"),
 					SettingsManager.getInt("SavingDelay"));
 		}
+		// Call enable event, can be used for initialisation of type-specific
+		// things.
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new CitizensEnableEvent());
+
 		Messaging.log("version [" + getVersion() + "] loaded.");
 	}
 
