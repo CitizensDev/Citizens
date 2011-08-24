@@ -41,7 +41,7 @@ public class QuestManager {
 	}
 
 	public static Quest getQuest(String questName) {
-		return quests.get(questName);
+		return quests.get(questName.toLowerCase());
 	}
 
 	public static void assignQuest(HumanNPC npc, Player player, String quest) {
@@ -54,6 +54,6 @@ public class QuestManager {
 	}
 
 	public static void addQuest(Quest quest) {
-		quests.put(quest.getName(), quest);
+		quests.put(quest.getName().toLowerCase(), quest);
 	}
 }

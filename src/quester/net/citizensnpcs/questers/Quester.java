@@ -9,6 +9,7 @@ import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.questers.listeners.QuesterBlockListen;
+import net.citizensnpcs.questers.listeners.QuesterCitizensListen;
 import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
@@ -38,7 +39,11 @@ public class Quester extends CitizensNPC {
 	}
 
 	public void removeQuest(String quest) {
-		quests.remove(quests.indexOf(quest));
+		quests.remove(quest);
+	}
+
+	public boolean hasQuest(String string) {
+		return quests.contains(string);
 	}
 
 	public List<String> getQuests() {
@@ -182,10 +187,6 @@ public class Quester extends CitizensNPC {
 		return quests.size() > 0 ? quests.get(queue.get(player)) : "";
 	}
 
-	public boolean hasQuests() {
-		return this.quests == null ? false : this.quests.size() > 0;
-	}
-
 	@Override
 	public Properties getProperties() {
 		return QuesterProperties.INSTANCE;
@@ -198,6 +199,8 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public void registerEvents() {
+		QuesterCitizensListen cl = new QuesterCitizensListen();
+		CitizensManager.registerEvent(Type.CUSTOM_EVENT, cl);
 		// block events
 		QuesterBlockListen bl = new QuesterBlockListen();
 		CitizensManager.registerEvent(Type.BLOCK_BREAK, bl);

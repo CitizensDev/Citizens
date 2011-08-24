@@ -146,9 +146,9 @@ public class QuesterCommands implements CommandHandler {
 	@CommandPermissions("quester.modify.removequest")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		Quester quester = npc.getType("quester");
-		if (!QuestManager.validQuest(args.getString(1))) {
+		if (!quester.hasQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
-					+ "There is no quest by that name.");
+					+ "The quester doesn't have any quests by that name.");
 			return;
 		}
 		quester.removeQuest(args.getString(1));
