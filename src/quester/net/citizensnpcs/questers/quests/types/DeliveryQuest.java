@@ -43,7 +43,12 @@ public class DeliveryQuest implements QuestUpdater {
 
 	@Override
 	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		if (progress.getLastItem() == null)
+			return false;
+		return progress.getLastItem().getType() == progress.getObjective()
+				.getMaterial()
+				&& progress.getLastItem().getAmount() >= progress
+						.getObjective().getAmount();
 	}
 
 	@Override
