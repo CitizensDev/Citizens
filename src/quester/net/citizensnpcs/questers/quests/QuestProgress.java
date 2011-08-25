@@ -36,8 +36,8 @@ public class QuestProgress {
 				String message = objective.getMessage();
 				if (!message.isEmpty())
 					Messaging.send(player, message);
-				next();
 			}
+			next();
 		}
 	}
 
