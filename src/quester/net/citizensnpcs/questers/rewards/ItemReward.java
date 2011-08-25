@@ -8,6 +8,7 @@ import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,6 +23,9 @@ public class ItemReward implements Reward {
 
 	@Override
 	public void grant(Player player, HumanNPC npc) {
+		if (reward == null || reward.getAmount() == 0
+				|| reward.getType() == Material.AIR)
+			return;
 		if (this.take) {
 			InventoryUtils.removeItems(player, reward);
 		} else {

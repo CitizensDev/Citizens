@@ -67,6 +67,7 @@ public class Quester extends CitizensNPC {
 		} else {
 			if (displays.get(player) == null) {
 				cycle(player);
+				return;
 			}
 			PageInstance display = displays.get(player);
 			if (!pending.contains(player)) {

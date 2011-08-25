@@ -24,10 +24,10 @@ public class QuestFactory {
 			if (quests.pathExists(path + ".rewards")) {
 				for (String reward : quests.getKeys(path + ".rewards")) {
 					path = tempPath + ".rewards." + reward;
-					String type = quests.getString(path + ".type");
 					boolean take = quests.getBoolean(path + ".take");
-					quest.addReward(QuestAPI.getBuilder(type).build(quests,
-							type, take));
+					quest.addReward(QuestAPI.getBuilder(
+							quests.getString(path + ".type")).build(quests,
+							path, take));
 				}
 			}
 			path = tempPath = questName + ".objectives";
