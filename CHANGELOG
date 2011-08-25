@@ -89,5 +89,6 @@ API CHANGES (for developers, see jd.citizensnpcs.net for more documentation):
 -added CitizensEnableEvent
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world
 -merged NPCSpawnEvent and NPCCreateEvent
+-added CitizensReloadEvent, only called when '/citizens reload' command is used
 -Added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; it is not 
  recommended that you use NPCManager

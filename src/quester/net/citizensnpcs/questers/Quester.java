@@ -202,6 +202,7 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public void registerEvents() {
+		// custom events
 		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
 				new QuesterCitizensListen());
 		// block events

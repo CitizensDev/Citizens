@@ -9,6 +9,7 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.events.CitizensReloadEvent;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.economy.EconomyManager;
@@ -124,6 +125,9 @@ public class BasicCommands implements CommandHandler {
 		UtilityProperties.initialize();
 		PropertyManager.loadAll();
 		SettingsManager.setupVariables();
+
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new CitizensReloadEvent());
 
 		Messaging.log("Reloaded.");
 		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
