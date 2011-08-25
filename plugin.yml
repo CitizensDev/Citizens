@@ -205,9 +205,10 @@ permissions:
     citizens.quester.use.*:
         children:
             citizens.quester.use.help: true
+            citizens.quester.use.status: true
+            citizens.quester.use.abandon: true
     citizens.quester.modify.*:
         children:
-            citizens.quester.modify.questedit: true
             citizens.quester.modify.assignquest: true
             citizens.quester.modify.removequest: true
     citizens.trader.*:

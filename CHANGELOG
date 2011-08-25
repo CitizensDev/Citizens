@@ -74,7 +74,8 @@ By fullwall and aPunch
 -you can no longer set '*' as a wizard's interact-item
 -added new wizard mode "command", '/wizard command [command] (args)' sets a wizard's command, right-clicking it
  with the interact-item executes that command
--added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs"
+-added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs", its effects
+ are only noticable upon relogging
 -added 'evil.spawn.chance' node in mobs.yml
 -fixed compatibility with Bukkit permissions
 -added 'citizens.evils.immune' permission node, those with this node will not be attacked by Evil NPCs
@@ -88,5 +89,6 @@ API CHANGES (for developers, see jd.citizensnpcs.net for more documentation):
 -added CitizensEnableEvent
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world
 -merged NPCSpawnEvent and NPCCreateEvent
+-added CitizensReloadEvent, only called when '/citizens reload' command is used
 -Added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; it is not 
  recommended that you use NPCManager

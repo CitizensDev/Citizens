@@ -1,9 +1,12 @@
 package net.citizensnpcs.api;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
+
+import com.citizens.npcs.NPCDataManager;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
@@ -93,5 +96,41 @@ public class CitizensManager {
 	 */
 	public static void addPermission(String perm) {
 		PermissionManager.addPermission(perm);
+	}
+
+	/**
+	 * Get the NPC that a given player has selected
+	 * 
+	 * @param player
+	 *            to check if an NPC is selected
+	 * 
+	 * @return selected NPC, null if no NPC is selected
+	 */
+	public static int getSelected(Player player) {
+		return NPCDataManager.getSelected(player);
+	}
+
+	/**
+	 * Checks if a player has an npc selected.
+	 * 
+	 * @param player
+	 *            Player to check
+	 * @return true if the player has an NPC selected
+	 */
+	public static boolean validateSelected(Player player) {
+		return NPCManager.validateSelected(player);
+	}
+
+	/**
+	 * Checks if the player has selected the given npc.
+	 * 
+	 * @param player
+	 *            Player to check
+	 * @param UID
+	 *            UID of the NPC to check
+	 * @return true if the player has the NPC with the given UID selected
+	 */
+	public static boolean validateSelected(Player player, int UID) {
+		return NPCManager.validateSelected(player, UID);
 	}
 }

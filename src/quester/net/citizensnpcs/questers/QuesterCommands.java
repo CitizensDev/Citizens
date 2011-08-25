@@ -98,17 +98,6 @@ public class QuesterCommands implements CommandHandler {
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 
-	@Command(
-			aliases = "quests",
-			usage = "edit",
-			desc = "modify server quests",
-			modifiers = "edit",
-			min = 1,
-			max = 1)
-	@CommandPermissions("quester.modify.questedit")
-	public static void edit(CommandContext args, Player player, HumanNPC npc) {
-	}
-
 	@CommandRequirements()
 	@Command(
 			aliases = "quest",
@@ -118,7 +107,7 @@ public class QuesterCommands implements CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("quester.use.abort")
-	public static void abandonQuest(CommandContext args, Player player,
+	public static void abortQuest(CommandContext args, Player player,
 			HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
@@ -138,8 +127,8 @@ public class QuesterCommands implements CommandHandler {
 			modifiers = "completed",
 			min = 1,
 			max = 2)
-	@CommandPermissions("quester.use.queststatus")
-	public static void completedQuests(CommandContext args, Player player,
+	@CommandPermissions("quester.use.status")
+	public static void completed(CommandContext args, Player player,
 			HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
@@ -173,9 +162,8 @@ public class QuesterCommands implements CommandHandler {
 			modifiers = "status",
 			min = 1,
 			max = 1)
-	@CommandPermissions("quester.use.queststatus")
-	public static void questStatus(CommandContext args, Player player,
-			HumanNPC npc) {
+	@CommandPermissions("quester.use.status")
+	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
 			player.sendMessage(ChatColor.GRAY
@@ -203,6 +191,7 @@ public class QuesterCommands implements CommandHandler {
 		CitizensManager.addPermission("quester.use.help");
 		CitizensManager.addPermission("quester.modify.assignquest");
 		CitizensManager.addPermission("quester.modify.removequest");
-		CitizensManager.addPermission("quester.modify.questedit");
+		CitizensManager.addPermission("quester.use.status");
+		CitizensManager.addPermission("quester.use.abandon");
 	}
 }
