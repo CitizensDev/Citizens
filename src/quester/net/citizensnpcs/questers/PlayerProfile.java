@@ -36,6 +36,12 @@ public class PlayerProfile {
 		profiles.put(name, profile);
 	}
 
+	public static void saveAll() {
+		for (PlayerProfile profile : profiles.values()) {
+			profile.save();
+		}
+	}
+
 	public PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
 				+ name + ".yml");

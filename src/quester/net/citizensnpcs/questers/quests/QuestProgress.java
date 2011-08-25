@@ -31,14 +31,12 @@ public class QuestProgress {
 	}
 
 	public void cycle() {
-		if (!this.objectives.isCompleted()) {
-			for (Objective objective : this.objectives.current().all()) {
-				String message = objective.getMessage();
-				if (!message.isEmpty())
-					Messaging.send(player, message);
-			}
-			next();
+		for (Objective objective : this.objectives.current().all()) {
+			String message = objective.getMessage();
+			if (!message.isEmpty())
+				Messaging.send(player, message);
 		}
+		next();
 	}
 
 	private void next() {

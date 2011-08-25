@@ -52,7 +52,8 @@ public class ObjectiveProgress {
 	}
 
 	public void incrementCompleted(int i) {
-		this.setAmountCompleted(this.getAmount() + 1);
+		if (this.getObjective().getAmount() - this.getAmount() > 0)
+			this.setAmountCompleted(this.getAmount() + 1);
 	}
 
 	public int getAmount() {

@@ -18,12 +18,20 @@ public class CitizensListener extends CustomEventListener {
 	public void onCitizensReload(CitizensReloadEvent event) {
 	}
 
+	/**
+	 * Called when the command /citizens reload is used in-game
+	 */
+	public void onCitizensDisable(CitizensDisableEvent event) {
+	}
+
 	@Override
 	public void onCustomEvent(Event event) {
 		if (event instanceof CitizensEnableEvent) {
 			onCitizensEnable((CitizensEnableEvent) event);
 		} else if (event instanceof CitizensReloadEvent) {
 			onCitizensReload((CitizensReloadEvent) event);
+		} else if (event instanceof CitizensDisableEvent) {
+			onCitizensDisable((CitizensDisableEvent) event);
 		}
 	}
 }

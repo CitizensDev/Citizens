@@ -72,7 +72,7 @@ public class QuesterCommands implements CommandHandler {
 				+ StringUtils.wrap(args.getString(1)) + " added to "
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
-				+ StringUtils.wrap(quester.getQuests().size() - 1) + " quests.");
+				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 
 	@Command(
@@ -95,7 +95,7 @@ public class QuesterCommands implements CommandHandler {
 				+ StringUtils.wrap(args.getString(1)) + " removed from "
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
-				+ StringUtils.wrap(quester.getQuests().size() - 1) + " quests.");
+				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 
 	@CommandRequirements()

@@ -4,6 +4,7 @@ import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestUpdater;
 import net.citizensnpcs.utils.EntityUtils;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
@@ -23,6 +24,7 @@ public class HuntQuest implements QuestUpdater {
 				LivingEntity entity = (LivingEntity) ev.getEntity();
 				if (progress.getObjective().getString()
 						.contains(EntityUtils.getMonsterName(entity))) {
+					Messaging.log("death successful");
 					progress.incrementCompleted(1);
 				}
 			}

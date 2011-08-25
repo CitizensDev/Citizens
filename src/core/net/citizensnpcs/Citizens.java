@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.events.CitizensDisableEvent;
 import net.citizensnpcs.api.events.CitizensEnableEvent;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
@@ -149,6 +150,8 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.saveState();
 		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
 		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new CitizensDisableEvent());
 
 		Messaging.log("version [" + getVersion() + "] disabled.");
 	}
