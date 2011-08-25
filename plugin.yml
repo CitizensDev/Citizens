@@ -40,7 +40,7 @@ commands:
         usage: |
                         The command was not recognized.
                         See /wizard help for a list of commands.
-    quests:
+    quest:
         description: Performs player-quest related commands.
         usage: |
                         The command was not recognized.
