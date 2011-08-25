@@ -3,6 +3,7 @@ package net.citizensnpcs.utils;
 import net.citizensnpcs.api.events.NPCInventoryOpenEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -67,12 +68,14 @@ public class InventoryUtils {
 		return id >= 298 && id <= 317;
 	}
 
-	public static void removeItems(Player player, ItemStack stack, int slot) {
-		int remaining = stack.getAmount();
+	@SuppressWarnings("deprecation")
+	public static void removeItems(Player player, Material material,
+			int amount, int slot) {
+		int remaining = amount;
 		ItemStack[] contents = player.getInventory().getContents();
 		if (slot != -1) {
 			ItemStack item = contents[slot];
-			if (item != null && item.getType() == stack.getType()) {
+			if (item != null && item.getType() == material) {
 				if (remaining - item.getAmount() < 0) {
 					item.setAmount(item.getAmount() - remaining);
 					remaining = 0;
@@ -85,9 +88,14 @@ public class InventoryUtils {
 				contents[slot] = item;
 			}
 		}
+		if (remaining == 0) {
+			player.getInventory().setContents(contents);
+			player.updateInventory();
+			return;
+		}
 		for (int i = 0; i != contents.length; ++i) {
 			ItemStack item = contents[i];
-			if (item != null && item.getType() == stack.getType()) {
+			if (item != null && item.getType() == material) {
 				if (remaining - item.getAmount() < 0) {
 					item.setAmount(item.getAmount() - remaining);
 					remaining = 0;
@@ -103,16 +111,17 @@ public class InventoryUtils {
 			}
 		}
 		player.getInventory().setContents(contents);
+		player.updateInventory();
 	}
 
-	public static void removeItems(Player player, ItemStack stack) {
-		removeItems(player, stack, -1);
+	public static void removeItems(Player player, Material material, int amount) {
+		removeItems(player, material, amount, -1);
 	}
 
-	public static int getRemainder(Player player, ItemStack stack) {
-		int remaining = stack.getAmount();
+	public static int getRemainder(Player player, Material material, int amount) {
+		int remaining = amount;
 		for (ItemStack item : player.getInventory().getContents()) {
-			if (item != null && item.getType() == stack.getType()) {
+			if (item != null && item.getType() == material) {
 				if (remaining - item.getAmount() < 0) {
 					item.setAmount(item.getAmount() - remaining);
 					remaining = 0;
@@ -126,7 +135,16 @@ public class InventoryUtils {
 		return remaining;
 	}
 
-	public static boolean has(Player player, ItemStack stack) {
-		return getRemainder(player, stack) <= 0;
+	public static boolean has(Player player, Material material, int amount) {
+		return getRemainder(player, material, amount) <= 0;
 	}
+
+	public static boolean has(Player player, ItemStack stack) {
+		return has(player, stack.getType(), stack.getAmount());
+	}
+
+	public static void removeItems(Player player, ItemStack buying, int slot) {
+		removeItems(player, buying.getType(), buying.getAmount(), slot);
+	}
+
 }
