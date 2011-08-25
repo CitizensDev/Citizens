@@ -129,20 +129,20 @@ public class PlayerProfile {
 			int count = 0;
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
 				temp = path + "." + count;
-				questProgress.setAmountCompleted(this.profile.getInt(path
+				questProgress.setAmountCompleted(this.profile.getInt(temp
 						+ ".progress.amount"));
-				int itemID = profile.getInt(path + ".progress.item.id");
-				int amount = profile.getInt(path + ".progress.item.amount");
+				int itemID = profile.getInt(temp + ".progress.item.id");
+				int amount = profile.getInt(temp + ".progress.item.amount");
 				if (itemID != 0 && amount > 0) {
 					ItemStack item = null;
 					item = new ItemStack(itemID, amount);
 					item.setData(new MaterialData(itemID, (byte) profile
-							.getInt(path + ".progress.item.data")));
+							.getInt(temp + ".progress.item.data")));
 					questProgress.setLastItem(item);
 				}
 				if (profile.pathExists(".progress.location")) {
 					questProgress.setLastLocation(LocationUtils.loadLocation(
-							profile, path + ".progress.location", true));
+							profile, temp + ".progress.location", true));
 					++count;
 				}
 			}
