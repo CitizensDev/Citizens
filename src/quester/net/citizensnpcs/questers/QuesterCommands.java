@@ -76,6 +76,41 @@ public class QuesterCommands implements CommandHandler {
 	}
 
 	@Command(
+			aliases = "quester",
+			usage = "remove [quest]",
+			desc = "remove a quest from an NPC",
+			modifiers = "remove",
+			min = 2,
+			max = 2)
+	@CommandPermissions("quester.modify.removequest")
+	public static void remove(CommandContext args, Player player, HumanNPC npc) {
+		Quester quester = npc.getType("quester");
+		if (!quester.hasQuest(args.getString(1))) {
+			player.sendMessage(ChatColor.GRAY
+					+ "The quester doesn't have any quests by that name.");
+			return;
+		}
+		quester.removeQuest(args.getString(1));
+		player.sendMessage(ChatColor.GREEN + "Quest "
+				+ StringUtils.wrap(args.getString(1)) + " removed from "
+				+ StringUtils.wrap(npc.getName()) + "'s quests. "
+				+ StringUtils.wrap(npc.getName()) + " now has "
+				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
+	}
+
+	@Command(
+			aliases = "quests",
+			usage = "edit",
+			desc = "modify server quests",
+			modifiers = "edit",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.modify.questedit")
+	public static void edit(CommandContext args, Player player, HumanNPC npc) {
+	}
+
+	@CommandRequirements()
+	@Command(
 			aliases = "quest",
 			usage = "status",
 			desc = "view current quest status",
@@ -107,6 +142,7 @@ public class QuesterCommands implements CommandHandler {
 		}
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "quest",
 			usage = "completed (page)",
@@ -139,40 +175,6 @@ public class QuesterCommands implements CommandHandler {
 			return;
 		}
 		instance.process(page);
-	}
-
-	@Command(
-			aliases = "quester",
-			usage = "remove [quest]",
-			desc = "remove a quest from an NPC",
-			modifiers = "remove",
-			min = 2,
-			max = 2)
-	@CommandPermissions("quester.modify.removequest")
-	public static void remove(CommandContext args, Player player, HumanNPC npc) {
-		Quester quester = npc.getType("quester");
-		if (!quester.hasQuest(args.getString(1))) {
-			player.sendMessage(ChatColor.GRAY
-					+ "The quester doesn't have any quests by that name.");
-			return;
-		}
-		quester.removeQuest(args.getString(1));
-		player.sendMessage(ChatColor.GREEN + "Quest "
-				+ StringUtils.wrap(args.getString(1)) + " removed from "
-				+ StringUtils.wrap(npc.getName()) + "'s quests. "
-				+ StringUtils.wrap(npc.getName()) + " now has "
-				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
-	}
-
-	@Command(
-			aliases = "quests",
-			usage = "edit",
-			desc = "modify server quests",
-			modifiers = "edit",
-			min = 1,
-			max = 1)
-	@CommandPermissions("quester.modify.questedit")
-	public static void edit(CommandContext args, Player player, HumanNPC npc) {
 	}
 
 	@Override
