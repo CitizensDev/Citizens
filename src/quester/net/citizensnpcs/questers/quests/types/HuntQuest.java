@@ -3,8 +3,10 @@ package net.citizensnpcs.questers.quests.types;
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestUpdater;
+import net.citizensnpcs.utils.EntityUtils;
 
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
@@ -19,7 +21,11 @@ public class HuntQuest implements QuestUpdater {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
 			if (ev.getEntity() instanceof Monster
 					|| ev.getEntity() instanceof Creature) {
-				progress.incrementCompleted(1);
+				LivingEntity entity = (LivingEntity) ev.getEntity();
+				if (progress.getObjective().getString()
+						.contains(EntityUtils.getMonsterName(entity))) {
+					progress.incrementCompleted(1);
+				}
 			}
 		}
 		return progress.getAmount() >= progress.getObjective().getAmount();

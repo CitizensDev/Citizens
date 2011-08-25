@@ -1,26 +1,14 @@
 package net.citizensnpcs.traders;
 
 public class Check {
-	private int itemID;
-	private short dataValue;
-	private boolean selling;
+	private final int itemID;
+	private final short dataValue;
+	private final boolean selling;
 
 	// Used to distinguish between stockables in a hashmap.
 	public Check(int itemID, short dataValue, boolean selling) {
-		this.setItemID(itemID);
-		this.setDataValue(dataValue);
-		this.setSelling(selling);
-	}
-
-	public void setItemID(int itemID) {
 		this.itemID = itemID;
-	}
-
-	public void setDataValue(short dataValue) {
 		this.dataValue = dataValue;
-	}
-
-	public void setSelling(boolean selling) {
 		this.selling = selling;
 	}
 

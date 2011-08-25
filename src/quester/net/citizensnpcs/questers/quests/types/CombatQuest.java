@@ -17,7 +17,11 @@ public class CombatQuest implements QuestUpdater {
 		if (event instanceof EntityDeathEvent) {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
 			if (ev.getEntity() instanceof Player) {
-				progress.incrementCompleted(1);
+				Player player = (Player) ev.getEntity();
+				if (progress.getObjective().getString()
+						.contains(player.getName().toLowerCase())) {
+					progress.incrementCompleted(1);
+				}
 			}
 		}
 		return isCompleted(progress);

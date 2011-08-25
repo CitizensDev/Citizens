@@ -25,12 +25,13 @@ public class QuesterProperties extends PropertyManager implements Properties {
 	}
 
 	private void setQuests(HumanNPC npc) {
-		String write = "";
+		StringBuilder write = new StringBuilder();
 		Quester quester = npc.getType("quester");
 		for (String quest : quester.getQuests()) {
-			write = write + quest + ";";
+			if (!write.toString().contains(quest))
+				write.append(quest + ";");
 		}
-		profiles.setString(npc.getUID() + quests, write);
+		profiles.setString(npc.getUID() + quests, write.toString());
 	}
 
 	private String getQuests(HumanNPC npc) {
