@@ -1,7 +1,7 @@
 package net.citizensnpcs.utils;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.Random;
 
 import net.citizensnpcs.SettingsManager;
@@ -58,7 +58,7 @@ public class MessageUtils {
 	 */
 	public static String getText(HumanNPC npc, Player player) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
-		ArrayDeque<String> array = NPCDataManager.getText(npc.getUID());
+		Deque<String> array = NPCDataManager.getText(npc.getUID());
 		String text = "";
 		if (array != null && array.size() > 0) {
 			text = array.pop();

@@ -13,23 +13,33 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemReward implements Reward {
-	private final ItemStack reward;
+	private final Material material;
+	private final int amount;
+	private final short durability;
 	private final boolean take;
 
-	public ItemReward(ItemStack reward, boolean take) {
-		this.reward = reward;
+	public ItemReward(Material mat, int amount, short durability, boolean take) {
+		this.material = mat;
+		this.amount = amount;
+		this.durability = durability;
 		this.take = take;
 	}
 
 	@Override
 	public void grant(Player player, HumanNPC npc) {
-		if (reward == null || reward.getAmount() == 0
-				|| reward.getType() == Material.AIR)
+		if (amount == 0 || material == Material.AIR)
 			return;
 		if (this.take) {
-			InventoryUtils.removeItems(player, reward);
+			InventoryUtils.removeItems(player, material, amount);
 		} else {
-			player.getWorld().dropItemNaturally(player.getLocation(), reward);
+			int temp = this.amount, other = temp;
+			while (temp > 0) {
+				other = temp > material.getMaxStackSize() ? material
+						.getMaxStackSize() : temp;
+				player.getWorld().dropItemNaturally(player.getLocation(),
+						new ItemStack(material, other, durability));
+				temp -= other;
+			}
 		}
 	}
 
@@ -40,25 +50,26 @@ public class ItemReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take ? InventoryUtils.getRemainder(player, reward) <= 0 : true;
+		return take ? InventoryUtils.has(player, material, amount) : true;
 	}
 
 	@Override
 	public String getRequiredText(Player player) {
-		int remainder = InventoryUtils.getRemainder(player, reward);
+		int remainder = InventoryUtils.getRemainder(player, material, amount);
 		return ChatColor.GRAY
 				+ "You need "
 				+ StringUtils.wrap(remainder, ChatColor.GRAY)
 				+ " more "
-				+ StringUtils.pluralise(StringUtils.format(reward.getType()),
-						remainder) + ".";
+				+ StringUtils
+						.pluralise(StringUtils.format(material), remainder)
+				+ ".";
 	}
 
 	@Override
 	public void save(Storage storage, String root) {
-		storage.setInt(root + ".id", reward.getTypeId());
-		storage.setInt(root + ".amount", reward.getAmount());
-		storage.setInt(root + ".data", reward.getDurability());
+		storage.setInt(root + ".id", material.getId());
+		storage.setInt(root + ".amount", amount);
+		storage.setInt(root + ".data", durability);
 	}
 
 	public static class ItemRewardBuilder implements RewardBuilder {
@@ -69,7 +80,7 @@ public class ItemReward implements Reward {
 			short data = 0;
 			if (storage.keyExists(root + ".data"))
 				data = (short) storage.getInt(root + ".data");
-			return new ItemReward(new ItemStack(id, amount, data), take);
+			return new ItemReward(Material.getMaterial(id), amount, data, take);
 		}
 	}
 }

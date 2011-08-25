@@ -1,6 +1,7 @@
 package net.citizensnpcs.utils;
 
 import java.util.ArrayDeque;
+import java.util.Deque;
 
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
@@ -45,8 +46,8 @@ public class StringUtils {
 				+ Character.toUpperCase(toCapitalise.charAt(0)));
 	}
 
-	public static ArrayDeque<String> colourise(ArrayDeque<String> text) {
-		ArrayDeque<String> newText = new ArrayDeque<String>();
+	public static Deque<String> colourise(Deque<String> text) {
+		Deque<String> newText = new ArrayDeque<String>();
 		for (String string : text) {
 			newText.add(string.replace("&", "\u00A7"));
 		}

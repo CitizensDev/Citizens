@@ -3,6 +3,7 @@ package net.citizensnpcs.properties.properties;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 
 import net.citizensnpcs.SettingsManager;
@@ -108,7 +109,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 		if (save.isEmpty()) {
 			return null;
 		}
-		ArrayList<ItemStack> array = new ArrayList<ItemStack>();
+		List<ItemStack> array = new ArrayList<ItemStack>();
 		for (String s : save.split(",")) {
 			String[] split = s.split("/");
 			if (!split[0].contains("AIR") && !split[0].equals("0")) {
@@ -148,9 +149,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 		return array;
 	}
 
-	private void saveItems(int UID, ArrayList<Integer> items) {
-		profiles.setString(UID + this.items,
-				Joiner.on(",").join(items.toArray()));
+	private void saveItems(int UID, List<Integer> items) {
+		profiles.setString(UID + this.items, Joiner.on(",").join(items));
 	}
 
 	public ChatColor getColour(int UID) {
@@ -172,22 +172,21 @@ public class BasicProperties extends PropertyManager implements Properties {
 				: colour.getCode());
 	}
 
-	public ArrayDeque<String> getText(int UID) {
+	public Deque<String> getText(int UID) {
 		String current = profiles.getString(UID + text);
 		if (!current.isEmpty()) {
-			ArrayDeque<String> texts = new ArrayDeque<String>(
-					Arrays.asList(current.split(";")));
+			Deque<String> texts = new ArrayDeque<String>(Arrays.asList(current
+					.split(";")));
 			return texts;
 		}
 		return null;
 	}
 
-	private void saveText(int UID, ArrayDeque<String> texts) {
+	private void saveText(int UID, Deque<String> texts) {
 		if (texts == null) {
 			return;
 		}
-		profiles.setString(UID + text,
-				Joiner.on(";").skipNulls().join(texts.toArray()));
+		profiles.setString(UID + text, Joiner.on(";").skipNulls().join(texts));
 	}
 
 	public boolean isLookWhenClose(int UID) {
