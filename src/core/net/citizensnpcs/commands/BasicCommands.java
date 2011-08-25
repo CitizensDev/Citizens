@@ -1,7 +1,7 @@
 package net.citizensnpcs.commands;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.List;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
@@ -546,7 +546,7 @@ public class BasicCommands implements CommandHandler {
 		ItemStack item = InventoryUtils.decreaseItemStack(player.getInventory()
 				.getItem(slot));
 		player.getInventory().setItem(slot, item);
-		ArrayList<Integer> items = npc.getNPCData().getItems();
+		List<Integer> items = npc.getNPCData().getItems();
 
 		if (args.getString(1).contains("helm")) {
 			items.set(1, mat.getId());

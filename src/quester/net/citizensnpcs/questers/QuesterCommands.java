@@ -112,33 +112,21 @@ public class QuesterCommands implements CommandHandler {
 	@CommandRequirements()
 	@Command(
 			aliases = "quest",
-			usage = "status",
-			desc = "view current quest status",
-			modifiers = "status",
+			usage = "abandon",
+			desc = "removes current quest",
+			modifiers = "abandon",
 			min = 1,
 			max = 1)
-	@CommandPermissions("quester.use.queststatus")
-	public static void questStatus(CommandContext args, Player player,
+	@CommandPermissions("quester.use.abandon")
+	public static void abandonQuest(CommandContext args, Player player,
 			HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You don't have a quest at the moment.");
 		} else {
-			player.sendMessage(ChatColor.GREEN
-					+ "Currently in the middle of "
-					+ StringUtils.wrap(profile.getProgress().getQuestName())
-					+ ". You have been on this quest for "
-					+ TimeUnit.HOURS.convert(System.currentTimeMillis()
-							- profile.getProgress().getStartTime(),
-							TimeUnit.MILLISECONDS) + " hours.");
-			player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
-					+ " Progress report " + ChatColor.GREEN + "-");
-			for (ObjectiveProgress progress : profile.getProgress()
-					.getProgress()) {
-				Messaging.send(player,
-						progress.getQuestUpdater().getStatus(progress));
-			}
+			profile.setProgress(null);
+			player.sendMessage(ChatColor.GREEN + "Quest cleared.");
 		}
 	}
 
@@ -175,6 +163,39 @@ public class QuesterCommands implements CommandHandler {
 			return;
 		}
 		instance.process(page);
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "quest",
+			usage = "status",
+			desc = "view current quest status",
+			modifiers = "status",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.use.queststatus")
+	public static void questStatus(CommandContext args, Player player,
+			HumanNPC npc) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (!profile.hasQuest()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You don't have a quest at the moment.");
+		} else {
+			player.sendMessage(ChatColor.GREEN
+					+ "Currently in the middle of "
+					+ StringUtils.wrap(profile.getProgress().getQuestName())
+					+ ". You have been on this quest for "
+					+ TimeUnit.HOURS.convert(System.currentTimeMillis()
+							- profile.getProgress().getStartTime(),
+							TimeUnit.MILLISECONDS) + " hours.");
+			player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
+					+ " Progress report " + ChatColor.GREEN + "-");
+			for (ObjectiveProgress progress : profile.getProgress()
+					.getProgress()) {
+				Messaging.send(player,
+						progress.getQuestUpdater().getStatus(progress));
+			}
+		}
 	}
 
 	@Override

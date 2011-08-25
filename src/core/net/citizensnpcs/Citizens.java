@@ -1,10 +1,10 @@
 package net.citizensnpcs;
 
 import java.io.File;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -276,7 +276,7 @@ public class Citizens extends JavaPlugin {
 				if (loc != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
 							.getOwner(UID), NPCCreateReason.RESPAWN);
-					ArrayDeque<String> text = PropertyManager.getBasic()
+					Deque<String> text = PropertyManager.getBasic()
 							.getText(UID);
 					if (text != null) {
 						NPCDataManager.setText(UID, text);

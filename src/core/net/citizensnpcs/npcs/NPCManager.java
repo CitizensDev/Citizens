@@ -1,6 +1,6 @@
 package net.citizensnpcs.npcs;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
@@ -103,8 +103,7 @@ public class NPCManager {
 	// Removes an NPC.
 	public static void remove(int UID, NPCRemoveReason reason) {
 		PropertyManager.remove(get(UID));
-		NPCSpawner.despawnNPC(list.remove(UID), reason);
-		GlobalUIDs.remove(UID);
+		despawn(UID, reason);
 	}
 
 	// Removes all NPCs.
@@ -183,7 +182,7 @@ public class NPCManager {
 		NPCCreateEvent event = new NPCCreateEvent(npc, reason, loc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 
-		ArrayList<Integer> items = PropertyManager.getBasic().getItems(UID);
+		List<Integer> items = PropertyManager.getBasic().getItems(UID);
 
 		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items,
 				NPCDataManager.NPCTexts.get(UID), PropertyManager.getBasic()

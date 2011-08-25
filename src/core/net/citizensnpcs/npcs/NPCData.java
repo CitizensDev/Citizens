@@ -1,7 +1,7 @@
 package net.citizensnpcs.npcs;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,8 +11,8 @@ public class NPCData {
 	private int UID;
 	private Location location;
 	private ChatColor colour = ChatColor.WHITE;
-	private ArrayList<Integer> items;
-	private ArrayDeque<String> texts;
+	private List<Integer> items;
+	private Deque<String> texts;
 	private boolean lookClose;
 	private boolean talkClose;
 	private String owner;
@@ -31,8 +31,8 @@ public class NPCData {
 	 * @param owner
 	 */
 	public NPCData(String name, int UID, Location loc, ChatColor colour,
-			ArrayList<Integer> items, ArrayDeque<String> texts,
-			boolean lookClose, boolean talkClose, String owner) {
+			List<Integer> items, Deque<String> texts, boolean lookClose,
+			boolean talkClose, String owner) {
 		this.setName(name);
 		this.setUID(UID);
 		this.setLocation(loc);
@@ -76,19 +76,19 @@ public class NPCData {
 		return colour;
 	}
 
-	public void setItems(ArrayList<Integer> items) {
+	public void setItems(List<Integer> items) {
 		this.items = items;
 	}
 
-	public ArrayList<Integer> getItems() {
+	public List<Integer> getItems() {
 		return items;
 	}
 
-	public void setTexts(ArrayDeque<String> text) {
+	public void setTexts(Deque<String> text) {
 		this.texts = text;
 	}
 
-	public ArrayDeque<String> getTexts() {
+	public Deque<String> getTexts() {
 		return texts;
 	}
 

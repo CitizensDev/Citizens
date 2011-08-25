@@ -1,7 +1,8 @@
 package net.citizensnpcs.npcs;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.SettingsManager;
@@ -24,7 +25,7 @@ import com.google.common.collect.Maps;
 
 public class NPCDataManager {
 	public static final Map<String, Integer> pathEditors = Maps.newHashMap();
-	public static final Map<Integer, ArrayDeque<String>> NPCTexts = new MapMaker()
+	public static final Map<Integer, Deque<String>> NPCTexts = new MapMaker()
 			.makeMap();
 	static final Map<String, Integer> selectedNPCs = new MapMaker().makeMap();
 
@@ -103,7 +104,7 @@ public class NPCDataManager {
 	 * @param npc
 	 * @param items
 	 */
-	public static void addItems(HumanNPC npc, ArrayList<Integer> items) {
+	public static void addItems(HumanNPC npc, List<Integer> items) {
 		if (items != null) {
 			Material matHelm = Material.getMaterial(items.get(1));
 			Material matTorso = Material.getMaterial(items.get(2));
@@ -164,7 +165,7 @@ public class NPCDataManager {
 				.getItem(slot));
 		player.getInventory().setItem(slot, item);
 
-		ArrayList<Integer> items = npc.getNPCData().getItems();
+		List<Integer> items = npc.getNPCData().getItems();
 
 		int olditem = items.get(0);
 		items.set(0, mat.getId());
@@ -197,7 +198,7 @@ public class NPCDataManager {
 	 * @param text
 	 */
 	public static void addText(int UID, String text) {
-		ArrayDeque<String> texts = NPCDataManager.getText(UID);
+		Deque<String> texts = NPCDataManager.getText(UID);
 		if (texts == null) {
 			texts = new ArrayDeque<String>();
 		}
@@ -223,7 +224,7 @@ public class NPCDataManager {
 	 * @param UID
 	 * @return
 	 */
-	public static ArrayDeque<String> getText(int UID) {
+	public static Deque<String> getText(int UID) {
 		return NPCTexts.get(UID);
 	}
 
@@ -233,7 +234,7 @@ public class NPCDataManager {
 	 * @param UID
 	 * @param text
 	 */
-	public static void setText(int UID, ArrayDeque<String> text) {
+	public static void setText(int UID, Deque<String> text) {
 		text = StringUtils.colourise(text);
 		NPCTexts.put(UID, text);
 		NPCManager.get(UID).getNPCData().setTexts(text);
