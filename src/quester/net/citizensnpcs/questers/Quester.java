@@ -10,6 +10,7 @@ import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.questers.listeners.QuesterBlockListen;
 import net.citizensnpcs.questers.listeners.QuesterCitizensListen;
+import net.citizensnpcs.questers.listeners.QuesterEntityListen;
 import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
@@ -174,11 +175,11 @@ public class Quester extends CitizensNPC {
 						+ "Right click to continue description.");
 			}
 		}
+		display.process(1);
 		if (display.maxPages() == 1) {
-			player.sendMessage(ChatColor.GOLD + "Right click again to accept.");
+			player.sendMessage(ChatColor.GOLD + "Right click to accept.");
 			pending.add(player);
 		}
-		display.process(1);
 		displays.put(player, display);
 	}
 
@@ -205,6 +206,8 @@ public class Quester extends CitizensNPC {
 		// custom events
 		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
 				new QuesterCitizensListen());
+		QuesterEntityListen el = new QuesterEntityListen();
+		CitizensManager.registerEvent(Type.ENTITY_DAMAGE, el);
 		// block events
 		QuesterBlockListen bl = new QuesterBlockListen();
 		CitizensManager.registerEvent(Type.BLOCK_BREAK, bl);

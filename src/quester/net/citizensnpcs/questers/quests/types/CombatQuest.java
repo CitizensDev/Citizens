@@ -7,16 +7,18 @@ import net.citizensnpcs.questers.quests.QuestUpdater;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class CombatQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
+	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DAMAGE };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof EntityDeathEvent) {
-			EntityDeathEvent ev = (EntityDeathEvent) event;
-			if (ev.getEntity() instanceof Player) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
+			if (!(ev.getEntity() instanceof Player))
+				return false;
+			if (((Player) ev.getEntity()).getHealth() - ev.getDamage() <= 0) {
 				Player player = (Player) ev.getEntity();
 				if (progress.getObjective().getString()
 						.contains(player.getName().toLowerCase())) {
