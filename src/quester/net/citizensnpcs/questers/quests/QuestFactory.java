@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public class QuestFactory {
 	public static void instantiateQuests(ConfigurationHandler quests) {
 		int questCount = 0;
-		for (String questName : quests.getKeys(null)) {
+		questLoop: for (String questName : quests.getKeys(null)) {
 			String path = questName;
 			Quest quest = new Quest(questName);
 			quest.setDescription(quests.getString(path + ".texts.description"));
@@ -25,8 +25,13 @@ public class QuestFactory {
 				for (String reward : quests.getKeys(path + ".rewards")) {
 					path = tempPath + ".rewards." + reward;
 					boolean take = quests.getBoolean(path + ".take");
-					quest.addReward(QuestAPI.getBuilder(
-							quests.getString(path + ".type")).build(quests,
+					String type = quests.getString(path + ".type");
+					if (QuestAPI.getBuilder(type) == null) {
+						Messaging.log("Invalid reward type specified (" + type
+								+ "). Quest " + questName + " not loaded.");
+						continue questLoop;
+					}
+					quest.addReward(QuestAPI.getBuilder(type).build(quests,
 							path, take));
 				}
 			}
@@ -39,11 +44,12 @@ public class QuestFactory {
 					for (Object objective : quests.getKeys(path + "." + step)) {
 						path = tempPath + "." + objective;
 						String type = quests.getString(path + ".type");
-						if (type == null) {
-							Messaging.log("Invalid quest objective (quest "
-									+ (questCount + 1)
-									+ ") - incorrect type specified.");
-							continue;
+						if (type == null || type.isEmpty()
+								|| QuestAPI.getObjective(type) == null) {
+							Messaging
+									.log("Invalid quest objective - incorrect type specified. "
+											+ questName + "not loaded.");
+							continue questLoop;
 						}
 						Objective.Builder obj = new Objective.Builder(type);
 						if (quests.pathExists(path + ".amount"))

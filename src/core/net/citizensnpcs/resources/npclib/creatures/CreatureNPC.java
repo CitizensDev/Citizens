@@ -8,6 +8,7 @@ import net.minecraft.server.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -57,7 +58,7 @@ public abstract class CreatureNPC extends CraftNPC {
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			Entity damager = e.getDamager();
-			if (damager != null) {
+			if (damager != null && damager instanceof LivingEntity) {
 				this.targetAggro = true;
 				this.targetEntity = ((CraftEntity) damager).getHandle();
 			}

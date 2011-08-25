@@ -5,10 +5,11 @@ import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.QuestFactory;
 
 public class QuestProperties {
-	private static ConfigurationHandler quests;
+	private static ConfigurationHandler quests = new ConfigurationHandler(
+			"plugins/Citizens/quests.yml");
 
 	public static void initialize() {
-		quests = new ConfigurationHandler("plugins/Citizens/quests.yml");
+		quests.load();
 		QuestFactory.instantiateQuests(quests);
 	}
 

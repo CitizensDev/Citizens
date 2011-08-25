@@ -21,7 +21,9 @@ public class QuestManager {
 	}
 
 	public static void incrementQuest(Player player, Event event) {
-		if (event instanceof Cancellable && ((Cancellable) event).isCancelled())
+		if (event == null
+				|| (event instanceof Cancellable && ((Cancellable) event)
+						.isCancelled()))
 			return;
 		if (hasQuest(player)) {
 			QuestProgress progress = getProfile(player.getName()).getProgress();

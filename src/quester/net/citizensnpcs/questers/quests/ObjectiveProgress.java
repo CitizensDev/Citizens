@@ -11,7 +11,7 @@ public class ObjectiveProgress {
 	private final int UID;
 	private final Objective objective;
 	private final Player player;
-	private final QuestUpdater questtype;
+	private final QuestUpdater questUpdater;
 	private final String questName;
 
 	private int amountCompleted = 0;
@@ -24,7 +24,7 @@ public class ObjectiveProgress {
 		this.player = player;
 		this.questName = questName;
 		this.objective = objectives.nextObjective();
-		this.questtype = QuestAPI.getObjective(objective.getType());
+		this.questUpdater = QuestAPI.getObjective(objective.getType());
 	}
 
 	public boolean update(Event event) {
@@ -33,6 +33,10 @@ public class ObjectiveProgress {
 
 	public boolean isCompleted() {
 		return getQuestUpdater().isCompleted(this);
+	}
+
+	public Event.Type[] getEventTypes() {
+		return this.questUpdater.getEventTypes();
 	}
 
 	public int getQuesterUID() {
@@ -79,12 +83,8 @@ public class ObjectiveProgress {
 		return questName;
 	}
 
-	public Event.Type[] getEventTypes() {
-		return getQuestUpdater().getEventTypes();
-	}
-
 	public QuestUpdater getQuestUpdater() {
-		return questtype;
+		return questUpdater;
 	}
 
 }

@@ -112,12 +112,12 @@ public class QuesterCommands implements CommandHandler {
 	@CommandRequirements()
 	@Command(
 			aliases = "quest",
-			usage = "abandon",
-			desc = "removes current quest",
-			modifiers = "abandon",
+			usage = "abort",
+			desc = "aborts current quest",
+			modifiers = "abort",
 			min = 1,
 			max = 1)
-	@CommandPermissions("quester.use.abandon")
+	@CommandPermissions("quester.use.abort")
 	public static void abandonQuest(CommandContext args, Player player,
 			HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
