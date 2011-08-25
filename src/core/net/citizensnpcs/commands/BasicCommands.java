@@ -380,6 +380,10 @@ public class BasicCommands implements CommandHandler {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
 			if (PermissionManager.generic(player,
 					"citizens.basic.modify.remove.all")) {
+				if (NPCManager.GlobalUIDs.size() == 0) {
+					Messaging.sendError(player, "There are no NPCs to remove.");
+					return;
+				}
 				NPCManager.removeAll(NPCRemoveReason.COMMAND);
 				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
