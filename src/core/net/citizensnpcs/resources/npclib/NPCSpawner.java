@@ -69,13 +69,11 @@ public class NPCSpawner {
 	}
 
 	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
-		Bukkit.getServer().getPluginManager()
-				.callEvent(new NPCRemoveEvent(npc.npc, reason));
+		Bukkit.getServer().getPluginManager().callEvent(new NPCRemoveEvent(npc.npc, reason));
 		npc.world.removeEntity(npc);
 	}
 
 	public static void removeNPCFromPlayerList(HumanNPC npc) {
-		getWorldServer(npc.getPlayer().getWorld()).players.remove(npc
-				.getHandle());
+		getWorldServer(npc.getPlayer().getWorld()).players.remove(npc.getHandle());
 	}
 }
