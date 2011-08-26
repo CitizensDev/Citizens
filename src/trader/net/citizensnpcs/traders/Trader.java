@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.traders.TraderManager.TraderMode;
@@ -120,11 +121,6 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public String getName() {
-		return "trader";
-	}
-
-	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		Trader trader = npc.getType("trader");
 		if (trader.isFree()) {
@@ -159,5 +155,10 @@ public class Trader extends CitizensNPC {
 			player.sendMessage(ChatColor.RED
 					+ "Only one person may be served at a time!");
 		}
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new TraderType();
 	}
 }

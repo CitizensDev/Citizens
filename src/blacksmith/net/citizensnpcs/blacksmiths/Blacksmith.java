@@ -2,6 +2,7 @@ package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -9,11 +10,6 @@ import net.citizensnpcs.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 public class Blacksmith extends CitizensNPC {
-
-	@Override
-	public String getName() {
-		return "blacksmith";
-	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
@@ -30,5 +26,10 @@ public class Blacksmith extends CitizensNPC {
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new BlacksmithType();
 	}
 }

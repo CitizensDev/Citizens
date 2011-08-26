@@ -5,6 +5,7 @@ import java.util.HashMap;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -44,11 +45,6 @@ public class Alchemist extends CitizensNPC {
 	}
 
 	@Override
-	public String getName() {
-		return "alchemist";
-	}
-
-	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (!PermissionManager.generic(player,
 				"citizens.alchemist.use.interact")) {
@@ -77,5 +73,10 @@ public class Alchemist extends CitizensNPC {
 		InventoryUtils.showInventory(npc, player);
 		AlchemistManager.setClickedOnce(player.getName(), false);
 		// TODO requires inventory events to cancel tasks when inventory closes
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new AlchemistType();
 	}
 }

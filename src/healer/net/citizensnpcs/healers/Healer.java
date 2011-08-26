@@ -3,6 +3,7 @@ package net.citizensnpcs.healers;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -39,11 +40,6 @@ public class Healer extends CitizensNPC {
 	// Set the level of a healer NPC
 	public void setLevel(int level) {
 		this.level = level;
-	}
-
-	@Override
-	public String getName() {
-		return "healer";
 	}
 
 	// TODO Make this less ugly to look at
@@ -122,5 +118,10 @@ public class Healer extends CitizensNPC {
 				}
 			}
 		}
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new HealerType();
 	}
 }

@@ -10,7 +10,7 @@ public abstract class CitizensNPCType {
 	public abstract String getName();
 
 	/**
-	 * Get an NPC's property handler
+	 * Get an NPC type's property handler
 	 * 
 	 * @return NPC type's properties object
 	 */
@@ -19,7 +19,7 @@ public abstract class CitizensNPCType {
 	/**
 	 * Get the commands for an NPC type
 	 * 
-	 * @return NPC type's command object
+	 * @return NPC type's command handler
 	 */
 	public abstract CommandHandler getCommands();
 

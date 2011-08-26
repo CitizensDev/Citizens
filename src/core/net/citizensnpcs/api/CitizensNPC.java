@@ -8,7 +8,14 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public abstract class CitizensNPC {
-	public abstract String getName();
+
+	/**
+	 * Get the CitizensNPCType subclass that corresponds with the CitizensNPC
+	 * subclass
+	 * 
+	 * @return CitizensNPCType subclass
+	 */
+	public abstract CitizensNPCType getType();
 
 	/**
 	 * Called when a player left clicks the NPC - this can cause a damage event

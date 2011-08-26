@@ -3,7 +3,8 @@ package net.citizensnpcs.guards;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.guards.GuardManager.GuardType;
+import net.citizensnpcs.api.CitizensNPCType;
+import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -23,32 +24,32 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class Guard extends CitizensNPC {
 	private boolean isAggressive = false;
 	private boolean isAttacking = false;
-	private GuardType guardType = GuardType.NULL;
+	private GuardState guardState = GuardState.NULL;
 	private final FlagList flags = new FlagList();
 	private double radius = 10;
 
 	// Get whether a guard NPC is a bodyguard
 	public boolean isBodyguard() {
-		return guardType == GuardType.BODYGUARD;
+		return guardState == GuardState.BODYGUARD;
 	}
 
 	// Set whether a guard NPC is a bodyguard
 	public void setBodyguard() {
-		guardType = GuardType.BODYGUARD;
+		guardState = GuardState.BODYGUARD;
 	}
 
 	// Set whether a guard NPC is a bodyguard
 	public boolean isBouncer() {
-		return guardType == GuardType.BOUNCER;
+		return guardState == GuardState.BOUNCER;
 	}
 
 	// Set whether a guard NPC is a bouncer
 	public void setBouncer() {
-		guardType = GuardType.BOUNCER;
+		guardState = GuardState.BOUNCER;
 	}
 
 	public void clear() {
-		guardType = GuardType.NULL;
+		guardState = GuardState.NULL;
 	}
 
 	// Get whether a bodyguard NPC kills on sight
@@ -62,13 +63,13 @@ public class Guard extends CitizensNPC {
 	}
 
 	// Get the type of guard that a guard NPC is
-	public GuardType getGuardType() {
-		return guardType;
+	public GuardState getGuardState() {
+		return guardState;
 	}
 
 	// Set the type of a guard that a guard NPC is
-	public void setGuardType(GuardType guardType) {
-		this.guardType = guardType;
+	public void setGuardState(GuardState guardState) {
+		this.guardState = guardState;
 	}
 
 	// Get a guard's blacklist
@@ -89,11 +90,6 @@ public class Guard extends CitizensNPC {
 	// Set the protection radius for a bouncer
 	public void setProtectionRadius(double radius) {
 		this.radius = radius;
-	}
-
-	@Override
-	public String getName() {
-		return "guard";
 	}
 
 	public void setAttacking(boolean attacking) {
@@ -148,5 +144,10 @@ public class Guard extends CitizensNPC {
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
 				SettingsManager.getDouble("PathfindingRange"));
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new GuardType();
 	}
 }

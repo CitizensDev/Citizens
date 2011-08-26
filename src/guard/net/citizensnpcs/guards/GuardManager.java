@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class GuardManager {
-	public enum GuardType {
+	public enum GuardState {
 		/**
 		 * Protects land
 		 */
@@ -23,9 +23,9 @@ public class GuardManager {
 		 */
 		NULL;
 
-		public static GuardType parse(String string) {
+		public static GuardState parse(String string) {
 			try {
-				return GuardType.valueOf(string.toUpperCase());
+				return GuardState.valueOf(string.toUpperCase());
 			} catch (Exception ex) {
 				return NULL;
 			}

@@ -3,6 +3,7 @@ package net.citizensnpcs.wizards;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -210,11 +211,6 @@ public class Wizard extends CitizensNPC {
 	}
 
 	@Override
-	public String getName() {
-		return "wizard";
-	}
-
-	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (PermissionManager.generic(player, "citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == SettingsManager
@@ -308,5 +304,10 @@ public class Wizard extends CitizensNPC {
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new WizardType();
 	}
 }

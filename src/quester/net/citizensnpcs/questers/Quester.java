@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -41,11 +42,6 @@ public class Quester extends CitizensNPC {
 
 	public List<String> getQuests() {
 		return quests;
-	}
-
-	@Override
-	public String getName() {
-		return "quester";
 	}
 
 	@Override
@@ -181,5 +177,10 @@ public class Quester extends CitizensNPC {
 
 	private String fetchFromList(Player player) {
 		return quests.size() > 0 ? quests.get(queue.get(player)) : "";
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new QuesterType();
 	}
 }

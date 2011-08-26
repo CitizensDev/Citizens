@@ -149,7 +149,7 @@ public class ToggleCommands implements CommandHandler {
 			}
 		} else {
 			for (CitizensNPC type : npc.types()) {
-				toggleState(player, npc, type.getName());
+				toggleState(player, npc, type.getType().getName());
 			}
 		}
 	}

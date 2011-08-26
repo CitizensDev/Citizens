@@ -7,7 +7,7 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.SettingsManager.SettingsType;
 import net.citizensnpcs.api.Node;
 import net.citizensnpcs.api.Properties;
-import net.citizensnpcs.guards.GuardManager.GuardType;
+import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -43,12 +43,12 @@ public class GuardProperties extends PropertyManager implements Properties {
 		return profiles.getBoolean(UID + aggressive);
 	}
 
-	private GuardType getGuardType(int UID) {
-		return GuardType.parse(profiles.getString(UID + type));
+	private GuardState getGuardState(int UID) {
+		return GuardState.parse(profiles.getString(UID + type));
 	}
 
-	private void saveGuardType(int UID, GuardType guardType) {
-		profiles.setString(UID + type, guardType.name());
+	private void saveGuardState(int UID, GuardState state) {
+		profiles.setString(UID + type, state.name());
 	}
 
 	private void loadFlags(Guard guard, int UID) {
@@ -85,7 +85,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 			setEnabled(npc, is);
 			if (is) {
 				Guard guard = npc.getType("guard");
-				saveGuardType(npc.getUID(), guard.getGuardType());
+				saveGuardState(npc.getUID(), guard.getGuardState());
 				saveFlags(npc.getUID(), guard.getFlags());
 				saveProtectionRadius(npc.getUID(), guard.getProtectionRadius());
 				saveAggressive(npc.getUID(), guard.isAggressive());
@@ -99,7 +99,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 			npc.registerType("guard");
 			Guard guard = npc.getType("guard");
 			loadFlags(guard, npc.getUID());
-			guard.setGuardType(getGuardType(npc.getUID()));
+			guard.setGuardState(getGuardState(npc.getUID()));
 			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));
 			guard.setAggressive(isAggressive(npc.getUID()));
 		}

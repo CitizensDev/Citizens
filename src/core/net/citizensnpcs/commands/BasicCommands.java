@@ -222,13 +222,13 @@ public class BasicCommands implements CommandHandler {
 		sender.sendMessage(ChatColor.GREEN + "Owner: "
 				+ StringUtils.wrap(npc.getOwner()));
 		sender.sendMessage(ChatColor.GREEN + "Types:");
-		if (npc.types() == null) {
+		if (npc.types().size() == 0) {
 			sender.sendMessage(ChatColor.RED + "None");
 			return;
 		}
 		for (CitizensNPC type : npc.types()) {
 			sender.sendMessage(ChatColor.GRAY + "    - "
-					+ StringUtils.wrap(type.getName()));
+					+ StringUtils.wrap(type.getType().getName()));
 		}
 	}
 
