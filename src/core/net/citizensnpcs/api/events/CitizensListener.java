@@ -19,7 +19,7 @@ public class CitizensListener extends CustomEventListener {
 	}
 
 	/**
-	 * Called when the command /citizens reload is used in-game
+	 * Called when Citizens is disabled
 	 */
 	public void onCitizensDisable(CitizensDisableEvent event) {
 	}

@@ -150,6 +150,7 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.saveState();
 		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
 		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
+		// call Citizens disable event
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensDisableEvent());
 
@@ -164,8 +165,9 @@ public class Citizens extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		Player player = null;
-		if (sender instanceof Player)
+		if (sender instanceof Player) {
 			player = (Player) sender;
+		}
 		try {
 			// must put command into split.
 			String[] split = new String[args.length + 1];
@@ -173,8 +175,9 @@ public class Citizens extends JavaPlugin {
 			split[0] = command.getName().toLowerCase();
 
 			String modifier = "";
-			if (args.length > 0)
+			if (args.length > 0) {
 				modifier = args[0];
+			}
 
 			// No command found!
 			if (!commands.hasCommand(split[0], modifier)) {

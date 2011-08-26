@@ -658,6 +658,7 @@ public class BasicCommands implements CommandHandler {
 		}
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "npc",
 			usage = "setowner [name]",
@@ -665,7 +666,6 @@ public class BasicCommands implements CommandHandler {
 			modifiers = "setowner",
 			min = 2,
 			max = 2)
-	@CommandPermissions("basic.modify.setowner")
 	public static void setOwner(CommandContext args, Player player, HumanNPC npc) {
 		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
 				.generic(player, "citizens.admin.override.setowner"))
