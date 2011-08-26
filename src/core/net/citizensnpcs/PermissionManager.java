@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
@@ -122,7 +122,7 @@ public class PermissionManager {
 		new WaypointCommands().addPermissions();
 		addPermission("citizens.evils.immune");
 		for (String loaded : Citizens.loadedTypes) {
-			CitizensNPC type = NPCTypeManager.getType(loaded);
+			CitizensNPCType type = NPCTypeManager.getType(loaded);
 			if (type != null) {
 				type.getCommands().addPermissions();
 			}

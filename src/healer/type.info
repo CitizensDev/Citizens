@@ -1,1 +1,1 @@
-main: net.citizensnpcs.healers.Healer
+main: net.citizensnpcs.healers.HealerType

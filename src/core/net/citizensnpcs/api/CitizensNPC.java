@@ -8,27 +8,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public abstract class CitizensNPC {
-
-	/**
-	 * Get an NPC type's name
-	 * 
-	 * @return NPC type's name, use lowercase
-	 */
 	public abstract String getName();
-
-	/**
-	 * Get an NPC's property handler
-	 * 
-	 * @return NPC type's properties object
-	 */
-	public abstract Properties getProperties();
-
-	/**
-	 * Get the commands for an NPC type
-	 * 
-	 * @return NPC type's command object
-	 */
-	public abstract CommandHandler getCommands();
 
 	/**
 	 * Called when a player left clicks the NPC - this can cause a damage event
@@ -80,12 +60,5 @@ public abstract class CitizensNPC {
 	 *            Bukkit's EntityDeathEvent
 	 */
 	public void onDeath(EntityDeathEvent event) {
-	}
-
-	/**
-	 * Register event listeners for an NPC type. Use
-	 * CitizensNPCManager.registerEvent
-	 */
-	public void registerEvents() {
 	}
 }

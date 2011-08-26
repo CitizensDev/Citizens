@@ -6,6 +6,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
@@ -75,7 +76,7 @@ public class ToggleCommands implements CommandHandler {
 		if (!PropertyManager.npcHasType(npc, type)) {
 			buyState(player, npc, NPCTypeManager.getType(type));
 		} else {
-			toggleState(player, npc, NPCTypeManager.getType(type));
+			toggleState(player, npc, NPCTypeManager.getType(type).getName());
 		}
 	}
 
@@ -98,23 +99,23 @@ public class ToggleCommands implements CommandHandler {
 	}
 
 	// Toggles an NPC state.
-	private static void toggleState(Player player, HumanNPC npc,
-			CitizensNPC type) {
-		if (!npc.isType(type.getName())) {
-			PropertyManager.get(type.getName()).setEnabled(npc, true);
-			npc.addType(type.getName());
+	private static void toggleState(Player player, HumanNPC npc, String type) {
+		if (!npc.isType(type)) {
+			PropertyManager.get(type).setEnabled(npc, true);
+			npc.addType(type);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " is now a " + type.getName() + "!");
+					+ " is now a " + type + "!");
 		} else {
-			PropertyManager.get(type.getName()).setEnabled(npc, false);
-			npc.removeType(type.getName());
+			PropertyManager.get(type).setEnabled(npc, false);
+			npc.removeType(type);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " has stopped being a " + type.getName() + ".");
+					+ " has stopped being a " + type + ".");
 		}
 	}
 
 	// Buys an NPC state.
-	private static void buyState(Player player, HumanNPC npc, CitizensNPC type) {
+	private static void buyState(Player player, HumanNPC npc,
+			CitizensNPCType type) {
 		String toggle = type.getName();
 		if (!PermissionManager.generic(player, "citizens.toggle." + toggle)) {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
@@ -130,7 +131,7 @@ public class ToggleCommands implements CommandHandler {
 						MessageUtils.getPaidMessage(player, toggle, toggle
 								+ ".creation", npc.getStrippedName(), true));
 			}
-			toggleState(player, npc, type);
+			toggleState(player, npc, type.getName());
 		} else {
 			Messaging.send(player, npc, MessageUtils.getNoMoneyMessage(player,
 					toggle + ".creation"));
@@ -140,15 +141,15 @@ public class ToggleCommands implements CommandHandler {
 	// Toggles all types of NPCs
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
-			for (Entry<String, CitizensNPC> entry : NPCTypeManager.getTypes()
-					.entrySet()) {
+			for (Entry<String, CitizensNPCType> entry : NPCTypeManager
+					.getTypes().entrySet()) {
 				if (!npc.isType(entry.getValue().getName())) {
-					toggleState(player, npc, entry.getValue());
+					toggleState(player, npc, entry.getValue().getName());
 				}
 			}
 		} else {
 			for (CitizensNPC type : npc.types()) {
-				toggleState(player, npc, type);
+				toggleState(player, npc, type.getName());
 			}
 		}
 	}

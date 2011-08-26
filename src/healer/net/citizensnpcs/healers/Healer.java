@@ -2,12 +2,8 @@ package net.citizensnpcs.healers;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.healers.listeners.HealerCitizensListen;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -17,7 +13,6 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Type;
 
 public class Healer extends CitizensNPC {
 	private int health = 10;
@@ -127,21 +122,5 @@ public class Healer extends CitizensNPC {
 				}
 			}
 		}
-	}
-
-	@Override
-	public Properties getProperties() {
-		return HealerProperties.INSTANCE;
-	}
-
-	@Override
-	public CommandHandler getCommands() {
-		return HealerCommands.INSTANCE;
-	}
-
-	@Override
-	public void registerEvents() {
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
-				new HealerCitizensListen());
 	}
 }

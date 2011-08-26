@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.events.CitizensDisableEvent;
 import net.citizensnpcs.api.events.CitizensEnableEvent;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
@@ -328,8 +328,8 @@ public class Citizens extends JavaPlugin {
 		dir.mkdirs();
 		for (String f : dir.list()) {
 			if (f.contains(".jar")) {
-				CitizensNPC type = CitizensNPCLoader.loadNPCType(new File(dir,
-						f), this);
+				CitizensNPCType type = CitizensNPCLoader.loadNPCType(new File(
+						dir, f), this);
 				if (type != null) {
 					loadedTypes.add(type.getName());
 				}

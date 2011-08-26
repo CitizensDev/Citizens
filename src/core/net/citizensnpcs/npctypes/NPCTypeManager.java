@@ -2,21 +2,21 @@ package net.citizensnpcs.npctypes;
 
 import java.util.Map;
 
-import org.bukkit.event.Listener;
+import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.CitizensNPCType;
+import net.citizensnpcs.properties.PropertyManager;
+
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
-
-import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.properties.PropertyManager;
+import org.bukkit.event.Listener;
 
 import com.google.common.collect.Maps;
 
 public class NPCTypeManager {
 
-	private static final Map<String, CitizensNPC> types = Maps.newHashMap();
+	private static final Map<String, CitizensNPCType> types = Maps.newHashMap();
 
-	public static CitizensNPC registerType(CitizensNPC type) {
+	public static CitizensNPCType registerType(CitizensNPCType type) {
 		types.put(type.getName(), type);
 		PropertyManager.add(type.getName(), type.getProperties());
 		Citizens.commands.register(type.getCommands().getClass());
@@ -27,11 +27,11 @@ public class NPCTypeManager {
 		return types.get(type) != null;
 	}
 
-	public static CitizensNPC getType(String type) {
+	public static CitizensNPCType getType(String type) {
 		return types.get(type);
 	}
 
-	public static Map<String, CitizensNPC> getTypes() {
+	public static Map<String, CitizensNPCType> getTypes() {
 		return types;
 	}
 

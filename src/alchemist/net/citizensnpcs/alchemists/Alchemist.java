@@ -2,20 +2,18 @@ package net.citizensnpcs.alchemists;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class Alchemist extends CitizensNPC {
 	private HashMap<Integer, String> recipes = new HashMap<Integer, String>();
@@ -48,16 +46,6 @@ public class Alchemist extends CitizensNPC {
 	@Override
 	public String getName() {
 		return "alchemist";
-	}
-
-	@Override
-	public Properties getProperties() {
-		return AlchemistProperties.INSTANCE;
-	}
-
-	@Override
-	public CommandHandler getCommands() {
-		return AlchemistCommands.INSTANCE;
 	}
 
 	@Override

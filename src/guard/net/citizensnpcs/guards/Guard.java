@@ -2,14 +2,9 @@ package net.citizensnpcs.guards;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.TickTask;
-import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.guards.GuardManager.GuardType;
 import net.citizensnpcs.guards.flags.FlagList;
-import net.citizensnpcs.guards.listeners.GuardCitizensListen;
-import net.citizensnpcs.guards.listeners.GuardPlayerListen;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
@@ -20,7 +15,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -154,23 +148,5 @@ public class Guard extends CitizensNPC {
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
 				SettingsManager.getDouble("PathfindingRange"));
-	}
-
-	@Override
-	public Properties getProperties() {
-		return GuardProperties.INSTANCE;
-	}
-
-	@Override
-	public CommandHandler getCommands() {
-		return GuardCommands.INSTANCE;
-	}
-
-	@Override
-	public void registerEvents() {
-		CitizensManager.registerEvent(Type.PLAYER_LOGIN,
-				new GuardPlayerListen());
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
-				new GuardCitizensListen());
 	}
 }

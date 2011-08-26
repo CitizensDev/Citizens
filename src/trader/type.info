@@ -1,1 +1,1 @@
-main: net.citizensnpcs.traders.Trader
+main: net.citizensnpcs.traders.TraderType

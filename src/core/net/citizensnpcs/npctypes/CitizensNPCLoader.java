@@ -10,12 +10,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.CitizensNPC;
+import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.utils.Messaging;
 
 public class CitizensNPCLoader {
 
-	public static CitizensNPC loadNPCType(File file, Citizens plugin) {
+	public static CitizensNPCType loadNPCType(File file, Citizens plugin) {
 		try {
 			JarFile jarFile = new JarFile(file);
 			Enumeration<JarEntry> entries = jarFile.entries();
@@ -39,9 +39,9 @@ public class CitizensNPCLoader {
 					// load extended classes.
 					Class.forName(subclazz.getName(), true, loader);
 				}
-				Class<? extends CitizensNPC> typeClass = clazz
-						.asSubclass(CitizensNPC.class);
-				CitizensNPC type = typeClass.newInstance();
+				Class<? extends CitizensNPCType> typeClass = clazz
+						.asSubclass(CitizensNPCType.class);
+				CitizensNPCType type = typeClass.newInstance();
 				if (type.getProperties() == null) {
 					throw new InvalidNPCTypeException(type.getName()
 							+ " is missing a valid Properties class.");

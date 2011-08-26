@@ -1,1 +1,1 @@
-main: net.citizensnpcs.guards.Guard
+main: net.citizensnpcs.guards.GuardType

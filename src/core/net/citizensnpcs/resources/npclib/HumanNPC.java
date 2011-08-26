@@ -50,7 +50,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void registerType(String type) {
-		this.types.put(type, NPCTypeManager.getType(type));
+		this.types.put(type, NPCTypeManager.getType(type).getInstance());
 	}
 
 	@SuppressWarnings("unchecked")
