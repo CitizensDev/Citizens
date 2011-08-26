@@ -119,7 +119,7 @@ public class Guard extends CitizensNPC {
 
 	private boolean isOwner(Entity damager, HumanNPC npc) {
 		return damager instanceof Player ? NPCManager.validateOwnership(
-				(Player) damager, npc.getUID(), false) : false;
+				(Player) damager, npc.getUID()) : false;
 	}
 
 	@Override

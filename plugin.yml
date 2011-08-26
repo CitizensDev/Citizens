@@ -87,6 +87,11 @@ permissions:
             citizens.admin.reload: true
             citizens.admin.save: true
             citizens.admin.debug: true
+            citizens.admin.override.*: true
+    citizens.admin.override.*:
+        children:
+            citizens.admin.override.setowner: true
+            citizens.admin.override.remove: true
     citizens.toggle.*:
         children:
             citizens.toggle.help: true
@@ -206,7 +211,7 @@ permissions:
         children:
             citizens.quester.use.help: true
             citizens.quester.use.status: true
-            citizens.quester.use.abandon: true
+            citizens.quester.use.abort: true
     citizens.quester.modify.*:
         children:
             citizens.quester.modify.assignquest: true

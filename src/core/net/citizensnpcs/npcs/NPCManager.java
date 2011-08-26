@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.events.NPCCreateEvent;
 import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
@@ -138,11 +137,8 @@ public class NPCManager {
 	}
 
 	// Checks if a player owns a given npc.
-	public static boolean validateOwnership(Player player, int UID,
-			boolean checkAdmin) {
-		return (checkAdmin && PermissionManager.generic(player,
-				"citizens.admin"))
-				|| get(UID).getOwner().equals(player.getName());
+	public static boolean validateOwnership(Player player, int UID) {
+		return get(UID).getOwner().equals(player.getName());
 	}
 
 	// Renames an npc.

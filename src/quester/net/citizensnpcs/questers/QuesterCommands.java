@@ -107,8 +107,7 @@ public class QuesterCommands implements CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("quester.use.abort")
-	public static void abortQuest(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void abort(CommandContext args, Player player, HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
 			player.sendMessage(ChatColor.GRAY
@@ -192,6 +191,6 @@ public class QuesterCommands implements CommandHandler {
 		CitizensManager.addPermission("quester.modify.assignquest");
 		CitizensManager.addPermission("quester.modify.removequest");
 		CitizensManager.addPermission("quester.use.status");
-		CitizensManager.addPermission("quester.use.abandon");
+		CitizensManager.addPermission("quester.use.abort");
 	}
 }

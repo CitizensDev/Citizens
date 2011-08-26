@@ -392,22 +392,25 @@ public class BasicCommands implements CommandHandler {
 				NPCDataManager.deselectNPC(player);
 				player.sendMessage(ChatColor.GRAY + "The NPC(s) disappeared.");
 			} else {
-				player.sendMessage(MessageUtils.noPermissionsMessage);
+				Messaging.sendError(player, MessageUtils.noPermissionsMessage);
 			}
-			return;
-		}
-		if (!PermissionManager.generic(player, "citizens.basic.modify.remove")) {
-			player.sendMessage(MessageUtils.noPermissionsMessage);
 			return;
 		}
 		if (npc == null) {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			return;
 		}
-		NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
-		NPCDataManager.deselectNPC(player);
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
-				ChatColor.GRAY) + " disappeared.");
+		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+				.generic(player, "citizens.admin.override.remove"))
+				|| (NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+						.generic(player, "citizens.basic.modify.remove"))) {
+			NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
+			NPCDataManager.deselectNPC(player);
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
+					ChatColor.GRAY) + " disappeared.");
+			return;
+		}
+		Messaging.sendError(player, MessageUtils.noPermissionsMessage);
 	}
 
 	@Command(
@@ -664,10 +667,17 @@ public class BasicCommands implements CommandHandler {
 			max = 2)
 	@CommandPermissions("basic.modify.setowner")
 	public static void setOwner(CommandContext args, Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.GREEN + "The owner of "
-				+ StringUtils.wrap(npc.getStrippedName()) + " is now "
-				+ StringUtils.wrap(args.getString(1)) + ".");
-		npc.getNPCData().setOwner(args.getString(1));
+		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+				.generic(player, "citizens.admin.override.setowner"))
+				|| (NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+						.generic(player, "citizens.basic.modify.setowner"))) {
+			player.sendMessage(ChatColor.GREEN + "The owner of "
+					+ StringUtils.wrap(npc.getStrippedName()) + " is now "
+					+ StringUtils.wrap(args.getString(1)) + ".");
+			npc.getNPCData().setOwner(args.getString(1));
+			return;
+		}
+		Messaging.sendError(player, MessageUtils.noPermissionsMessage);
 	}
 
 	@Command(
@@ -782,5 +792,7 @@ public class BasicCommands implements CommandHandler {
 		CitizensManager.addPermission("basic.modify.setowner");
 		CitizensManager.addPermission("waypoints.edit");
 		CitizensManager.addPermission("basic.use.list");
+		CitizensManager.addPermission("admin.override.setowner");
+		CitizensManager.addPermission("admin.override.remove");
 	}
 }

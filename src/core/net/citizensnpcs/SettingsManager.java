@@ -99,7 +99,7 @@ public class SettingsManager {
 						.log("Writing default setting " + node.getPath() + ".");
 				local.setRaw(node.getPath(), node.getValue());
 			} else {
-				node.set(node.getFile().getRaw(node.getPath()));
+				node.set(local.getRaw(node.getPath()));
 			}
 			loadedNodes.put(node.getName(), node.getValue());
 			local.save();

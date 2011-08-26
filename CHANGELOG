@@ -85,6 +85,7 @@ By fullwall and aPunch
 -Evil NPCs no longer drop diamond swords
 -fixed copied NPCs moving back to the original NPCs location on a server restart/reload
 -'/npc remove all' command no longer requires an NPC to be selected to execute
+-added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
 API CHANGES (for developers, the API page on our Wiki for more information):
 -added CitizensEnableEvent
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world

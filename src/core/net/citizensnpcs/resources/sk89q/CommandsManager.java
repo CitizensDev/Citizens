@@ -470,10 +470,8 @@ public abstract class CommandsManager<T extends Player> {
 					throw new RequirementMissingException(
 							MessageUtils.mustHaveNPCSelectedMessage);
 				}
-				if (requirements.requireOwnership()
-						&& npc != null
-						&& !NPCManager.validateOwnership(player, npc.getUID(),
-								true)) {
+				if (requirements.requireOwnership() && npc != null
+						&& !NPCManager.validateOwnership(player, npc.getUID())) {
 					throw new RequirementMissingException(
 							MessageUtils.notOwnerMessage);
 				}
