@@ -67,7 +67,7 @@ commands:
                     
 permissions:
     citizens.*:
-        default: false
+        default: op
         children:
             citizens.admin.*: true
             citizens.toggle.*: true
