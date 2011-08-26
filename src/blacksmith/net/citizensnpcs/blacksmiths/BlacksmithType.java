@@ -1,29 +1,29 @@
-package net.citizensnpcs.alchemists;
+package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 
-public class AlchemistType extends CitizensNPCType {
+public class BlacksmithType extends CitizensNPCType {
 
 	@Override
 	public String getName() {
-		return "alchemist";
+		return "blacksmith";
 	}
 
 	@Override
 	public Properties getProperties() {
-		return AlchemistProperties.INSTANCE;
+		return BlacksmithProperties.INSTANCE;
 	}
 
 	@Override
 	public CommandHandler getCommands() {
-		return AlchemistCommands.INSTANCE;
+		return BlacksmithCommands.INSTANCE;
 	}
 
 	@Override
 	public CitizensNPC getInstance() {
-		return new Alchemist();
+		return new Blacksmith();
 	}
 }

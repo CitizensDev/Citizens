@@ -127,8 +127,8 @@ public class NPCManager {
 	// Checks if a player has an npc selected.
 	public static boolean validateSelected(Player player) {
 		return NPCDataManager.selectedNPCs.get(player.getName()) != null
-				&& !NPCDataManager.selectedNPCs.get(player.getName()).toString()
-						.isEmpty();
+				&& !NPCDataManager.selectedNPCs.get(player.getName())
+						.toString().isEmpty();
 	}
 
 	// Checks if the player has selected the given npc.

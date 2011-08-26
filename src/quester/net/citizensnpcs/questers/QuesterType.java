@@ -52,5 +52,4 @@ public class QuesterType extends CitizensNPCType {
 	public CitizensNPC getInstance() {
 		return new Quester();
 	}
-
 }

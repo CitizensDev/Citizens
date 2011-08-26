@@ -27,7 +27,8 @@ public class NPCDataManager {
 	public static final Map<String, Integer> pathEditors = Maps.newHashMap();
 	public static final Map<Integer, Deque<String>> NPCTexts = new MapMaker()
 			.makeMap();
-	static final Map<String, Integer> selectedNPCs = new MapMaker().makeMap();
+	public static final Map<String, Integer> selectedNPCs = new MapMaker()
+			.makeMap();
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
 		String name = event.getPlayer().getName();

@@ -23,11 +23,16 @@ public abstract class CitizensNPCType {
 	 */
 	public abstract CommandHandler getCommands();
 
+	/**
+	 * Get an instance of a type's CitizensNPC subclass
+	 * 
+	 * @return instance of a type's CitizensNPC subclass
+	 */
 	public abstract CitizensNPC getInstance();
 
 	/**
 	 * Register event listeners for an NPC type. Use
-	 * CitizensNPCManager.registerEvent
+	 * CitizensManager.registerEvent
 	 */
 	public void registerEvents() {
 	}

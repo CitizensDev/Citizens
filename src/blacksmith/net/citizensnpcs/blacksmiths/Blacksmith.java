@@ -2,8 +2,6 @@ package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -32,15 +30,5 @@ public class Blacksmith extends CitizensNPC {
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 		}
-	}
-
-	@Override
-	public Properties getProperties() {
-		return BlacksmithProperties.INSTANCE;
-	}
-
-	@Override
-	public CommandHandler getCommands() {
-		return BlacksmithCommands.INSTANCE;
 	}
 }

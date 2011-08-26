@@ -584,7 +584,7 @@ public class BasicCommands implements CommandHandler {
 			aliases = "npc",
 			usage = "tp",
 			desc = "teleport to an NPC",
-			modifiers = "tp",
+			modifiers = { "tp", "teleport" },
 			min = 1,
 			max = 1)
 	@CommandPermissions("basic.use.teleport")
@@ -655,7 +655,6 @@ public class BasicCommands implements CommandHandler {
 		}
 	}
 
-	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "setowner [name]",
