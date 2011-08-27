@@ -18,7 +18,7 @@ public class HelpUtils {
 			format(sender, "citizens", "save", "force a save of Citizens files");
 			format(sender, "citizens", "debug", "toggle Citizens debug mode");
 			format(sender, "citizens", "clean", "remove ghost NPCs");
-			format(sender, "toggle", "list (page)",
+			format(sender, "toggle", "help (page)",
 					"view available toggleable types");
 			format(sender, "toggle", "[type]", "toggle an NPC type");
 			format(sender, "toggle", "all [on/off]",
@@ -57,7 +57,7 @@ public class HelpUtils {
 		case 2:
 			header(sender, "General", 2, 3);
 			format(sender, "npc", "move", "move an NPC to your location");
-			format(sender, "npc", "moveto [x y z](world pitch yaw)",
+			format(sender, "npc", "moveto [x y z] (world pitch yaw)",
 					"move NPC to a location");
 			format(sender, "npc", "tp", "teleport to the location of an NPC");
 			format(sender, "npc", "copy",

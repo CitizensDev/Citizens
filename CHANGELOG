@@ -86,6 +86,7 @@ By fullwall and aPunch
 -fixed copied NPCs moving back to the original NPCs location on a server restart/reload
 -'/npc remove all' command no longer requires an NPC to be selected to execute
 -added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
+-fixed '/npc moveto' command requiring all arguments, now only requires x, y, and z coords to work
 API CHANGES (for developers, the API page on our Wiki for more information):
 -added CitizensEnableEvent
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world

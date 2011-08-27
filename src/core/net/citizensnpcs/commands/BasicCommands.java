@@ -302,43 +302,75 @@ public class BasicCommands implements CommandHandler {
 
 	@Command(
 			aliases = "npc",
-			usage = "moveto [x y z](world pitch yaw)",
+			usage = "moveto [x y z] (world pitch yaw)",
 			desc = "move an NPC to a location",
 			modifiers = "moveto",
 			min = 4,
 			max = 7)
 	@CommandPermissions("basic.modify.moveto")
 	public static void moveTo(CommandContext args, Player player, HumanNPC npc) {
-		int index = args.argsLength() - 1;
+		int index = 1;
 		double x = 0, y = 0, z = 0;
 		float yaw = npc.getLocation().getYaw();
 		float pitch = npc.getLocation().getPitch();
 		String world = npc.getWorld().getName();
 		switch (args.argsLength()) {
-		case 6:
-			yaw = Float.parseFloat(args.getString(index));
-			--index;
-		case 5:
-			pitch = Float.parseFloat(args.getString(index));
-			--index;
 		case 4:
-			world = args.getString(index);
-			--index;
-		case 3:
-			z = Double.parseDouble(args.getString(index));
-			--index;
-		case 2:
-			y = Double.parseDouble(args.getString(index));
-			--index;
-		case 1:
 			x = Double.parseDouble(args.getString(index));
+			index++;
+			y = Double.parseDouble(args.getString(index));
+			index++;
+			z = Double.parseDouble(args.getString(index));
+			break;
+		case 5:
+			x = Double.parseDouble(args.getString(index));
+			index++;
+			y = Double.parseDouble(args.getString(index));
+			index++;
+			z = Double.parseDouble(args.getString(index));
+			index++;
+			world = args.getString(index);
+			if (Bukkit.getServer().getWorld(world) == null) {
+				Messaging.sendError(player, "Invalid world.");
+				return;
+			}
+			break;
+		case 6:
+			x = Double.parseDouble(args.getString(index));
+			index++;
+			y = Double.parseDouble(args.getString(index));
+			index++;
+			z = Double.parseDouble(args.getString(index));
+			index++;
+			world = args.getString(index);
+			if (Bukkit.getServer().getWorld(world) == null) {
+				Messaging.sendError(player, "Invalid world.");
+				return;
+			}
+			index++;
+			pitch = Float.parseFloat(args.getString(index));
+			break;
+		case 7:
+			x = Double.parseDouble(args.getString(index));
+			index++;
+			y = Double.parseDouble(args.getString(index));
+			index++;
+			z = Double.parseDouble(args.getString(index));
+			index++;
+			world = args.getString(index);
+			if (Bukkit.getServer().getWorld(world) == null) {
+				Messaging.sendError(player, "Invalid world.");
+				return;
+			}
+			index++;
+			pitch = Float.parseFloat(args.getString(index));
+			index++;
+			yaw = Float.parseFloat(args.getString(index));
 		}
-		if (Bukkit.getServer().getWorld(world) == null) {
-			player.sendMessage("Invalid world.");
-			return;
-		}
-		npc.teleport(new Location(Bukkit.getServer().getWorld(world), x, y, z,
-				pitch, yaw));
+		Location loc = new Location(Bukkit.getServer().getWorld(world), x, y,
+				z, pitch, yaw);
+		npc.teleport(loc);
+		npc.getNPCData().setLocation(loc);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " moved to the coordinates " + StringUtils.wrap(x) + ", "
 				+ StringUtils.wrap(y) + ", " + StringUtils.wrap(z)
