@@ -3,6 +3,7 @@ package net.citizensnpcs.alchemists;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
@@ -28,18 +29,18 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 	}
 
 	private int getCurrentRecipe(int UID) {
-		return profiles.getInt(UID + currentRecipe);
+		return profiles.getInt(UID + currentRecipe, 0);
 	}
 
-	private void saveRecipes(int UID, HashMap<Integer, String> recipeMap) {
+	private void saveRecipes(int UID, Map<Integer, String> recipeMap) {
 		for (Entry<Integer, String> entry : recipeMap.entrySet()) {
 			profiles.setString(UID + recipes + "." + entry.getKey(),
 					entry.getValue());
 		}
 	}
 
-	private HashMap<Integer, String> getRecipes(int UID) {
-		HashMap<Integer, String> recipeMap = new HashMap<Integer, String>();
+	private Map<Integer, String> getRecipes(int UID) {
+		Map<Integer, String> recipeMap = new HashMap<Integer, String>();
 		if (profiles.getKeys(UID + recipes).size() == 0) {
 			return recipeMap;
 		}

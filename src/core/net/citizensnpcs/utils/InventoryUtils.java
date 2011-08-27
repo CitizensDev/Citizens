@@ -83,7 +83,7 @@ public class InventoryUtils {
 					remaining -= item.getAmount();
 					item = null;
 				}
-				if (item.getAmount() == 0)
+				if (item != null && item.getAmount() == 0)
 					item = null;
 				contents[slot] = item;
 			}
@@ -103,7 +103,7 @@ public class InventoryUtils {
 					remaining -= item.getAmount();
 					item = null;
 				}
-				if (item.getAmount() == 0)
+				if (item != null && item.getAmount() == 0)
 					item = null;
 				contents[i] = item;
 				if (remaining <= 0)

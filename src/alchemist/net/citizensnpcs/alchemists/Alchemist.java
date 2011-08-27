@@ -1,6 +1,7 @@
 package net.citizensnpcs.alchemists;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
@@ -17,14 +18,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Alchemist extends CitizensNPC {
-	private HashMap<Integer, String> recipes = new HashMap<Integer, String>();
+	private Map<Integer, String> recipes = new HashMap<Integer, String>();
 	private int currentRecipeID = 0;
 
-	public HashMap<Integer, String> getRecipes() {
+	public Map<Integer, String> getRecipes() {
 		return recipes;
 	}
 
-	public void setRecipes(HashMap<Integer, String> recipes) {
+	public void setRecipes(Map<Integer, String> recipes) {
 		this.recipes = recipes;
 	}
 
