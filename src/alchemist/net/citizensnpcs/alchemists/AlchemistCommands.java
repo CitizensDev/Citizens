@@ -1,6 +1,6 @@
 package net.citizensnpcs.alchemists;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.api.CitizensManager;
@@ -58,8 +58,8 @@ public class AlchemistCommands implements CommandHandler {
 			max = 2)
 	@CommandPermissions("alchemist.use.recipes.view")
 	public static void recipes(CommandContext args, Player player, HumanNPC npc) {
-		HashMap<Integer, String> recipes = ((Alchemist) npc
-				.getType("alchemist")).getRecipes();
+		Map<Integer, String> recipes = ((Alchemist) npc.getType("alchemist"))
+				.getRecipes();
 		if (recipes.size() == 0) {
 			Messaging.sendError(player, npc.getStrippedName()
 					+ " has no recipes.");

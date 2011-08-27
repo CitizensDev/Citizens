@@ -64,8 +64,8 @@ public class NPCManager {
 	}
 
 	// Rotates an NPC.
-	public static void facePlayer(HumanNPC npc, Player player) {
-		Location loc = npc.getLocation(), pl = player.getLocation();
+	public static void faceEntity(HumanNPC npc, Entity entity) {
+		Location loc = npc.getLocation(), pl = entity.getLocation();
 		double xDiff = pl.getX() - loc.getX();
 		double yDiff = pl.getY() - loc.getY();
 		double zDiff = pl.getZ() - loc.getZ();
@@ -78,11 +78,14 @@ public class NPCManager {
 		}
 		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
 				(float) pitch);
-		if (npc.getOwner().equals(player.getName())) {
-			loc = npc.getNPCData().getLocation();
-			loc.setPitch(npc.getLocation().getPitch());
-			loc.setYaw(npc.getLocation().getYaw());
-			npc.getNPCData().setLocation(loc);
+		if (entity instanceof Player) {
+			Player player = (Player) entity;
+			if (npc.getOwner().equals(player.getName())) {
+				loc = npc.getNPCData().getLocation();
+				loc.setPitch(npc.getLocation().getPitch());
+				loc.setYaw(npc.getLocation().getYaw());
+				npc.getNPCData().setLocation(loc);
+			}
 		}
 	}
 

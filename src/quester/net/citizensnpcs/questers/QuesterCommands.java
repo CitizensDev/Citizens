@@ -129,6 +129,7 @@ public class QuesterCommands implements CommandHandler {
 	@CommandPermissions("quester.use.status")
 	public static void completed(CommandContext args, Player player,
 			HumanNPC npc) {
+		player.shootArrow();
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
 		if (page < 0)

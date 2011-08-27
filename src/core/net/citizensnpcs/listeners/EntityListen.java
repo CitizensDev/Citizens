@@ -72,7 +72,7 @@ public class EntityListen extends EntityListener implements Listener {
 		if (npc != null && event.getTarget() instanceof Player) {
 			Player player = (Player) event.getTarget();
 			if (npc.getNPCData().isLookClose()) {
-				NPCManager.facePlayer(npc, player);
+				NPCManager.faceEntity(npc, player);
 			}
 			if (Citizens.validateTool("items.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {

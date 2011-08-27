@@ -43,7 +43,7 @@ public class TickTask implements Runnable {
 							if (npc.getHandle().pathFinished()
 									&& !npc.getHandle().hasTarget()
 									&& npc.getNPCData().isLookClose()) {
-								NPCManager.facePlayer(npc, p);
+								NPCManager.faceEntity(npc, p);
 							}
 							cacheActions(p, npc, UID, name);
 						} else {

@@ -1,5 +1,6 @@
 package net.citizensnpcs.resources.npclib;
 
+import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
@@ -12,10 +13,10 @@ import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
@@ -214,7 +215,7 @@ public class PathNPC extends EntityPlayer {
 
 	private boolean isHoldingBow() {
 		return this.getPlayer().getItemInHand() != null
-				&& this.getPlayer().getItemInHand().getTypeId() == 261;
+				&& this.getPlayer().getItemInHand().getType() == Material.BOW;
 	}
 
 	private boolean isWithinAttackRange(Entity entity, double distanceToEntity) {
@@ -228,18 +229,8 @@ public class PathNPC extends EntityPlayer {
 	private void attackEntity(Entity entity) {
 		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
 		if (isHoldingBow()) {
-			// Code from EntitySkeleton.
-			double distX = entity.locX - this.locX;
-			double distZ = entity.locZ - this.locZ;
-			double arrowDistY = entity.locY - 0.20000000298023224D
-					- entity.locY;
-			float distance = (float) (Math.sqrt(distX * distX + distZ * distZ) * 0.2F);
-			Vector velocity = new Vector(distX, arrowDistY + distance, distZ);
-
-			this.getPlayer()
-					.getWorld()
-					.spawnArrow(this.getPlayer().getLocation(), velocity, 0.6F,
-							12F);
+			NPCManager.faceEntity(this.npc, entity.getBukkitEntity());
+			this.getPlayer().shootArrow();
 		} else {
 			this.performAction(Animation.SWING_ARM);
 			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
