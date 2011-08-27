@@ -22,8 +22,11 @@ public class HuntQuest implements QuestUpdater {
 				return false;
 			if (((LivingEntity) ev.getEntity()).getHealth() - ev.getDamage() <= 0) {
 				LivingEntity entity = (LivingEntity) ev.getEntity();
-				if (progress.getObjective().getString()
-						.contains(EntityUtils.getMonsterName(entity))) {
+				String search = progress.getObjective().getString();
+				boolean found = search.contains(EntityUtils
+						.getMonsterName(entity)) || search.contains("*"), reversed = !search
+						.isEmpty() && search.charAt(0) == '-';
+				if ((reversed && !found) || (!reversed && found)) {
 					Messaging.log("death successful");
 					progress.incrementCompleted(1);
 				}

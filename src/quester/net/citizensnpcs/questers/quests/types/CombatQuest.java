@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers.quests.types;
 
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestUpdater;
@@ -8,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import com.platymuus.bukkit.permissions.Group;
 
 public class CombatQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DAMAGE };
@@ -20,8 +23,22 @@ public class CombatQuest implements QuestUpdater {
 				return false;
 			if (((Player) ev.getEntity()).getHealth() - ev.getDamage() <= 0) {
 				Player player = (Player) ev.getEntity();
-				if (progress.getObjective().getString()
-						.contains(player.getName().toLowerCase())) {
+				String search = progress.getObjective().getString();
+				boolean found = false, reversed = !search.isEmpty()
+						&& search.charAt(0) == '-';
+				if (search.contains(player.getName().toLowerCase())
+						|| search.contains("*")) {
+					found = true;
+				} else if (search.contains("g:")
+						&& PermissionManager.superPermsEnabled()) {
+					for (Group group : PermissionManager.getGroups(player)) {
+						if (search.contains("g:"
+								+ group.getName().toLowerCase())) {
+							found = true;
+						}
+					}
+				}
+				if ((reversed && !found) || (!reversed && found)) {
 					progress.incrementCompleted(1);
 				}
 			}

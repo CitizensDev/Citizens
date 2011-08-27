@@ -36,7 +36,12 @@ public class QuestProgress {
 			if (!message.isEmpty())
 				Messaging.send(player, message);
 		}
-		next();
+		if (!this.objectives.isCompleted()) {
+			next();
+		} else {
+			this.objectives.cycle();
+			this.progress.clear();
+		}
 	}
 
 	private void next() {
