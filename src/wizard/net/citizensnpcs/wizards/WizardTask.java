@@ -1,32 +1,44 @@
 package net.citizensnpcs.wizards;
 
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+
+import org.bukkit.Bukkit;
 
 public class WizardTask implements Runnable {
+	private Wizard wizard;
+	private int taskID = 0;
+	private static final List<Integer> tasks = new ArrayList<Integer>();
+
+	public WizardTask(Wizard wizard) {
+		this.wizard = wizard;
+	}
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
-				.entrySet()) {
-			if (!entry.getValue().isType("wizard")) {
-				return;
-			}
-			Wizard wizard = entry.getValue().getType("wizard");
-			if (SettingsManager.getBoolean("RegenWizardMana")
-					&& !wizard.hasUnlimitedMana()) {
-				increaseMana(wizard, 1);
-			}
+		if (wizard.getMana() + 1 < SettingsManager.getInt("WizardMaxMana")) {
+			wizard.setMana(wizard.getMana() + 1);
 		}
 	}
 
-	// Increase the mana of a wizard
-	private void increaseMana(Wizard wizard, int mana) {
-		if (wizard.getMana() + mana < SettingsManager.getInt("WizardMaxMana")) {
-			wizard.setMana(wizard.getMana() + mana);
+	public void addID(int id) {
+		this.taskID = id;
+		tasks.add(taskID);
+	}
+
+	public static void cancelTasks() {
+		for (int task : tasks) {
+			Bukkit.getServer().getScheduler().cancelTask(task);
 		}
+	}
+
+	public boolean isActiveTask() {
+		return taskID != 0;
+	}
+
+	public void cancel() {
+		Bukkit.getServer().getScheduler().cancelTask(taskID);
 	}
 }

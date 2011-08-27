@@ -1,46 +1,42 @@
 package net.citizensnpcs.healers;
 
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
-import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import org.bukkit.Bukkit;
 
 public class HealerTask implements Runnable {
+	private Healer healer;
+	private int taskID;
+	private static final List<Integer> tasks = new ArrayList<Integer>();
+
+	public HealerTask(Healer healer) {
+		this.healer = healer;
+	}
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
-				.entrySet()) {
-			if (SettingsManager.getBoolean("RegenHealerHealth")) {
-				regenerateHealth(entry.getValue());
-			}
+		if (healer.getHealth() < healer.getMaxHealth()) {
+			healer.setHealth(healer.getHealth() + 1);
 		}
 	}
 
-	// Regenerate a healer's health
-	private void regenerateHealth(HumanNPC npc) {
-		if (npc.isType("healer")) {
-			Healer healer = npc.getType("healer");
-			if (healer.getHealth() < healer.getMaxHealth()) {
-				healer.setHealth(healer.getHealth() + 1);
-			}
-		}
+	public void addID(int id) {
+		this.taskID = id;
+		tasks.add(taskID);
 	}
 
-	// Get the health regeneration rate for a healer based on its level
-	public static int getHealthRegenRate() {
-		int delay = SettingsManager.getInt("HealerHealthRegenIncrement");
-		if (!CitizensManager.getList().isEmpty()) {
-			for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
-					.entrySet()) {
-				if (entry.getValue().isType("healer")) {
-					delay = delay
-							* (11 - ((Healer) (entry.getValue()
-									.getType("healer"))).getLevel());
-				}
-			}
+	public static void cancelTasks() {
+		for (int task : tasks) {
+			Bukkit.getServer().getScheduler().cancelTask(task);
 		}
-		return delay;
+	}
+	
+	public boolean isActiveTask() {
+		return taskID != 0;
+	}
+
+	public void cancel() {
+		Bukkit.getServer().getScheduler().cancelTask(taskID);
 	}
 }

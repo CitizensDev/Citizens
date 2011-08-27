@@ -88,10 +88,11 @@ By fullwall and aPunch
 -added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
 -fixed '/npc moveto' command requiring all arguments, now only requires x, y, and z coords to work
 API CHANGES (for developers, the API page on our Wiki for more information):
--added CitizensEnableEvent
+-added CitizensEnableEvent and CitizensDisableEvent for when Citizens is enabled/disabled
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world
 -merged NPCSpawnEvent and NPCCreateEvent
 -added CitizensReloadEvent, only called when '/citizens reload' command is used
+-added NPCToggleTypeEvent
 -added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; it is not 
  recommended that you use NPCManager
- -added API for creating your own NPC type
+-added API for creating your own NPC type

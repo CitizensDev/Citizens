@@ -6,6 +6,7 @@ import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.wizards.listeners.WizardCitizensListen;
+import net.citizensnpcs.wizards.listeners.WizardNPCListen;
 
 import org.bukkit.event.Event.Type;
 
@@ -25,6 +26,7 @@ public class WizardType extends CitizensNPCType {
 	public void registerEvents() {
 		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
 				new WizardCitizensListen());
+		CitizensManager.registerEvent(Type.CUSTOM_EVENT, new WizardNPCListen());
 	}
 
 	@Override

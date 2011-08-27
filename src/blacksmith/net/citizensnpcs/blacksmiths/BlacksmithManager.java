@@ -72,7 +72,7 @@ public class BlacksmithManager {
 	}
 
 	// Get the index of the material addendums array based on an item ID
-	public static int getBlacksmithIndex(ItemStack item) {
+	private static int getBlacksmithIndex(ItemStack item) {
 		int id = item.getTypeId();
 		if (id == 259 || id == 346 || id == 359) {
 			return 0;

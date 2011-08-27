@@ -99,12 +99,7 @@ public class NPCDataManager {
 		}
 	}
 
-	/**
-	 * Adds items to an npc so that they are visible.
-	 * 
-	 * @param npc
-	 * @param items
-	 */
+	// Adds items to an npc so that they are visible.
 	public static void addItems(HumanNPC npc, List<Integer> items) {
 		if (items != null) {
 			Material matHelm = Material.getMaterial(items.get(1));
@@ -137,13 +132,7 @@ public class NPCDataManager {
 		}
 	}
 
-	/**
-	 * Sets the in-hand item of an npc.
-	 * 
-	 * @param player
-	 * @param npc
-	 * @param material
-	 */
+	// Sets the in-hand item of an npc.
 	public static void setItemInHand(Player player, HumanNPC npc,
 			String material) {
 		Material mat = StringUtils.parseMaterial(material);
@@ -192,12 +181,7 @@ public class NPCDataManager {
 				+ ".");
 	}
 
-	/**
-	 * Adds to an npc's text.
-	 * 
-	 * @param UID
-	 * @param text
-	 */
+	// Adds to an npc's text.
 	public static void addText(int UID, String text) {
 		Deque<String> texts = NPCDataManager.getText(UID);
 		if (texts == null) {
@@ -219,33 +203,19 @@ public class NPCDataManager {
 		selectedNPCs.remove(player.getName());
 	}
 
-	/**
-	 * Returns an npc's text.
-	 * 
-	 * @param UID
-	 * @return
-	 */
+	// Get an npc's text.
 	public static Deque<String> getText(int UID) {
 		return NPCTexts.get(UID);
 	}
 
-	/**
-	 * Sets an npc's text to the given texts.
-	 * 
-	 * @param UID
-	 * @param text
-	 */
+	// Sets an npc's text to the given texts.
 	public static void setText(int UID, Deque<String> text) {
 		text = StringUtils.colourise(text);
 		NPCTexts.put(UID, text);
 		NPCManager.get(UID).getNPCData().setTexts(text);
 	}
 
-	/**
-	 * Resets an NPC's text.
-	 * 
-	 * @param UID
-	 */
+	// Resets an NPC's text.
 	public static void resetText(int UID) {
 		setText(UID, new ArrayDeque<String>());
 	}

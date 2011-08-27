@@ -120,6 +120,12 @@ public class Healer extends CitizensNPC {
 		}
 	}
 
+	// Get the health regeneration rate for a healer based on its level
+	public int getHealthRegenRate() {
+		return SettingsManager.getInt("HealerHealthRegenIncrement")
+				* (11 - (getLevel()));
+	}
+
 	@Override
 	public CitizensNPCType getType() {
 		return new HealerType();

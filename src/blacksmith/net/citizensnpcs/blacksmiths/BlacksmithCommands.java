@@ -58,8 +58,7 @@ public class BlacksmithCommands implements CommandHandler {
 			repairType = "armorrepair";
 		} else if (InventoryUtils.isTool(item)) {
 			repairType = "toolrepair";
-		}
-		if (repairType.isEmpty()) {
+		} else {
 			Messaging.sendError(player,
 					MessageUtils.getMaterialName(item.getTypeId())
 							+ " is not a repairable item.");

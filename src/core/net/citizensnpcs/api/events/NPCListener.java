@@ -40,7 +40,12 @@ public class NPCListener extends CustomEventListener {
 	 * Called when an NPC is right-clicked
 	 */
 	public void onNPCRightClick(NPCRightClickEvent event) {
+	}
 
+	/**
+	 * Called when an NPC has a type toggled
+	 */
+	public void onNPCToggleType(NPCToggleTypeEvent event) {
 	}
 
 	@Override
@@ -57,6 +62,8 @@ public class NPCListener extends CustomEventListener {
 			onNPCRemove((NPCRemoveEvent) event);
 		} else if (event instanceof NPCRightClickEvent) {
 			onNPCRightClick((NPCRightClickEvent) event);
+		} else if (event instanceof NPCToggleTypeEvent) {
+			onNPCToggleType((NPCToggleTypeEvent) event);
 		}
 	}
 }

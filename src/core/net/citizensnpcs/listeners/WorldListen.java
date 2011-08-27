@@ -10,7 +10,6 @@ import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
-import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event.Priority;
@@ -40,9 +39,6 @@ public class WorldListen extends WorldListener implements Listener {
 			HumanNPC npc = NPCManager.get(entry);
 			if (event.getChunk().getX() == npc.getChunkX()
 					&& event.getChunk().getZ() == npc.getChunkZ()) {
-				Messaging.debug("Despawned", npc.getUID(), "at", event
-						.getChunk().getX(), event.getChunk().getZ(),
-						"(" + npc.getChunkX(), npc.getChunkZ() + ")");
 				NPCLocation loc = new NPCLocation(npc.getLocation(),
 						npc.getUID(), npc.getOwner());
 				toRespawn.put(loc, npc.getUID());
@@ -64,8 +60,6 @@ public class WorldListen extends WorldListener implements Listener {
 			if (tempLoc.getChunkX() == event.getChunk().getX()
 					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
 				if (NPCManager.get(tempLoc.getUID()) != null) {
-					Messaging.debug("Reloaded", tempLoc.getUID(), "at",
-							tempLoc.getChunkX(), tempLoc.getChunkZ());
 					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner(),
 							NPCCreateReason.RESPAWN);
 				}

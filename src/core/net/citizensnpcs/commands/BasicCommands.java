@@ -223,7 +223,7 @@ public class BasicCommands implements CommandHandler {
 				+ StringUtils.wrap(npc.getOwner()));
 		sender.sendMessage(ChatColor.GREEN + "Types:");
 		if (npc.types().size() == 0) {
-			sender.sendMessage(ChatColor.RED + "None");
+			sender.sendMessage(ChatColor.RED + "    None");
 			return;
 		}
 		for (CitizensNPC type : npc.types()) {

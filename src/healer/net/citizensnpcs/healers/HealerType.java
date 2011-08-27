@@ -6,6 +6,7 @@ import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.healers.listeners.HealerCitizensListen;
+import net.citizensnpcs.healers.listeners.HealerNPCListen;
 
 import org.bukkit.event.Event.Type;
 
@@ -25,6 +26,7 @@ public class HealerType extends CitizensNPCType {
 	public void registerEvents() {
 		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
 				new HealerCitizensListen());
+		CitizensManager.registerEvent(Type.CUSTOM_EVENT, new HealerNPCListen());
 	}
 
 	@Override

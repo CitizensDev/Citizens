@@ -8,6 +8,7 @@ import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.api.events.NPCToggleTypeEvent;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
@@ -24,6 +25,7 @@ import net.citizensnpcs.utils.PageUtils;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -111,6 +113,8 @@ public class ToggleCommands implements CommandHandler {
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " has stopped being a " + type + ".");
 		}
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new NPCToggleTypeEvent(npc, type, npc.isType(type)));
 	}
 
 	// Buys an NPC state.

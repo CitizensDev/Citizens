@@ -136,7 +136,7 @@ public class Citizens extends JavaPlugin {
 					}, SettingsManager.getInt("SavingDelay"),
 					SettingsManager.getInt("SavingDelay"));
 		}
-		// Call enable event, can be used for initialisation of type-specific
+		// Call enable event, can be used for initialization of type-specific
 		// things.
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensEnableEvent());
@@ -150,7 +150,7 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.saveState();
 		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
 		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
-		// call Citizens disable event
+		// call disable event
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensDisableEvent());
 
