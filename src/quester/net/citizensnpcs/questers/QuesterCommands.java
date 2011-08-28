@@ -235,8 +235,14 @@ public class QuesterCommands extends CommandHandler {
 						+ " Progress report " + ChatColor.GREEN + "-");
 				for (ObjectiveProgress progress : profile.getProgress()
 						.getProgress()) {
-					Messaging.send(player, progress.getQuestUpdater()
-							.getStatus(progress));
+					try {
+						Messaging.send(player, progress.getQuestUpdater()
+								.getStatus(progress));
+					} catch (QuestCancelException ex) {
+						player.sendMessage(ChatColor.GRAY
+								+ "Cancelling quest. Reason: " + ex.getReason());
+						profile.setProgress(null);
+					}
 				}
 			}
 		}

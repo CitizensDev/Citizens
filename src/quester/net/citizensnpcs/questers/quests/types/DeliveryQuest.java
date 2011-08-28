@@ -2,6 +2,7 @@ package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.npc.NPCTargetEvent;
+import net.citizensnpcs.questers.QuestCancelException;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.QuestUpdater;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -52,7 +53,12 @@ public class DeliveryQuest implements QuestUpdater {
 	}
 
 	@Override
-	public String getStatus(ObjectiveProgress progress) {
+	public String getStatus(ObjectiveProgress progress)
+			throws QuestCancelException {
+		if (CitizensManager.getNPC(progress.getObjective().getDestNPCID()) == null) {
+			throw new QuestCancelException(ChatColor.GRAY
+					+ "Cancelling quest due to missing destination NPC.");
+		}
 		int amount = progress.getAmount();
 		return ChatColor.GREEN
 				+ "Delivering "

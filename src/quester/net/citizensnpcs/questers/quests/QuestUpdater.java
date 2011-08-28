@@ -1,5 +1,7 @@
 package net.citizensnpcs.questers.quests;
 
+import net.citizensnpcs.questers.QuestCancelException;
+
 import org.bukkit.event.Event;
 
 public interface QuestUpdater {
@@ -9,5 +11,6 @@ public interface QuestUpdater {
 
 	public boolean isCompleted(ObjectiveProgress progress);
 
-	public String getStatus(ObjectiveProgress progress);
+	public String getStatus(ObjectiveProgress progress)
+			throws QuestCancelException;
 }
