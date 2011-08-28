@@ -222,12 +222,16 @@ public class QuesterCommands implements CommandHandler {
 					+ TimeUnit.HOURS.convert(System.currentTimeMillis()
 							- profile.getProgress().getStartTime(),
 							TimeUnit.MILLISECONDS) + " hours.");
-			player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
-					+ " Progress report " + ChatColor.GREEN + "-");
-			for (ObjectiveProgress progress : profile.getProgress()
-					.getProgress()) {
-				Messaging.send(player,
-						progress.getQuestUpdater().getStatus(progress));
+			if (profile.getProgress().fullyCompleted()) {
+				player.sendMessage(ChatColor.AQUA + "Quest is completed.");
+			} else {
+				player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
+						+ " Progress report " + ChatColor.GREEN + "-");
+				for (ObjectiveProgress progress : profile.getProgress()
+						.getProgress()) {
+					Messaging.send(player, progress.getQuestUpdater()
+							.getStatus(progress));
+				}
 			}
 		}
 	}
