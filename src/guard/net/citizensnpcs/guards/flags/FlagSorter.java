@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.TreeMultiset;
@@ -103,10 +102,10 @@ public class FlagSorter {
 					if (groupMap.get(name) != null) {
 						return true;
 					}
-					List<String> transformed = ImmutableList.copyOf(Iterables
+					List<String> transformed = Lists.newArrayList((Iterables
 							.transform(Iterables.filter(
 									PermissionManager.getGroups(player),
-									groupSorter), groupToString));
+									groupSorter), groupToString)));
 					TreeMultiset<FlagInfo> sorted = getSortedFlags(
 							getByType(GROUPS), transformed);
 					if (sorted.size() > 0) {
@@ -203,7 +202,7 @@ public class FlagSorter {
 	}
 
 	public List<LivingEntity> transformToLiving(List<Entity> entities) {
-		return ImmutableList.copyOf(Iterables.transform(
+		return Lists.newArrayList(Iterables.transform(
 				Iterables.filter(entities, livingFilterer), livingTransformer));
 	}
 
