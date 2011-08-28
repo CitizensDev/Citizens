@@ -1,44 +1,51 @@
 package net.citizensnpcs.wizards;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
 
 public class WizardTask implements Runnable {
-	private Wizard wizard;
-	private int taskID = 0;
-	private static final List<Integer> tasks = new ArrayList<Integer>();
+	private HumanNPC npc;
+	private int taskID;
+	private static final Map<Integer, WizardTask> tasks = new HashMap<Integer, WizardTask>();
 
-	public WizardTask(Wizard wizard) {
-		this.wizard = wizard;
+	public WizardTask(HumanNPC npc) {
+		this.npc = npc;
 	}
 
 	@Override
 	public void run() {
+		Wizard wizard = npc.getType("wizard");
 		if (wizard.getMana() + 1 < SettingsManager.getInt("WizardMaxMana")) {
 			wizard.setMana(wizard.getMana() + 1);
 		}
 	}
 
-	public void addID(int id) {
-		this.taskID = id;
-		tasks.add(taskID);
+	public void addID(int taskID) {
+		this.taskID = taskID;
+		tasks.put(npc.getUID(), this);
 	}
 
 	public static void cancelTasks() {
-		for (int task : tasks) {
-			Bukkit.getServer().getScheduler().cancelTask(task);
+		for (Entry<Integer, WizardTask> entry : tasks.entrySet()) {
+			Bukkit.getServer().getScheduler()
+					.cancelTask(entry.getValue().taskID);
 		}
+		tasks.clear();
 	}
 
-	public boolean isActiveTask() {
-		return taskID != 0;
+	public static WizardTask getTask(int UID) {
+		return tasks.get(UID);
 	}
 
 	public void cancel() {
-		Bukkit.getServer().getScheduler().cancelTask(taskID);
+		Bukkit.getServer().getScheduler()
+				.cancelTask(getTask(npc.getUID()).taskID);
+		tasks.remove(npc.getUID());
 	}
 }

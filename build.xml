@@ -6,7 +6,6 @@
       <property name="src" location="src"/>
       <property name="build" location="build"/>
       <property name="core" location="build/core"/>
-      <property name="alchemist" location="build/alchemist"/>
       <property name="blacksmith" location="build/blacksmith"/>
       <property name="guard" location="build/guard"/>
       <property name="healer" location="build/healer"/>
@@ -20,7 +19,6 @@
         <!-- Create neccesary folders -->
         <mkdir dir="${build}"/>
         <mkdir dir="${core}"/>
-        <mkdir dir="${alchemist}"/>
         <mkdir dir="${blacksmith}"/>
         <mkdir dir="${guard}"/>
         <mkdir dir="${healer}"/>
@@ -50,23 +48,6 @@
         </javac>
       </target>
      
-      <target name="alchemist" depends="init" description="compile the source">
-        <javac srcdir="${src}/alchemist" destdir="${alchemist}" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy.jar"/>
-                <pathelement location="Citizens.jar"/>
-                </classpath>
-        </javac>
-      </target>
       <target name="blacksmith" depends="init" description="compile the source">
         <javac srcdir="${src}/blacksmith" destdir="${blacksmith}" encoding="Cp1252" >
                <classpath>
@@ -175,12 +156,6 @@
       <target name="dist" depends="core" description="generate the distribution" >
         <jar jarfile="Citizens.jar" basedir="${core}" encoding="Cp1252">
         <zipfileset dir="." includes="*.yml"/>
-        </jar>
-        <antcall target="distalchemist"/>
-      </target>
-      <target name="distalchemist" depends="alchemist" description="generate the distribution" >
-        <jar jarfile="types/Alchemist.jar" basedir="${alchemist}" encoding="Cp1252">
-        <zipfileset dir="${src}/alchemist" includes="*.info"/>
         </jar>
         <antcall target="distblacksmith"/>
       </target>

@@ -6,7 +6,6 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCListener;
 import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
-import net.citizensnpcs.wizards.Wizard;
 import net.citizensnpcs.wizards.WizardTask;
 
 public class WizardNPCListen extends NPCListener {
@@ -15,8 +14,7 @@ public class WizardNPCListen extends NPCListener {
 		if (!event.getToggledType().equals("wizard")) {
 			return;
 		}
-		WizardTask task = new WizardTask((Wizard) event.getNPC().getType(
-				"wizard"));
+		WizardTask task = new WizardTask(event.getNPC());
 		if (event.isToggledOn()) {
 			task.addID(Bukkit
 					.getServer()
@@ -25,7 +23,7 @@ public class WizardNPCListen extends NPCListener {
 							SettingsManager.getInt("WizardManaRegenRate"),
 							SettingsManager.getInt("WizardManaRegenRate")));
 		} else {
-			if (task.isActiveTask()) {
+			if ((task = WizardTask.getTask(event.getNPC().getUID())) != null) {
 				task.cancel();
 			}
 		}

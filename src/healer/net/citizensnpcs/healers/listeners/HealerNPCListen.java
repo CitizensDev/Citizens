@@ -15,7 +15,7 @@ public class HealerNPCListen extends NPCListener {
 			return;
 		}
 		Healer healer = event.getNPC().getType("healer");
-		HealerTask task = new HealerTask(healer);
+		HealerTask task = new HealerTask(event.getNPC());
 		if (event.isToggledOn()) {
 			int delay = healer.getHealthRegenRate();
 			task.addID(Bukkit
@@ -24,7 +24,7 @@ public class HealerNPCListen extends NPCListener {
 					.scheduleSyncRepeatingTask(Citizens.plugin, task, delay,
 							delay));
 		} else {
-			if (task.isActiveTask()) {
+			if ((task = HealerTask.getTask(event.getNPC().getUID())) != null) {
 				task.cancel();
 			}
 		}

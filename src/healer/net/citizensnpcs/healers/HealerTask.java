@@ -1,42 +1,49 @@
 package net.citizensnpcs.healers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
 
 public class HealerTask implements Runnable {
-	private Healer healer;
+	private HumanNPC npc;
 	private int taskID;
-	private static final List<Integer> tasks = new ArrayList<Integer>();
+	private static final Map<Integer, HealerTask> tasks = new HashMap<Integer, HealerTask>();
 
-	public HealerTask(Healer healer) {
-		this.healer = healer;
+	public HealerTask(HumanNPC npc) {
+		this.npc = npc;
 	}
 
 	@Override
 	public void run() {
+		Healer healer = npc.getType("healer");
 		if (healer.getHealth() < healer.getMaxHealth()) {
 			healer.setHealth(healer.getHealth() + 1);
 		}
 	}
 
-	public void addID(int id) {
-		this.taskID = id;
-		tasks.add(taskID);
+	public void addID(int taskID) {
+		this.taskID = taskID;
+		tasks.put(npc.getUID(), this);
 	}
 
 	public static void cancelTasks() {
-		for (int task : tasks) {
-			Bukkit.getServer().getScheduler().cancelTask(task);
+		for (Entry<Integer, HealerTask> entry : tasks.entrySet()) {
+			Bukkit.getServer().getScheduler()
+					.cancelTask(entry.getValue().taskID);
 		}
 	}
-	
-	public boolean isActiveTask() {
-		return taskID != 0;
+
+	public static HealerTask getTask(int UID) {
+		return tasks.get(UID);
 	}
 
 	public void cancel() {
-		Bukkit.getServer().getScheduler().cancelTask(taskID);
+		Bukkit.getServer().getScheduler()
+				.cancelTask(getTask(npc.getUID()).taskID);
+		tasks.remove(npc.getUID());
 	}
 }

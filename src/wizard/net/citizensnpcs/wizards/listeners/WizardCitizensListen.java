@@ -11,7 +11,6 @@ import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensListener;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.wizards.Wizard;
 import net.citizensnpcs.wizards.WizardTask;
 
 public class WizardCitizensListen extends CitizensListener {
@@ -24,8 +23,7 @@ public class WizardCitizensListen extends CitizensListener {
 		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
 				.entrySet()) {
 			if (entry.getValue().isType("wizard")) {
-				Wizard wizard = entry.getValue().getType("wizard");
-				WizardTask task = new WizardTask(wizard);
+				WizardTask task = new WizardTask(entry.getValue());
 				task.addID(Bukkit
 						.getServer()
 						.getScheduler()

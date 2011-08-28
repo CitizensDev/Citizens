@@ -24,9 +24,9 @@ public class HealerCitizensListen extends CitizensListener {
 		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
 				.entrySet()) {
 			if (entry.getValue().isType("healer")) {
-				Healer healer = entry.getValue().getType("healer");
-				HealerTask task = new HealerTask(healer);
-				int delay = healer.getHealthRegenRate();
+				HealerTask task = new HealerTask(entry.getValue());
+				int delay = ((Healer) entry.getValue().getType("healer"))
+						.getHealthRegenRate();
 				task.addID(Bukkit
 						.getServer()
 						.getScheduler()
