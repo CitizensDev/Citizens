@@ -31,6 +31,8 @@ public class CombatQuest implements QuestUpdater {
 					found = true;
 				} else if (search.contains("g:")
 						&& PermissionManager.superPermsEnabled()) {
+					// Should be the last else statement, as it needs to do
+					// extra processing.
 					for (Group group : PermissionManager.getGroups(player)) {
 						if (search.contains("g:"
 								+ group.getName().toLowerCase())) {
