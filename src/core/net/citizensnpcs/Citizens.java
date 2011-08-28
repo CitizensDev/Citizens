@@ -282,9 +282,9 @@ public class Citizens extends JavaPlugin {
 			for (String value : values) {
 				int UID = Integer.parseInt(value);
 				Location loc = PropertyManager.getBasic().getLocation(UID);
-				if (loc != null) {
+				if (loc != null && loc.getWorld() != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
-							.getOwner(UID), NPCCreateReason.RESPAWN);
+							.getOwner(UID), NPCCreateReason.SPAWN);
 					Deque<String> text = PropertyManager.getBasic()
 							.getText(UID);
 					if (text != null) {

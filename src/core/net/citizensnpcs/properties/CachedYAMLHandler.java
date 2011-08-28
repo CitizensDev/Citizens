@@ -305,7 +305,6 @@ public class CachedYAMLHandler implements Storage {
 				key = key.replace(path, "");
 				int index = key.contains(".") ? key.indexOf('.') : key.length();
 				keys.add(key.substring(0, index));
-				Messaging.log(key.substring(0, index));
 			}
 		}
 		return keys;
