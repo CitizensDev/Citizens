@@ -83,111 +83,8 @@ public class HelpUtils {
 		}
 	}
 
-	// TODO make help menus register per-type without requiring any NPC to be
-	// selected
-	public static void sendAlchemistHelp(CommandSender sender) {
-		header(sender, "Alchemist", 1, 1);
-		format(sender, "alchemist", "recipes",
-				"view all of an alchemist's recipes");
-		format(sender, "alchemist", "select [itemID]", "select a recipe");
-		format(sender, "alchemist", "view (page)",
-				"view an alchemist's selected recipe");
-		format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
-				"add a recipe to an alchemist");
-		footer(sender);
-	}
-
-	public static void sendBlacksmithHelp(CommandSender sender) {
-		header(sender, "Blacksmith", 1, 1);
-		format(sender, "blacksmith", "status",
-				"view the status of your in-hand item");
-		footer(sender);
-	}
-
-	public static void sendGuardHelp(CommandSender sender) {
-		header(sender, "Guard", 1, 1);
-		format(sender, "guard", "[type]",
-				"toggle the type of guard that an NPC is");
-		format(sender, "guard", "flags [-g,m,p] (page)", "view a guard's flags");
-		format(sender, "guard", "addflag (-i [priority]) [target] (-a,g,m,p)",
-				"add a flag to a guard");
-		format(sender, "guard", "delflag [name] [-g,m,p] (-a)",
-				"delete a flag from a guard");
-		format(sender, "guard", "radius [amount]",
-				"set the radius of a bouncer's zone");
-		format(sender, "guard", "aggro", "toggle aggro");
-		footer(sender);
-	}
-
-	public static void sendHealerHelp(CommandSender sender) {
-		header(sender, "Healer", 1, 1);
-		format(sender, "healer", "status",
-				"view the health and level of a healer");
-		format(sender, "healer", "level-up (levels)", "level-up a healer");
-		footer(sender);
-	}
-
-	public static void sendQuesterHelp(CommandSender sender) {
-		header(sender, "Quester", 1, 1);
-		format(sender, "quester", "assign [quest]", "assign a quest to an NPC");
-		format(sender, "quester", "remove [quest]",
-				"remove a quest from an NPC");
-		footer(sender);
-	}
-
-	public static void sendQuestHelp(CommandSender sender) {
-		header(sender, "Quests", 1, 1);
-		format(sender, "quest", "status", "view your current quest status");
-		format(sender, "quest", "completed (page)",
-				"view your completed quests");
-		format(sender, "quest", "abort", "abort your current quest");
-		footer(sender);
-	}
-
-	public static void sendTraderHelp(CommandSender sender) {
-		header(sender, "Trader", 1, 1);
-		format(sender, "trader", "list [buy|sell] (page)",
-				"list a trader's buy/sell list");
-		format(sender, "trader", "[buy|sell] [itemID(:amount:data)] [price]",
-				"add an item to a trader's stock");
-		format(sender, "trader", "[buy|sell] remove [itemID:data]",
-				"remove item from a trader's stock");
-		format(sender, "trader",
-				"[buy|sell] edit [itemID(:amount:data)] [price]",
-				"edit a trader's stock");
-		format(sender, "trader", "unlimited",
-				"set whether a trader has unlimited stock");
-		format(sender, "trader", "money [give|take] (amount)",
-				"control a trader's money");
-		format(sender, "trader", "clear [buy|sell]", "clear a trader's stock");
-		footer(sender);
-	}
-
-	public static void sendWizardHelp(CommandSender sender) {
-		header(sender, "Wizard", 1, 1);
-		format(sender, "wizard", "locations",
-				"view the tp locations of a wizard");
-		format(sender, "wizard", "addloc [name]",
-				"add a tp location to the wizard");
-		format(sender, "wizard", "removeloc [id]", "remove the tp location");
-		format(sender, "wizard", "mode [mode]", "change the mode of a wizard");
-		format(sender, "wizard", "status", "display the status of a wizard");
-		format(sender, "wizard", "unlimited",
-				"toggle a wizard's mana as unlimited");
-		format(sender, "wizard", "command [command] (args)",
-				"set a wizard's command");
-		footer(sender);
-	}
-
-	/**
-	 * Prints the header for the help menus
-	 * 
-	 * @param sender
-	 * @param npcType
-	 * @param page
-	 * @param maxPages
-	 */
-	private static void header(CommandSender sender, String npcType, int page,
+	// Prints the header for the help menus
+	public static void header(CommandSender sender, String npcType, int page,
 			int maxPages) {
 		sender.sendMessage(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN + "Citizens " + npcType
@@ -195,15 +92,8 @@ public class HelpUtils {
 						+ maxPages + ">" + ChatColor.YELLOW));
 	}
 
-	/**
-	 * Formats commands to fit a uniform style
-	 * 
-	 * @param sender
-	 * @param command
-	 * @param args
-	 * @param desc
-	 */
-	private static void format(CommandSender sender, String command,
+	// Formats commands to fit a uniform style
+	public static void format(CommandSender sender, String command,
 			String args, String desc) {
 		String message = "";
 		if (args.isEmpty()) {
@@ -216,12 +106,8 @@ public class HelpUtils {
 		sender.sendMessage(message);
 	}
 
-	/**
-	 * Prints the footer for the help menus
-	 * 
-	 * @param sender
-	 */
-	private static void footer(CommandSender sender) {
+	// Prints the footer for the help menus
+	public static void footer(CommandSender sender) {
 		sender.sendMessage(ChatColor.DARK_GRAY
 				+ StringUtils.listify("Coded by fullwall and aPunch"));
 	}

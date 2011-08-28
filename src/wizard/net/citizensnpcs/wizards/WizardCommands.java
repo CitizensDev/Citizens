@@ -2,6 +2,7 @@ package net.citizensnpcs.wizards;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -19,7 +20,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "wizard")
-public class WizardCommands implements CommandHandler {
+public class WizardCommands extends CommandHandler {
 	public static final WizardCommands INSTANCE = new WizardCommands();
 
 	private WizardCommands() {
@@ -36,7 +37,7 @@ public class WizardCommands implements CommandHandler {
 	@CommandPermissions("wizard.use.help")
 	public static void wizardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendWizardHelp(sender);
+		NPCTypeManager.getType("wizard").getCommands().sendHelpPage(sender, 1);
 	}
 
 	@Command(
@@ -206,5 +207,25 @@ public class WizardCommands implements CommandHandler {
 		CitizensManager.addPermission("wizard.modify.unlimited");
 		CitizensManager.addPermission("wizard.modify.command");
 		CitizensManager.addPermission("wizard.use.interact");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Wizard", 1, 1);
+		HelpUtils.format(sender, "wizard", "locations",
+				"view the tp locations of a wizard");
+		HelpUtils.format(sender, "wizard", "addloc [name]",
+				"add a tp location to the wizard");
+		HelpUtils.format(sender, "wizard", "removeloc [id]",
+				"remove the tp location");
+		HelpUtils.format(sender, "wizard", "mode [mode]",
+				"change the mode of a wizard");
+		HelpUtils.format(sender, "wizard", "status",
+				"display the status of a wizard");
+		HelpUtils.format(sender, "wizard", "unlimited",
+				"toggle a wizard's mana as unlimited");
+		HelpUtils.format(sender, "wizard", "command [command] (args)",
+				"set a wizard's command");
+		HelpUtils.footer(sender);
 	}
 }

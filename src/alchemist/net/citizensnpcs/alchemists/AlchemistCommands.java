@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -26,7 +27,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "alchemist")
-public class AlchemistCommands implements CommandHandler {
+public class AlchemistCommands extends CommandHandler {
 	public static final AlchemistCommands INSTANCE = new AlchemistCommands();
 
 	private AlchemistCommands() {
@@ -44,7 +45,8 @@ public class AlchemistCommands implements CommandHandler {
 	@CommandPermissions("alchemist.use.help")
 	public static void alchemistHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendAlchemistHelp(sender);
+		NPCTypeManager.getType("alchemist").getCommands()
+				.sendHelpPage(sender, 1);
 	}
 
 	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
@@ -184,5 +186,19 @@ public class AlchemistCommands implements CommandHandler {
 		CitizensManager.addPermission("alchemist.use.recipes.view");
 		CitizensManager.addPermission("alchemist.modify.recipes");
 		CitizensManager.addPermission("alchemist.use.interact");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Alchemist", 1, 1);
+		HelpUtils.format(sender, "alchemist", "recipes",
+				"view all of an alchemist's recipes");
+		HelpUtils.format(sender, "alchemist", "select [itemID]",
+				"select a recipe");
+		HelpUtils.format(sender, "alchemist", "view (page)",
+				"view an alchemist's selected recipe");
+		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
+				"add a recipe to an alchemist");
+		HelpUtils.footer(sender);
 	}
 }

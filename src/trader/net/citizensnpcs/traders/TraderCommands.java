@@ -6,6 +6,7 @@ import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -29,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "trader")
-public class TraderCommands implements CommandHandler {
+public class TraderCommands extends CommandHandler {
 	public static final TraderCommands INSTANCE = new TraderCommands();
 
 	private TraderCommands() {
@@ -47,7 +48,7 @@ public class TraderCommands implements CommandHandler {
 	@ServerCommand()
 	public static void traderHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendTraderHelp(sender);
+		NPCTypeManager.getType("trader").getCommands().sendHelpPage(sender, 1);
 	}
 
 	@Command(
@@ -391,5 +392,25 @@ public class TraderCommands implements CommandHandler {
 		CitizensManager.addPermission("trader.modify.clearstock");
 		CitizensManager.addPermission("trader.modify.stock");
 		CitizensManager.addPermission("trader.use.trade");
+	}
+	
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Trader", 1, 1);
+		HelpUtils.format(sender, "trader", "list [buy|sell] (page)",
+				"list a trader's buy/sell list");
+		HelpUtils.format(sender, "trader", "[buy|sell] [itemID(:amount:data)] [price]",
+				"add an item to a trader's stock");
+		HelpUtils.format(sender, "trader", "[buy|sell] remove [itemID:data]",
+				"remove item from a trader's stock");
+		HelpUtils.format(sender, "trader",
+				"[buy|sell] edit [itemID(:amount:data)] [price]",
+				"edit a trader's stock");
+		HelpUtils.format(sender, "trader", "unlimited",
+				"set whether a trader has unlimited stock");
+		HelpUtils.format(sender, "trader", "money [give|take] (amount)",
+				"control a trader's money");
+		HelpUtils.format(sender, "trader", "clear [buy|sell]", "clear a trader's stock");
+		HelpUtils.footer(sender);
 	}
 }
