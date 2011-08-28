@@ -52,8 +52,7 @@ public class CraftNPC extends PathNPC {
 						.getEyeLocation().getY() % 1 <= 0.62)) {
 			// onGround only checks if they're at least below 0.62 above it ->
 			// need to check if they actually are standing on the block.
-			float yaw = this.yaw;
-			float pitch = this.pitch;
+			float yaw = this.yaw, pitch = this.pitch;
 			this.a(0, 0); // cheap hack - move with motion of 0.
 			this.yaw = yaw;
 			this.pitch = pitch;

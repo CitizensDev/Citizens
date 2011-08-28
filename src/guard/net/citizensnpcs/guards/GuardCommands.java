@@ -1,7 +1,6 @@
 package net.citizensnpcs.guards;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import net.citizensnpcs.PermissionManager;
@@ -134,8 +133,8 @@ public class GuardCommands implements CommandHandler {
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(header + ChatColor.WHITE
 						+ " <%x/%y>")));
-		for (Entry<String, FlagInfo> entry : flags.entrySet()) {
-			instance.push(StringUtils.wrap("  - ") + entry.getKey());
+		for (String entry : flags.keySet()) {
+			instance.push(StringUtils.wrap("  - ") + entry);
 		}
 		instance.process(page);
 	}
@@ -160,6 +159,11 @@ public class GuardCommands implements CommandHandler {
 		if (args.hasFlag('i')) {
 			++flagOffset;
 			priority = args.getInteger(1);
+		}
+		if (priority < 1 || priority > 20) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Priority must be between 1-20.");
+			return;
 		}
 		if (args.hasFlag('a')) {
 			guard.getFlags().addToAll(

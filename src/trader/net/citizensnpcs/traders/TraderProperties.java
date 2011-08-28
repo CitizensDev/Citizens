@@ -64,9 +64,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 				case 0:
 					String[] split = main.split("/");
 					stack = new ItemStack(Integer.parseInt(split[0]),
-							Integer.parseInt(split[1]));
-					short data = Short.parseShort(split[2]);
-					stack.setDurability(data);
+							Integer.parseInt(split[1]),
+							Short.parseShort(split[2]));
 					break;
 				case 1:
 					String[] parts = main.split("/");

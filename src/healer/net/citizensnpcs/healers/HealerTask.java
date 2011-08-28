@@ -2,14 +2,13 @@ package net.citizensnpcs.healers;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
 
 public class HealerTask implements Runnable {
-	private HumanNPC npc;
+	private final HumanNPC npc;
 	private int taskID;
 	private static final Map<Integer, HealerTask> tasks = new HashMap<Integer, HealerTask>();
 
@@ -31,9 +30,8 @@ public class HealerTask implements Runnable {
 	}
 
 	public static void cancelTasks() {
-		for (Entry<Integer, HealerTask> entry : tasks.entrySet()) {
-			Bukkit.getServer().getScheduler()
-					.cancelTask(entry.getValue().taskID);
+		for (HealerTask entry : tasks.values()) {
+			Bukkit.getServer().getScheduler().cancelTask(entry.taskID);
 		}
 	}
 

@@ -1,9 +1,5 @@
 package net.citizensnpcs.healers.listeners;
 
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensManager;
@@ -14,6 +10,8 @@ import net.citizensnpcs.healers.Healer;
 import net.citizensnpcs.healers.HealerTask;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
+import org.bukkit.Bukkit;
+
 public class HealerCitizensListen extends CitizensListener {
 
 	@Override
@@ -21,11 +19,10 @@ public class HealerCitizensListen extends CitizensListener {
 		if (!SettingsManager.getBoolean("RegenHealerHealth")) {
 			return;
 		}
-		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
-				.entrySet()) {
-			if (entry.getValue().isType("healer")) {
-				HealerTask task = new HealerTask(entry.getValue());
-				int delay = ((Healer) entry.getValue().getType("healer"))
+		for (HumanNPC entry : CitizensManager.getList().values()) {
+			if (entry.isType("healer")) {
+				HealerTask task = new HealerTask(entry);
+				int delay = ((Healer) entry.getType("healer"))
 						.getHealthRegenRate();
 				task.addID(Bukkit
 						.getServer()

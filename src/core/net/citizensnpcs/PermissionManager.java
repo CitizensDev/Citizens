@@ -99,7 +99,8 @@ public class PermissionManager {
 
 	public static List<com.platymuus.bukkit.permissions.Group> getGroups(
 			Player player) {
-		if (permissionsEnabled) {
+		if (permissionsEnabled
+				&& superperms.getPlayerInfo(player.getName()) != null) {
 			return superperms.getPlayerInfo(player.getName()).getGroups();
 		}
 		return null;

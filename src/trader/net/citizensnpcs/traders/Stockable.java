@@ -55,12 +55,9 @@ public class Stockable {
 	@Override
 	public String toString() {
 		String ret = "";
-		ret += stocking.getTypeId()
-				+ Citizens.separatorChar
-				+ stocking.getAmount()
-				+ Citizens.separatorChar
-				+ (stocking.getData() == null ? "0" : stocking.getData()
-						.getData()) + Citizens.separatorChar + ",";
+		ret += stocking.getTypeId() + Citizens.separatorChar
+				+ stocking.getAmount() + Citizens.separatorChar
+				+ (stocking.getDurability()) + Citizens.separatorChar + ",";
 		ret += price.toString() + ",";
 		ret += selling + ",";
 		return ret;

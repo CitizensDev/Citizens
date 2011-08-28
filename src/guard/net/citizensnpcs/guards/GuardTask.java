@@ -3,7 +3,6 @@ package net.citizensnpcs.guards;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
@@ -24,12 +23,12 @@ public class GuardTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
-				.entrySet()) {
-			HumanNPC npc = entry.getValue();
+		for (HumanNPC npc : CitizensManager.getList().values()) {
 			if (npc.isType("guard")) {
 				Guard guard = npc.getType("guard");
-				if (guard.isAttacking() && !npc.getHandle().hasTarget()) {
+				if (guard.isAttacking()
+						&& (!npc.getHandle().hasTarget() || !guard
+								.isAggressive())) {
 					GuardManager.returnToBase(guard, npc);
 					guard.setAttacking(false);
 				}

@@ -1,7 +1,5 @@
 package net.citizensnpcs.commands;
 
-import java.util.Map.Entry;
-
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
@@ -145,10 +143,9 @@ public class ToggleCommands implements CommandHandler {
 	// Toggles all types of NPCs
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
-			for (Entry<String, CitizensNPCType> entry : NPCTypeManager
-					.getTypes().entrySet()) {
-				if (!npc.isType(entry.getValue().getName())) {
-					toggleState(player, npc, entry.getValue().getName());
+			for (CitizensNPCType entry : NPCTypeManager.getTypes().values()) {
+				if (!npc.isType(entry.getName())) {
+					toggleState(player, npc, entry.getName());
 				}
 			}
 		} else {

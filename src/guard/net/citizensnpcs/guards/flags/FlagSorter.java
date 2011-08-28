@@ -150,7 +150,7 @@ public class FlagSorter {
 				retrieved = get(getByType(MOBS),
 						EntityUtils.getMonsterName(entity));
 			}
-			if (retrieved.priority() == lowestFound) {
+			if (retrieved != null && retrieved.priority() == lowestFound) {
 				processed.add(entity);
 			}
 		}

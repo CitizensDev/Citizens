@@ -2,7 +2,6 @@ package net.citizensnpcs.wizards;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -10,7 +9,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.Bukkit;
 
 public class WizardTask implements Runnable {
-	private HumanNPC npc;
+	private final HumanNPC npc;
 	private int taskID;
 	private static final Map<Integer, WizardTask> tasks = new HashMap<Integer, WizardTask>();
 
@@ -32,9 +31,8 @@ public class WizardTask implements Runnable {
 	}
 
 	public static void cancelTasks() {
-		for (Entry<Integer, WizardTask> entry : tasks.entrySet()) {
-			Bukkit.getServer().getScheduler()
-					.cancelTask(entry.getValue().taskID);
+		for (WizardTask entry : tasks.values()) {
+			Bukkit.getServer().getScheduler().cancelTask(entry.taskID);
 		}
 		tasks.clear();
 	}

@@ -1,9 +1,5 @@
 package net.citizensnpcs.wizards.listeners;
 
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensManager;
@@ -13,6 +9,8 @@ import net.citizensnpcs.api.event.citizens.CitizensListener;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.wizards.WizardTask;
 
+import org.bukkit.Bukkit;
+
 public class WizardCitizensListen extends CitizensListener {
 
 	@Override
@@ -20,10 +18,9 @@ public class WizardCitizensListen extends CitizensListener {
 		if (!SettingsManager.getBoolean("RegenWizardMana")) {
 			return;
 		}
-		for (Entry<Integer, HumanNPC> entry : CitizensManager.getList()
-				.entrySet()) {
-			if (entry.getValue().isType("wizard")) {
-				WizardTask task = new WizardTask(entry.getValue());
+		for (HumanNPC entry : CitizensManager.getList().values()) {
+			if (entry.isType("wizard")) {
+				WizardTask task = new WizardTask(entry);
 				task.addID(Bukkit
 						.getServer()
 						.getScheduler()

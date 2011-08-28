@@ -1,7 +1,6 @@
 package net.citizensnpcs.alchemists;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
@@ -77,10 +76,10 @@ public class AlchemistCommands implements CommandHandler {
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
 						+ "'s Recipes " + ChatColor.WHITE + "<%x/%y>")));
-		for (Entry<Integer, String> entry : recipes.entrySet()) {
+		for (int entry : recipes.keySet()) {
 			instance.push(" - "
-					+ StringUtils.wrap(MessageUtils.getMaterialName(entry
-							.getKey())) + " (ID: " + entry.getKey() + ")");
+					+ StringUtils.wrap(MessageUtils.getMaterialName(entry))
+					+ " (ID: " + entry + ")");
 		}
 		instance.push(ChatColor.GREEN + "Type "
 				+ StringUtils.wrap("/alchemist select [itemID]")
