@@ -297,6 +297,8 @@ public class CachedYAMLHandler implements Storage {
 	public List<String> getKeys(String path) {
 		if (path == null)
 			path = "";
+		else
+			path += ".";
 		List<String> keys = Lists.newArrayList();
 		for (String key : this.tree.getTree().keySet()) {
 			if (key.startsWith(path) && key.length() > path.length()) {
