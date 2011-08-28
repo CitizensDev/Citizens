@@ -9,6 +9,7 @@ import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -33,7 +34,7 @@ import com.platymuus.bukkit.permissions.Group;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "guard")
-public class GuardCommands implements CommandHandler {
+public class GuardCommands extends CommandHandler {
 	public static final GuardCommands INSTANCE = new GuardCommands();
 
 	private GuardCommands() {
@@ -51,7 +52,7 @@ public class GuardCommands implements CommandHandler {
 	@CommandPermissions("guard.use.help")
 	public static void guardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendGuardHelp(sender);
+		NPCTypeManager.getType("guard").getCommands().sendHelpPage(sender, 1);
 	}
 
 	@Command(
@@ -314,5 +315,23 @@ public class GuardCommands implements CommandHandler {
 		CitizensManager.addPermission("guard.modify.flags");
 		CitizensManager.addPermission("guard.modify.aggro");
 		CitizensManager.addPermission("guard.modify.radius");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Guard", 1, 1);
+		HelpUtils.format(sender, "guard", "[type]",
+				"toggle the type of guard that an NPC is");
+		HelpUtils.format(sender, "guard", "flags [-g,m,p] (page)",
+				"view a guard's flags");
+		HelpUtils.format(sender, "guard",
+				"addflag (-i [priority]) [target] (-a,g,m,p)",
+				"add a flag to a guard");
+		HelpUtils.format(sender, "guard", "delflag [name] [-g,m,p] (-a)",
+				"delete a flag from a guard");
+		HelpUtils.format(sender, "guard", "radius [amount]",
+				"set the radius of a bouncer's zone");
+		HelpUtils.format(sender, "guard", "aggro", "toggle aggro");
+		HelpUtils.footer(sender);
 	}
 }

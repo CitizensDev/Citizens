@@ -3,6 +3,7 @@ package net.citizensnpcs.healers;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -21,7 +22,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "healer")
-public class HealerCommands implements CommandHandler {
+public class HealerCommands extends CommandHandler {
 	public static final HealerCommands INSTANCE = new HealerCommands();
 
 	private HealerCommands() {
@@ -38,7 +39,7 @@ public class HealerCommands implements CommandHandler {
 	@CommandPermissions("healer.use.help")
 	public static void healerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendHealerHelp(sender);
+		NPCTypeManager.getType("healer").getCommands().sendHelpPage(sender, 1);
 	}
 
 	@Command(
@@ -126,5 +127,15 @@ public class HealerCommands implements CommandHandler {
 		CitizensManager.addPermission("healer.use.status");
 		CitizensManager.addPermission("healer.modify.levelup");
 		CitizensManager.addPermission("healer.use.heal");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Healer", 1, 1);
+		HelpUtils.format(sender, "healer", "status",
+				"view the health and level of a healer");
+		HelpUtils.format(sender, "healer", "level-up (levels)",
+				"level-up a healer");
+		HelpUtils.footer(sender);
 	}
 }
