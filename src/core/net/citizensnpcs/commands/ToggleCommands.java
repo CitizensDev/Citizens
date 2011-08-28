@@ -28,7 +28,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ToggleCommands implements CommandHandler {
+public class ToggleCommands extends CommandHandler {
 
 	@Command(
 			aliases = { "toggle", "tog", "t" },

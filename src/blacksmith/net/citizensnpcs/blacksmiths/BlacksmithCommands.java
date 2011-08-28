@@ -3,6 +3,7 @@ package net.citizensnpcs.blacksmiths;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -22,7 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @CommandRequirements(requiredType = "blacksmith")
-public class BlacksmithCommands implements CommandHandler {
+public class BlacksmithCommands extends CommandHandler {
 	public static final BlacksmithCommands INSTANCE = new BlacksmithCommands();
 
 	private BlacksmithCommands() {
@@ -40,7 +41,8 @@ public class BlacksmithCommands implements CommandHandler {
 	@ServerCommand()
 	public static void blacksmithHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		HelpUtils.sendBlacksmithHelp(sender);
+		NPCTypeManager.getType("blacksmith").getCommands()
+				.sendHelpPage(sender, 1);
 	}
 
 	@Command(
@@ -85,5 +87,13 @@ public class BlacksmithCommands implements CommandHandler {
 		CitizensManager.addPermission("blacksmith.use.help");
 		CitizensManager.addPermission("blacksmith.use.status");
 		CitizensManager.addPermission("blacksmith.use.repair");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Blacksmith", 1, 1);
+		HelpUtils.format(sender, "blacksmith", "status",
+				"view the status of your in-hand item");
+		HelpUtils.footer(sender);
 	}
 }

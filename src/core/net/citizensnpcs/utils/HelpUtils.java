@@ -187,7 +187,7 @@ public class HelpUtils {
 	 * @param page
 	 * @param maxPages
 	 */
-	private static void header(CommandSender sender, String npcType, int page,
+	public static void header(CommandSender sender, String npcType, int page,
 			int maxPages) {
 		sender.sendMessage(ChatColor.YELLOW
 				+ StringUtils.listify(ChatColor.GREEN + "Citizens " + npcType
@@ -203,7 +203,7 @@ public class HelpUtils {
 	 * @param args
 	 * @param desc
 	 */
-	private static void format(CommandSender sender, String command,
+	public static void format(CommandSender sender, String command,
 			String args, String desc) {
 		String message = "";
 		if (args.isEmpty()) {
@@ -221,7 +221,7 @@ public class HelpUtils {
 	 * 
 	 * @param sender
 	 */
-	private static void footer(CommandSender sender) {
+	public static void footer(CommandSender sender) {
 		sender.sendMessage(ChatColor.DARK_GRAY
 				+ StringUtils.listify("Coded by fullwall and aPunch"));
 	}

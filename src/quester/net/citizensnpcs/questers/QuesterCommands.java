@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -26,7 +27,7 @@ import org.bukkit.entity.Player;
 		requireSelected = true,
 		requireOwnership = true,
 		requiredType = "quester")
-public class QuesterCommands implements CommandHandler {
+public class QuesterCommands extends CommandHandler {
 	public static final QuesterCommands INSTANCE = new QuesterCommands();
 
 	private QuesterCommands() {
@@ -44,7 +45,7 @@ public class QuesterCommands implements CommandHandler {
 	@CommandPermissions("quester.use.help")
 	public static void questerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendQuesterHelp(sender);
+		NPCTypeManager.getType("quester").getCommands().sendHelpPage(sender, 1);
 	}
 
 	@Command(
@@ -141,7 +142,7 @@ public class QuesterCommands implements CommandHandler {
 	@CommandPermissions("quester.use.help")
 	public static void questHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		HelpUtils.sendQuestHelp(sender);
+		sendQuestHelp(sender);
 	}
 
 	@CommandRequirements()
@@ -239,5 +240,27 @@ public class QuesterCommands implements CommandHandler {
 		CitizensManager.addPermission("quester.modify.removequest");
 		CitizensManager.addPermission("quester.use.status");
 		CitizensManager.addPermission("quester.use.abort");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender, int page) {
+		HelpUtils.header(sender, "Quester", 1, 1);
+		HelpUtils.format(sender, "quest", "help",
+				"see more commands for quests");
+		HelpUtils.format(sender, "quester", "assign [quest]",
+				"assign a quest to an NPC");
+		HelpUtils.format(sender, "quester", "remove [quest]",
+				"remove a quest from an NPC");
+		HelpUtils.footer(sender);
+	}
+
+	private static void sendQuestHelp(CommandSender sender) {
+		HelpUtils.header(sender, "Quests", 1, 1);
+		HelpUtils.format(sender, "quest", "status",
+				"view your current quest status");
+		HelpUtils.format(sender, "quest", "completed (page)",
+				"view your completed quests");
+		HelpUtils.format(sender, "quest", "abort", "abort your current quest");
+		HelpUtils.footer(sender);
 	}
 }
