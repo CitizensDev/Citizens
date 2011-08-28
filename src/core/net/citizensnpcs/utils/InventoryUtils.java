@@ -1,6 +1,6 @@
 package net.citizensnpcs.utils;
 
-import net.citizensnpcs.api.events.NPCInventoryOpenEvent;
+import net.citizensnpcs.api.event.npc.NPCInventoryOpenEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Material;

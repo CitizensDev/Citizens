@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCListener;
-import net.citizensnpcs.api.events.NPCToggleTypeEvent;
+import net.citizensnpcs.api.event.npc.NPCListener;
+import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
 import net.citizensnpcs.wizards.Wizard;
 import net.citizensnpcs.wizards.WizardTask;
 

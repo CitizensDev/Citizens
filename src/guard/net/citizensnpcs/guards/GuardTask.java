@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.misc.NPCLocation;
 import net.citizensnpcs.npcs.NPCManager;

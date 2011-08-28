@@ -8,7 +8,7 @@ import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.events.NPCToggleTypeEvent;
+import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
