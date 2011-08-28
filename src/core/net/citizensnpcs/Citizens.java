@@ -13,10 +13,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import net.citizensnpcs.api.CitizensNPCType;
-import net.citizensnpcs.api.events.CitizensDisableEvent;
-import net.citizensnpcs.api.events.CitizensEnableEvent;
-import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
+import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;

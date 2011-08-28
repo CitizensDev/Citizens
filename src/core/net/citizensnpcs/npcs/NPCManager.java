@@ -5,9 +5,9 @@ import java.util.Map;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCCreateEvent;
-import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCList;

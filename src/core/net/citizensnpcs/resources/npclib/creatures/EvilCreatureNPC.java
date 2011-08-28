@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.InventoryUtils;

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;

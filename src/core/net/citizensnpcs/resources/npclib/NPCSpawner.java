@@ -1,7 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
-import net.citizensnpcs.api.events.NPCRemoveEvent;
-import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.minecraft.server.ItemInWorldManager;

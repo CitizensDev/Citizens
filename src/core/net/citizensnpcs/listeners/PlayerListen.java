@@ -3,7 +3,7 @@ package net.citizensnpcs.listeners;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.events.NPCTargetEvent;
+import net.citizensnpcs.api.event.npc.NPCTargetEvent;
 import net.citizensnpcs.npcs.NPCDataManager;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;

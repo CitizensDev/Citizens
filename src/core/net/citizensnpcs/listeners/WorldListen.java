@@ -3,8 +3,8 @@ package net.citizensnpcs.listeners;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.events.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.events.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.misc.NPCLocation;
 import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
