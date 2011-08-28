@@ -97,9 +97,13 @@ public class NPCManager {
 
 	// Despawns all NPCs.
 	public static void despawnAll(NPCRemoveReason reason) {
-		for (Integer i : GlobalUIDs.keySet()) {
+		for (int i : GlobalUIDs.keySet()) {
 			despawn(i, reason);
 		}
+	}
+
+	public static void safeDespawn(HumanNPC npc) {
+		NPCSpawner.despawnNPC(npc, NPCRemoveReason.UNLOAD);
 	}
 
 	// Removes an NPC.
@@ -110,7 +114,7 @@ public class NPCManager {
 
 	// Removes all NPCs.
 	public static void removeAll(NPCRemoveReason reason) {
-		for (Integer i : GlobalUIDs.keySet()) {
+		for (int i : GlobalUIDs.keySet()) {
 			remove(i, reason);
 		}
 	}
@@ -156,10 +160,6 @@ public class NPCManager {
 	public static void setColour(int UID, String owner) {
 		removeForRespawn(UID);
 		register(UID, owner, NPCCreateReason.RESPAWN);
-	}
-
-	public static void safeDespawn(HumanNPC npc) {
-		NPCSpawner.despawnNPC(npc, NPCRemoveReason.UNLOAD);
 	}
 
 	// Spawns a new NPC and registers it.

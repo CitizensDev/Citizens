@@ -119,8 +119,7 @@ public class Citizens extends JavaPlugin {
 						setupNPCs();
 					}
 				}) == -1) {
-			Messaging
-					.log("Issue with scheduled loading of pre-existing NPCs. There may be a multiworld error.");
+			Messaging.log("Issue with multiworld scheduling.");
 			setupNPCs();
 		}
 
@@ -150,7 +149,8 @@ public class Citizens extends JavaPlugin {
 		PropertyManager.saveState();
 		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
 		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
-		// call disable event
+
+		// Call disable event
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensDisableEvent());
 

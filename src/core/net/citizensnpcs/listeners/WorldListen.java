@@ -28,14 +28,16 @@ public class WorldListen extends WorldListener implements Listener {
 	@Override
 	public void registerEvents(Citizens plugin) {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvent(Type.CHUNK_UNLOAD, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.CHUNK_LOAD, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.CHUNK_UNLOAD, this, Priority.Monitor, plugin);
+		pm.registerEvent(Type.CHUNK_LOAD, this, Priority.Monitor, plugin);
 	}
 
 	@Override
 	public void onChunkUnload(ChunkUnloadEvent event) {
+		if (event.isCancelled())
+			return;
 		// Stores NPC location/name for later respawn.
-		for (Integer entry : NPCManager.GlobalUIDs.keySet()) {
+		for (int entry : NPCManager.GlobalUIDs.keySet()) {
 			HumanNPC npc = NPCManager.get(entry);
 			if (event.getChunk().getX() == npc.getChunkX()
 					&& event.getChunk().getZ() == npc.getChunkZ()) {
