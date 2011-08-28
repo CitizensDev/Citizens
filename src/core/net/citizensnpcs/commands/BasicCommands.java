@@ -680,7 +680,7 @@ public class BasicCommands implements CommandHandler {
 	public static void select(CommandContext args, Player player, HumanNPC npc) {
 		npc = NPCManager.get(args.getInteger(1));
 		if (npc == null) {
-			player.sendMessage(ChatColor.RED + "No NPC with the ID "
+			player.sendMessage(ChatColor.RED + "No NPC with ID "
 					+ StringUtils.wrap(args.getString(1), ChatColor.RED)
 					+ " exists.");
 		} else {

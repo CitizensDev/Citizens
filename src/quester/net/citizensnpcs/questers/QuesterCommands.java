@@ -82,7 +82,7 @@ public class QuesterCommands implements CommandHandler {
 			modifiers = "remove",
 			min = 2,
 			max = 2)
-	@CommandPermissions("quester.modify.removequest")
+	@CommandPermissions("quester.modify.assignquest")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		Quester quester = npc.getType("quester");
 		if (!quester.hasQuest(args.getString(1))) {
@@ -96,6 +96,52 @@ public class QuesterCommands implements CommandHandler {
 				+ StringUtils.wrap(npc.getName()) + "'s quests. "
 				+ StringUtils.wrap(npc.getName()) + " now has "
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
+	}
+
+	@Command(
+			aliases = "quester",
+			usage = "quests (page)",
+			desc = "view the assigned quests of a quester",
+			modifiers = "quests",
+			min = 1,
+			max = 2)
+	@CommandPermissions("quester.modify.assignquest")
+	public static void quests(CommandContext args, Player player, HumanNPC npc) {
+		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
+		if (page < 0)
+			page = 1;
+		PageInstance instance = PageUtils.newInstance(player);
+		Quester quester = npc.getType("quester");
+		instance.header(ChatColor.GREEN
+				+ StringUtils.listify("Completed Quests " + ChatColor.WHITE
+						+ "<%x/%y>" + ChatColor.GREEN));
+		for (String quest : quester.getQuests()) {
+			if (instance.maxPages() > page)
+				break;
+			instance.push(ChatColor.GREEN + "   - " + StringUtils.wrap(quest));
+		}
+		if (page > instance.maxPages()) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Invalid page entered. There are only "
+					+ instance.maxPages() + " pages.");
+			return;
+		}
+		instance.process(page);
+	}
+
+	@CommandRequirements()
+	@ServerCommand()
+	@Command(
+			aliases = "quest",
+			usage = "help",
+			desc = "view the quests help page",
+			modifiers = "help",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.use.help")
+	public static void questHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		HelpUtils.sendQuestHelp(sender);
 	}
 
 	@CommandRequirements()

@@ -111,6 +111,8 @@ public class HelpUtils {
 		format(sender, "guard", "flags [-g,m,p] (page)", "view a guard's flags");
 		format(sender, "guard", "addflag (-i [priority]) [target] (-a,g,m,p)",
 				"add a flag to a guard");
+		format(sender, "guard", "delflag [name] [-g,m,p] (-a)",
+				"delete a flag from a guard");
 		format(sender, "guard", "radius [amount]",
 				"set the radius of a bouncer's zone");
 		format(sender, "guard", "aggro", "toggle aggro");
@@ -133,18 +135,25 @@ public class HelpUtils {
 		footer(sender);
 	}
 
+	public static void sendQuestHelp(CommandSender sender) {
+		header(sender, "Quests", 1, 1);
+		format(sender, "quest", "status", "view your current quest status");
+		format(sender, "quest", "completed (page)",
+				"view your completed quests");
+		format(sender, "quest", "abort", "abort your current quest");
+		footer(sender);
+	}
+
 	public static void sendTraderHelp(CommandSender sender) {
 		header(sender, "Trader", 1, 1);
 		format(sender, "trader", "list [buy|sell] (page)",
 				"list a trader's buy/sell list");
-		format(sender, "trader",
-				"[buy|sell] [itemID(:amount:data)] [itemID(:amount:data)]",
+		format(sender, "trader", "[buy|sell] [itemID(:amount:data)] [price]",
 				"add an item to a trader's stock");
 		format(sender, "trader", "[buy|sell] remove [itemID:data]",
 				"remove item from a trader's stock");
-		format(sender,
-				"trader",
-				"[buy|sell] edit [itemID(:amount:data)] [itemID(:amount:data)]",
+		format(sender, "trader",
+				"[buy|sell] edit [itemID(:amount:data)] [price]",
 				"edit a trader's stock");
 		format(sender, "trader", "unlimited",
 				"set whether a trader has unlimited stock");
