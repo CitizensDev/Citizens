@@ -110,19 +110,6 @@ public class Citizens extends JavaPlugin {
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(), 0, 1);
 
-		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
-		// loaded -> gives multiworld support.
-		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
-				new Runnable() {
-					@Override
-					public void run() {
-						setupNPCs();
-					}
-				}) == -1) {
-			Messaging.log("Issue with multiworld scheduling.");
-			setupNPCs();
-		}
-
 		if (SettingsManager.getBoolean("UseSaveTask")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
@@ -135,12 +122,28 @@ public class Citizens extends JavaPlugin {
 					}, SettingsManager.getInt("SavingDelay"),
 					SettingsManager.getInt("SavingDelay"));
 		}
-		// Call enable event, can be used for initialization of type-specific
-		// things.
-		Bukkit.getServer().getPluginManager()
-				.callEvent(new CitizensEnableEvent());
 
 		Messaging.log("version [" + getVersion() + "] loaded.");
+
+		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
+		// loaded -> gives multiworld support.
+		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
+				new Runnable() {
+					@Override
+					public void run() {
+						setupNPCs();
+						// Call enable event, can be used for initialization of
+						// type-specific things.
+						Bukkit.getServer().getPluginManager()
+								.callEvent(new CitizensEnableEvent());
+					}
+				}) == -1) {
+			Messaging
+					.log("Issue with multiworld scheduling, disabling plugin.");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 	}
 
 	@Override
