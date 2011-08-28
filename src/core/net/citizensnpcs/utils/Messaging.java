@@ -45,7 +45,7 @@ public class Messaging {
 	public static void log(Object... messages) {
 		StringBuilder builder = new StringBuilder();
 		for (Object string : messages) {
-			builder.append(string.toString() + " ");
+			builder.append(string == null ? "null " : string.toString() + " ");
 		}
 		log(builder.toString(), Level.INFO);
 	}

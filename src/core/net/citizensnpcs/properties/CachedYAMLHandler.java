@@ -12,6 +12,8 @@ import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.util.config.Configuration;
 
+import com.google.common.collect.Lists;
+
 public class CachedYAMLHandler implements Storage {
 	private final SettingsTree tree = new SettingsTree();
 	private final Configuration config;
@@ -293,17 +295,26 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	public List<String> getKeys(String path) {
-		return this.config.getKeys(path);
+		if (path == null)
+			path = "";
+		List<String> keys = Lists.newArrayList();
+		for (String key : this.tree.getTree().keySet()) {
+			if (key.startsWith(path) && key.length() > path.length()) {
+				key = key.replace(path, "");
+				int index = key.contains(".") ? key.indexOf('.') : key.length();
+				keys.add(key.substring(0, index));
+				Messaging.log(key.substring(0, index));
+			}
+		}
+		return keys;
 	}
 
 	public List<Integer> getIntegerKeys(String path) {
-		load();
 		List<Integer> ret = new ArrayList<Integer>();
 		for (String str : getKeys(path)) {
 			try {
-				ret.add(Integer.parseInt(str.replace("'", "")));
+				ret.add(Integer.parseInt(str));
 			} catch (NumberFormatException ex) {
-
 			}
 		}
 		return ret;

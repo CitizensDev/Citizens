@@ -177,6 +177,11 @@ public class QuesterCommands implements CommandHandler {
 			HumanNPC npc) {
 		player.shootArrow();
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (profile.getAllCompleted().size() == 0) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You haven't completed any quests yet.");
+			return;
+		}
 		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
 		if (page < 0)
 			page = 1;
