@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class WaypointCommands extends CommandHandler {
-	
+
 	@Command(
 			aliases = { "wp", "waypoint" },
 			usage = "modifier [type]",
@@ -33,9 +33,8 @@ public class WaypointCommands extends CommandHandler {
 					+ "You must be editing your NPC's path.");
 			return;
 		}
-		String type = args.getString(2);
-		WaypointModifierType modifier = WaypointModifierType.value(type
-				.toUpperCase());
+		WaypointModifierType modifier = WaypointModifierType.value(args
+				.getString(1).toUpperCase());
 		if (modifier == null) {
 			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
 			return;

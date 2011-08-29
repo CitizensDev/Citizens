@@ -124,10 +124,7 @@ public class Guard extends CitizensNPC {
 
 	@Override
 	public void onDeath(EntityDeathEvent event) {
-		if (!(event.getEntity() instanceof HumanNPC)) {
-			return;
-		}
-		HumanNPC npc = (HumanNPC) event.getEntity();
+		HumanNPC npc = NPCManager.get(event.getEntity());
 		Player player = Bukkit.getServer().getPlayer(npc.getOwner());
 		if (player != null) {
 			player.sendMessage(ChatColor.GRAY + "Your guard NPC "

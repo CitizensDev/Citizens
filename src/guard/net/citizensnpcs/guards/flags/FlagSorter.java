@@ -9,6 +9,7 @@ import java.util.Map;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
+import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -138,7 +139,8 @@ public class FlagSorter {
 		List<LivingEntity> processed = Lists.newArrayList();
 		FlagInfo retrieved = null;
 		for (LivingEntity entity : toProcess) {
-			if (CreatureTask.getCreature(entity) != null) {
+			if (NPCManager.isNPC(entity)) {
+			} else if (CreatureTask.getCreature(entity) != null) {
 				retrieved = get(getByType(MOBS), StringUtils.format(
 						CreatureTask.getCreature(entity).getType(), false));
 			} else if (entity instanceof Player) {
