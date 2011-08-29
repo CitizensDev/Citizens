@@ -15,9 +15,10 @@ public class Blacksmith extends CitizensNPC {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (PermissionManager.generic(player, "citizens.blacksmith.use.repair")) {
 			String repairType = "";
-			if (InventoryUtils.isTool(player.getItemInHand())) {
+			if (InventoryUtils.isTool(player.getItemInHand().getTypeId())) {
 				repairType = "toolrepair";
-			} else if (InventoryUtils.isArmor(player.getItemInHand())) {
+			} else if (InventoryUtils.isArmor(player.getItemInHand()
+					.getTypeId())) {
 				repairType = "armorrepair";
 			}
 			if (!repairType.isEmpty()) {

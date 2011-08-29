@@ -56,9 +56,9 @@ public class BlacksmithCommands extends CommandHandler {
 	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		ItemStack item = player.getItemInHand();
 		String repairType = "";
-		if (InventoryUtils.isArmor(item)) {
+		if (InventoryUtils.isArmor(item.getTypeId())) {
 			repairType = "armorrepair";
-		} else if (InventoryUtils.isTool(item)) {
+		} else if (InventoryUtils.isTool(item.getTypeId())) {
 			repairType = "toolrepair";
 		} else {
 			Messaging.sendError(player,

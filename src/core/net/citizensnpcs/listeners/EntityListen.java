@@ -102,7 +102,7 @@ public class EntityListen extends EntityListener implements Listener {
 					player);
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
 			if (!rightClickEvent.isCancelled()) {
-				NPCDataManager.handleEquip(rightClickEvent);
+				NPCDataManager.handleEquipmentEditor(rightClickEvent);
 				if (npc.getWaypoints().isStarted()
 						&& npc.getWaypoints().current() != null) {
 					npc.getWaypoints().scheduleDelay(npc,

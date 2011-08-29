@@ -39,16 +39,14 @@ public class InventoryUtils {
 	}
 
 	// Get that an item is a tool
-	public static boolean isTool(ItemStack item) {
-		int id = item.getTypeId();
+	public static boolean isTool(int id) {
 		return (id >= 256 && id <= 259) || (id >= 267 && id <= 279)
 				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
 				|| id == 346 || id == 359;
 	}
 
 	// Get if an item is armor
-	public static boolean isArmor(ItemStack armor) {
-		int id = armor.getTypeId();
+	public static boolean isArmor(int id) {
 		return id >= 298 && id <= 317;
 	}
 

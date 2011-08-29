@@ -273,7 +273,8 @@ public class TraderTask implements Runnable {
 			boolean selling) {
 		// durability needs to be reset to 0 for tools / weapons / armor
 		short durability = item.getDurability();
-		if (InventoryUtils.isTool(item) || InventoryUtils.isArmor(item)) {
+		if (InventoryUtils.isTool(item.getTypeId())
+				|| InventoryUtils.isArmor(item.getTypeId())) {
 			durability = 0;
 		}
 		Trader trader = npc.getType("trader");

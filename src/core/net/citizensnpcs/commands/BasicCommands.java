@@ -554,29 +554,32 @@ public class BasicCommands extends CommandHandler {
 			max = 1)
 	@CommandPermissions("basic.modify.equip")
 	public static void equip(CommandContext args, Player player, HumanNPC npc) {
-		Integer editing = NPCDataManager.armorEditors.get(player.getName());
+		Integer editing = NPCDataManager.equipmentEditors.get(player.getName());
 		int UID = npc.getUID();
 		if (editing == null) {
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap("Now Editing "
 							+ npc.getStrippedName() + "'s Items")));
 			player.sendMessage(StringUtils.wrap("Right-click")
-					+ " to set an NPC's armor to the item in your hand.");
+					+ " to set an NPC's equipment.");
 			player.sendMessage(ChatColor.GREEN
 					+ "Hold nothing in your hand to remove "
 					+ StringUtils.wrap("all") + " items.");
+			player.sendMessage(StringUtils.wrap("Sneak")
+					+ " to set the item-in-hand to armor.");
 			player.sendMessage(StringUtils.wrap("Repeat")
 					+ " the command to exit item-edit mode.");
 			editing = UID;
 		} else if (editing == UID) {
 			player.sendMessage(StringUtils.wrap("Exited") + " item-edit mode.");
+			NPCDataManager.equipmentEditors.remove(player.getName());
 			editing = null;
 		} else if (editing != UID) {
 			player.sendMessage(ChatColor.GRAY + "Now editing "
 					+ StringUtils.wrap(npc.getStrippedName()) + "'s items.");
 			editing = UID;
 		}
-		NPCDataManager.armorEditors.put(player.getName(), editing);
+		NPCDataManager.equipmentEditors.put(player.getName(), editing);
 	}
 
 	@Command(
@@ -702,6 +705,7 @@ public class BasicCommands extends CommandHandler {
 			} else if (editing == UID) {
 				player.sendMessage(StringUtils.wrap("Finished")
 						+ " editing waypoints.");
+				NPCDataManager.pathEditors.remove(player.getName());
 				editing = null;
 				npc.setPaused(false);
 			} else if (editing != UID) {

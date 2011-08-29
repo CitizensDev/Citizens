@@ -1,6 +1,7 @@
 package net.citizensnpcs.npcs;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
@@ -23,24 +24,25 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 
 public class NPCDataManager {
 	public static final Map<String, Integer> pathEditors = Maps.newHashMap();
-	public static final Map<String, Integer> armorEditors = Maps.newHashMap();
+	public static final Map<String, Integer> equipmentEditors = Maps
+			.newHashMap();
 	public static final Map<Integer, Deque<String>> NPCTexts = new MapMaker()
 			.makeMap();
 	public static final Map<String, Integer> selectedNPCs = new MapMaker()
 			.makeMap();
 
-	public static void handleEquip(NPCRightClickEvent event) {
+	public static void handleEquipmentEditor(NPCRightClickEvent event) {
 		Player player = event.getPlayer();
-		if (armorEditors.get(player.getName()) != null) {
-			HumanNPC npc = NPCManager.get(armorEditors.get(player.getName()));
+		if (equipmentEditors.get(player.getName()) != null) {
+			HumanNPC npc = NPCManager
+					.get(equipmentEditors.get(player.getName()));
 			if (npc == null) {
-				armorEditors.remove(player.getName());
+				equipmentEditors.remove(player.getName());
 				player.sendMessage(ChatColor.GRAY
 						+ "Something went wrong (NPC is dead?).");
 				return;
@@ -50,101 +52,116 @@ public class NPCDataManager {
 	}
 
 	// equip an NPC based on a player's item-in-hand
-	// TODO needs to be cleaned up badly
 	@SuppressWarnings("deprecation")
 	private static void equip(Player player, HumanNPC npc) {
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory inv = player.getInventory();
-		PlayerInventory npcInv = npc.getInventory();
-		ItemStack npcHelmet = npcInv.getHelmet();
-		ItemStack npcChestplate = npcInv.getChestplate();
-		ItemStack npcLeggings = npcInv.getLeggings();
-		ItemStack npcBoots = npcInv.getBoots();
-		ItemStack npcHand = npcInv.getItemInHand();
+		List<Integer> items = new ArrayList<Integer>();
+		items.add(npc.getInventory().getItemInHand().getTypeId());
+		for (ItemStack i : npc.getInventory().getArmorContents()) {
+			items.add(i.getTypeId());
+		}
+		boolean success = false;
 		if (player.getItemInHand().getType() == Material.AIR) {
-			if (npcHelmet.getType() != Material.AIR) {
-				inv.addItem(npcHelmet);
+			for (int i = 0; i < items.size(); i++) {
+				if (items.get(i) != 0) {
+					inv.addItem(new ItemStack(items.get(i), 1));
+					items.set(i, 0);
+					player.updateInventory();
+				}
 			}
-			if (npcChestplate.getType() != Material.AIR) {
-				inv.addItem(npcChestplate);
-			}
-			if (npcLeggings.getType() != Material.AIR) {
-				inv.addItem(npcLeggings);
-			}
-			if (npcBoots.getType() != Material.AIR) {
-				inv.addItem(npcBoots);
-			}
-			if (npcHand.getType() != Material.AIR) {
-				inv.addItem(npcHand);
-			}
-			player.updateInventory();
-			npcInv.setItemInHand(null);
-			npcInv.setArmorContents(null);
-			npc.getNPCData().setItems(Lists.newArrayList(0, 0, 0, 0, 0));
-
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
+			success = true;
+		} else {
+			int itemID = hand.getTypeId();
+			String error = npc.getStrippedName() + " is already equipped with "
+					+ MessageUtils.getMaterialName(itemID) + ".";
+			String slot = "";
+			if (player.isSneaking()) {
+				if (Material.getMaterial(items.get(0)) == Material
+						.getMaterial(itemID)) {
+					Messaging.sendError(player, error);
+					return;
+				}
+				items.set(0, itemID);
+				if (npc.getInventory().getItemInHand().getType() != Material.AIR) {
+					inv.addItem(npc.getInventory().getItemInHand());
+				}
+				slot = "item-in-hand";
+			} else {
+				if (InventoryUtils.isHelmet(itemID)) {
+					if (Material.getMaterial(items.get(1)) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
+					}
+					slot = "helmet";
+					if (npc.getInventory().getBoots().getType() != Material.AIR) {
+						inv.addItem(npc.getInventory().getHelmet());
+					}
+					items.set(1, itemID);
+				} else if (InventoryUtils.isChestplate(itemID)) {
+					if (Material.getMaterial(items.get(2)) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
+					}
+					slot = "chestplate";
+					if (npc.getInventory().getChestplate().getType() != Material.AIR) {
+						inv.addItem(npc.getInventory().getChestplate());
+					}
+					items.set(2, itemID);
+				} else if (InventoryUtils.isLeggings(itemID)) {
+					if (Material.getMaterial(items.get(3)) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
+					}
+					slot = "leggings";
+					if (npc.getInventory().getLeggings().getType() != Material.AIR) {
+						inv.addItem(npc.getInventory().getLeggings());
+					}
+					items.set(3, itemID);
+				} else if (InventoryUtils.isBoots(itemID)) {
+					if (Material.getMaterial(items.get(4)) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
+					}
+					slot = "boots";
+					if (npc.getInventory().getBoots().getType() != Material.AIR) {
+						inv.addItem(npc.getInventory().getBoots());
+					}
+					items.set(4, itemID);
+				} else {
+					if (Material.getMaterial(items.get(0)) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
+					}
+					items.set(0, itemID);
+					if (npc.getInventory().getItemInHand().getType() != Material.AIR) {
+						inv.addItem(npc.getInventory().getItemInHand());
+					}
+					slot = "item-in-hand";
+				}
+			}
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
+					+ slot + " was set to "
+					+ StringUtils.wrap(MessageUtils.getMaterialName(itemID))
+					+ ".");
+			success = true;
+		}
+		InventoryUtils.decreaseItemInHand(player);
 
+		if (success) {
+			npc.getNPCData().setItems(items);
+			addItems(npc, items);
 			NPCManager.removeForRespawn(npc.getUID());
 			NPCManager.register(npc.getUID(), npc.getOwner(),
 					NPCCreateReason.RESPAWN);
-			return;
 		}
-		int itemID = hand.getTypeId();
-		ItemStack equip = new ItemStack(itemID, 1);
-		String slot = "";
-		String error = npc.getStrippedName() + " is already holding "
-				+ MessageUtils.getMaterialName(itemID) + ".";
-		if (InventoryUtils.isHelmet(itemID)) {
-			if (npcHelmet.getType() == Material.getMaterial(itemID)) {
-				Messaging.sendError(player, error);
-				return;
-			}
-			slot = "helmet";
-			npcInv.setHelmet(equip);
-		} else if (InventoryUtils.isChestplate(itemID)) {
-			if (npcChestplate.getType() == Material.getMaterial(itemID)) {
-				Messaging.sendError(player, error);
-				return;
-			}
-			slot = "chestplate";
-			npcInv.setChestplate(equip);
-		} else if (InventoryUtils.isLeggings(itemID)) {
-			if (npcLeggings.getType() == Material.getMaterial(itemID)) {
-				Messaging.sendError(player, error);
-				return;
-			}
-			slot = "leggings";
-			npcInv.setLeggings(equip);
-		} else if (InventoryUtils.isBoots(itemID)) {
-			if (npcBoots.getType() == Material.getMaterial(itemID)) {
-				Messaging.sendError(player, error);
-				return;
-			}
-			slot = "boots";
-			npcInv.setBoots(equip);
-		} else {
-			if (npcHand.getType() == Material.getMaterial(itemID)) {
-				Messaging.sendError(player, error);
-				return;
-			}
-			npcInv.setItemInHand(equip);
-			slot = "item-in-hand";
-		}
-		InventoryUtils.decreaseItemInHand(player);
-		npc.getNPCData().setItems(
-				Lists.newArrayList(npcInv.getItemInHand().getTypeId(), npcInv
-						.getHelmet().getTypeId(), npcInv.getChestplate()
-						.getTypeId(), npcInv.getLeggings().getTypeId(), npcInv
-						.getBoots().getTypeId()));
-
-		NPCManager.removeForRespawn(npc.getUID());
-		NPCManager.register(npc.getUID(), npc.getOwner(),
-				NPCCreateReason.RESPAWN);
-
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
-				+ slot + " was set to "
-				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
@@ -219,6 +236,7 @@ public class NPCDataManager {
 	// Adds items to an npc so that they are visible.
 	public static void addItems(HumanNPC npc, List<Integer> items) {
 		if (items != null) {
+			Material matHand = Material.getMaterial(items.get(0));
 			Material matHelm = Material.getMaterial(items.get(1));
 			Material matTorso = Material.getMaterial(items.get(2));
 			Material matLegs = Material.getMaterial(items.get(3));
@@ -226,7 +244,11 @@ public class NPCDataManager {
 
 			PlayerInventory npcInv = npc.getInventory();
 
-			// TODO: reduce the long if-tree.
+			if (matHand != null && matHand != Material.AIR) {
+				npcInv.setItemInHand(new ItemStack(matHand, 1));
+			} else {
+				npcInv.setItemInHand(null);
+			}
 			if (matHelm != null && matHelm != Material.AIR) {
 				npcInv.setHelmet(new ItemStack(matHelm, 1));
 			} else {
