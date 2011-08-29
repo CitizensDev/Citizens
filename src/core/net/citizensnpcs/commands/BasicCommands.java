@@ -1,7 +1,6 @@
 package net.citizensnpcs.commands;
 
 import java.util.ArrayDeque;
-import java.util.List;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
@@ -26,7 +25,6 @@ import net.citizensnpcs.resources.sk89q.CommandPermissions;
 import net.citizensnpcs.resources.sk89q.CommandRequirements;
 import net.citizensnpcs.resources.sk89q.ServerCommand;
 import net.citizensnpcs.utils.HelpUtils;
-import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.ServerUtils;
@@ -35,13 +33,11 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands extends CommandHandler {
@@ -123,6 +119,7 @@ public class BasicCommands extends CommandHandler {
 				+ "] Reloading....");
 
 		UtilityProperties.initialize();
+		PropertyManager.saveState();
 		PropertyManager.loadAll();
 		SettingsManager.setupVariables();
 
@@ -550,71 +547,38 @@ public class BasicCommands extends CommandHandler {
 
 	@Command(
 			aliases = "npc",
-			usage = "item [item]",
-			desc = "set the item in an NPC's hand",
-			modifiers = "item",
-			min = 2,
-			max = 2)
-	@CommandPermissions("basic.modify.item")
-	public static void item(CommandContext args, Player player, HumanNPC npc) {
-		NPCDataManager.setItemInHand(player, npc, args.getString(1));
+			usage = "equip",
+			desc = "toggle equip mode",
+			modifiers = "equip",
+			min = 1,
+			max = 1)
+	@CommandPermissions("basic.modify.equip")
+	public static void equip(CommandContext args, Player player, HumanNPC npc) {
+		Integer editing = NPCDataManager.armorEditors.get(player.getName());
+		int UID = npc.getUID();
+		if (editing == null) {
+			player.sendMessage(ChatColor.GREEN
+					+ StringUtils.listify(StringUtils.wrap("Now Editing "
+							+ npc.getStrippedName() + "'s Items")));
+			player.sendMessage(StringUtils.wrap("Right-click")
+					+ " to set an NPC's armor to the item in your hand.");
+			player.sendMessage(ChatColor.GREEN
+					+ "Hold nothing in your hand to remove "
+					+ StringUtils.wrap("all") + " items.");
+			player.sendMessage(StringUtils.wrap("Repeat")
+					+ " the command to exit item-edit mode.");
+			editing = UID;
+		} else if (editing == UID) {
+			player.sendMessage(StringUtils.wrap("Exited") + " item-edit mode.");
+			editing = null;
+		} else if (editing != UID) {
+			player.sendMessage(ChatColor.GRAY + "Now editing "
+					+ StringUtils.wrap(npc.getStrippedName()) + "'s items.");
+			editing = UID;
+		}
+		NPCDataManager.armorEditors.put(player.getName(), editing);
 	}
 
-	@Command(
-			aliases = "npc",
-			usage = "armor [armor] [item]",
-			desc = "set the armor of an NPC",
-			modifiers = "armor",
-			min = 3,
-			max = 3)
-	@CommandPermissions("basic.modify.armor")
-	public static void armor(CommandContext args, Player player, HumanNPC npc) {
-		Material mat = StringUtils.parseMaterial(args.getString(2));
-		if (mat == null) {
-			player.sendMessage(ChatColor.RED + "Invalid item.");
-			return;
-		}
-		if (mat != Material.AIR && !player.getInventory().contains(mat)) {
-			player.sendMessage(ChatColor.RED
-					+ "You need to have the item in your inventory to add it to the NPC.");
-			return;
-		}
-		if ((mat.getId() < 298 || mat.getId() > 317)
-				&& (mat.getId() != 86 && mat.getId() != 91)) {
-			player.sendMessage(ChatColor.GRAY
-					+ "That can't be used as an armor material.");
-			return;
-		}
-		int slot = player.getInventory().first(mat);
-		ItemStack item = InventoryUtils.decreaseItemStack(player.getInventory()
-				.getItem(slot));
-		player.getInventory().setItem(slot, item);
-		List<Integer> items = npc.getNPCData().getItems();
-
-		if (args.getString(1).contains("helm")) {
-			items.set(1, mat.getId());
-		} else if (args.getString(1).equalsIgnoreCase("torso")) {
-			items.set(2, mat.getId());
-		} else if (args.getString(1).contains("leg")) {
-			items.set(3, mat.getId());
-		} else if (args.getString(1).contains("boot")) {
-			items.set(4, mat.getId());
-		}
-		npc.getNPCData().setItems(items);
-		NPCDataManager.addItems(npc, items);
-
-		// Despawn the old NPC, register our new one.
-		NPCManager.removeForRespawn(npc.getUID());
-		NPCManager.register(npc.getUID(), npc.getOwner(),
-				NPCCreateReason.RESPAWN);
-
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-				+ "'s armor was set to "
-				+ StringUtils.wrap(MessageUtils.getMaterialName(mat.getId()))
-				+ ".");
-	}
-
-	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
 			aliases = "npc",
 			usage = "tp",
@@ -815,8 +779,7 @@ public class BasicCommands extends CommandHandler {
 		CitizensManager.addPermission("basic.modify.addtext");
 		CitizensManager.addPermission("basic.modify.resettext");
 		CitizensManager.addPermission("basic.modify.settext");
-		CitizensManager.addPermission("basic.modify.item");
-		CitizensManager.addPermission("basic.modify.armor");
+		CitizensManager.addPermission("basic.modify.equip");
 		CitizensManager.addPermission("basic.use.teleport");
 		CitizensManager.addPermission("basic.modify.talkclose");
 		CitizensManager.addPermission("basic.modify.lookat");

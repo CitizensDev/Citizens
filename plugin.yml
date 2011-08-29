@@ -138,8 +138,7 @@ permissions:
             citizens.basic.modify.settext: true
             citizens.basic.modify.addtext: true
             citizens.basic.modify.resettext: true
-            citizens.basic.modify.armor: true
-            citizens.basic.modify.item: true
+            citizens.basic.modify.equip: true
             citizens.basic.modify.lookat: true
             citizens.basic.modify.talkclose: true
             citizens.basic.modify.setowner: true

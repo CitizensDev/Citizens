@@ -12,11 +12,7 @@ import org.bukkit.entity.Player;
 
 public class ServerUtils {
 
-	/**
-	 * Get a player object from the provided name
-	 * 
-	 * @param name
-	 */
+	// Get a player object from the provided name
 	public static Player matchPlayer(String name) {
 		List<Player> players = Bukkit.getServer().matchPlayer(name);
 		if (!players.isEmpty()) {
@@ -27,12 +23,8 @@ public class ServerUtils {
 		return null;
 	}
 
-	/**
-	 * Check the Citizens thread on the Bukkit forums if there is a new version
-	 * available
-	 * 
-	 * @param player
-	 */
+	// Check the Citizens thread on the Bukkit forums if there is a new version
+	// available
 	public static void checkForUpdates(Player player) {
 		try {
 			URI baseURI = new URI("http://forums.bukkit.org/threads/7173/");

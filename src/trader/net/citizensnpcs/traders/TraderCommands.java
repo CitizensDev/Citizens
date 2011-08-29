@@ -393,13 +393,14 @@ public class TraderCommands extends CommandHandler {
 		CitizensManager.addPermission("trader.modify.stock");
 		CitizensManager.addPermission("trader.use.trade");
 	}
-	
+
 	@Override
 	public void sendHelpPage(CommandSender sender, int page) {
 		HelpUtils.header(sender, "Trader", 1, 1);
 		HelpUtils.format(sender, "trader", "list [buy|sell] (page)",
 				"list a trader's buy/sell list");
-		HelpUtils.format(sender, "trader", "[buy|sell] [itemID(:amount:data)] [price]",
+		HelpUtils.format(sender, "trader",
+				"[buy|sell] [itemID(:amount:data)] [price]",
 				"add an item to a trader's stock");
 		HelpUtils.format(sender, "trader", "[buy|sell] remove [itemID:data]",
 				"remove item from a trader's stock");
@@ -408,9 +409,10 @@ public class TraderCommands extends CommandHandler {
 				"edit a trader's stock");
 		HelpUtils.format(sender, "trader", "unlimited",
 				"set whether a trader has unlimited stock");
-		HelpUtils.format(sender, "trader", "money [give|take] (amount)",
+		HelpUtils.format(sender, "trader", "money (give|take) (amount)",
 				"control a trader's money");
-		HelpUtils.format(sender, "trader", "clear [buy|sell]", "clear a trader's stock");
+		HelpUtils.format(sender, "trader", "clear [buy|sell]",
+				"clear a trader's stock");
 		HelpUtils.footer(sender);
 	}
 }
