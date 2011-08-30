@@ -69,6 +69,8 @@ public class NPCDataManager {
 		items.add(getMap(npc.getPlayer().getItemInHand().getTypeId(), npc
 				.getPlayer().getItemInHand().getDurability()));
 		PlayerInventory npcInv = npc.getInventory();
+		// prevents one armor piece from magically turning into another piece
+		// (i.e helmet turns into boots)
 		items.add(getMap(npcInv.getHelmet().getTypeId(), npcInv.getHelmet()
 				.getDurability()));
 		items.add(getMap(npcInv.getChestplate().getTypeId(), npcInv
@@ -77,17 +79,20 @@ public class NPCDataManager {
 				.getDurability()));
 		items.add(getMap(npcInv.getBoots().getTypeId(), npcInv.getBoots()
 				.getDurability()));
+		// end
 		boolean success = false;
 		if (player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
 				for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
 					if (entry.getKey() != 0) {
+						// at seemingly random times, an item turns into a
+						// "ghost item" and disappears upon clicking it
 						inv.addItem(getStack(entry.getKey(), entry.getValue()));
 					}
 					items.set(i, getMap(0, (short) 0));
 				}
-				player.updateInventory();
 			}
+			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
 			success = true;
