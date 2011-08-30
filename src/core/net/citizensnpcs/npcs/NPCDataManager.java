@@ -101,7 +101,7 @@ public class NPCDataManager {
 					if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
 						inv.addItem(npc.getInventory().getItemInHand());
 					}
-					items.set(0, getMap(0, (short) 0));
+					items.set(0, getMap(itemID, hand.getDurability()));
 				}
 			} else {
 				Armor armor = InventoryUtils.getArmorSlot(itemID);
