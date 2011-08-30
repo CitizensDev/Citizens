@@ -115,8 +115,10 @@ public class BasicCommands extends CommandHandler {
 	public static void reload(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		Messaging.log("Reloading configuration settings....");
-		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
-				+ "] Reloading....");
+		if (sender instanceof Player) {
+			sender.sendMessage(ChatColor.GREEN + "["
+					+ StringUtils.wrap("Citizens") + "] Reloading....");
+		}
 
 		UtilityProperties.initialize();
 		PropertyManager.saveState();
@@ -127,8 +129,10 @@ public class BasicCommands extends CommandHandler {
 				.callEvent(new CitizensReloadEvent());
 
 		Messaging.log("Reloaded.");
-		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
-				+ "] Reloaded.");
+		if (sender instanceof Player) {
+			sender.sendMessage(ChatColor.GREEN + "["
+					+ StringUtils.wrap("Citizens") + "] Reloaded.");
+		}
 	}
 
 	@CommandRequirements()

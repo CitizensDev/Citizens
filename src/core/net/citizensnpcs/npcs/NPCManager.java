@@ -34,31 +34,17 @@ public class NPCManager {
 		return list.getNPC(entity);
 	}
 
-	/**
-	 * Gets the list of NPCs.
-	 * 
-	 * @return list of NPCs on a server
-	 */
+	// Gets the list of NPCs.
 	public static NPCList getList() {
 		return list;
 	}
 
-	/**
-	 * Gets the global list of UIDs.
-	 * 
-	 * @return list of NPC UIDs
-	 */
+	// Gets the global list of UIDs.
 	public Map<Integer, String> getUIDs() {
 		return GlobalUIDs;
 	}
 
-	/**
-	 * Checks if a given entity is an npc.
-	 * 
-	 * @param entity
-	 *            Bukkit Entity
-	 * @return true if the entity is an NPC
-	 */
+	// Checks if a given entity is an npc.
 	public static boolean isNPC(Entity entity) {
 		return list.getNPC(entity) != null;
 	}

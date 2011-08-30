@@ -33,7 +33,7 @@ public class ServerListen extends ServerListener implements Listener {
 			if (this.methods.setMethod(event.getPlugin())) {
 				Citizens.setMethod(this.methods.getMethod());
 				EconomyManager.setServerEconomyEnabled(true);
-				Messaging.log("Payment method found ("
+				Messaging.log("Economy plugin found ("
 						+ methods.getMethod().getName() + " version: "
 						+ methods.getMethod().getVersion() + ")");
 			}
@@ -43,10 +43,6 @@ public class ServerListen extends ServerListener implements Listener {
 	@Override
 	public void onPluginDisable(PluginDisableEvent event) {
 		if (this.methods != null && this.methods.hasMethod()) {
-			Boolean check = this.methods.checkDisabled(event.getPlugin());
-			if (check) {
-				Messaging.log("Payment method disabled.");
-			}
 			EconomyManager.setServerEconomyEnabled(false);
 		}
 	}
