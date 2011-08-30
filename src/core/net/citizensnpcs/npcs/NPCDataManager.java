@@ -68,19 +68,25 @@ public class NPCDataManager {
 		List<HashMap<Integer, Short>> items = new ArrayList<HashMap<Integer, Short>>();
 		items.add(getMap(npc.getPlayer().getItemInHand().getTypeId(), npc
 				.getPlayer().getItemInHand().getDurability()));
-		for (ItemStack i : npc.getInventory().getArmorContents()) {
-			items.add(getMap(i.getTypeId(), i.getDurability()));
-		}
+		PlayerInventory npcInv = npc.getInventory();
+		items.add(getMap(npcInv.getHelmet().getTypeId(), npcInv.getHelmet()
+				.getDurability()));
+		items.add(getMap(npcInv.getChestplate().getTypeId(), npcInv
+				.getChestplate().getDurability()));
+		items.add(getMap(npcInv.getLeggings().getTypeId(), npcInv.getLeggings()
+				.getDurability()));
+		items.add(getMap(npcInv.getBoots().getTypeId(), npcInv.getBoots()
+				.getDurability()));
 		boolean success = false;
 		if (player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
 				for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
 					if (entry.getKey() != 0) {
 						inv.addItem(getStack(entry.getKey(), entry.getValue()));
-						player.updateInventory();
-						items.set(i, getMap(0, (short) 0));
 					}
+					items.set(i, getMap(0, (short) 0));
 				}
+				player.updateInventory();
 			}
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
@@ -98,22 +104,22 @@ public class NPCDataManager {
 						return;
 					}
 					slot = "item-in-hand";
-					if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
-						inv.addItem(npc.getInventory().getItemInHand());
+					if (npc.getItemInHand().getType() != Material.AIR) {
+						inv.addItem(npc.getItemInHand());
 					}
 					items.set(0, getMap(itemID, hand.getDurability()));
 				}
 			} else {
 				Armor armor = InventoryUtils.getArmorSlot(itemID);
 				if (armor != null) {
-					if (armor.get(npc.getInventory()).getType() == Material
+					if (armor.get(npcInv).getType() == Material
 							.getMaterial(itemID)) {
 						Messaging.sendError(player, error);
 						return;
 					}
 					slot = armor.name().toLowerCase();
-					if (armor.get(npc.getInventory()).getType() != Material.AIR) {
-						inv.addItem(armor.get(npc.getInventory()));
+					if (armor.get(npcInv).getType() != Material.AIR) {
+						inv.addItem(armor.get(npcInv));
 					}
 					items.set(armor.getSlot() + 1,
 							getMap(itemID, hand.getDurability()));
@@ -125,8 +131,8 @@ public class NPCDataManager {
 							return;
 						}
 						slot = "item-in-hand";
-						if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
-							inv.addItem(npc.getInventory().getItemInHand());
+						if (npc.getItemInHand().getType() != Material.AIR) {
+							inv.addItem(npc.getItemInHand());
 						}
 						items.set(0, getMap(itemID, hand.getDurability()));
 					}

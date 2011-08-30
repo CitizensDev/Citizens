@@ -177,7 +177,17 @@ public class InventoryUtils {
 		}
 
 		public ItemStack get(PlayerInventory inventory) {
-			return inventory.getItem(inventory.getSize() + slot);
+			switch (slot) {
+			case 0:
+				return inventory.getHelmet();
+			case 1:
+				return inventory.getChestplate();
+			case 2:
+				return inventory.getLeggings();
+			case 3:
+				return inventory.getBoots();
+			}
+			return null;
 		}
 
 		public int getSlot() {
@@ -201,7 +211,6 @@ public class InventoryUtils {
 				break;
 			case 3:
 				inventory.setBoots(item);
-				break;
 			}
 		}
 

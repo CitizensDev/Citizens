@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.google.common.collect.MapMaker;
@@ -107,15 +108,15 @@ public class HumanNPC extends NPC {
 	}
 
 	public Location getLocation() {
-		return getPlayer().getLocation();
+		return this.getPlayer().getLocation();
 	}
 
 	public int getHealth() {
-		return getPlayer().getHealth();
+		return this.getPlayer().getHealth();
 	}
 
 	public void setHealth(int health) {
-		getPlayer().setHealth(health);
+		this.getPlayer().setHealth(health);
 	}
 
 	public NPCData getNPCData() {
@@ -123,11 +124,11 @@ public class HumanNPC extends NPC {
 	}
 
 	public PlayerInventory getInventory() {
-		return getPlayer().getInventory();
+		return this.getPlayer().getInventory();
 	}
 
 	public World getWorld() {
-		return getPlayer().getWorld();
+		return this.getPlayer().getWorld();
 	}
 
 	public double getBalance() {
@@ -196,5 +197,9 @@ public class HumanNPC extends NPC {
 
 	public int getChunkZ() {
 		return this.getLocation().getBlockZ() >> 4;
+	}
+
+	public ItemStack getItemInHand() {
+		return this.getPlayer().getItemInHand();
 	}
 }

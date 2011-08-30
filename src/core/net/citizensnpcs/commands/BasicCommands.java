@@ -75,8 +75,9 @@ public class BasicCommands extends CommandHandler {
 				if (mcEntity instanceof CraftNPC
 						&& !(mcEntity instanceof CreatureNPC)) {
 					HumanNPC found = ((CraftNPC) mcEntity).npc;
-					if (NPCManager.getList().get(found.getUID()) != found)
+					if (NPCManager.getList().get(found.getUID()) != found) {
 						found.getPlayer().remove();
+					}
 				}
 			}
 		}
