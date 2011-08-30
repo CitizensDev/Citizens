@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class InventoryUtils {
 
@@ -129,6 +130,18 @@ public class InventoryUtils {
 		removeItems(player, buying.getType(), buying.getAmount(), slot);
 	}
 
+	public static Armor getArmorSlot(int itemID) {
+		if (isHelmet(itemID)) {
+			return Armor.HELMET;
+		} else if (isChestplate(itemID)) {
+			return Armor.CHESTPLATE;
+		} else if (isLeggings(itemID)) {
+			return Armor.LEGGINGS;
+		} else if (isBoots(itemID))
+			return Armor.BOOTS;
+		return null;
+	}
+
 	public static boolean isHelmet(int itemID) {
 		return itemID == 298 || itemID == 302 || itemID == 306 || itemID == 310
 				|| itemID == 314 || itemID == 86 || itemID == 91;
@@ -147,5 +160,26 @@ public class InventoryUtils {
 	public static boolean isBoots(int itemID) {
 		return itemID == 301 || itemID == 305 || itemID == 309 || itemID == 313
 				|| itemID == 317;
+	}
+
+	public enum Armor {
+		HELMET(3),
+		CHESTPLATE(2),
+		LEGGINGS(1),
+		BOOTS(0);
+		private final int slot;
+
+		Armor(int slot) {
+			this.slot = slot;
+		}
+
+		public ItemStack get(PlayerInventory inventory) {
+			return inventory.getItem(inventory.getSize() + slot);
+		}
+
+		public void set(PlayerInventory inventory, int itemID) {
+			inventory.setItem(inventory.getSize() + slot, new ItemStack(itemID,
+					1));
+		}
 	}
 }
