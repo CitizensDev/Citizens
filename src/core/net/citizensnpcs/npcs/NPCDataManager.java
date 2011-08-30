@@ -66,8 +66,8 @@ public class NPCDataManager {
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i) != 0) {
 					inv.addItem(new ItemStack(items.get(i), 1));
-					items.set(i, 0);
 					player.updateInventory();
+					items.set(i, 0);
 				}
 			}
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
@@ -84,11 +84,11 @@ public class NPCDataManager {
 					Messaging.sendError(player, error);
 					return;
 				}
-				items.set(0, itemID);
+				slot = "item-in-hand";
 				if (npc.getInventory().getItemInHand().getType() != Material.AIR) {
 					inv.addItem(npc.getInventory().getItemInHand());
 				}
-				slot = "item-in-hand";
+				items.set(0, itemID);
 			} else {
 				if (InventoryUtils.isHelmet(itemID)) {
 					if (Material.getMaterial(items.get(1)) == Material

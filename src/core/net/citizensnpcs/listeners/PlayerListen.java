@@ -13,7 +13,9 @@ import net.citizensnpcs.utils.ServerUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.Event.Type;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -60,6 +62,10 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		NPCDataManager.handlePathEditor(event);
+		if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer()
+				.getName()) && event.getAction() == Action.RIGHT_CLICK_AIR) {
+			event.setUseItemInHand(Result.DENY);
+		}
 	}
 
 	@Override
