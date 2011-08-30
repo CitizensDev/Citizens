@@ -84,11 +84,11 @@ public class NPCDataManager {
 					Messaging.sendError(player, error);
 					return;
 				}
-				items.set(0, itemID);
+				slot = "item-in-hand";
 				if (npc.getInventory().getItemInHand().getType() != Material.AIR) {
 					inv.addItem(npc.getInventory().getItemInHand());
 				}
-				slot = "item-in-hand";
+				items.set(0, itemID);
 			} else {
 				Armor armor = InventoryUtils.getArmorSlot(itemID);
 				if (armor != null) {
