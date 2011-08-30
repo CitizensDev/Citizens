@@ -586,7 +586,7 @@ public class BasicCommands extends CommandHandler {
 					+ StringUtils.wrap(npc.getStrippedName()) + "'s equipment.");
 			editing = UID;
 		}
-		NPCDataManager.equipmentEditors.put(player.getName(), editing);
+		NPCDataManager.equipmentEditors.put(player, editing);
 	}
 
 	@Command(
