@@ -56,20 +56,23 @@ public class NPCDataManager {
 	private static void equip(Player player, HumanNPC npc) {
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory inv = player.getInventory();
-		List<Integer> items = new ArrayList<Integer>();
-		items.add(npc.getPlayer().getItemInHand().getTypeId());
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		items.add(npc.getPlayer().getItemInHand());
 		for (ItemStack i : npc.getInventory().getArmorContents()) {
-			items.add(i.getTypeId());
+			if (i != null) {
+				items.add(i);
+			} else {
+				items.add(new ItemStack(0, (short) 0));
+			}
 		}
 		boolean success = false;
 		if (player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
-				if (items.get(i) != 0) {
-					inv.addItem(new ItemStack(items.get(i), 1));
-					items.set(i, 0);
+				if (items.get(i).getType() != Material.AIR) {
+					inv.addItem(items.get(i));
+					items.set(i, new ItemStack(0, (short) 0));
 				}
 			}
-			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
 			success = true;
@@ -79,16 +82,16 @@ public class NPCDataManager {
 					+ MessageUtils.getMaterialName(itemID) + ".";
 			String slot = "";
 			if (player.isSneaking()) {
-				if (Material.getMaterial(items.get(0)) == Material
+				if (Material.getMaterial(items.get(0).getTypeId()) == Material
 						.getMaterial(itemID)) {
 					Messaging.sendError(player, error);
 					return;
 				}
 				slot = "item-in-hand";
-				if (npc.getInventory().getItemInHand().getType() != Material.AIR) {
+				if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
 					inv.addItem(npc.getInventory().getItemInHand());
 				}
-				items.set(0, itemID);
+				items.set(0, hand);
 			} else {
 				Armor armor = InventoryUtils.getArmorSlot(itemID);
 				if (armor != null) {
@@ -101,18 +104,18 @@ public class NPCDataManager {
 					if (armor.get(npc.getInventory()).getType() != Material.AIR) {
 						inv.addItem(armor.get(npc.getInventory()));
 					}
-					armor.set(npc.getInventory(), itemID);
+					items.set(armor.getSlot(), hand);
 				} else {
-					if (Material.getMaterial(items.get(0)) == Material
+					if (Material.getMaterial(items.get(0).getTypeId()) == Material
 							.getMaterial(itemID)) {
 						Messaging.sendError(player, error);
 						return;
 					}
-					items.set(0, itemID);
-					if (npc.getInventory().getItemInHand().getType() != Material.AIR) {
+					slot = "item-in-hand";
+					if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
 						inv.addItem(npc.getInventory().getItemInHand());
 					}
-					slot = "item-in-hand";
+					items.set(0, hand);
 				}
 			}
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
@@ -124,7 +127,7 @@ public class NPCDataManager {
 		InventoryUtils.decreaseItemInHand(player);
 
 		if (success) {
-			npc.getNPCData().setItems(items);
+			player.updateInventory();
 			addItems(npc, items);
 			NPCManager.removeForRespawn(npc.getUID());
 			NPCManager.register(npc.getUID(), npc.getOwner(),
@@ -202,40 +205,11 @@ public class NPCDataManager {
 	}
 
 	// Adds items to an npc so that they are visible.
-	public static void addItems(HumanNPC npc, List<Integer> items) {
+	public static void addItems(HumanNPC npc, List<ItemStack> items) {
 		if (items != null) {
-			Material matHand = Material.getMaterial(items.get(0));
-			Material matHelm = Material.getMaterial(items.get(1));
-			Material matTorso = Material.getMaterial(items.get(2));
-			Material matLegs = Material.getMaterial(items.get(3));
-			Material matBoots = Material.getMaterial(items.get(4));
-
-			PlayerInventory npcInv = npc.getInventory();
-
-			if (matHand != null && matHand != Material.AIR) {
-				npcInv.setItemInHand(new ItemStack(matHand, 1));
-			} else {
-				npcInv.setItemInHand(null);
-			}
-			if (matHelm != null && matHelm != Material.AIR) {
-				npcInv.setHelmet(new ItemStack(matHelm, 1));
-			} else {
-				npcInv.setHelmet(null);
-			}
-			if (matBoots != null && matBoots != Material.AIR) {
-				npcInv.setBoots(new ItemStack(matBoots, 1));
-			} else {
-				npcInv.setBoots(null);
-			}
-			if (matLegs != null && matLegs != Material.AIR) {
-				npcInv.setLeggings(new ItemStack(matLegs, 1));
-			} else {
-				npcInv.setLeggings(null);
-			}
-			if (matTorso != null && matTorso != Material.AIR) {
-				npcInv.setChestplate(new ItemStack(matTorso, 1));
-			} else {
-				npcInv.setChestplate(null);
+			npc.getPlayer().setItemInHand(items.get(0));
+			for (int i = 1; i < items.size(); i++) {
+				Armor.getArmor(0).set(npc.getInventory(), items.get(i));
 			}
 			npc.getNPCData().setItems(items);
 		}

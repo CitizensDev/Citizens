@@ -62,8 +62,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		NPCDataManager.handlePathEditor(event);
-		if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer()
-				.getName()) && event.getAction() == Action.RIGHT_CLICK_AIR) {
+		if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer())
+				&& event.getAction() == Action.RIGHT_CLICK_AIR) {
 			event.setUseItemInHand(Result.DENY);
 		}
 	}

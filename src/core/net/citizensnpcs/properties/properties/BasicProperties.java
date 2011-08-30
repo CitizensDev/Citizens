@@ -136,21 +136,33 @@ public class BasicProperties extends PropertyManager implements Properties {
 		return inv;
 	}
 
-	public ArrayList<Integer> getItems(int UID) {
-		ArrayList<Integer> array = new ArrayList<Integer>();
+	public List<ItemStack> getItems(int UID) {
+		List<ItemStack> array = new ArrayList<ItemStack>();
 		String current = profiles.getString(UID + items);
 		if (current.isEmpty()) {
-			current = "0,0,0,0,0,";
+			current = "0:0,0:0,0:0,0:0,0:0,";
 			profiles.setString(UID + items, current);
 		}
 		for (String s : current.split(",")) {
-			array.add(Integer.parseInt(s));
+			if (!s.contains(":")) {
+				s += ":0";
+			}
+			String[] parts = s.split(":");
+			array.add(new ItemStack(Integer.parseInt(parts[0]), 1, Short
+					.parseShort(parts[1])));
 		}
 		return array;
 	}
 
-	private void saveItems(int UID, List<Integer> items) {
-		profiles.setString(UID + this.items, Joiner.on(",").join(items));
+	private void saveItems(int UID, List<ItemStack> items) {
+		StringBuilder temp = new StringBuilder();
+		for (ItemStack i : items) {
+			if (i.getDurability() == -1) {
+				i.setDurability((short) 0);
+			}
+			temp.append(i.getTypeId() + ":" + i.getDurability() + ",");
+		}
+		profiles.setString(UID + this.items, temp.toString());
 	}
 
 	public ChatColor getColour(int UID) {

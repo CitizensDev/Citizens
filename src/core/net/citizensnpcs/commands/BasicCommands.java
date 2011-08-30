@@ -563,7 +563,7 @@ public class BasicCommands extends CommandHandler {
 					"You can only be in one editor at a time.");
 			return;
 		}
-		Integer editing = NPCDataManager.equipmentEditors.get(player.getName());
+		Integer editing = NPCDataManager.equipmentEditors.get(player);
 		int UID = npc.getUID();
 		if (editing == null) {
 			player.sendMessage(ChatColor.GREEN
@@ -582,7 +582,7 @@ public class BasicCommands extends CommandHandler {
 		} else if (editing == UID) {
 			player.sendMessage(StringUtils.wrap("Exited")
 					+ " equipment-edit mode.");
-			NPCDataManager.equipmentEditors.remove(player.getName());
+			NPCDataManager.equipmentEditors.remove(player);
 			editing = null;
 			return;
 		} else if (editing != UID) {
@@ -701,7 +701,7 @@ public class BasicCommands extends CommandHandler {
 	public static void waypoints(CommandContext args, Player player,
 			HumanNPC npc) {
 		if (args.length() == 2) {
-			if (NPCDataManager.equipmentEditors.containsKey(player.getName())) {
+			if (NPCDataManager.equipmentEditors.containsKey(player)) {
 				Messaging.sendError(player,
 						"You can only be in one editor at a time.");
 				return;

@@ -1,6 +1,5 @@
 package net.citizensnpcs.npcs;
 
-import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
@@ -167,12 +166,10 @@ public class NPCManager {
 		NPCCreateEvent event = new NPCCreateEvent(npc, reason, loc);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 
-		List<Integer> items = PropertyManager.getBasic().getItems(UID);
-
-		npc.setNPCData(new NPCData(npcName, UID, loc, colour, items,
-				NPCDataManager.NPCTexts.get(UID), PropertyManager.getBasic()
-						.isLookWhenClose(UID), PropertyManager.getBasic()
-						.isTalkWhenClose(UID), owner));
+		npc.setNPCData(new NPCData(npcName, UID, loc, colour, PropertyManager
+				.getBasic().getItems(UID), NPCDataManager.NPCTexts.get(UID),
+				PropertyManager.getBasic().isLookWhenClose(UID),
+				PropertyManager.getBasic().isTalkWhenClose(UID), owner));
 		PropertyManager.getBasic().saveOwner(UID, owner);
 		PropertyManager.load(npc);
 

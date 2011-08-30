@@ -1,5 +1,7 @@
 package net.citizensnpcs.utils;
 
+import java.util.HashMap;
+
 import net.citizensnpcs.api.event.npc.NPCInventoryOpenEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
@@ -163,11 +165,9 @@ public class InventoryUtils {
 	}
 
 	public enum Armor {
-		HELMET(3),
-		CHESTPLATE(2),
-		LEGGINGS(1),
-		BOOTS(0);
+		HELMET(3), CHESTPLATE(2), LEGGINGS(1), BOOTS(0);
 		private final int slot;
+		private static final HashMap<Integer, Armor> slots = new HashMap<Integer, Armor>();
 
 		Armor(int slot) {
 			this.slot = slot;
@@ -177,9 +177,35 @@ public class InventoryUtils {
 			return inventory.getItem(inventory.getSize() + slot);
 		}
 
-		public void set(PlayerInventory inventory, int itemID) {
-			inventory.setItem(inventory.getSize() + slot, new ItemStack(itemID,
-					1));
+		public int getSlot() {
+			return this.slot;
+		}
+
+		public static Armor getArmor(int slot) {
+			return slots.get(slot);
+		}
+
+		public void set(PlayerInventory inventory, ItemStack item) {
+			switch (slot) {
+			case 0:
+				inventory.setBoots(item);
+				break;
+			case 1:
+				inventory.setLeggings(item);
+				break;
+			case 2:
+				inventory.setChestplate(item);
+				break;
+			case 3:
+				inventory.setHelmet(item);
+				break;
+			}
+		}
+
+		static {
+			for (Armor armor : values()) {
+				slots.put(armor.getSlot(), armor);
+			}
 		}
 	}
 }
