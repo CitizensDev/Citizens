@@ -165,7 +165,10 @@ public class InventoryUtils {
 	}
 
 	public enum Armor {
-		HELMET(3), CHESTPLATE(2), LEGGINGS(1), BOOTS(0);
+		HELMET(0),
+		CHESTPLATE(1),
+		LEGGINGS(2),
+		BOOTS(3);
 		private final int slot;
 		private static final HashMap<Integer, Armor> slots = new HashMap<Integer, Armor>();
 
@@ -188,16 +191,16 @@ public class InventoryUtils {
 		public void set(PlayerInventory inventory, ItemStack item) {
 			switch (slot) {
 			case 0:
-				inventory.setBoots(item);
+				inventory.setHelmet(item);
 				break;
 			case 1:
-				inventory.setLeggings(item);
-				break;
-			case 2:
 				inventory.setChestplate(item);
 				break;
+			case 2:
+				inventory.setLeggings(item);
+				break;
 			case 3:
-				inventory.setHelmet(item);
+				inventory.setBoots(item);
 				break;
 			}
 		}

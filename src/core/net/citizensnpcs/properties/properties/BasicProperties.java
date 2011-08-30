@@ -4,7 +4,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.Node;
@@ -136,31 +138,36 @@ public class BasicProperties extends PropertyManager implements Properties {
 		return inv;
 	}
 
-	public List<ItemStack> getItems(int UID) {
-		List<ItemStack> array = new ArrayList<ItemStack>();
-		String current = profiles.getString(UID + items);
+	// Gets a map of items
+	public List<HashMap<Integer, Short>> getItems(int UID) {
+		List<HashMap<Integer, Short>> map = new ArrayList<HashMap<Integer, Short>>();
+		String current = profiles.getString(UID + this.items);
 		if (current.isEmpty()) {
 			current = "0:0,0:0,0:0,0:0,0:0,";
-			profiles.setString(UID + items, current);
+			profiles.setString(UID + this.items, current);
 		}
 		for (String s : current.split(",")) {
 			if (!s.contains(":")) {
 				s += ":0";
 			}
 			String[] parts = s.split(":");
-			array.add(new ItemStack(Integer.parseInt(parts[0]), 1, Short
-					.parseShort(parts[1])));
+			HashMap<Integer, Short> items = new HashMap<Integer, Short>();
+			items.put(Integer.parseInt(parts[0]), Short.parseShort(parts[1]));
+			map.add(items);
 		}
-		return array;
+		return map;
 	}
 
-	private void saveItems(int UID, List<ItemStack> items) {
+	private void saveItems(int UID, List<HashMap<Integer, Short>> items) {
 		StringBuilder temp = new StringBuilder();
-		for (ItemStack i : items) {
-			if (i.getDurability() == -1) {
-				i.setDurability((short) 0);
+		for (int i = 0; i < items.size(); i++) {
+			for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
+				short durability = entry.getValue();
+				if (durability == -1) {
+					durability = 0;
+				}
+				temp.append(entry.getKey() + ":" + durability + ",");
 			}
-			temp.append(i.getTypeId() + ":" + i.getDurability() + ",");
 		}
 		profiles.setString(UID + this.items, temp.toString());
 	}

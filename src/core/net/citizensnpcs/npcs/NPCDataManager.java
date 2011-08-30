@@ -3,8 +3,10 @@ package net.citizensnpcs.npcs;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
@@ -51,26 +53,33 @@ public class NPCDataManager {
 		}
 	}
 
+	// construct a hash map with a given ID and durability
+	private static HashMap<Integer, Short> getMap(int id, short durability) {
+		HashMap<Integer, Short> map = new HashMap<Integer, Short>();
+		map.put(id, durability);
+		return map;
+	}
+
 	// equip an NPC based on a player's item-in-hand
 	@SuppressWarnings("deprecation")
 	private static void equip(Player player, HumanNPC npc) {
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory inv = player.getInventory();
-		List<ItemStack> items = new ArrayList<ItemStack>();
-		items.add(npc.getPlayer().getItemInHand());
+		List<HashMap<Integer, Short>> items = new ArrayList<HashMap<Integer, Short>>();
+		items.add(getMap(npc.getPlayer().getItemInHand().getTypeId(), npc
+				.getPlayer().getItemInHand().getDurability()));
 		for (ItemStack i : npc.getInventory().getArmorContents()) {
-			if (i != null) {
-				items.add(i);
-			} else {
-				items.add(new ItemStack(0, (short) 0));
-			}
+			items.add(getMap(i.getTypeId(), i.getDurability()));
 		}
 		boolean success = false;
 		if (player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
-				if (items.get(i).getType() != Material.AIR) {
-					inv.addItem(items.get(i));
-					items.set(i, new ItemStack(0, (short) 0));
+				for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
+					if (entry.getKey() != 0) {
+						inv.addItem(getStack(entry.getKey(), entry.getValue()));
+						player.updateInventory();
+						items.set(i, getMap(0, (short) 0));
+					}
 				}
 			}
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
@@ -82,16 +91,18 @@ public class NPCDataManager {
 					+ MessageUtils.getMaterialName(itemID) + ".";
 			String slot = "";
 			if (player.isSneaking()) {
-				if (Material.getMaterial(items.get(0).getTypeId()) == Material
-						.getMaterial(itemID)) {
-					Messaging.sendError(player, error);
-					return;
+				for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
+					if (Material.getMaterial(entry.getKey()) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
+					}
+					slot = "item-in-hand";
+					if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
+						inv.addItem(npc.getInventory().getItemInHand());
+					}
+					items.set(0, getMap(0, (short) 0));
 				}
-				slot = "item-in-hand";
-				if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
-					inv.addItem(npc.getInventory().getItemInHand());
-				}
-				items.set(0, hand);
 			} else {
 				Armor armor = InventoryUtils.getArmorSlot(itemID);
 				if (armor != null) {
@@ -104,30 +115,33 @@ public class NPCDataManager {
 					if (armor.get(npc.getInventory()).getType() != Material.AIR) {
 						inv.addItem(armor.get(npc.getInventory()));
 					}
-					items.set(armor.getSlot(), hand);
+					items.set(armor.getSlot() + 1,
+							getMap(itemID, hand.getDurability()));
 				} else {
-					if (Material.getMaterial(items.get(0).getTypeId()) == Material
-							.getMaterial(itemID)) {
-						Messaging.sendError(player, error);
-						return;
+					for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
+						if (Material.getMaterial(entry.getKey()) == Material
+								.getMaterial(itemID)) {
+							Messaging.sendError(player, error);
+							return;
+						}
+						slot = "item-in-hand";
+						if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
+							inv.addItem(npc.getInventory().getItemInHand());
+						}
+						items.set(0, getMap(itemID, hand.getDurability()));
 					}
-					slot = "item-in-hand";
-					if (npc.getPlayer().getItemInHand().getType() != Material.AIR) {
-						inv.addItem(npc.getInventory().getItemInHand());
-					}
-					items.set(0, hand);
 				}
 			}
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
 					+ slot + " was set to "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(itemID))
 					+ ".");
+			player.updateInventory();
 			success = true;
 		}
 		InventoryUtils.decreaseItemInHand(player);
 
 		if (success) {
-			player.updateInventory();
 			addItems(npc, items);
 			NPCManager.removeForRespawn(npc.getUID());
 			NPCManager.register(npc.getUID(), npc.getOwner(),
@@ -205,14 +219,29 @@ public class NPCDataManager {
 	}
 
 	// Adds items to an npc so that they are visible.
-	public static void addItems(HumanNPC npc, List<ItemStack> items) {
+	public static void addItems(HumanNPC npc,
+			List<HashMap<Integer, Short>> items) {
 		if (items != null) {
-			npc.getPlayer().setItemInHand(items.get(0));
-			for (int i = 1; i < items.size(); i++) {
-				Armor.getArmor(0).set(npc.getInventory(), items.get(i));
+			for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
+				npc.getPlayer().setItemInHand(
+						getStack(entry.getKey(), entry.getValue()));
+			}
+			for (int i = 0; i < items.size() - 1; i++) {
+				for (Entry<Integer, Short> entry : items.get(i + 1).entrySet()) {
+					Armor.getArmor(i).set(npc.getInventory(),
+							getStack(entry.getKey(), entry.getValue()));
+				}
 			}
 			npc.getNPCData().setItems(items);
 		}
+	}
+
+	// Get an ItemStack from an ID and a durability
+	private static ItemStack getStack(int id, short durability) {
+		if (id == 0) {
+			return null;
+		}
+		return new ItemStack(id, 1, durability);
 	}
 
 	// Adds to an npc's text.
