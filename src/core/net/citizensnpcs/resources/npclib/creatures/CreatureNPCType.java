@@ -1,6 +1,8 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
 import java.lang.reflect.Constructor;
+import java.util.EnumSet;
+import java.util.Map;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.utils.StringUtils;
@@ -8,12 +10,12 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
+import com.google.common.collect.Maps;
+
 public enum CreatureNPCType {
-	EVIL(
-			EvilCreatureNPC.class,
-			"Evil",
-			SpawnValidator.DEFAULT_SPAWNIN,
+	EVIL(EvilCreatureNPC.class, "Evil", SpawnValidator.DEFAULT_SPAWNIN,
 			SpawnValidator.DEFAULT_SPAWNON);
+
 	private final int max;
 	private final int spawnChance;
 	private final String possible;
@@ -22,9 +24,11 @@ public enum CreatureNPCType {
 	private final SpawnValidator spawnIn;
 	private final SpawnValidator spawnOn;
 	private Spawner spawner = DefaultSpawner.INSTANCE;
+	private final String name;
 
 	CreatureNPCType(Class<? extends CreatureNPC> instance, String name,
 			SpawnValidator spawnIn, SpawnValidator spawnOn) {
+
 		name = StringUtils.capitalise(name.toLowerCase());
 		try {
 			this.instance = instance.getConstructor(MinecraftServer.class,
@@ -37,6 +41,16 @@ public enum CreatureNPCType {
 		this.possible = SettingsManager.getString(name + "Names");
 		this.spawnIn = spawnIn;
 		this.spawnOn = spawnOn;
+		this.name = name;
+	}
+
+	private final static Map<String, CreatureNPCType> mapping = Maps
+			.newHashMap();
+
+	static {
+		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
+			mapping.put(type.name, type);
+		}
 	}
 
 	public int getMaxSpawnable() {
@@ -68,12 +82,7 @@ public enum CreatureNPCType {
 	}
 
 	public static CreatureNPCType fromName(String mob) {
-		try {
-			return CreatureNPCType.valueOf(mob.toUpperCase().replace(
-					"CREATURENPC", ""));
-		} catch (Exception ex) {
-			return null;
-		}
+		return mapping.get(mob);
 	}
 
 	public int getSpawnChance() {

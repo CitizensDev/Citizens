@@ -1,9 +1,7 @@
 package net.citizensnpcs.npcs;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 
@@ -54,8 +53,8 @@ public class NPCDataManager {
 	}
 
 	// construct a hash map with a given ID and durability
-	private static HashMap<Integer, Short> getMap(int id, short durability) {
-		HashMap<Integer, Short> map = new HashMap<Integer, Short>();
+	private static Map<Integer, Short> getMap(int id, short durability) {
+		Map<Integer, Short> map = Maps.newHashMap();
 		map.put(id, durability);
 		return map;
 	}
@@ -65,9 +64,9 @@ public class NPCDataManager {
 	private static void equip(Player player, HumanNPC npc) {
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory inv = player.getInventory();
-		List<HashMap<Integer, Short>> items = new ArrayList<HashMap<Integer, Short>>();
-		items.add(getMap(npc.getPlayer().getItemInHand().getTypeId(), npc
-				.getPlayer().getItemInHand().getDurability()));
+		List<Map<Integer, Short>> items = Lists.newArrayList();
+		items.add(getMap(npc.getItemInHand().getTypeId(), npc.getItemInHand()
+				.getDurability()));
 		PlayerInventory npcInv = npc.getInventory();
 		// prevents one armor piece from magically turning into another piece
 		// (i.e helmet turns into boots)
@@ -81,7 +80,8 @@ public class NPCDataManager {
 				.getDurability()));
 		// end
 		boolean success = false;
-		if (player.getItemInHand().getType() == Material.AIR) {
+		if (player.getItemInHand() == null
+				|| player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
 				for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
 					if (entry.getKey() != 0) {
@@ -92,7 +92,6 @@ public class NPCDataManager {
 					items.set(i, getMap(0, (short) 0));
 				}
 			}
-			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
 			success = true;
@@ -158,6 +157,14 @@ public class NPCDataManager {
 			NPCManager.register(npc.getUID(), npc.getOwner(),
 					NPCCreateReason.RESPAWN);
 		}
+	}
+
+	// Get an ItemStack from an ID and a durability
+	private static ItemStack getStack(int id, short durability) {
+		if (id == 0) {
+			return null;
+		}
+		return new ItemStack(id, 1, durability);
 	}
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
@@ -230,8 +237,7 @@ public class NPCDataManager {
 	}
 
 	// Adds items to an npc so that they are visible.
-	public static void addItems(HumanNPC npc,
-			List<HashMap<Integer, Short>> items) {
+	public static void addItems(HumanNPC npc, List<Map<Integer, Short>> items) {
 		if (items != null) {
 			for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
 				npc.getPlayer().setItemInHand(
@@ -245,14 +251,6 @@ public class NPCDataManager {
 			}
 			npc.getNPCData().setItems(items);
 		}
-	}
-
-	// Get an ItemStack from an ID and a durability
-	private static ItemStack getStack(int id, short durability) {
-		if (id == 0) {
-			return null;
-		}
-		return new ItemStack(id, 1, durability);
 	}
 
 	// Adds to an npc's text.

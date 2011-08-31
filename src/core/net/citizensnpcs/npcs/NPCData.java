@@ -1,8 +1,8 @@
 package net.citizensnpcs.npcs;
 
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,7 +12,7 @@ public class NPCData {
 	private int UID;
 	private Location location;
 	private ChatColor colour = ChatColor.WHITE;
-	private List<HashMap<Integer, Short>> items;
+	private List<Map<Integer, Short>> items;
 	private Deque<String> texts;
 	private boolean lookClose;
 	private boolean talkClose;
@@ -20,7 +20,7 @@ public class NPCData {
 
 	// Acts as a container for various npc data.
 	public NPCData(String name, int UID, Location loc, ChatColor colour,
-			List<HashMap<Integer, Short>> items, Deque<String> texts,
+			List<Map<Integer, Short>> items, Deque<String> texts,
 			boolean lookClose, boolean talkClose, String owner) {
 		this.setName(name);
 		this.setUID(UID);
@@ -65,11 +65,11 @@ public class NPCData {
 		return colour;
 	}
 
-	public void setItems(List<HashMap<Integer, Short>> items) {
+	public void setItems(List<Map<Integer, Short>> items) {
 		this.items = items;
 	}
 
-	public List<HashMap<Integer, Short>> getItems() {
+	public List<Map<Integer, Short>> getItems() {
 		return items;
 	}
 

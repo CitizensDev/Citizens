@@ -72,7 +72,7 @@ public class NPCSpawner {
 	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new NPCRemoveEvent(npc.npc, reason));
-		((Player) npc).remove();
+		((Player) npc.getBukkitEntity()).remove();
 	}
 
 	public static void removeNPCFromPlayerList(HumanNPC npc) {

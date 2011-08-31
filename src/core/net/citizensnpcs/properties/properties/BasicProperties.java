@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
@@ -34,6 +35,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 public class BasicProperties extends PropertyManager implements Properties {
 	private final String name = ".basic.name";
@@ -139,8 +141,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 	}
 
 	// Gets a map of items
-	public List<HashMap<Integer, Short>> getItems(int UID) {
-		List<HashMap<Integer, Short>> map = new ArrayList<HashMap<Integer, Short>>();
+	public List<Map<Integer, Short>> getItems(int UID) {
+		List<Map<Integer, Short>> map = Lists.newArrayList();
 		String current = profiles.getString(UID + this.items);
 		if (current.isEmpty()) {
 			current = "0:0,0:0,0:0,0:0,0:0,";
@@ -158,7 +160,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 		return map;
 	}
 
-	private void saveItems(int UID, List<HashMap<Integer, Short>> items) {
+	private void saveItems(int UID, List<Map<Integer, Short>> items) {
 		StringBuilder temp = new StringBuilder();
 		for (int i = 0; i < items.size(); i++) {
 			for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
