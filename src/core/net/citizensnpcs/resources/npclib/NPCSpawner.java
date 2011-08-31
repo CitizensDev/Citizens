@@ -14,6 +14,7 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.entity.Player;
 
 public class NPCSpawner {
 	protected static WorldServer getWorldServer(World world) {
@@ -71,7 +72,7 @@ public class NPCSpawner {
 	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new NPCRemoveEvent(npc.npc, reason));
-		npc.world.removeEntity(npc);
+		((Player) npc).remove();
 	}
 
 	public static void removeNPCFromPlayerList(HumanNPC npc) {
