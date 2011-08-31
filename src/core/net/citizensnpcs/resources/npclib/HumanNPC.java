@@ -202,4 +202,8 @@ public class HumanNPC extends NPC {
 	public ItemStack getItemInHand() {
 		return this.getPlayer().getItemInHand();
 	}
+
+	public void setItemInHand(ItemStack item) {
+		this.getPlayer().setItemInHand(item);
+	}
 }

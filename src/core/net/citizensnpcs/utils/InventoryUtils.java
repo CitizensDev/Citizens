@@ -132,18 +132,6 @@ public class InventoryUtils {
 		removeItems(player, buying.getType(), buying.getAmount(), slot);
 	}
 
-	public static Armor getArmorSlot(int itemID) {
-		if (isHelmet(itemID)) {
-			return Armor.HELMET;
-		} else if (isChestplate(itemID)) {
-			return Armor.CHESTPLATE;
-		} else if (isLeggings(itemID)) {
-			return Armor.LEGGINGS;
-		} else if (isBoots(itemID))
-			return Armor.BOOTS;
-		return null;
-	}
-
 	public static boolean isHelmet(int itemID) {
 		return itemID == 298 || itemID == 302 || itemID == 306 || itemID == 310
 				|| itemID == 314 || itemID == 86 || itemID == 91;
@@ -165,10 +153,10 @@ public class InventoryUtils {
 	}
 
 	public enum Armor {
-		HELMET(3),
-		CHESTPLATE(2),
-		LEGGINGS(1),
-		BOOTS(0);
+		HELMET(0),
+		CHESTPLATE(1),
+		LEGGINGS(2),
+		BOOTS(3);
 		private final int slot;
 		private static final HashMap<Integer, Armor> slots = new HashMap<Integer, Armor>();
 
@@ -177,21 +165,58 @@ public class InventoryUtils {
 		}
 
 		public ItemStack get(PlayerInventory inventory) {
-			return inventory.getItem(inventory.getSize() + slot);
+			switch (slot) {
+			case 0:
+				return inventory.getHelmet();
+			case 1:
+				return inventory.getChestplate();
+			case 2:
+				return inventory.getLeggings();
+			case 3:
+				return inventory.getBoots();
+			}
+			return null;
 		}
 
 		public int getSlot() {
 			return this.slot;
 		}
 
+		// get Armor from a slot ID
 		public static Armor getArmor(int slot) {
 			return slots.get(slot);
 		}
 
-		public void set(PlayerInventory inventory, ItemStack item) {
-			inventory.setItem(inventory.getSize() + slot, item);
+		// get Armor from an item ID
+		public static Armor getArmorSlot(int itemID) {
+			if (isHelmet(itemID)) {
+				return Armor.HELMET;
+			} else if (isChestplate(itemID)) {
+				return Armor.CHESTPLATE;
+			} else if (isLeggings(itemID)) {
+				return Armor.LEGGINGS;
+			} else if (isBoots(itemID))
+				return Armor.BOOTS;
+			return null;
 		}
 
+		public void set(PlayerInventory inventory, ItemStack item) {
+			switch (slot) {
+			case 0:
+				inventory.setHelmet(item);
+				break;
+			case 1:
+				inventory.setChestplate(item);
+				break;
+			case 2:
+				inventory.setLeggings(item);
+				break;
+			case 3:
+				inventory.setBoots(item);
+				break;
+			}
+		}
+		
 		static {
 			for (Armor armor : values()) {
 				slots.put(armor.getSlot(), armor);

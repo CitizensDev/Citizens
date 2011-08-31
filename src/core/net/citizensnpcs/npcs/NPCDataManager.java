@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
@@ -52,69 +51,46 @@ public class NPCDataManager {
 		}
 	}
 
-	// construct a hash map with a given ID and durability
-	private static Map<Integer, Short> getMap(int id, short durability) {
-		Map<Integer, Short> map = Maps.newHashMap();
-		map.put(id, durability);
-		return map;
-	}
-
 	// equip an NPC based on a player's item-in-hand
 	@SuppressWarnings("deprecation")
 	private static void equip(Player player, HumanNPC npc) {
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory inv = player.getInventory();
-		List<Map<Integer, Short>> items = Lists.newArrayList();
-		items.add(getMap(npc.getItemInHand().getTypeId(), npc.getItemInHand()
-				.getDurability()));
 		PlayerInventory npcInv = npc.getInventory();
-		// prevents one armor piece from magically turning into another piece
-		// (i.e helmet turns into boots)
-		items.add(getMap(npcInv.getHelmet().getTypeId(), npcInv.getHelmet()
-				.getDurability()));
-		items.add(getMap(npcInv.getChestplate().getTypeId(), npcInv
-				.getChestplate().getDurability()));
-		items.add(getMap(npcInv.getLeggings().getTypeId(), npcInv.getLeggings()
-				.getDurability()));
-		items.add(getMap(npcInv.getBoots().getTypeId(), npcInv.getBoots()
-				.getDurability()));
-		// end
-		boolean success = false;
+		List<ItemStack> items = Lists.newArrayList();
+		items.add(npc.getItemInHand());
+		for (ItemStack i : npcInv.getArmorContents()) {
+			items.add(i);
+		}
 		if (player.getItemInHand() == null
 				|| player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
-				for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
-					if (entry.getKey() != 0) {
-						// at seemingly random times, an item turns into a
-						// "ghost item" and disappears upon clicking it
-						inv.addItem(getStack(entry.getKey(), entry.getValue()));
-					}
-					items.set(i, getMap(0, (short) 0));
+				if (items.get(i).getType() != Material.AIR) {
+					inv.addItem(items.get(i));
 				}
+				items.set(i, null);
 			}
+			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
-			success = true;
 		} else {
 			int itemID = hand.getTypeId();
 			String error = npc.getStrippedName() + " is already equipped with "
 					+ MessageUtils.getMaterialName(itemID) + ".";
 			String slot = "";
 			if (player.isSneaking()) {
-				for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
-					if (Material.getMaterial(entry.getKey()) == Material
-							.getMaterial(itemID)) {
-						Messaging.sendError(player, error);
-						return;
-					}
-					slot = "item-in-hand";
-					if (npc.getItemInHand().getType() != Material.AIR) {
-						inv.addItem(npc.getItemInHand());
-					}
-					items.set(0, getMap(itemID, hand.getDurability()));
+				if (Material.getMaterial(items.get(0).getTypeId()) == Material
+						.getMaterial(itemID)) {
+					Messaging.sendError(player, error);
+					return;
 				}
+				slot = "item-in-hand";
+				if (npc.getItemInHand().getType() != Material.AIR) {
+					inv.addItem(npc.getItemInHand());
+				}
+				items.set(0, hand);
 			} else {
-				Armor armor = InventoryUtils.getArmorSlot(itemID);
+				Armor armor = Armor.getArmorSlot(itemID);
 				if (armor != null) {
 					if (armor.get(npcInv).getType() == Material
 							.getMaterial(itemID)) {
@@ -125,46 +101,32 @@ public class NPCDataManager {
 					if (armor.get(npcInv).getType() != Material.AIR) {
 						inv.addItem(armor.get(npcInv));
 					}
-					items.set(armor.getSlot() + 1,
-							getMap(itemID, hand.getDurability()));
+					items.set(armor.getSlot() + 1, hand);
 				} else {
-					for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
-						if (Material.getMaterial(entry.getKey()) == Material
-								.getMaterial(itemID)) {
-							Messaging.sendError(player, error);
-							return;
-						}
-						slot = "item-in-hand";
-						if (npc.getItemInHand().getType() != Material.AIR) {
-							inv.addItem(npc.getItemInHand());
-						}
-						items.set(0, getMap(itemID, hand.getDurability()));
+					if (Material.getMaterial(items.get(0).getTypeId()) == Material
+							.getMaterial(itemID)) {
+						Messaging.sendError(player, error);
+						return;
 					}
+					slot = "item-in-hand";
+					if (npc.getItemInHand().getType() != Material.AIR) {
+						inv.addItem(npc.getItemInHand());
+					}
+					items.set(0, hand);
 				}
 			}
+			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
 					+ slot + " was set to "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(itemID))
 					+ ".");
-			player.updateInventory();
-			success = true;
 		}
 		InventoryUtils.decreaseItemInHand(player);
 
-		if (success) {
-			addItems(npc, items);
-			NPCManager.removeForRespawn(npc.getUID());
-			NPCManager.register(npc.getUID(), npc.getOwner(),
-					NPCCreateReason.RESPAWN);
-		}
-	}
-
-	// Get an ItemStack from an ID and a durability
-	private static ItemStack getStack(int id, short durability) {
-		if (id == 0) {
-			return null;
-		}
-		return new ItemStack(id, 1, durability);
+		addItems(npc, items);
+		NPCManager.removeForRespawn(npc.getUID());
+		NPCManager.register(npc.getUID(), npc.getOwner(),
+				NPCCreateReason.RESPAWN);
 	}
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
@@ -237,17 +199,11 @@ public class NPCDataManager {
 	}
 
 	// Adds items to an npc so that they are visible.
-	public static void addItems(HumanNPC npc, List<Map<Integer, Short>> items) {
+	public static void addItems(HumanNPC npc, List<ItemStack> items) {
 		if (items != null) {
-			for (Entry<Integer, Short> entry : items.get(0).entrySet()) {
-				npc.getPlayer().setItemInHand(
-						getStack(entry.getKey(), entry.getValue()));
-			}
+			npc.setItemInHand(items.get(0));
 			for (int i = 0; i < items.size() - 1; i++) {
-				for (Entry<Integer, Short> entry : items.get(i + 1).entrySet()) {
-					Armor.getArmor(i).set(npc.getInventory(),
-							getStack(entry.getKey(), entry.getValue()));
-				}
+				Armor.getArmor(i).set(npc.getInventory(), items.get(i + 1));
 			}
 			npc.getNPCData().setItems(items);
 		}

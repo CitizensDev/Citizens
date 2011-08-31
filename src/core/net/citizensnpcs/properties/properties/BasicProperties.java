@@ -4,10 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.Node;
@@ -141,8 +138,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 	}
 
 	// Gets a map of items
-	public List<Map<Integer, Short>> getItems(int UID) {
-		List<Map<Integer, Short>> map = Lists.newArrayList();
+	public List<ItemStack> getItems(int UID) {
+		List<ItemStack> items = Lists.newArrayList();
 		String current = profiles.getString(UID + this.items);
 		if (current.isEmpty()) {
 			current = "0:0,0:0,0:0,0:0,0:0,";
@@ -153,23 +150,28 @@ public class BasicProperties extends PropertyManager implements Properties {
 				s += ":0";
 			}
 			String[] parts = s.split(":");
-			HashMap<Integer, Short> items = new HashMap<Integer, Short>();
-			items.put(Integer.parseInt(parts[0]), Short.parseShort(parts[1]));
-			map.add(items);
+			items.add(new ItemStack(Integer.parseInt(parts[0]), 1, Short
+					.parseShort(parts[1])));
 		}
-		return map;
+		return items;
 	}
 
-	private void saveItems(int UID, List<Map<Integer, Short>> items) {
+	private void saveItems(int UID, List<ItemStack> items) {
 		StringBuilder temp = new StringBuilder();
 		for (int i = 0; i < items.size(); i++) {
-			for (Entry<Integer, Short> entry : items.get(i).entrySet()) {
-				short durability = entry.getValue();
+			int id;
+			short durability;
+			if (items.get(i) != null) {
+				id = items.get(i).getTypeId();
+				durability = items.get(i).getDurability();
 				if (durability == -1) {
 					durability = 0;
 				}
-				temp.append(entry.getKey() + ":" + durability + ",");
+			} else {
+				id = 0;
+				durability = 0;
 			}
+			temp.append(id + ":" + durability + ",");
 		}
 		profiles.setString(UID + this.items, temp.toString());
 	}
