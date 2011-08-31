@@ -84,7 +84,8 @@ public class GuardTask implements Runnable {
 			return;
 		}
 		FlagList flags = guard.getFlags();
-		flags.processEntities(player.getLocation(), getNearby(player, guard));
+		flags.processEntities(npc, player.getLocation(),
+				getNearby(player, guard));
 		if (flags.getResult() != null) {
 			guard.target(flags.getResult(), npc);
 		}

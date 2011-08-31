@@ -10,6 +10,7 @@ import java.util.Map;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.npcs.NPCManager;
+import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -135,7 +136,8 @@ public class FlagSorter {
 		return source.get(name);
 	}
 
-	List<LivingEntity> getPossible(Iterable<LivingEntity> toProcess) {
+	List<LivingEntity> getPossible(HumanNPC npc,
+			Iterable<LivingEntity> toProcess) {
 		List<LivingEntity> processed = Lists.newArrayList();
 		FlagInfo retrieved = null;
 		for (LivingEntity entity : toProcess) {
@@ -145,8 +147,9 @@ public class FlagSorter {
 						CreatureTask.getCreature(entity).getType(), false));
 			} else if (entity instanceof Player) {
 				String name = ((Player) entity).getName().toLowerCase();
-				retrieved = get(getByType(PLAYERS), name) == null ? groupMap
-						.get(name) : get(getByType(PLAYERS), name);
+				if (!name.equals(npc.getOwner()))
+					retrieved = get(getByType(PLAYERS), name) == null ? groupMap
+							.get(name) : get(getByType(PLAYERS), name);
 			} else {
 				retrieved = get(getByType(MOBS),
 						EntityUtils.getMonsterName(entity));
