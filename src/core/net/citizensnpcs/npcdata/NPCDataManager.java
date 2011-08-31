@@ -131,8 +131,19 @@ public class NPCDataManager {
 		InventoryUtils.decreaseItemInHand(player);
 		// add all items to the player's inventory AFTER in-hand item was
 		// removed
+		boolean drop = false;
 		for (ItemStack i : toAdd) {
-			player.getInventory().addItem(i);
+			// drop items that don't fit in a player's inventory
+			if (player.getInventory().addItem(i).size() >= 1) {
+				player.getInventory().removeItem(i);
+				player.getWorld().dropItemNaturally(player.getLocation(), i);
+				drop = true;
+			}
+		}
+		if (drop) {
+			Messaging
+					.sendError(player,
+							"Some items couldn't fit in your inventory and were dropped at your location.");
 		}
 		player.updateInventory();
 

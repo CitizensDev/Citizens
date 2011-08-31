@@ -26,9 +26,17 @@ public class PlayerProfile {
 
 	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
 
+	public PlayerProfile(String name) {
+		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
+				+ name + ".yml");
+		this.name = name;
+		this.load();
+	}
+
 	public static PlayerProfile getProfile(String name) {
-		if (profiles.get(name) == null)
+		if (profiles.get(name) == null) {
 			profiles.put(name, new PlayerProfile(name));
+		}
 		return profiles.get(name);
 	}
 
@@ -38,15 +46,10 @@ public class PlayerProfile {
 
 	public static void saveAll() {
 		for (PlayerProfile profile : profiles.values()) {
-			profile.save();
+			if (profile != null) {
+				profile.save();
+			}
 		}
-	}
-
-	public PlayerProfile(String name) {
-		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
-				+ name + ".yml");
-		this.name = name;
-		this.load();
 	}
 
 	public void addCompletedQuest(CompletedQuest quest) {
@@ -153,8 +156,9 @@ public class PlayerProfile {
 				}
 			}
 		}
-		if (!profile.pathExists(".quest.completed"))
+		if (!profile.pathExists(".quest.completed")) {
 			return;
+		}
 		for (String key : profile.getKeys(".quest.completed")) {
 			path = ".quest.completed." + key;
 			completedQuests.put(
