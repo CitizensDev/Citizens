@@ -153,10 +153,7 @@ public class InventoryUtils {
 	}
 
 	public enum Armor {
-		HELMET(0),
-		CHESTPLATE(1),
-		LEGGINGS(2),
-		BOOTS(3);
+		HELMET(0), CHESTPLATE(1), LEGGINGS(2), BOOTS(3);
 		private final int slot;
 		private static final HashMap<Integer, Armor> slots = new HashMap<Integer, Armor>();
 
@@ -216,7 +213,7 @@ public class InventoryUtils {
 				break;
 			}
 		}
-		
+
 		static {
 			for (Armor armor : values()) {
 				slots.put(armor.getSlot(), armor);

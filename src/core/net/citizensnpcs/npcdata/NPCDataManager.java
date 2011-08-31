@@ -56,7 +56,6 @@ public class NPCDataManager {
 	@SuppressWarnings("deprecation")
 	private static void equip(Player player, HumanNPC npc) {
 		ItemStack hand = player.getItemInHand();
-		PlayerInventory inv = player.getInventory();
 		PlayerInventory npcInv = npc.getInventory();
 		List<ItemData> items = Lists.newArrayList();
 		items.add(new ItemData(npc.getItemInHand().getTypeId(), npc
@@ -65,15 +64,15 @@ public class NPCDataManager {
 			items.add(new ItemData(armor.get(npcInv).getTypeId(), armor.get(
 					npcInv).getDurability()));
 		}
+		List<ItemStack> toAdd = Lists.newArrayList();
 		if (player.getItemInHand() == null
 				|| player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i).getID() != 0) {
-					inv.addItem(items.get(i).createStack());
+					toAdd.add(items.get(i).createStack());
 				}
 				items.set(i, new ItemData(0, (short) 0));
 			}
-			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 					+ " is now naked. Here are the items!");
 		} else {
@@ -89,9 +88,7 @@ public class NPCDataManager {
 				}
 				slot = "item-in-hand";
 				if (npc.getItemInHand().getType() != Material.AIR) {
-					inv.addItem(items.get(0).createStack());
-				} else {
-					Messaging.log("A ITEM IN HAND is AIR");
+					toAdd.add(items.get(0).createStack());
 				}
 				items.set(0,
 						new ItemData(hand.getTypeId(), hand.getDurability()));
@@ -105,10 +102,7 @@ public class NPCDataManager {
 					}
 					slot = armor.name().toLowerCase();
 					if (armor.get(npcInv).getType() != Material.AIR) {
-						inv.addItem(items.get(armor.getSlot() + 1)
-								.createStack());
-					} else {
-						Messaging.log("B ARMOR IS AIR");
+						toAdd.add(items.get(armor.getSlot() + 1).createStack());
 					}
 					items.set(
 							armor.getSlot() + 1,
@@ -121,22 +115,26 @@ public class NPCDataManager {
 					}
 					slot = "item-in-hand";
 					if (npc.getItemInHand().getType() != Material.AIR) {
-						inv.addItem(items.get(0).createStack());
-					} else {
-						Messaging.log("C ITEM IN HAND IS AIR");
+						toAdd.add(items.get(0).createStack());
 					}
 					items.set(
 							0,
 							new ItemData(hand.getTypeId(), hand.getDurability()));
 				}
 			}
-			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
 					+ slot + " was set to "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(itemID))
 					+ ".");
 		}
+		// remove item that was added to NPC
 		InventoryUtils.decreaseItemInHand(player);
+		// add all items to the player's inventory AFTER in-hand item was
+		// removed
+		for (ItemStack i : toAdd) {
+			player.getInventory().addItem(i);
+		}
+		player.updateInventory();
 
 		addItems(npc, items);
 		NPCManager.removeForRespawn(npc.getUID());
