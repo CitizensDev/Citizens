@@ -9,8 +9,9 @@ import java.util.List;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.Node;
 import net.citizensnpcs.api.Properties;
-import net.citizensnpcs.npcs.NPCData;
-import net.citizensnpcs.npcs.NPCDataManager;
+import net.citizensnpcs.npcdata.ItemData;
+import net.citizensnpcs.npcdata.NPCData;
+import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
@@ -138,8 +139,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 	}
 
 	// Gets a map of items
-	public List<ItemStack> getItems(int UID) {
-		List<ItemStack> items = Lists.newArrayList();
+	public List<ItemData> getItems(int UID) {
+		List<ItemData> items = Lists.newArrayList();
 		String current = profiles.getString(UID + this.items);
 		if (current.isEmpty()) {
 			current = "0:0,0:0,0:0,0:0,0:0,";
@@ -150,28 +151,18 @@ public class BasicProperties extends PropertyManager implements Properties {
 				s += ":0";
 			}
 			String[] parts = s.split(":");
-			items.add(new ItemStack(Integer.parseInt(parts[0]), 1, Short
+			items.add(new ItemData(Integer.parseInt(parts[0]), Short
 					.parseShort(parts[1])));
 		}
 		return items;
 	}
 
-	private void saveItems(int UID, List<ItemStack> items) {
+	private void saveItems(int UID, List<ItemData> items) {
 		StringBuilder temp = new StringBuilder();
 		for (int i = 0; i < items.size(); i++) {
-			int id;
-			short durability;
-			if (items.get(i) != null) {
-				id = items.get(i).getTypeId();
-				durability = items.get(i).getDurability();
-				if (durability == -1) {
-					durability = 0;
-				}
-			} else {
-				id = 0;
-				durability = 0;
-			}
-			temp.append(id + ":" + durability + ",");
+			short durability = items.get(i).getDurability();
+			temp.append(items.get(i).getID() + ":"
+					+ (durability == -1 ? 0 : durability) + ",");
 		}
 		profiles.setString(UID + this.items, temp.toString());
 	}

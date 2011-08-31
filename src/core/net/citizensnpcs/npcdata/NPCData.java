@@ -1,18 +1,17 @@
-package net.citizensnpcs.npcs;
+package net.citizensnpcs.npcdata;
 
 import java.util.Deque;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.inventory.ItemStack;
 
 public class NPCData {
 	private String name;
 	private int UID;
 	private Location location;
 	private ChatColor colour = ChatColor.WHITE;
-	private List<ItemStack> items;
+	private List<ItemData> items;
 	private Deque<String> texts;
 	private boolean lookClose;
 	private boolean talkClose;
@@ -20,7 +19,7 @@ public class NPCData {
 
 	// Acts as a container for various npc data.
 	public NPCData(String name, int UID, Location loc, ChatColor colour,
-			List<ItemStack> items, Deque<String> texts, boolean lookClose,
+			List<ItemData> items, Deque<String> texts, boolean lookClose,
 			boolean talkClose, String owner) {
 		this.setName(name);
 		this.setUID(UID);
@@ -65,11 +64,11 @@ public class NPCData {
 		return colour;
 	}
 
-	public void setItems(List<ItemStack> items) {
+	public void setItems(List<ItemData> items) {
 		this.items = items;
 	}
 
-	public List<ItemStack> getItems() {
+	public List<ItemData> getItems() {
 		return items;
 	}
 

@@ -9,8 +9,8 @@ import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.misc.NPCLocation;
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.PathUtils;
 

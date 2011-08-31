@@ -2,10 +2,10 @@ package net.citizensnpcs.properties.properties;
 
 import java.util.Random;
 
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 
 import org.bukkit.Material;

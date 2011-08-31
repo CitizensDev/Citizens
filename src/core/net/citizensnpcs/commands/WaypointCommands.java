@@ -3,7 +3,7 @@ package net.citizensnpcs.commands;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.npcs.NPCDataManager;
+import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;

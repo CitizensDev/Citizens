@@ -44,11 +44,11 @@ public class Healer extends CitizensNPC {
 
 	// TODO Make this less ugly to look at
 	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {
-		Healer healer = npc.getType("healer");
-		int playerHealth = player.getHealth();
-		int healerHealth = healer.getHealth();
+	public void onRightClick(Player player, HumanNPC npc) {
 		if (PermissionManager.generic(player, "citizens.healer.use.heal")) {
+			Healer healer = npc.getType("healer");
+			int playerHealth = player.getHealth();
+			int healerHealth = healer.getHealth();
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("HealerTakeHealthItem")) {
 				if (playerHealth < 20) {

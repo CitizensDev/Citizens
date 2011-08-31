@@ -6,8 +6,8 @@ import net.citizensnpcs.api.CitizensNPC;
 import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagList;
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;
 

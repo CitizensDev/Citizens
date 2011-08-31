@@ -1,4 +1,4 @@
-package net.citizensnpcs.npcs;
+package net.citizensnpcs.npcdata;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -9,6 +9,7 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.InventoryUtils.Armor;
 import net.citizensnpcs.utils.MessageUtils;
@@ -57,18 +58,20 @@ public class NPCDataManager {
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory inv = player.getInventory();
 		PlayerInventory npcInv = npc.getInventory();
-		List<ItemStack> items = Lists.newArrayList();
-		items.add(npc.getItemInHand());
-		for (ItemStack i : npcInv.getArmorContents()) {
-			items.add(i);
+		List<ItemData> items = Lists.newArrayList();
+		items.add(new ItemData(npc.getItemInHand().getTypeId(), npc
+				.getItemInHand().getDurability()));
+		for (Armor armor : Armor.values()) {
+			items.add(new ItemData(armor.get(npcInv).getTypeId(), armor.get(
+					npcInv).getDurability()));
 		}
 		if (player.getItemInHand() == null
 				|| player.getItemInHand().getType() == Material.AIR) {
 			for (int i = 0; i < items.size(); i++) {
-				if (items.get(i).getType() != Material.AIR) {
-					inv.addItem(items.get(i));
+				if (items.get(i).getID() != 0) {
+					inv.addItem(items.get(i).createStack());
 				}
-				items.set(i, null);
+				items.set(i, new ItemData(0, (short) 0));
 			}
 			player.updateInventory();
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
@@ -79,16 +82,19 @@ public class NPCDataManager {
 					+ MessageUtils.getMaterialName(itemID) + ".";
 			String slot = "";
 			if (player.isSneaking()) {
-				if (Material.getMaterial(items.get(0).getTypeId()) == Material
+				if (Material.getMaterial(items.get(0).getID()) == Material
 						.getMaterial(itemID)) {
 					Messaging.sendError(player, error);
 					return;
 				}
 				slot = "item-in-hand";
 				if (npc.getItemInHand().getType() != Material.AIR) {
-					inv.addItem(npc.getItemInHand());
+					inv.addItem(items.get(0).createStack());
+				} else {
+					Messaging.log("A ITEM IN HAND is AIR");
 				}
-				items.set(0, hand);
+				items.set(0,
+						new ItemData(hand.getTypeId(), hand.getDurability()));
 			} else {
 				Armor armor = Armor.getArmorSlot(itemID);
 				if (armor != null) {
@@ -99,20 +105,29 @@ public class NPCDataManager {
 					}
 					slot = armor.name().toLowerCase();
 					if (armor.get(npcInv).getType() != Material.AIR) {
-						inv.addItem(armor.get(npcInv));
+						inv.addItem(items.get(armor.getSlot() + 1)
+								.createStack());
+					} else {
+						Messaging.log("B ARMOR IS AIR");
 					}
-					items.set(armor.getSlot() + 1, hand);
+					items.set(
+							armor.getSlot() + 1,
+							new ItemData(hand.getTypeId(), hand.getDurability()));
 				} else {
-					if (Material.getMaterial(items.get(0).getTypeId()) == Material
+					if (Material.getMaterial(items.get(0).getID()) == Material
 							.getMaterial(itemID)) {
 						Messaging.sendError(player, error);
 						return;
 					}
 					slot = "item-in-hand";
 					if (npc.getItemInHand().getType() != Material.AIR) {
-						inv.addItem(npc.getItemInHand());
+						inv.addItem(items.get(0).createStack());
+					} else {
+						Messaging.log("C ITEM IN HAND IS AIR");
 					}
-					items.set(0, hand);
+					items.set(
+							0,
+							new ItemData(hand.getTypeId(), hand.getDurability()));
 				}
 			}
 			player.updateInventory();
@@ -199,11 +214,15 @@ public class NPCDataManager {
 	}
 
 	// Adds items to an npc so that they are visible.
-	public static void addItems(HumanNPC npc, List<ItemStack> items) {
+	public static void addItems(HumanNPC npc, List<ItemData> items) {
 		if (items != null) {
-			npc.setItemInHand(items.get(0));
+			npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0)
+					.createStack());
 			for (int i = 0; i < items.size() - 1; i++) {
-				Armor.getArmor(i).set(npc.getInventory(), items.get(i + 1));
+				Armor.getArmor(i).set(
+						npc.getInventory(),
+						items.get(i + 1).getID() == 0 ? null : items.get(i + 1)
+								.createStack());
 			}
 			npc.getNPCData().setItems(items);
 		}

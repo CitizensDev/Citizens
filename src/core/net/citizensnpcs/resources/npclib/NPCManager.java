@@ -1,4 +1,4 @@
-package net.citizensnpcs.npcs;
+package net.citizensnpcs.resources.npclib;
 
 import java.util.Map;
 
@@ -7,10 +7,9 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.npcdata.NPCData;
+import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCList;
-import net.citizensnpcs.resources.npclib.NPCSpawner;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,7 +1,7 @@
 ===== Citizens - NPCs for Bukkit =====
 By fullwall and aPunch
 
---- v1.0.9 ---
+*--- v1.0.9 ---
 -updated to Minecraft Beta 1.7.2
 -updated to latest CraftBukkit Recommended Build
 -new save system, all NPCs will now save in npc-profiles.yml instead of in multiple files
@@ -18,19 +18,19 @@ By fullwall and aPunch
 -added '/citizens save' to force a save of Citizens files
 -pumpkins and jack-o-lanterns can now be used an helmets for NPCs
 
---- v1.0.9a ---
+*--- v1.0.9a ---
 -guard fixes (THEY STILL DO NOT WORK 100%)
 -trader command fixes
 -fixed /npc remove command
 
---- v1.0.9b ---
+*--- v1.0.9b ---
 -fixed NPCs not saving
 -added command suggestions ("Unknown command. Did you mean: ....")
 -trader command fixes
 -added /trader clear [buy|sell] command for clearing a trader's stock
 -added /toggle [list|help] for toggling help
 
---- v1.0.9c ---
+*--- v1.0.9c ---
 -added '/citizens debug' command to toggle Citizens debug-mode
 -added 'debug-mode' property in citizens.yml
 -added 'quick-select' property in citizens.yml; if it is set to true, an NPC will be selected and 
@@ -38,7 +38,7 @@ By fullwall and aPunch
 -fixed random chunk generation bug (?)
 -fixed memory leak issues (?)
 
---- v1.0.9d ---
+*--- v1.0.9d ---
 -if you have the 'citizens.admin' node and the node 'general.notify-updates' is set to true, you will
  be notified if a new version of Citizens is available
 -fixed Evil NPCs spawning in blocks
@@ -61,40 +61,46 @@ By fullwall and aPunch
 -fixed renaming an NPC resetting its toggled types
 -changed '/blacksmith uses' to '/blacksmith status', now shows cost of repairing your in-hand item
 
---- v1.1 ---
+*--- v1.1 ---
+*-KEY FEATURES
 -Citizens is now modular! You can download the full package or a customized ZIP file at 
  www.citizensnpcs.net/download
+*-ADDED
 -added 2 new NPC types: Guards and Questers; see wiki for detailed documentation
--item economy removed; now if 'economy.use-economy' is true and an economy plugin is detected, Citizens will use
- that plugin, otherwise everything is free
--now supports MultiCurrency, BOSEconomy7, and iConomy6
--made lots of changes to configuration settings; delete all config files and let them regenerate (if you fail
- to do so there will be issues)
--fixed saving bug with waypoints
--you can no longer set '*' as a wizard's interact-item
+-added support for MultiCurrency, BOSEconomy7, and iConomy6
 -added new wizard mode "command", '/wizard command [command] (args)' sets a wizard's command, right-clicking it
  with the interact-item executes that command
+-added 'citizens.evils.immune' permission node, those with this node will not be attacked by Evil NPCs
+-added ability to have an NPC say multiple lines of text at once using the <br> tag
 -added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs", its effects
  are only noticable upon relogging
 -added 'evil.spawn.chance' node in mobs.yml
--fixed compatibility with Bukkit permissions
--added 'citizens.evils.immune' permission node, those with this node will not be attacked by Evil NPCs
--added ability to have an NPC say multiple lines of text at once using the <br> tag
--removed support for Permissions 2.7.x/3.x
+-added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
+*-CHANGED
+-made lots of changes to configuration settings; delete all config files and let them regenerate (if you fail
+ to do so there will be issues)
+-healers now are used by right-clicking, not left-clicking
 -moved economy settings from economy.yml to citizens.yml
 -Evil NPCs no longer drop diamond swords
+-you can no longer set '*' as a wizard's interact-item
+-/npc remove all command no longer requires an NPC to be selected to execute
+*-FIXED
+-fixed saving bug with waypoints
+-fixed compatibility with Bukkit permissions
 -fixed copied NPCs moving back to the original NPCs location on a server restart/reload
--'/npc remove all' command no longer requires an NPC to be selected to execute
--added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
 -fixed '/npc moveto' command requiring all arguments, now only requires x, y, and z coords to work
+*-REMOVED
+-removed item economy; now if 'economy.use-economy' is true and an economy plugin is detected, Citizens will use
+ that plugin, otherwise everything is free
+-removed support for Permissions 2.7.x/3.x
 -removed '/npc item' and '/npc armor' commands in favor of new '/npc equip' command that toggles item-edit
  mode
-API CHANGES (for developers, the API page on our Wiki for more information):
+*-API CHANGES (for developers, the API page on our Wiki for more information):
 -added CitizensEnableEvent and CitizensDisableEvent for when Citizens is enabled/disabled
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world
 -merged NPCSpawnEvent and NPCCreateEvent
 -added CitizensReloadEvent, only called when '/citizens reload' command is used
 -added NPCToggleTypeEvent
--added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; it is not 
- recommended that you use NPCManager
+-added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; we recommend
+ to no longer use NPCManager
 -added API for creating your own NPC type

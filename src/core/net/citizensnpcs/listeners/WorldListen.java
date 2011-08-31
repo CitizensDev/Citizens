@@ -6,9 +6,9 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.misc.NPCLocation;
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 

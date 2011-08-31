@@ -2,10 +2,10 @@ package net.citizensnpcs.api;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.npcs.NPCDataManager;
-import net.citizensnpcs.npcs.NPCManager;
+import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCList;
+import net.citizensnpcs.resources.npclib.NPCManager;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

@@ -6,10 +6,10 @@ import java.util.Random;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.npcs.NPCDataManager;
-import net.citizensnpcs.npcs.NPCManager;
+import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
 
 import org.bukkit.ChatColor;

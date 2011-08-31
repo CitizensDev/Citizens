@@ -1,6 +1,5 @@
 package net.citizensnpcs.resources.npclib;
 
-import net.citizensnpcs.npcs.NPCManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.npcs.NPCData;
+import net.citizensnpcs.npcdata.NPCData;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
