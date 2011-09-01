@@ -8,13 +8,7 @@ commands:
         description: Performs various NPC-related commands.
         usage: |
                     The command was not recognized.
-                    See /npc help for a list of commands.
-    alchemist:
-        description: Performs various Alchemist NPC-related commands.
-        aliases: [alch]
-        usage: |
-                        The command was not recognized.
-                        See /alchemist help for a list of commands.    
+                    See /npc help for a list of commands.  
     blacksmith:
         description: Performs various Blacksmith NPC-related commands.
         usage: |
@@ -89,6 +83,7 @@ permissions:
             citizens.admin.debug: true
             citizens.admin.override.*: true
             citizens.admin.clean: true
+            citizens.admin.notifyupdates: true
     citizens.admin.override.*:
         children:
             citizens.admin.override.setowner: true

@@ -41,7 +41,8 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (PermissionManager.generic(event.getPlayer(), "citizens.admin")
+		if (PermissionManager.generic(event.getPlayer(),
+				"citizens.admin.notifyupdates")
 				&& SettingsManager.getBoolean("NotifyUpdates")) {
 			ServerUtils.checkForUpdates(event.getPlayer());
 		}
