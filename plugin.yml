@@ -72,7 +72,6 @@ permissions:
             citizens.healer.*: true
             citizens.wizard.*: true
             citizens.quester.*: true
-            citizens.alchemist.*: true
             citizens.waypoints.*: true
             citizens.npccount.unlimited: true
     citizens.admin.*:
@@ -142,25 +141,6 @@ permissions:
         children:
             citizens.basic.modify.remove: true
             citizens.basic.modify.remove.all: true
-    citizens.alchemist.*:
-        children:
-            citizens.alchemist.use.*: true
-            citizens.alchemist.modify.*: true
-    citizens.alchemist.use.*:
-        children:
-            citizens.alchemist.use.interact: true
-            citizens.alchemist.use.help: true
-            citizens.alchemist.use.recipes.*: true
-    citizens.alchemist.use.recipes.*:
-        children:
-            citizens.alchemist.use.recipes.select: true
-            citizens.alchemist.use.recipes.view: true
-    citizens.alchemist.modify.recipes.*:
-        children:
-            citizens.alchemist.modify.recipes.add: true
-    citizens.alchemist.modify.*:
-        children:
-            citizens.alchemist.modify.recipes.*: true
     citizens.blacksmith.*:
         children:
             citizens.blacksmith.use.*: true
@@ -205,12 +185,20 @@ permissions:
     citizens.quester.use.*:
         children:
             citizens.quester.use.help: true
-            citizens.quester.use.status: true
-            citizens.quester.use.abort: true
+            citizens.quester.use.quests.*: true
+    citizens.quester.use.quests.*:
+        children:
+            citizens.quester.use.quests.help: true
+            citizens.quester.use.quests.view: true
+            citizens.quester.use.quests.abort: true
+            citizens.quester.use.quests.status: true
     citizens.quester.modify.*:
         children:
-            citizens.quester.modify.assignquest: true
-            citizens.quester.modify.removequest: true
+            citizens.quester.modify.quests.*: true
+    citizens.quester.modify.quests.*:
+        children:
+            citizens.quester.modify.quests.assign: true
+            citizens.quester.modify.quests.remove: true
     citizens.trader.*:
         children:
             citizens.trader.use.*: true

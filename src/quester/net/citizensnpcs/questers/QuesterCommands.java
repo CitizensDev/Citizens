@@ -55,7 +55,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "assign",
 			min = 2,
 			max = 2)
-	@CommandPermissions("quester.modify.assignquest")
+	@CommandPermissions("quester.modify.quests.assign")
 	public static void assign(CommandContext args, Player player, HumanNPC npc) {
 		if (!QuestManager.validQuest(args.getString(1))) {
 			player.sendMessage(ChatColor.GRAY
@@ -83,7 +83,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "remove",
 			min = 2,
 			max = 2)
-	@CommandPermissions("quester.modify.assignquest")
+	@CommandPermissions("quester.modify.quests.remove")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		Quester quester = npc.getType("quester");
 		if (!quester.hasQuest(args.getString(1))) {
@@ -106,7 +106,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "quests",
 			min = 1,
 			max = 2)
-	@CommandPermissions("quester.modify.assignquest")
+	@CommandPermissions("quester.use.quests.view")
 	public static void quests(CommandContext args, Player player, HumanNPC npc) {
 		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
 		if (page < 0)
@@ -139,7 +139,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("quester.use.help")
+	@CommandPermissions("quester.use.quests.help")
 	public static void questHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		sendQuestHelp(sender);
@@ -153,7 +153,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "abort",
 			min = 1,
 			max = 1)
-	@CommandPermissions("quester.use.abort")
+	@CommandPermissions("quester.use.quests.abort")
 	public static void abort(CommandContext args, Player player, HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
@@ -173,7 +173,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "completed",
 			min = 1,
 			max = 2)
-	@CommandPermissions("quester.use.status")
+	@CommandPermissions("quester.use.quests.status")
 	public static void completed(CommandContext args, Player player,
 			HumanNPC npc) {
 		player.shootArrow();
@@ -214,7 +214,7 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "status",
 			min = 1,
 			max = 1)
-	@CommandPermissions("quester.use.status")
+	@CommandPermissions("quester.use.quests.status")
 	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (!profile.hasQuest()) {
@@ -251,10 +251,12 @@ public class QuesterCommands extends CommandHandler {
 	@Override
 	public void addPermissions() {
 		CitizensManager.addPermission("quester.use.help");
-		CitizensManager.addPermission("quester.modify.assignquest");
-		CitizensManager.addPermission("quester.modify.removequest");
-		CitizensManager.addPermission("quester.use.status");
-		CitizensManager.addPermission("quester.use.abort");
+		CitizensManager.addPermission("quester.modify.quests.assign");
+		CitizensManager.addPermission("quester.modify.quests.remove");
+		CitizensManager.addPermission("quester.use.quests.status");
+		CitizensManager.addPermission("quester.use.quests.abort");
+		CitizensManager.addPermission("quester.use.quests.view");
+		CitizensManager.addPermission("quester.use.quests.help");
 	}
 
 	@Override

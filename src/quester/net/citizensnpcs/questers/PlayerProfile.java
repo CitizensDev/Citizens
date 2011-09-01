@@ -46,9 +46,7 @@ public class PlayerProfile {
 
 	public static void saveAll() {
 		for (PlayerProfile profile : profiles.values()) {
-			if (profile != null) {
-				profile.save();
-			}
+			profile.save();
 		}
 	}
 
