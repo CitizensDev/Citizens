@@ -9,6 +9,7 @@ import net.citizensnpcs.resources.sk89q.CommandContext;
 import net.citizensnpcs.resources.sk89q.CommandPermissions;
 import net.citizensnpcs.resources.sk89q.CommandRequirements;
 import net.citizensnpcs.utils.HelpUtils;
+import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.wizards.WizardManager.WizardMode;
 
@@ -104,11 +105,16 @@ public class WizardCommands extends CommandHandler {
 	@CommandPermissions("wizard.modify.addloc")
 	public static void addLocation(CommandContext args, Player player,
 			HumanNPC npc) {
+		Wizard wizard = npc.getType("wizard");
+		if (wizard.getMode() != WizardMode.TELEPORT) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " is not in teleport mode.");
+			return;
+		}
 		player.sendMessage(ChatColor.GREEN + "Added current location to "
 				+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
 				+ " as " + StringUtils.wrap(args.getString(1)) + ".");
-		((Wizard) npc.getType("wizard")).addLocation(player.getLocation(),
-				args.getString(1));
+		wizard.addLocation(player.getLocation(), args.getString(1));
 	}
 
 	@Command(
@@ -122,6 +128,11 @@ public class WizardCommands extends CommandHandler {
 	public static void removeLocation(CommandContext args, Player player,
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
+		if (wizard.getMode() != WizardMode.TELEPORT) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " is not in teleport mode.");
+			return;
+		}
 		String locations[] = wizard.getLocations().split(":");
 		String newLoc = "";
 		String removedName = "";
@@ -150,6 +161,11 @@ public class WizardCommands extends CommandHandler {
 	public static void locations(CommandContext args, Player player,
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
+		if (wizard.getMode() != WizardMode.TELEPORT) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " is not in teleport mode.");
+			return;
+		}
 		player.sendMessage(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
 						+ "'s Wizard Locations")));
@@ -190,6 +206,11 @@ public class WizardCommands extends CommandHandler {
 			min = 2)
 	@CommandPermissions("wizard.modify.command")
 	public static void command(CommandContext args, Player player, HumanNPC npc) {
+		if (((Wizard) npc.getType("wizard")).getMode() != WizardMode.COMMAND) {
+			Messaging.sendError(player, npc.getStrippedName()
+					+ " is not in command mode.");
+			return;
+		}
 		String command = args.getJoinedStrings(1);
 		((Wizard) npc.getType("wizard")).setCommand(command);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")

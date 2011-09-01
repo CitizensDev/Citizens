@@ -77,6 +77,7 @@ By fullwall and aPunch
  are only noticable upon relogging
 -added 'evil.spawn.chance' node in mobs.yml
 -added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
+-added configurable mana-costs for wizards ('wizards.mana-costs') nodes in citizens.yml
 *CHANGED
 -made lots of changes to configuration settings; delete all config files and let them regenerate (if you fail
  to do so there will be issues)

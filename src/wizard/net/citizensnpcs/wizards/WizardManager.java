@@ -1,5 +1,6 @@
 package net.citizensnpcs.wizards;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -46,7 +47,8 @@ public class WizardManager {
 	private static boolean teleportPlayer(Player player, HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getNumberOfLocations() > 0) {
-			if (decreaseMana(player, npc, 5)) {
+			if (decreaseMana(player, npc,
+					SettingsManager.getInt("TeleportManaCost"))) {
 				player.teleport(wizard.getCurrentLocation());
 				return true;
 			}
@@ -70,7 +72,8 @@ public class WizardManager {
 		} else if (wizard.getTime().equals("afternoon")) {
 			time = 10000;
 		}
-		if (decreaseMana(player, npc, 5)) {
+		if (decreaseMana(player, npc,
+				SettingsManager.getInt("ChangeTimeManaCost"))) {
 			player.getWorld().setTime(time);
 			return true;
 		}
@@ -79,7 +82,8 @@ public class WizardManager {
 
 	// Spawn mob(s) at the specified location
 	private static boolean spawnMob(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc, 5)) {
+		if (decreaseMana(player, npc,
+				SettingsManager.getInt("SpawnMobManaCost"))) {
 			player.getWorld().spawnCreature(player.getLocation(),
 					((Wizard) npc.getType("wizard")).getMob());
 			return true;
@@ -89,7 +93,8 @@ public class WizardManager {
 
 	// Toggle a storm in the player's world
 	private static boolean toggleStorm(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc, 5)) {
+		if (decreaseMana(player, npc,
+				SettingsManager.getInt("ToggleStormManaCost"))) {
 			player.getWorld().setStorm(!player.getWorld().hasStorm());
 			return true;
 		}
@@ -98,11 +103,8 @@ public class WizardManager {
 
 	// Executes a command
 	private static boolean executeCommand(Player player, HumanNPC npc) {
-		if (player
-				.performCommand(((Wizard) npc.getType("wizard")).getCommand())) {
-			return decreaseMana(player, npc, 5);
-		}
-		return false;
+		return decreaseMana(player, npc,
+				SettingsManager.getInt("ExecuteCommandManaCost"));
 	}
 
 	// Decrease the mana of a wizard
@@ -161,6 +163,7 @@ public class WizardManager {
 			if (!changeTime(player, npc)) {
 				return;
 			}
+			player.performCommand(wizard.getCommand());
 		} else if (op.equals("wizard.togglestorm")) {
 			msg += " toggled a thunderstorm in the world "
 					+ StringUtils.wrap(player.getWorld().getName()) + ".";

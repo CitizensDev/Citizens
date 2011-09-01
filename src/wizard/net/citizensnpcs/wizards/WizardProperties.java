@@ -178,6 +178,16 @@ public class WizardProperties extends PropertyManager implements Properties {
 				"economy.prices.wizard.togglestorm", 100));
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.wizard.executecommand", 100));
+		nodes.add(new Node("TeleportManaCost", SettingsType.GENERAL,
+				"wizards.mana-costs.teleport", 5));
+		nodes.add(new Node("ChangeTimeManaCost", SettingsType.GENERAL,
+				"wizards.mana-costs.changetime", 5));
+		nodes.add(new Node("SpawnMobManaCost", SettingsType.GENERAL,
+				"wizards.mana-costs.spawnmob", 5));
+		nodes.add(new Node("ToggleStormManaCost", SettingsType.GENERAL,
+				"wizards.mana-costs.togglestorm", 5));
+		nodes.add(new Node("ExecuteCommandManaCost", SettingsType.GENERAL,
+				"wizards.mana-costs.executecommand", 5));
 		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
 				"wizards.max-locations", 10));
 		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,
