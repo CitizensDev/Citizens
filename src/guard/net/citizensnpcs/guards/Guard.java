@@ -2,10 +2,10 @@ package net.citizensnpcs.guards;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.TickTask;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagList;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.PathUtils;

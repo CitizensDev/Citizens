@@ -1,4 +1,4 @@
-package net.citizensnpcs.api;
+package net.citizensnpcs.npctypes;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
 

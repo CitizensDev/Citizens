@@ -2,7 +2,6 @@ package net.citizensnpcs.properties;
 
 import java.util.HashMap;
 
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.properties.properties.BasicProperties;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;

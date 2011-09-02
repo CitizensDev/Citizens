@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;

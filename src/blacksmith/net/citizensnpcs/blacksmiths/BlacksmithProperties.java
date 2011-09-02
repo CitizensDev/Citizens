@@ -3,10 +3,10 @@ package net.citizensnpcs.blacksmiths;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.citizensnpcs.properties.Node;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.SettingsManager.SettingsType;
-import net.citizensnpcs.api.Node;
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class BlacksmithProperties extends PropertyManager implements Properties {

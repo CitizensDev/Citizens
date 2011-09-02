@@ -10,7 +10,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.utils.Messaging;
 
 public class CitizensNPCLoader {

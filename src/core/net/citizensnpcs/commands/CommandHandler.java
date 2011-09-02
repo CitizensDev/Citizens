@@ -1,4 +1,4 @@
-package net.citizensnpcs.api;
+package net.citizensnpcs.commands;
 
 import org.bukkit.command.CommandSender;
 

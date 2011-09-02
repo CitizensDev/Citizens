@@ -1,12 +1,12 @@
 package net.citizensnpcs.healers;
 
-import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
+import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.healers.listeners.HealerCitizensListen;
 import net.citizensnpcs.healers.listeners.HealerNPCListen;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.properties.Properties;
 
 import org.bukkit.event.Event.Type;
 
@@ -24,9 +24,9 @@ public class HealerType extends CitizensNPCType {
 
 	@Override
 	public void registerEvents() {
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new HealerCitizensListen());
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT, new HealerNPCListen());
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT, new HealerNPCListen());
 	}
 
 	@Override

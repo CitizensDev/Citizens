@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.api.Node;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.Messaging;

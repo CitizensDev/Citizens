@@ -3,7 +3,7 @@ package net.citizensnpcs.questers;
 import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.ObjectiveProgress;
