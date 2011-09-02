@@ -36,7 +36,7 @@ public class Objectives {
 		}
 
 		public Objective nextObjective() {
-			return current().get(index++);
+			return current().all().get(index++);
 		}
 
 		public void cycle() {

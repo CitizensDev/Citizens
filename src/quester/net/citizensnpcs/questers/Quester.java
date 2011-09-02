@@ -100,13 +100,17 @@ public class Quester extends CitizensNPC {
 		}
 	}
 
+	private boolean canRepeat(Player player, Quest quest) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		return profile.hasCompleted(quest.getName())
+				&& (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
+						quest.getName()).getTimesCompleted() < quest
+						.getRepeatLimit());
+	}
+
 	private void attemptAssign(Player player, HumanNPC npc) {
 		Quest quest = getQuest(fetchFromList(player));
-		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		if (profile.hasCompleted(quest.getName())
-				&& (quest.getRepeatLimit() != -1 && profile.getCompletedQuest(
-						quest.getName()).getTimesCompleted() >= quest
-						.getRepeatLimit())) {
+		if (!canRepeat(player, quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You are not allowed to repeat this quest again.");
 			return;
@@ -136,12 +140,24 @@ public class Quester extends CitizensNPC {
 			player.sendMessage(ChatColor.GRAY + "No quests available.");
 			return;
 		}
+		pending.remove(player);
 		if (queue.get(player) == null || queue.get(player) + 1 >= quests.size()) {
 			queue.put(player, 0);
 		} else {
-			queue.put(player, queue.get(player) + 1);
+			int base = queue.get(player) + 1;
+			while (true) {
+				base = (base + 1 >= quests.size() ? 0 : base + 1);
+				if (canRepeat(player, getQuest(fetchFromList(player)))) {
+					break;
+				}
+				if (base == queue.get(player) + 1) {
+					player.sendMessage(ChatColor.GRAY
+							+ "No quests are currently available for completion.");
+					return;
+				}
+			}
+			queue.put(player, base);
 		}
-		pending.remove(player);
 		updateDescription(player);
 	}
 
@@ -149,6 +165,10 @@ public class Quester extends CitizensNPC {
 		Quest quest = getQuest(fetchFromList(player));
 		if (quest == null)
 			return;
+		if (!canRepeat(player, quest)) {
+			cycle(player);
+			return;
+		}
 		PageInstance display = PageUtils.newInstance(player);
 		display.setSmoothTransition(true);
 		display.header(ChatColor.GREEN

@@ -13,8 +13,4 @@ public class QuestStep {
 	public void add(Objective obj) {
 		objectives.add(obj);
 	}
-
-	public Objective get(int index) {
-		return objectives.get(index);
-	}
 }

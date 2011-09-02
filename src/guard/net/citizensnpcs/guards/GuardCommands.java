@@ -208,9 +208,15 @@ public class GuardCommands extends CommandHandler {
 			}
 			type = FlagType.MOB;
 		}
-		if (args.hasFlag('p') && player.getName().equals(name)) {
-			player.sendMessage(ChatColor.GRAY + "You can't flag yourself!");
-			return;
+		if (args.hasFlag('p')) {
+			if (name.contains(" ")) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Player names can't have spaces in them.");
+			}
+			if (player.getName().equals(name)) {
+				player.sendMessage(ChatColor.GRAY + "You can't flag yourself!");
+				return;
+			}
 		}
 		String prefix = guard.getFlags().contains(type, name) ? "Updated"
 				: "Added";
