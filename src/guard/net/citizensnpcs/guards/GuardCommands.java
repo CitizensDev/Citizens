@@ -135,7 +135,8 @@ public class GuardCommands extends CommandHandler {
 				+ StringUtils.listify(StringUtils.wrap(header + ChatColor.WHITE
 						+ " <%x/%y>")));
 		for (String entry : flags.keySet()) {
-			instance.push(StringUtils.wrap("  - ") + entry);
+			if (!entry.equals("all"))
+				instance.push(StringUtils.wrap("  - ") + entry);
 		}
 		instance.process(page);
 	}
@@ -156,10 +157,10 @@ public class GuardCommands extends CommandHandler {
 		}
 
 		Guard guard = npc.getType("guard");
-		int flagOffset = 1, priority = 1;
+		int offset = 1, priority = 1;
 		if (args.hasFlag('i')) {
-			++flagOffset;
-			priority = args.getInteger(1);
+			priority = args.getInteger(offset);
+			++offset;
 		}
 		if (priority < 1 || priority > 20) {
 			player.sendMessage(ChatColor.GRAY
@@ -169,22 +170,21 @@ public class GuardCommands extends CommandHandler {
 		if (args.hasFlag('a')) {
 			guard.getFlags().addToAll(
 					args.getFlags(),
-					FlagInfo.newInstance(
-							"all",
-							priority,
-							args.argsLength() > flagOffset ? args.getString(
-									flagOffset).charAt(0) == '-' : false));
+					FlagInfo.newInstance("all", priority,
+							args.argsLength() > offset ? args.getString(offset)
+									.charAt(0) == '-' : false));
 			player.sendMessage(ChatColor.GREEN
 					+ "Added specified flags to specified types.");
 			return;
-		} else if (args.argsLength() == 1 || flagOffset == 2) {
+		} else if (args.argsLength() == 1
+				|| (args.argsLength() == 2 && offset == 2)) {
 			player.sendMessage(ChatColor.GRAY + "No name given.");
 			return;
 		}
-		boolean isSafe = args.getString(flagOffset).charAt(0) == '-';
+		boolean isSafe = args.getString(offset).charAt(0) == '-';
 
-		String name = isSafe ? args.getJoinedStrings(flagOffset).replaceFirst(
-				"-", "") : args.getJoinedStrings(flagOffset);
+		String name = isSafe ? args.getJoinedStrings(offset).replaceFirst("-",
+				"") : args.getJoinedStrings(offset);
 		name = name.toLowerCase();
 
 		FlagType type = FlagType.PLAYER;

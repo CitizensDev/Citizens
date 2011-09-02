@@ -41,7 +41,11 @@ public class PlayerProfile {
 	}
 
 	public static void setProfile(String name, PlayerProfile profile) {
-		profiles.put(name, profile);
+		if (profile == null) {
+			profiles.remove(name);
+		} else {
+			profiles.put(name, profile);
+		}
 	}
 
 	public static void saveAll() {

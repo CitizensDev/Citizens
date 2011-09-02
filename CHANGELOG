@@ -91,6 +91,7 @@ By fullwall and aPunch
 -fixed compatibility with Bukkit permissions
 -fixed copied NPCs moving back to the original NPCs location on a server restart/reload
 -fixed '/npc moveto' command requiring all arguments, now only requires x, y, and z coords to work
+-fixed npc arrow spam
 *REMOVED
 -removed item economy; now if 'economy.use-economy' is true and an economy plugin is detected, Citizens will use
  that plugin, otherwise everything is free

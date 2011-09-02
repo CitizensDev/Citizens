@@ -229,6 +229,12 @@ public class PathNPC extends EntityPlayer {
 		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
 		if (isHoldingBow()) {
 			NPCManager.faceEntity(this.npc, entity.getBukkitEntity());
+
+			boolean up = this.random.nextBoolean();
+			this.yaw += this.random.nextInt(5) * (up ? 1 : -1);
+			up = this.random.nextBoolean();
+			this.pitch += this.random.nextInt(5) * (up ? 1 : -1);
+			// make inaccuracies.
 			this.getPlayer().shootArrow();
 		} else {
 			this.performAction(Animation.SWING_ARM);

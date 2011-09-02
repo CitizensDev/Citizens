@@ -326,12 +326,12 @@ public class BasicProperties extends PropertyManager implements Properties {
 		npcdata.setTalkClose(isTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
 		npc.getWaypoints().setPoints(getWaypoints(UID, npc.getWorld()));
+
+		NPCDataManager.addItems(npc, npcdata.getItems());
 		if (getInventory(npc.getUID()) != null) {
 			npc.getInventory().setContents(
 					getInventory(npc.getUID()).getContents());
 		}
-
-		NPCDataManager.addItems(npc, npcdata.getItems());
 		saveState(npc);
 	}
 

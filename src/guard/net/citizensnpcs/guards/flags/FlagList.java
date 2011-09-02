@@ -31,6 +31,8 @@ public class FlagList {
 
 	public boolean process(HumanNPC npc, Location base,
 			List<LivingEntity> toProcess) {
+		if (toProcess == null)
+			return false;
 		Iterable<LivingEntity> filtered = Iterables.filter(toProcess,
 				predicates.getSorter());
 		List<LivingEntity> possible = predicates.getPossible(npc, filtered);
