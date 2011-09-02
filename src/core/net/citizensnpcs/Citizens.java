@@ -1,6 +1,9 @@
 package net.citizensnpcs;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,13 +65,14 @@ public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
 	public static Method economy;
 
-	private static final String version = "1.1";
-
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
 
 	public static boolean initialized = false;
 
 	public static List<String> loadedTypes = new ArrayList<String>();
+
+	// Set to false before release
+	public static boolean devBuild = true;
 
 	@Override
 	public void onEnable() {
@@ -142,7 +146,6 @@ public class Citizens extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-
 	}
 
 	@Override
@@ -224,9 +227,35 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	// Get the current version of Citizens
+	// Get the release version of Citizens
+	public static String getReleaseVersion() {
+		return "1.1";
+	}
+
+	// Get the latest Jenkins build #
+	private static String getBuildVersion() {
+		try {
+			URL url = new URL("http://www.citizensnpcs.net/latest.php");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					url.openStream()));
+			String line;
+			if ((line = reader.readLine()) != null) {
+				return "devBuild-" + (Integer.parseInt(line) + 1);
+			}
+			reader.close();
+		} catch (Exception e) {
+			Messaging
+					.log("Could not connect to citizensnpcs.net to determine latest Jenkins build number.");
+		}
+		return "devBuild-Unknown";
+	}
+
+	// Get the version of Citizens (dev-build or release)
 	public static String getVersion() {
-		return version;
+		if (devBuild) {
+			return getBuildVersion();
+		}
+		return getReleaseVersion();
 	}
 
 	private boolean handleMistake(CommandSender sender, String command,

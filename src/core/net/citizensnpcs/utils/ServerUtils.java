@@ -37,7 +37,7 @@ public class ServerUtils {
 				return;
 			}
 			String url = new URI(con.getHeaderField("Location")).toString();
-			if (!url.contains(Citizens.getVersion().replace(".", "-"))) {
+			if (!url.contains(Citizens.getReleaseVersion().replace(".", "-"))) {
 				Messaging.send(player, null, ChatColor.YELLOW + "**ALERT** "
 						+ ChatColor.GREEN
 						+ "There is a new version of Citizens available!");
