@@ -2,6 +2,7 @@ package net.citizensnpcs.utils;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.regex.Pattern;
 
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
@@ -12,6 +13,8 @@ import org.bukkit.Material;
 import com.google.common.base.Joiner;
 
 public class StringUtils {
+	private static final Pattern INTEGER = Pattern.compile("^[0-9]+$");
+
 	public static String pluralise(String string, int size) {
 		return size > 1 ? string + (string.endsWith("s") ? "es" : "s") : string;
 	}
@@ -76,7 +79,7 @@ public class StringUtils {
 	}
 
 	public static boolean isNumber(String material) {
-		return material.matches("^[0-9]+$");
+		return INTEGER.matcher(material).find();
 	}
 
 	/**
