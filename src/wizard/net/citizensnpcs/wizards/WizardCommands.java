@@ -1,6 +1,6 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -219,15 +219,15 @@ public class WizardCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("wizard.use.help");
-		CitizensManager.addPermission("wizard.modify.mode");
-		CitizensManager.addPermission("wizard.use.status");
-		CitizensManager.addPermission("wizard.modify.addloc");
-		CitizensManager.addPermission("wizard.modify.removeloc");
-		CitizensManager.addPermission("wizard.use.locations");
-		CitizensManager.addPermission("wizard.modify.unlimited");
-		CitizensManager.addPermission("wizard.modify.command");
-		CitizensManager.addPermission("wizard.use.interact");
+		PermissionManager.addPermission("wizard.use.help");
+		PermissionManager.addPermission("wizard.modify.mode");
+		PermissionManager.addPermission("wizard.use.status");
+		PermissionManager.addPermission("wizard.modify.addloc");
+		PermissionManager.addPermission("wizard.modify.removeloc");
+		PermissionManager.addPermission("wizard.use.locations");
+		PermissionManager.addPermission("wizard.modify.unlimited");
+		PermissionManager.addPermission("wizard.modify.command");
+		PermissionManager.addPermission("wizard.use.interact");
 	}
 
 	@Override

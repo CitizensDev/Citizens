@@ -1,6 +1,6 @@
 package net.citizensnpcs.blacksmiths;
 
-import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
@@ -84,9 +84,9 @@ public class BlacksmithCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("blacksmith.use.help");
-		CitizensManager.addPermission("blacksmith.use.status");
-		CitizensManager.addPermission("blacksmith.use.repair");
+		PermissionManager.addPermission("blacksmith.use.help");
+		PermissionManager.addPermission("blacksmith.use.status");
+		PermissionManager.addPermission("blacksmith.use.repair");
 	}
 
 	@Override

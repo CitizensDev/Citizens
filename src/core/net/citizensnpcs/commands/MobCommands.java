@@ -1,6 +1,6 @@
 package net.citizensnpcs.commands;
 
-import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -24,6 +24,6 @@ public class MobCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("creature.spawn");
+		PermissionManager.addPermission("creature.spawn");
 	}
 }

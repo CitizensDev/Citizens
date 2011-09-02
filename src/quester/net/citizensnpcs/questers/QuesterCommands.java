@@ -2,7 +2,7 @@ package net.citizensnpcs.questers;
 
 import java.util.concurrent.TimeUnit;
 
-import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.questers.quests.CompletedQuest;
@@ -250,13 +250,13 @@ public class QuesterCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("quester.use.help");
-		CitizensManager.addPermission("quester.modify.quests.assign");
-		CitizensManager.addPermission("quester.modify.quests.remove");
-		CitizensManager.addPermission("quester.use.quests.status");
-		CitizensManager.addPermission("quester.use.quests.abort");
-		CitizensManager.addPermission("quester.use.quests.view");
-		CitizensManager.addPermission("quester.use.quests.help");
+		PermissionManager.addPermission("quester.use.help");
+		PermissionManager.addPermission("quester.modify.quests.assign");
+		PermissionManager.addPermission("quester.modify.quests.remove");
+		PermissionManager.addPermission("quester.use.quests.status");
+		PermissionManager.addPermission("quester.use.quests.abort");
+		PermissionManager.addPermission("quester.use.quests.view");
+		PermissionManager.addPermission("quester.use.quests.help");
 	}
 
 	@Override

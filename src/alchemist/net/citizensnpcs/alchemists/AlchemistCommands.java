@@ -2,7 +2,7 @@ package net.citizensnpcs.alchemists;
 
 import java.util.Map;
 
-import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -181,11 +181,11 @@ public class AlchemistCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("alchemist.use.help");
-		CitizensManager.addPermission("alchemist.use.recipes.select");
-		CitizensManager.addPermission("alchemist.use.recipes.view");
-		CitizensManager.addPermission("alchemist.modify.recipes");
-		CitizensManager.addPermission("alchemist.use.interact");
+		PermissionManager.addPermission("alchemist.use.help");
+		PermissionManager.addPermission("alchemist.use.recipes.select");
+		PermissionManager.addPermission("alchemist.use.recipes.view");
+		PermissionManager.addPermission("alchemist.modify.recipes");
+		PermissionManager.addPermission("alchemist.use.interact");
 	}
 
 	@Override

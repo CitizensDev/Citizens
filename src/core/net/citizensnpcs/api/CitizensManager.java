@@ -1,6 +1,5 @@
 package net.citizensnpcs.api;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCList;
@@ -51,17 +50,6 @@ public class CitizensManager {
 	 */
 	public static NPCList getList() {
 		return NPCManager.getList();
-	}
-
-	/**
-	 * Adds a permission node to a list of nodes to register for superperms
-	 * 
-	 * @param perm
-	 *            Permission node to register (use format '(typeName).(perm)',
-	 *            Citizens adds "citizens." to the beginning)
-	 */
-	public static void addPermission(String perm) {
-		PermissionManager.addPermission(perm);
 	}
 
 	/**

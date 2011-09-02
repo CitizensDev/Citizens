@@ -1,6 +1,6 @@
 package net.citizensnpcs.healers;
 
-import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
@@ -123,10 +123,10 @@ public class HealerCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("healer.use.help");
-		CitizensManager.addPermission("healer.use.status");
-		CitizensManager.addPermission("healer.modify.levelup");
-		CitizensManager.addPermission("healer.use.heal");
+		PermissionManager.addPermission("healer.use.help");
+		PermissionManager.addPermission("healer.use.status");
+		PermissionManager.addPermission("healer.modify.levelup");
+		PermissionManager.addPermission("healer.use.heal");
 	}
 
 	@Override

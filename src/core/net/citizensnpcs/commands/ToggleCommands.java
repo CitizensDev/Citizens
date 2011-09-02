@@ -2,7 +2,6 @@ package net.citizensnpcs.commands;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
@@ -156,10 +155,10 @@ public class ToggleCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
-		CitizensManager.addPermission("toggle.help");
-		CitizensManager.addPermission("toggle.all");
+		PermissionManager.addPermission("toggle.help");
+		PermissionManager.addPermission("toggle.all");
 		for (String type : Citizens.loadedTypes) {
-			CitizensManager.addPermission("toggle." + type);
+			PermissionManager.addPermission("toggle." + type);
 		}
 	}
 }
