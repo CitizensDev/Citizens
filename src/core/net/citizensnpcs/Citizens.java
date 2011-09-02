@@ -61,7 +61,7 @@ import com.google.common.base.Joiner;
 public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
 	public static Method economy;
-	public static String separatorChar = "/";
+	public static String separatorChar = SettingsManager.getString("SpaceChar");
 
 	private static final String version = "1.1";
 

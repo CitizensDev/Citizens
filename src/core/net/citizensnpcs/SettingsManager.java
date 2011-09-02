@@ -78,8 +78,6 @@ public class SettingsManager {
 	public static void setupVariables() {
 		PropertyManager.registerProperties();
 		Storage local = null;
-		// Load our non-type-specific settings
-		loadSettings();
 		// Only load settings for loaded NPC types
 		for (String t : Citizens.loadedTypes) {
 			nodes.add(new Node("", SettingsType.GENERAL, "economy.prices." + t
@@ -106,7 +104,7 @@ public class SettingsManager {
 		}
 	}
 
-	private static void loadSettings() {
+	static {
 		// citizens.yml
 		nodes.add(new Node("MaxStationaryTicks", SettingsType.GENERAL,
 				"ticks.pathing.max-stationary", -1));

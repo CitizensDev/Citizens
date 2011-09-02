@@ -185,7 +185,7 @@ public class GuardCommands extends CommandHandler {
 
 		String name = isSafe ? args.getJoinedStrings(offset).replaceFirst("-",
 				"") : args.getJoinedStrings(offset);
-		name = name.toLowerCase();
+		name = name.toLowerCase().trim();
 
 		FlagType type = FlagType.PLAYER;
 		if (args.hasFlag('g')) {
