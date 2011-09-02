@@ -163,7 +163,6 @@ public class WizardManager {
 			if (!changeTime(player, npc)) {
 				return;
 			}
-			player.performCommand(wizard.getCommand());
 		} else if (op.equals("wizard.togglestorm")) {
 			msg += " toggled a thunderstorm in the world "
 					+ StringUtils.wrap(player.getWorld().getName()) + ".";
@@ -174,6 +173,9 @@ public class WizardManager {
 			msg += " executed the command "
 					+ StringUtils.wrap("/" + wizard.getCommand()) + ".";
 			if (!executeCommand(player, npc)) {
+				return;
+			}
+			if (!player.performCommand(wizard.getCommand())) {
 				return;
 			}
 		}
