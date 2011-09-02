@@ -1,7 +1,6 @@
-package net.citizensnpcs.api;
+package net.citizensnpcs.properties;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
-import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
 /**

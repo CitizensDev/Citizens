@@ -1,12 +1,12 @@
 package net.citizensnpcs.guards;
 
-import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
+import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.listeners.GuardCitizensListen;
 import net.citizensnpcs.guards.listeners.GuardPlayerListen;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.properties.Properties;
 
 import org.bukkit.event.Event.Type;
 
@@ -24,9 +24,9 @@ public class GuardType extends CitizensNPCType {
 
 	@Override
 	public void registerEvents() {
-		CitizensManager.registerEvent(Type.PLAYER_LOGIN,
-				new GuardPlayerListen());
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
+		NPCTypeManager
+				.registerEvent(Type.PLAYER_LOGIN, new GuardPlayerListen());
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new GuardCitizensListen());
 	}
 

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.CommandHandler;
+import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;

@@ -2,9 +2,9 @@ package net.citizensnpcs.healers;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;

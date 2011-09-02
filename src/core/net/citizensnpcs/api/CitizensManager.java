@@ -1,6 +1,5 @@
 package net.citizensnpcs.api;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -9,9 +8,6 @@ import net.citizensnpcs.resources.npclib.NPCManager;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
-import org.bukkit.event.Listener;
 
 public class CitizensManager {
 
@@ -55,35 +51,6 @@ public class CitizensManager {
 	 */
 	public static NPCList getList() {
 		return NPCManager.getList();
-	}
-
-	/**
-	 * Helper method used to register events per-type
-	 * 
-	 * @param eventType
-	 *            Bukkit Event.Type
-	 * @param listener
-	 *            Bukkit Listener interface
-	 * @param priority
-	 *            Bukkit Event.Priority
-	 */
-	public static void registerEvent(Type eventType, Listener listener,
-			Priority priority) {
-		Citizens.plugin.getServer().getPluginManager()
-				.registerEvent(eventType, listener, priority, Citizens.plugin);
-	}
-
-	/**
-	 * Helper method used to register events per-type with default "Normal"
-	 * priority
-	 * 
-	 * @param eventType
-	 *            Bukkit Event.Type
-	 * @param listener
-	 *            Bukkit Listener interface
-	 */
-	public static void registerEvent(Type eventType, Listener listener) {
-		registerEvent(eventType, listener, Priority.Normal);
 	}
 
 	/**

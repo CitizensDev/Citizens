@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
@@ -26,6 +25,7 @@ import net.citizensnpcs.listeners.ServerListen;
 import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
+import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;

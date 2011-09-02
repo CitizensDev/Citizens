@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.resources.npclib.HumanNPC;

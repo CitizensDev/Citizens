@@ -1,4 +1,4 @@
-package net.citizensnpcs.api;
+package net.citizensnpcs.properties;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public interface Properties {
 	/**
 	 * Get a list of configuration nodes for an NPC type
 	 * 
-	 * @see net.citizensnpcs.api.Node Node for info on creating nodes
+	 * @see net.citizensnpcs.properties.Node Node for info on creating nodes
 	 * 
 	 * @return list of configuration nodes
 	 */

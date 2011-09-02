@@ -3,7 +3,6 @@ package net.citizensnpcs.npctypes;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.CitizensNPCType;
 import net.citizensnpcs.properties.PropertyManager;
 
 import org.bukkit.event.Event.Priority;

@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.traders.TraderManager.TraderMode;

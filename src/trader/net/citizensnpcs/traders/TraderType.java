@@ -1,9 +1,9 @@
 package net.citizensnpcs.traders;
 
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
+import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.properties.Properties;
 
 public class TraderType extends CitizensNPCType {
 

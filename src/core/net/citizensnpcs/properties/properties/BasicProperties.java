@@ -7,11 +7,11 @@ import java.util.Deque;
 import java.util.List;
 
 import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.api.Node;
-import net.citizensnpcs.api.Properties;
 import net.citizensnpcs.npcdata.ItemData;
 import net.citizensnpcs.npcdata.NPCData;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.properties.Node;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;

@@ -5,8 +5,8 @@ import java.util.Map;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.PermissionManager;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;

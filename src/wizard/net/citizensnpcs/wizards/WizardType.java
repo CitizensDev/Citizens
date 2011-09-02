@@ -1,10 +1,10 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.CitizensNPC;
-import net.citizensnpcs.api.CitizensNPCType;
-import net.citizensnpcs.api.CommandHandler;
-import net.citizensnpcs.api.Properties;
+import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.wizards.listeners.WizardCitizensListen;
 import net.citizensnpcs.wizards.listeners.WizardNPCListen;
 
@@ -24,9 +24,9 @@ public class WizardType extends CitizensNPCType {
 
 	@Override
 	public void registerEvents() {
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT,
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new WizardCitizensListen());
-		CitizensManager.registerEvent(Type.CUSTOM_EVENT, new WizardNPCListen());
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT, new WizardNPCListen());
 	}
 
 	@Override
