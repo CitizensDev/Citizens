@@ -143,10 +143,10 @@ public class GuardCommands extends CommandHandler {
 
 	@Command(
 			aliases = "guard",
-			usage = "addflag (-i [priority]) [target] (-a,g,m,p)",
+			usage = "addflag (priority) [target] (-a,g,m,p)",
 			desc = "add a flag to a guard",
 			modifiers = { "addflag", "af" },
-			flags = "agmpi",
+			flags = "agmp",
 			min = 1)
 	@CommandPermissions("guard.modify.flags")
 	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
@@ -158,7 +158,7 @@ public class GuardCommands extends CommandHandler {
 
 		Guard guard = npc.getType("guard");
 		int offset = 1, priority = 1;
-		if (args.hasFlag('i')) {
+		if (args.argsLength() > 1 && StringUtils.isNumber(args.getString(1))) {
 			priority = args.getInteger(offset);
 			++offset;
 		}
