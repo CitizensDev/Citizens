@@ -42,21 +42,18 @@ public class HelpUtils {
 		switch (page) {
 		case 1:
 			header(sender, "General", 1, 3);
-			format(sender, "npc", "", "view an NPC's information");
+			format(sender, "npc", "", "view information on the selected NPC");
 			format(sender, "npc", "create [name]", "create an NPC");
 			format(sender, "npc", "set [text]", "set the text of an NPC");
 			format(sender, "npc", "add [text]", "add text to an NPC");
 			format(sender, "npc", "reset", "reset the text of an NPC");
 			format(sender, "npc", "rename [name]", "rename an NPC");
 			format(sender, "npc", "remove (all)", "remove all NPC(s)");
-			format(sender, "npc", "item [item]",
-					"set the item that an NPC holds");
-			format(sender, "npc", "armor [slot] [item]",
-					"set the armor slot of an NPC");
+			format(sender, "npc", "equip", "edit an NPC's equipment");
+			format(sender, "npc", "move", "move an NPC to your location");
 			break;
 		case 2:
 			header(sender, "General", 2, 3);
-			format(sender, "npc", "move", "move an NPC to your location");
 			format(sender, "npc", "moveto [x y z] (world pitch yaw)",
 					"move NPC to a location");
 			format(sender, "npc", "tp", "teleport to the location of an NPC");
@@ -68,11 +65,11 @@ public class HelpUtils {
 			format(sender, "npc", "talkclose", "make an NPC talk to players");
 			format(sender, "npc", "lookat", "make an NPC look at players");
 			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
+			format(sender, "npc", "[path|waypoints] (reset)",
+					"control an NPC's waypoints");
 			break;
 		case 3:
 			header(sender, "General", 3, 3);
-			format(sender, "npc", "[path|waypoints] (reset)",
-					"control an NPC's waypoints");
 			format(sender, "waypoint", "modifier [type]",
 					"add a waypoint modifier to an NPC");
 			footer(sender);
