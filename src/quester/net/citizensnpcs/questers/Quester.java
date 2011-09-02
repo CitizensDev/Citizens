@@ -101,6 +101,8 @@ public class Quester extends CitizensNPC {
 	}
 
 	private boolean canRepeat(Player player, Quest quest) {
+		if (quest == null)
+			return false;
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		return profile.hasCompleted(quest.getName())
 				&& (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
