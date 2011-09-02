@@ -240,7 +240,7 @@ public class Citizens extends JavaPlugin {
 					url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return "devBuild-" + (Integer.parseInt(line) + 1);
+				return "devBuild-" + Integer.parseInt(line);
 			}
 			reader.close();
 		} catch (Exception e) {
