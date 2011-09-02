@@ -1,6 +1,5 @@
 package net.citizensnpcs.traders;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -55,9 +54,8 @@ public class Stockable {
 	@Override
 	public String toString() {
 		String ret = "";
-		ret += stocking.getTypeId() + Citizens.separatorChar
-				+ stocking.getAmount() + Citizens.separatorChar
-				+ (stocking.getDurability()) + Citizens.separatorChar + ",";
+		ret += stocking.getTypeId() + "/" + stocking.getAmount() + "/"
+				+ (stocking.getDurability()) + "/" + ",";
 		ret += price.toString() + ",";
 		ret += selling + ",";
 		return ret;

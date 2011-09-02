@@ -1,9 +1,10 @@
 package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
 
 import org.bukkit.ChatColor;
+
+import com.google.common.base.Joiner;
 
 public class NPC {
 
@@ -20,19 +21,8 @@ public class NPC {
 	}
 
 	public String getName() {
-		if (SettingsManager.getBoolean("ConvertSlashes")) {
-			String returnName = "";
-			String[] brokenName = this.name.split(" ");
-			for (int i = 0; i < brokenName.length; i++) {
-				if (i == 0) {
-					returnName = brokenName[i];
-				} else {
-					returnName += Citizens.separatorChar + brokenName[i];
-				}
-			}
-			return ChatColor.stripColor(returnName);
-		}
-		return ChatColor.stripColor(this.name);
+		return ChatColor.stripColor(Joiner.on(Citizens.separatorChar)
+				.skipNulls().join(this.name.split(" ")));
 	}
 
 	public String getStrippedName() {

@@ -153,7 +153,7 @@ public class NPCManager {
 		ChatColor colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
-		if (SettingsManager.getBoolean("ConvertSlashes")) {
+		if (!SettingsManager.getString("SpaceChar").isEmpty()) {
 			name = name.replace(Citizens.separatorChar, " ");
 		}
 		String npcName = name;

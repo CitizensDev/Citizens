@@ -138,6 +138,8 @@ public class SettingsManager {
 		nodes.add(new Node("CreationMessage", SettingsType.GENERAL,
 				"general.chat.creation-message",
 				"<g>The NPC <y><npc><g> was born!"));
+		nodes.add(new Node("SpaceChar", SettingsType.GENERAL,
+				"general.chat.space-char", "/"));
 		nodes.add(new Node("DefaultLookAt", SettingsType.GENERAL,
 				"general.defaults.enable-following", true));
 		nodes.add(new Node("SaveOften", SettingsType.GENERAL,
@@ -152,8 +154,6 @@ public class SettingsManager {
 				"general.debug-mode", false));
 		nodes.add(new Node("NotifyUpdates", SettingsType.GENERAL,
 				"general.notify-updates", true));
-		nodes.add(new Node("ConvertSlashes", SettingsType.GENERAL,
-				"general.chat.slashes-to-spaces", true));
 		nodes.add(new Node("DefaultTalkClose", SettingsType.GENERAL,
 				"general.defaults.talk-when-close", false));
 		nodes.add(new Node("PathfindingRange", SettingsType.GENERAL,
