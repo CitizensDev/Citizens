@@ -1,6 +1,6 @@
 package net.citizensnpcs.resources.npclib;
 
-import net.citizensnpcs.Citizens;
+import net.citizensnpcs.SettingsManager;
 
 import org.bukkit.ChatColor;
 
@@ -21,7 +21,7 @@ public class NPC {
 	}
 
 	public String getName() {
-		return ChatColor.stripColor(Joiner.on(Citizens.separatorChar)
+		return ChatColor.stripColor(Joiner.on(SettingsManager.getString("SpaceChar"))
 				.skipNulls().join(this.name.split(" ")));
 	}
 

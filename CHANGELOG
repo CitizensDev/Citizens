@@ -78,6 +78,8 @@ By fullwall and aPunch
 -added 'evil.spawn.chance' node in mobs.yml
 -added 'citizens.admin.override.setowner' and 'citizens.admin.override.remove' nodes, see wiki for more info
 -added configurable mana-costs for wizards ('wizards.mana-costs') nodes in citizens.yml
+-added 'general.chat.space-char' node in citizens.yml, the value you specify is the character that you can
+ use to add spaces to NPC names
 *CHANGED
 -made lots of changes to configuration settings; delete all config files and let them regenerate (if you fail
  to do so there will be issues)
@@ -98,6 +100,7 @@ By fullwall and aPunch
 -removed support for Permissions 2.7.x/3.x
 -removed '/npc item' and '/npc armor' commands in favor of new '/npc equip' command that toggles item-edit
  mode
+-removed 'slashes-to-spaces' node in citizens.yml
 *API CHANGES (for developers, the API page on our Wiki for more information):
 -added CitizensEnableEvent and CitizensDisableEvent for when Citizens is enabled/disabled
 -added NPCRemoveEvent, called when an NPC is manually or naturally removed from a world

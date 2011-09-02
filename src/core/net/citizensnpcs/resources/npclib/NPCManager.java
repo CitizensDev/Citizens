@@ -2,7 +2,6 @@ package net.citizensnpcs.resources.npclib;
 
 import java.util.Map;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
@@ -154,7 +153,7 @@ public class NPCManager {
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
 		if (!SettingsManager.getString("SpaceChar").isEmpty()) {
-			name = name.replace(Citizens.separatorChar, " ");
+			name = name.replace(SettingsManager.getString("SpaceChar"), " ");
 		}
 		String npcName = name;
 		if (colour != ChatColor.WHITE) {
