@@ -109,4 +109,3 @@ By fullwall and aPunch
 -added NPCToggleTypeEvent
 -added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; we recommend
  to no longer use NPCManager
--added API for creating your own NPC type
