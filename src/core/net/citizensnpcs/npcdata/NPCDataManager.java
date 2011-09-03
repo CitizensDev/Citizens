@@ -40,14 +40,9 @@ public class NPCDataManager {
 
 	public static void handleEquipmentEditor(NPCRightClickEvent event) {
 		Player player = event.getPlayer();
-		if (equipmentEditors.get(player) != null) {
-			HumanNPC npc = NPCManager.get(equipmentEditors.get(player));
-			if (npc == null) {
-				equipmentEditors.remove(player);
-				player.sendMessage(ChatColor.GRAY
-						+ "Something went wrong (NPC is dead?).");
-				return;
-			}
+		HumanNPC npc = event.getNPC();
+		if (equipmentEditors.get(player) != null
+				&& equipmentEditors.get(player) == npc.getUID()) {
 			equip(player, npc);
 		}
 	}
