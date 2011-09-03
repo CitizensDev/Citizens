@@ -11,6 +11,7 @@ import java.util.jar.JarFile;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.ServerUtils;
 
 public class CitizensNPCLoader {
 
@@ -59,6 +60,7 @@ public class CitizensNPCLoader {
 			Messaging.log(ex.getMessage());
 			return null;
 		} catch (Exception ex) {
+			ServerUtils.ErrorReport((Exception) ex);
 			ex.printStackTrace();
 			return null;
 		}

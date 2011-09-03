@@ -10,6 +10,7 @@ import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.ServerUtils;
 
 public class SettingsManager {
 	private static List<Node> nodes = new ArrayList<Node>();
@@ -31,6 +32,7 @@ public class SettingsManager {
 			return (Boolean) loadedNodes.get(name);
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
+			ServerUtils.ErrorReport((Exception) e);
 			e.printStackTrace();
 			return false;
 		}
@@ -41,6 +43,7 @@ public class SettingsManager {
 			return (Integer) loadedNodes.get(name);
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
+			ServerUtils.ErrorReport((Exception) e);
 			e.printStackTrace();
 			return 0;
 		}
@@ -51,6 +54,7 @@ public class SettingsManager {
 			return (String) loadedNodes.get(name);
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
+			ServerUtils.ErrorReport((Exception) e);
 			e.printStackTrace();
 			return "";
 		}
@@ -67,6 +71,7 @@ public class SettingsManager {
 			}
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
+			ServerUtils.ErrorReport((Exception) e);
 			e.printStackTrace();
 			return 0;
 		}
