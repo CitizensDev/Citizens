@@ -13,9 +13,9 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.traders.TraderManager.TraderMode;
 import net.citizensnpcs.utils.InventoryUtils;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Trader extends CitizensNPC {
@@ -88,9 +88,7 @@ public class Trader extends CitizensNPC {
 
 	public boolean isStocked(int itemID, short dataValue, boolean selling) {
 		if (checkStockingIntegrity()) {
-			if (fetchStockable(itemID, dataValue, selling) != null) {
-				return true;
-			}
+			return fetchStockable(itemID, dataValue, selling) != null;
 		}
 		return false;
 	}
@@ -152,8 +150,8 @@ public class Trader extends CitizensNPC {
 			trader.setFree(false);
 			InventoryUtils.showInventory(npc, player);
 		} else {
-			player.sendMessage(ChatColor.RED
-					+ "Only one person may be served at a time!");
+			Messaging.sendError(player,
+					"Only one person may be served at a time!");
 		}
 	}
 

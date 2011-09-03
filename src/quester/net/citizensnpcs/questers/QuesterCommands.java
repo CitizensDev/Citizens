@@ -45,7 +45,7 @@ public class QuesterCommands extends CommandHandler {
 	@CommandPermissions("quester.use.help")
 	public static void questerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("quester").getCommands().sendHelpPage(sender, 1);
+		NPCTypeManager.getType("quester").getCommands().sendHelpPage(sender);
 	}
 
 	@Command(
@@ -260,7 +260,7 @@ public class QuesterCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Quester", 1, 1);
 		HelpUtils.format(sender, "quest", "help",
 				"see more commands for quests");

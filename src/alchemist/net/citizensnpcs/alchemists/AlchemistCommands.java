@@ -45,8 +45,7 @@ public class AlchemistCommands extends CommandHandler {
 	@CommandPermissions("alchemist.use.help")
 	public static void alchemistHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("alchemist").getCommands()
-				.sendHelpPage(sender, 1);
+		NPCTypeManager.getType("alchemist").getCommands().sendHelpPage(sender);
 	}
 
 	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
@@ -189,7 +188,7 @@ public class AlchemistCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Alchemist", 1, 1);
 		HelpUtils.format(sender, "alchemist", "recipes",
 				"view all of an alchemist's recipes");

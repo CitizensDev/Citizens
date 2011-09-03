@@ -41,8 +41,7 @@ public class BlacksmithCommands extends CommandHandler {
 	@ServerCommand()
 	public static void blacksmithHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		NPCTypeManager.getType("blacksmith").getCommands()
-				.sendHelpPage(sender, 1);
+		NPCTypeManager.getType("blacksmith").getCommands().sendHelpPage(sender);
 	}
 
 	@Command(
@@ -90,7 +89,7 @@ public class BlacksmithCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Blacksmith", 1, 1);
 		HelpUtils.format(sender, "blacksmith", "status",
 				"view the status of your in-hand item");

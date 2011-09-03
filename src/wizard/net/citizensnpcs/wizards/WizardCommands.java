@@ -38,7 +38,7 @@ public class WizardCommands extends CommandHandler {
 	@CommandPermissions("wizard.use.help")
 	public static void wizardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("wizard").getCommands().sendHelpPage(sender, 1);
+		NPCTypeManager.getType("wizard").getCommands().sendHelpPage(sender);
 	}
 
 	@Command(
@@ -231,7 +231,7 @@ public class WizardCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Wizard", 1, 1);
 		HelpUtils.format(sender, "wizard", "locations",
 				"view the tp locations of a wizard");

@@ -39,7 +39,7 @@ public class HealerCommands extends CommandHandler {
 	@CommandPermissions("healer.use.help")
 	public static void healerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("healer").getCommands().sendHelpPage(sender, 1);
+		NPCTypeManager.getType("healer").getCommands().sendHelpPage(sender);
 	}
 
 	@Command(
@@ -130,7 +130,7 @@ public class HealerCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Healer", 1, 1);
 		HelpUtils.format(sender, "healer", "status",
 				"view the health and level of a healer");

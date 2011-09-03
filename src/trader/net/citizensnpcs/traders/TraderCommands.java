@@ -47,7 +47,7 @@ public class TraderCommands extends CommandHandler {
 	@ServerCommand()
 	public static void traderHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("trader").getCommands().sendHelpPage(sender, 1);
+		NPCTypeManager.getType("trader").getCommands().sendHelpPage(sender);
 	}
 
 	@Command(
@@ -84,8 +84,8 @@ public class TraderCommands extends CommandHandler {
 			try {
 				amount = Double.parseDouble(args.getString(2));
 			} catch (NumberFormatException e) {
-				player.sendMessage(ChatColor.RED
-						+ "Invalid balance change amount entered.");
+				Messaging.sendError(player,
+						"Invalid balance change amount entered.");
 				return;
 			}
 			String keyword = "Took ";
@@ -150,7 +150,7 @@ public class TraderCommands extends CommandHandler {
 	public static void list(CommandContext args, Player player, HumanNPC npc) {
 		if (!args.getString(1).contains("s")
 				&& !args.getString(1).contains("b")) {
-			player.sendMessage(ChatColor.RED + "Not a valid list type.");
+			Messaging.sendError(player, "Not a valid list type.");
 			return;
 		}
 		boolean selling = args.getString(1).contains("s");
@@ -234,9 +234,8 @@ public class TraderCommands extends CommandHandler {
 				return;
 			if (trader.getStockable(stack.getTypeId(), stack.getDurability(),
 					selling) == null) {
-				player.sendMessage(ChatColor.RED
-						+ "The trader is not currently " + keyword
-						+ " that item.");
+				Messaging.sendError(player, "The trader is not currently "
+						+ keyword + " that item.");
 				return;
 			} else {
 				String cost = args.getString(3);
@@ -255,9 +254,8 @@ public class TraderCommands extends CommandHandler {
 				return;
 			if (trader.getStockable(stack.getTypeId(), stack.getDurability(),
 					selling) == null) {
-				player.sendMessage(ChatColor.RED
-						+ "The trader is not currently " + keyword
-						+ " that item.");
+				Messaging.sendError(player, "The trader is not currently "
+						+ keyword + " that item.");
 				return;
 			} else {
 				trader.removeStockable(stack.getTypeId(),
@@ -394,7 +392,7 @@ public class TraderCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Trader", 1, 1);
 		HelpUtils.format(sender, "trader", "list [buy|sell] (page)",
 				"list a trader's buy/sell list");

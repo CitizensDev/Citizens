@@ -51,7 +51,7 @@ public class GuardCommands extends CommandHandler {
 	@CommandPermissions("guard.use.help")
 	public static void guardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("guard").getCommands().sendHelpPage(sender, 1);
+		NPCTypeManager.getType("guard").getCommands().sendHelpPage(sender);
 	}
 
 	@Command(
@@ -323,7 +323,7 @@ public class GuardCommands extends CommandHandler {
 	}
 
 	@Override
-	public void sendHelpPage(CommandSender sender, int page) {
+	public void sendHelpPage(CommandSender sender) {
 		HelpUtils.header(sender, "Guard", 1, 1);
 		HelpUtils.format(sender, "guard", "[type]",
 				"toggle the type of guard that an NPC is");
