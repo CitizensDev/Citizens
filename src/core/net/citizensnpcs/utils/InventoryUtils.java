@@ -73,7 +73,7 @@ public class InventoryUtils {
 				contents[slot] = item;
 			}
 		}
-		if (remaining == 0) {
+		if (remaining <= 0) {
 			player.getInventory().setContents(contents);
 			player.updateInventory();
 			return;
@@ -153,7 +153,10 @@ public class InventoryUtils {
 	}
 
 	public enum Armor {
-		HELMET(0), CHESTPLATE(1), LEGGINGS(2), BOOTS(3);
+		HELMET(0),
+		CHESTPLATE(1),
+		LEGGINGS(2),
+		BOOTS(3);
 		private final int slot;
 		private static final HashMap<Integer, Armor> slots = new HashMap<Integer, Armor>();
 

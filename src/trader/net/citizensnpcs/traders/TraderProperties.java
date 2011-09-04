@@ -69,7 +69,7 @@ public class TraderProperties extends PropertyManager implements Properties {
 					break;
 				case 1:
 					String[] parts = main.split("/");
-					if (parts.length == 2) {
+					if (parts.length == 1) {
 						price = new ItemPrice(Double.parseDouble(parts[0]));
 					} else {// Ignore old prices.
 						continue label;
