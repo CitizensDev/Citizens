@@ -60,7 +60,7 @@ public class CitizensNPCLoader {
 			Messaging.log(ex.getMessage());
 			return null;
 		} catch (Exception ex) {
-			ServerUtils.ErrorReport((Exception) ex);
+			ServerUtils.ErrorReport(ex);
 			ex.printStackTrace();
 			return null;
 		}

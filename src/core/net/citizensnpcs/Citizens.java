@@ -3,12 +3,7 @@ package net.citizensnpcs;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -228,7 +223,7 @@ public class Citizens extends JavaPlugin {
 					"Please report this error: [See console]");
 			Messaging.sendError(player,
 					excp.getClass().getName() + ": " + excp.getMessage());
-			ServerUtils.ErrorReport((Exception) excp);
+			ServerUtils.ErrorReport(excp);
 		}
 		return true;
 	}

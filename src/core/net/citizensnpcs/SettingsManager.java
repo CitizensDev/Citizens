@@ -129,6 +129,10 @@ public class SettingsManager {
 				SettingsType.GENERAL,
 				"general.chat.default-text",
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"));
+		nodes.add(new Node("ErrorReport", SettingsType.GENERAL,
+				"errorreporting.on", true));
+		nodes.add(new Node("ErrorReportIdent", SettingsType.GENERAL,
+				"errorreporting.ident", "Anonymous"));
 		nodes.add(new Node("NPCColor", SettingsType.GENERAL,
 				"general.colors.npc-colour", "f"));
 		nodes.add(new Node("TalkItems", SettingsType.GENERAL,

@@ -32,7 +32,7 @@
     <!-- Compile the code -->
      
       <target name="core" depends="init" description="compile the source">
-        <javac srcdir="${src}/core" destdir="${core}" encoding="Cp1252" >
+        <javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -49,7 +49,7 @@
       </target>
      
       <target name="blacksmith" depends="init" description="compile the source">
-        <javac srcdir="${src}/blacksmith" destdir="${blacksmith}" encoding="Cp1252" >
+        <javac srcdir="${src}/blacksmith" destdir="${blacksmith}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -66,7 +66,7 @@
         </javac>
       </target>
       <target name="guard" depends="init" description="compile the source">
-        <javac srcdir="${src}/guard" destdir="${guard}" encoding="Cp1252" >
+        <javac srcdir="${src}/guard" destdir="${guard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -83,7 +83,7 @@
         </javac>
       </target>
       <target name="healer" depends="init" description="compile the source">
-        <javac srcdir="${src}/healer" destdir="${healer}" encoding="Cp1252" >
+        <javac srcdir="${src}/healer" destdir="${healer}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -100,7 +100,7 @@
         </javac>
       </target>
       <target name="quester" depends="init" description="compile the source">
-        <javac srcdir="${src}/quester" destdir="${quester}" encoding="Cp1252" >
+        <javac srcdir="${src}/quester" destdir="${quester}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -117,7 +117,7 @@
         </javac>
       </target>
       <target name="trader" depends="init" description="compile the source">
-        <javac srcdir="${src}/trader" destdir="${trader}" encoding="Cp1252" >
+        <javac srcdir="${src}/trader" destdir="${trader}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
@@ -134,7 +134,7 @@
         </javac>
       </target>
       <target name="wizard" depends="init" description="compile the source">
-        <javac srcdir="${src}/wizard" destdir="${wizard}" encoding="Cp1252" >
+        <javac srcdir="${src}/wizard" destdir="${wizard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
                <classpath>
                 <pathelement path="${libs}"/>
                 <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>

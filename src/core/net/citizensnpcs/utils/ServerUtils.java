@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.SettingsManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,14 +57,14 @@ public class ServerUtils {
 		}
 	}
 	//Error Reporting code
-	public static void ErrorReport(Exception error)
+	public static void ErrorReport(Throwable error)
 	{
-
+	  if(!SettingsManager.getBoolean("ErrorReport")) return;
 	  try {
 	      // Construct data
-	      String data = URLEncoder.encode("Exception", "UTF-8") + "=" + URLEncoder.encode(StacktoString(error), "UTF-8");
+	      String data = URLEncoder.encode("Exception", "UTF-8") + "=" + URLEncoder.encode(StackToString(error), "UTF-8");
 	      data += "&" + URLEncoder.encode("Version", "UTF-8") + "=" + URLEncoder.encode(Citizens.getVersion(), "UTF-8");
-	      data += "&" + URLEncoder.encode("Ident", "UTF-8") + "=" + URLEncoder.encode("Tester", "UTF-8");
+	      data += "&" + URLEncoder.encode("Ident", "UTF-8") + "=" + URLEncoder.encode(SettingsManager.getString("ErrorReportIdent"), "UTF-8");
 
 	      // Send data
 	      URL url = new URL("http://errorreport.citizensnpcs.net");
@@ -77,16 +78,16 @@ public class ServerUtils {
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	      String line;
 	      while ((line = rd.readLine()) != null) {
-	          // Process line...
+	          // Process line... If we decide we want to tell the game-server we got the error report so it can inform the admin... Maybe even a hyperlink to a wiki page, for common-user created errors?
 	      }
 	      wr.close();
 	      rd.close();
 	  } catch (Exception e) {
-	  //Well this'd be bad, likely server down I guess, no real reason to report anything I guess... Only effects us, not the user, but maybe worth putting something here?
+	  //Well this'd be bad, likely server down I guess, no real reason to report anything? Only effects us, not the user, but maybe worth putting something here though?
 	  }
 
 	}
-	 public static String StacktoString(Exception e) {
+	 private static String StackToString(Throwable e) {
 		  try {
 		    StringWriter sw = new StringWriter();
 		    PrintWriter pw = new PrintWriter(sw);
