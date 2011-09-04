@@ -1,10 +1,19 @@
 package net.citizensnpcs.utils;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.SettingsManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -47,4 +56,46 @@ public class ServerUtils {
 			e.printStackTrace();
 		}
 	}
+	//Error Reporting code
+	public static void ErrorReport(Throwable error)
+	{
+	  if(!SettingsManager.getBoolean("ErrorReport")) return;
+	  try {
+	      // Construct data
+	      String data = URLEncoder.encode("Exception", "UTF-8") + "=" + URLEncoder.encode(StackToString(error), "UTF-8");
+	      data += "&" + URLEncoder.encode("Version", "UTF-8") + "=" + URLEncoder.encode(Citizens.getVersion(), "UTF-8");
+	      data += "&" + URLEncoder.encode("Ident", "UTF-8") + "=" + URLEncoder.encode(SettingsManager.getString("ErrorReportIdent"), "UTF-8");
+
+	      // Send data
+	      URL url = new URL("http://errorreport.citizensnpcs.net");
+	      URLConnection conn = url.openConnection();
+	      conn.setDoOutput(true);
+	      OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+	      wr.write(data);
+	      wr.flush();
+
+	      // Get the response
+	      BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	      String line;
+	      while ((line = rd.readLine()) != null) {
+	          // Process line... If we decide we want to tell the game-server we got the error report so it can inform the admin... Maybe even a hyperlink to a wiki page, for common-user created errors?
+	      }
+	      wr.close();
+	      rd.close();
+	  } catch (Exception e) {
+	  //Well this'd be bad, likely server down I guess, no real reason to report anything? Only effects us, not the user, but maybe worth putting something here though?
+	  }
+
+	}
+	 private static String StackToString(Throwable e) {
+		  try {
+		    StringWriter sw = new StringWriter();
+		    PrintWriter pw = new PrintWriter(sw);
+		    e.printStackTrace(pw);
+		    return sw.toString();
+		  }
+		  catch(Exception e2) {
+		    return "Bad Stacktrace... Hit Paul with something.";
+		  }
+	 }
 }
