@@ -2,7 +2,7 @@ name: Citizens
 main: net.citizensnpcs.Citizens
 version: 1.1
 authors: [fullwall, aPunch]
-softdepend: [Permissions]
+softdepend: [PermissionsBukkit]
 commands:
     npc:
         description: Performs various NPC-related commands.
