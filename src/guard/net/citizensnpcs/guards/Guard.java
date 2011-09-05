@@ -22,7 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class Guard extends CitizensNPC {
-	private boolean isAggressive = false;
+	private boolean isAggressive = true;
 	private boolean isAttacking = false;
 	private GuardState guardState = GuardState.NULL;
 	private final FlagList flags = new FlagList();

@@ -108,7 +108,6 @@ public class InventoryUtils {
 		for (ItemStack item : player.getInventory().getContents()) {
 			if (item != null && item.getType() == material) {
 				if (remaining - item.getAmount() < 0) {
-					item.setAmount(item.getAmount() - remaining);
 					remaining = 0;
 				} else {
 					remaining -= item.getAmount();

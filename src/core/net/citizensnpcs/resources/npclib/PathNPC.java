@@ -352,6 +352,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public LivingEntity getTarget() {
-		return ((LivingEntity) this.targetEntity.getBukkitEntity());
+		return this.targetEntity == null ? null
+				: ((LivingEntity) this.targetEntity.getBukkitEntity());
 	}
 }

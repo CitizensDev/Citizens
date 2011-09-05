@@ -156,8 +156,8 @@ public class TraderTask implements Runnable {
 		if (mode != TraderMode.INFINITE) {
 			InventoryUtils.removeItems(npc.getPlayer(), buying, slot);
 		}
-		HashMap<Integer, ItemStack> unbought = player.getInventory().addItem(
-				buying);
+		Map<Integer, ItemStack> unbought = player.getInventory()
+				.addItem(buying);
 		if (unbought.size() >= 1) {
 			rewind();
 			player.sendMessage(ChatColor.RED
@@ -225,15 +225,14 @@ public class TraderTask implements Runnable {
 	private boolean checkMiscellaneous(PlayerInventory inv,
 			Stockable stockable, boolean buying) {
 		ItemStack stocking = stockable.getStocking();
-
 		if (buying) {
 			if (!InventoryUtils.has(npc.getPlayer(), stocking)) {
-				sendNoMoneyMessage(stocking, true);
+				sendNoMoneyMessage(stocking, false);
 				return true;
 			}
 			if (!EconomyManager.hasEnough(player, stockable.getPrice()
 					.getPrice())) {
-				sendNoMoneyMessage(stocking, false);
+				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
 		} else {
@@ -251,7 +250,6 @@ public class TraderTask implements Runnable {
 	}
 
 	private void sendNoMoneyMessage(ItemStack stocking, boolean selling) {
-		selling = !selling;
 		String start = "The trader doesn't";
 		if (selling) {
 			start = "You don't";

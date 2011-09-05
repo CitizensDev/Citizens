@@ -26,20 +26,33 @@ public class GuardTask implements Runnable {
 		for (HumanNPC npc : CitizensManager.getList().values()) {
 			if (npc.isType("guard")) {
 				Guard guard = npc.getType("guard");
-				if (guard.isAttacking()
-						&& (!npc.getHandle().hasTarget() || !guard
-								.isAggressive())) {
-					GuardManager.returnToBase(guard, npc);
-					guard.setAttacking(false);
-				}
-				if (guard.isAttacking()
-						&& npc.getHandle().hasTarget()
-						&& (!LocationUtils.withinRange(npc.getLocation(), npc
-								.getHandle().getTarget().getLocation(),
-								guard.getProtectionRadius()))) {
-					npc.getHandle().cancelTarget();
-					GuardManager.returnToBase(guard, npc);
-					guard.setAttacking(false);
+				if (guard.isAttacking()) {
+					boolean cancel = false;
+					if (!npc.getHandle().hasTarget() || !guard.isAggressive()) {
+						cancel = true;
+					} else if (npc.getHandle().hasTarget()
+							&& !LocationUtils.withinRange(npc.getLocation(),
+									npc.getHandle().getTarget().getLocation(),
+									guard.getProtectionRadius())) {
+						cancel = true;
+					} else if (npc.getHandle().hasTarget()
+							&& guard.isBodyguard()
+							&& Bukkit.getServer().getPlayer(npc.getOwner()) != null) {
+						Player player = Bukkit.getServer().getPlayer(
+								npc.getOwner());
+						if (npc.getHandle().getTarget() != player
+								&& !LocationUtils.withinRange(
+										npc.getLocation(),
+										player.getLocation(),
+										guard.getProtectionRadius())) {
+							cancel = true;
+						}
+					}
+					if (cancel) {
+						npc.getHandle().cancelTarget();
+						GuardManager.returnToBase(guard, npc);
+						guard.setAttacking(false);
+					}
 				}
 				if (guard.isAttacking()) {
 					continue;
@@ -59,7 +72,7 @@ public class GuardTask implements Runnable {
 					if (p != null) {
 						handleTarget(p, npc, guard);
 						if (LocationUtils.withinRange(npc.getLocation(),
-								p.getLocation(), 25)) {
+								p.getLocation(), guard.getProtectionRadius())) {
 							PathUtils.target(npc, p, false, -1, -1, 25);
 						} else {
 							npc.teleport(p.getLocation());
