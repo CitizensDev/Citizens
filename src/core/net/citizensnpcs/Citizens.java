@@ -72,7 +72,7 @@ public class Citizens extends JavaPlugin {
 	public static List<String> loadedTypes = new ArrayList<String>();
 
 	// Set to false before release
-	public static boolean devBuild = true;
+	//public static boolean devBuild = true;// No longer required
 
 	@Override
 	public void onEnable() {
@@ -227,13 +227,8 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	// Get the release version of Citizens
-	public static String getReleaseVersion() {
-		return "1.1";
-	}
-
-	// Get the latest Jenkins build #
-	private static String getBuildVersion() {
+	public static String getLatestBuildVersion() // This returns the latest AVAILABLE devBuild, not the one in use!
+	{
 		try {
 			URL url = new URL("http://www.citizensnpcs.net/latest.php");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -249,13 +244,9 @@ public class Citizens extends JavaPlugin {
 		}
 		return "devBuild-Unknown";
 	}
-
-	// Get the version of Citizens (dev-build or release)
+	// Get the version of Citizens (dev-build or release) automagically.
 	public static String getVersion() {
-		if (devBuild) {
-			return getBuildVersion();
-		}
-		return getReleaseVersion();
+		return Version.VERSION;
 	}
 
 	private boolean handleMistake(CommandSender sender, String command,
