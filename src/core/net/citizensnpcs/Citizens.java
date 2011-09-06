@@ -235,14 +235,14 @@ public class Citizens extends JavaPlugin {
 					url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return "devBuild-" + Integer.parseInt(line);
+				return "devBuild-" + Integer.parseInt(line); // Dunno why it is a string, then turned to an int, then back to a string, a more efficient way of trimming a string for excess whitespaces?
 			}
 			reader.close();
 		} catch (Exception e) {
 			Messaging
 					.log("Could not connect to citizensnpcs.net to determine latest development build number.");
 		}
-		return "devBuild-Unknown";
+		return getVersion();//Lets not trigger the update reminder if we can't find a version
 	}
 	public static String getLatestVersion() // This returns the latest AVAILABLE version, not the one in use!
 	{
@@ -252,14 +252,14 @@ public class Citizens extends JavaPlugin {
 					url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return "devBuild-" + Integer.parseInt(line);
+				return line.trim(); // Need to use trim because your version numbers contain letters and numbers.
 			}
 			reader.close();
 		} catch (Exception e) {
 			Messaging
 					.log("Could not connect to citizensnpcs.net to determine latest version.");
 		}
-		return "devBuild-Unknown";
+		return getVersion(); //Lets not trigger the update reminder if we can't find a version
 	}
 	// Get the CURRENT version of Citizens (dev-build or release) automagically.
 	public static String getVersion() {
