@@ -30,14 +30,14 @@ public class ServerUtils {
 			if(Citizens.getVersion().contains("devBuild"))
 			{
 				
-				if ( ("devBuild-" + Citizens.getLatestBuildVersion()) != Citizens.getVersion() ) {
+				if ( !("devBuild-" + Citizens.getLatestBuildVersion()).equals(Citizens.getVersion()) ) {
 					Messaging.send(player, null, ChatColor.YELLOW + "**ALERT** "
 							+ ChatColor.GREEN
 							+ "There is a new development version of Citizens available!");
 					return;
 				}
 			} else {
-				if ( Citizens.getLatestVersion() != Citizens.getVersion() ) {
+				if ( !Citizens.getLatestVersion().equals(Citizens.getVersion()) ) {
 					Messaging.send(player, null, ChatColor.YELLOW + "**ALERT** "
 							+ ChatColor.GREEN
 							+ "There is a new version of Citizens available!");
