@@ -104,6 +104,9 @@ public class FlagSorter {
 					if (groupMap.get(name) != null) {
 						return true;
 					}
+					if (PermissionManager.getGroups(player) == null) {
+						return false;
+					}
 					List<String> transformed = Lists.newArrayList((Iterables
 							.transform(Iterables.filter(
 									PermissionManager.getGroups(player),
