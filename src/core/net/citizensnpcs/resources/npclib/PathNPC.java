@@ -37,14 +37,14 @@ public class PathNPC extends EntityPlayer {
 	private int attackTimes = 0;
 	private int attackTimesLimit = -1;
 	private int prevX, prevY, prevZ;
-	private static final double JUMP_FACTOR = 0.05D;
+	private static final double JUMP_FACTOR = 0.052D;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
 	}
 
-	public void updateMove() {
+	public void moveTick() {
 		hasAttacked = false;
 		jumping = false;
 		if (randomPather) {
@@ -104,11 +104,8 @@ public class PathNPC extends EntityPlayer {
 			if (targetEntity != null && targetAggro) {
 				// If a direct line of sight exists.
 				if (this.e(this.targetEntity)) {
-					if (isWithinAttackRange(
-							this.targetEntity,
-							this.bukkitEntity.getLocation().distance(
-									this.targetEntity.getBukkitEntity()
-											.getLocation()))) {
+					if (isWithinAttackRange(this.targetEntity,
+							distance(this.targetEntity))) {
 						this.attackEntity(this.targetEntity);
 					}
 				}
@@ -174,10 +171,6 @@ public class PathNPC extends EntityPlayer {
 		this.a(this.az, this.aA);
 	}
 
-	private Player getPlayer() {
-		return (Player) this.bukkitEntity;
-	}
-
 	private void jump(boolean inWater, boolean inLava) {
 		// Both magic values taken from minecraft source.
 		if (inWater || inLava) {
@@ -227,14 +220,16 @@ public class PathNPC extends EntityPlayer {
 
 	private void attackEntity(Entity entity) {
 		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
-		if (isHoldingBow()) {
+		if (isHoldingBow() && distanceSquared(entity) > 2) {
 			NPCManager.faceEntity(this.npc, entity.getBukkitEntity());
 
+			// make inaccuracies.
 			boolean up = this.random.nextBoolean();
 			this.yaw += this.random.nextInt(5) * (up ? 1 : -1);
+
 			up = this.random.nextBoolean();
 			this.pitch += this.random.nextInt(5) * (up ? 1 : -1);
-			// make inaccuracies.
+
 			this.getPlayer().shootArrow();
 		} else {
 			this.performAction(Animation.SWING_ARM);
@@ -243,6 +238,16 @@ public class PathNPC extends EntityPlayer {
 		}
 		hasAttacked = true;
 		incrementAttackTimes();
+	}
+
+	private double distanceSquared(Entity entity) {
+		return entity.getBukkitEntity().getLocation()
+				.distanceSquared(this.getBukkitEntity().getLocation());
+	}
+
+	private double distance(Entity entity) {
+		return entity.getBukkitEntity().getLocation()
+				.distance(this.getBukkitEntity().getLocation());
 	}
 
 	private float getBlockPathWeight(int i, int j, int k) {
@@ -283,6 +288,10 @@ public class PathNPC extends EntityPlayer {
 				createPathEntity(x, y, z);
 			}
 		}
+	}
+
+	private Player getPlayer() {
+		return (Player) this.bukkitEntity;
 	}
 
 	public EntityHuman getClosestPlayer(double range) {

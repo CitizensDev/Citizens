@@ -91,7 +91,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void doTick() {
-		this.mcEntity.updateMove();
+		this.mcEntity.moveTick();
 		this.mcEntity.applyGravity();
 	}
 

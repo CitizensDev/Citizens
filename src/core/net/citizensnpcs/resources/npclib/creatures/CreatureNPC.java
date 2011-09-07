@@ -36,7 +36,7 @@ public abstract class CreatureNPC extends CraftNPC {
 	 * closest player based on a predefined range, else takes a random path.
 	 */
 	public void doTick() {
-		updateMove();
+		moveTick();
 		applyGravity();
 	}
 
