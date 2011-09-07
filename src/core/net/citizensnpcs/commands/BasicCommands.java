@@ -40,6 +40,20 @@ import org.bukkit.entity.Player;
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands extends CommandHandler {
 
+	@Command(
+			aliases = "npc",
+			usage = "add [text]",
+			desc = "add text to an NPC",
+			modifiers = "add",
+			min = 2)
+	@CommandPermissions("basic.modify.addtext")
+	public static void add(CommandContext args, Player player, HumanNPC npc) {
+		String text = args.getJoinedStrings(1);
+		NPCDataManager.addText(npc.getUID(), text);
+		player.sendMessage(StringUtils.wrap(text) + " was added to "
+				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
+	}
+
 	@Command(aliases = "citizens", desc = "view Citizens info", max = 0)
 	@ServerCommand()
 	@CommandPermissions("admin.info")
@@ -53,6 +67,25 @@ public class BasicCommands extends CommandHandler {
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
+	}
+
+	@Command(
+			aliases = "citizens",
+			usage = "help (page)",
+			desc = "view the Citizens help page",
+			modifiers = "help",
+			min = 1,
+			max = 2)
+	@CommandPermissions("basic.use.help")
+	@CommandRequirements()
+	@ServerCommand()
+	public static void citizensHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		int page = 1;
+		if (args.argsLength() == 2) {
+			page = Integer.parseInt(args.getString(1));
+		}
+		HelpUtils.sendHelpPage(sender, page);
 	}
 
 	@Command(
@@ -83,153 +116,69 @@ public class BasicCommands extends CommandHandler {
 	}
 
 	@Command(
-			aliases = "citizens",
-			usage = "help (page)",
-			desc = "view the Citizens help page",
-			modifiers = "help",
-			min = 1,
+			aliases = "npc",
+			usage = "color [color-code]",
+			desc = "set the name color of an NPC",
+			modifiers = "color",
+			min = 2,
 			max = 2)
-	@CommandPermissions("basic.use.help")
-	@CommandRequirements()
-	@ServerCommand()
-	public static void citizensHelp(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		int page = 1;
-		if (args.argsLength() == 2) {
-			page = Integer.parseInt(args.getString(1));
-		}
-		HelpUtils.sendHelpPage(sender, page);
-	}
-
-	@CommandRequirements()
-	@Command(
-			aliases = "citizens",
-			usage = "reload",
-			desc = "reload Citizens",
-			modifiers = "reload",
-			min = 1,
-			max = 1)
-	@CommandPermissions("admin.reload")
-	@ServerCommand()
-	public static void reload(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		Messaging.log("Reloading configuration settings....");
-		if (sender instanceof Player) {
-			sender.sendMessage(ChatColor.GREEN + "["
-					+ StringUtils.wrap("Citizens") + "] Reloading....");
-		}
-
-		UtilityProperties.initialize();
-		PropertyManager.saveState();
-		PropertyManager.loadAll();
-		SettingsManager.setupVariables();
-
-		Bukkit.getServer().getPluginManager()
-				.callEvent(new CitizensReloadEvent());
-
-		Messaging.log("Reloaded.");
-		if (sender instanceof Player) {
-			sender.sendMessage(ChatColor.GREEN + "["
-					+ StringUtils.wrap("Citizens") + "] Reloaded.");
-		}
-	}
-
-	@CommandRequirements()
-	@Command(
-			aliases = "citizens",
-			usage = "save",
-			desc = "force a save of Citizens files",
-			modifiers = "save",
-			min = 1,
-			max = 1)
-	@ServerCommand()
-	@CommandPermissions("admin.save")
-	public static void save(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		if (sender instanceof Player) {
-			Messaging.log("Saving...");
-		}
-		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
-				+ "] Saving...");
-
-		PropertyManager.saveState();
-
-		if (sender instanceof Player) {
-			Messaging.log("Saved.");
-		}
-		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
-				+ "] Saved.");
-	}
-
-	@CommandRequirements()
-	@Command(
-			aliases = "citizens",
-			usage = "debug",
-			desc = "toggle debug mode for Citizens",
-			modifiers = "debug",
-			min = 1,
-			max = 1)
-	@ServerCommand()
-	@CommandPermissions("admin.debug")
-	public static void debug(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		boolean debug = SettingsManager.getBoolean("DebugMode");
-		UtilityProperties.getSettings().setRaw("general.debug-mode", !debug);
-		debug = !debug;
-		if (debug) {
-			Messaging.log("Debug mode is now on.");
-			if (sender instanceof Player) {
-				Messaging.send(sender, npc, "Debug mode is now "
-						+ ChatColor.GREEN + "on");
-			}
+	@CommandPermissions("basic.modify.color")
+	public static void color(CommandContext args, Player player, HumanNPC npc) {
+		if (!args.getString(1).substring(0, 1).equals("&")) {
+			player.sendMessage(ChatColor.RED + "Use an & to specify color.");
+		} else if (args.getString(1).length() != 2) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Use the format &(code). Example - &f = white.");
 		} else {
-			Messaging.log("Debug mode is now off.");
-			if (sender instanceof Player) {
-				Messaging.send(sender, npc, "Debug mode is now "
-						+ ChatColor.RED + "off");
+			int colour = 0xf;
+			try {
+				colour = Integer.parseInt(args.getString(1).substring(1, 2));
+			} catch (NumberFormatException ex) {
+				try {
+					colour = Integer.parseInt(
+							args.getString(1).substring(1, 2), 16);
+				} catch (NumberFormatException e) {
+					player.sendMessage(ChatColor.RED + "Invalid color code.");
+					return;
+				}
 			}
+			if (ChatColor.getByCode(colour) == null) {
+				player.sendMessage(ChatColor.RED + "Color code not recognised.");
+				return;
+			}
+			npc.getNPCData().setColour(ChatColor.getByCode(colour));
+			NPCManager.setColour(npc.getUID(), npc.getOwner());
+			player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
+					+ "}'s name color is now "
+					+ args.getString(1).replace("&", "\u00A7") + "this}."));
 		}
 	}
 
-	@CommandRequirements()
 	@Command(
 			aliases = "npc",
-			usage = "help (page)",
-			desc = "view the Basic NPC help page",
-			modifiers = "help",
+			usage = "copy",
+			desc = "copy an NPC",
+			modifiers = "copy",
 			min = 1,
-			max = 2)
-	@CommandPermissions("basic.use.help")
-	@ServerCommand()
-	public static void npcHelp(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		int page = 1;
-		if (args.argsLength() == 2) {
-			page = Integer.parseInt(args.getString(1));
-		}
-		HelpUtils.sendBasicHelpPage(sender, page);
-	}
-
-	@CommandRequirements(requireSelected = true)
-	@Command(aliases = "npc", desc = "view information for an NPC", max = 0)
-	@CommandPermissions("basic.use.info")
-	public static void npc(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		sender.sendMessage(ChatColor.GREEN
-				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName())));
-		sender.sendMessage(ChatColor.GREEN + "ID: "
-				+ StringUtils.wrap(npc.getUID()));
-		sender.sendMessage(ChatColor.GREEN + "Owner: "
-				+ StringUtils.wrap(npc.getOwner()));
-		sender.sendMessage(ChatColor.GREEN + "Types:");
-		if (npc.types().size() == 0) {
-			sender.sendMessage(ChatColor.RED + "    None");
+			max = 1)
+	@CommandPermissions("basic.modify.copy")
+	public static void copy(CommandContext args, Player player, HumanNPC npc) {
+		if (!PermissionManager.canCreate(player)) {
+			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
 			return;
 		}
-		for (CitizensNPC type : npc.types()) {
-			sender.sendMessage(ChatColor.GRAY + "    - "
-					+ StringUtils.wrap(type.getType().getName()));
-		}
+		PropertyManager.save(npc);
+		int newUID = NPCManager.register(npc.getName(), player.getLocation(),
+				player.getName(), NPCCreateReason.COMMAND);
+		HumanNPC newNPC = NPCManager.get(newUID);
+		newNPC.teleport(player.getLocation());
+		PropertyManager.copyNPCs(npc.getUID(), newUID);
+		PropertyManager.save(newNPC);
+		PropertyManager.load(newNPC);
+		newNPC.getNPCData().setLocation(player.getLocation());
+		PropertyManager.save(newNPC);
+		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+				+ " has been copied at your location.");
 	}
 
 	@CommandRequirements()
@@ -283,6 +232,140 @@ public class BasicCommands extends CommandHandler {
 		NPCDataManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created,
 				SettingsManager.getString("SelectionMessage"));
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "citizens",
+			usage = "debug",
+			desc = "toggle debug mode for Citizens",
+			modifiers = "debug",
+			min = 1,
+			max = 1)
+	@ServerCommand()
+	@CommandPermissions("admin.debug")
+	public static void debug(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		boolean debug = SettingsManager.getBoolean("DebugMode");
+		UtilityProperties.getSettings().setRaw("general.debug-mode", !debug);
+		debug = !debug;
+		if (debug) {
+			Messaging.log("Debug mode is now on.");
+			if (sender instanceof Player) {
+				Messaging.send(sender, npc, "Debug mode is now "
+						+ ChatColor.GREEN + "on");
+			}
+		} else {
+			Messaging.log("Debug mode is now off.");
+			if (sender instanceof Player) {
+				Messaging.send(sender, npc, "Debug mode is now "
+						+ ChatColor.RED + "off");
+			}
+		}
+	}
+
+	@Command(
+			aliases = "npc",
+			usage = "equip",
+			desc = "toggle equip mode",
+			modifiers = "equip",
+			min = 1,
+			max = 1)
+	@CommandPermissions("basic.modify.equip")
+	public static void equip(CommandContext args, Player player, HumanNPC npc) {
+		if (NPCDataManager.pathEditors.containsKey(player.getName())) {
+			Messaging.sendError(player,
+					"You can only be in one editor at a time.");
+			return;
+		}
+		Integer editing = NPCDataManager.equipmentEditors.get(player);
+		int UID = npc.getUID();
+		if (editing == null) {
+			player.sendMessage(ChatColor.GREEN
+					+ StringUtils.listify(StringUtils.wrap("Now Editing "
+							+ npc.getStrippedName() + "'s Items")));
+			player.sendMessage(StringUtils.wrap("Right-click")
+					+ " to set an NPC's equipment.");
+			player.sendMessage(ChatColor.GREEN
+					+ "Hold nothing in your hand to remove "
+					+ StringUtils.wrap("all") + " items.");
+			player.sendMessage(StringUtils.wrap("Sneak")
+					+ " to set the item-in-hand to armor.");
+			player.sendMessage(StringUtils.wrap("Repeat")
+					+ " the command to exit equipment-edit mode.");
+			editing = UID;
+		} else if (editing == UID) {
+			player.sendMessage(StringUtils.wrap("Exited")
+					+ " equipment-edit mode.");
+			NPCDataManager.equipmentEditors.remove(player);
+			editing = null;
+			return;
+		} else if (editing != UID) {
+			player.sendMessage(ChatColor.GRAY + "Now editing "
+					+ StringUtils.wrap(npc.getStrippedName()) + "'s equipment.");
+			editing = UID;
+		}
+		NPCDataManager.equipmentEditors.put(player, editing);
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "npc",
+			usage = "list (name) (page)",
+			desc = "view a list of NPCs for a player",
+			modifiers = "list",
+			min = 1,
+			max = 3)
+	@CommandPermissions("basic.use.list")
+	public static void list(CommandContext args, Player player, HumanNPC npc) {
+		switch (args.argsLength()) {
+		case 1:
+			MessageUtils.displayNPCList(player, player, npc, "1");
+			break;
+		case 2:
+			if (StringUtils.isNumber(args.getString(1))) {
+				MessageUtils.displayNPCList(player, player, npc,
+						args.getString(1));
+			} else {
+				if (ServerUtils.matchPlayer(args.getString(1)) != null) {
+					MessageUtils.displayNPCList(player,
+							ServerUtils.matchPlayer(args.getString(1)), npc,
+							"1");
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "Could not match player.");
+				}
+			}
+			break;
+		case 3:
+			if (ServerUtils.matchPlayer(args.getString(1)) != null) {
+				MessageUtils.displayNPCList(player,
+						ServerUtils.matchPlayer(args.getString(1)), npc,
+						args.getString(2));
+			} else {
+				player.sendMessage(ChatColor.RED + "Could not match player.");
+			}
+			break;
+		}
+	}
+
+	@Command(
+			aliases = "npc",
+			usage = "lookat",
+			desc = "set an NPC's look-when-close setting",
+			modifiers = "lookat",
+			min = 1,
+			max = 1)
+	@CommandPermissions("basic.modify.lookat")
+	public static void lookAt(CommandContext args, Player player, HumanNPC npc) {
+		npc.getNPCData().setLookClose(!npc.getNPCData().isLookClose());
+		if (npc.getNPCData().isLookClose()) {
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " will now look at players.");
+		} else {
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " will stop looking at players.");
+		}
 	}
 
 	@Command(
@@ -377,31 +460,78 @@ public class BasicCommands extends CommandHandler {
 				+ " in the world " + StringUtils.wrap(world) + ".");
 	}
 
-	@Command(
-			aliases = "npc",
-			usage = "copy",
-			desc = "copy an NPC",
-			modifiers = "copy",
-			min = 1,
-			max = 1)
-	@CommandPermissions("basic.modify.copy")
-	public static void copy(CommandContext args, Player player, HumanNPC npc) {
-		if (!PermissionManager.canCreate(player)) {
-			player.sendMessage(MessageUtils.reachedNPCLimitMessage);
+	@CommandRequirements(requireSelected = true)
+	@Command(aliases = "npc", desc = "view information for an NPC", max = 0)
+	@CommandPermissions("basic.use.info")
+	public static void npc(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		sender.sendMessage(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName())));
+		sender.sendMessage(ChatColor.GREEN + "ID: "
+				+ StringUtils.wrap(npc.getUID()));
+		sender.sendMessage(ChatColor.GREEN + "Owner: "
+				+ StringUtils.wrap(npc.getOwner()));
+		sender.sendMessage(ChatColor.GREEN + "Types:");
+		if (npc.types().size() == 0) {
+			sender.sendMessage(ChatColor.RED + "    None");
 			return;
 		}
-		PropertyManager.save(npc);
-		int newUID = NPCManager.register(npc.getName(), player.getLocation(),
-				player.getName(), NPCCreateReason.COMMAND);
-		HumanNPC newNPC = NPCManager.get(newUID);
-		newNPC.teleport(player.getLocation());
-		PropertyManager.copyNPCs(npc.getUID(), newUID);
-		PropertyManager.save(newNPC);
-		PropertyManager.load(newNPC);
-		newNPC.getNPCData().setLocation(player.getLocation());
-		PropertyManager.save(newNPC);
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-				+ " has been copied at your location.");
+		for (CitizensNPC type : npc.types()) {
+			sender.sendMessage(ChatColor.GRAY + "    - "
+					+ StringUtils.wrap(type.getType().getName()));
+		}
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "npc",
+			usage = "help (page)",
+			desc = "view the Basic NPC help page",
+			modifiers = "help",
+			min = 1,
+			max = 2)
+	@CommandPermissions("basic.use.help")
+	@ServerCommand()
+	public static void npcHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		int page = 1;
+		if (args.argsLength() == 2) {
+			page = Integer.parseInt(args.getString(1));
+		}
+		HelpUtils.sendBasicHelpPage(sender, page);
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "citizens",
+			usage = "reload",
+			desc = "reload Citizens",
+			modifiers = "reload",
+			min = 1,
+			max = 1)
+	@CommandPermissions("admin.reload")
+	@ServerCommand()
+	public static void reload(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		Messaging.log("Reloading configuration settings....");
+		if (sender instanceof Player) {
+			sender.sendMessage(ChatColor.GREEN + "["
+					+ StringUtils.wrap("Citizens") + "] Reloading....");
+		}
+
+		UtilityProperties.initialize();
+		PropertyManager.saveState();
+		PropertyManager.loadAll();
+		SettingsManager.setupVariables();
+
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new CitizensReloadEvent());
+
+		Messaging.log("Reloaded.");
+		if (sender instanceof Player) {
+			sender.sendMessage(ChatColor.GREEN + "["
+					+ StringUtils.wrap("Citizens") + "] Reloaded.");
+		}
 	}
 
 	@CommandRequirements()
@@ -467,75 +597,6 @@ public class BasicCommands extends CommandHandler {
 
 	@Command(
 			aliases = "npc",
-			usage = "color [color-code]",
-			desc = "set the name color of an NPC",
-			modifiers = "color",
-			min = 2,
-			max = 2)
-	@CommandPermissions("basic.modify.color")
-	public static void color(CommandContext args, Player player, HumanNPC npc) {
-		if (!args.getString(1).substring(0, 1).equals("&")) {
-			player.sendMessage(ChatColor.RED + "Use an & to specify color.");
-		} else if (args.getString(1).length() != 2) {
-			player.sendMessage(ChatColor.GRAY
-					+ "Use the format &(code). Example - &f = white.");
-		} else {
-			int colour = 0xf;
-			try {
-				colour = Integer.parseInt(args.getString(1).substring(1, 2));
-			} catch (NumberFormatException ex) {
-				try {
-					colour = Integer.parseInt(
-							args.getString(1).substring(1, 2), 16);
-				} catch (NumberFormatException e) {
-					player.sendMessage(ChatColor.RED + "Invalid color code.");
-					return;
-				}
-			}
-			if (ChatColor.getByCode(colour) == null) {
-				player.sendMessage(ChatColor.RED + "Color code not recognised.");
-				return;
-			}
-			npc.getNPCData().setColour(ChatColor.getByCode(colour));
-			NPCManager.setColour(npc.getUID(), npc.getOwner());
-			player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
-					+ "}'s name color is now "
-					+ args.getString(1).replace("&", "\u00A7") + "this}."));
-		}
-	}
-
-	@Command(
-			aliases = "npc",
-			usage = "set [text]",
-			desc = "set the text of an NPC",
-			modifiers = "set",
-			min = 2)
-	@CommandPermissions("basic.modify.settext")
-	public static void set(CommandContext args, Player player, HumanNPC npc) {
-		String text = args.getJoinedStrings(1);
-		ArrayDeque<String> texts = new ArrayDeque<String>();
-		texts.add(text);
-		NPCDataManager.setText(npc.getUID(), texts);
-		player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
-				+ "}'s text was set to {" + text + "}."));
-	}
-
-	@Command(
-			aliases = "npc",
-			usage = "add [text]",
-			desc = "add text to an NPC",
-			modifiers = "add",
-			min = 2)
-	@CommandPermissions("basic.modify.addtext")
-	public static void add(CommandContext args, Player player, HumanNPC npc) {
-		String text = args.getJoinedStrings(1);
-		NPCDataManager.addText(npc.getUID(), text);
-		player.sendMessage(StringUtils.wrap(text) + " was added to "
-				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
-	}
-
-	@Command(
-			aliases = "npc",
 			usage = "reset",
 			desc = "reset the text of an NPC",
 			modifiers = "reset",
@@ -548,101 +609,31 @@ public class BasicCommands extends CommandHandler {
 				+ " text was reset!");
 	}
 
+	@CommandRequirements()
 	@Command(
-			aliases = "npc",
-			usage = "equip",
-			desc = "toggle equip mode",
-			modifiers = "equip",
+			aliases = "citizens",
+			usage = "save",
+			desc = "force a save of Citizens files",
+			modifiers = "save",
 			min = 1,
 			max = 1)
-	@CommandPermissions("basic.modify.equip")
-	public static void equip(CommandContext args, Player player, HumanNPC npc) {
-		if (NPCDataManager.pathEditors.containsKey(player.getName())) {
-			Messaging.sendError(player,
-					"You can only be in one editor at a time.");
-			return;
-		}
-		Integer editing = NPCDataManager.equipmentEditors.get(player);
-		int UID = npc.getUID();
-		if (editing == null) {
-			player.sendMessage(ChatColor.GREEN
-					+ StringUtils.listify(StringUtils.wrap("Now Editing "
-							+ npc.getStrippedName() + "'s Items")));
-			player.sendMessage(StringUtils.wrap("Right-click")
-					+ " to set an NPC's equipment.");
-			player.sendMessage(ChatColor.GREEN
-					+ "Hold nothing in your hand to remove "
-					+ StringUtils.wrap("all") + " items.");
-			player.sendMessage(StringUtils.wrap("Sneak")
-					+ " to set the item-in-hand to armor.");
-			player.sendMessage(StringUtils.wrap("Repeat")
-					+ " the command to exit equipment-edit mode.");
-			editing = UID;
-		} else if (editing == UID) {
-			player.sendMessage(StringUtils.wrap("Exited")
-					+ " equipment-edit mode.");
-			NPCDataManager.equipmentEditors.remove(player);
-			editing = null;
-			return;
-		} else if (editing != UID) {
-			player.sendMessage(ChatColor.GRAY + "Now editing "
-					+ StringUtils.wrap(npc.getStrippedName()) + "'s equipment.");
-			editing = UID;
-		}
-		NPCDataManager.equipmentEditors.put(player, editing);
-	}
-
-	@Command(
-			aliases = "npc",
-			usage = "tp",
-			desc = "teleport to an NPC",
-			modifiers = { "tp", "teleport" },
-			min = 1,
-			max = 1)
-	@CommandPermissions("basic.use.teleport")
-	public static void teleport(CommandContext args, Player player, HumanNPC npc) {
-		player.teleport(npc.getNPCData().getLocation());
-		player.sendMessage(ChatColor.GREEN + "Teleported you to "
-				+ StringUtils.wrap(npc.getStrippedName()) + ". Enjoy!");
-	}
-
-	@Command(
-			aliases = "npc",
-			usage = "talkclose",
-			desc = "toggle an NPC's talk-when-close setting",
-			modifiers = "talkclose",
-			min = 1,
-			max = 1)
-	@CommandPermissions("basic.modify.talkclose")
-	public static void talkClose(CommandContext args, Player player,
+	@ServerCommand()
+	@CommandPermissions("admin.save")
+	public static void save(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		npc.getNPCData().setTalkClose(!npc.getNPCData().isTalkClose());
-		if (npc.getNPCData().isTalkClose()) {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will now talk to nearby players.");
-		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will stop talking to nearby players.");
+		if (sender instanceof Player) {
+			Messaging.log("Saving...");
 		}
-	}
+		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+				+ "] Saving...");
 
-	@Command(
-			aliases = "npc",
-			usage = "lookat",
-			desc = "set an NPC's look-when-close setting",
-			modifiers = "lookat",
-			min = 1,
-			max = 1)
-	@CommandPermissions("basic.modify.lookat")
-	public static void lookAt(CommandContext args, Player player, HumanNPC npc) {
-		npc.getNPCData().setLookClose(!npc.getNPCData().isLookClose());
-		if (npc.getNPCData().isLookClose()) {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will now look at players.");
-		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " will stop looking at players.");
+		PropertyManager.saveState();
+
+		if (sender instanceof Player) {
+			Messaging.log("Saved.");
 		}
+		sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens")
+				+ "] Saved.");
 	}
 
 	@Command(
@@ -667,6 +658,22 @@ public class BasicCommands extends CommandHandler {
 		}
 	}
 
+	@Command(
+			aliases = "npc",
+			usage = "set [text]",
+			desc = "set the text of an NPC",
+			modifiers = "set",
+			min = 2)
+	@CommandPermissions("basic.modify.settext")
+	public static void set(CommandContext args, Player player, HumanNPC npc) {
+		String text = args.getJoinedStrings(1);
+		ArrayDeque<String> texts = new ArrayDeque<String>();
+		texts.add(text);
+		NPCDataManager.setText(npc.getUID(), texts);
+		player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
+				+ "}'s text was set to {" + text + "}."));
+	}
+
 	@CommandRequirements()
 	@Command(
 			aliases = "npc",
@@ -687,6 +694,40 @@ public class BasicCommands extends CommandHandler {
 			return;
 		}
 		Messaging.sendError(player, MessageUtils.noPermissionsMessage);
+	}
+
+	@Command(
+			aliases = "npc",
+			usage = "talkclose",
+			desc = "toggle an NPC's talk-when-close setting",
+			modifiers = "talkclose",
+			min = 1,
+			max = 1)
+	@CommandPermissions("basic.modify.talkclose")
+	public static void talkClose(CommandContext args, Player player,
+			HumanNPC npc) {
+		npc.getNPCData().setTalkClose(!npc.getNPCData().isTalkClose());
+		if (npc.getNPCData().isTalkClose()) {
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " will now talk to nearby players.");
+		} else {
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " will stop talking to nearby players.");
+		}
+	}
+
+	@Command(
+			aliases = "npc",
+			usage = "tp",
+			desc = "teleport to an NPC",
+			modifiers = { "tp", "teleport" },
+			min = 1,
+			max = 1)
+	@CommandPermissions("basic.use.teleport")
+	public static void teleport(CommandContext args, Player player, HumanNPC npc) {
+		player.teleport(npc.getNPCData().getLocation());
+		player.sendMessage(ChatColor.GREEN + "Teleported you to "
+				+ StringUtils.wrap(npc.getStrippedName()) + ". Enjoy!");
 	}
 
 	@Command(
@@ -735,47 +776,6 @@ public class BasicCommands extends CommandHandler {
 			npc.getWaypoints().resetWaypoints();
 			player.sendMessage(ChatColor.GREEN + "Waypoints "
 					+ StringUtils.wrap("reset") + ".");
-		}
-	}
-
-	@CommandRequirements()
-	@Command(
-			aliases = "npc",
-			usage = "list (name) (page)",
-			desc = "view a list of NPCs for a player",
-			modifiers = "list",
-			min = 1,
-			max = 3)
-	@CommandPermissions("basic.use.list")
-	public static void list(CommandContext args, Player player, HumanNPC npc) {
-		switch (args.argsLength()) {
-		case 1:
-			MessageUtils.displayNPCList(player, player, npc, "1");
-			break;
-		case 2:
-			if (StringUtils.isNumber(args.getString(1))) {
-				MessageUtils.displayNPCList(player, player, npc,
-						args.getString(1));
-			} else {
-				if (ServerUtils.matchPlayer(args.getString(1)) != null) {
-					MessageUtils.displayNPCList(player,
-							ServerUtils.matchPlayer(args.getString(1)), npc,
-							"1");
-				} else {
-					player.sendMessage(ChatColor.RED
-							+ "Could not match player.");
-				}
-			}
-			break;
-		case 3:
-			if (ServerUtils.matchPlayer(args.getString(1)) != null) {
-				MessageUtils.displayNPCList(player,
-						ServerUtils.matchPlayer(args.getString(1)), npc,
-						args.getString(2));
-			} else {
-				player.sendMessage(ChatColor.RED + "Could not match player.");
-			}
-			break;
 		}
 	}
 

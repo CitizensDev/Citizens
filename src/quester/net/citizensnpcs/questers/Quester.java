@@ -145,16 +145,21 @@ public class Quester extends CitizensNPC {
 		pending.remove(player);
 		if (queue.get(player) == null || queue.get(player) + 1 >= quests.size()) {
 			queue.put(player, 0);
+			if (quests.size() == 1
+					&& !canRepeat(player, getQuest(fetchFromList(player)))) {
+				player.sendMessage(ChatColor.GRAY + "No quests are available.");
+				return;
+			}
 		} else {
 			int base = queue.get(player);
 			while (true) {
-				base = (base + 1 >= quests.size() ? 0 : base + 1);
-				if (canRepeat(player, getQuest(fetchFromList(player)))) {
+				base = base + 1 > quests.size() ? 0 : base + 1;
+				if (canRepeat(player, getQuest(fetch(base)))) {
 					break;
 				}
 				if (base == queue.get(player)) {
 					player.sendMessage(ChatColor.GRAY
-							+ "No quests are currently available for completion.");
+							+ "No quests are available.");
 					return;
 				}
 			}
@@ -167,10 +172,6 @@ public class Quester extends CitizensNPC {
 		Quest quest = getQuest(fetchFromList(player));
 		if (quest == null)
 			return;
-		if (!canRepeat(player, quest)) {
-			cycle(player);
-			return;
-		}
 		PageInstance display = PageUtils.newInstance(player);
 		display.setSmoothTransition(true);
 		display.header(ChatColor.GREEN
@@ -197,8 +198,12 @@ public class Quester extends CitizensNPC {
 		return QuestManager.getQuest(name);
 	}
 
+	private String fetch(int index) {
+		return quests.get(index);
+	}
+
 	private String fetchFromList(Player player) {
-		return quests.size() > 0 ? quests.get(queue.get(player)) : "";
+		return quests.size() > 0 ? fetch(queue.get(player)) : "";
 	}
 
 	@Override
