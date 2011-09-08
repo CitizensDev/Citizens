@@ -82,9 +82,9 @@ public class Citizens extends JavaPlugin {
 
 		// Load settings.
 		SettingsManager.setupVariables();
-		
+
 		// Initialize Error Reporting
-		ErrorReporting.Init();
+		ErrorReporting.init();
 
 		// Register events per type
 		for (String loaded : loadedTypes) {
@@ -229,7 +229,7 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	// Get the CURRENT version of Citizens (dev-build or release) automagically.
+	// Get the CURRENT version of Citizens (dev-build or release)
 	public static String localVersion() {
 		return Version.VERSION;
 	}

@@ -149,7 +149,7 @@ public class SettingsManager {
 		nodes.add(new Node("QuickSelect", SettingsType.GENERAL,
 				"general.quick-select", false));
 		nodes.add(new Node("DebugMode", SettingsType.GENERAL,
-				"general.debug-mode", false));
+				"debug.debug-mode", false));
 		nodes.add(new Node("NotifyUpdates", SettingsType.GENERAL,
 				"general.notify-updates", true));
 		nodes.add(new Node("DefaultTalkClose", SettingsType.GENERAL,
@@ -161,9 +161,9 @@ public class SettingsManager {
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.basic.creation", 100));
 		nodes.add(new Node("ErrorReporting", SettingsType.GENERAL,
-				"errorreporting.enable", true));
+				"debug.enable-error-reporting", true));
 		nodes.add(new Node("ErrorReportingIdent", SettingsType.GENERAL,
-				"errorreporting.ident", "Anonymous"));
+				"debug.error-reporting-ident", "Anonymous"));
 		// mobs.yml
 		nodes.add(new Node("CreatureNPCSpawnDelay", SettingsType.MOB,
 				"general.spawn.delay", 200));

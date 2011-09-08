@@ -80,6 +80,9 @@ By fullwall and aPunch
 -added configurable mana-costs for wizards ('wizards.mana-costs') nodes in citizens.yml
 -added 'general.chat.space-char' node in citizens.yml, the value you specify is the character that you can
  use to add spaces to NPC names
+-added ability to have any Citizens console errors automatically report to errorreport.citizensnpcs.net if
+ the node 'debug.enable-error-reporting' is true, you can set the name that is associated with each report
+ by changing the 'debug.error-reporting-ident' node
 *CHANGED
 -made lots of changes to configuration settings; delete all config files and let them regenerate (if you fail
  to do so there will be issues)
@@ -88,6 +91,7 @@ By fullwall and aPunch
 -Evil NPCs no longer drop diamond swords
 -you can no longer set '*' as a wizard's interact-item
 -/npc remove all command no longer requires an NPC to be selected to execute
+-changed 'general.debug-mode' node to 'debug.debug-mode'
 *FIXED
 -fixed saving bug with waypoints
 -fixed compatibility with Bukkit permissions

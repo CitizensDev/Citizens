@@ -18,8 +18,10 @@ You can find tons of information on Citizens permissions nodes, commands, and mo
 URL: http://wiki.citizensnpcs.net
 
 Reporting Bugs:
-You can report bugs on the Bukkit forum thread. However, it is more likely to get noticed
-if you report it on the Issue Tracker here: http://github.com/CitizensDev/Citizens/issues.
+With our Error Reporting system, you can have any Citizens console errors sent to 
+http://errorreport.citizensnpcs.net. However, some bugs may not produce console errors or you
+may not feel comfortable using our ER system. If that is the case, you can report the issue on the 
+Issue Tracker here: http://github.com/CitizensDev/Citizens/issues.
 
 It is also imperative that you follow these guidelines if you don't want your bug report to be ignored:
 
