@@ -72,7 +72,7 @@ public class Citizens extends JavaPlugin {
 	public static List<String> loadedTypes = new ArrayList<String>();
 
 	// Set to false before release
-	public static boolean devBuild = true;
+	//public static boolean devBuild = true;// No longer required
 
 	@Override
 	public void onEnable() {
@@ -227,35 +227,43 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	// Get the release version of Citizens
-	public static String getReleaseVersion() {
-		return "1.1";
-	}
-
-	// Get the latest Jenkins build #
-	private static String getBuildVersion() {
+	public static String getLatestBuildVersion() // This returns the latest AVAILABLE devBuild, not the one in use!
+	{
 		try {
-			URL url = new URL("http://www.citizensnpcs.net/latest.php");
+			URL url = new URL("http://www.citizensnpcs.net/dev/latestdev.php");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return "devBuild-" + Integer.parseInt(line);
+				return "devBuild-" + line.trim();
 			}
 			reader.close();
 		} catch (Exception e) {
 			Messaging
-					.log("Could not connect to citizensnpcs.net to determine latest Jenkins build number.");
+					.log("Could not connect to citizensnpcs.net to determine latest development build number.");
 		}
-		return "devBuild-Unknown";
+		return getVersion();//Lets not trigger the update reminder if we can't find a version
 	}
-
-	// Get the version of Citizens (dev-build or release)
-	public static String getVersion() {
-		if (devBuild) {
-			return getBuildVersion();
+	public static String getLatestVersion() // This returns the latest AVAILABLE version, not the one in use!
+	{
+		try {
+			URL url = new URL("http://www.citizensnpcs.net/dev/latest.php");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					url.openStream()));
+			String line;
+			if ((line = reader.readLine()) != null) {
+				return line.trim();
+			}
+			reader.close();
+		} catch (Exception e) {
+			Messaging
+					.log("Could not connect to citizensnpcs.net to determine latest version.");
 		}
-		return getReleaseVersion();
+		return getVersion(); //Lets not trigger the update reminder if we can't find a version
+	}
+	// Get the CURRENT version of Citizens (dev-build or release) automagically.
+	public static String getVersion() {
+		return Version.VERSION;
 	}
 
 	private boolean handleMistake(CommandSender sender, String command,
