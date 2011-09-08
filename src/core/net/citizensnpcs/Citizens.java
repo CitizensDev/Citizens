@@ -235,7 +235,7 @@ public class Citizens extends JavaPlugin {
 					url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return "devBuild-" + Integer.parseInt(line); // Dunno why it is a string, then turned to an int, then back to a string, a more efficient way of trimming a string for excess whitespaces?
+				return "devBuild-" + line.trim();
 			}
 			reader.close();
 		} catch (Exception e) {
@@ -252,7 +252,7 @@ public class Citizens extends JavaPlugin {
 					url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return line.trim(); // Need to use trim because your version numbers contain letters and numbers.
+				return line.trim();
 			}
 			reader.close();
 		} catch (Exception e) {
