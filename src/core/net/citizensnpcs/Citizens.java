@@ -1,10 +1,6 @@
 package net.citizensnpcs;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -127,7 +123,7 @@ public class Citizens extends JavaPlugin {
 					SettingsManager.getInt("SavingDelay"));
 		}
 
-		Messaging.log("version [" + getVersion() + "] loaded.");
+		Messaging.log("version [" + localVersion() + "] loaded.");
 
 		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
@@ -160,7 +156,7 @@ public class Citizens extends JavaPlugin {
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensDisableEvent());
 
-		Messaging.log("version [" + getVersion() + "] disabled.");
+		Messaging.log("version [" + localVersion() + "] disabled.");
 	}
 
 	@Override
@@ -228,56 +224,39 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	private static String fetchVersion(String source) {
-		BufferedReader reader = null;
-		try {
-			URL url = new URL(source);
-			reader = new BufferedReader(new InputStreamReader(url.openStream()));
-			String line;
-			if ((line = reader.readLine()) != null) {
-				reader.close(); // may be dangerous, but it needs to be
-								// closed...
-				return line.trim();
-			}
-		} catch (Exception e) {
-			Messaging
-					.log("Could not connect to citizensnpcs.net to determine latest version.");
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					Messaging.log("Unable to close the URL stream.");
-				}
-			}
-		}
-		return getVersion();
-	}
-
-	/**
-	 * Fetches the latest development build version.
-	 * 
-	 * @return a String representation of the latest build version.
-	 */
-	public static String fetchLatestBuildVersion() {
-		String result = fetchVersion("http://www.citizensnpcs.net/dev/latestdev.php");
-		return result.equals(getVersion()) ? result : "devBuild-" + result;
-	}
-
-	/**
-	 * Fetches the latest version from the citizens website.
-	 * 
-	 * @return the latest available version
-	 */
-	public static String getLatestVersion() {
-		return fetchVersion("http://www.citizensnpcs.net/dev/latest.php");
-	}
-
 	// Get the CURRENT version of Citizens (dev-build or release) automagically.
-	public static String getVersion() {
+	public static String localVersion() {
 		return Version.VERSION;
 	}
 
+	// A method used for iConomy support.
+	public static void setMethod(Method method) {
+		if (economy == null) {
+			economy = method;
+		}
+	}
+
+	// Returns whether the given item ID is usable as a tool.
+	public static boolean validateTool(String key, int type, boolean sneaking) {
+		List<String> item = Arrays.asList(UtilityProperties.getSettings()
+				.getString(key).split(","));
+		if (item.contains("*")) {
+			return true;
+		}
+		for (String s : item) {
+			boolean isShift = false;
+			if (s.contains("SHIFT-")) {
+				s = s.replace("SHIFT-", "");
+				isShift = true;
+			}
+			if (Integer.parseInt(s) == type && isShift == sneaking) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// TODO: clean this up a little bit.
 	private boolean handleMistake(CommandSender sender, String command,
 			String modifier) {
 		String[] modifiers = commands.getAllCommandModifiers(command);
@@ -336,35 +315,6 @@ public class Citizens extends JavaPlugin {
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		initialized = true;
-	}
-
-	// A method used for iConomy support.
-	public static void setMethod(Method method) {
-		if (economy == null) {
-			economy = method;
-		}
-	}
-
-	// Returns whether the given item ID is usable as a tool.
-	public static boolean validateTool(String key, int type, boolean sneaking) {
-		String[] items = UtilityProperties.getSettings().getString(key)
-				.split(",");
-		List<String> item = Arrays.asList(items);
-		if (item.contains("*")) {
-			return true;
-		}
-		boolean isShift;
-		for (String s : item) {
-			isShift = false;
-			if (s.contains("SHIFT-")) {
-				s = s.replace("SHIFT-", "");
-				isShift = true;
-			}
-			if (Integer.parseInt(s) == type && isShift == sneaking) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	// Load NPC types in the plugins/Citizens/types directory

@@ -63,7 +63,7 @@ public class BasicCommands extends CommandHandler {
 		sender.sendMessage(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap("Citizens")));
 		sender.sendMessage(ChatColor.GREEN + "  Version: "
-				+ StringUtils.wrap(Citizens.getVersion()));
+				+ StringUtils.wrap(Citizens.localVersion()));
 		sender.sendMessage(ChatColor.GREEN + "  Authors: ");
 		sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
 		sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
