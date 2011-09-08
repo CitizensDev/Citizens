@@ -2,6 +2,7 @@ package net.citizensnpcs;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class Citizens extends JavaPlugin {
 	public static List<String> loadedTypes = new ArrayList<String>();
 
 	// Set to false before release
-	//public static boolean devBuild = true;// No longer required
+	// public static boolean devBuild = true;// No longer required
 
 	@Override
 	public void onEnable() {
@@ -227,40 +228,51 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	public static String getLatestBuildVersion() // This returns the latest AVAILABLE devBuild, not the one in use!
-	{
+	private static String fetchVersion(String source) {
+		BufferedReader reader = null;
 		try {
-			URL url = new URL("http://www.citizensnpcs.net/dev/latestdev.php");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					url.openStream()));
+			URL url = new URL(source);
+			reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			String line;
 			if ((line = reader.readLine()) != null) {
-				return "devBuild-" + line.trim();
-			}
-			reader.close();
-		} catch (Exception e) {
-			Messaging
-					.log("Could not connect to citizensnpcs.net to determine latest development build number.");
-		}
-		return getVersion();//Lets not trigger the update reminder if we can't find a version
-	}
-	public static String getLatestVersion() // This returns the latest AVAILABLE version, not the one in use!
-	{
-		try {
-			URL url = new URL("http://www.citizensnpcs.net/dev/latest.php");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					url.openStream()));
-			String line;
-			if ((line = reader.readLine()) != null) {
+				reader.close(); // may be dangerous, but it needs to be
+								// closed...
 				return line.trim();
 			}
-			reader.close();
 		} catch (Exception e) {
 			Messaging
 					.log("Could not connect to citizensnpcs.net to determine latest version.");
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					Messaging.log("Unable to close the URL stream.");
+				}
+			}
 		}
-		return getVersion(); //Lets not trigger the update reminder if we can't find a version
+		return getVersion();
 	}
+
+	/**
+	 * Fetches the latest development build version.
+	 * 
+	 * @return a String representation of the latest build version.
+	 */
+	public static String fetchLatestBuildVersion() {
+		String result = fetchVersion("http://www.citizensnpcs.net/dev/latestdev.php");
+		return result.equals(getVersion()) ? result : "devBuild-" + result;
+	}
+
+	/**
+	 * Fetches the latest version from the citizens website.
+	 * 
+	 * @return the latest available version
+	 */
+	public static String getLatestVersion() {
+		return fetchVersion("http://www.citizensnpcs.net/dev/latest.php");
+	}
+
 	// Get the CURRENT version of Citizens (dev-build or release) automagically.
 	public static String getVersion() {
 		return Version.VERSION;
@@ -302,21 +314,13 @@ public class Citizens extends JavaPlugin {
 
 	private void setupNPCs() {
 		PropertyManager.getNPCProfiles().load();
-		StringBuilder UIDList = new StringBuilder();
 		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(
 				null);
 		Collections.sort(sorted);
 		int max = sorted.size() == 0 ? 0 : sorted.get(sorted.size() - 1), count = 0;
 		while (count <= max) {
 			if (PropertyManager.getNPCProfiles().pathExists(count)) {
-				UIDList.append(count + ",");
-			}
-			++count;
-		}
-		String[] values = UIDList.toString().split(",");
-		if (values.length > 0 && !values[0].isEmpty()) {
-			for (String value : values) {
-				int UID = Integer.parseInt(value);
+				int UID = count;
 				Location loc = PropertyManager.getBasic().getLocation(UID);
 				if (loc != null && loc.getWorld() != null) {
 					NPCManager.register(UID, PropertyManager.getBasic()
@@ -328,18 +332,17 @@ public class Citizens extends JavaPlugin {
 					}
 				}
 			}
+			++count;
 		}
 		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
 		initialized = true;
 	}
 
 	// A method used for iConomy support.
-	public static boolean setMethod(Method method) {
+	public static void setMethod(Method method) {
 		if (economy == null) {
 			economy = method;
-			return true;
 		}
-		return false;
 	}
 
 	// Returns whether the given item ID is usable as a tool.

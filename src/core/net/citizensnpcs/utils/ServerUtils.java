@@ -1,13 +1,10 @@
 package net.citizensnpcs.utils;
 
-import java.net.HttpURLConnection;
-import java.net.URI;
 import java.util.List;
 
 import net.citizensnpcs.Citizens;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class ServerUtils {
@@ -27,20 +24,19 @@ public class ServerUtils {
 	// available, or use Citizens.getLatestBuildVersion() for devBuilds.
 	public static void checkForUpdates(Player player) {
 		try {
-			if(Citizens.getVersion().contains("devBuild"))
-			{
-				
-				if ( !("devBuild-" + Citizens.getLatestBuildVersion()).equals(Citizens.getVersion()) ) {
-					Messaging.send(player, null, ChatColor.YELLOW + "**ALERT** "
-							+ ChatColor.GREEN
-							+ "There is a new development version of Citizens available!");
+			if (Citizens.getVersion().contains("devBuild")) {
+				if (!("devBuild-" + Citizens.fetchLatestBuildVersion())
+						.equals(Citizens.getVersion())) {
+					Messaging
+							.send(player,
+									StringUtils.wrap("**ALERT** ")
+											+ "A new development version of Citizens is available!");
 					return;
 				}
 			} else {
-				if ( !Citizens.getLatestVersion().equals(Citizens.getVersion()) ) {
-					Messaging.send(player, null, ChatColor.YELLOW + "**ALERT** "
-							+ ChatColor.GREEN
-							+ "There is a new version of Citizens available!");
+				if (!Citizens.getLatestVersion().equals(Citizens.getVersion())) {
+					Messaging.send(player, StringUtils.wrap("**ALERT** ")
+							+ "A new version of Citizens is available!");
 					return;
 				}
 			}
