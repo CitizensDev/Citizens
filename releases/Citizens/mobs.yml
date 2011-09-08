@@ -1,14 +1,8 @@
-pirates:
-    spawn:
-        spawn: false
-        max: 2
-    misc:
-        names: Pirate_Pete,Piratebay,Jack_Sparrow,
-        steal-messages: I stole yer booty.;Aaargh.;
 evil:
     spawn:
         spawn: false
         max: 2
+        chance: 100
     items:
         tame-item: 354
         drops: 260,357,2256,

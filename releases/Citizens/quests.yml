@@ -1,1 +1,51 @@
-{}
+example:
+    texts:
+        description: A build quest
+        completion: <g>You win! Here's some stone.
+        acceptance: <g>Challenge <y>accepted<g>.
+    repeatable: true
+    objectives:
+        '0':
+            '0':
+                type: build
+                materialid: 1
+                amount: 3
+                message: Built. Now come back here!
+    rewards:
+        '0':
+            type: item
+            id: 1
+            amount: 64
+            take: false
+example2:
+    texts:
+        description: A fetch quest
+        completion: <g>You win! Give me that stone.
+        acceptance: <g>Challenge <y>accepted<g>.
+    repeatable: false
+    objectives:
+        '0':
+            '0':
+                type: collect
+                materialid: 1
+                amount: 3
+                message: A voice echoes... "I want that stone now!"
+example3:
+    texts:
+        description: A mob quest - kill any 3 of zombie, pig or chicken
+        completion: <g>You win!
+        acceptance: <g>Challenge <y>accepted<g>.
+    repeatable: false
+    objectives:
+        '0':
+            '0':
+                type: hunt
+                string: 'zombie, pig, chicken'
+                amount: 3
+                message: Monsters slain!
+    rewards:
+         '0':
+            type: item
+            id: 1
+            amount: 3
+            take: true

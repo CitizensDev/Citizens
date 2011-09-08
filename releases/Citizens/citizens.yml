@@ -1,27 +1,13 @@
+guards:
+    default-bouncer-protection-radius: 10
+    respawn-delay: 100
 range:
-    guards:
-        default-bouncer-protection-radius: 10
-        pathfinding: 16.0
-    basic:
-        look: 5
+    look: 5
+    pathfinding: 16.0
 items:
-    item-list-on: true
-    basic:
-        select-items: '*'
-        talk-items: 340,
-    healers:
-        give-health-item: 35
-        take-health-item: 278
-    wizards:
-        mana-regen-item: 348
-        interact-item: 288
+    select-items: '*'
+    talk-items: 340,
 ticks:
-    guards:
-        respawn-delay: 100
-    healers:
-        health-regen-increment: 12000
-    wizards:
-        mana-regen-rate: 6000
     saving:
         save-often: true
         use-task: true
@@ -31,30 +17,77 @@ ticks:
         max-pathing: -1
     waypoints:
         right-click-pause: 70
-    general:
-        delay: 1
+healers:
+    give-health-item: 35
+    take-health-item: 276
+    health-regen-increment: 12000
+    regen-health: true
+wizards:
+    mana-regen-item: 348
+    regen-mana: true
+    max-mana: 100
+    max-locations: 10
+    mana-regen-rate: 6000
+    interact-item: 288
+    mana-costs:
+        executecommand: 5
+        spawnmob: 5
+        changetime: 5
+        togglestorm: 5
+        teleport: 5
+economy:
+    prices:
+        blacksmith:
+            creation: 100
+            toolrepair:
+                wood: 0.25
+                diamond: 1.25
+                stone: 0.75
+                gold: 0.5
+                iron: 1
+                misc: 0.5
+            armorrepair:
+                diamond: 1.25
+                gold: 0.5
+                leather: 0.25
+                iron: 1
+                chainmail: 0.75
+        basic:
+            creation: 100
+        guard:
+            creation: 100
+        wizard:
+            executecommand: 100
+            creation: 100
+            spawnmob: 100
+            changetime: 100
+            togglestorm: 100
+            teleport: 100
+        trader:
+            creation: 100
+        quester:
+            creation: 100
+        healer:
+            creation: 100
+            heal: 100
+            levelup: 100
+    use-economy: true
+debug:
+    enable-error-reporting: true
+    debug-mode: false
+    error-reporting-ident: Anonymous
 general:
     defaults:
         enable-following: true
         talk-when-close: false
-    debug-mode: false
-    healers:
-        pay-for-heal: true
-        regen-health: true
+    quick-select: false
     colors:
         use-npc-colours: true
         npc-colour: f
-    wizards:
-        regen-mana: true
-        max-mana: 100
-        wizard-max-locations: 10
     notify-updates: true
     chat:
-        slashes-to-spaces: true
+        space-char: /
         selection-message: <g>You selected <y><npc><g> (ID <y><npcid><g>).
         default-text: Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;
         creation-message: <g>The NPC <y><npc><g> was born!
         format: '[%name%]: '
-    selection:
-        quick-select: false
-    use-bukkit-permissions: false
