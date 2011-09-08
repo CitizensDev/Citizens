@@ -55,6 +55,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.base.Joiner;
 
+import net.citizensnpcs.utils.ErrorReporting;
+
 /**
  * Citizens - NPCs for Bukkit
  */
@@ -80,6 +82,9 @@ public class Citizens extends JavaPlugin {
 
 		// Load settings.
 		SettingsManager.setupVariables();
+		
+		// Initialize Error Reporting
+		ErrorReporting.Init();
 
 		// Register events per type
 		for (String loaded : loadedTypes) {
