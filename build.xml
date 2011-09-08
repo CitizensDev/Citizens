@@ -5,6 +5,7 @@
       <!-- set global properties for this build -->
       <property name="src" location="src"/>
 	  <property name="bin" location="bin"/>
+	  <property name="types" location="${bin}/types"/>
       <property name="build" location="build"/>
       <property name="core" location="build/core"/>
       <property name="blacksmith" location="build/blacksmith"/>
@@ -20,6 +21,7 @@
 		<!-- Create neccesary folders -->
         <mkdir dir="${build}"/>
 		<mkdir dir="${bin}"/>
+		<mkdir dir="${types}"/>
         <mkdir dir="${core}"/>
         <mkdir dir="${blacksmith}"/>
         <mkdir dir="${guard}"/>
@@ -175,32 +177,32 @@
 		
       </target>
       <target name="distblacksmith" description="generate the distribution" >
-        <jar jarfile="${bin}/Blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
+        <jar jarfile="${types}/Blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
         <zipfileset dir="${src}/blacksmith" includes="*.info"/>
         </jar>
       </target>
       <target name="distguard" description="generate the distribution" >
-        <jar jarfile="${bin}/Guard.jar" basedir="${guard}" encoding="Cp1252">
+        <jar jarfile="${types}/Guard.jar" basedir="${guard}" encoding="Cp1252">
         <zipfileset dir="${src}/guard" includes="*.info"/>
         </jar>
       </target>
       <target name="disthealer" description="generate the distribution" >
-        <jar jarfile="${bin}/Healer.jar" basedir="${healer}" encoding="Cp1252">
+        <jar jarfile="${types}/Healer.jar" basedir="${healer}" encoding="Cp1252">
         <zipfileset dir="${src}/healer" includes="*.info"/>
         </jar>
       </target>
       <target name="distquester" description="generate the distribution" >
-        <jar jarfile="${bin}/Quester.jar" basedir="${quester}" encoding="Cp1252">
+        <jar jarfile="${types}/Quester.jar" basedir="${quester}" encoding="Cp1252">
         <zipfileset dir="${src}/quester" includes="*.info"/>
         </jar>
       </target>
       <target name="disttrader" description="generate the distribution" >
-        <jar jarfile="${bin}/Trader.jar" basedir="${trader}" encoding="Cp1252">
+        <jar jarfile="${types}/Trader.jar" basedir="${trader}" encoding="Cp1252">
         <zipfileset dir="${src}/trader" includes="*.info"/>
         </jar>
       </target>
       <target name="distwizard" description="generate the distribution" >
-        <jar jarfile="${bin}/Wizard.jar" basedir="${wizard}" encoding="Cp1252">
+        <jar jarfile="${types}/Wizard.jar" basedir="${wizard}" encoding="Cp1252">
         <zipfileset dir="${src}/wizard" includes="*.info"/>
         </jar>
       </target>
