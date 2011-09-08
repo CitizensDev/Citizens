@@ -149,8 +149,7 @@ public class GuardCommands extends CommandHandler {
 			min = 1)
 	@CommandPermissions("guard.modify.flags")
 	public static void addFlag(CommandContext args, Player player, HumanNPC npc) {
-		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')
-				&& !args.hasFlag('p')) {
+		if (args.getFlags().size() == 0) {
 			player.sendMessage(ChatColor.GRAY + "No type flags specified.");
 			return;
 		}
@@ -227,7 +226,7 @@ public class GuardCommands extends CommandHandler {
 
 	@Command(
 			aliases = "guard",
-			usage = "delflag [name] [-p, -m, -g] (-a)",
+			usage = "delflag [name] [-p,m,g] (-a)",
 			desc = "deletes a flag from a guard",
 			modifiers = { "delflag", "df" },
 			flags = "agmp",
@@ -235,8 +234,7 @@ public class GuardCommands extends CommandHandler {
 	@CommandPermissions("guard.modify.flags")
 	public static void deleteFlag(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (!args.hasFlag('a') && !args.hasFlag('g') && !args.hasFlag('m')
-				&& !args.hasFlag('p')) {
+		if (args.getFlags().size() == 0) {
 			player.sendMessage(ChatColor.GRAY + "No type flags specified.");
 			return;
 		}
@@ -314,9 +312,9 @@ public class GuardCommands extends CommandHandler {
 
 	@Override
 	public void addPermissions() {
+		PermissionManager.addPermission("guard.use.flags");
 		PermissionManager.addPermission("guard.use.help");
 		PermissionManager.addPermission("guard.modify.type");
-		PermissionManager.addPermission("guard.use.flags");
 		PermissionManager.addPermission("guard.modify.flags");
 		PermissionManager.addPermission("guard.modify.aggro");
 		PermissionManager.addPermission("guard.modify.radius");
@@ -330,7 +328,7 @@ public class GuardCommands extends CommandHandler {
 		HelpUtils.format(sender, "guard", "flags [-g,m,p] (page)",
 				"view a guard's flags");
 		HelpUtils.format(sender, "guard",
-				"addflag (-i [priority]) [target] (-a,g,m,p)",
+				"addflag (priority) [target] (-a,g,m,p)",
 				"add a flag to a guard");
 		HelpUtils.format(sender, "guard", "delflag [name] [-g,m,p] (-a)",
 				"delete a flag from a guard");
