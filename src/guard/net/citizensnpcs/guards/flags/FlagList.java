@@ -43,8 +43,8 @@ public class FlagList {
 			result = possible.get(0);
 			return true;
 		default:
-			double lowest = Integer.MAX_VALUE,
-			distance;
+			double lowest = Integer.MAX_VALUE;
+			double distance;
 			LivingEntity closest = null;
 			for (LivingEntity entity : possible) {
 				distance = base.distance(entity.getLocation());

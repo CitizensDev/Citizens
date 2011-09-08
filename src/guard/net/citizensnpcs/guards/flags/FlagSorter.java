@@ -150,9 +150,10 @@ public class FlagSorter {
 						CreatureTask.getCreature(entity).getType(), false));
 			} else if (entity instanceof Player) {
 				String name = ((Player) entity).getName().toLowerCase();
-				if (!name.equals(npc.getOwner()))
+				if (!name.equals(npc.getOwner().toLowerCase())) {
 					retrieved = get(getByType(PLAYERS), name) == null ? groupMap
 							.get(name) : get(getByType(PLAYERS), name);
+				}
 			} else {
 				retrieved = get(getByType(MOBS),
 						EntityUtils.getMonsterName(entity));
