@@ -72,74 +72,14 @@ public class Quester extends CitizensNPC {
 		}
 	}
 
-	private void checkCompletion(Player player, HumanNPC npc) {
-		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
-			if (profile.getProgress().fullyCompleted()) {
-				Quest quest = QuestManager.getQuest(profile.getProgress()
-						.getQuestName());
-				Messaging.send(player, quest.getCompletedText());
-				for (Reward reward : quest.getRewards()) {
-					reward.grant(player, npc);
-				}
-				long elapsed = System.currentTimeMillis()
-						- profile.getProgress().getStartTime();
-				profile.setProgress(null);
-				int completed = profile.hasCompleted(quest.getName()) ? profile
-						.getCompletedQuest(quest.getName()).getTimesCompleted()
-						: 1;
-				profile.addCompletedQuest(new CompletedQuest(quest.getName(),
-						npc.getUID(), completed, elapsed));
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "The quest isn't completed yet.");
-			}
-		} else {
-			player.sendMessage(ChatColor.GRAY
-					+ "You already have a quest from another NPC.");
-		}
-	}
-
-	private boolean canRepeat(Player player, Quest quest) {
-		if (quest == null)
-			return false;
-		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		return profile.hasCompleted(quest.getName())
-				&& (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
-						quest.getName()).getTimesCompleted() < quest
-						.getRepeatLimit());
-	}
-
-	private void attemptAssign(Player player, HumanNPC npc) {
-		Quest quest = getQuest(fetchFromList(player));
-		if (!canRepeat(player, quest)) {
-			player.sendMessage(ChatColor.GRAY
-					+ "You are not allowed to repeat this quest again.");
-			return;
-		}
-		for (Reward requirement : quest.getRequirements()) {
-			if (!requirement.canTake(player)) {
-				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
-						+ requirement.getRequiredText(player));
-				return;
-			}
-		}
-
-		QuestManager.assignQuest(npc, player, fetchFromList(player));
-		Messaging.send(player, quest.getAcceptanceText());
-
-		displays.remove(player);
-		pending.remove(player);
-	}
-
 	private void cycle(Player player) {
 		if (QuestManager.hasQuest(player)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "Only one quest can be taken on at a time.");
 			return;
 		}
-		if (quests == null) {
-			player.sendMessage(ChatColor.GRAY + "No quests available.");
+		if (quests == null || quests.size() == 0) {
+			player.sendMessage(ChatColor.GRAY + "No quests are available.");
 			return;
 		}
 		pending.remove(player);
@@ -194,6 +134,56 @@ public class Quester extends CitizensNPC {
 		displays.put(player, display);
 	}
 
+	private void attemptAssign(Player player, HumanNPC npc) {
+		Quest quest = getQuest(fetchFromList(player));
+		if (!canRepeat(player, quest)) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You are not allowed to repeat this quest again.");
+			return;
+		}
+		for (Reward requirement : quest.getRequirements()) {
+			if (!requirement.canTake(player)) {
+				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
+						+ requirement.getRequiredText(player));
+				return;
+			}
+		}
+	
+		QuestManager.assignQuest(npc, player, fetchFromList(player));
+		Messaging.send(player, quest.getAcceptanceText());
+	
+		displays.remove(player);
+		pending.remove(player);
+	}
+
+	private void checkCompletion(Player player, HumanNPC npc) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
+			if (profile.getProgress().fullyCompleted()) {
+				Quest quest = QuestManager.getQuest(profile.getProgress()
+						.getQuestName());
+				Messaging.send(player, quest.getCompletedText());
+				for (Reward reward : quest.getRewards()) {
+					reward.grant(player, npc);
+				}
+				long elapsed = System.currentTimeMillis()
+						- profile.getProgress().getStartTime();
+				profile.setProgress(null);
+				int completed = profile.hasCompleted(quest.getName()) ? profile
+						.getCompletedQuest(quest.getName()).getTimesCompleted()
+						: 1;
+				profile.addCompletedQuest(new CompletedQuest(quest.getName(),
+						npc.getUID(), completed, elapsed));
+			} else {
+				player.sendMessage(ChatColor.GRAY
+						+ "The quest isn't completed yet.");
+			}
+		} else {
+			player.sendMessage(ChatColor.GRAY
+					+ "You already have a quest from another NPC.");
+		}
+	}
+
 	private Quest getQuest(String name) {
 		return QuestManager.getQuest(name);
 	}
@@ -204,6 +194,16 @@ public class Quester extends CitizensNPC {
 
 	private String fetchFromList(Player player) {
 		return quests.size() > 0 ? fetch(queue.get(player)) : "";
+	}
+
+	private boolean canRepeat(Player player, Quest quest) {
+		if (quest == null)
+			return false;
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		return profile.hasCompleted(quest.getName())
+				&& (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
+						quest.getName()).getTimesCompleted() < quest
+						.getRepeatLimit());
 	}
 
 	@Override
