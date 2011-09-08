@@ -160,6 +160,10 @@ public class SettingsManager {
 				"economy.use-economy", true));
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.basic.creation", 100));
+		nodes.add(new Node("ErrorReporting", SettingsType.GENERAL,
+				"errorreporting.enable", true));
+		nodes.add(new Node("ErrorReportingIdent", SettingsType.GENERAL,
+				"errorreporting.ident", "Anonymous"));
 		// mobs.yml
 		nodes.add(new Node("CreatureNPCSpawnDelay", SettingsType.MOB,
 				"general.spawn.delay", 200));
