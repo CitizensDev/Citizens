@@ -39,10 +39,7 @@ public class PageUtils {
 			if (lines.size() % 9 != 0) {
 				pages += 1;
 			}
-			if (pages == 0) {
-				pages = 1;
-			}
-			return pages;
+			return pages == 0 ? 1 : pages;
 		}
 
 		public void process(int page) {
