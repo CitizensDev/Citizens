@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class Guard extends CitizensNPC {
 	private boolean isAggressive = true;
 	private boolean isAttacking = false;
+	private boolean returning = false;
 	private GuardState guardState = GuardState.NULL;
 	private final FlagList flags = new FlagList();
 	private double radius = 10;
@@ -146,5 +147,13 @@ public class Guard extends CitizensNPC {
 	@Override
 	public CitizensNPCType getType() {
 		return new GuardType();
+	}
+
+	public void setReturning(boolean returning) {
+		this.returning = returning;
+	}
+
+	public boolean isReturning() {
+		return returning;
 	}
 }

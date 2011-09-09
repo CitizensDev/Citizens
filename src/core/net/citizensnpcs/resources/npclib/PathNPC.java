@@ -37,7 +37,7 @@ public class PathNPC extends EntityPlayer {
 	private int attackTimes = 0;
 	private int attackTimesLimit = -1;
 	private int prevX, prevY, prevZ;
-	private static final double JUMP_FACTOR = 0.052D;
+	private static final double JUMP_FACTOR = 0.054D;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -210,17 +210,17 @@ public class PathNPC extends EntityPlayer {
 				&& this.getPlayer().getItemInHand().getType() == Material.BOW;
 	}
 
-	private boolean isWithinAttackRange(Entity entity, double distanceToEntity) {
+	private boolean isWithinAttackRange(Entity entity, double distance) {
 		// Bow distance from EntitySkeleton.
 		// Other from EntityCreature.
 		return this.attackTicks <= 0
-				&& ((isHoldingBow() && distanceToEntity < 10) || (distanceToEntity < 1.5F
+				&& ((isHoldingBow() && (distance > 3.5 && distance < 10)) || (distance < 1.5F
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e));
 	}
 
 	private void attackEntity(Entity entity) {
 		this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
-		if (isHoldingBow() && distanceSquared(entity) > 2) {
+		if (isHoldingBow() && distance(entity) > 3.5) {
 			NPCManager.faceEntity(this.npc, entity.getBukkitEntity());
 
 			// make inaccuracies.
@@ -238,11 +238,6 @@ public class PathNPC extends EntityPlayer {
 		}
 		hasAttacked = true;
 		incrementAttackTimes();
-	}
-
-	private double distanceSquared(Entity entity) {
-		return entity.getBukkitEntity().getLocation()
-				.distanceSquared(this.getBukkitEntity().getLocation());
 	}
 
 	private double distance(Entity entity) {

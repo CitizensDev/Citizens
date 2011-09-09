@@ -93,7 +93,7 @@ public class Quester extends CitizensNPC {
 		} else {
 			int base = queue.get(player);
 			while (true) {
-				base = base + 1 > quests.size() ? 0 : base + 1;
+				base = base + 1 >= quests.size() ? 0 : base + 1;
 				if (canRepeat(player, getQuest(fetch(base)))) {
 					break;
 				}
@@ -148,10 +148,10 @@ public class Quester extends CitizensNPC {
 				return;
 			}
 		}
-	
+
 		QuestManager.assignQuest(npc, player, fetchFromList(player));
 		Messaging.send(player, quest.getAcceptanceText());
-	
+
 		displays.remove(player);
 		pending.remove(player);
 	}

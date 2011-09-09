@@ -43,16 +43,14 @@ public class GuardManager {
 				return;
 			}
 		} else {
-			if (npc.getWaypoints().size() > 0) {
-				loc = npc.getWaypoints().current().getLocation();
-			} else {
-				loc = npc.getNPCData().getLocation();
-			}
+			loc = npc.getWaypoints().size() > 0 ? npc.getWaypoints().current()
+					.getLocation() : npc.getNPCData().getLocation();
 		}
-		if (npc.getLocation().distance(loc) > SettingsManager
-				.getDouble("PathfindingRange")) {
+		if (npc.getLocation().distance(loc) > guard.getProtectionRadius()) {
 			npc.teleport(loc);
+			return;
 		}
+		guard.setReturning(true);
 		PathUtils.createPath(npc, loc, -1, -1,
 				SettingsManager.getDouble("PathfindingRange"));
 	}

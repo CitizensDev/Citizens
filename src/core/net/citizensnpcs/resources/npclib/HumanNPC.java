@@ -206,4 +206,9 @@ public class HumanNPC extends NPC {
 	public void setItemInHand(ItemStack item) {
 		this.getPlayer().setItemInHand(item);
 	}
+
+	public Location getBaseLocation() {
+		return this.waypoints.getLast() != null ? this.waypoints.getLast()
+				.getLocation() : this.npcdata.getLocation();
+	}
 }

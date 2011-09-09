@@ -31,8 +31,9 @@ public class GuardTask implements Runnable {
 					if (!npc.getHandle().hasTarget() || !guard.isAggressive()) {
 						cancel = true;
 					} else if (npc.getHandle().hasTarget()
-							&& !LocationUtils.withinRange(npc.getLocation(),
-									npc.getHandle().getTarget().getLocation(),
+							&& !LocationUtils.withinRange(
+									npc.getBaseLocation(), npc.getHandle()
+											.getTarget().getLocation(),
 									guard.getProtectionRadius())) {
 						cancel = true;
 					} else if (npc.getHandle().hasTarget()
@@ -42,7 +43,7 @@ public class GuardTask implements Runnable {
 								npc.getOwner());
 						if (npc.getHandle().getTarget() != player
 								&& !LocationUtils.withinRange(
-										npc.getLocation(),
+										npc.getBaseLocation(),
 										player.getLocation(),
 										guard.getProtectionRadius())) {
 							cancel = true;
@@ -54,13 +55,17 @@ public class GuardTask implements Runnable {
 						guard.setAttacking(false);
 					}
 				}
-				if (guard.isAttacking()) {
-					continue;
+
+				if (LocationUtils.withinRange(npc.getLocation(),
+						npc.getBaseLocation())) {
+					if (guard.isReturning()) {
+						guard.setReturning(false);
+					} else if (!guard.isAttacking() && npc.isPaused()) {
+						npc.setPaused(false);
+					}
 				}
-				if (npc.isPaused()
-						&& LocationUtils.withinRange(npc.getLocation(), npc
-								.getNPCData().getLocation())) {
-					npc.setPaused(false);
+				if (guard.isAttacking() || guard.isReturning()) {
+					continue;
 				}
 				if (guard.isBouncer()) {
 					handleTarget(npc.getPlayer(), npc, guard);

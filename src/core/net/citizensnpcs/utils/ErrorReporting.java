@@ -26,12 +26,12 @@ public class ErrorReporting {
 			return;
 		}
 		log.setFilter(new Filter() {
+			@Override
 			public boolean isLoggable(LogRecord record) {
-				if (record.getMessage() != null) {
-					if (record.getLevel() == Level.SEVERE) {
-						if (record.getMessage().contains("Citizens")) {
-							report(stackToString(record.getThrown()));
-						}
+				if (record.getMessage() != null
+						&& record.getLevel() == Level.SEVERE) {
+					if (record.getMessage().contains("Citizens")) {
+						report(stackToString(record.getThrown()));
 					}
 				}
 				return true;
@@ -41,8 +41,8 @@ public class ErrorReporting {
 
 	private static void report(String error) {
 		try {
-			System.out
-					.println("[Citizens] An error has occured, please wait while it is trasmitted to the developers...");
+			Messaging
+					.log("An error has occurred, please wait while it is sent to the developers...");
 			// Construct data
 			String data = URLEncoder.encode("Exception", "UTF-8") + "="
 					+ URLEncoder.encode(error, "UTF-8");
@@ -69,16 +69,16 @@ public class ErrorReporting {
 					conn.getInputStream()));
 			/*
 			 * String line; while ((line = rd.readLine()) != null) { //
-			 * Posability of suggestions for common errors in the future. }
+			 * Possibility of suggestions for common errors in the future. }
 			 */
 			wr.close();
 			rd.close();
 		} catch (Exception e) {
-			System.out
-					.println("[Citizens] An error has occured while trasmitting your error report.");
+			Messaging
+					.log("An error occurred whilst sending your error report.");
 		} finally {
-			System.out
-					.println("[Citizens] Below is the stacktrace that has been trasmitted to the developers, no other information has been included, other than version information.");
+			Messaging
+					.log("Below is the stacktrace that has been transmitted to the developers, no other information has been included other than Citizens version information.");
 		}
 	}
 
@@ -89,7 +89,7 @@ public class ErrorReporting {
 			e.printStackTrace(pw);
 			return sw.toString();
 		} catch (Exception e2) {
-			return "Invalid Stacktrace...";
+			return "Invalid stacktrace";
 		}
 	}
 }

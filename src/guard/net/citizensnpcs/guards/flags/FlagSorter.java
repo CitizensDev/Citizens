@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.guards.Guard;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.EntityUtils;
+import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.entity.Entity;
@@ -143,6 +145,7 @@ public class FlagSorter {
 			Iterable<LivingEntity> toProcess) {
 		List<LivingEntity> processed = Lists.newArrayList();
 		FlagInfo retrieved = null;
+		Guard guard = npc.getType("guard");
 		for (LivingEntity entity : toProcess) {
 			if (NPCManager.isNPC(entity)) {
 			} else if (CreatureTask.getCreature(entity) != null) {
@@ -158,7 +161,10 @@ public class FlagSorter {
 				retrieved = get(getByType(MOBS),
 						EntityUtils.getMonsterName(entity));
 			}
-			if (retrieved != null && retrieved.priority() == lowestFound) {
+			if (retrieved != null
+					&& LocationUtils.withinRange(npc.getBaseLocation(),
+							entity.getLocation(), guard.getProtectionRadius())
+					&& retrieved.priority() == lowestFound) {
 				processed.add(entity);
 			}
 		}
