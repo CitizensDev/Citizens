@@ -91,13 +91,14 @@ public class Quester extends CitizensNPC {
 				return;
 			}
 		} else {
-			int base = queue.get(player);
+			// TODO: this code may be broken, needs fixing.
+			int base = queue.get(player), orig = base;
 			while (true) {
 				base = base + 1 >= quests.size() ? 0 : base + 1;
 				if (canRepeat(player, getQuest(fetch(base)))) {
 					break;
 				}
-				if (base == queue.get(player)) {
+				if (base == orig) {
 					player.sendMessage(ChatColor.GRAY
 							+ "No quests are available.");
 					return;

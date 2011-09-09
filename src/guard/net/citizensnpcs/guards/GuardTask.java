@@ -57,7 +57,7 @@ public class GuardTask implements Runnable {
 				}
 
 				if (LocationUtils.withinRange(npc.getLocation(),
-						npc.getBaseLocation())) {
+						npc.getBaseLocation(), 1)) {
 					if (guard.isReturning()) {
 						guard.setReturning(false);
 					} else if (!guard.isAttacking() && npc.isPaused()) {

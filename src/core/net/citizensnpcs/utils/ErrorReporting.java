@@ -67,10 +67,12 @@ public class ErrorReporting {
 			// Get the response
 			BufferedReader rd = new BufferedReader(new InputStreamReader(
 					conn.getInputStream()));
-			/*
-			 * String line; while ((line = rd.readLine()) != null) { //
-			 * Possibility of suggestions for common errors in the future. }
-			 */
+
+			String line;
+			while ((line = rd.readLine()) != null) {
+				Messaging.log(line);
+			}
+
 			wr.close();
 			rd.close();
 		} catch (Exception e) {

@@ -134,8 +134,7 @@ public class GuardCommands extends CommandHandler {
 				+ StringUtils.listify(StringUtils.wrap(header + ChatColor.WHITE
 						+ " <%x/%y>")));
 		for (String entry : flags.keySet()) {
-			if (!entry.equals("all"))
-				instance.push(StringUtils.wrap("  - ") + entry);
+			instance.push(StringUtils.wrap("  - ") + entry);
 		}
 		instance.process(page);
 	}
