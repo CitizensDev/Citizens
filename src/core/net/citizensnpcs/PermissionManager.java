@@ -101,6 +101,10 @@ public class PermissionManager {
 		}
 	}
 
+	public static Group getGroup(String name) {
+		return permissionsEnabled ? superperms.getGroup(name) : null;
+	}
+
 	public static List<Group> getGroups(Player player) {
 		if (permissionsEnabled
 				&& superperms.getPlayerInfo(player.getName()) != null) {
