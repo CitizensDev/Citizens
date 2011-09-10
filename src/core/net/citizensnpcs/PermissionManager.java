@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 
+import com.platymuus.bukkit.permissions.Group;
 import com.platymuus.bukkit.permissions.PermissionsPlugin;
 
 public class PermissionManager {
@@ -66,7 +67,9 @@ public class PermissionManager {
 	}
 
 	public static void grantRank(Player player, String rank, boolean take) {
-		if (permissionsEnabled) {
+		if (permissionsEnabled
+				&& superperms.getPlayerInfo(player.getName()) != null
+				&& superperms.getGroup(rank) != null) {
 			if (take) {
 				superperms.getPlayerInfo(player.getName()).getGroups()
 						.remove(superperms.getGroup(rank));
@@ -78,9 +81,10 @@ public class PermissionManager {
 	}
 
 	public static boolean hasRank(Player player, String rank) {
-		if (permissionsEnabled) {
+		if (permissionsEnabled && superperms.getGroup(rank) != null
+				&& superperms.getPlayerInfo(player.getName()) != null) {
 			return superperms.getPlayerInfo(player.getName()).getGroups()
-					.contains(rank);
+					.contains(superperms.getGroup(rank));
 		}
 		return false;
 	}
@@ -97,8 +101,7 @@ public class PermissionManager {
 		}
 	}
 
-	public static List<com.platymuus.bukkit.permissions.Group> getGroups(
-			Player player) {
+	public static List<Group> getGroups(Player player) {
 		if (permissionsEnabled
 				&& superperms.getPlayerInfo(player.getName()) != null) {
 			return superperms.getPlayerInfo(player.getName()).getGroups();
@@ -106,13 +109,7 @@ public class PermissionManager {
 		return null;
 	}
 
-	public static com.platymuus.bukkit.permissions.Group getGroup(String name) {
-		if (permissionsEnabled) {
-			return superperms.getGroup(name);
-		}
-		return null;
-	}
-
+	// TODO: is this needed?
 	public static void addPermission(String perm) {
 		permissions.add(perm);
 	}
@@ -128,6 +125,7 @@ public class PermissionManager {
 				type.getCommands().addPermissions();
 			}
 		}
+		// TODO: investigate whether this is needed.
 		for (String permission : permissions) {
 			Bukkit.getServer().getPluginManager()
 					.addPermission(new Permission("citizens." + permission));

@@ -18,7 +18,7 @@ public class LocationUtils {
 	 * @return
 	 */
 	public static boolean withinRange(Location loc, Location pLoc, double range) {
-		if (!loc.getWorld().getName().equals(pLoc.getWorld().getName())) {
+		if (loc == null || pLoc == null || loc.getWorld() != pLoc.getWorld()) {
 			return false;
 		}
 		double halved = range / 2;
