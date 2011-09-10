@@ -75,12 +75,16 @@ public class WaypointPath {
 		return waypoints.get(waypoints.size() - 1);
 	}
 
+	private void onReach(HumanNPC npc) {
+		current().onReach(npc);
+	}
+
 	public void scheduleNext(HumanNPC npc) {
 		schedule(npc, currentIndex());
-
 	}
 
 	public void schedule(HumanNPC npc, int index) {
+		onReach(npc);
 		this.setStarted(true);
 		WaypointScheduler scheduler = new WaypointScheduler(npc, waypoints.get(
 				index).getLocation());
@@ -92,10 +96,10 @@ public class WaypointPath {
 		} else {
 			scheduler.run();
 		}
-
 	}
 
 	public void scheduleDelay(HumanNPC npc, Location target, int delay) {
+		onReach(npc);
 		RestartPathTask task = new RestartPathTask(npc, target);
 		if (delay > 0) {
 			Bukkit.getServer()

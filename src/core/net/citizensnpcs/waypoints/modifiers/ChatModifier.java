@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import joptsimple.internal.Strings;
-
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.utils.ConversationUtils.ChatType;
 import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
+import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointModifier;
 import net.citizensnpcs.waypoints.WaypointModifierType;
@@ -55,7 +54,8 @@ public class ChatModifier extends WaypointModifier {
 	public void begin(Player player) {
 		// Commands will be checked against your own permissions.
 		player.sendMessage(ChatColor.GREEN + "Enter messages to say.");
-		player.sendMessage("Type " + StringUtils.wrap("finish") + " to end.");
+		player.sendMessage(ChatColor.GREEN + "Type "
+				+ StringUtils.wrap("finish") + " to end.");
 	}
 
 	@Override

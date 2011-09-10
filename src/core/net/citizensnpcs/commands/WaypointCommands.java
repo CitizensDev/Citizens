@@ -64,7 +64,7 @@ public class WaypointCommands extends CommandHandler {
 		HelpUtils.header(player, "Waypoints", 1, 1);
 		HelpUtils.format(player, "waypoint", "modifiers",
 				"view waypoint modifiers");
-		HelpUtils.format(player, "waypoint", "modifier|mod add [type]",
+		HelpUtils.format(player, "waypoint", "modifier|mod [type]",
 				"add a modifier to the current waypoint");
 		HelpUtils.footer(player);
 	}
@@ -73,7 +73,7 @@ public class WaypointCommands extends CommandHandler {
 			aliases = { "wp", "waypoint" },
 			usage = "modifiers (page)",
 			desc = "list waypoint types",
-			modifiers = "modifiers",
+			modifiers = { "modifiers", "mods" },
 			min = 1,
 			max = 2)
 	public static void listModifiers(CommandContext args, Player player,
@@ -82,7 +82,6 @@ public class WaypointCommands extends CommandHandler {
 		if (page <= 0)
 			page = 1;
 		PageInstance instance = PageUtils.newInstance(player);
-		instance.setSmoothTransition(true);
 		instance.header(ChatColor.GREEN
 				+ StringUtils.listify(ChatColor.YELLOW
 						+ "Waypoint modifiers <%x/%y>" + ChatColor.GREEN));

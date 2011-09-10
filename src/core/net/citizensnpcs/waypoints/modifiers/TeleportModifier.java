@@ -3,9 +3,9 @@ package net.citizensnpcs.waypoints.modifiers;
 import net.citizensnpcs.misc.ConstructableLocation;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.StringUtils;
-import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointModifier;
 import net.citizensnpcs.waypoints.WaypointModifierType;
@@ -38,13 +38,12 @@ public class TeleportModifier extends WaypointModifier {
 		super.resetExit();
 		if (message.getMessage().equalsIgnoreCase("current")) {
 			Location pLoc = player.getLocation();
-			if (!pLoc.getWorld().getName()
-					.equals(waypoint.getLocation().getWorld().getName())) {
+			if (pLoc.getWorld() != waypoint.getLocation()) {
 				player.sendMessage(ChatColor.GRAY
 						+ "You must be in the same world as the waypoint.");
 				return false;
 			}
-			construct.setValues(pLoc, false);
+			construct.setValues(pLoc);
 			step = YAW;
 			player.sendMessage(endMessage);
 			return false;

@@ -42,9 +42,8 @@ public class ConstructableLocation {
 				yaw);
 	}
 
-	public void setValues(Location other, boolean useWorld) {
-		if (useWorld)
-			this.setWorld(other.getWorld());
+	public void setValues(Location other) {
+		this.setWorld(other.getWorld());
 		this.setX(other.getX());
 		this.setY(other.getY());
 		this.setZ(other.getZ());
