@@ -91,7 +91,6 @@ public class Quester extends CitizensNPC {
 				return;
 			}
 		} else {
-			// TODO: this code may be broken, needs fixing.
 			int base = queue.get(player), orig = base;
 			while (true) {
 				base = base + 1 >= quests.size() ? 0 : base + 1;
@@ -198,11 +197,13 @@ public class Quester extends CitizensNPC {
 	}
 
 	private boolean canRepeat(Player player, Quest quest) {
-		if (quest == null)
+		if (quest == null) {
 			return false;
+		}
+
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		return profile.hasCompleted(quest.getName())
-				&& (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
+		return !profile.hasCompleted(quest.getName())
+				|| (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
 						quest.getName()).getTimesCompleted() < quest
 						.getRepeatLimit());
 	}

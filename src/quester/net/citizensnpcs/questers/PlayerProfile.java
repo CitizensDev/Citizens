@@ -27,8 +27,8 @@ public class PlayerProfile {
 	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
 
 	public PlayerProfile(String name) {
-		profile = new ConfigurationHandler("plugins/Citizens/Player Profiles/"
-				+ name + ".yml");
+		profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name
+				+ ".yml");
 		this.name = name;
 		this.load();
 	}
