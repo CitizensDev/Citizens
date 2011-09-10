@@ -46,9 +46,9 @@ public class EconpluginReward implements Reward {
 		return ChatColor.GRAY
 				+ "You need "
 				+ StringUtils.wrap(
-						EconomyManager.format(EconomyManager.getBalance(player
-								.getName()) - reward), ChatColor.GRAY)
-				+ " more.";
+						EconomyManager.format(reward
+								- EconomyManager.getBalance(player.getName())),
+						ChatColor.GRAY) + " more.";
 	}
 
 	@Override

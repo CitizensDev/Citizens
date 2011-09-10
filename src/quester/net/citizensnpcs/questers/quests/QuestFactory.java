@@ -25,7 +25,7 @@ public class QuestFactory {
 			if (quests.pathExists(path + ".rewards")) {
 				for (String reward : quests.getKeys(path + ".rewards")) {
 					path = tempPath + ".rewards." + reward;
-					Reward builder = loadReward(quests, path, false);
+					Reward builder = loadReward(quests, path);
 					if (builder == null) {
 						Messaging.log("Invalid reward type specified ("
 								+ quests.getString(path + ".type")
@@ -35,11 +35,12 @@ public class QuestFactory {
 					quest.addReward(builder);
 				}
 			}
+			path = questName;
 			if (quests.pathExists(path + ".requirements")) {
 				for (String requirement : quests
 						.getKeys(path + ".requirements")) {
 					path = tempPath + ".requirements." + requirement;
-					Reward builder = loadReward(quests, path, true);
+					Reward builder = loadReward(quests, path);
 					if (builder == null) {
 						Messaging.log("Invalid requirement type specified ("
 								+ quests.getString(path + ".type")
@@ -130,7 +131,7 @@ public class QuestFactory {
 		count = 0;
 		for (Reward reward : quest.getRequirements()) {
 			path = temp + count;
-			quests.setBoolean(path + ".take", true);
+			quests.setBoolean(path + ".take", reward.isTake());
 			reward.save(quests, path);
 			++count;
 		}
@@ -168,9 +169,8 @@ public class QuestFactory {
 		}
 	}
 
-	public static Reward loadReward(Storage source, String root,
-			boolean defaultTake) {
-		boolean take = source.getBoolean(root + ".take", defaultTake);
+	public static Reward loadReward(Storage source, String root) {
+		boolean take = source.getBoolean(root + ".take", false);
 		String type = source.getString(root + ".type");
 		return QuestAPI.getBuilder(type) == null ? null : QuestAPI.getBuilder(
 				type).build(source, root, take);

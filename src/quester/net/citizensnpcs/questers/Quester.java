@@ -147,6 +147,9 @@ public class Quester extends CitizensNPC {
 						+ requirement.getRequiredText(player));
 				return;
 			}
+			if (requirement.isTake()) {
+				requirement.grant(player, npc);
+			}
 		}
 
 		QuestManager.assignQuest(npc, player, fetchFromList(player));
