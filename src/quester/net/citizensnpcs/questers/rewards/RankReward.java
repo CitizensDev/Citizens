@@ -13,15 +13,17 @@ import org.bukkit.entity.Player;
 public class RankReward implements Reward {
 	private final String reward;
 	private final boolean take;
+	private final boolean replace;
 
-	public RankReward(String reward, boolean take) {
+	public RankReward(String reward, boolean replace, boolean take) {
 		this.reward = reward;
+		this.replace = replace;
 		this.take = take;
 	}
 
 	@Override
 	public void grant(Player player, HumanNPC npc) {
-		PermissionManager.grantRank(player, reward, take);
+		PermissionManager.grantRank(player, reward, replace, take);
 	}
 
 	@Override
@@ -43,12 +45,14 @@ public class RankReward implements Reward {
 	@Override
 	public void save(Storage storage, String root) {
 		storage.setString(root + ".rank", reward);
+		storage.setBoolean(root + ".replace", replace);
 	}
 
 	public static class RankRewardBuilder implements RewardBuilder {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
-			return new RankReward(storage.getString(root + ".rank"), take);
+			return new RankReward(storage.getString(root + ".rank"),
+					storage.getBoolean(root + ".replace", false), take);
 		}
 	}
 }

@@ -14,6 +14,7 @@ import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
@@ -66,17 +67,16 @@ public class PermissionManager {
 		return 0;
 	}
 
-	public static void grantRank(Player player, String rank, boolean take) {
-		if (permissionsEnabled
-				&& superperms.getPlayerInfo(player.getName()) != null
-				&& superperms.getGroup(rank) != null) {
-			if (take) {
-				superperms.getPlayerInfo(player.getName()).getGroups()
-						.remove(superperms.getGroup(rank));
-			} else {
-				superperms.getPlayerInfo(player.getName()).getGroups()
-						.add(superperms.getGroup(rank));
-			}
+	public static void grantRank(Player player, String rank, boolean replace,
+			boolean take) {
+		if (permissionsEnabled && superperms.getGroup(rank) != null) {
+			String modifier = take ? "removegroup" : replace ? "setgroup"
+					: "addgroup";
+			Bukkit.getServer().dispatchCommand(
+					new ConsoleCommandSender(Bukkit.getServer()),
+					"perm player " + modifier + " " + player.getName() + " "
+							+ rank);
+			// Untested, not sure if it even works.
 		}
 	}
 
