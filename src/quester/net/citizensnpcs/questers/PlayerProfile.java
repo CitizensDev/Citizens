@@ -131,7 +131,7 @@ public class PlayerProfile {
 
 	private void load() {
 		String path = "quests.current", temp = path;
-		if (!profile.getString(path + "name").isEmpty()) {
+		if (!profile.getString(path + ".name").isEmpty()) {
 			progress = new QuestProgress(profile.getInt(path + ".giver"),
 					Bukkit.getServer().getPlayer(name), profile.getString(path
 							+ ".name"));

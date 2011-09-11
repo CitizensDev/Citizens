@@ -203,7 +203,6 @@ public class Quester extends CitizensNPC {
 		if (quest == null) {
 			return false;
 		}
-
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		return !profile.hasCompleted(quest.getName())
 				|| (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(

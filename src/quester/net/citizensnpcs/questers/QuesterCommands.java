@@ -225,9 +225,10 @@ public class QuesterCommands extends CommandHandler {
 					+ "Currently in the middle of "
 					+ StringUtils.wrap(profile.getProgress().getQuestName())
 					+ ". You have been on this quest for "
-					+ TimeUnit.HOURS.convert(System.currentTimeMillis()
-							- profile.getProgress().getStartTime(),
-							TimeUnit.MILLISECONDS) + " hours.");
+					+ StringUtils.wrap(TimeUnit.MINUTES.convert(
+							System.currentTimeMillis()
+									- profile.getProgress().getStartTime(),
+							TimeUnit.MILLISECONDS)) + " minutes.");
 			if (profile.getProgress().fullyCompleted()) {
 				player.sendMessage(ChatColor.AQUA + "Quest is completed.");
 			} else {

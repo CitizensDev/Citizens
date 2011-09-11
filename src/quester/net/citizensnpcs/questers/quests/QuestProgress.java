@@ -89,7 +89,7 @@ public class QuestProgress {
 						break;
 					}
 				}
-				if (cont)
+				if (cont || progress.isCompleted())
 					continue;
 				progress.update(event);
 			}

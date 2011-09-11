@@ -32,6 +32,8 @@ public class LocationQuest implements QuestUpdater {
 
 	@Override
 	public boolean isCompleted(ObjectiveProgress progress) {
+		if (progress.getLastLocation() == null)
+			return false;
 		return LocationUtils
 				.withinRange(progress.getObjective().getLocation(), progress
 						.getLastLocation(), progress.getObjective().getAmount());
