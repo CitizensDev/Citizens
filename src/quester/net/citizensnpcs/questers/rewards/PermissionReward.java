@@ -34,7 +34,7 @@ public class PermissionReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take ? PermissionManager.generic(player, reward) : true;
+		return PermissionManager.generic(player, reward);
 	}
 
 	@Override

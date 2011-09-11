@@ -31,7 +31,7 @@ public class RankReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return take ? PermissionManager.hasRank(player, reward) : false;
+		return PermissionManager.hasRank(player, reward);
 	}
 
 	@Override
