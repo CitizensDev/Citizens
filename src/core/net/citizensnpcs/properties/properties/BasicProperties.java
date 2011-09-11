@@ -255,10 +255,10 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 	private List<Waypoint> getWaypoints(int UID, World world) {
 		List<Waypoint> temp = new ArrayList<Waypoint>();
-		if (!profiles.pathExists(UID + waypoints)) {
+		if (!profiles.pathExists(UID + this.waypoints)) {
 			return temp;
 		}
-		String read = profiles.getString(UID + waypoints);
+		String read = profiles.getString(UID + this.waypoints);
 		Waypoint waypoint = null;
 		if (!read.isEmpty()) {
 			for (String str : read.split(";")) {
@@ -271,8 +271,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 		}
 		String path = "", root = "";
 		WaypointModifier modifier = null;
-		for (String key : profiles.getKeys(UID + waypoints)) {
-			root = UID + waypoints + "." + key;
+		for (String key : profiles.getKeys(UID + this.waypoints)) {
+			root = UID + this.waypoints + "." + key;
 			waypoint = new Waypoint(LocationUtils.loadLocation(profiles, root,
 					true));
 

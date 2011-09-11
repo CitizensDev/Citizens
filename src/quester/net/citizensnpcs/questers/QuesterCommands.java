@@ -53,26 +53,25 @@ public class QuesterCommands extends CommandHandler {
 			usage = "assign [quest]",
 			desc = "assign a quest to an NPC",
 			modifiers = "assign",
-			min = 2,
-			max = 2)
+			min = 2)
 	@CommandPermissions("quester.modify.quests.assign")
 	public static void assign(CommandContext args, Player player, HumanNPC npc) {
-		if (!QuestManager.validQuest(args.getString(1))) {
+		String quest = args.getJoinedStrings(1);
+		if (!QuestManager.validQuest(quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
 			return;
 		}
 		Quester quester = npc.getType("quester");
-		if (quester.hasQuest(args.getString(1))) {
+		if (quester.hasQuest(quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "The quester already has that quest.");
 			return;
 		}
-		quester.addQuest(args.getString(1));
-		player.sendMessage(ChatColor.GREEN + "Quest "
-				+ StringUtils.wrap(args.getString(1)) + " added to "
-				+ StringUtils.wrap(npc.getName()) + "'s quests. "
-				+ StringUtils.wrap(npc.getName()) + " now has "
+		quester.addQuest(quest);
+		player.sendMessage(ChatColor.GREEN + "Quest " + StringUtils.wrap(quest)
+				+ " added to " + StringUtils.wrap(npc.getName())
+				+ "'s quests. " + StringUtils.wrap(npc.getName()) + " now has "
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 
@@ -81,21 +80,20 @@ public class QuesterCommands extends CommandHandler {
 			usage = "remove [quest]",
 			desc = "remove a quest from an NPC",
 			modifiers = "remove",
-			min = 2,
-			max = 2)
+			min = 2)
 	@CommandPermissions("quester.modify.quests.remove")
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		Quester quester = npc.getType("quester");
-		if (!quester.hasQuest(args.getString(1))) {
+		String quest = args.getJoinedStrings(1);
+		if (!quester.hasQuest(quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "The quester doesn't have any quests by that name.");
 			return;
 		}
-		quester.removeQuest(args.getString(1));
-		player.sendMessage(ChatColor.GREEN + "Quest "
-				+ StringUtils.wrap(args.getString(1)) + " removed from "
-				+ StringUtils.wrap(npc.getName()) + "'s quests. "
-				+ StringUtils.wrap(npc.getName()) + " now has "
+		quester.removeQuest(quest);
+		player.sendMessage(ChatColor.GREEN + "Quest " + StringUtils.wrap(quest)
+				+ " removed from " + StringUtils.wrap(npc.getName())
+				+ "'s quests. " + StringUtils.wrap(npc.getName()) + " now has "
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
 	}
 
