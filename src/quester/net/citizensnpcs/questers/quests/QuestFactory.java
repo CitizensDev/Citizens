@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class QuestFactory {
+
 	public static void instantiateQuests(ConfigurationHandler quests) {
 		int questCount = 0;
 		questLoop: for (String questName : quests.getKeys(null)) {
@@ -50,13 +51,13 @@ public class QuestFactory {
 					quest.addRequirement(builder);
 				}
 			}
-			path = tempPath = questName + ".objectives";
 			Objectives objectives = new Objectives();
+			path = tempPath = questName + ".objectives";
 			if (quests.pathExists(path)) {
 				for (Object step : quests.getKeys(path)) {
 					QuestStep tempStep = new QuestStep();
 					tempPath = questName + ".objectives." + step;
-					for (Object objective : quests.getKeys(path + "." + step)) {
+					for (Object objective : quests.getKeys(tempPath)) {
 						path = tempPath + "." + objective;
 						String type = quests.getString(path + ".type");
 						if (type == null || type.isEmpty()

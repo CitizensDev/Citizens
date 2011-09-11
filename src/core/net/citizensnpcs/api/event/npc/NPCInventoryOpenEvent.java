@@ -5,13 +5,13 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-public class NPCInventoryOpenEvent extends NPCEvent implements Cancellable {
+public class NPCInventoryOpenEvent extends NPCPlayerEvent implements
+		Cancellable {
 	private static final long serialVersionUID = 1L;
 	private boolean cancelled = false;
-	private final Player player;
 
 	public NPCInventoryOpenEvent(HumanNPC npc, Player player) {
-		super("NPCInventoryOpenEvent", npc);
+		super("NPCInventoryOpenEvent", npc, player);
 		this.player = player;
 	}
 
@@ -34,14 +34,5 @@ public class NPCInventoryOpenEvent extends NPCEvent implements Cancellable {
 	@Override
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
-	}
-
-	/**
-	 * Get the player involved in the event.
-	 * 
-	 * @return player involved in the event
-	 */
-	public Player getPlayer() {
-		return this.player;
 	}
 }

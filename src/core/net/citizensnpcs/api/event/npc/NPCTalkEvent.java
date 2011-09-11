@@ -5,14 +5,13 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-public class NPCTalkEvent extends NPCEvent implements Cancellable {
+public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
 	private static final long serialVersionUID = 1L;
 	private boolean cancelled = false;
 	private String text;
-	private final Player player;
 
 	public NPCTalkEvent(HumanNPC npc, Player player, String text) {
-		super("NPCDisplayTextEvent", npc);
+		super("NPCDisplayTextEvent", npc, player);
 		this.text = text;
 		this.player = player;
 	}
@@ -55,14 +54,5 @@ public class NPCTalkEvent extends NPCEvent implements Cancellable {
 	 */
 	public void setText(String text) {
 		this.text = text;
-	}
-
-	/**
-	 * Get the player involved in the event.
-	 * 
-	 * @return player involved in the event
-	 */
-	public Player getPlayer() {
-		return this.player;
 	}
 }

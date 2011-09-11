@@ -5,14 +5,12 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-public class NPCRightClickEvent extends NPCEvent implements Cancellable {
+public class NPCRightClickEvent extends NPCPlayerEvent implements Cancellable {
 	private static final long serialVersionUID = 1L;
 	private boolean cancelled = false;
-	private final Player player;
 
 	public NPCRightClickEvent(HumanNPC npc, Player player) {
-		super("NPCRightClickEvent", npc);
-		this.player = player;
+		super("NPCRightClickEvent", npc, player);
 	}
 
 	/**
@@ -34,14 +32,5 @@ public class NPCRightClickEvent extends NPCEvent implements Cancellable {
 	@Override
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
-	}
-
-	/**
-	 * Get the player who right-clicked an NPC
-	 * 
-	 * @return player who right-clicked NPC
-	 */
-	public Player getPlayer() {
-		return this.player;
 	}
 }
