@@ -141,11 +141,13 @@ public class GuardProperties extends PropertyManager implements Properties {
 	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node("MaxStationaryReturnTicks", SettingsType.GENERAL,
+				"guards.max.stationary-return-ticks", 25));
 		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
 				"guards.respawn-delay", 100));
 		nodes.add(new Node("DefaultBouncerProtectionRadius",
 				SettingsType.GENERAL,
-				"guards.default-bouncer-protection-radius", 10));
+				"guards.bouncers.default.protection-radius", 10));
 		return nodes;
 	}
 }

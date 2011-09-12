@@ -1,6 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -8,6 +9,7 @@ import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.World;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class CraftNPC extends PathNPC {
@@ -59,8 +61,22 @@ public class CraftNPC extends PathNPC {
 		}
 	}
 
+	@Override
+	public void performAction(Animation action) {
+		this.animations.performAnimation(action);
+	}
+
 	private boolean chunkLoaded() {
 		return this.bukkitEntity.getWorld().isChunkLoaded(this.npc.getChunkX(),
 				this.npc.getChunkZ());
+	}
+
+	public LivingEntity getTarget() {
+		return this.targetEntity == null ? null
+				: ((LivingEntity) this.targetEntity.getBukkitEntity());
+	}
+
+	public boolean hasTarget() {
+		return this.targetEntity != null;
 	}
 }

@@ -347,16 +347,11 @@ public class PathNPC extends EntityPlayer {
 		resetTarget();
 	}
 
-	public boolean hasTarget() {
-		return this.targetEntity != null;
+	public int getStationaryTicks() {
+		return this.stationaryTicks;
 	}
 
 	public void performAction(Animation action) {
 		this.animations.performAnimation(action);
-	}
-
-	public LivingEntity getTarget() {
-		return this.targetEntity == null ? null
-				: ((LivingEntity) this.targetEntity.getBukkitEntity());
 	}
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
@@ -57,13 +58,18 @@ public class GuardTask implements Runnable {
 				}
 
 				if (LocationUtils.withinRange(npc.getLocation(),
-						npc.getBaseLocation(), 3)) {
+						npc.getBaseLocation(), 3.5)) {
 					if (guard.isReturning()) {
 						guard.setReturning(false);
 					}
 					if (!guard.isAttacking() && npc.isPaused()) {
 						npc.setPaused(false);
 					}
+				} else if (guard.isReturning()
+						&& npc.getHandle().getStationaryTicks() > SettingsManager
+								.getInt("MaxStationaryReturnTicks")) {
+					npc.teleport(npc.getBaseLocation());
+					guard.setReturning(false);
 				}
 				if (guard.isAttacking() || guard.isReturning()) {
 					continue;
