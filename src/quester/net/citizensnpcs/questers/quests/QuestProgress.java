@@ -23,7 +23,7 @@ public class QuestProgress {
 		this.player = player;
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
-		for (int i = 0; i != objectives.current().all().size(); ++i) {
+		for (int i = 0; i != objectives.current().objectives().size(); ++i) {
 			this.progress.add(new ObjectiveProgress(UID, player, questName,
 					objectives));
 		}
@@ -31,7 +31,7 @@ public class QuestProgress {
 	}
 
 	public void cycle() {
-		for (Objective objective : this.objectives.current().all()) {
+		for (Objective objective : this.objectives.current().objectives()) {
 			String message = objective.getMessage();
 			if (!message.isEmpty())
 				Messaging.send(player, message);
@@ -46,7 +46,7 @@ public class QuestProgress {
 
 	private void next() {
 		this.objectives.cycle();
-		for (int i = 0; i != objectives.current().all().size(); ++i) {
+		for (int i = 0; i != objectives.current().objectives().size(); ++i) {
 			this.progress.add(new ObjectiveProgress(UID, player, questName,
 					objectives));
 		}

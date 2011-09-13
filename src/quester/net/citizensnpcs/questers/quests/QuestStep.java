@@ -6,7 +6,7 @@ import java.util.List;
 public class QuestStep {
 	private final List<Objective> objectives = new ArrayList<Objective>();
 
-	public List<Objective> all() {
+	public List<Objective> objectives() {
 		return objectives;
 	}
 

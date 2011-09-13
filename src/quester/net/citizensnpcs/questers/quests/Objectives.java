@@ -5,18 +5,18 @@ import java.util.Collections;
 import java.util.Deque;
 
 public class Objectives {
-	private final Deque<QuestStep> objectives = new ArrayDeque<QuestStep>();
+	private final Deque<QuestStep> steps = new ArrayDeque<QuestStep>();
 
 	public Objectives(QuestStep... objectives) {
-		Collections.addAll(this.objectives, objectives);
+		Collections.addAll(this.steps, objectives);
 	}
 
 	public void add(QuestStep step) {
-		this.objectives.add(step);
+		this.steps.add(step);
 	}
 
-	public ArrayDeque<QuestStep> all() {
-		return objectives;
+	public Deque<QuestStep> steps() {
+		return steps;
 	}
 
 	public ObjectiveCycler newCycler() {
@@ -24,32 +24,32 @@ public class Objectives {
 	}
 
 	public static class ObjectiveCycler {
-		private Deque<QuestStep> objectives = new ArrayDeque<QuestStep>();
+		private final Deque<QuestStep> steps = new ArrayDeque<QuestStep>();
 		private int index = 0;
 
 		private ObjectiveCycler(Objectives objectives) {
-			this.objectives.addAll(objectives.all());
+			this.steps.addAll(objectives.steps);
 		}
 
 		public QuestStep current() {
-			return this.objectives.peek();
+			return this.steps.peek();
 		}
 
 		public Objective nextObjective() {
-			return current().all().get(index++);
+			return current().objectives().get(index++);
 		}
 
 		public void cycle() {
 			index = 0;
-			this.objectives.pop();
+			this.steps.pop();
 		}
 
 		public int currentStep() {
-			return this.objectives.size();
+			return this.steps.size();
 		}
 
 		public boolean isCompleted() {
-			return this.objectives.size() - 1 <= 0;
+			return this.steps.size() - 1 <= 0;
 			// Current quest is kept in deque, so we check if the size minus the
 			// loaded step (1) would equal 0 (completed).
 		}

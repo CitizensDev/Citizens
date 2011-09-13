@@ -102,7 +102,7 @@ public class QuestFactory {
 					objectives.add(tempStep);
 				}
 			}
-			if (objectives.all().size() == 0) {
+			if (objectives.steps().size() == 0) {
 				quest = null;
 				Messaging.log("Quest number " + (questCount + 1)
 						+ " is invalid - no objectives set.");
@@ -139,8 +139,8 @@ public class QuestFactory {
 		count = 0;
 		path = quest.getName() + ".objectives";
 		int stepCount = 0;
-		for (QuestStep step : quest.getObjectives().all()) {
-			for (Objective objective : step.all()) {
+		for (QuestStep step : quest.getObjectives().steps()) {
+			for (Objective objective : step.objectives()) {
 				temp = path + "." + stepCount + "." + count;
 				quests.setString(path + ".type", objective.getType());
 				if (objective.getAmount() != -1)
