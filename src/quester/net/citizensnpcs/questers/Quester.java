@@ -162,7 +162,7 @@ public class Quester extends CitizensNPC {
 	private void checkCompletion(Player player, HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
-			if (profile.getProgress().fullyCompleted()) {
+			if (profile.getProgress().isFullyCompleted()) {
 				Quest quest = QuestManager.getQuest(profile.getProgress()
 						.getQuestName());
 				Messaging.send(player, quest.getCompletedText());

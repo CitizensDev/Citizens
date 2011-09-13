@@ -14,20 +14,18 @@ public class QuestProgress {
 	private final List<ObjectiveProgress> progress = new ArrayList<ObjectiveProgress>();
 	private final String questName;
 	private final ObjectiveCycler objectives;
-	private long startTime;
+	private final long startTime;
 	private final int UID;
 	private final Player player;
 
-	public QuestProgress(int UID, Player player, String questName) {
+	public QuestProgress(int UID, Player player, String questName,
+			long startTime) {
 		this.UID = UID;
 		this.player = player;
 		this.questName = questName;
 		this.objectives = getObjectives().newCycler();
-		for (int i = 0; i != objectives.current().objectives().size(); ++i) {
-			this.progress.add(new ObjectiveProgress(UID, player, questName,
-					objectives));
-		}
-		this.setStartTime(System.currentTimeMillis());
+		this.startTime = startTime;
+		addObjectives();
 	}
 
 	public void cycle() {
@@ -36,17 +34,20 @@ public class QuestProgress {
 			if (!message.isEmpty())
 				Messaging.send(player, message);
 		}
-		this.progress.clear();
+		next();
 		if (!this.objectives.isCompleted()) {
-			next();
-		} else {
-			this.objectives.cycle();
+			addObjectives();
 		}
 	}
 
 	private void next() {
+		this.progress.clear();
 		this.objectives.cycle();
-		for (int i = 0; i != objectives.current().objectives().size(); ++i) {
+	}
+
+	private void addObjectives() {
+		int size = objectives.current().objectives().size();
+		for (int i = 0; i != size; ++i) {
 			this.progress.add(new ObjectiveProgress(UID, player, questName,
 					objectives));
 		}
@@ -66,7 +67,7 @@ public class QuestProgress {
 		return QuestManager.getQuest(this.getQuestName()).getObjectives();
 	}
 
-	public boolean stepCompleted() {
+	public boolean isStepCompleted() {
 		for (ObjectiveProgress prog : progress) {
 			if (!prog.isCompleted()) {
 				return false;
@@ -75,13 +76,15 @@ public class QuestProgress {
 		return true;
 	}
 
-	public boolean fullyCompleted() {
-		return stepCompleted() && this.objectives.isCompleted();
+	public boolean isFullyCompleted() {
+		return isStepCompleted() && this.objectives.isCompleted();
 	}
 
 	public void updateProgress(Event event) {
 		if (progress.size() > 0) {
 			for (ObjectiveProgress progress : this.progress) {
+				if (progress.isCompleted())
+					continue;
 				boolean cont = true;
 				for (Event.Type type : progress.getEventTypes()) {
 					if (type == event.getType()) {
@@ -89,7 +92,7 @@ public class QuestProgress {
 						break;
 					}
 				}
-				if (cont || progress.isCompleted())
+				if (cont)
 					continue;
 				progress.update(event);
 			}
@@ -106,10 +109,6 @@ public class QuestProgress {
 
 	public long getStartTime() {
 		return startTime;
-	}
-
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
 	}
 
 	public List<ObjectiveProgress> getProgress() {

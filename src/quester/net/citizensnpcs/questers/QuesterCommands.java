@@ -227,7 +227,7 @@ public class QuesterCommands extends CommandHandler {
 							System.currentTimeMillis()
 									- profile.getProgress().getStartTime(),
 							TimeUnit.MILLISECONDS)) + " minutes.");
-			if (profile.getProgress().fullyCompleted()) {
+			if (profile.getProgress().isFullyCompleted()) {
 				player.sendMessage(ChatColor.AQUA + "Quest is completed.");
 			} else {
 				player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA

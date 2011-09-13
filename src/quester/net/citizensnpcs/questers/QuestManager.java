@@ -27,10 +27,10 @@ public class QuestManager {
 			return;
 		if (hasQuest(player)) {
 			QuestProgress progress = getProfile(player.getName()).getProgress();
-			if (progress.stepCompleted())
+			if (progress.isFullyCompleted())
 				return;
 			progress.updateProgress(event);
-			if (progress.stepCompleted()) {
+			if (progress.isStepCompleted()) {
 				progress.cycle();
 			}
 		}
@@ -50,7 +50,8 @@ public class QuestManager {
 
 	public static void assignQuest(HumanNPC npc, Player player, String quest) {
 		getProfile(player.getName()).setProgress(
-				new QuestProgress(npc.getUID(), player, quest));
+				new QuestProgress(npc.getUID(), player, quest, System
+						.currentTimeMillis()));
 	}
 
 	public static boolean validQuest(String quest) {

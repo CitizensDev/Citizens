@@ -41,6 +41,7 @@ import net.citizensnpcs.resources.sk89q.RequirementMissingException;
 import net.citizensnpcs.resources.sk89q.ServerCommandException;
 import net.citizensnpcs.resources.sk89q.UnhandledCommandException;
 import net.citizensnpcs.resources.sk89q.WrappedCommandException;
+import net.citizensnpcs.utils.ErrorReporting;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
@@ -54,8 +55,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.base.Joiner;
-
-import net.citizensnpcs.utils.ErrorReporting;
 
 /**
  * Citizens - NPCs for Bukkit
@@ -129,7 +128,6 @@ public class Citizens extends JavaPlugin {
 		}
 
 		Messaging.log("version [" + localVersion() + "] loaded.");
-
 		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
 		// loaded -> gives multiworld support.
 		if (getServer().getScheduler().scheduleSyncDelayedTask(this,

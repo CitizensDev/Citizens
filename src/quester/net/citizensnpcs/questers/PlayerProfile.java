@@ -134,8 +134,7 @@ public class PlayerProfile {
 		if (!profile.getString(path + ".name").isEmpty()) {
 			progress = new QuestProgress(profile.getInt(path + ".giver"),
 					Bukkit.getServer().getPlayer(name), profile.getString(path
-							+ ".name"));
-			progress.setStartTime(profile.getLong(path + ".start-time"));
+							+ ".name"), profile.getLong(path + ".start-time"));
 			progress.setStep(profile.getInt(path + ".step"));
 			int count = 0;
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
