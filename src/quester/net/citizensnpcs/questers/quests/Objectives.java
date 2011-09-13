@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Deque;
 
 public class Objectives {
-	private final ArrayDeque<QuestStep> objectives = new ArrayDeque<QuestStep>();
+	private final Deque<QuestStep> objectives = new ArrayDeque<QuestStep>();
 
 	public Objectives(QuestStep... objectives) {
 		Collections.addAll(this.objectives, objectives);
@@ -28,7 +28,7 @@ public class Objectives {
 		private int index = 0;
 
 		private ObjectiveCycler(Objectives objectives) {
-			this.objectives = objectives.all();
+			this.objectives.addAll(objectives.all());
 		}
 
 		public QuestStep current() {
