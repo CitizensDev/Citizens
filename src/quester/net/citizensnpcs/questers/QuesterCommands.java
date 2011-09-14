@@ -174,7 +174,6 @@ public class QuesterCommands extends CommandHandler {
 	@CommandPermissions("quester.use.quests.status")
 	public static void completed(CommandContext args, Player player,
 			HumanNPC npc) {
-		player.shootArrow();
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (profile.getAllCompleted().size() == 0) {
 			player.sendMessage(ChatColor.GRAY

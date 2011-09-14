@@ -29,7 +29,7 @@ public class QuestManager {
 			QuestProgress progress = getProfile(player.getName()).getProgress();
 			if (progress.isFullyCompleted())
 				return;
-			progress.updateProgress(event);
+			progress.updateProgress(player, event);
 			if (progress.isStepCompleted()) {
 				progress.cycle();
 			}

@@ -173,7 +173,7 @@ public class Quester extends CitizensNPC {
 						- profile.getProgress().getStartTime();
 				profile.setProgress(null);
 				int completed = profile.hasCompleted(quest.getName()) ? profile
-						.getCompletedQuest(quest.getName()).getTimesCompleted()
+						.getCompletedQuest(quest.getName()).getTimesCompleted() + 1
 						: 1;
 				profile.addCompletedQuest(new CompletedQuest(quest.getName(),
 						npc.getUID(), completed, elapsed));
