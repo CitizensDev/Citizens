@@ -157,11 +157,11 @@ public class PlayerProfile {
 				}
 			}
 		}
-		if (!profile.pathExists(".quest.completed")) {
+		if (!profile.pathExists(".quests.completed")) {
 			return;
 		}
-		for (String key : profile.getKeys(".quest.completed")) {
-			path = ".quest.completed." + key;
+		for (String key : profile.getKeys(".quests.completed")) {
+			path = ".quests.completed." + key;
 			completedQuests.put(
 					key,
 					new CompletedQuest(key,
