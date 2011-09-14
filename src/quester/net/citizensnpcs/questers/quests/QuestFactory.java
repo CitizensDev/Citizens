@@ -142,26 +142,26 @@ public class QuestFactory {
 		for (QuestStep step : quest.getObjectives().steps()) {
 			for (Objective objective : step.objectives()) {
 				temp = path + "." + stepCount + "." + count;
-				quests.setString(path + ".type", objective.getType());
+				quests.setString(temp + ".type", objective.getType());
 				if (objective.getAmount() != -1)
-					quests.setInt(path + ".amount", objective.getAmount());
+					quests.setInt(temp + ".amount", objective.getAmount());
 				if (objective.getDestNPCID() != -1)
-					quests.setInt(path + ".npcdestination",
+					quests.setInt(temp + ".npcdestination",
 							objective.getDestNPCID());
 				if (!objective.getMessage().isEmpty())
-					quests.setString(path + ".message", objective.getMessage());
+					quests.setString(temp + ".message", objective.getMessage());
 				if (objective.getItem() != null) {
 					ItemStack item = objective.getItem();
-					quests.setInt(path + ".item.id", item.getTypeId());
-					quests.setInt(path + ".item.amount", item.getAmount());
-					quests.setInt(path + ".item.data", item.getDurability());
+					quests.setInt(temp + ".item.id", item.getTypeId());
+					quests.setInt(temp + ".item.amount", item.getAmount());
+					quests.setInt(temp + ".item.data", item.getDurability());
 				}
 				if (objective.getLocation() != null) {
 					LocationUtils.saveLocation(quests, objective.getLocation(),
-							path, false);
+							temp, false);
 				}
 				if (objective.getMaterial() != null) {
-					quests.setInt(path + ".materialid", objective.getMaterial()
+					quests.setInt(temp + ".materialid", objective.getMaterial()
 							.getId());
 				}
 				++count;
