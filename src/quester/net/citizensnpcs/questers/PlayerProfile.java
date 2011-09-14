@@ -66,8 +66,8 @@ public class PlayerProfile {
 		return completedQuests.values();
 	}
 
-	public boolean hasCompleted(String reward) {
-		return completedQuests.containsKey(reward);
+	public boolean hasCompleted(String quest) {
+		return completedQuests.containsKey(quest);
 	}
 
 	public QuestProgress getProgress() {

@@ -29,11 +29,6 @@ public class QuestProgress {
 	}
 
 	public void cycle() {
-		for (Objective objective : this.objectives.current().objectives()) {
-			String message = objective.getMessage();
-			if (!message.isEmpty())
-				Messaging.send(player, message);
-		}
 		next();
 		if (!this.objectives.isCompleted()) {
 			addObjectives();
@@ -80,7 +75,7 @@ public class QuestProgress {
 		return isStepCompleted() && this.objectives.isCompleted();
 	}
 
-	public void updateProgress(Event event) {
+	public void updateProgress(Player player, Event event) {
 		if (progress.size() > 0) {
 			for (ObjectiveProgress progress : this.progress) {
 				if (progress.isCompleted())
@@ -94,7 +89,11 @@ public class QuestProgress {
 				}
 				if (cont)
 					continue;
-				progress.update(event);
+				if (progress.update(event)
+						&& !progress.getObjective().getMessage().isEmpty()) {
+					Messaging
+							.send(player, progress.getObjective().getMessage());
+				}
 			}
 		}
 	}
