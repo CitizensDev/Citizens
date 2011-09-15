@@ -2,17 +2,19 @@ package net.citizensnpcs.utils;
 
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 
+import org.bukkit.entity.CaveSpider;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Spider;
@@ -21,46 +23,56 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
 public class EntityUtils {
-	public static String getMonsterName(LivingEntity le) {
-		if (le instanceof Chicken) {
+	public static String getMonsterName(Entity ent) {
+		if (ent instanceof CaveSpider) {
+			return "cavespider";
+		} else if (ent instanceof Chicken) {
 			return "chicken";
-		} else if (le instanceof Cow) {
+		} else if (ent instanceof Cow) {
 			return "cow";
-		} else if (le instanceof Creeper) {
+		} else if (ent instanceof Creeper) {
 			return "creeper";
-		} else if (le instanceof Ghast) {
+		} else if (ent instanceof Enderman) {
+			return "enderman";
+		} else if (ent instanceof Ghast) {
 			return "ghast";
-		} else if (le instanceof Giant) {
+		} else if (ent instanceof Giant) {
 			return "giant";
-		} else if (le instanceof Pig) {
+		} else if (ent instanceof Pig) {
 			return "pig";
-		} else if (le instanceof PigZombie) {
+		} else if (ent instanceof PigZombie) {
 			return "pigzombie";
-		} else if (le instanceof Sheep) {
+		} else if (ent instanceof Sheep) {
 			return "sheep";
-		} else if (le instanceof Skeleton) {
+		} else if (ent instanceof Silverfish) {
+			return "silverfish";
+		} else if (ent instanceof Skeleton) {
 			return "skeleton";
-		} else if (le instanceof Slime) {
+		} else if (ent instanceof Slime) {
 			return "slime";
-		} else if (le instanceof Spider) {
+		} else if (ent instanceof Spider) {
 			return "spider";
-		} else if (le instanceof Squid) {
+		} else if (ent instanceof Squid) {
 			return "squid";
-		} else if (le instanceof Wolf) {
+		} else if (ent instanceof Wolf) {
 			return "wolf";
-		} else if (le instanceof Zombie) {
+		} else if (ent instanceof Zombie) {
 			return "zombie";
 		}
 		return "";
 	}
 
 	public static CreatureType getType(Entity entity) {
-		if (entity instanceof Chicken) {
+		if (entity instanceof CaveSpider) {
+			// TODO
+		} else if (entity instanceof Chicken) {
 			return CreatureType.CHICKEN;
 		} else if (entity instanceof Cow) {
 			return CreatureType.COW;
 		} else if (entity instanceof Creeper) {
 			return CreatureType.CREEPER;
+		} else if (entity instanceof Enderman) {
+			// TODO
 		} else if (entity instanceof Ghast) {
 			return CreatureType.GHAST;
 		} else if (entity instanceof Giant) {
@@ -73,6 +85,8 @@ public class EntityUtils {
 			return CreatureType.SHEEP;
 		} else if (entity instanceof Skeleton) {
 			return CreatureType.SKELETON;
+		} else if (entity instanceof Silverfish) {
+			// TODO
 		} else if (entity instanceof Slime) {
 			return CreatureType.SLIME;
 		} else if (entity instanceof Spider) {
@@ -96,6 +110,9 @@ public class EntityUtils {
 				" ", "");
 		if (formatted.equals("Pigzombie")) {
 			formatted = "PigZombie";
+		}
+		if (formatted.equals("Cavespider")) {
+			formatted = "CaveSpider";
 		}
 		return CreatureType.fromName(formatted) != null
 				|| (both && CreatureNPCType.fromName(formatted) != null);
