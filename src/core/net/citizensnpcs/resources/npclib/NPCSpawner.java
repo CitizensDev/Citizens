@@ -14,21 +14,14 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.entity.Player;
 
 public class NPCSpawner {
-	protected static WorldServer getWorldServer(World world) {
-		if (world instanceof CraftWorld) {
-			return ((CraftWorld) world).getHandle();
-		}
-		return null;
+	private static WorldServer getWorldServer(World world) {
+		return ((CraftWorld) world).getHandle();
 	}
 
 	private static MinecraftServer getMinecraftServer(Server server) {
-		if (server instanceof CraftServer) {
-			return ((CraftServer) server).getServer();
-		}
-		return null;
+		return ((CraftServer) server).getServer();
 	}
 
 	public static HumanNPC spawnNPC(int UID, String name, Location loc) {
@@ -36,7 +29,6 @@ public class NPCSpawner {
 		CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws,
 				name, new ItemInWorldManager(ws));
 		ws.addEntity(eh);
-		ws.players.remove(eh);
 		eh.getBukkitEntity().teleport(loc);
 		return new HumanNPC(eh, UID, name);
 	}
@@ -50,8 +42,7 @@ public class NPCSpawner {
 					new ItemInWorldManager(ws));
 			ws.addEntity(eh);
 			eh.getBukkitEntity().teleport(loc);
-			ws.players.remove(eh);
-			return new HumanNPC(eh, -1, name);
+			return new HumanNPC(eh, -1 /*Fake UID*/, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,17 +57,16 @@ public class NPCSpawner {
 	}
 
 	public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
-		despawnNPC(npc.getHandle(), reason);
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new NPCRemoveEvent(npc, reason));
+		npc.getPlayer().remove();
 	}
 
 	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
-		Bukkit.getServer().getPluginManager()
-				.callEvent(new NPCRemoveEvent(npc.npc, reason));
-		((Player) npc.getBukkitEntity()).remove();
+		despawnNPC(npc.npc, reason);
 	}
 
 	public static void removeNPCFromPlayerList(HumanNPC npc) {
-		getWorldServer(npc.getPlayer().getWorld()).players.remove(npc
-				.getHandle());
+		getWorldServer(npc.getWorld()).players.remove(npc.getHandle());
 	}
 }
