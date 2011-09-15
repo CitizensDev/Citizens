@@ -26,6 +26,8 @@ public class QuesterCitizensListen extends CitizensListener {
 	@Override
 	public void onCitizensDisable(CitizensDisableEvent event) {
 		PlayerProfile.saveAll();
+		// QuestProperties.save(); TODO: commented out until quest saving is
+		// finished.
 	}
 
 	@Override

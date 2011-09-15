@@ -138,30 +138,30 @@ public class PlayerProfile {
 			progress.setStep(profile.getInt(path + ".step"));
 			int count = 0;
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
-				temp = path + "." + count;
+				temp = path + "." + count + ".progress";
 				questProgress.setAmountCompleted(this.profile.getInt(temp
-						+ ".progress.amount"));
-				int itemID = profile.getInt(temp + ".progress.item.id");
-				int amount = profile.getInt(temp + ".progress.item.amount");
+						+ ".amount"));
+				int itemID = profile.getInt(temp + ".item.id");
+				int amount = profile.getInt(temp + ".item.amount");
 				if (itemID != 0 && amount > 0) {
 					ItemStack item = null;
 					item = new ItemStack(itemID, amount);
 					item.setData(new MaterialData(itemID, (byte) profile
-							.getInt(temp + ".progress.item.data")));
+							.getInt(temp + ".item.data")));
 					questProgress.setLastItem(item);
 				}
-				if (profile.pathExists(".progress.location")) {
+				if (profile.pathExists(temp + ".location")) {
 					questProgress.setLastLocation(LocationUtils.loadLocation(
-							profile, temp + ".progress.location", true));
-					++count;
+							profile, temp + ".location", true));
 				}
+				++count;
 			}
 		}
-		if (!profile.pathExists(".quests.completed")) {
+		if (!profile.pathExists("quests.completed")) {
 			return;
 		}
-		for (String key : profile.getKeys(".quests.completed")) {
-			path = ".quests.completed." + key;
+		for (String key : profile.getKeys("quests.completed")) {
+			path = "quests.completed." + key;
 			completedQuests.put(
 					key,
 					new CompletedQuest(key,

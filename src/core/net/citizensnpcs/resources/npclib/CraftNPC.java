@@ -2,7 +2,6 @@ package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
-import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
@@ -13,12 +12,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class CraftNPC extends PathNPC {
-	@SuppressWarnings("unused")
-	private final int lastTargetId;
-	private long lastBounceTick;
-	private int lastBounceId;
-	boolean said = false;
-
 	public CraftNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
@@ -32,19 +25,6 @@ public class CraftNPC extends PathNPC {
 				});
 		this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
 		// netMgr.a(this.netServerHandler);
-		this.lastTargetId = -1;
-		this.lastBounceId = -1;
-		this.lastBounceTick = 0;
-	}
-
-	@Override
-	public void b(EntityHuman entity) {
-		if (lastBounceId != entity.id
-				|| System.currentTimeMillis() - lastBounceTick > 1000) {
-			lastBounceTick = System.currentTimeMillis();
-		}
-		lastBounceId = entity.id;
-		super.b(entity);
 	}
 
 	public void applyGravity() {
