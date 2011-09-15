@@ -20,7 +20,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 	private static final String time = ".wizard.time";
 	private static final String mob = ".wizard.mob";
 	private static final String unlimitedMana = ".wizard.unlimited-mana";
-	private static final String command = ".wizard.command";
 
 	public static final WizardProperties INSTANCE = new WizardProperties();
 
@@ -81,14 +80,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 		return profiles.getBoolean(UID + unlimitedMana);
 	}
 
-	private void saveCommand(int UID, String cmd) {
-		profiles.setString(UID + command, cmd);
-	}
-
-	private String getCommand(int UID) {
-		return profiles.getString(UID + command);
-	}
-
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
@@ -102,7 +93,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 				saveTime(npc.getUID(), wizard.getTime());
 				saveMob(npc.getUID(), wizard.getMob());
 				saveUnlimitedMana(npc.getUID(), wizard.hasUnlimitedMana());
-				saveCommand(npc.getUID(), wizard.getCommand());
 			}
 		}
 	}
@@ -118,7 +108,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 			wizard.setTime(getTime(npc.getUID()));
 			wizard.setMob(getMob(npc.getUID()));
 			wizard.setUnlimitedMana(hasUnlimitedMana(npc.getUID()));
-			wizard.setCommand(getCommand(npc.getUID()));
 		}
 		saveState(npc);
 	}
@@ -159,10 +148,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 			profiles.setString(nextUID + unlimitedMana,
 					profiles.getString(UID + unlimitedMana));
 		}
-		if (profiles.pathExists(UID + command)) {
-			profiles.setString(nextUID + command,
-					profiles.getString(UID + command));
-		}
 	}
 
 	@Override
@@ -176,8 +161,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 				"economy.prices.wizard.spawnmob", 100));
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.wizard.togglestorm", 100));
-		nodes.add(new Node("", SettingsType.GENERAL,
-				"economy.prices.wizard.executecommand", 100));
 		nodes.add(new Node("TeleportManaCost", SettingsType.GENERAL,
 				"wizards.mana-costs.teleport", 5));
 		nodes.add(new Node("ChangeTimeManaCost", SettingsType.GENERAL,
@@ -186,8 +169,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 				"wizards.mana-costs.spawnmob", 5));
 		nodes.add(new Node("ToggleStormManaCost", SettingsType.GENERAL,
 				"wizards.mana-costs.togglestorm", 5));
-		nodes.add(new Node("ExecuteCommandManaCost", SettingsType.GENERAL,
-				"wizards.mana-costs.executecommand", 5));
 		nodes.add(new Node("WizardMaxLocations", SettingsType.GENERAL,
 				"wizards.max-locations", 10));
 		nodes.add(new Node("WizardMaxMana", SettingsType.GENERAL,

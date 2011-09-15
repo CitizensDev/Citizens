@@ -231,4 +231,3 @@ permissions:
             citizens.wizard.modify.addloc: true
             citizens.wizard.modify.removeloc: true
             citizens.wizard.modify.unlimited: true
-            citizens.wizard.modify.command: true

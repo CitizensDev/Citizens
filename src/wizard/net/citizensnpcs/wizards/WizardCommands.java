@@ -198,25 +198,6 @@ public class WizardCommands extends CommandHandler {
 		}
 	}
 
-	@Command(
-			aliases = "wizard",
-			usage = "command [command] (args)",
-			desc = "set a wizard's command",
-			modifiers = { "command", "cmd" },
-			min = 2)
-	@CommandPermissions("wizard.modify.command")
-	public static void command(CommandContext args, Player player, HumanNPC npc) {
-		if (((Wizard) npc.getType("wizard")).getMode() != WizardMode.COMMAND) {
-			Messaging.sendError(player, npc.getStrippedName()
-					+ " is not in command mode.");
-			return;
-		}
-		String command = args.getJoinedStrings(1);
-		((Wizard) npc.getType("wizard")).setCommand(command);
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
-				+ " command was set to " + StringUtils.wrap(command) + ".");
-	}
-
 	@Override
 	public void addPermissions() {
 		PermissionManager.addPermission("wizard.use.help");
@@ -226,7 +207,6 @@ public class WizardCommands extends CommandHandler {
 		PermissionManager.addPermission("wizard.modify.removeloc");
 		PermissionManager.addPermission("wizard.use.locations");
 		PermissionManager.addPermission("wizard.modify.unlimited");
-		PermissionManager.addPermission("wizard.modify.command");
 		PermissionManager.addPermission("wizard.use.interact");
 	}
 
@@ -245,8 +225,6 @@ public class WizardCommands extends CommandHandler {
 				"display the status of a wizard");
 		HelpUtils.format(sender, "wizard", "unlimited",
 				"toggle a wizard's mana as unlimited");
-		HelpUtils.format(sender, "wizard", "command [command] (args)",
-				"set a wizard's command");
 		HelpUtils.footer(sender);
 	}
 }

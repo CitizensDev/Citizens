@@ -218,8 +218,6 @@ public class Wizard extends CitizensNPC {
 				Wizard wizard = npc.getType("wizard");
 				String msg = ChatColor.GREEN + "";
 				switch (wizard.getMode()) {
-				case COMMAND:
-					return;
 				case TELEPORT:
 					if (wizard.getNumberOfLocations() > 0) {
 						wizard.cycle(npc, WizardMode.TELEPORT);
@@ -246,7 +244,6 @@ public class Wizard extends CitizensNPC {
 					return;
 				default:
 					msg = ChatColor.RED + "No valid mode selected.";
-					break;
 				}
 				player.sendMessage(msg);
 			}
@@ -263,9 +260,6 @@ public class Wizard extends CitizensNPC {
 					.getInt("WizardInteractItem")) {
 				String op = "";
 				switch (wizard.getMode()) {
-				case COMMAND:
-					op = "executecommand";
-					break;
 				case TELEPORT:
 					op = "teleport";
 					break;
@@ -277,7 +271,6 @@ public class Wizard extends CitizensNPC {
 					break;
 				case WEATHER:
 					op = "togglestorm";
-					break;
 				}
 				WizardManager.handleRightClick(player, npc, "wizard." + op);
 			} else if (player.getItemInHand().getTypeId() == SettingsManager

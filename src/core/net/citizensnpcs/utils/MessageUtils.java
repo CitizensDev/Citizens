@@ -35,13 +35,7 @@ public class MessageUtils {
 			+ "You have reached the NPC-creation limit.";
 	public static final String invalidNPCTypeMessage = "Invalid NPC type.";
 
-	/**
-	 * Parses a basic npc's text for sending.
-	 * 
-	 * @param npc
-	 * @param player
-	 * @param plugin
-	 */
+	// Parses a basic npc's text for sending.
 	public static void sendText(HumanNPC npc, Player player) {
 		String text = getText(npc, player);
 		if (!text.isEmpty()) {
@@ -49,13 +43,7 @@ public class MessageUtils {
 		}
 	}
 
-	/**
-	 * Gets the text to be said for a basic NPC
-	 * 
-	 * @param npc
-	 * @param player
-	 * @return
-	 */
+	// Gets the text to be said for a basic NPC
 	public static String getText(HumanNPC npc, Player player) {
 		String name = StringUtils.stripColour(npc.getStrippedName());
 		Deque<String> array = NPCDataManager.getText(npc.getUID());
@@ -86,13 +74,7 @@ public class MessageUtils {
 		return "";
 	}
 
-	/**
-	 * Formats the not enough money message for an operation.
-	 * 
-	 * @param player
-	 * @param path
-	 * @return
-	 */
+	// Formats the not enough money message for an operation.
 	public static String getNoMoneyMessage(Player player, String path) {
 		String message;
 		message = ChatColor.RED
@@ -104,16 +86,7 @@ public class MessageUtils {
 		return message;
 	}
 
-	/**
-	 * Formats the paid message for an operation.
-	 * 
-	 * @param player
-	 * @param npcType
-	 * @param path
-	 * @param npcName
-	 * @param useType
-	 * @return
-	 */
+	// Formats the paid message for an operation.
 	public static String getPaidMessage(Player player, String npcType,
 			String path, String npcName, boolean useType) {
 		String message;
@@ -163,25 +136,14 @@ public class MessageUtils {
 		return getStackString(item, ChatColor.YELLOW);
 	}
 
-	/**
-	 * Get the max-pages message
-	 * 
-	 * @param sender
-	 * @param page
-	 * @param maxPages
-	 */
+	// Get the max-pages message
 	public static String getMaxPagesMessage(int page, int maxPages) {
 		return ChatColor.GRAY + "The total number of pages is "
 				+ StringUtils.wrap(maxPages, ChatColor.GRAY) + ", page "
 				+ StringUtils.wrap(page, ChatColor.GRAY) + " is not available.";
 	}
 
-	/**
-	 * Pulls a random message from a string of messages split by a semi-colon
-	 * 
-	 * @param messages
-	 * @return
-	 */
+	// Pulls a random message from a string of messages split by a semi-colon
 	public static String getRandomMessage(String messages) {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
@@ -191,12 +153,7 @@ public class MessageUtils {
 		return text;
 	}
 
-	/**
-	 * Display a list of NPCs owned by a player
-	 * 
-	 * @param player
-	 * @param npc
-	 */
+	// Display a list of NPCs owned by a player
 	public static void displayNPCList(Player sender, Player toDisplay,
 			HumanNPC npc, String passed) {
 		PageInstance paginate = PageUtils.newInstance(sender);

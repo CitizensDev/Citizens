@@ -14,10 +14,6 @@ import org.bukkit.entity.Player;
 public class WizardManager {
 	public enum WizardMode {
 		/**
-		 * Executes commands
-		 */
-		COMMAND,
-		/**
 		 * Teleports players
 		 */
 		TELEPORT,
@@ -101,12 +97,6 @@ public class WizardManager {
 		return false;
 	}
 
-	// Executes a command
-	private static boolean executeCommand(Player player, HumanNPC npc) {
-		return decreaseMana(player, npc,
-				SettingsManager.getInt("ExecuteCommandManaCost"));
-	}
-
 	// Decrease the mana of a wizard
 	private static boolean decreaseMana(Player player, HumanNPC npc, int mana) {
 		Wizard wizard = npc.getType("wizard");
@@ -167,15 +157,6 @@ public class WizardManager {
 			msg += " toggled a thunderstorm in the world "
 					+ StringUtils.wrap(player.getWorld().getName()) + ".";
 			if (!toggleStorm(player, npc)) {
-				return;
-			}
-		} else if (op.equals("wizard.executecommand")) {
-			msg += " executed the command "
-					+ StringUtils.wrap("/" + wizard.getCommand()) + ".";
-			if (!executeCommand(player, npc)) {
-				return;
-			}
-			if (!player.performCommand(wizard.getCommand())) {
 				return;
 			}
 		}
