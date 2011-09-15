@@ -25,26 +25,25 @@ public class QuestFactory {
 			String tempPath = path;
 			if (quests.pathExists(path + ".rewards")) {
 				for (String reward : quests.getKeys(path + ".rewards")) {
-					path = tempPath + ".rewards." + reward;
-					Reward builder = loadReward(quests, path);
+					tempPath = path + ".rewards." + reward;
+					Reward builder = loadReward(quests, tempPath);
 					if (builder == null) {
 						Messaging.log("Invalid reward type specified ("
-								+ quests.getString(path + ".type")
+								+ quests.getString(tempPath + ".type")
 								+ "). Quest " + questName + " not loaded.");
 						continue questLoop;
 					}
 					quest.addReward(builder);
 				}
 			}
-			path = questName;
 			if (quests.pathExists(path + ".requirements")) {
 				for (String requirement : quests
 						.getKeys(path + ".requirements")) {
-					path = tempPath + ".requirements." + requirement;
-					Reward builder = loadReward(quests, path);
+					tempPath = path + ".requirements." + requirement;
+					Reward builder = loadReward(quests, tempPath);
 					if (builder == null) {
 						Messaging.log("Invalid requirement type specified ("
-								+ quests.getString(path + ".type")
+								+ quests.getString(tempPath + ".type")
 								+ "). Quest " + questName + " not loaded.");
 						continue questLoop;
 					}
@@ -124,14 +123,14 @@ public class QuestFactory {
 		String temp = path + ".rewards";
 		int count = 0;
 		for (Reward reward : quest.getRewards()) {
-			path = temp + count;
+			path = temp + "." + count;
 			quests.setBoolean(path + ".take", reward.isTake());
 			reward.save(quests, path);
 			++count;
 		}
 		count = 0;
 		for (Reward reward : quest.getRequirements()) {
-			path = temp + count;
+			path = temp + "." + count;
 			quests.setBoolean(path + ".take", reward.isTake());
 			reward.save(quests, path);
 			++count;
@@ -168,6 +167,7 @@ public class QuestFactory {
 			}
 			++stepCount;
 		}
+		// TODO: save rewards + requirements.
 	}
 
 	public static Reward loadReward(Storage source, String root) {

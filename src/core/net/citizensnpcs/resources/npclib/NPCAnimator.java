@@ -13,7 +13,12 @@ public class NPCAnimator {
 	private final PathNPC npc;
 
 	public enum Animation {
-		ACT_HURT, CROUCH, SLEEP, SWING_ARM, UNSLEEP, UNCROUCH;
+		ACT_HURT,
+		CROUCH,
+		SLEEP,
+		SWING_ARM,
+		UNSLEEP,
+		UNCROUCH;
 	}
 
 	public NPCAnimator(PathNPC pathNPC) {
@@ -62,7 +67,7 @@ public class NPCAnimator {
 	}
 
 	private DataWatcher getWatcher() {
-		return this.npc.aa();
+		return this.npc.al();
 	}
 
 	private Packet40EntityMetadata getMetadataPacket() {

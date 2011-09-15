@@ -15,6 +15,9 @@ public class QuestProperties {
 
 	public static void save() {
 		quests.save();
+		for (Quest quest : QuestManager.quests()) {
+			QuestFactory.saveQuest(quests, quest);
+		}
 	}
 
 	public static void load() {

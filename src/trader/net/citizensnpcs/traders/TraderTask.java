@@ -68,7 +68,7 @@ public class TraderTask implements Runnable {
 		int count = 0;
 		boolean found = false;
 		net.minecraft.server.ItemStack inhand = player.getHandle().inventory
-				.j();
+				.l();
 		for (ItemStack i : npc.getInventory().getContents()) {
 			if (!previousTraderInv.getItem(count).equals(i) && inhand == null) {
 				rewind();

@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,5 +61,9 @@ public class QuestManager {
 
 	public static void addQuest(Quest quest) {
 		quests.put(quest.getName().toLowerCase(), quest);
+	}
+
+	public static Collection<Quest> quests() {
+		return quests.values();
 	}
 }

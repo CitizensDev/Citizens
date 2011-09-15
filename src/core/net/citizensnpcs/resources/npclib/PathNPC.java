@@ -67,7 +67,7 @@ public class PathNPC extends EntityPlayer {
 	private void handleMove(Vec3D vector) {
 		int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
 		boolean inWater = this.getPlayer().getRemainingAir() < 20;
-		boolean inLava = this.getPlayer().getFireTicks() > 0;
+		boolean onFire = this.getPlayer().getFireTicks() > 0;
 		if (vector != null) {
 			double diffX = vector.a - this.locX;
 			double diffZ = vector.c - this.locZ;
@@ -84,11 +84,11 @@ public class PathNPC extends EntityPlayer {
 		if (this.positionChanged && !this.pathFinished()) {
 			jumping = true;
 		}
-		if (this.random.nextFloat() < 0.8F && (inWater || inLava)) {
+		if (this.random.nextFloat() < 0.8F && (inWater || onFire)) {
 			jumping = true;
 		}
 		if (jumping) {
-			jump(inWater, inLava);
+			jump(inWater, onFire);
 		}
 	}
 
@@ -102,8 +102,7 @@ public class PathNPC extends EntityPlayer {
 				resetTarget();
 			}
 			if (targetEntity != null && targetAggro) {
-				// If a direct line of sight exists.
-				if (this.e(this.targetEntity)) {
+				if (isInSight(this.targetEntity)) {
 					if (isWithinAttackRange(this.targetEntity,
 							distance(this.targetEntity))) {
 						this.attackEntity(this.targetEntity);
@@ -153,7 +152,7 @@ public class PathNPC extends EntityPlayer {
 		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float diffYaw = vectorYaw - this.yaw;
 
-		for (this.aA = this.aE; diffYaw < -180.0F; diffYaw += 360.0F) {
+		for (this.aQ = this.aU; diffYaw < -180.0F; diffYaw += 360.0F) {
 		}
 		while (diffYaw >= 180.0F) {
 			diffYaw -= 360.0F;
@@ -168,15 +167,15 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private void moveOnCurrentHeading() {
-		this.a(this.az, this.aA);
+		this.a(this.aP, this.aQ);
 	}
 
 	private void jump(boolean inWater, boolean inLava) {
 		// Both magic values taken from minecraft source.
 		if (inWater || inLava) {
-			this.motY += 0.03999999910593033D;
+			this.motY += 0.04D;
 		} else if (this.onGround) {
-			this.motY = 0.41999998688697815D + JUMP_FACTOR;
+			this.motY = 0.42D + JUMP_FACTOR;
 			// Augment defaults to actually get over a block.
 		}
 	}
@@ -245,8 +244,12 @@ public class PathNPC extends EntityPlayer {
 				.distance(this.getBukkitEntity().getLocation());
 	}
 
+	private boolean isInSight(Entity entity) {
+		return this.f(entity);
+	}
+
 	private float getBlockPathWeight(int i, int j, int k) {
-		return 0.5F - this.world.n(i, j, k);
+		return 0.5F - this.world.m(i, j, k);
 	}
 
 	private void takeRandomPath() {
@@ -256,7 +259,7 @@ public class PathNPC extends EntityPlayer {
 					pathingRange);
 		} else if (!hasAttacked
 				&& (this.path == null && this.random.nextInt(70) == 0 || this.random
-						.nextInt(70) == 0)) { // 80 -> 70 - path faster.
+						.nextInt(70) == 0)) { // 80 -> 70 - succeeds more often.
 			boolean flag = false;
 			int x = -1;
 			int y = -1;
@@ -291,7 +294,8 @@ public class PathNPC extends EntityPlayer {
 
 	public EntityHuman getClosestPlayer(double range) {
 		EntityHuman entityhuman = this.world.findNearbyPlayer(this, range);
-		return entityhuman != null && this.e(entityhuman) ? entityhuman : null;
+		return entityhuman != null && isInSight(entityhuman) ? entityhuman
+				: null;
 	}
 
 	public void targetClosestPlayer(boolean aggro, double range) {
