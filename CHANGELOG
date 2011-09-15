@@ -67,10 +67,9 @@ By fullwall and aPunch
  www.citizensnpcs.net
 -Questers (see the Quester page on wiki.citizensnpcs.net for more information)
 -Guards (see the Guard page wiki.citizensnpcs.net for more information)
+-updated to Minecraft Beta 1.8.1
 *ADDED
 -added support for MultiCurrency, BOSEconomy7, and iConomy6
--added new wizard mode "command", '/wizard command [command] (args)' sets a wizard's command, right-clicking it
- with the interact-item executes that command
 -added 'citizens.evils.immune' permission node, those with this node will not be attacked by Evil NPCs
 -added ability to have an NPC say multiple lines of text at once using the <br> tag
 -added '/citizens clean' command as a temporary workaround command to remove any "ghost NPCs", its effects
