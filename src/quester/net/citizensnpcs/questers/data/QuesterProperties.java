@@ -1,10 +1,11 @@
-package net.citizensnpcs.questers;
+package net.citizensnpcs.questers.data;
 
 import java.util.List;
 
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
+import net.citizensnpcs.questers.Quester;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class QuesterProperties extends PropertyManager implements Properties {

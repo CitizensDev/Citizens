@@ -1,8 +1,8 @@
 package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.questers.QuestUtils;
-import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestUpdater;
+import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.EntityUtils;
 
 import org.bukkit.entity.LivingEntity;

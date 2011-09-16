@@ -1,8 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.questers.Reward;
-import net.citizensnpcs.questers.RewardBuilder;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.StringUtils;

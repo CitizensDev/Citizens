@@ -1,4 +1,4 @@
-package net.citizensnpcs.questers;
+package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
 

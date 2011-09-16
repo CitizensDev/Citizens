@@ -3,7 +3,7 @@ package net.citizensnpcs.questers.quests;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.questers.Reward;
+import net.citizensnpcs.questers.rewards.Reward;
 
 public class Quest {
 	private String questName = "";

@@ -1,9 +1,7 @@
-package net.citizensnpcs.questers.quests;
-
-import java.util.ArrayList;
-import java.util.List;
+package net.citizensnpcs.questers.quests.progress;
 
 import net.citizensnpcs.questers.QuestManager;
+import net.citizensnpcs.questers.quests.Objectives;
 import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.utils.Messaging;
 
@@ -11,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class QuestProgress {
-	private final List<ObjectiveProgress> progress = new ArrayList<ObjectiveProgress>();
+	private ObjectiveProgress[] progress;
 	private final String questName;
 	private final ObjectiveCycler objectives;
 	private final long startTime;
@@ -36,15 +34,16 @@ public class QuestProgress {
 	}
 
 	private void next() {
-		this.progress.clear();
+		this.progress = null;
 		this.objectives.cycle();
 	}
 
 	private void addObjectives() {
 		int size = objectives.current().objectives().size();
+		this.progress = new ObjectiveProgress[size];
 		for (int i = 0; i != size; ++i) {
-			this.progress.add(new ObjectiveProgress(UID, player, questName,
-					objectives));
+			this.progress[i] = new ObjectiveProgress(UID, player, questName,
+					objectives);
 		}
 	}
 
@@ -63,8 +62,10 @@ public class QuestProgress {
 	}
 
 	public boolean isStepCompleted() {
+		if (progress == null)
+			return true;
 		for (ObjectiveProgress prog : progress) {
-			if (!prog.isCompleted()) {
+			if (prog != null) {
 				return false;
 			}
 		}
@@ -76,9 +77,11 @@ public class QuestProgress {
 	}
 
 	public void updateProgress(Player player, Event event) {
-		if (progress.size() > 0) {
+		if (progress.length > 0) {
+			int idx = -1;
 			for (ObjectiveProgress progress : this.progress) {
-				if (progress.isCompleted())
+				++idx;
+				if (progress == null || progress.isCompleted())
 					continue;
 				boolean cont = true;
 				for (Event.Type type : progress.getEventTypes()) {
@@ -89,10 +92,12 @@ public class QuestProgress {
 				}
 				if (cont)
 					continue;
-				if (progress.update(event)
-						&& !progress.getObjective().getMessage().isEmpty()) {
-					Messaging
-							.send(player, progress.getObjective().getMessage());
+				if (progress.update(event)) {
+					this.progress[idx] = null;
+					if (!progress.getObjective().getMessage().isEmpty()) {
+						Messaging.send(player, progress.getObjective()
+								.getMessage());
+					}
 				}
 			}
 		}
@@ -110,11 +115,7 @@ public class QuestProgress {
 		return startTime;
 	}
 
-	public List<ObjectiveProgress> getProgress() {
+	public ObjectiveProgress[] getProgress() {
 		return progress;
-	}
-
-	public ObjectiveProgress getProgress(int count) {
-		return progress.get(count);
 	}
 }

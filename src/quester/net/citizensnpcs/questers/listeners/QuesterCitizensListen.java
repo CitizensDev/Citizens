@@ -5,9 +5,9 @@ import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensListener;
 import net.citizensnpcs.api.event.citizens.CitizensReloadEvent;
 import net.citizensnpcs.api.event.npc.NPCPlayerEvent;
-import net.citizensnpcs.questers.PlayerProfile;
 import net.citizensnpcs.questers.QuestManager;
-import net.citizensnpcs.questers.QuestProperties;
+import net.citizensnpcs.questers.data.PlayerProfile;
+import net.citizensnpcs.questers.data.QuestProperties;
 
 import org.bukkit.event.Event;
 

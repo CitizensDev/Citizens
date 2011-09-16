@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.Quest;
-import net.citizensnpcs.questers.quests.QuestProgress;
+import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
