@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers.quests.progress;
 
 import net.citizensnpcs.questers.QuestManager;
-import net.citizensnpcs.questers.quests.Objectives;
 import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.utils.Messaging;
 
@@ -21,7 +20,8 @@ public class QuestProgress {
 		this.UID = UID;
 		this.player = player;
 		this.questName = questName;
-		this.objectives = getObjectives().newCycler();
+		this.objectives = QuestManager.getQuest(questName).getObjectives()
+				.newCycler();
 		this.startTime = startTime;
 		addObjectives();
 	}
@@ -57,10 +57,6 @@ public class QuestProgress {
 		}
 	}
 
-	public Objectives getObjectives() {
-		return QuestManager.getQuest(this.getQuestName()).getObjectives();
-	}
-
 	public boolean isStepCompleted() {
 		if (progress == null)
 			return true;
@@ -81,7 +77,7 @@ public class QuestProgress {
 			int idx = -1;
 			for (ObjectiveProgress progress : this.progress) {
 				++idx;
-				if (progress == null || progress.isCompleted())
+				if (progress == null)
 					continue;
 				boolean cont = true;
 				for (Event.Type type : progress.getEventTypes()) {

@@ -26,27 +26,18 @@ public class DeliveryQuest implements QuestUpdater {
 					Player player = e.getPlayer();
 					if (player.getItemInHand().getType() == progress
 							.getObjective().getMaterial()) {
-						progress.setLastItem(player.getItemInHand());
+						return player.getItemInHand().getAmount() >= progress
+								.getObjective().getAmount();
 					}
 				}
 			}
 		}
-		return isCompleted(progress);
+		return false;
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		if (progress.getLastItem() == null)
-			return false;
-		return progress.getLastItem().getType() == progress.getObjective()
-				.getMaterial()
-				&& progress.getLastItem().getAmount() >= progress
-						.getObjective().getAmount();
 	}
 
 	@Override
@@ -56,21 +47,16 @@ public class DeliveryQuest implements QuestUpdater {
 			throw new QuestCancelException(ChatColor.GRAY
 					+ "Cancelling quest due to missing destination NPC.");
 		}
-		if (isCompleted(progress)) {
-			return ChatColor.GREEN + "Delivered item to NPC.";
-		} else {
-			int amount = progress.getObjective().getAmount();
-			return ChatColor.GREEN
-					+ "Delivering "
-					+ StringUtils.wrap(amount)
-					+ " "
-					+ StringUtils.formatter(
-							progress.getObjective().getMaterial()).plural(
-							amount)
-					+ " to "
-					+ StringUtils.wrap(CitizensManager.getNPC(
-							progress.getObjective().getDestNPCID()).getName())
-					+ ".";
-		}
+		int amount = progress.getObjective().getAmount();
+		return ChatColor.GREEN
+				+ "Delivering "
+				+ StringUtils.wrap(amount)
+				+ " "
+				+ StringUtils.formatter(progress.getObjective().getMaterial())
+						.plural(amount)
+				+ " to "
+				+ StringUtils.wrap(CitizensManager.getNPC(
+						progress.getObjective().getDestNPCID()).getName())
+				+ ".";
 	}
 }

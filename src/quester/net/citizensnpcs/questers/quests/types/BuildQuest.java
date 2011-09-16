@@ -17,20 +17,15 @@ public class BuildQuest implements QuestUpdater {
 		if (event instanceof BlockPlaceEvent) {
 			if (((BlockPlaceEvent) event).getBlockPlaced().getType() == progress
 					.getObjective().getMaterial()) {
-				progress.incrementCompleted(1);
+				progress.addAmount(1);
 			}
 		}
-		return isCompleted(progress);
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override

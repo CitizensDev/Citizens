@@ -18,7 +18,7 @@ public class DestroyQuest implements QuestUpdater {
 			BlockBreakEvent ev = (BlockBreakEvent) event;
 			if (ev.getBlock().getType() == progress.getObjective()
 					.getMaterial()) {
-				progress.incrementCompleted(1);
+				progress.addAmount(1);
 			}
 		}
 		return progress.getAmount() >= progress.getObjective().getAmount();
@@ -27,11 +27,6 @@ public class DestroyQuest implements QuestUpdater {
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override

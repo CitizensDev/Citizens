@@ -33,10 +33,6 @@ public class ObjectiveProgress {
 		return getQuestUpdater().update(event, this);
 	}
 
-	public boolean isCompleted() {
-		return getQuestUpdater().isCompleted(this);
-	}
-
 	public Event.Type[] getEventTypes() {
 		return this.questUpdater.getEventTypes();
 	}
@@ -53,9 +49,11 @@ public class ObjectiveProgress {
 		return this.objective;
 	}
 
-	public void incrementCompleted(int i) {
+	public void addAmount(int i) {
 		if (this.getObjective().getAmount() - this.getAmount() > 0)
 			this.setAmountCompleted(this.getAmount() + 1);
+		else
+			this.amountCompleted = this.objective.getAmount();
 	}
 
 	public int getAmount() {

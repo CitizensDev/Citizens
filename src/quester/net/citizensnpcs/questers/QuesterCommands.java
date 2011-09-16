@@ -234,6 +234,8 @@ public class QuesterCommands extends CommandHandler {
 						+ " Progress report " + ChatColor.GREEN + "-");
 				for (ObjectiveProgress progress : profile.getProgress()
 						.getProgress()) {
+					if (progress == null)
+						continue;
 					try {
 						Messaging.send(player, progress.getQuestUpdater()
 								.getStatus(progress));

@@ -19,20 +19,15 @@ public class DistanceQuest implements QuestUpdater {
 			int x = Math.abs(ev.getTo().getBlockX() - ev.getFrom().getBlockX());
 			int y = Math.abs(ev.getTo().getBlockY() - ev.getFrom().getBlockY());
 			int z = Math.abs(ev.getTo().getBlockZ() - ev.getFrom().getBlockZ());
-			progress.incrementCompleted(x + y + z);
+			progress.addAmount(x + y + z);
 
 		}
-		return isCompleted(progress);
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
