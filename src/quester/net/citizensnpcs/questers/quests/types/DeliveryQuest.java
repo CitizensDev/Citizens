@@ -3,8 +3,8 @@ package net.citizensnpcs.questers.quests.types;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
 import net.citizensnpcs.questers.QuestCancelException;
-import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestUpdater;
+import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;

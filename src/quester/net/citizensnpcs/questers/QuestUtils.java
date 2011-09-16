@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers;
 
-import net.citizensnpcs.questers.quests.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.utils.StringUtils;
 
 public class QuestUtils {

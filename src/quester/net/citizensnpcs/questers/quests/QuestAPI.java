@@ -2,7 +2,7 @@ package net.citizensnpcs.questers.quests;
 
 import java.util.Map;
 
-import net.citizensnpcs.questers.RewardBuilder;
+import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.questers.quests.types.BuildQuest;
 import net.citizensnpcs.questers.quests.types.CollectQuest;
 import net.citizensnpcs.questers.quests.types.CombatQuest;
@@ -11,6 +11,7 @@ import net.citizensnpcs.questers.quests.types.DestroyQuest;
 import net.citizensnpcs.questers.quests.types.DistanceQuest;
 import net.citizensnpcs.questers.quests.types.HuntQuest;
 import net.citizensnpcs.questers.quests.types.LocationQuest;
+import net.citizensnpcs.questers.rewards.RewardBuilder;
 import net.citizensnpcs.questers.rewards.EconpluginReward.EconpluginRewardBuilder;
 import net.citizensnpcs.questers.rewards.HealthReward.HealthRewardBuilder;
 import net.citizensnpcs.questers.rewards.ItemReward.ItemRewardBuilder;

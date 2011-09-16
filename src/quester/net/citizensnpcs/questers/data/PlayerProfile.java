@@ -1,4 +1,4 @@
-package net.citizensnpcs.questers;
+package net.citizensnpcs.questers.data;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,8 +7,8 @@ import java.util.Map;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.quests.CompletedQuest;
-import net.citizensnpcs.questers.quests.ObjectiveProgress;
-import net.citizensnpcs.questers.quests.QuestProgress;
+import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
+import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.utils.LocationUtils;
 
 import org.bukkit.Bukkit;

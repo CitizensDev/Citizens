@@ -1,4 +1,4 @@
-package net.citizensnpcs.questers.quests;
+package net.citizensnpcs.questers.quests.progress;
 
 import net.citizensnpcs.questers.QuestCancelException;
 
