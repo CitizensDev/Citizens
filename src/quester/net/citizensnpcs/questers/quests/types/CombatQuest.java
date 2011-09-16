@@ -41,21 +41,16 @@ public class CombatQuest implements QuestUpdater {
 					}
 				}
 				if ((reversed && !found) || (!reversed && found)) {
-					progress.incrementCompleted(1);
+					progress.addAmount(1);
 				}
 			}
 		}
-		return isCompleted(progress);
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override

@@ -20,23 +20,14 @@ public class LocationQuest implements QuestUpdater {
 			if (LocationUtils.withinRange(ev.getPlayer().getLocation(),
 					progress.getObjective().getLocation(), progress
 							.getObjective().getAmount()))
-				progress.setLastLocation(ev.getPlayer().getLocation());
+				return true;
 		}
-		return isCompleted(progress);
+		return false;
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		if (progress.getLastLocation() == null)
-			return false;
-		return LocationUtils
-				.withinRange(progress.getObjective().getLocation(), progress
-						.getLastLocation(), progress.getObjective().getAmount());
 	}
 
 	@Override

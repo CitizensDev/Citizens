@@ -18,21 +18,15 @@ public class CollectQuest implements QuestUpdater {
 			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
 			if (ev.getItem().getItemStack().getType() == progress
 					.getObjective().getMaterial()) {
-				progress.incrementCompleted(ev.getItem().getItemStack()
-						.getAmount());
+				progress.addAmount(ev.getItem().getItemStack().getAmount());
 			}
 		}
-		return isCompleted(progress);
+		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override

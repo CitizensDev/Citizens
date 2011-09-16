@@ -26,7 +26,7 @@ public class HuntQuest implements QuestUpdater {
 						.getMonsterName(entity)) || search.contains("*"), reversed = !search
 						.isEmpty() && search.charAt(0) == '-';
 				if ((reversed && !found) || (!reversed && found)) {
-					progress.incrementCompleted(1);
+					progress.addAmount(1);
 				}
 			}
 		}
@@ -36,11 +36,6 @@ public class HuntQuest implements QuestUpdater {
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
-	}
-
-	@Override
-	public boolean isCompleted(ObjectiveProgress progress) {
-		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
 	@Override
