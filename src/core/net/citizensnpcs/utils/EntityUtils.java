@@ -64,7 +64,7 @@ public class EntityUtils {
 
 	public static CreatureType getType(Entity entity) {
 		if (entity instanceof CaveSpider) {
-			// TODO
+			return CreatureType.CAVE_SPIDER;
 		} else if (entity instanceof Chicken) {
 			return CreatureType.CHICKEN;
 		} else if (entity instanceof Cow) {
@@ -72,7 +72,7 @@ public class EntityUtils {
 		} else if (entity instanceof Creeper) {
 			return CreatureType.CREEPER;
 		} else if (entity instanceof Enderman) {
-			// TODO
+			return CreatureType.ENDERMAN;
 		} else if (entity instanceof Ghast) {
 			return CreatureType.GHAST;
 		} else if (entity instanceof Giant) {
@@ -86,7 +86,7 @@ public class EntityUtils {
 		} else if (entity instanceof Skeleton) {
 			return CreatureType.SKELETON;
 		} else if (entity instanceof Silverfish) {
-			// TODO
+			return CreatureType.SILVERFISH;
 		} else if (entity instanceof Slime) {
 			return CreatureType.SLIME;
 		} else if (entity instanceof Spider) {
