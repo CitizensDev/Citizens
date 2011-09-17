@@ -8,9 +8,11 @@ import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
+import org.bukkit.inventory.ItemStack;
 
 public class DeliveryQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.CUSTOM_EVENT };
@@ -26,8 +28,21 @@ public class DeliveryQuest implements QuestUpdater {
 					Player player = e.getPlayer();
 					if (player.getItemInHand().getType() == progress
 							.getObjective().getMaterial()) {
-						return player.getItemInHand().getAmount() >= progress
+						boolean completed = player.getItemInHand().getAmount() >= progress
 								.getObjective().getAmount();
+						if (completed
+								&& progress.getObjective().getAmount() > 0
+								&& progress.getObjective().getMaterial() != Material.AIR) {
+							int amount = player.getItemInHand().getAmount()
+									- progress.getObjective().getAmount();
+							ItemStack item = player.getItemInHand();
+							if (amount > 0)
+								item.setAmount(amount);
+							else
+								item = null;
+							player.setItemInHand(item);
+						}
+						return completed;
 					}
 				}
 			}
