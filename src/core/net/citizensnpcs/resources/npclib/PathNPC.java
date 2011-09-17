@@ -37,7 +37,7 @@ public class PathNPC extends EntityPlayer {
 	private int attackTimes = 0;
 	private int attackTimesLimit = -1;
 	private int prevX, prevY, prevZ;
-	private static final double JUMP_FACTOR = 0.054D;
+	private static final double JUMP_FACTOR = 0.07D;
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
