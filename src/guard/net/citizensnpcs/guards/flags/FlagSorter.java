@@ -144,9 +144,10 @@ public class FlagSorter {
 	List<LivingEntity> getPossible(HumanNPC npc,
 			Iterable<LivingEntity> toProcess) {
 		List<LivingEntity> processed = Lists.newArrayList();
-		FlagInfo retrieved = null;
+		FlagInfo retrieved;
 		Guard guard = npc.getType("guard");
 		for (LivingEntity entity : toProcess) {
+			retrieved = null;
 			if (NPCManager.isNPC(entity)) {
 			} else if (CreatureTask.getCreature(entity) != null) {
 				retrieved = get(getByType(MOBS), StringUtils.format(
