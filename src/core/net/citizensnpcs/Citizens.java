@@ -41,10 +41,10 @@ import net.citizensnpcs.resources.sk89q.RequirementMissingException;
 import net.citizensnpcs.resources.sk89q.ServerCommandException;
 import net.citizensnpcs.resources.sk89q.UnhandledCommandException;
 import net.citizensnpcs.resources.sk89q.WrappedCommandException;
-import net.citizensnpcs.utils.ErrorReporting;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
+import net.citizensnpcs.utils.Web;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -80,7 +80,7 @@ public class Citizens extends JavaPlugin {
 		SettingsManager.setupVariables();
 
 		// Initialize Error Reporting
-		ErrorReporting.init();
+		Web.initErrorReporting();
 
 		// Register events per type
 		for (String loaded : loadedTypes) {
