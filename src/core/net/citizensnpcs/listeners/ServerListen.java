@@ -5,7 +5,6 @@ import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.register.payment.Methods;
 import net.citizensnpcs.utils.Messaging;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -22,7 +21,7 @@ public class ServerListen extends ServerListener implements Listener {
 
 	@Override
 	public void registerEvents(Citizens plugin) {
-		PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Type.PLUGIN_ENABLE, this, Priority.Monitor, plugin);
 		pm.registerEvent(Type.PLUGIN_DISABLE, this, Priority.Monitor, plugin);
 	}

@@ -27,7 +27,7 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void registerEvents(Citizens plugin) {
-		PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Type.ENTITY_DAMAGE, this, Priority.Normal, plugin);
 		pm.registerEvent(Type.ENTITY_TARGET, this, Priority.Normal, plugin);
 		pm.registerEvent(Type.ENTITY_DEATH, this, Priority.Normal, plugin);

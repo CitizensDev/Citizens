@@ -12,7 +12,6 @@ public class NPCInventoryOpenEvent extends NPCPlayerEvent implements
 
 	public NPCInventoryOpenEvent(HumanNPC npc, Player player) {
 		super("NPCInventoryOpenEvent", npc, player);
-		this.player = player;
 	}
 
 	/**

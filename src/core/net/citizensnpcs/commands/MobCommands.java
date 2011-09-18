@@ -12,14 +12,13 @@ import org.bukkit.entity.Player;
 public class MobCommands extends CommandHandler {
 	@CommandRequirements()
 	@Command(
-			aliases = "npcspawn",
-			usage = "npcspawn [type]",
-			desc = "spawn a mob npc",
-			min = 1,
-			max = 1)
+			aliases = "npc",
+			usage = "spawn [type]",
+			desc = "spawn a creature npc",
+			min = 2,
+			max = 2)
 	@CommandPermissions("creature.spawn")
 	public static void spawn(CommandContext args, Player player, HumanNPC npc) {
-
 	}
 
 	@Override

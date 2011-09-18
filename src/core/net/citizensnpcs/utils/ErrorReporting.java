@@ -84,13 +84,13 @@ public class ErrorReporting {
 		}
 	}
 
-	private static String stackToString(Throwable e) {
+	private static String stackToString(Throwable throwable) {
 		try {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
+			throwable.printStackTrace(pw);
 			return sw.toString();
-		} catch (Exception e2) {
+		} catch (Exception ex) {
 			return "Invalid stacktrace";
 		}
 	}

@@ -30,7 +30,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void registerEvents(Citizens plugin) {
-		PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm = plugin.getServer().getPluginManager();
 		pm.registerEvent(Type.PLAYER_JOIN, this, Priority.Normal, plugin);
 		pm.registerEvent(Type.PLAYER_LOGIN, this, Priority.Normal, plugin);
 		pm.registerEvent(Type.PLAYER_QUIT, this, Priority.Normal, plugin);

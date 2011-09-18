@@ -69,9 +69,6 @@ public class Citizens extends JavaPlugin {
 
 	public static List<String> loadedTypes = new ArrayList<String>();
 
-	// Set to false before release
-	// public static boolean devBuild = true;// No longer required
-
 	@Override
 	public void onEnable() {
 		plugin = this;
