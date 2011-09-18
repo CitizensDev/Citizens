@@ -165,8 +165,8 @@ public class PlayerProfile {
 			completedQuests.put(
 					key,
 					new CompletedQuest(key,
-							profile.getInt(path + ".completed"), profile
-									.getInt(path + ".quester"), profile
+							profile.getInt(path + ".quester"), profile
+									.getInt(path + ".completed"), profile
 									.getLong(path + ".elapsed")));
 		}
 	}
