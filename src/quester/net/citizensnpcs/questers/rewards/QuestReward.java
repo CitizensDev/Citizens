@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class QuestReward implements Reward {
 	private final String reward;
 
-	public QuestReward(String quest) {
+	QuestReward(String quest) {
 		this.reward = quest;
 	}
 

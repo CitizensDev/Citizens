@@ -16,7 +16,7 @@ public class ItemReward implements Reward {
 	private final short durability;
 	private final boolean take;
 
-	public ItemReward(Material mat, int amount, short durability, boolean take) {
+	ItemReward(Material mat, int amount, short durability, boolean take) {
 		this.material = mat;
 		this.amount = amount;
 		this.durability = durability;

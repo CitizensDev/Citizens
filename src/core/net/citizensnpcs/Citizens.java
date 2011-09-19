@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
+import net.citizensnpcs.api.event.citizens.CitizensEnableTypeEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
@@ -327,6 +328,8 @@ public class Citizens extends JavaPlugin {
 						dir, f), this);
 				if (type != null) {
 					loadedTypes.add(type.getName());
+					Bukkit.getServer().getPluginManager()
+							.callEvent(new CitizensEnableTypeEvent(type));
 				}
 			}
 		}

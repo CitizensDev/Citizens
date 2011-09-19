@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import com.google.common.collect.Maps;
 
 public class NPCTypeManager {
-
 	private static final Map<String, CitizensNPCType> types = Maps.newHashMap();
 
 	public static CitizensNPCType registerType(CitizensNPCType type) {

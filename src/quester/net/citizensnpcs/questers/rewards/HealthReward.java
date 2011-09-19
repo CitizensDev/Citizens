@@ -11,7 +11,7 @@ public class HealthReward implements Reward {
 	private final int reward;
 	private final boolean take;
 
-	public HealthReward(int reward, boolean take) {
+	HealthReward(int reward, boolean take) {
 		this.reward = reward;
 		this.take = take;
 	}
