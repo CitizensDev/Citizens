@@ -41,6 +41,14 @@ public interface Method {
 	public String getVersion();
 
 	/**
+	 * Returns the amount of decimal places that get stored NOTE: it will return
+	 * -1 if there is no rounding
+	 * 
+	 * @return <code>int</code> for each decimal place
+	 */
+	public int fractionalDigits();
+
+	/**
 	 * Formats amounts into this payment methods style of currency display.
 	 * 
 	 * @param amount

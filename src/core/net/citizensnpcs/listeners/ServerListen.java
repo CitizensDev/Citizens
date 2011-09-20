@@ -5,6 +5,7 @@ import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.register.payment.Methods;
 import net.citizensnpcs.utils.Messaging;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -13,11 +14,7 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.PluginManager;
 
 public class ServerListen extends ServerListener implements Listener {
-	private final Methods methods;
-
-	public ServerListen() {
-		this.methods = new Methods();
-	}
+	private final Methods methods = new Methods();
 
 	@Override
 	public void registerEvents(Citizens plugin) {
@@ -28,20 +25,20 @@ public class ServerListen extends ServerListener implements Listener {
 
 	@Override
 	public void onPluginEnable(PluginEnableEvent event) {
-		if (!this.methods.hasMethod()) {
-			if (this.methods.setMethod(event.getPlugin())) {
-				Citizens.setMethod(this.methods.getMethod());
+		if (!Methods.hasMethod()) {
+			if (Methods.setMethod(Bukkit.getPluginManager())) {
+				Citizens.setMethod(Methods.getMethod());
 				EconomyManager.setServerEconomyEnabled(true);
 				Messaging.log("Economy plugin found ("
-						+ methods.getMethod().getName() + " version: "
-						+ methods.getMethod().getVersion() + ")");
+						+ Methods.getMethod().getName() + ", version "
+						+ Methods.getMethod().getVersion() + ")");
 			}
 		}
 	}
 
 	@Override
 	public void onPluginDisable(PluginDisableEvent event) {
-		if (this.methods != null && this.methods.hasMethod()) {
+		if (this.methods != null && Methods.hasMethod()) {
 			EconomyManager.setServerEconomyEnabled(false);
 		}
 	}
