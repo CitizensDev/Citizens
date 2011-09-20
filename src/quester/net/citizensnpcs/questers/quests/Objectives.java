@@ -24,6 +24,7 @@ public class Objectives {
 	}
 
 	public static class ObjectiveCycler {
+		// TODO: merge this and QuestStep.
 		private final Deque<QuestStep> steps = new ArrayDeque<QuestStep>();
 		private int index = 0;
 

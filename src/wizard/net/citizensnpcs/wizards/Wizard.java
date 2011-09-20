@@ -17,6 +17,7 @@ import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
 public class Wizard extends CitizensNPC {
+	// TODO: using a string as storage for locations is baaaaad.
 	private String locations = "";
 	private int currentLocation = 0;
 	private int numberOfLocations = 0;
