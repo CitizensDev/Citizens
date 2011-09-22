@@ -45,10 +45,13 @@ public class PermissionManager {
 			return;
 		}
 		permissionsEnabled = true;
-		Messaging.log("Permissions system found (" + permPlugin
+		Messaging.log("Permissions system found (" + permPlugin + " v"
 				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
 	}
 
+	// TODO this is not used in favor of the above method, maybe we shouldn't
+	// have rely on one permissions plugin for groups - either support all or
+	// none
 	public static void initialize(Server server) {
 		Plugin test = server.getPluginManager().getPlugin("PermissionsBukkit");
 		if (test != null) {
@@ -84,7 +87,6 @@ public class PermissionManager {
 		return 0;
 	}
 
-	// TODO Do we need to have a PermissionReward? Let's simplify.
 	public static void grantRank(Player player, String rank, boolean replace,
 			boolean take) {
 		if (permissionsEnabled && superperms.getGroup(rank) != null) {
