@@ -11,7 +11,7 @@ public class PermissionReward implements Reward {
 	private final String reward;
 	private final boolean take;
 
-	public PermissionReward(String reward, boolean take) {
+	PermissionReward(String reward, boolean take) {
 		this.reward = reward;
 		this.take = take;
 	}

@@ -230,12 +230,12 @@ public class BasicProperties extends PropertyManager implements Properties {
 	}
 
 	private void saveWaypoints(int UID, List<Waypoint> list) {
+		if (list.size() == 0)
+			return;
 		profiles.removeKey(UID + this.waypoints); // clear old waypoints.
 		int count = 0, innercount = 0;
 		String path = "", root = "";
 		for (Waypoint waypoint : list) {
-			innercount = 0;
-
 			path = UID + this.waypoints + "." + count;
 			LocationUtils.saveLocation(profiles, waypoint.getLocation(), path,
 					true);
@@ -243,6 +243,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 			profiles.setInt(path + ".delay", waypoint.getDelay());
 			path += ".modifiers.";
 
+			innercount = 0;
 			for (WaypointModifier modifier : waypoint.getModifiers()) {
 				root = path + innercount;
 				profiles.setString(root + ".type", modifier.getType().name());
@@ -259,7 +260,6 @@ public class BasicProperties extends PropertyManager implements Properties {
 			return temp;
 		}
 		String read = profiles.getString(UID + this.waypoints);
-		Waypoint waypoint = null;
 		if (!read.isEmpty()) {
 			for (String str : read.split(";")) {
 				String[] split = str.split(",");
@@ -273,8 +273,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 		WaypointModifier modifier = null;
 		for (String key : profiles.getKeys(UID + this.waypoints)) {
 			root = UID + this.waypoints + "." + key;
-			waypoint = new Waypoint(LocationUtils.loadLocation(profiles, root,
-					true));
+			Waypoint waypoint = new Waypoint(LocationUtils.loadLocation(
+					profiles, root, true));
 
 			waypoint.setDelay(profiles.getInt(root + ".delay"));
 
@@ -289,7 +289,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 					waypoint.addModifier(modifier);
 				}
 			}
-			temp.add(waypoint);
+			if (waypoint != null)
+				temp.add(waypoint);
 		}
 		return temp;
 	}

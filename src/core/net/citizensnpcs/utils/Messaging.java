@@ -16,8 +16,8 @@ import com.google.common.base.Splitter;
 public class Messaging {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private final static String[] colours = { "black", "dblue", "dgreen",
-			"dteal", "dred", "purple", "gold", "gray", "dgray", "blue",
-			"bgreen", "teal", "red", "pink", "yellow", "white" };
+			"daqua", "dred", "dpurple", "gold", "gray", "dgray", "blue",
+			"green", "aqua", "red", "lpurple", "yellow", "white" };
 
 	public static void send(CommandSender sender, String message) {
 		send(sender, null, message);
@@ -93,7 +93,7 @@ public class Messaging {
 					+ ChatColor.getByCode(index));
 			++index;
 		}
-		for (int colour = 0; colour <= 16; ++colour) {
+		for (int colour = 0; colour < 16; ++colour) {
 			message = message.replaceAll(String.format(format, colour), ""
 					+ ChatColor.getByCode(colour));
 		}

@@ -144,12 +144,12 @@ public class Quester extends CitizensNPC {
 			return;
 		}
 		for (Reward requirement : quest.getRequirements()) {
-			if (!requirement.canTake(player)) {
-				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
-						+ requirement.getRequiredText(player));
-				return;
-			}
 			if (requirement.isTake()) {
+				if (!requirement.canTake(player)) {
+					player.sendMessage(ChatColor.GRAY + "Missing requirement. "
+							+ requirement.getRequiredText(player));
+					return;
+				}
 				requirement.grant(player, npc);
 			}
 		}

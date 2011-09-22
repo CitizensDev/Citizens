@@ -40,7 +40,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 	}
 
 	private boolean isAggressive(int UID) {
-		return profiles.getBoolean(UID + aggressive);
+		return profiles.getBoolean(UID + aggressive, true);
 	}
 
 	private GuardState getGuardState(int UID) {

@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
+import net.citizensnpcs.api.event.citizens.CitizensEnableTypeEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
@@ -41,10 +42,10 @@ import net.citizensnpcs.resources.sk89q.RequirementMissingException;
 import net.citizensnpcs.resources.sk89q.ServerCommandException;
 import net.citizensnpcs.resources.sk89q.UnhandledCommandException;
 import net.citizensnpcs.resources.sk89q.WrappedCommandException;
-import net.citizensnpcs.utils.ErrorReporting;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
+import net.citizensnpcs.utils.Web;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -80,7 +81,7 @@ public class Citizens extends JavaPlugin {
 		SettingsManager.setupVariables();
 
 		// initialize error reporting
-		ErrorReporting.init();
+		Web.initErrorReporting();
 
 		// register events per type
 		for (String loaded : loadedTypes) {
@@ -329,6 +330,8 @@ public class Citizens extends JavaPlugin {
 						dir, f), this);
 				if (type != null) {
 					loadedTypes.add(type.getName());
+					Bukkit.getServer().getPluginManager()
+							.callEvent(new CitizensEnableTypeEvent(type));
 				}
 			}
 		}

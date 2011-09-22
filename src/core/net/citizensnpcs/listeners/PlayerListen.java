@@ -9,7 +9,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.ConversationUtils;
-import net.citizensnpcs.utils.ServerUtils;
+import net.citizensnpcs.utils.Web;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event.Priority;
@@ -44,7 +44,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 		if (PermissionManager.generic(event.getPlayer(),
 				"citizens.admin.notifyupdates")
 				&& SettingsManager.getBoolean("NotifyUpdates")) {
-			ServerUtils.checkForUpdates(event.getPlayer());
+			Web.notifyUpdate(event.getPlayer());
 		}
 	}
 

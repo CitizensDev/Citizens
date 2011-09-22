@@ -12,7 +12,7 @@ public class EconpluginReward implements Reward {
 	private final double reward;
 	private final boolean take;
 
-	public EconpluginReward(double reward, boolean take) {
+	EconpluginReward(double reward, boolean take) {
 		this.reward = reward;
 		this.take = take;
 	}

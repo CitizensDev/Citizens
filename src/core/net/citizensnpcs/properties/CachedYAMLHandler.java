@@ -304,7 +304,9 @@ public class CachedYAMLHandler implements Storage {
 			if (key.startsWith(path) && key.length() > path.length()) {
 				key = key.replace(path, "");
 				int index = key.contains(".") ? key.indexOf('.') : key.length();
-				keys.add(key.substring(0, index));
+				key = key.substring(0, index);
+				if (!keys.contains(key))
+					keys.add(key);
 			}
 		}
 		return keys;

@@ -1,13 +1,13 @@
 package net.citizensnpcs.resources.register.payment.methods;
 
+import net.citizensnpcs.resources.register.payment.Method;
+
+import org.bukkit.plugin.Plugin;
+
 import com.iCo6.iConomy;
 import com.iCo6.system.Account;
 import com.iCo6.system.Accounts;
 import com.iCo6.system.Holdings;
-
-import net.citizensnpcs.resources.register.payment.Method;
-
-import org.bukkit.plugin.Plugin;
 
 /**
  * iConomy 6 Implementation of Method
@@ -19,65 +19,76 @@ import org.bukkit.plugin.Plugin;
 public class iCo6 implements Method {
 	private iConomy iConomy;
 
+	@Override
 	public iConomy getPlugin() {
 		return this.iConomy;
 	}
 
+	@Override
 	public String getName() {
 		return "iConomy";
 	}
 
+	@Override
 	public String getVersion() {
 		return "6";
 	}
 
-	public String format(double amount) {
-		return this.iConomy.format(amount);
+	@Override
+	public int fractionalDigits() {
+		return 2;
 	}
 
+	@Override
+	public String format(double amount) {
+		return com.iCo6.iConomy.format(amount);
+	}
+
+	@Override
 	public boolean hasBanks() {
 		return false;
 	}
 
+	@Override
 	public boolean hasBank(String bank) {
 		return false;
 	}
 
+	@Override
 	public boolean hasAccount(String name) {
 		return (new Accounts()).exists(name);
 	}
 
+	@Override
 	public boolean hasBankAccount(String bank, String name) {
 		return false;
 	}
 
+	@Override
 	public MethodAccount getAccount(String name) {
 		return new iCoAccount((new Accounts()).get(name));
 	}
 
+	@Override
 	public MethodBankAccount getBankAccount(String bank, String name) {
 		return null;
 	}
 
+	@Override
 	public boolean isCompatible(Plugin plugin) {
-		try {
-			Class.forName("com.iCo6.IO");
-		} catch (Exception e) {
-			return false;
-		}
-
 		return plugin.getDescription().getName().equalsIgnoreCase("iconomy")
 				&& plugin.getClass().getName().equals("com.iCo6.iConomy")
 				&& plugin instanceof iConomy;
 	}
 
+	@Override
 	public void setPlugin(Plugin plugin) {
 		iConomy = (iConomy) plugin;
 	}
 
 	public class iCoAccount implements MethodAccount {
-		private Account account;
-		private Holdings holdings;
+		private final Account account;
+		private final Holdings holdings;
 
 		public iCoAccount(Account account) {
 			this.account = account;
@@ -88,10 +99,12 @@ public class iCo6 implements Method {
 			return account;
 		}
 
+		@Override
 		public double balance() {
 			return this.holdings.getBalance();
 		}
 
+		@Override
 		public boolean set(double amount) {
 			if (this.holdings == null)
 				return false;
@@ -99,6 +112,7 @@ public class iCo6 implements Method {
 			return true;
 		}
 
+		@Override
 		public boolean add(double amount) {
 			if (this.holdings == null)
 				return false;
@@ -106,6 +120,7 @@ public class iCo6 implements Method {
 			return true;
 		}
 
+		@Override
 		public boolean subtract(double amount) {
 			if (this.holdings == null)
 				return false;
@@ -113,6 +128,7 @@ public class iCo6 implements Method {
 			return true;
 		}
 
+		@Override
 		public boolean multiply(double amount) {
 			if (this.holdings == null)
 				return false;
@@ -120,6 +136,7 @@ public class iCo6 implements Method {
 			return true;
 		}
 
+		@Override
 		public boolean divide(double amount) {
 			if (this.holdings == null)
 				return false;
@@ -127,22 +144,27 @@ public class iCo6 implements Method {
 			return true;
 		}
 
+		@Override
 		public boolean hasEnough(double amount) {
 			return this.holdings.hasEnough(amount);
 		}
 
+		@Override
 		public boolean hasOver(double amount) {
 			return this.holdings.hasOver(amount);
 		}
 
+		@Override
 		public boolean hasUnder(double amount) {
 			return this.holdings.hasUnder(amount);
 		}
 
+		@Override
 		public boolean isNegative() {
 			return this.holdings.isNegative();
 		}
 
+		@Override
 		public boolean remove() {
 			if (this.account == null)
 				return false;

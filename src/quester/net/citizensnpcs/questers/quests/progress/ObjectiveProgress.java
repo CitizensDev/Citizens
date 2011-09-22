@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers.quests.progress;
 
 import net.citizensnpcs.questers.quests.Objective;
-import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
 import net.citizensnpcs.questers.quests.QuestAPI;
 
 import org.bukkit.Location;
@@ -21,11 +20,11 @@ public class ObjectiveProgress {
 	private Location lastLocation;
 
 	public ObjectiveProgress(int UID, Player player, String questName,
-			ObjectiveCycler objectives) {
+			Objective objective) {
 		this.UID = UID;
 		this.player = player;
 		this.questName = questName;
-		this.objective = objectives.nextObjective();
+		this.objective = objective;
 		this.questUpdater = QuestAPI.getObjective(objective.getType());
 	}
 

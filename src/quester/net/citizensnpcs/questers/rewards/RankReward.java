@@ -13,7 +13,7 @@ public class RankReward implements Reward {
 	private final boolean take;
 	private final boolean replace;
 
-	public RankReward(String reward, boolean replace, boolean take) {
+	RankReward(String reward, boolean replace, boolean take) {
 		this.reward = reward;
 		this.replace = replace;
 		this.take = take;
