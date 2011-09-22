@@ -62,8 +62,8 @@ public class QuestFactory {
 						if (type == null || type.isEmpty()
 								|| QuestAPI.getObjective(type) == null) {
 							Messaging
-									.log("Invalid quest objective - incorrect type specified. "
-											+ questName + "not loaded.");
+									.log("Invalid quest objective - incorrect type specified. Quest '"
+											+ questName + "' not loaded.");
 							continue questLoop;
 						}
 						Objective.Builder obj = new Objective.Builder(type);
