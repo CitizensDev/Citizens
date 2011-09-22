@@ -25,8 +25,7 @@ public class EconomyManager {
 		return (useEconPlugin && serverEconomyEnabled);
 	}
 
-	// Gets what item ID or economy-plugin currency is being used for an
-	// operation.
+	// Gets what economy-plugin currency is being used for an operation.
 	public static String getPaymentType(String amount) {
 		if (useEconPlugin()) {
 			return format(amount);

@@ -18,6 +18,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import com.platymuus.bukkit.permissions.Group;
 import com.platymuus.bukkit.permissions.PermissionsPlugin;
@@ -30,6 +31,22 @@ public class PermissionManager {
 
 	private static boolean hasPermission(Player player, String string) {
 		return player.hasPermission(string);
+	}
+
+	public static void initialize(PluginManager pm) {
+		String permPlugin = "";
+		if (pm.getPlugin("PermissionsBukkit") != null) {
+			permPlugin = "PermissionsBukkit";
+		} else if (pm.getPlugin("PermissionsEx") != null) {
+			permPlugin = "PermissionsEx";
+		} else if (pm.getPlugin("bPermissions") != null) {
+			permPlugin = "bPermissions";
+		} else {
+			return;
+		}
+		permissionsEnabled = true;
+		Messaging.log("Permissions system found (" + permPlugin
+				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
 	}
 
 	public static void initialize(Server server) {
@@ -67,6 +84,7 @@ public class PermissionManager {
 		return 0;
 	}
 
+	// TODO Do we need to have a PermissionReward? Let's simplify.
 	public static void grantRank(Player player, String rank, boolean replace,
 			boolean take) {
 		if (permissionsEnabled && superperms.getGroup(rank) != null) {
