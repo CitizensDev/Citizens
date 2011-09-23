@@ -88,7 +88,8 @@ public class Quester extends CitizensNPC {
 		if (queue.get(player) == null || queue.get(player) + 1 >= quests.size()) {
 			queue.put(player, 0);
 			if (quests.size() == 1
-					&& !canRepeat(player, getQuest(fetchFromList(player)))) {
+					&& !QuestManager.canRepeat(player,
+							getQuest(fetchFromList(player)))) {
 				player.sendMessage(ChatColor.GRAY + "No quests are available.");
 				return;
 			}
@@ -96,7 +97,7 @@ public class Quester extends CitizensNPC {
 			int base = queue.get(player), orig = base;
 			while (true) {
 				base = base + 1 >= quests.size() ? 0 : base + 1;
-				if (canRepeat(player, getQuest(fetch(base)))) {
+				if (QuestManager.canRepeat(player, getQuest(fetch(base)))) {
 					break;
 				}
 				if (base == orig) {
@@ -137,28 +138,10 @@ public class Quester extends CitizensNPC {
 	}
 
 	private void attemptAssign(Player player, HumanNPC npc) {
-		Quest quest = getQuest(fetchFromList(player));
-		if (!canRepeat(player, quest)) {
-			player.sendMessage(ChatColor.GRAY
-					+ "You are not allowed to repeat this quest again.");
-			return;
+		if (QuestManager.assignQuest(npc, player, fetchFromList(player))) {
+			displays.remove(player);
+			pending.remove(player);
 		}
-		for (Reward requirement : quest.getRequirements()) {
-			if (requirement.isTake()) {
-				if (!requirement.canTake(player)) {
-					player.sendMessage(ChatColor.GRAY + "Missing requirement. "
-							+ requirement.getRequiredText(player));
-					return;
-				}
-				requirement.grant(player, npc);
-			}
-		}
-
-		QuestManager.assignQuest(npc, player, fetchFromList(player));
-		Messaging.send(player, quest.getAcceptanceText());
-
-		displays.remove(player);
-		pending.remove(player);
 	}
 
 	private void checkCompletion(Player player, HumanNPC npc) {
@@ -199,17 +182,6 @@ public class Quester extends CitizensNPC {
 
 	private String fetchFromList(Player player) {
 		return quests.size() > 0 ? fetch(queue.get(player)) : "";
-	}
-
-	private boolean canRepeat(Player player, Quest quest) {
-		if (quest == null) {
-			return false;
-		}
-		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		return !profile.hasCompleted(quest.getName())
-				|| (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
-						quest.getName()).getTimesCompleted() < quest
-						.getRepeatLimit());
 	}
 
 	@Override

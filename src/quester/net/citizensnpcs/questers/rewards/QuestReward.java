@@ -2,6 +2,7 @@ package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.QuestManager;
+import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -10,9 +11,11 @@ import org.bukkit.entity.Player;
 
 public class QuestReward implements Reward {
 	private final String reward;
+	private final boolean take;
 
-	QuestReward(String quest) {
+	QuestReward(String quest, boolean take) {
 		this.reward = quest;
+		this.take = take;
 	}
 
 	@Override
@@ -22,12 +25,12 @@ public class QuestReward implements Reward {
 
 	@Override
 	public boolean isTake() {
-		return false;
+		return take;
 	}
 
 	@Override
 	public boolean canTake(Player player) {
-		return false;
+		return PlayerProfile.getProfile(player.getName()).hasCompleted(reward);
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class QuestReward implements Reward {
 	public static class QuestRewardBuilder implements RewardBuilder {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
-			return new QuestReward(storage.getString(root + ".quest"));
+			return new QuestReward(storage.getString(root + ".quest"), take);
 		}
 	}
 }

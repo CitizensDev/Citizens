@@ -7,8 +7,11 @@ import java.util.Map;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
+import net.citizensnpcs.questers.rewards.Reward;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.Messaging;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -50,14 +53,43 @@ public class QuestManager {
 		return quests.get(questName.toLowerCase());
 	}
 
-	public static void assignQuest(HumanNPC npc, Player player, String quest) {
-		quest = quest.toLowerCase();
-		if (!quests.containsKey(quest)) {
+	public static boolean canRepeat(Player player, Quest quest) {
+		if (quest == null) {
+			return false;
+		}
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		return !profile.hasCompleted(quest.getName())
+				|| (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
+						quest.getName()).getTimesCompleted() < quest
+						.getRepeatLimit());
+	}
+
+	public static boolean assignQuest(HumanNPC npc, Player player, String q) {
+		q = q.toLowerCase();
+		if (!validQuest(q)) {
 			throw new IllegalArgumentException("Given quest does not exist");
 		}
+		Quest quest = quests.get(q);
+		if (!canRepeat(player, quest)) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You are not allowed to repeat this quest again.");
+			return false;
+		}
+		for (Reward requirement : quest.getRequirements()) {
+			if (requirement.isTake()) {
+				if (!requirement.canTake(player)) {
+					player.sendMessage(ChatColor.GRAY + "Missing requirement. "
+							+ requirement.getRequiredText(player));
+					return false;
+				}
+				requirement.grant(player, npc);
+			}
+		}
 		getProfile(player.getName()).setProgress(
-				new QuestProgress(npc.getUID(), player, quest, System
+				new QuestProgress(npc.getUID(), player, q, System
 						.currentTimeMillis()));
+		Messaging.send(player, quest.getAcceptanceText());
+		return true;
 	}
 
 	public static boolean validQuest(String quest) {
