@@ -47,6 +47,7 @@ public class ItemReward implements Reward {
 				player.getWorld()
 						.dropItemNaturally(player.getLocation(), stack);
 			}
+			player.updateInventory();
 		}
 	}
 
