@@ -1,5 +1,8 @@
 package net.citizensnpcs.questers.rewards;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -31,12 +34,18 @@ public class ItemReward implements Reward {
 			InventoryUtils.removeItems(player, material, amount);
 		} else {
 			int temp = this.amount, other = temp;
+			Collection<ItemStack> unadded = new ArrayList<ItemStack>();
 			while (temp > 0) {
 				other = temp > material.getMaxStackSize() ? material
 						.getMaxStackSize() : temp;
-				player.getWorld().dropItemNaturally(player.getLocation(),
-						new ItemStack(material, other, durability));
+				unadded.addAll(player.getInventory()
+						.addItem(new ItemStack(material, other, durability))
+						.values());
 				temp -= other;
+			}
+			for (ItemStack stack : unadded) {
+				player.getWorld()
+						.dropItemNaturally(player.getLocation(), stack);
 			}
 		}
 	}

@@ -21,7 +21,7 @@ public class CombatQuest implements QuestUpdater {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
 			if (!(ev.getEntity() instanceof Player))
 				return false;
-			if (((Player) ev.getEntity()).getHealth() - ev.getDamage() <= 0) {
+			if (((Player) ev.getEntity()).isDead()) {
 				Player player = (Player) ev.getEntity();
 				String search = progress.getObjective().getString();
 				boolean found = false, reversed = !search.isEmpty()

@@ -11,6 +11,7 @@ import net.citizensnpcs.questers.listeners.QuesterCitizensListen;
 import net.citizensnpcs.questers.listeners.QuesterEntityListen;
 import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 
+import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 
 public class QuesterType extends CitizensNPCType {
@@ -31,17 +32,18 @@ public class QuesterType extends CitizensNPCType {
 		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new QuesterCitizensListen());
 		QuesterEntityListen el = new QuesterEntityListen();
-		NPCTypeManager.registerEvent(Type.ENTITY_DAMAGE, el);
+		NPCTypeManager.registerEvent(Type.ENTITY_DAMAGE, el, Priority.Highest);
 		// block events
 		QuesterBlockListen bl = new QuesterBlockListen();
-		NPCTypeManager.registerEvent(Type.BLOCK_BREAK, bl);
-		NPCTypeManager.registerEvent(Type.BLOCK_PLACE, bl);
+		NPCTypeManager.registerEvent(Type.BLOCK_BREAK, bl, Priority.Highest);
+		NPCTypeManager.registerEvent(Type.BLOCK_PLACE, bl, Priority.Highest);
 		// player events
 		QuesterPlayerListen pl = new QuesterPlayerListen();
-		NPCTypeManager.registerEvent(Type.PLAYER_QUIT, pl);
-		NPCTypeManager.registerEvent(Type.PLAYER_MOVE, pl);
-		NPCTypeManager.registerEvent(Type.PLAYER_PICKUP_ITEM, pl);
-		NPCTypeManager.registerEvent(Type.PLAYER_CHAT, pl);
+		NPCTypeManager.registerEvent(Type.PLAYER_QUIT, pl, Priority.Highest);
+		NPCTypeManager.registerEvent(Type.PLAYER_MOVE, pl, Priority.Highest);
+		NPCTypeManager.registerEvent(Type.PLAYER_PICKUP_ITEM, pl,
+				Priority.Highest);
+		NPCTypeManager.registerEvent(Type.PLAYER_CHAT, pl, Priority.Highest);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.QuestManager;
-import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -28,7 +27,7 @@ public class QuestReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return PlayerProfile.getProfile(player.getName()).hasCompleted(reward);
+		return false;
 	}
 
 	@Override

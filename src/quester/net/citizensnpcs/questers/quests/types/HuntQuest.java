@@ -19,7 +19,7 @@ public class HuntQuest implements QuestUpdater {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
 			if (!(ev.getEntity() instanceof LivingEntity))
 				return false;
-			if (((LivingEntity) ev.getEntity()).getHealth() - ev.getDamage() <= 0) {
+			if (((LivingEntity) ev.getEntity()).isDead()) {
 				LivingEntity entity = (LivingEntity) ev.getEntity();
 				String search = progress.getObjective().getString();
 				boolean found = search.contains(EntityUtils
