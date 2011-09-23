@@ -8,26 +8,22 @@ import net.citizensnpcs.utils.EntityUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 public class HuntQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DAMAGE };
+	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-			if (!(ev.getEntity() instanceof LivingEntity))
-				return false;
-			if (((LivingEntity) ev.getEntity()).isDead()) {
-				LivingEntity entity = (LivingEntity) ev.getEntity();
-				String search = progress.getObjective().getString();
-				boolean found = search.contains(EntityUtils
-						.getMonsterName(entity)) || search.contains("*"), reversed = !search
-						.isEmpty() && search.charAt(0) == '-';
-				if ((reversed && !found) || (!reversed && found)) {
-					progress.addAmount(1);
-				}
+		if (event instanceof EntityDeathEvent) {
+			EntityDeathEvent ev = (EntityDeathEvent) event;
+			LivingEntity entity = (LivingEntity) ev.getEntity();
+			String search = progress.getObjective().getString();
+			boolean found = search.contains(EntityUtils.getMonsterName(entity))
+					|| search.contains("*"), reversed = !search.isEmpty()
+					&& search.charAt(0) == '-';
+			if ((reversed && !found) || (!reversed && found)) {
+				progress.addAmount(1);
 			}
 		}
 		return progress.getAmount() >= progress.getObjective().getAmount();

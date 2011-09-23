@@ -33,6 +33,7 @@ public class QuesterType extends CitizensNPCType {
 				new QuesterCitizensListen());
 		QuesterEntityListen el = new QuesterEntityListen();
 		NPCTypeManager.registerEvent(Type.ENTITY_DAMAGE, el, Priority.Highest);
+		NPCTypeManager.registerEvent(Type.ENTITY_DEATH, el, Priority.Highest);
 		// block events
 		QuesterBlockListen bl = new QuesterBlockListen();
 		NPCTypeManager.registerEvent(Type.BLOCK_BREAK, bl, Priority.Highest);
