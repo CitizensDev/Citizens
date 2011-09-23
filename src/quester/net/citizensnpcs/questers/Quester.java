@@ -151,12 +151,12 @@ public class Quester extends CitizensNPC {
 				Quest quest = QuestManager.getQuest(profile.getProgress()
 						.getQuestName());
 				Messaging.send(player, quest.getCompletedText());
-				for (Reward reward : quest.getRewards()) {
-					reward.grant(player, npc);
-				}
 				long elapsed = System.currentTimeMillis()
 						- profile.getProgress().getStartTime();
 				profile.setProgress(null);
+				for (Reward reward : quest.getRewards()) {
+					reward.grant(player, npc);
+				}
 				int completed = profile.hasCompleted(quest.getName()) ? profile
 						.getCompletedQuest(quest.getName()).getTimesCompleted() + 1
 						: 1;
