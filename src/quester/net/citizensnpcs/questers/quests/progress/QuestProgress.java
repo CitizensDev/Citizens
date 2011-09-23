@@ -41,7 +41,9 @@ public class QuestProgress {
 	private void addObjectives() {
 		int size = objectives.current().objectives().size();
 		this.progress = new ObjectiveProgress[size];
-		for (int i = 0; i < size - 1; ++i) {
+		for (int i = 0; i < size; ++i) {
+			if (i >= size)
+				break;
 			this.progress[i] = new ObjectiveProgress(UID, player, questName,
 					objectives.nextObjective());
 		}
