@@ -68,6 +68,7 @@ By fullwall and aPunch
 -Questers (see the Quester page on wiki.citizensnpcs.net for more information)
 -Guards (see the Guard page wiki.citizensnpcs.net for more information)
 -updated to Minecraft Beta 1.8.1
+-updated to latest CraftBukkit Recommended Build
 *ADDED
 -added support for MultiCurrency, BOSEconomy7, and iConomy6
 -added 'citizens.evils.immune' permission node, those with this node will not be attacked by Evil NPCs

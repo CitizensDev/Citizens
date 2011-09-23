@@ -74,33 +74,33 @@ public class Citizens extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 
-		// Load NPC types. Must be loaded before settings.
+		// load NPC types (must be loaded before settings)
 		loadNPCTypes();
 
-		// Load settings.
+		// load settings
 		SettingsManager.setupVariables();
 
-		// Initialize Error Reporting
+		// initialize error reporting
 		Web.initErrorReporting();
 
-		// Register events per type
+		// register events per type
 		for (String loaded : loadedTypes) {
 			NPCTypeManager.getType(loaded).registerEvents();
 		}
 
-		// Register our events.
+		// register our events
 		new EntityListen().registerEvents(this);
 		new WorldListen().registerEvents(this);
 		new ServerListen().registerEvents(this);
 		new PlayerListen().registerEvents(this);
 
-		// Register our commands.
+		// register our commands
 		Citizens.commands.register(BasicCommands.class);
 		Citizens.commands.register(ToggleCommands.class);
 		Citizens.commands.register(WaypointCommands.class);
 
-		// Initialize Permissions.
-		PermissionManager.initialize(getServer());
+		// initialize permissions system
+		PermissionManager.initialize(getServer().getPluginManager());
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
@@ -126,15 +126,16 @@ public class Citizens extends JavaPlugin {
 		}
 
 		Messaging.log("version [" + localVersion() + "] loaded.");
-		// Reinitialize existing NPCs. Scheduled tasks run once all plugins are
-		// loaded -> gives multiworld support.
+		// reinitialize existing NPCs
+		// Scheduled tasks run once all plugins are loaded (multiworld support)
 		if (getServer().getScheduler().scheduleSyncDelayedTask(this,
 				new Runnable() {
 					@Override
 					public void run() {
 						setupNPCs();
-						// Call enable event, can be used for initialization of
-						// type-specific things.
+						// call enable event, can be used for initialization of
+						// type-specific things
+						// TODO remove when types are made into plugins
 						Bukkit.getServer().getPluginManager()
 								.callEvent(new CitizensEnableEvent());
 					}
@@ -148,12 +149,13 @@ public class Citizens extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		// Save the local copy of our files to disk.
+		// save the local copy of our files to disk
 		PropertyManager.saveState();
 		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
 		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
 
-		// Call disable event
+		// call disable event
+		// TODO remove when types are made into plugins
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensDisableEvent());
 
@@ -225,19 +227,19 @@ public class Citizens extends JavaPlugin {
 		return true;
 	}
 
-	// Get the CURRENT version of Citizens (dev-build or release)
+	// get the CURRENT version of Citizens (dev-build or release)
 	public static String localVersion() {
 		return Version.VERSION;
 	}
 
-	// A method used for iConomy support.
+	// used for economy plugin support
 	public static void setMethod(Method method) {
 		if (economy == null) {
 			economy = method;
 		}
 	}
 
-	// Returns whether the given item ID is usable as a tool.
+	// returns whether the given item ID is usable as a tool
 	public static boolean validateTool(String key, int type, boolean sneaking) {
 		List<String> item = Arrays.asList(UtilityProperties.getSettings()
 				.getString(key).split(","));
@@ -318,7 +320,7 @@ public class Citizens extends JavaPlugin {
 		initialized = true;
 	}
 
-	// Load NPC types in the plugins/Citizens/types directory
+	// load NPC types in the plugins/Citizens/types directory
 	private void loadNPCTypes() {
 		File dir = new File(getDataFolder(), "types");
 		dir.mkdirs();

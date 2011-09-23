@@ -18,6 +18,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import com.platymuus.bukkit.permissions.Group;
 import com.platymuus.bukkit.permissions.PermissionsPlugin;
@@ -32,6 +33,25 @@ public class PermissionManager {
 		return player.hasPermission(string);
 	}
 
+	public static void initialize(PluginManager pm) {
+		String permPlugin = "";
+		if (pm.getPlugin("PermissionsBukkit") != null) {
+			permPlugin = "PermissionsBukkit";
+		} else if (pm.getPlugin("PermissionsEx") != null) {
+			permPlugin = "PermissionsEx";
+		} else if (pm.getPlugin("bPermissions") != null) {
+			permPlugin = "bPermissions";
+		} else {
+			return;
+		}
+		permissionsEnabled = true;
+		Messaging.log("Permissions system found (" + permPlugin + " v"
+				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
+	}
+
+	// TODO this is not used in favor of the above method, maybe we shouldn't
+	// have rely on one permissions plugin for groups - either support all or
+	// none
 	public static void initialize(Server server) {
 		Plugin test = server.getPluginManager().getPlugin("PermissionsBukkit");
 		if (test != null) {

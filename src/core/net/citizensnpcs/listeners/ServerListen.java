@@ -30,7 +30,7 @@ public class ServerListen extends ServerListener implements Listener {
 				Citizens.setMethod(Methods.getMethod());
 				EconomyManager.setServerEconomyEnabled(true);
 				Messaging.log("Economy plugin found ("
-						+ Methods.getMethod().getName() + ", version "
+						+ Methods.getMethod().getName() + " v"
 						+ Methods.getMethod().getVersion() + ")");
 			}
 		}
