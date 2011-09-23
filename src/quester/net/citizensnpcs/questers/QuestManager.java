@@ -51,6 +51,10 @@ public class QuestManager {
 	}
 
 	public static void assignQuest(HumanNPC npc, Player player, String quest) {
+		quest = quest.toLowerCase();
+		if (!quests.containsKey(quest)) {
+			throw new IllegalArgumentException("Given quest does not exist");
+		}
 		getProfile(player.getName()).setProgress(
 				new QuestProgress(npc.getUID(), player, quest, System
 						.currentTimeMillis()));

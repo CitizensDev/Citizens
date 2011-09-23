@@ -2,7 +2,6 @@ package net.citizensnpcs;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
@@ -37,6 +36,7 @@ public class PermissionManager {
 		String permPlugin = "";
 		if (pm.getPlugin("PermissionsBukkit") != null) {
 			permPlugin = "PermissionsBukkit";
+			permissionsEnabled = true; // moved from bottom for now
 		} else if (pm.getPlugin("PermissionsEx") != null) {
 			permPlugin = "PermissionsEx";
 		} else if (pm.getPlugin("bPermissions") != null) {
@@ -44,7 +44,7 @@ public class PermissionManager {
 		} else {
 			return;
 		}
-		permissionsEnabled = true;
+		// permissionsEnabled = true; - change this when we support more plugins
 		Messaging.log("Permissions system found (" + permPlugin + " v"
 				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
 	}
@@ -111,13 +111,10 @@ public class PermissionManager {
 
 	public static void givePermission(Player player, String reward, boolean take) {
 		if (permissionsEnabled) {
-			Map<String, Boolean> permissions = superperms.getPlayerInfo(
-					player.getName()).getPermissions();
-			if (take) {
-				permissions.remove(reward);
-			} else {
-				permissions.put(reward, true);
-			}
+			Bukkit.getServer().dispatchCommand(
+					new ConsoleCommandSender(Bukkit.getServer()),
+					"perm player setperm " + player.getName() + " " + reward
+							+ " " + take);
 		}
 	}
 
