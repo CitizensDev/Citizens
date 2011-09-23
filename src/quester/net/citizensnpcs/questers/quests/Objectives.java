@@ -40,6 +40,10 @@ public class Objectives {
 			return current().objectives().get(index++);
 		}
 
+		public boolean hasNext() {
+			return index + 1 < current().objectives().size();
+		}
+
 		public void cycle() {
 			index = 0;
 			this.steps.pop();
@@ -53,6 +57,10 @@ public class Objectives {
 			return this.steps.size() - 1 <= 0;
 			// Current quest is kept in deque, so we check if the size minus the
 			// loaded step (1) would equal 0 (completed).
+		}
+
+		public int index() {
+			return this.index;
 		}
 	}
 }
