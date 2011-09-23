@@ -53,9 +53,8 @@ public class QuestProgress {
 
 	public void setStep(int step) {
 		while (this.objectives.currentStep() != step) {
-			next();
+			cycle();
 		}
-		addObjectives();
 	}
 
 	public boolean isStepCompleted() {

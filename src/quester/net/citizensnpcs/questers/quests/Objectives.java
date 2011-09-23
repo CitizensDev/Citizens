@@ -41,7 +41,7 @@ public class Objectives {
 		}
 
 		public boolean hasNext() {
-			return index + 1 < current().objectives().size();
+			return index < current().objectives().size();
 		}
 
 		public void cycle() {
