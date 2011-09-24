@@ -34,8 +34,7 @@ public class CommandContext {
 	}
 
 	public CommandContext(String[] args) {
-		int i = 1, flagCount = 1;
-		// TODO: Bugged, needs fixing.
+		int i = 1;
 		for (; i < args.length; i++) {
 			if (args[i].length() == 0) {
 				// Ignore this
@@ -43,11 +42,8 @@ public class CommandContext {
 					&& args[i].matches("^-[a-zA-Z]+$")) {
 				for (int k = 1; k < args[i].length(); k++) {
 					flags.add(args[i].charAt(k));
-					++flagCount;
 				}
 				args[i] = "";
-			} else {
-				continue;
 			}
 		}
 		this.args = Iterables.toArray(Splitter.on(" ").omitEmptyStrings()
