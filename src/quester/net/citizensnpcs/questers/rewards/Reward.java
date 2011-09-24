@@ -1,12 +1,11 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
 
 public interface Reward {
-	public void grant(Player player, HumanNPC npc);
+	public void grant(Player player, int UID);
 
 	public boolean canTake(Player player);
 

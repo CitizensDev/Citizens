@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -27,7 +26,7 @@ public class ItemReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player, HumanNPC npc) {
+	public void grant(Player player, int UID) {
 		if (amount == 0 || material == Material.AIR)
 			return;
 		if (this.take) {

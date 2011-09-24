@@ -3,7 +3,6 @@ package net.citizensnpcs.questers.rewards;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.data.PlayerProfile;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -19,8 +18,8 @@ public class QuestReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player, HumanNPC npc) {
-		QuestManager.assignQuest(npc, player, reward);
+	public void grant(Player player, int UID) {
+		QuestManager.assignQuest(player, UID, reward);
 	}
 
 	@Override

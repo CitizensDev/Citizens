@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -17,12 +16,13 @@ public class CommandReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player, HumanNPC npc) {
+	public void grant(Player player, int UID) {
+		String localCommand = command.replaceAll("<player>", player.getName());
 		if (isServerCommand) {
 			Bukkit.getServer().dispatchCommand(
-					new ConsoleCommandSender(Bukkit.getServer()), command);
+					new ConsoleCommandSender(Bukkit.getServer()), localCommand);
 		} else {
-			player.performCommand(command);
+			player.performCommand(localCommand);
 		}
 	}
 

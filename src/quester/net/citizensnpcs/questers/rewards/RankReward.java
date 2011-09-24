@@ -2,7 +2,6 @@ package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -20,7 +19,7 @@ public class RankReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player, HumanNPC npc) {
+	public void grant(Player player, int UID) {
 		PermissionManager.grantRank(player, reward, replace, take);
 	}
 

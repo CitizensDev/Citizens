@@ -4,13 +4,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.citizensnpcs.questers.api.events.QuestBeginEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.questers.rewards.Reward;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -64,7 +65,7 @@ public class QuestManager {
 						.getRepeatLimit());
 	}
 
-	public static boolean assignQuest(HumanNPC npc, Player player, String q) {
+	public static boolean assignQuest(Player player, int UID, String q) {
 		q = q.toLowerCase();
 		if (!validQuest(q)) {
 			throw new IllegalArgumentException("Given quest does not exist");
@@ -82,12 +83,17 @@ public class QuestManager {
 							+ requirement.getRequiredText(player));
 					return false;
 				}
-				requirement.grant(player, npc);
+				requirement.grant(player, UID);
 			}
 		}
+		QuestBeginEvent call;
+		Bukkit.getPluginManager().callEvent(
+				(call = new QuestBeginEvent(quest, player)));
+		if (call.isCancelled()) {
+			return false;
+		}
 		getProfile(player.getName()).setProgress(
-				new QuestProgress(npc.getUID(), player, q, System
-						.currentTimeMillis()));
+				new QuestProgress(UID, player, q, System.currentTimeMillis()));
 		Messaging.send(player, quest.getAcceptanceText());
 		return true;
 	}

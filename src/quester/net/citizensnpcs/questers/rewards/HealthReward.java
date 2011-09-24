@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -17,12 +16,9 @@ public class HealthReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player, HumanNPC npc) {
-		if (this.take) {
-			player.setHealth(player.getHealth() - reward);
-		} else {
-			player.setHealth(player.getHealth() + reward);
-		}
+	public void grant(Player player, int UID) {
+		player.setHealth(take ? player.getHealth() - reward : player
+				.getHealth() + reward);
 	}
 
 	@Override

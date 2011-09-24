@@ -2,7 +2,6 @@ package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -18,7 +17,7 @@ public class EconpluginReward implements Reward {
 	}
 
 	@Override
-	public void grant(Player player, HumanNPC npc) {
+	public void grant(Player player, int UID) {
 		if (EconomyManager.useEconPlugin()) {
 			if (this.take) {
 				EconomyManager.subtract(player.getName(), reward);

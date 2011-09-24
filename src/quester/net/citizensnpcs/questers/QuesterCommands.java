@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.questers.api.events.QuestCancelEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
@@ -20,6 +21,7 @@ import net.citizensnpcs.utils.PageUtils;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -159,6 +161,9 @@ public class QuesterCommands extends CommandHandler {
 			player.sendMessage(ChatColor.GRAY
 					+ "You don't have a quest at the moment.");
 		} else {
+			Bukkit.getPluginManager().callEvent(
+					new QuestCancelEvent(QuestManager.getQuest(profile
+							.getProgress().getQuestName()), player));
 			profile.setProgress(null);
 			player.sendMessage(ChatColor.GREEN + "Quest cleared.");
 		}

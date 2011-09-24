@@ -1,7 +1,7 @@
 package net.citizensnpcs.questers.quests.progress;
 
+import net.citizensnpcs.questers.api.QuestAPI;
 import net.citizensnpcs.questers.quests.Objective;
-import net.citizensnpcs.questers.quests.QuestAPI;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
