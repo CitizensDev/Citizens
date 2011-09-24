@@ -83,11 +83,15 @@ public class GuardTask implements Runnable {
 					Player p = Bukkit.getServer().getPlayer(npc.getOwner());
 					if (p != null) {
 						handleTarget(p, npc, guard);
-						if (LocationUtils.withinRange(npc.getLocation(),
+						if (!LocationUtils.withinRange(npc.getLocation(),
 								p.getLocation(), guard.getProtectionRadius())) {
-							PathUtils.target(npc, p, false, -1, -1, 25);
-						} else {
-							npc.teleport(p.getLocation());
+							double range = SettingsManager
+									.getDouble("PathfindingRange");
+							if (!LocationUtils.withinRange(npc.getLocation(),
+									p.getLocation(), range))
+								npc.teleport(p.getLocation());
+							else
+								PathUtils.target(npc, p, false, -1, -1, range);
 						}
 					} else {
 						if (CitizensManager.getNPC(npc.getUID()) != null) {

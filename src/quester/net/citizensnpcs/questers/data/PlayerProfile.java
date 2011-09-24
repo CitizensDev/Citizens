@@ -138,6 +138,8 @@ public class PlayerProfile {
 			progress.setStep(profile.getInt(path + ".step"));
 			int count = 0;
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
+				if (questProgress == null)
+					continue;
 				temp = path + "." + count + ".progress";
 				questProgress.setAmountCompleted(this.profile.getInt(temp
 						+ ".amount"));
