@@ -6,6 +6,7 @@ import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
 import net.citizensnpcs.api.event.npc.NPCTalkEvent;
 import net.citizensnpcs.api.event.npc.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
@@ -74,7 +75,7 @@ public class EntityListen extends EntityListener implements Listener {
 			if (npc.getNPCData().isLookClose()) {
 				NPCManager.faceEntity(npc, player);
 			}
-			if (Citizens.validateTool("items.select-items", player
+			if (UtilityProperties.validateTool("items.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				if (!NPCManager.validateSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
@@ -86,7 +87,7 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 			}
 			// Call NPC talk event
-			if (Citizens.validateTool("items.talk-items", player
+			if (UtilityProperties.validateTool("items.talk-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
 				Player target = (Player) e.getTarget();
 				NPCTalkEvent talkEvent = new NPCTalkEvent(npc, target,

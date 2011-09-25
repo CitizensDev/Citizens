@@ -11,6 +11,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
@@ -46,6 +47,9 @@ public class WorldListen extends WorldListener implements Listener {
 				toRespawn.put(loc, npc.getUID());
 				PropertyManager.save(npc);
 				NPCManager.safeDespawn(npc);
+				Messaging.debug("Despawned", npc.getUID(),
+						"due to chunk unload at", npc.getChunkX(),
+						npc.getChunkZ());
 			}
 		}
 		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
@@ -67,6 +71,9 @@ public class WorldListen extends WorldListener implements Listener {
 							NPCCreateReason.RESPAWN);
 				}
 				toRespawn.remove(tempLoc);
+				Messaging.debug("Reloaded", tempLoc.getUID(),
+						"due to chunk load at", tempLoc.getChunkX(),
+						tempLoc.getChunkZ());
 			}
 		}
 	}

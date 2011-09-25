@@ -33,9 +33,9 @@ public class NPCNetworkManager extends NetworkManager {
 	public void a(String s, Object... aobject) {
 	}
 
-	/*@Override
+	@Override
 	public void a() {
-	}*/
+	}
 
 	@Override
 	public void b() {

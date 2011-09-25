@@ -1,5 +1,7 @@
 package net.citizensnpcs.properties.properties;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
@@ -66,5 +68,25 @@ public class UtilityProperties {
 			}
 		}
 		return count;
+	}
+
+	// returns whether the given item ID is usable as a tool
+	public static boolean validateTool(String key, int type, boolean sneaking) {
+		List<String> item = Arrays.asList(getSettings()
+				.getString(key).split(","));
+		if (item.contains("*")) {
+			return true;
+		}
+		for (String s : item) {
+			boolean isShift = false;
+			if (s.contains("SHIFT-")) {
+				s = s.replace("SHIFT-", "");
+				isShift = true;
+			}
+			if (Integer.parseInt(s) == type && isShift == sneaking) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

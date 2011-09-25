@@ -2,7 +2,6 @@ package net.citizensnpcs;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
@@ -30,7 +29,6 @@ import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
@@ -238,26 +236,6 @@ public class Citizens extends JavaPlugin {
 		if (economy == null) {
 			economy = method;
 		}
-	}
-
-	// returns whether the given item ID is usable as a tool
-	public static boolean validateTool(String key, int type, boolean sneaking) {
-		List<String> item = Arrays.asList(UtilityProperties.getSettings()
-				.getString(key).split(","));
-		if (item.contains("*")) {
-			return true;
-		}
-		for (String s : item) {
-			boolean isShift = false;
-			if (s.contains("SHIFT-")) {
-				s = s.replace("SHIFT-", "");
-				isShift = true;
-			}
-			if (Integer.parseInt(s) == type && isShift == sneaking) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	// TODO: clean this up a little bit.

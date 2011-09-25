@@ -84,7 +84,7 @@ public class QuestFactory {
 						}
 						if (quests.pathExists(path + ".location")) {
 							obj.location(LocationUtils.loadLocation(quests,
-									path, false));
+									path + ".location", false));
 						}
 						if (quests.pathExists(path + ".string")) {
 							obj.string(quests.getString(path + ".string"));
@@ -158,7 +158,7 @@ public class QuestFactory {
 				}
 				if (objective.getLocation() != null) {
 					LocationUtils.saveLocation(quests, objective.getLocation(),
-							temp, false);
+							temp + ".location", false);
 				}
 				if (objective.getMaterial() != null) {
 					quests.setInt(temp + ".materialid", objective.getMaterial()
