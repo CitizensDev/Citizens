@@ -28,8 +28,9 @@ public class NPCSpawner {
 		WorldServer ws = getWorldServer(loc.getWorld());
 		CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws,
 				name, new ItemInWorldManager(ws));
+		eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
+				loc.getYaw(), loc.getPitch());
 		ws.addEntity(eh);
-		eh.getBukkitEntity().teleport(loc);
 		return new HumanNPC(eh, UID, name);
 	}
 
@@ -40,8 +41,9 @@ public class NPCSpawner {
 			CraftNPC eh = type.getEntityConstructor().newInstance(
 					getMinecraftServer(ws.getServer()), ws, name,
 					new ItemInWorldManager(ws));
+			eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
+					loc.getYaw(), loc.getPitch());
 			ws.addEntity(eh);
-			eh.getBukkitEntity().teleport(loc);
 			return new HumanNPC(eh, -1 /*Fake UID*/, name);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,8 +53,9 @@ public class NPCSpawner {
 
 	public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
 		WorldServer ws = getWorldServer(loc.getWorld());
+		npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
+				loc.getYaw(), loc.getPitch());
 		ws.addEntity(npc.getHandle());
-		npc.teleport(loc);
 		return npc;
 	}
 
