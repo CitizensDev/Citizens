@@ -3,12 +3,13 @@ package net.citizensnpcs.guards;
 import java.util.Map;
 import java.util.Set;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.permissions.CitizensGroup;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -26,8 +27,6 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.platymuus.bukkit.permissions.Group;
 
 @CommandRequirements(
 		requireSelected = true,
@@ -186,12 +185,12 @@ public class GuardCommands extends CommandHandler {
 
 		FlagType type = FlagType.PLAYER;
 		if (args.hasFlag('g')) {
-			if (!PermissionManager.superPermsEnabled()) {
+			if (!PermissionManager.hasBackend()) {
 				player.sendMessage(ChatColor.GRAY
 						+ "Group flags require Bukkit's permission system to be used.");
 				return;
 			}
-			Group group = PermissionManager.getGroup(name);
+			CitizensGroup group = PermissionManager.getGroup(name);
 			if (group == null) {
 				player.sendMessage(ChatColor.GRAY + "Group not recognized.");
 				return;

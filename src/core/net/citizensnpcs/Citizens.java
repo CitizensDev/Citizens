@@ -28,6 +28,7 @@ import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;

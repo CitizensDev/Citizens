@@ -1,7 +1,7 @@
 package net.citizensnpcs.commands;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -40,7 +40,7 @@ public class WaypointCommands extends CommandHandler {
 			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
 			return;
 		}
-		if (!PermissionManager.generic(player, "citizens.waypoints.modifier"
+		if (!PermissionManager.hasPermission(player, "citizens.waypoints.modifier"
 				+ modifier.name().toLowerCase())) {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 			return;

@@ -2,9 +2,9 @@ package net.citizensnpcs.alchemists;
 
 import java.util.Map;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;

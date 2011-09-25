@@ -2,10 +2,10 @@ package net.citizensnpcs.resources.npclib.creatures;
 
 import java.util.Random;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -41,7 +41,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 		if (!isTame) {
 			EntityHuman closest = getClosestPlayer(this.range);
 			if (!hasTarget() && closest != null) {
-				if (!PermissionManager.generic(
+				if (!PermissionManager.hasPermission(
 						(Player) closest.getBukkitEntity(),
 						"citizens.evils.immune")) {
 					targetClosestPlayer(true, this.range);

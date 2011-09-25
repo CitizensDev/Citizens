@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.StringUtils;
 

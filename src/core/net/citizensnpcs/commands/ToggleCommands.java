@@ -1,12 +1,12 @@
 package net.citizensnpcs.commands;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -117,7 +117,7 @@ public class ToggleCommands extends CommandHandler {
 	private static void buyState(Player player, HumanNPC npc,
 			CitizensNPCType type) {
 		String toggle = type.getName();
-		if (!PermissionManager.generic(player, "citizens.toggle." + toggle)) {
+		if (!PermissionManager.hasPermission(player, "citizens.toggle." + toggle)) {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
 		}

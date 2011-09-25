@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.Storage;
 
 import org.bukkit.ChatColor;
@@ -27,7 +27,7 @@ public class PermissionReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return PermissionManager.generic(player, reward);
+		return PermissionManager.hasPermission(player, reward);
 	}
 
 	@Override

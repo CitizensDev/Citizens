@@ -2,9 +2,9 @@ package net.citizensnpcs.questers;
 
 import java.util.concurrent.TimeUnit;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.api.events.QuestCancelEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.CompletedQuest;

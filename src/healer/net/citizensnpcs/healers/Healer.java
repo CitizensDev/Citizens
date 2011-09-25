@@ -1,10 +1,10 @@
 package net.citizensnpcs.healers;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -45,7 +45,7 @@ public class Healer extends CitizensNPC {
 	// TODO Make this less ugly to look at
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (PermissionManager.generic(player, "citizens.healer.use.heal")) {
+		if (PermissionManager.hasPermission(player, "citizens.healer.use.heal")) {
 			Healer healer = npc.getType("healer");
 			int playerHealth = player.getHealth();
 			int healerHealth = healer.getHealth();

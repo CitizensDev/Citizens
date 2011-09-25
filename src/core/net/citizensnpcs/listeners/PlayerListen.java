@@ -1,10 +1,10 @@
 package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
@@ -41,7 +41,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (PermissionManager.generic(event.getPlayer(),
+		if (PermissionManager.hasPermission(event.getPlayer(),
 				"citizens.admin.notifyupdates")
 				&& SettingsManager.getBoolean("NotifyUpdates")) {
 			Web.notifyUpdate(event.getPlayer());

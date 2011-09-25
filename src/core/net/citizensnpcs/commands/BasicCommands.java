@@ -3,7 +3,6 @@ package net.citizensnpcs.commands;
 import java.util.ArrayDeque;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.citizens.CitizensReloadEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
@@ -11,6 +10,7 @@ import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.CraftNPC;
@@ -544,7 +544,7 @@ public class BasicCommands extends CommandHandler {
 			max = 2)
 	public static void remove(CommandContext args, Player player, HumanNPC npc) {
 		if (args.argsLength() == 2 && args.getString(1).equalsIgnoreCase("all")) {
-			if (PermissionManager.generic(player,
+			if (PermissionManager.hasPermission(player,
 					"citizens.basic.modify.remove.all")) {
 				if (NPCManager.GlobalUIDs.size() == 0) {
 					Messaging.sendError(player, "There are no NPCs to remove.");
@@ -563,9 +563,9 @@ public class BasicCommands extends CommandHandler {
 			return;
 		}
 		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
-				.generic(player, "citizens.admin.override.remove"))
+				.hasPermission(player, "citizens.admin.override.remove"))
 				|| (NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
-						.generic(player, "citizens.basic.modify.remove"))) {
+						.hasPermission(player, "citizens.basic.modify.remove"))) {
 			NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
 			NPCDataManager.deselectNPC(player);
 			player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
@@ -684,9 +684,9 @@ public class BasicCommands extends CommandHandler {
 			max = 2)
 	public static void setOwner(CommandContext args, Player player, HumanNPC npc) {
 		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
-				.generic(player, "citizens.admin.override.setowner"))
+				.hasPermission(player, "citizens.admin.override.setowner"))
 				|| (NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
-						.generic(player, "citizens.basic.modify.setowner"))) {
+						.hasPermission(player, "citizens.basic.modify.setowner"))) {
 			player.sendMessage(ChatColor.GREEN + "The owner of "
 					+ StringUtils.wrap(npc.getStrippedName()) + " is now "
 					+ StringUtils.wrap(args.getString(1)) + ".");

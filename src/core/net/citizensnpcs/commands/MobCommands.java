@@ -1,6 +1,6 @@
 package net.citizensnpcs.commands;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;

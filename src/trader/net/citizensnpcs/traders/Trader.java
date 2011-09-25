@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.traders.TraderManager.TraderMode;
@@ -124,20 +124,20 @@ public class Trader extends CitizensNPC {
 		if (trader.isFree()) {
 			TraderMode mode;
 			if (NPCManager.validateOwnership(player, npc.getUID())) {
-				if (!PermissionManager.generic(player,
+				if (!PermissionManager.hasPermission(player,
 						"citizens.trader.modify.stock")) {
 					return;
 				}
 				mode = TraderMode.STOCK;
 			} else if (trader.isUnlimited()) {
 				mode = TraderMode.INFINITE;
-				if (!PermissionManager.generic(player,
+				if (!PermissionManager.hasPermission(player,
 						"citizens.trader.use.trade")) {
 					return;
 				}
 			} else {
 				mode = TraderMode.NORMAL;
-				if (!PermissionManager.generic(player,
+				if (!PermissionManager.hasPermission(player,
 						"citizens.trader.use.trade")) {
 					return;
 				}

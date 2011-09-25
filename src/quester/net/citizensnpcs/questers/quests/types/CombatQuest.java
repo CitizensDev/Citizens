@@ -1,6 +1,7 @@
 package net.citizensnpcs.questers.quests.types;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.permissions.CitizensGroup;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
@@ -9,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
-
-import com.platymuus.bukkit.permissions.Group;
 
 public class CombatQuest implements QuestUpdater {
 	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
@@ -28,11 +27,10 @@ public class CombatQuest implements QuestUpdater {
 			if (search.contains(player.getName().toLowerCase())
 					|| search.contains("*")) {
 				found = true;
-			} else if (search.contains("g:")
-					&& PermissionManager.superPermsEnabled()) {
+			} else if (search.contains("g:") && PermissionManager.hasBackend()) {
 				// Should be the last else statement, as it needs to do
 				// extra processing.
-				for (Group group : PermissionManager.getGroups(player)) {
+				for (CitizensGroup group : PermissionManager.getGroups(player)) {
 					if (search.contains("g:" + group.getName().toLowerCase())) {
 						found = true;
 					}

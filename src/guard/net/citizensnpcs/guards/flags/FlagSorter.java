@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.guards.Guard;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
+import net.citizensnpcs.permissions.CitizensGroup;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
@@ -26,7 +27,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.TreeMultiset;
-import com.platymuus.bukkit.permissions.Group;
 
 public class FlagSorter {
 	// TODO: perhaps we should make a sorted copy as well of the base flags.
@@ -56,9 +56,9 @@ public class FlagSorter {
 		}
 
 	};
-	private final Predicate<Group> groupSorter = new Predicate<Group>() {
+	private final Predicate<CitizensGroup> groupSorter = new Predicate<CitizensGroup>() {
 		@Override
-		public boolean apply(Group group) {
+		public boolean apply(CitizensGroup group) {
 			String name = group.getName().toLowerCase();
 			if (!getByType(GROUPS).containsKey(name))
 				name = "all";
@@ -67,9 +67,9 @@ public class FlagSorter {
 		}
 	};
 
-	private final Function<Group, String> groupToString = new Function<Group, String>() {
+	private final Function<CitizensGroup, String> groupToString = new Function<CitizensGroup, String>() {
 		@Override
-		public String apply(Group group) {
+		public String apply(CitizensGroup group) {
 			return group.getName().toLowerCase();
 		}
 	};
@@ -100,7 +100,7 @@ public class FlagSorter {
 					updateLowest(get(getByType(PLAYERS), name));
 					return true;
 				} else {
-					if (!PermissionManager.superPermsEnabled()) {
+					if (!PermissionManager.hasBackend()) {
 						return false;
 					}
 					if (groupMap.get(name) != null) {
@@ -231,10 +231,10 @@ public class FlagSorter {
 	}
 
 	public void updateGroup(FlagInfo info) {
-		Group group = PermissionManager.getGroup(info.getName());
+		CitizensGroup group = PermissionManager.getGroup(info.getName());
 		if (group == null)
 			return;
-		for (String name : group.getPlayers()) {
+		for (String name : group.getMembers()) {
 			if (groupMap.containsKey(name))
 				groupMap.put(name, info);
 		}

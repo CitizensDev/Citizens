@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.citizensnpcs.PermissionManager;
+import net.citizensnpcs.permissions.PermissionManager;
 
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ public class CitizensCommandsManager<T extends Player> extends
 
 	@Override
 	public boolean hasPermission(T player, String perm) {
-		return PermissionManager.generic(player, "citizens." + perm);
+		return PermissionManager.hasPermission(player, "citizens." + perm);
 	}
 
 	public String[] getAllCommandModifiers(String command) {

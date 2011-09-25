@@ -2,10 +2,10 @@ package net.citizensnpcs.traders;
 
 import java.util.List;
 
-import net.citizensnpcs.PermissionManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -64,7 +64,7 @@ public class TraderCommands extends CommandHandler {
 		}
 		switch (args.argsLength()) {
 		case 1:
-			if (PermissionManager.generic(player,
+			if (PermissionManager.hasPermission(player,
 					"citizens.trader.use.showmoney")) {
 				player.sendMessage(StringUtils.wrap(npc.getName())
 						+ " has "
@@ -75,7 +75,7 @@ public class TraderCommands extends CommandHandler {
 			}
 			break;
 		case 3:
-			if (!PermissionManager.generic(player,
+			if (!PermissionManager.hasPermission(player,
 					"citizens.trader.modify.money")) {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 				return;
