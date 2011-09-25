@@ -212,7 +212,7 @@ public class TraderCommands extends CommandHandler {
 
 	@Command(
 			aliases = "trader",
-			usage = "buy/sell [item] [price]",
+			usage = "buy|sell [item] [price]",
 			desc = "change the stock of a trader",
 			modifiers = { "buy", "sell" },
 			min = 3,
@@ -314,7 +314,7 @@ public class TraderCommands extends CommandHandler {
 			aliases = "trader",
 			usage = "clear [buy|sell]",
 			desc = "clear the stock of a trader",
-			modifiers = { "clear" },
+			modifiers = "clear",
 			min = 2,
 			max = 2)
 	@CommandPermissions("trader.modify.clearstock")
