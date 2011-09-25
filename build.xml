@@ -48,6 +48,8 @@
                 <pathelement location="${libs}/iCo5.jar"/>
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
+                <pathelement location="${libs}/PermissionsEx.jar"/>
+        		<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 		<!-- Finish compiling the core early because the NPC types require the core! -->
@@ -69,6 +71,8 @@
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${bin}/Citizens.jar"/>
+               	<pathelement location="${libs}/PermissionsEx.jar"/>
+               	<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distblacksmith"/>
@@ -88,6 +92,8 @@
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${bin}/Citizens.jar"/>
+               	<pathelement location="${libs}/PermissionsEx.jar"/>
+               	<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distguard"/>
@@ -107,6 +113,8 @@
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${bin}/Citizens.jar"/>
+               	<pathelement location="${libs}/PermissionsEx.jar"/>
+               	<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 		<antcall target="disthealer"/>
@@ -126,6 +134,8 @@
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${bin}/Citizens.jar"/>
+               	<pathelement location="${libs}/PermissionsEx.jar"/>
+               	<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distquester"/>
@@ -145,6 +155,8 @@
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${bin}/Citizens.jar"/>
+               	<pathelement location="${libs}/PermissionsEx.jar"/>
+               	<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 		<antcall target="disttrader"/>
@@ -164,6 +176,8 @@
                 <pathelement location="${libs}/iCo6.jar"/>
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${bin}/Citizens.jar"/>
+               	<pathelement location="${libs}/PermissionsEx.jar"/>
+               	<pathelement location="${libs}/bpermissions.jar"/>
                 </classpath>
         </javac>
 				<antcall target="distwizard"/>
