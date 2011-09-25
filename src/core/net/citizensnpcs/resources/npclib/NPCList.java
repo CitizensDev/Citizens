@@ -20,6 +20,8 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 				.getHandle();
 		if (mcEntity instanceof CraftNPC) {
 			HumanNPC npc = ((CraftNPC) mcEntity).npc;
+			if (npc == null)
+				return null;
 			// Compare object references to eliminate conflicting UIDs.
 			if (get(npc.getUID()) == npc) {
 				return npc;
