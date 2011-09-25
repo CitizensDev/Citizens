@@ -13,6 +13,7 @@ public class CraftNPC extends PathNPC {
 	public CraftNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
 		super(minecraftserver, world, s, iteminworldmanager);
+		iteminworldmanager.a(0);
 
 		NetworkManager netMgr = new NPCNetworkManager(new NPCSocket(),
 				"npc mgr", new NetHandler() {
