@@ -47,12 +47,12 @@ public class LocationUtils {
 			pitch = Float.parseFloat(read[4]);
 			yaw = Float.parseFloat(read[5]);
 		} else {
-			world = storage.getString(path + ".world");
-			x = storage.getDouble(path + ".x");
-			y = storage.getDouble(path + ".y");
-			z = storage.getDouble(path + ".z");
-			pitch = (float) storage.getDouble(path + ".pitch");
-			yaw = (float) storage.getDouble(path + ".yaw");
+			world = storage.getString(path + ".location.world");
+			x = storage.getDouble(path + ".location.x");
+			y = storage.getDouble(path + ".location.y");
+			z = storage.getDouble(path + ".location.z");
+			pitch = (float) storage.getDouble(path + ".location.pitch");
+			yaw = (float) storage.getDouble(path + ".location.yaw");
 		}
 		return new Location(Bukkit.getServer().getWorld(world), x, y, z, pitch,
 				yaw);
@@ -68,12 +68,13 @@ public class LocationUtils {
 									loc.getX(), loc.getY(), loc.getZ(),
 									loc.getPitch(), loc.getYaw() }));
 		} else {
-			storage.setString(path + ".world", loc.getWorld().getName());
-			storage.setDouble(path + ".x", loc.getX());
-			storage.setDouble(path + ".y", loc.getY());
-			storage.setDouble(path + ".z", loc.getZ());
-			storage.setDouble(path + ".pitch", loc.getPitch());
-			storage.setDouble(path + ".yaw", loc.getYaw());
+			storage.setString(path + ".location.world", loc.getWorld()
+					.getName());
+			storage.setDouble(path + ".location.x", loc.getX());
+			storage.setDouble(path + ".location.y", loc.getY());
+			storage.setDouble(path + ".location.z", loc.getZ());
+			storage.setDouble(path + ".location.pitch", loc.getPitch());
+			storage.setDouble(path + ".location.yaw", loc.getYaw());
 		}
 	}
 }

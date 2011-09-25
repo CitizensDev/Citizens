@@ -154,7 +154,7 @@ public class PlayerProfile {
 				}
 				if (profile.pathExists(temp + ".location")) {
 					questProgress.setLastLocation(LocationUtils.loadLocation(
-							profile, temp + ".location", true));
+							profile, temp, true));
 				}
 				++count;
 			}

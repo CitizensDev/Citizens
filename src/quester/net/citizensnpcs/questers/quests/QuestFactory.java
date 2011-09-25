@@ -84,7 +84,7 @@ public class QuestFactory {
 						}
 						if (quests.pathExists(path + ".location")) {
 							obj.location(LocationUtils.loadLocation(quests,
-									path + ".location", false));
+									path, false));
 						}
 						if (quests.pathExists(path + ".string")) {
 							obj.string(quests.getString(path + ".string"));
