@@ -40,8 +40,8 @@ public class WaypointCommands extends CommandHandler {
 			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
 			return;
 		}
-		if (!PermissionManager.hasPermission(player, "citizens.waypoints.modifier"
-				+ modifier.name().toLowerCase())) {
+		if (!PermissionManager.hasPermission(player,
+				"citizens.waypoints.modifier." + modifier.name().toLowerCase())) {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
 			return;
 		}
