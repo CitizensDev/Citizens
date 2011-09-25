@@ -47,6 +47,7 @@ public class LocationUtils {
 			pitch = Float.parseFloat(read[4]);
 			yaw = Float.parseFloat(read[5]);
 		} else {
+			path = path + ".location";
 			world = storage.getString(path + ".world");
 			x = storage.getDouble(path + ".x");
 			y = storage.getDouble(path + ".y");
@@ -68,6 +69,7 @@ public class LocationUtils {
 									loc.getX(), loc.getY(), loc.getZ(),
 									loc.getPitch(), loc.getYaw() }));
 		} else {
+			path = path + ".location";
 			storage.setString(path + ".world", loc.getWorld().getName());
 			storage.setDouble(path + ".x", loc.getX());
 			storage.setDouble(path + ".y", loc.getY());
