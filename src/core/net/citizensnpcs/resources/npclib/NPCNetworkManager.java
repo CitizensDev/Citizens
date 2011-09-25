@@ -22,10 +22,6 @@ public class NPCNetworkManager extends NetworkManager {
 	}
 
 	@Override
-	public void a(NetHandler nethandler) {
-	}
-
-	@Override
 	public void queue(Packet packet) {
 	}
 

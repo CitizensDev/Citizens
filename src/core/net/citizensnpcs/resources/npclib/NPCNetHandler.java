@@ -20,11 +20,9 @@ import net.minecraft.server.Packet51MapChunk;
 import net.minecraft.server.Packet9Respawn;
 
 public class NPCNetHandler extends NetServerHandler {
-
 	public NPCNetHandler(MinecraftServer minecraftserver,
 			EntityPlayer entityplayer, NetworkManager netMgr) {
 		super(minecraftserver, netMgr, entityplayer);
-		netMgr.a(this);
 	}
 
 	@Override
