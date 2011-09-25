@@ -1,6 +1,3 @@
-guards:
-    default-bouncer-protection-radius: 10
-    respawn-delay: 100
 range:
     look: 5
     pathfinding: 16.0
@@ -17,60 +14,10 @@ ticks:
         max-pathing: -1
     waypoints:
         right-click-pause: 70
-healers:
-    give-health-item: 35
-    take-health-item: 276
-    health-regen-increment: 12000
-    regen-health: true
-wizards:
-    mana-regen-item: 348
-    regen-mana: true
-    max-mana: 100
-    max-locations: 10
-    mana-regen-rate: 6000
-    interact-item: 288
-    mana-costs:
-        executecommand: 5
-        spawnmob: 5
-        changetime: 5
-        togglestorm: 5
-        teleport: 5
 economy:
     prices:
-        blacksmith:
-            creation: 100
-            toolrepair:
-                wood: 0.25
-                diamond: 1.25
-                stone: 0.75
-                gold: 0.5
-                iron: 1
-                misc: 0.5
-            armorrepair:
-                diamond: 1.25
-                gold: 0.5
-                leather: 0.25
-                iron: 1
-                chainmail: 0.75
         basic:
             creation: 100
-        guard:
-            creation: 100
-        wizard:
-            executecommand: 100
-            creation: 100
-            spawnmob: 100
-            changetime: 100
-            togglestorm: 100
-            teleport: 100
-        trader:
-            creation: 100
-        quester:
-            creation: 100
-        healer:
-            creation: 100
-            heal: 100
-            levelup: 100
     use-economy: true
 debug:
     enable-error-reporting: true
