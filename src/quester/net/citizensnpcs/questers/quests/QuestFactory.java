@@ -158,7 +158,7 @@ public class QuestFactory {
 				}
 				if (objective.getLocation() != null) {
 					LocationUtils.saveLocation(quests, objective.getLocation(),
-							temp + ".location", false);
+							temp, false);
 				}
 				if (objective.getMaterial() != null) {
 					quests.setInt(temp + ".materialid", objective.getMaterial()
