@@ -74,12 +74,12 @@ public class GuardTask implements Runnable {
 				if (guard.isAttacking() || guard.isReturning()) {
 					continue;
 				}
+				if (npc.isPaused()) {
+					npc.setPaused(false);
+				}
 				if (guard.isBouncer()) {
 					handleTarget(npc.getPlayer(), npc, guard);
 				} else if (guard.isBodyguard()) {
-					if (!npc.isPaused()) {
-						npc.setPaused(true);
-					}
 					Player p = Bukkit.getServer().getPlayer(npc.getOwner());
 					if (p != null) {
 						handleTarget(p, npc, guard);
@@ -117,6 +117,7 @@ public class GuardTask implements Runnable {
 				getNearby(player, guard));
 		if (flags.getResult() != null) {
 			guard.target(flags.getResult(), npc);
+			npc.setPaused(true);
 		}
 	}
 

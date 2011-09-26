@@ -16,7 +16,7 @@ public class QuesterEntityListen extends EntityListener {
 					.getEntity().getLastDamageCause();
 			if (event.getDamager() instanceof Player
 					&& event.getEntity() instanceof LivingEntity) {
-				QuestManager.incrementQuest((Player) event.getDamager(), event);
+				QuestManager.incrementQuest((Player) event.getDamager(), ev);
 			}
 		}
 	}
