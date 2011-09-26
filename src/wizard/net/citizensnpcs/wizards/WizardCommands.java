@@ -49,9 +49,8 @@ public class WizardCommands extends CommandHandler {
 			max = 2)
 	@CommandPermissions("wizard.modify.mode")
 	public static void mode(CommandContext args, Player player, HumanNPC npc) {
-		WizardMode wizardMode;
-		if (WizardMode.parse(args.getString(1)) != null) {
-			wizardMode = WizardMode.parse(args.getString(1));
+		WizardMode wizardMode = WizardMode.parse(args.getString(1));
+		if (wizardMode != null) {
 			Wizard wizard = npc.getType("wizard");
 			if (wizardMode != wizard.getMode()) {
 				wizard.setMode(wizardMode);

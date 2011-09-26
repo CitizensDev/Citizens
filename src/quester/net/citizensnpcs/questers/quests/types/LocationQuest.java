@@ -17,9 +17,8 @@ public class LocationQuest implements QuestUpdater {
 	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
-			if (LocationUtils.withinRange(ev.getPlayer().getLocation(),
-					progress.getObjective().getLocation(), progress
-							.getObjective().getAmount()))
+			if (LocationUtils.withinRange(ev.getTo(), progress.getObjective()
+					.getLocation(), progress.getObjective().getAmount()))
 				return true;
 		}
 		return false;

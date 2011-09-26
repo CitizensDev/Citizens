@@ -50,6 +50,7 @@ public class NPCDataManager {
 	// equip an NPC based on a player's item-in-hand
 	@SuppressWarnings("deprecation")
 	private static void equip(Player player, HumanNPC npc) {
+		// TODO: cleanup
 		ItemStack hand = player.getItemInHand();
 		PlayerInventory npcInv = npc.getInventory();
 		List<ItemData> items = Lists.newArrayList();
@@ -129,9 +130,9 @@ public class NPCDataManager {
 		boolean drop = false;
 		for (ItemStack i : toAdd) {
 			// drop items that don't fit in a player's inventory
-			if (player.getInventory().addItem(i).size() >= 1) {
-				player.getInventory().removeItem(i);
-				player.getWorld().dropItemNaturally(player.getLocation(), i);
+			for (ItemStack unadded : player.getInventory().addItem(i).values()) {
+				player.getWorld().dropItemNaturally(player.getLocation(),
+						unadded);
 				drop = true;
 			}
 		}
@@ -222,10 +223,10 @@ public class NPCDataManager {
 		if (items != null) {
 			npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0)
 					.createStack());
-			for (int i = 0; i < items.size() - 1; i++) {
+			for (int i = 1; i < items.size() - 1; i++) {
 				Armor.getArmor(i).set(
 						npc.getInventory(),
-						items.get(i + 1).getID() == 0 ? null : items.get(i + 1)
+						items.get(i).getID() == 0 ? null : items.get(i)
 								.createStack());
 			}
 			npc.getNPCData().setItems(items);

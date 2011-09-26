@@ -43,11 +43,12 @@ public class WizardProperties extends PropertyManager implements Properties {
 	}
 
 	private void saveMode(int UID, WizardMode wizardMode) {
-		profiles.setString(UID + mode, wizardMode.toString());
+		profiles.setString(UID + mode, wizardMode.name());
 	}
 
 	private WizardMode getMode(int UID) {
-		if (profiles.pathExists(UID + mode)) {
+		if (profiles.pathExists(UID + mode)
+				&& WizardMode.parse(profiles.getString(UID + mode)) != null) {
 			return WizardMode.parse(profiles.getString(UID + mode));
 		}
 		return WizardMode.TELEPORT;

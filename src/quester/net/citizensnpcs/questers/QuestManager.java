@@ -77,14 +77,12 @@ public class QuestManager {
 			return false;
 		}
 		for (Reward requirement : quest.getRequirements()) {
-			if (requirement.isTake()) {
-				if (!requirement.canTake(player)) {
-					player.sendMessage(ChatColor.GRAY + "Missing requirement. "
-							+ requirement.getRequiredText(player));
-					return false;
-				}
-				requirement.grant(player, UID);
+			if (!requirement.canTake(player)) {
+				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
+						+ requirement.getRequiredText(player));
+				return false;
 			}
+			requirement.grant(player, UID);
 		}
 		QuestBeginEvent call;
 		Bukkit.getPluginManager().callEvent(
