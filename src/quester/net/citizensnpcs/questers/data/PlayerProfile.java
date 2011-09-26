@@ -114,7 +114,7 @@ public class PlayerProfile {
 				if (current.getLastLocation() != null) {
 					LocationUtils
 							.saveLocation(profile, current.getLastLocation(),
-									path + ".location", true);
+									path, true);
 				}
 				++count;
 			}
