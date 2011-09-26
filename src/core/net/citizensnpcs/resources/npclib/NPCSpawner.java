@@ -31,6 +31,7 @@ public class NPCSpawner {
 		eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), loc.getPitch());
 		ws.addEntity(eh);
+		ws.players.remove(eh);
 		return new HumanNPC(eh, UID, name);
 	}
 
@@ -44,6 +45,7 @@ public class NPCSpawner {
 			eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
 					loc.getYaw(), loc.getPitch());
 			ws.addEntity(eh);
+			ws.players.remove(eh);
 			return new HumanNPC(eh, -1 /*Fake UID*/, name);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,6 +58,7 @@ public class NPCSpawner {
 		npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), loc.getPitch());
 		ws.addEntity(npc.getHandle());
+		ws.players.remove(npc.getHandle());
 		return npc;
 	}
 

@@ -3,7 +3,6 @@ package net.citizensnpcs.alchemists;
 import java.util.Map;
 
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -45,7 +44,7 @@ public class AlchemistCommands extends CommandHandler {
 	@CommandPermissions("alchemist.use.help")
 	public static void alchemistHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("alchemist").getCommands().sendHelpPage(sender);
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@CommandRequirements(requireSelected = true, requiredType = "alchemist")

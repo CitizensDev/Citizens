@@ -99,7 +99,7 @@ public class Citizens extends JavaPlugin {
 		Citizens.commands.register(WaypointCommands.class);
 
 		// initialize permissions system
-		PermissionManager.initialize(getServer().getPluginManager());
+		new PermissionManager(getServer().getPluginManager());
 
 		// schedule Creature tasks
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,

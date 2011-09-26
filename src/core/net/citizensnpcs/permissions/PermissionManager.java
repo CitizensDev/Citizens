@@ -25,7 +25,7 @@ public class PermissionManager {
 	private static boolean permissionsEnabled;
 	private static List<String> permissions = new ArrayList<String>();
 
-	public static void initialize(PluginManager pm) {
+	public PermissionManager(PluginManager pm) {
 		String permPlugin = "";
 		if (pm.getPlugin("PermissionsBukkit") != null) {
 			permPlugin = "PermissionsBukkit";
@@ -43,6 +43,7 @@ public class PermissionManager {
 		permissionsEnabled = true;
 		Messaging.log("Permissions system found (" + permPlugin + " v"
 				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
+		addPermissions();
 	}
 
 	public static boolean hasBackend() {

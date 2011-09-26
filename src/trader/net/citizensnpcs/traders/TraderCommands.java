@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -47,7 +46,7 @@ public class TraderCommands extends CommandHandler {
 	@ServerCommand()
 	public static void traderHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("trader").getCommands().sendHelpPage(sender);
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@Command(

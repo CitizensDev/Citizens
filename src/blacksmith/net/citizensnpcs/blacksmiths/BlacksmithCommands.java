@@ -2,7 +2,6 @@ package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.economy.EconomyManager;
-import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -41,7 +40,7 @@ public class BlacksmithCommands extends CommandHandler {
 	@ServerCommand()
 	public static void blacksmithHelp(CommandContext args,
 			CommandSender sender, HumanNPC npc) {
-		NPCTypeManager.getType("blacksmith").getCommands().sendHelpPage(sender);
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@Command(

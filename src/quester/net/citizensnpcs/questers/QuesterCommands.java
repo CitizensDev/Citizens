@@ -3,7 +3,6 @@ package net.citizensnpcs.questers;
 import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.api.events.QuestCancelEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
@@ -48,7 +47,7 @@ public class QuesterCommands extends CommandHandler {
 	@CommandPermissions("quester.use.help")
 	public static void questerHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("quester").getCommands().sendHelpPage(sender);
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@Command(

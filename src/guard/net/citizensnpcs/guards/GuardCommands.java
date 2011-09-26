@@ -7,7 +7,6 @@ import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
-import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.CitizensGroup;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -50,7 +49,7 @@ public class GuardCommands extends CommandHandler {
 	@CommandPermissions("guard.use.help")
 	public static void guardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("guard").getCommands().sendHelpPage(sender);
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@Command(

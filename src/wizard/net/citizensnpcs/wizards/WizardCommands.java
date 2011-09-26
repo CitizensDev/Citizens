@@ -1,7 +1,6 @@
 package net.citizensnpcs.wizards;
 
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -38,7 +37,7 @@ public class WizardCommands extends CommandHandler {
 	@CommandPermissions("wizard.use.help")
 	public static void wizardHelp(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		NPCTypeManager.getType("wizard").getCommands().sendHelpPage(sender);
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@Command(
