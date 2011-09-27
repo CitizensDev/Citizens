@@ -25,7 +25,7 @@ public class DefaultSpawner implements Spawner {
 
 	@Override
 	public HumanNPC spawn(CreatureNPCType type, Location loc) {
-		if (random.nextInt(100) < type.getSpawnChance())
+		if (random.nextInt(100) > type.getSpawnChance())
 			return null;
 		// TODO: Make this more random.
 		int offset = 25 * getRandomInt(random, 1);
