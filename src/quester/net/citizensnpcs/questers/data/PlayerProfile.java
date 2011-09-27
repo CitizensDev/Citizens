@@ -93,7 +93,7 @@ public class PlayerProfile {
 	}
 
 	public void save() {
-		if (progress != null) {
+		if (progress != null && progress.getProgress() != null) {
 			String path = "quests.current", oldPath = path;
 			int count = 0;
 
@@ -152,6 +152,8 @@ public class PlayerProfile {
 					Bukkit.getServer().getPlayer(name), profile.getString(path
 							+ ".name"), profile.getLong(path + ".start-time"));
 			progress.setStep(profile.getInt(path + ".step"));
+			if (progress.getProgress() == null)
+				break questLoad;
 			int count = 0;
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
 				if (questProgress == null)

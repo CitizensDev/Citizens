@@ -33,8 +33,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 @CommandRequirements(requireSelected = true, requireOwnership = true)
@@ -99,20 +99,23 @@ public class BasicCommands extends CommandHandler {
 	public static void clean(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		sender.sendMessage(ChatColor.GRAY + "Cleaning up...");
+		int count = 0;
 		for (World world : Bukkit.getServer().getWorlds()) {
-			for (LivingEntity entity : world.getLivingEntities()) {
-				net.minecraft.server.Entity mcEntity = ((CraftLivingEntity) entity)
+			for (Entity entity : world.getEntities()) {
+				net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
 						.getHandle();
 				if (mcEntity instanceof CraftNPC
 						&& !(mcEntity instanceof CreatureNPC)) {
 					HumanNPC found = ((CraftNPC) mcEntity).npc;
 					if (NPCManager.getList().get(found.getUID()) != found) {
 						found.getPlayer().remove();
+						++count;
 					}
 				}
 			}
 		}
-		sender.sendMessage(ChatColor.GREEN + "Done.");
+		sender.sendMessage(ChatColor.GREEN + "Done. Removed "
+				+ StringUtils.wrap(count) + " orphaned NPCs.");
 	}
 
 	@Command(
@@ -379,9 +382,9 @@ public class BasicCommands extends CommandHandler {
 	public static void move(CommandContext args, Player player, HumanNPC npc) {
 		if (npc.getWorld() != player.getWorld()
 				&& !PermissionManager.hasPermission(player,
-						"basic.modify.move.multiworld")) {
+						"citizens.basic.modify.move.multiworld")) {
 			player.sendMessage(ChatColor.GRAY
-					+ "You don't have permission to move npcs between worlds.");
+					+ "You don't have permission to move NPCs between worlds.");
 			return;
 		}
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())

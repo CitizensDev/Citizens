@@ -10,8 +10,10 @@ import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.waypoints.WaypointPath;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -87,7 +89,12 @@ public class HumanNPC extends NPC {
 	}
 
 	public void teleport(Location loc) {
+		boolean multiworld = loc.getWorld() != this.getWorld();
 		this.getPlayer().teleport(loc);
+		if (multiworld) {
+			((CraftServer) Bukkit.getServer()).getHandle().players
+					.remove(this.mcEntity);
+		}
 	}
 
 	public void doTick() {

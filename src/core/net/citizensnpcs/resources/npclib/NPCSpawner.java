@@ -4,8 +4,10 @@ import net.citizensnpcs.api.event.npc.NPCRemoveEvent;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
+import net.citizensnpcs.utils.PacketUtils;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.Packet29DestroyEntity;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Bukkit;
@@ -65,6 +67,8 @@ public class NPCSpawner {
 	public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new NPCRemoveEvent(npc, reason));
+		PacketUtils.sendPacketToOnline(npc.getLocation(),
+				new Packet29DestroyEntity(npc.getHandle().id), null);
 		npc.getPlayer().remove();
 	}
 

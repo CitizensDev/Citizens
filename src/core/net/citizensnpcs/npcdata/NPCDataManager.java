@@ -227,7 +227,7 @@ public class NPCDataManager {
 			for (int i = 0; i < items.size() - 1; i++) {
 				Armor.getArmor(i).set(
 						npc.getInventory(),
-						items.get(i + 1).getID() == 0 ? null : items.get(i)
+						items.get(i + 1).getID() == 0 ? null : items.get(i + 1)
 								.createStack());
 			}
 			npc.getNPCData().setItems(items);

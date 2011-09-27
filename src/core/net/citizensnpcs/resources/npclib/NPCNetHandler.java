@@ -17,7 +17,6 @@ import net.minecraft.server.Packet255KickDisconnect;
 import net.minecraft.server.Packet28EntityVelocity;
 import net.minecraft.server.Packet3Chat;
 import net.minecraft.server.Packet51MapChunk;
-import net.minecraft.server.Packet9Respawn;
 
 public class NPCNetHandler extends NetServerHandler {
 	public NPCNetHandler(MinecraftServer minecraftserver,
@@ -50,19 +49,7 @@ public class NPCNetHandler extends NetServerHandler {
 	}
 
 	@Override
-	public void a(Packet9Respawn packet9respawn) {
-	}
-
-	@Override
 	public void a(Packet10Flying packet10flying) {
-	}
-
-	@Override
-	public void a(Packet51MapChunk packet50mapchunk) {
-	}
-
-	@Override
-	public void a(Packet28EntityVelocity packet28entityvelocity) {
 	}
 
 	@Override
@@ -75,6 +62,14 @@ public class NPCNetHandler extends NetServerHandler {
 
 	@Override
 	public void a(Packet16BlockItemSwitch packet16blockitemswitch) {
+	}
+
+	@Override
+	public void a(Packet28EntityVelocity packet28entityvelocity) {
+	}
+
+	@Override
+	public void a(Packet51MapChunk packet50mapchunk) {
 	}
 
 	@Override
