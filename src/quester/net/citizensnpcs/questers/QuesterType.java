@@ -5,6 +5,7 @@ import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.Properties;
+import net.citizensnpcs.questers.data.QuestProperties;
 import net.citizensnpcs.questers.data.QuesterProperties;
 import net.citizensnpcs.questers.listeners.QuesterBlockListen;
 import net.citizensnpcs.questers.listeners.QuesterCitizensListen;
@@ -28,6 +29,7 @@ public class QuesterType extends CitizensNPCType {
 
 	@Override
 	public void registerEvents() {
+		QuestProperties.initialize();
 		// custom events
 		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new QuesterCitizensListen());

@@ -271,7 +271,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 		}
 		String path = "", root = "";
 		WaypointModifier modifier = null;
-		for (String key : profiles.getKeys(UID + this.waypoints)) {
+		for (int key : profiles.getIntegerKeys(UID + this.waypoints)) {
 			root = UID + this.waypoints + "." + key;
 			Waypoint waypoint = new Waypoint(LocationUtils.loadLocation(
 					profiles, root, true));
@@ -280,7 +280,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 			if (profiles.pathExists(root + ".modifiers")) {
 				root += ".modifiers";
-				for (String innerKey : profiles.getKeys(root)) {
+				for (int innerKey : profiles.getIntegerKeys(root)) {
 					path = root + "." + innerKey;
 					modifier = WaypointModifierType.valueOf(
 							profiles.getString(path + ".type"))

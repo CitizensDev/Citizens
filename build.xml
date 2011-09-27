@@ -50,6 +50,7 @@
                 <pathelement location="${libs}/BOSEconomy7.jar"/>
                 <pathelement location="${libs}/PermissionsEx.jar"/>
         		<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 		<!-- Finish compiling the core early because the NPC types require the core! -->
@@ -73,6 +74,7 @@
                 <pathelement location="${bin}/Citizens.jar"/>
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distblacksmith"/>
@@ -94,6 +96,7 @@
                 <pathelement location="${bin}/Citizens.jar"/>
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distguard"/>
@@ -115,6 +118,7 @@
                 <pathelement location="${bin}/Citizens.jar"/>
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 		<antcall target="disthealer"/>
@@ -136,6 +140,7 @@
                 <pathelement location="${bin}/Citizens.jar"/>
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distquester"/>
@@ -157,6 +162,7 @@
                 <pathelement location="${bin}/Citizens.jar"/>
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 		<antcall target="disttrader"/>
@@ -178,6 +184,7 @@
                 <pathelement location="${bin}/Citizens.jar"/>
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
+        		<pathelement location="${libs}/WorldGuard.jar"/>
                 </classpath>
         </javac>
 				<antcall target="distwizard"/>

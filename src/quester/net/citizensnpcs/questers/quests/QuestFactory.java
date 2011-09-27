@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 public class QuestFactory {
 
 	public static void instantiateQuests(ConfigurationHandler quests) {
-		int questCount = 0;
 		questLoop: for (String questName : quests.getKeys(null)) {
 			String path = questName;
 			Quest quest = new Quest(questName);
@@ -104,15 +103,13 @@ public class QuestFactory {
 			}
 			if (objectives.steps().size() == 0) {
 				quest = null;
-				Messaging.log("Quest number " + (questCount + 1)
+				Messaging.log("Quest " + questName
 						+ " is invalid - no objectives set.");
 				continue;
 			}
 			quest.setObjectives(objectives);
 			QuestManager.addQuest(quest);
-			++questCount;
 		}
-		Messaging.log("Loaded " + questCount + " quests.");
 	}
 
 	public static void saveQuest(ConfigurationHandler quests, Quest quest) {

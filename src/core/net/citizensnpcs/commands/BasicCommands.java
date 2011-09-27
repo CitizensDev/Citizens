@@ -377,6 +377,13 @@ public class BasicCommands extends CommandHandler {
 			max = 1)
 	@CommandPermissions("basic.modify.move")
 	public static void move(CommandContext args, Player player, HumanNPC npc) {
+		if (npc.getWorld() != player.getWorld()
+				&& !PermissionManager.hasPermission(player,
+						"basic.modify.move.multiworld")) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You don't have permission to move npcs between worlds.");
+			return;
+		}
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " is en route to your location!");
 		npc.teleport(player.getLocation());

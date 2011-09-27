@@ -132,6 +132,7 @@ public class Web {
 			// Send data
 			URL url = new URL("http://errorreport.citizensnpcs.net");
 			URLConnection conn = url.openConnection();
+			conn.setConnectTimeout(10000);
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(
 					conn.getOutputStream());

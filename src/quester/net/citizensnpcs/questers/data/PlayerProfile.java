@@ -6,12 +6,15 @@ import java.util.Map;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.utils.LocationUtils;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
@@ -112,9 +115,8 @@ public class PlayerProfile {
 							.getData().getData());
 				}
 				if (current.getLastLocation() != null) {
-					LocationUtils
-							.saveLocation(profile, current.getLastLocation(),
-									path, true);
+					LocationUtils.saveLocation(profile,
+							current.getLastLocation(), path, true);
 				}
 				++count;
 			}
@@ -131,7 +133,21 @@ public class PlayerProfile {
 
 	private void load() {
 		String path = "quests.current", temp = path;
-		if (!profile.getString(path + ".name").isEmpty()) {
+		questLoad: if (!profile.getString(path + ".name").isEmpty()) {
+			if (QuestManager.getQuest(profile.getString(path + ".name")) == null) {
+				Bukkit.getServer()
+						.getPlayer(name)
+						.sendMessage(
+								ChatColor.GRAY
+										+ "Previous in-progress quest "
+										+ StringUtils.wrap(
+												profile.getString(path
+														+ ".name"),
+												ChatColor.GRAY)
+										+ " no longer exists and has been aborted.");
+				profile.removeKey("quests.current");
+				break questLoad;
+			}
 			progress = new QuestProgress(profile.getInt(path + ".giver"),
 					Bukkit.getServer().getPlayer(name), profile.getString(path
 							+ ".name"), profile.getLong(path + ".start-time"));

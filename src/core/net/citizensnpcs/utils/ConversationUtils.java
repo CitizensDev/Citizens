@@ -61,7 +61,9 @@ public class ConversationUtils {
 	}
 
 	public enum ChatType {
-		EXIT("exit", "finish", "end"), UNDO("undo"), RESTART("restart");
+		EXIT("exit", "finish", "end"),
+		UNDO("undo"),
+		RESTART("restart");
 		private final String[] possibilities;
 
 		ChatType(String... string) {
@@ -125,6 +127,7 @@ public class ConversationUtils {
 				} else {
 					player.sendMessage(StringUtils.wrap("Finished") + ".");
 					onExit();
+					remove(player);
 				}
 			} else if (type == ChatType.RESTART) {
 				player.sendMessage(ChatColor.GRAY + "Restarted.");

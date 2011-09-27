@@ -154,6 +154,8 @@ public class SettingsManager {
 				"general.notify-updates", true));
 		nodes.add(new Node("DefaultTalkClose", SettingsType.GENERAL,
 				"general.defaults.talk-when-close", false));
+		nodes.add(new Node("DenyBlockedPVPTargets", SettingsType.GENERAL,
+				"general.pvp.deny.attack-disabled-pvp-players", true));
 		nodes.add(new Node("PathfindingRange", SettingsType.GENERAL,
 				"range.pathfinding", 16F));
 		nodes.add(new Node("UseEconomy", SettingsType.GENERAL,

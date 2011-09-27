@@ -3,6 +3,7 @@ package net.citizensnpcs.properties;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -55,7 +56,7 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	private void clear() {
-		for (String path : config.getAll().keySet()) {
+		for (String path : config.getKeys()) {
 			config.removeProperty(path);
 		}
 	}
@@ -320,6 +321,7 @@ public class CachedYAMLHandler implements Storage {
 			} catch (NumberFormatException ex) {
 			}
 		}
+		Collections.sort(ret);
 		return ret;
 	}
 

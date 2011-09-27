@@ -1,5 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
+import net.citizensnpcs.Plugins;
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
@@ -16,6 +18,8 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
@@ -328,6 +332,13 @@ public class PathNPC extends EntityPlayer {
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
 			int maxStationaryTicks, double range) {
+		if (Plugins.worldGuardEnabled()
+				&& SettingsManager.getBoolean("DenyBlockedPVPTargets")
+				&& entity instanceof Player) {
+			if (!Plugins.worldGuard.getGlobalRegionManager().allows(
+					DefaultFlag.PVP, entity.getLocation()))
+				return;
+		}
 		this.targetEntity = ((CraftLivingEntity) entity).getHandle();
 		this.targetAggro = aggro;
 		this.pathTickLimit = maxTicks;

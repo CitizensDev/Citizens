@@ -30,6 +30,7 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 
 public class NPCDataManager {
+	// TODO: make editors an interface.
 	public static final Map<String, Integer> pathEditors = Maps.newHashMap();
 	public static final Map<Player, Integer> equipmentEditors = Maps
 			.newHashMap();
@@ -223,10 +224,10 @@ public class NPCDataManager {
 		if (items != null) {
 			npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0)
 					.createStack());
-			for (int i = 1; i < items.size() - 1; i++) {
+			for (int i = 0; i < items.size() - 1; i++) {
 				Armor.getArmor(i).set(
 						npc.getInventory(),
-						items.get(i).getID() == 0 ? null : items.get(i)
+						items.get(i + 1).getID() == 0 ? null : items.get(i)
 								.createStack());
 			}
 			npc.getNPCData().setItems(items);

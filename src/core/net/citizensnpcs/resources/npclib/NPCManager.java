@@ -48,6 +48,8 @@ public class NPCManager {
 
 	// Rotates an NPC.
 	public static void faceEntity(HumanNPC npc, Entity entity) {
+		if (npc.getWorld() != entity.getWorld())
+			return;
 		Location loc = npc.getLocation(), pl = entity.getLocation();
 		double xDiff = pl.getX() - loc.getX();
 		double yDiff = pl.getY() - loc.getY();

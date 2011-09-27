@@ -1,6 +1,7 @@
 package net.citizensnpcs.utils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.citizensnpcs.api.event.npc.NPCInventoryOpenEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -157,7 +158,7 @@ public class InventoryUtils {
 		LEGGINGS(2),
 		BOOTS(3);
 		private final int slot;
-		private static final HashMap<Integer, Armor> slots = new HashMap<Integer, Armor>();
+		private static final Map<Integer, Armor> slots = new HashMap<Integer, Armor>();
 
 		Armor(int slot) {
 			this.slot = slot;

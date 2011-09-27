@@ -1,6 +1,7 @@
 package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.Plugins;
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.register.payment.Methods;
 import net.citizensnpcs.utils.Messaging;
@@ -12,6 +13,8 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.PluginManager;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class ServerListen extends ServerListener implements Listener {
 	private final Methods methods = new Methods();
@@ -33,6 +36,10 @@ public class ServerListen extends ServerListener implements Listener {
 						+ Methods.getMethod().getName() + " v"
 						+ Methods.getMethod().getVersion() + ")");
 			}
+		}
+		if (event.getPlugin().getDescription().getName()
+				.equalsIgnoreCase("WorldGuard")) {
+			Plugins.worldGuard = (WorldGuardPlugin) event.getPlugin();
 		}
 	}
 

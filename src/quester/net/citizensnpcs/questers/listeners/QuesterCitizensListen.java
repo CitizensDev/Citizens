@@ -8,14 +8,14 @@ import net.citizensnpcs.api.event.npc.NPCPlayerEvent;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.data.QuestProperties;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.event.Event;
 
 public class QuesterCitizensListen extends CitizensListener {
-
 	@Override
 	public void onCitizensEnable(CitizensEnableEvent event) {
-		QuestProperties.initialize();
+		Messaging.log("Loaded " + QuestManager.quests().size() + " quests.");
 	}
 
 	@Override
