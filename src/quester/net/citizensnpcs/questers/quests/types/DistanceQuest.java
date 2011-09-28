@@ -5,6 +5,7 @@ import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -16,11 +17,15 @@ public class DistanceQuest implements QuestUpdater {
 	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof PlayerMoveEvent) {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
-			int x = Math.abs(ev.getTo().getBlockX() - ev.getFrom().getBlockX());
-			int y = Math.abs(ev.getTo().getBlockY() - ev.getFrom().getBlockY());
-			int z = Math.abs(ev.getTo().getBlockZ() - ev.getFrom().getBlockZ());
-			progress.addAmount(x + y + z);
-
+			Location from = ev.getFrom(), to = ev.getTo();
+			if (!(from.getBlockX() == to.getBlockX()
+					&& from.getBlockY() == to.getBlockY() && from.getBlockZ() == to
+					.getBlockZ())) {
+				int x = Math.abs(to.getBlockX() - from.getBlockX());
+				int y = Math.abs(to.getBlockY() - from.getBlockY());
+				int z = Math.abs(to.getBlockZ() - from.getBlockZ());
+				progress.addAmount(x + y + z);
+			}
 		}
 		return progress.getAmount() >= progress.getObjective().getAmount();
 	}

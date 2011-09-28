@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class Healer extends CitizensNPC {
+	// TODO: unlimited health option
 	private int health = 10;
 	private int level = 1;
 
@@ -51,42 +52,39 @@ public class Healer extends CitizensNPC {
 			int healerHealth = healer.getHealth();
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("HealerTakeHealthItem")) {
-				if (playerHealth < 20) {
-					if (healerHealth > 0) {
-						if (EconomyManager.useEconPlugin()) {
-							if (EconomyManager.hasEnough(player,
-									UtilityProperties.getPrice("healer.heal"))) {
-								double paid = EconomyManager.pay(player,
-										UtilityProperties
-												.getPrice("healer.heal"));
-								if (paid >= 0) {
-									player.sendMessage(StringUtils.wrap(npc
-											.getStrippedName())
-											+ " has healed you for "
-											+ StringUtils.wrap(EconomyManager
-													.format(paid)) + ".");
-								}
-							} else {
-								player.sendMessage(MessageUtils
-										.getNoMoneyMessage(player,
-												"healer.heal"));
-								return;
-							}
-						} else {
-							player.sendMessage(StringUtils.wrap(npc
-									.getStrippedName()) + " has healed you.");
-						}
-						player.setHealth(player.getHealth() + 1);
-						healer.setHealth(healer.getHealth() - 1);
-					} else {
-						player.sendMessage(StringUtils.wrap(npc
-								.getStrippedName())
-								+ " does not have enough health remaining for you to take.");
-					}
-				} else {
+				if (playerHealth == 20) {
 					player.sendMessage(ChatColor.GREEN
 							+ "You are fully healed.");
+					return;
 				}
+				if (healerHealth == 0) {
+					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+							+ " does not have enough health remaining for you to take.");
+					return;
+				}
+				if (EconomyManager.useEconPlugin()) {
+					if (EconomyManager.hasEnough(player,
+							UtilityProperties.getPrice("healer.heal"))) {
+						double paid = EconomyManager.pay(player,
+								UtilityProperties.getPrice("healer.heal"));
+						if (paid >= 0) {
+							player.sendMessage(StringUtils.wrap(npc
+									.getStrippedName())
+									+ " has healed you for "
+									+ StringUtils.wrap(EconomyManager
+											.format(paid)) + ".");
+						}
+					} else {
+						player.sendMessage(MessageUtils.getNoMoneyMessage(
+								player, "healer.heal"));
+						return;
+					}
+				} else {
+					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+							+ " has healed you.");
+				}
+				player.setHealth(player.getHealth() + 1);
+				healer.setHealth(healer.getHealth() - 1);
 			} else if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("HealerGiveHealthItem")) {
 				if (playerHealth >= 1) {

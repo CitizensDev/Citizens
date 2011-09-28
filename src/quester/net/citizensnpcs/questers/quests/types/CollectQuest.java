@@ -10,7 +10,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class CollectQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.PLAYER_PICKUP_ITEM };
+	private static final Type[] EVENTS = { Type.PLAYER_PICKUP_ITEM };
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {

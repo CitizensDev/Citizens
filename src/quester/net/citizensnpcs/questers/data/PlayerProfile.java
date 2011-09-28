@@ -1,11 +1,11 @@
 package net.citizensnpcs.questers.data;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
-import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
@@ -21,26 +21,32 @@ import org.bukkit.material.MaterialData;
 import com.google.common.collect.Maps;
 
 public class PlayerProfile {
-	private final ConfigurationHandler profile;
-	private final Map<String, CompletedQuest> completedQuests = Maps
-			.newHashMap();
-	private QuestProgress progress;
-	private final String name;
-
 	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
 
-	public PlayerProfile(String name) {
+	private PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name
 				+ ".yml");
 		this.name = name;
 		this.load();
 	}
 
-	public static PlayerProfile getProfile(String name) {
+	public static Collection<PlayerProfile> getOnline() {
+		return profiles.values();
+	}
+
+	public static PlayerProfile getProfile(String name, boolean register) {
 		if (profiles.get(name) == null) {
-			profiles.put(name, new PlayerProfile(name));
+			PlayerProfile profile = new PlayerProfile(name);
+			if (register) {
+				profiles.put(name, profile);
+			}
+			return profile;
 		}
 		return profiles.get(name);
+	}
+
+	public static PlayerProfile getProfile(String name) {
+		return getProfile(name, true);
 	}
 
 	public static void setProfile(String name, PlayerProfile profile) {
@@ -57,16 +63,30 @@ public class PlayerProfile {
 		}
 	}
 
+	private final ConfigurationHandler profile;
+	private final Map<String, CompletedQuest> completedQuests = Maps
+			.newHashMap();
+	private QuestProgress progress;
+	private final String name;
+
 	public void addCompletedQuest(CompletedQuest quest) {
 		completedQuests.put(quest.getName(), quest);
+	}
+
+	public void removeCompletedQuest(String name) {
+		completedQuests.remove(name);
 	}
 
 	public CompletedQuest getCompletedQuest(String name) {
 		return completedQuests.get(name);
 	}
 
+	public void removeAllCompletedQuests() {
+		completedQuests.clear();
+	}
+
 	public Collection<CompletedQuest> getAllCompleted() {
-		return completedQuests.values();
+		return Collections.unmodifiableCollection(completedQuests.values());
 	}
 
 	public boolean hasCompleted(String quest) {
@@ -88,8 +108,12 @@ public class PlayerProfile {
 		return progress != null;
 	}
 
-	public Storage getStorage() {
-		return profile;
+	public String getQuest() {
+		return progress == null ? "" : progress.getQuestName();
+	}
+
+	public boolean isOnline() {
+		return Bukkit.getServer().getPlayer(name) != null;
 	}
 
 	public void save() {
@@ -119,6 +143,7 @@ public class PlayerProfile {
 					LocationUtils.saveLocation(profile,
 							current.getLastLocation(), path, true);
 				}
+				progress.getProgress()[count] = null;
 				++count;
 			}
 		}
@@ -189,5 +214,29 @@ public class PlayerProfile {
 							profile.getInt(path + ".completed"), profile
 									.getLong(path + ".elapsed")));
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		return 31 + ((name == null) ? 0 : name.hashCode());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		PlayerProfile other = (PlayerProfile) obj;
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
 	}
 }

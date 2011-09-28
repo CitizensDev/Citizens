@@ -4,6 +4,7 @@ import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.utils.ConversationUtils;
 
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -14,11 +15,15 @@ public class QuesterPlayerListen extends PlayerListener {
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		QuestManager.unload(event.getPlayer());
-		ConversationUtils.verify();
 	}
 
 	@Override
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		QuestManager.incrementQuest(event.getPlayer(), event);
+	}
+
+	@Override
+	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		QuestManager.incrementQuest(event.getPlayer(), event);
 	}
 

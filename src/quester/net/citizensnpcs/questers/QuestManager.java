@@ -67,7 +67,7 @@ public class QuestManager {
 
 	public static boolean assignQuest(Player player, int UID, String q) {
 		q = q.toLowerCase();
-		if (!validQuest(q)) {
+		if (!isValidQuest(q)) {
 			throw new IllegalArgumentException("Given quest does not exist");
 		}
 		Quest quest = quests.get(q);
@@ -96,7 +96,7 @@ public class QuestManager {
 		return true;
 	}
 
-	public static boolean validQuest(String quest) {
+	public static boolean isValidQuest(String quest) {
 		return getQuest(quest) != null;
 	}
 
