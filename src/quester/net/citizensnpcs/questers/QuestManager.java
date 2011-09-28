@@ -82,7 +82,8 @@ public class QuestManager {
 						+ requirement.getRequiredText(player));
 				return false;
 			}
-			requirement.grant(player, UID);
+			if (requirement.isTake())
+				requirement.grant(player, UID);
 		}
 		QuestBeginEvent call;
 		Bukkit.getPluginManager().callEvent(
