@@ -13,6 +13,7 @@ import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.Messaging;
 
+import org.anjocaido.groupmanager.GroupManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -37,6 +38,10 @@ public class PermissionManager {
 		} else if (pm.getPlugin("bPermissions") != null) {
 			permPlugin = "bPermissions";
 			provider = new BPermissionsProvider();
+		} else if (pm.getPlugin("GroupManager") != null) {
+			permPlugin = "GroupManager";
+			provider = new GroupManagerProvider(
+					(GroupManager) pm.getPlugin("GroupManager"));
 		} else {
 			return;
 		}

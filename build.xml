@@ -51,6 +51,7 @@
                 <pathelement location="${libs}/PermissionsEx.jar"/>
         		<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 		<!-- Finish compiling the core early because the NPC types require the core! -->
@@ -75,6 +76,7 @@
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distblacksmith"/>
@@ -97,6 +99,7 @@
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distguard"/>
@@ -119,6 +122,7 @@
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 		<antcall target="disthealer"/>
@@ -141,6 +145,7 @@
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 		<antcall target="distquester"/>
@@ -163,6 +168,7 @@
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 		<antcall target="disttrader"/>
@@ -185,6 +191,7 @@
                	<pathelement location="${libs}/PermissionsEx.jar"/>
                	<pathelement location="${libs}/bpermissions.jar"/>
         		<pathelement location="${libs}/WorldGuard.jar"/>
+        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
                 </classpath>
         </javac>
 				<antcall target="distwizard"/>

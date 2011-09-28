@@ -10,7 +10,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Set;
-import java.util.logging.Filter;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -100,18 +100,7 @@ public class Web {
 		if (!SettingsManager.getBoolean("ErrorReporting")) {
 			return;
 		}
-		Bukkit.getServer().getLogger().setFilter(new Filter() {
-			@Override
-			public boolean isLoggable(LogRecord record) {
-				if (record.getMessage() != null
-						&& record.getLevel() == Level.SEVERE) {
-					if (record.getMessage().contains("Citizens")) {
-						report(stackToString(record.getThrown()));
-					}
-				}
-				return true;
-			}
-		});
+		Bukkit.getServer().getLogger().addHandler(new LogHandler());
 	}
 
 	private static void report(String error) {
@@ -167,6 +156,18 @@ public class Web {
 			return sw.toString();
 		} catch (Exception e2) {
 			return "Invalid stacktrace";
+		}
+	}
+
+	private static class LogHandler extends ConsoleHandler {
+		@Override
+		public void publish(LogRecord record) {
+			if (record.getMessage() != null
+					&& record.getLevel() == Level.SEVERE) {
+				if (record.getMessage().contains("Citizens")) {
+					report(stackToString(record.getThrown()));
+				}
+			}
 		}
 	}
 }
