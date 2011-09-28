@@ -83,7 +83,7 @@ public class DefaultSpawner implements Spawner {
 	}
 
 	private int getRandomInt(Random random, int max) {
-		int ran = random.nextInt(max);
+		int ran = random.nextInt(Math.abs(max));
 		return random.nextBoolean() ? -ran : ran;
 	}
 

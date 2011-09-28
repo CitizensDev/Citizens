@@ -103,6 +103,8 @@ public class PlayerProfile {
 			profile.setInt(path + ".giver", progress.getQuesterUID());
 
 			for (ObjectiveProgress current : progress.getProgress()) {
+				if (current == null)
+					continue;
 				path = oldPath + "." + count + ".progress";
 				profile.setInt(path + ".amount", current.getAmount());
 				if (current.getLastItem() != null) {
@@ -110,9 +112,8 @@ public class PlayerProfile {
 							.getTypeId());
 					profile.setInt(path + ".item.amount", current.getLastItem()
 							.getAmount());
-					profile.setInt(path + ".item.id", current.getLastItem()
-							.getData() == null ? 0 : current.getLastItem()
-							.getData().getData());
+					profile.setInt(path + ".item.data", current.getLastItem()
+							.getDurability());
 				}
 				if (current.getLastLocation() != null) {
 					LocationUtils.saveLocation(profile,

@@ -186,7 +186,7 @@ public class GuardCommands extends CommandHandler {
 		if (args.hasFlag('g')) {
 			if (!PermissionManager.hasBackend()) {
 				player.sendMessage(ChatColor.GRAY
-						+ "Group flags require Bukkit's permission system to be used.");
+						+ "Group flags require a Permissions backend.");
 				return;
 			}
 			CitizensGroup group = PermissionManager.getGroup(name);
