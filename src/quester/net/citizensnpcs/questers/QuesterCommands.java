@@ -254,6 +254,7 @@ public class QuesterCommands extends CommandHandler {
 		INSTANCE.sendHelpPage(sender);
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "quest",
 			usage = "saveall",
@@ -273,6 +274,7 @@ public class QuesterCommands extends CommandHandler {
 				+ " profiles.");
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "quest",
 			usage = "save",
