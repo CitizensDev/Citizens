@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 
 public class PlayerProfile {
 	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
+	private long lastSave;
 
 	private PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name
@@ -117,7 +118,9 @@ public class PlayerProfile {
 	}
 
 	public void save() {
+		this.lastSave = System.currentTimeMillis();
 		if (progress != null && progress.getProgress() != null) {
+			profile.removeKey("quests.current");
 			String path = "quests.current", oldPath = path;
 			int count = 0;
 
@@ -242,5 +245,9 @@ public class PlayerProfile {
 			return false;
 		}
 		return true;
+	}
+
+	public long getLastSaveTime() {
+		return lastSave;
 	}
 }

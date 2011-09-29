@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.api.events.QuestCancelEvent;
@@ -90,25 +91,6 @@ public class QuesterCommands extends CommandHandler {
 				+ " added to " + StringUtils.wrap(npc.getName())
 				+ "'s quests. " + StringUtils.wrap(npc.getName()) + " now has "
 				+ StringUtils.wrap(quester.getQuests().size()) + " quests.");
-	}
-
-	@Command(
-			aliases = "quest",
-			usage = "saveall",
-			desc = "saves all profiles",
-			modifiers = "saveall",
-			min = 1,
-			max = 1)
-	@CommandPermissions("quester.admin.quests.save")
-	public static void saveProfiles(CommandContext args, Player player,
-			HumanNPC npc) {
-		int count = 0;
-		for (PlayerProfile profile : PlayerProfile.getOnline()) {
-			profile.save();
-			++count;
-		}
-		player.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
-				+ " profiles.");
 	}
 
 	@Command(
@@ -273,6 +255,52 @@ public class QuesterCommands extends CommandHandler {
 	}
 
 	@Command(
+			aliases = "quest",
+			usage = "saveall",
+			desc = "saves all profiles",
+			modifiers = "saveall",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.admin.quests.save")
+	public static void saveProfiles(CommandContext args, Player player,
+			HumanNPC npc) {
+		int count = 0;
+		for (PlayerProfile profile : PlayerProfile.getOnline()) {
+			profile.save();
+			++count;
+		}
+		player.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
+				+ " profiles.");
+	}
+
+	@Command(
+			aliases = "quest",
+			usage = "save",
+			desc = "saves current progress",
+			modifiers = "save",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.use.quests.save")
+	public static void saveProfile(CommandContext args, Player player,
+			HumanNPC npc) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (System.currentTimeMillis() - profile.getLastSaveTime() < SettingsManager
+				.getInt("QuestSaveDelay")) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Please wait "
+					+ TimeUnit.SECONDS.convert(
+							SettingsManager.getInt("QuestSaveDelay")
+									- (System.currentTimeMillis() - profile
+											.getLastSaveTime()),
+							TimeUnit.MILLISECONDS)
+					+ " seconds before saving again.");
+			return;
+		}
+		profile.save();
+		player.sendMessage(ChatColor.GREEN + "Saved current progress.");
+	}
+
+	@Command(
 			aliases = "quester",
 			usage = "quests (page)",
 			desc = "view the assigned quests of a quester",
@@ -427,6 +455,8 @@ public class QuesterCommands extends CommandHandler {
 				"clear in-progress/completed quests");
 		HelpUtils.format(sender, "quest", "completed (page)",
 				"view your completed quests");
+		HelpUtils.format(sender, "quest", "save",
+				"saves current quest progress");
 		HelpUtils.format(sender, "quest", "status",
 				"view your current quest status");
 		HelpUtils.footer(sender);

@@ -74,11 +74,12 @@ public class QuestProgress {
 
 	public void updateProgress(Player player, Event event) {
 		if (progress.length > 0) {
-			int idx = -1;
+			int idx = 0;
 			for (ObjectiveProgress progress : this.progress) {
-				++idx;
-				if (progress == null)
+				if (progress == null) {
+					++idx;
 					continue;
+				}
 				boolean cont = true;
 				for (Event.Type type : progress.getEventTypes()) {
 					if (type == event.getType()) {
@@ -86,15 +87,19 @@ public class QuestProgress {
 						break;
 					}
 				}
-				if (cont)
+				if (cont) {
+					++idx;
 					continue;
+				}
 				if (progress.update(event)) {
+					Messaging.log("Clearing objective " + idx);
 					this.progress[idx] = null;
 					if (!progress.getObjective().getMessage().isEmpty()) {
 						Messaging.send(player, progress.getObjective()
 								.getMessage());
 					}
 				}
+				++idx;
 			}
 		}
 	}
