@@ -2,7 +2,9 @@ package net.citizensnpcs.resources.npclib.creatures;
 
 import java.lang.reflect.Constructor;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.utils.StringUtils;
@@ -10,6 +12,7 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public enum CreatureNPCType {
@@ -28,7 +31,6 @@ public enum CreatureNPCType {
 
 	CreatureNPCType(Class<? extends CreatureNPC> instance, String name,
 			SpawnValidator spawnIn, SpawnValidator spawnOn) {
-
 		name = StringUtils.capitalise(name.toLowerCase());
 		try {
 			this.instance = instance.getConstructor(MinecraftServer.class,
@@ -46,10 +48,13 @@ public enum CreatureNPCType {
 
 	private final static Map<String, CreatureNPCType> mapping = Maps
 			.newHashMap();
+	private final static List<CreatureNPCType> spawning = Lists.newArrayList();
 
 	static {
 		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
 			mapping.put(type.name, type);
+			if (type.isSpawn())
+				spawning.add(type);
 		}
 	}
 
@@ -91,5 +96,10 @@ public enum CreatureNPCType {
 
 	public boolean isSpawn() {
 		return spawn;
+	}
+
+	public static CreatureNPCType getRandomType(Random random) {
+		return spawning.size() == 0 ? null : spawning.get(random
+				.nextInt(spawning.size()));
 	}
 }

@@ -66,7 +66,7 @@ public class PermissionManager {
 	}
 
 	private static int getMaxNPCs(Player player) {
-		for (int x = 1; x <= 100; x++) {
+		for (int x = 100; x > 0; --x) {
 			if (hasPermission(player, "citizens.npccount." + x)) {
 				return x;
 			}

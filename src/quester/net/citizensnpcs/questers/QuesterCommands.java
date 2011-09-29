@@ -94,6 +94,25 @@ public class QuesterCommands extends CommandHandler {
 
 	@Command(
 			aliases = "quest",
+			usage = "saveall",
+			desc = "saves all profiles",
+			modifiers = "saveall",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.admin.quests.save")
+	public static void saveProfiles(CommandContext args, Player player,
+			HumanNPC npc) {
+		int count = 0;
+		for (PlayerProfile profile : PlayerProfile.getOnline()) {
+			profile.save();
+			++count;
+		}
+		player.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
+				+ " profiles.");
+	}
+
+	@Command(
+			aliases = "quest",
 			usage = "add [player] [npcID] [quest]",
 			desc = "gives a quest to a player",
 			modifiers = "add",

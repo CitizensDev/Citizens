@@ -182,9 +182,11 @@ public class PlayerProfile {
 				break questLoad;
 			int count = 0;
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
-				if (questProgress == null)
-					continue;
 				temp = path + "." + count + ".progress";
+				if (questProgress == null || !profile.pathExists(temp)) {
+					++count;
+					continue;
+				}
 				questProgress.setAmountCompleted(this.profile.getInt(temp
 						+ ".amount"));
 				int itemID = profile.getInt(temp + ".item.id");

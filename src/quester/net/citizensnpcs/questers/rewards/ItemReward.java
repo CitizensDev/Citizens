@@ -25,6 +25,7 @@ public class ItemReward implements Reward {
 		this.take = take;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void grant(Player player, int UID) {
 		if (amount == 0 || material == Material.AIR)

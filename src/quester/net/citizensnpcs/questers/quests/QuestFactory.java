@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 public class QuestFactory {
 
 	public static void instantiateQuests(ConfigurationHandler quests) {
-		questLoop: for (String questName : quests.getKeys(null)) {
-			String path = questName;
-			Quest quest = new Quest(questName);
+		questLoop: for (Object questName : quests.getKeys(null)) {
+			String path = questName.toString();
+			Quest quest = new Quest(questName.toString());
 			quest.setDescription(quests.getString(path + ".texts.description"));
 			quest.setCompletedText(quests.getString(path + ".texts.completion"));
 			quest.setAcceptanceText(quests

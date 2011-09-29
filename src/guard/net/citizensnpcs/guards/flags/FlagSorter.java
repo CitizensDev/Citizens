@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import net.citizensnpcs.guards.Guard;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -26,14 +28,14 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.TreeMultiset;
+import com.google.common.collect.Sets;
 
 public class FlagSorter {
 	// TODO: perhaps we should make a sorted copy as well of the base flags.
 	// Needs some cleaning up of code... perhaps less verbosity can be achieved.
 	// Optimisations are definitely possible.
 	private final FlagList list;
-	private final Map<String, FlagInfo> groupMap = new HashMap<String, FlagInfo>();
+	private final Map<String, FlagInfo> groupCache = new HashMap<String, FlagInfo>();
 	private final FlagType GROUPS = FlagType.GROUP, PLAYERS = FlagType.PLAYER,
 			MOBS = FlagType.MOB;
 	private int lowestFound = 21;
@@ -103,24 +105,25 @@ public class FlagSorter {
 					if (!PermissionManager.hasBackend()) {
 						return false;
 					}
-					if (groupMap.get(name) != null) {
+					if (groupCache.get(name) != null) {
 						return true;
 					}
-					if (PermissionManager.getGroups(player) == null) {
+					Set<CitizensGroup> groups = PermissionManager
+							.getGroups(player);
+					if (groups == null) {
 						return false;
 					}
 					List<String> transformed = Lists.newArrayList((Iterables
-							.transform(Iterables.filter(
-									PermissionManager.getGroups(player),
-									groupSorter), groupToString)));
-					TreeMultiset<FlagInfo> sorted = getSortedFlags(
+							.transform(Iterables.filter(groups, groupSorter),
+									groupToString)));
+					TreeSet<FlagInfo> sorted = getSortedFlags(
 							getByType(GROUPS), transformed);
 					if (sorted.size() > 0) {
-						FlagInfo info = sorted.elementSet().first();
-						groupMap.put(name, info);
+						FlagInfo info = sorted.first();
+						groupCache.put(name, info);
 						updateLowest(info);
 					}
-					return sorted.size() == 0;
+					return sorted.size() != 0;
 				}
 			} else {
 				if (isTargetable(getByType(MOBS),
@@ -155,7 +158,7 @@ public class FlagSorter {
 			} else if (entity instanceof Player) {
 				String name = ((Player) entity).getName().toLowerCase();
 				if (!name.equals(npc.getOwner().toLowerCase())) {
-					retrieved = get(getByType(PLAYERS), name) == null ? groupMap
+					retrieved = get(getByType(PLAYERS), name) == null ? groupCache
 							.get(name) : get(getByType(PLAYERS), name);
 				}
 			} else {
@@ -183,17 +186,7 @@ public class FlagSorter {
 		return list.getFlags(type);
 	}
 
-	TreeMultiset<FlagInfo> getSortedFlags(Map<String, FlagInfo> process) {
-		return getSortedFlags(process.values());
-	}
-
-	TreeMultiset<FlagInfo> getSortedFlags(Collection<FlagInfo> process) {
-		TreeMultiset<FlagInfo> sorted = TreeMultiset.create(priorityComparer);
-		sorted.addAll(process);
-		return sorted;
-	}
-
-	TreeMultiset<FlagInfo> getSortedFlags(Map<String, FlagInfo> source,
+	TreeSet<FlagInfo> getSortedFlags(Map<String, FlagInfo> source,
 			Collection<String> toProcess) {
 		List<FlagInfo> processed = new ArrayList<FlagInfo>();
 		for (String string : toProcess) {
@@ -203,7 +196,9 @@ public class FlagSorter {
 			}
 			processed.add(source.get(string));
 		}
-		return getSortedFlags(processed);
+		TreeSet<FlagInfo> sorted = Sets.newTreeSet(priorityComparer);
+		sorted.addAll(processed);
+		return sorted;
 	}
 
 	static boolean isTargetable(Map<String, FlagInfo> search, String key) {
@@ -235,8 +230,8 @@ public class FlagSorter {
 		if (group == null)
 			return;
 		for (String name : group.getMembers()) {
-			if (groupMap.containsKey(name))
-				groupMap.put(name, info);
+			if (groupCache.containsKey(name))
+				groupCache.put(name, info);
 		}
 	}
 }

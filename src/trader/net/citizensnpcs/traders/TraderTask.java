@@ -5,7 +5,6 @@ import java.util.Map;
 
 import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.traders.TraderManager.TraderMode;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -122,12 +121,8 @@ public class TraderTask implements Runnable {
 			sendLeaveMessage();
 			said = true;
 		}
-		int index = TraderManager.tasks.indexOf(taskID);
-		if (index != -1) {
-			TraderManager.tasks.remove(TraderManager.tasks.indexOf(taskID));
-		}
-		run();
 		Bukkit.getServer().getScheduler().cancelTask(taskID);
+		run();
 	}
 
 	private boolean checkContainer(EntityPlayer handle) {

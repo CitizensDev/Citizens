@@ -11,7 +11,6 @@ import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.traders.TraderManager.TraderMode;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.Messaging;
 
@@ -42,10 +41,7 @@ public class Trader extends CitizensNPC {
 	}
 
 	public Stockable getStockable(int itemID, short dataValue, boolean selling) {
-		if (checkStockingIntegrity()) {
-			return fetchStockable(itemID, dataValue, selling);
-		}
-		return null;
+		return fetchStockable(itemID, dataValue, selling);
 	}
 
 	public Stockable getStockable(Stockable s) {
@@ -55,30 +51,26 @@ public class Trader extends CitizensNPC {
 
 	public List<Stockable> getStockables(int itemID, boolean selling) {
 		List<Stockable> stockables = new ArrayList<Stockable>();
-		if (checkStockingIntegrity()) {
-			for (Stockable s : stocking.values())
-				if (itemID == s.getStockingId() && selling == s.isSelling()) {
-					stockables.add(s);
-				}
-		}
+		for (Stockable s : stocking.values())
+			if (itemID == s.getStockingId() && selling == s.isSelling()) {
+				stockables.add(s);
+			}
 		return stockables;
 	}
 
 	public List<Stockable> getStockables(boolean selling) {
-		ArrayList<Stockable> stockables = new ArrayList<Stockable>();
-		if (checkStockingIntegrity()) {
-			for (Stockable s : stocking.values())
-				if (selling == s.isSelling()) {
-					stockables.add(s);
-				}
-		}
+		List<Stockable> stockables = new ArrayList<Stockable>();
+		for (Stockable s : stocking.values())
+			if (selling == s.isSelling()) {
+				stockables.add(s);
+			}
+
 		return stockables;
 	}
 
 	public void removeStockable(int ID, short dataValue, boolean selling) {
-		if (checkStockingIntegrity()) {
-			stocking.remove(new Check(ID, dataValue, selling));
-		}
+		stocking.remove(new Check(ID, dataValue, selling));
+
 	}
 
 	public void removeStockable(Check check) {
@@ -87,19 +79,12 @@ public class Trader extends CitizensNPC {
 	}
 
 	public boolean isStocked(int itemID, short dataValue, boolean selling) {
-		if (checkStockingIntegrity()) {
-			return fetchStockable(itemID, dataValue, selling) != null;
-		}
-		return false;
+		return fetchStockable(itemID, dataValue, selling) != null;
 	}
 
 	public boolean isStocked(Stockable s) {
 		return isStocked(s.getStockingId(), s.getStockingDataValue(),
 				s.isSelling());
-	}
-
-	public boolean checkStockingIntegrity() {
-		return !(this.stocking == null || this.stocking.isEmpty());
 	}
 
 	public void setFree(boolean free) {
@@ -145,7 +130,6 @@ public class Trader extends CitizensNPC {
 			TraderTask task = new TraderTask(npc, player, mode);
 			int id = Bukkit.getServer().getScheduler()
 					.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 1);
-			TraderManager.tasks.add(id);
 			task.addID(id);
 			trader.setFree(false);
 			InventoryUtils.showInventory(npc, player);

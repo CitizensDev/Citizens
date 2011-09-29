@@ -18,7 +18,6 @@ public class DefaultSpawner implements Spawner {
 	public static final DefaultSpawner INSTANCE = new DefaultSpawner();
 
 	private DefaultSpawner() {
-
 	}
 
 	private final Random random = new Random(System.currentTimeMillis());
@@ -28,15 +27,15 @@ public class DefaultSpawner implements Spawner {
 		if (random.nextInt(100) > type.getSpawnChance())
 			return null;
 		// TODO: Make this more random.
-		int offset = 25 * getRandomInt(random, 1);
+		int offset = 25 * getRandomInt(1);
 		int offsetX = loc.getBlockX() + offset, offsetZ = loc.getBlockZ()
 				+ offset;
 		if (offset < 0) {
-			offsetX -= getRandomInt(random, offset);
-			offsetZ -= getRandomInt(random, offset);
+			offsetX -= getRandomInt(offset);
+			offsetZ -= getRandomInt(offset);
 		} else {
-			offsetX += getRandomInt(random, offset);
-			offsetZ += getRandomInt(random, offset);
+			offsetX += getRandomInt(offset);
+			offsetZ += getRandomInt(offset);
 		}
 		int searchY = 3, searchXZ = 4, shiftedX = 0, shiftedZ = 0;
 
@@ -64,8 +63,7 @@ public class DefaultSpawner implements Spawner {
 													random.nextInt(360)), type);
 									// call NPC creation event with reason of
 									// SPAWN
-									Bukkit.getServer()
-											.getPluginManager()
+									Bukkit.getPluginManager()
 											.callEvent(
 													new NPCCreateEvent(
 															npc,
@@ -82,8 +80,8 @@ public class DefaultSpawner implements Spawner {
 		return null;
 	}
 
-	private int getRandomInt(Random random, int max) {
-		int ran = random.nextInt(Math.abs(max));
+	private int getRandomInt(int max) {
+		int ran = random.nextInt(max < 0 ? -max : max);
 		return random.nextBoolean() ? -ran : ran;
 	}
 

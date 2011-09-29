@@ -33,8 +33,9 @@ public class CreatureTask implements Runnable {
 		}
 		if (online != null && online.length > 0) {
 			Player player = online[random.nextInt(online.length)];
-			CreatureNPCType type = CreatureNPCType.values()[random
-					.nextInt(CreatureNPCType.values().length)];
+			CreatureNPCType type = CreatureNPCType.getRandomType(random);
+			if (type == null)
+				return;
 			// TODO: favour certain biomes perhaps?
 			spawnCreature(type, player.getLocation());
 		}
