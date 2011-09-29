@@ -137,7 +137,7 @@ public class QuesterCommands extends CommandHandler {
 			aliases = "quest",
 			usage = "clear [player|*] [quest|*]",
 			desc = "gives a quest to a player",
-			modifiers = "clear",
+			modifiers = { "clear", "purge" },
 			min = 3,
 			flags = "c")
 	@CommandRequirements()
@@ -426,10 +426,14 @@ public class QuesterCommands extends CommandHandler {
 		PermissionManager.addPermission("quester.use.help");
 		PermissionManager.addPermission("quester.modify.quests.assign");
 		PermissionManager.addPermission("quester.modify.quests.remove");
-		PermissionManager.addPermission("quester.use.quests.status");
 		PermissionManager.addPermission("quester.use.quests.abort");
-		PermissionManager.addPermission("quester.use.quests.view");
 		PermissionManager.addPermission("quester.use.quests.help");
+		PermissionManager.addPermission("quester.use.quests.status");
+		PermissionManager.addPermission("quester.use.quests.save");
+		PermissionManager.addPermission("quester.use.quests.view");
+		PermissionManager.addPermission("quester.admin.quests.clear");
+		PermissionManager.addPermission("quester.admin.quests.save");
+		PermissionManager.addPermission("quester.admin.quests.giveplayer");
 	}
 
 	@Override

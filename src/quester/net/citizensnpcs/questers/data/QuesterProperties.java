@@ -92,6 +92,8 @@ public class QuesterProperties extends PropertyManager implements Properties {
 				"quests.exploits.combat.check-times", 2));
 		nodes.add(new Node("CombatExploitRadius", SettingsType.GENERAL,
 				"quests.exploits.combat.check-radius", 20));
+		nodes.add(new Node("BlockTrackingRemoveDelay", SettingsType.GENERAL,
+				"quests.exploits.blocks.tracking-remove-delay", 6000));
 		return nodes;
 	}
 }
