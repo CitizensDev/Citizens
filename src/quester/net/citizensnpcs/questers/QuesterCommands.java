@@ -126,7 +126,7 @@ public class QuesterCommands extends CommandHandler {
 					+ "Player already has a quest. Use the -f flag to force add the quest.");
 			return;
 		}
-		profile.setProgress(new QuestProgress(args.getInteger(2), other, name,
+		profile.setProgress(new QuestProgress(args.getInteger(2), other, quest,
 				System.currentTimeMillis()));
 		if (other == null)
 			profile.save();
