@@ -127,9 +127,10 @@ public class PlayerProfile {
 			profile.setInt(path + ".giver", progress.getQuesterUID());
 
 			for (ObjectiveProgress current : progress.getProgress()) {
-				if (current == null)
-					continue;
 				path = oldPath + "." + count + ".progress";
+				if (current == null) {
+					continue;
+				}
 				profile.setInt(path + ".amount", current.getAmount());
 				if (current.getLastItem() != null) {
 					profile.setInt(path + ".item.id", current.getLastItem()
@@ -184,6 +185,7 @@ public class PlayerProfile {
 			for (ObjectiveProgress questProgress : progress.getProgress()) {
 				temp = path + "." + count + ".progress";
 				if (questProgress == null || !profile.pathExists(temp)) {
+					progress.getProgress()[count] = null;
 					++count;
 					continue;
 				}

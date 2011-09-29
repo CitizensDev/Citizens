@@ -378,8 +378,11 @@ public class QuesterCommands extends CommandHandler {
 					if (progress == null)
 						continue;
 					try {
-						Messaging.send(player, progress.getQuestUpdater()
-								.getStatus(progress));
+						Messaging.send(
+								player,
+								StringUtils.wrap("  - ", ChatColor.WHITE)
+										+ progress.getQuestUpdater().getStatus(
+												progress));
 					} catch (QuestCancelException ex) {
 						player.sendMessage(ChatColor.GRAY
 								+ "Cancelling quest. Reason: " + ex.getReason());

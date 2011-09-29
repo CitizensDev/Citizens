@@ -22,28 +22,27 @@ public class DeliveryQuest implements QuestUpdater {
 		if (event instanceof NPCRightClickEvent) {
 			NPCRightClickEvent e = (NPCRightClickEvent) event;
 			if (e.getPlayer().getEntityId() == progress.getPlayer()
-					.getEntityId()) {
-				if (e.getNPC().getUID() == progress.getObjective()
-						.getDestNPCID()) {
-					Player player = e.getPlayer();
-					if (player.getItemInHand().getType() == progress
-							.getObjective().getMaterial()) {
-						boolean completed = player.getItemInHand().getAmount() >= progress
-								.getObjective().getAmount();
-						if (completed
-								&& progress.getObjective().getAmount() > 0
-								&& progress.getObjective().getMaterial() != Material.AIR) {
-							int amount = player.getItemInHand().getAmount()
-									- progress.getObjective().getAmount();
-							ItemStack item = player.getItemInHand();
-							if (amount > 0)
-								item.setAmount(amount);
-							else
-								item = null;
-							player.setItemInHand(item);
-						}
-						return completed;
+					.getEntityId()
+					&& e.getNPC().getUID() == progress.getObjective()
+							.getDestNPCID()) {
+				Player player = e.getPlayer();
+				if (player.getItemInHand().getType() == progress.getObjective()
+						.getMaterial()) {
+					boolean completed = player.getItemInHand().getAmount() >= progress
+							.getObjective().getAmount();
+					if (completed
+							&& progress.getObjective().getAmount() > 0
+							&& progress.getObjective().getMaterial() != Material.AIR) {
+						int amount = player.getItemInHand().getAmount()
+								- progress.getObjective().getAmount();
+						ItemStack item = player.getItemInHand();
+						if (amount > 0)
+							item.setAmount(amount);
+						else
+							item = null;
+						player.setItemInHand(item);
 					}
+					return completed;
 				}
 			}
 		}
