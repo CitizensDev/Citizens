@@ -102,4 +102,8 @@ public enum CreatureNPCType {
 		return spawning.size() == 0 ? null : spawning.get(random
 				.nextInt(spawning.size()));
 	}
+
+	public static boolean hasSpawning() {
+		return spawning.size() > 0;
+	}
 }

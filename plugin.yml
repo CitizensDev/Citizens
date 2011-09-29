@@ -63,6 +63,10 @@ permissions:
     citizens.*:
         default: op
         children:
+            citizens.admin.override.*:
+                 children:
+                    citizens.admin.override.setowner: true
+                    citizens.admin.override.remove: true
             citizens.admin.*:
                 children:
                     citizens.admin.info: true
@@ -71,10 +75,6 @@ permissions:
                     citizens.admin.debug: true
                     citizens.admin.clean: true
                     citizens.admin.notifyupdates: true
-                    citizens.admin.override.*:
-                        children:
-                            citizens.admin.override.setowner: true
-                            citizens.admin.override.remove: true
             citizens.toggle.*:
                 children:
                     citizens.toggle.help: true
@@ -176,6 +176,11 @@ permissions:
                             citizens.wizard.modify.unlimited: true
             citizens.quester.*:
                 children:
+                    citizens.quester.admin.*:
+                        children:
+                            quester.admin.quests.save: true
+                            quester.admin.quests.giveplayer: true
+                            quester.admin.quests.clear: true
                     citizens.quester.use.*:
                         children:
                             citizens.quester.use.help: true

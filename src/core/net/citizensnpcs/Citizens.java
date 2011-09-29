@@ -31,6 +31,7 @@ import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.resources.register.payment.Method;
 import net.citizensnpcs.resources.sk89q.CitizensCommandsManager;
@@ -102,12 +103,14 @@ public class Citizens extends JavaPlugin {
 		new PermissionManager(getServer().getPluginManager());
 
 		// schedule Creature tasks
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new CreatureTask(),
-				SettingsManager.getInt("CreatureNPCSpawnDelay"),
-				SettingsManager.getInt("CreatureNPCSpawnDelay"));
-		getServer().getScheduler().scheduleSyncRepeatingTask(this,
-				new CreatureTask.CreatureTick(), 0, 1);
+		if (CreatureNPCType.hasSpawning()) {
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new CreatureTask(),
+					SettingsManager.getInt("CreatureNPCSpawnDelay"),
+					SettingsManager.getInt("CreatureNPCSpawnDelay"));
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+					new CreatureTask.CreatureTick(), 0, 1);
+		}
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(), 0, 1);
 
