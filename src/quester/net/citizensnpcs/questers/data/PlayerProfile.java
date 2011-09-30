@@ -100,9 +100,6 @@ public class PlayerProfile {
 
 	public void setProgress(QuestProgress progress) {
 		this.progress = progress;
-		if (this.profile.pathExists("quests.current")) {
-			this.profile.removeKey("quests.current");
-		}
 	}
 
 	public boolean hasQuest() {

@@ -21,8 +21,10 @@ public class QuestManager {
 	private static final Map<String, Quest> quests = new HashMap<String, Quest>();
 
 	public static void unload(Player player) {
-		if (getProfile(player.getName()) != null)
+		if (getProfile(player.getName()) != null) {
 			getProfile(player.getName()).save();
+			getProfile(player.getName()).setProgress(null);
+		}
 		PlayerProfile.setProfile(player.getName(), null);
 	}
 
