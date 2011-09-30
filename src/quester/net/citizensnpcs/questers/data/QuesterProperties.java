@@ -87,7 +87,7 @@ public class QuesterProperties extends PropertyManager implements Properties {
 		nodes.add(new Node("QuestSaveDelay", SettingsType.GENERAL,
 				"quests.save.command-delay-ms", 5000));
 		nodes.add(new Node("ItemExploitCheckDelay", SettingsType.GENERAL,
-				"quests.exploits.item-pickup.check-delay", 1200));
+				"quests.exploits.item-pickup.check-delay", 400));
 		nodes.add(new Node("CombatExploitTimes", SettingsType.GENERAL,
 				"quests.exploits.combat.check-times", 2));
 		nodes.add(new Node("CombatExploitRadius", SettingsType.GENERAL,

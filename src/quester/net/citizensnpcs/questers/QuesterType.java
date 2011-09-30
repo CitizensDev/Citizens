@@ -45,6 +45,8 @@ public class QuesterType extends CitizensNPCType {
 		NPCTypeManager.registerEvent(Type.PLAYER_MOVE, pl, Priority.Highest);
 		NPCTypeManager.registerEvent(Type.PLAYER_PICKUP_ITEM, pl,
 				Priority.Highest);
+		NPCTypeManager.registerEvent(Type.PLAYER_DROP_ITEM, pl,
+				Priority.Highest);
 		NPCTypeManager.registerEvent(Type.PLAYER_CHAT, pl, Priority.Highest);
 	}
 

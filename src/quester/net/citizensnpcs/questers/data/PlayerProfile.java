@@ -149,7 +149,6 @@ public class PlayerProfile {
 					LocationUtils.saveLocation(profile,
 							current.getLastLocation(), path, true);
 				}
-				progress.getProgress()[count] = null;
 				++count;
 			}
 		}

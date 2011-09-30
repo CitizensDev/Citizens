@@ -20,18 +20,19 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import com.google.common.collect.Maps;
 
 public class CollectQuest implements QuestUpdater {
-	private static final Type[] EVENTS = { Type.PLAYER_PICKUP_ITEM };
-	private static final Map<Item, Player> map = Maps.newHashMap();
+	private static final Type[] EVENTS = { Type.PLAYER_DROP_ITEM,
+			Type.PLAYER_PICKUP_ITEM };
+	private static final Map<Item, Player> dropped = Maps.newHashMap();
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof PlayerDropItemEvent) {
 			PlayerDropItemEvent ev = (PlayerDropItemEvent) event;
-			map.put(ev.getItemDrop(), ev.getPlayer());
+			dropped.put(ev.getItemDrop(), ev.getPlayer());
 			new ItemCheck(ev.getItemDrop()).run();
 		} else if (event instanceof PlayerPickupItemEvent) {
 			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
-			Player thrower = map.get(ev.getItem());
+			Player thrower = dropped.get(ev.getItem());
 			if (thrower != null && thrower.equals(ev.getPlayer())) {
 				return progress.getAmount() >= progress.getObjective()
 						.getAmount();
@@ -67,7 +68,7 @@ public class CollectQuest implements QuestUpdater {
 		@Override
 		public void run() {
 			if (item == null || item.isDead()) {
-				map.remove(item);
+				dropped.remove(item);
 			} else {
 				Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
 						this, SettingsManager.getInt("ItemExploitCheckDelay"));
