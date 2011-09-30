@@ -170,9 +170,9 @@ public class QuesterCommands extends CommandHandler {
 			}
 		} else {
 			PlayerProfile profile;
-			if (!new File("plugins/Citizens/profiles/" + name + ".yml")
-					.exists()
-					|| (profile = PlayerProfile.getProfile(name, false)) == null) {
+			if ((profile = PlayerProfile.getProfile(name, false)) == null
+					&& !new File("plugins/Citizens/profiles/" + name + ".yml")
+							.exists()) {
 				player.sendMessage(ChatColor.GRAY
 						+ "Couldn't find that player.");
 				return;

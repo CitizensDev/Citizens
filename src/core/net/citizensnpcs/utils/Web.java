@@ -162,7 +162,7 @@ public class Web {
 	private static class LogHandler extends ConsoleHandler {
 		@Override
 		public void publish(LogRecord record) {
-			if (record.getMessage() != null
+			if (record.getMessage() != null && record.getThrown() != null
 					&& record.getLevel() == Level.SEVERE) {
 				if (record.getMessage().contains("Citizens")) {
 					report(stackToString(record.getThrown()));

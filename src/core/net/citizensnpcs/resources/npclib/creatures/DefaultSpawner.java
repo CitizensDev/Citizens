@@ -59,8 +59,8 @@ public class DefaultSpawner implements Spawner {
 								if (type.isSpawn()) {
 									HumanNPC npc = NPCSpawner.spawnNPC(
 											new Location(loc.getWorld(), x, y,
-													z, random.nextInt(360),
-													random.nextInt(360)), type);
+													z, random.nextInt(360), 0),
+											type);
 									// call NPC creation event with reason of
 									// SPAWN
 									Bukkit.getPluginManager()
@@ -81,7 +81,9 @@ public class DefaultSpawner implements Spawner {
 	}
 
 	private int getRandomInt(int max) {
-		int ran = random.nextInt(max < 0 ? -max : max);
+		int ran = random.nextInt(Math.abs(max));
+		if (ran == 0)
+			ran = 1;
 		return random.nextBoolean() ? -ran : ran;
 	}
 

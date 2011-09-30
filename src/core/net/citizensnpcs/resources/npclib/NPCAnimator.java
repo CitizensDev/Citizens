@@ -51,10 +51,8 @@ public class NPCAnimator {
 
 	private void sleep() {
 		Location loc = getPlayer().getLocation();
-		int x = loc.getBlockX();
-		int y = loc.getBlockY();
-		int z = loc.getBlockZ();
-		Packet17 packet17 = new Packet17(npc, 0, x, y, z);
+		Packet17 packet17 = new Packet17(npc, 0, loc.getBlockX(),
+				loc.getBlockY(), loc.getBlockZ());
 
 		// getPlayer().teleport(loc);
 		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64, packet17,
@@ -70,8 +68,10 @@ public class NPCAnimator {
 		return this.npc.al();
 	}
 
-	private Packet40EntityMetadata getMetadataPacket() {
-		return new Packet40EntityMetadata(this.npc.id, getWatcher());
+	private void sendMetadataPacket() {
+		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
+				new Packet40EntityMetadata(this.npc.id, getWatcher()),
+				getPlayer());
 	}
 
 	private Packet18ArmAnimation getArmAnimationPacket(int data) {
@@ -80,14 +80,12 @@ public class NPCAnimator {
 
 	private void crouch() {
 		npc.setSneak(true);
-		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
-				getMetadataPacket(), getPlayer());
+		sendMetadataPacket();
 	}
 
 	private void uncrouch() {
 		npc.setSneak(false);
-		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64,
-				getMetadataPacket(), getPlayer());
+		sendMetadataPacket();
 	}
 
 	private void swingArm() {

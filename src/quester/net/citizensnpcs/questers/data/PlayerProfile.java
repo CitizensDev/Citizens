@@ -71,15 +71,15 @@ public class PlayerProfile {
 	private final String name;
 
 	public void addCompletedQuest(CompletedQuest quest) {
-		completedQuests.put(quest.getName(), quest);
+		completedQuests.put(quest.getName().toLowerCase(), quest);
 	}
 
 	public void removeCompletedQuest(String name) {
-		completedQuests.remove(name);
+		completedQuests.remove(name.toLowerCase());
 	}
 
 	public CompletedQuest getCompletedQuest(String name) {
-		return completedQuests.get(name);
+		return completedQuests.get(name.toLowerCase());
 	}
 
 	public void removeAllCompletedQuests() {
@@ -91,7 +91,7 @@ public class PlayerProfile {
 	}
 
 	public boolean hasCompleted(String quest) {
-		return completedQuests.containsKey(quest);
+		return completedQuests.containsKey(quest.toLowerCase());
 	}
 
 	public QuestProgress getProgress() {
@@ -120,7 +120,8 @@ public class PlayerProfile {
 	public void save() {
 		this.lastSave = System.currentTimeMillis();
 		if (progress != null && progress.getProgress() != null) {
-			profile.removeKey("quests.current");
+			if (profile.pathExists("quests.current"))
+				profile.removeKey("quests.current");
 			String path = "quests.current", oldPath = path;
 			int count = 0;
 
