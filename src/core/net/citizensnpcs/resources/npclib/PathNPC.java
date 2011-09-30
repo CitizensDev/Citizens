@@ -217,7 +217,7 @@ public class PathNPC extends EntityPlayer {
 		// Bow distance from EntitySkeleton.
 		// Other from EntityCreature.
 		return this.attackTicks <= 0
-				&& ((isHoldingBow() && (distance > 3.5 && distance < 10)) || (distance < 1.5F
+				&& ((isHoldingBow() && (distance > 3.5 && distance < 13)) || (distance < 1.5F
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e));
 	}
 

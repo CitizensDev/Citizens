@@ -133,6 +133,7 @@ public class PlayerProfile {
 			for (ObjectiveProgress current : progress.getProgress()) {
 				path = oldPath + "." + count + ".progress";
 				if (current == null) {
+					++count;
 					continue;
 				}
 				profile.setInt(path + ".amount", current.getAmount());
