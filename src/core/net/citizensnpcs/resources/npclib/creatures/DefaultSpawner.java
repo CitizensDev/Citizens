@@ -40,37 +40,30 @@ public class DefaultSpawner implements Spawner {
 		int searchY = 3, searchXZ = 4, shiftedX = 0, shiftedZ = 0;
 
 		World world = loc.getWorld();
-		Chunk last = null;
 		for (int y = loc.getBlockY() + searchY; y >= loc.getBlockY() - searchY; --y) {
 			for (int x = offsetX - searchXZ; x <= offsetX + searchXZ; ++x) {
 				for (int z = offsetZ - searchXZ; z <= offsetZ + searchXZ; ++z) {
 					shiftedX = x >> 4;
 					shiftedZ = z >> 4;
 					if (world.isChunkLoaded(shiftedX, shiftedZ)) {
-						if (world.getChunkAt(shiftedX, shiftedZ) != last)
-							last = world.getChunkAt(shiftedX, shiftedZ);
 						if (type.spawnOn().isValid(
 								world.getBlockTypeIdAt(x, y - 1, z))
 								&& type.spawnIn().isValid(
 										world.getBlockTypeIdAt(x, y, z))
 								&& type.spawnIn().isValid(
 										world.getBlockTypeIdAt(x, y + 1, z))) {
-							if (areEntitiesOnBlock(last, x, y, z)) {
-								if (type.isSpawn()) {
-									HumanNPC npc = NPCSpawner.spawnNPC(
-											new Location(loc.getWorld(), x, y,
-													z, random.nextInt(360), 0),
-											type);
-									// call NPC creation event with reason of
-									// SPAWN
-									Bukkit.getPluginManager()
-											.callEvent(
-													new NPCCreateEvent(
-															npc,
-															NPCCreateReason.SPAWN,
-															loc));
-									return npc;
-								}
+							if (!areEntitiesOnBlock(
+									world.getChunkAt(shiftedX, shiftedZ), x, y,
+									z) && type.isSpawn()) {
+								HumanNPC npc = NPCSpawner.spawnNPC(
+										new Location(loc.getWorld(), x, y, z,
+												random.nextInt(360), 0), type);
+								// call NPC creation event with reason of
+								// SPAWN
+								Bukkit.getPluginManager().callEvent(
+										new NPCCreateEvent(npc,
+												NPCCreateReason.SPAWN, loc));
+								return npc;
 							}
 						}
 					}
@@ -81,9 +74,9 @@ public class DefaultSpawner implements Spawner {
 	}
 
 	private int getRandomInt(int max) {
+		if (max == 0)
+			max = 1;
 		int ran = random.nextInt(Math.abs(max));
-		if (ran == 0)
-			ran = 1;
 		return random.nextBoolean() ? -ran : ran;
 	}
 
