@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 @CommandRequirements(
 		requireSelected = true,
 		requireOwnership = true,
+		requireEconomy = true,
 		requiredType = "trader")
 public class TraderCommands extends CommandHandler {
 	public static final TraderCommands INSTANCE = new TraderCommands();
@@ -57,10 +58,6 @@ public class TraderCommands extends CommandHandler {
 			min = 1,
 			max = 3)
 	public static void money(CommandContext args, Player player, HumanNPC npc) {
-		if (!EconomyManager.useEconPlugin()) {
-			player.sendMessage(MessageUtils.noEconomyMessage);
-			return;
-		}
 		switch (args.argsLength()) {
 		case 1:
 			if (PermissionManager.hasPermission(player,
@@ -137,7 +134,10 @@ public class TraderCommands extends CommandHandler {
 		}
 	}
 
-	@CommandRequirements(requiredType = "trader", requireSelected = true)
+	@CommandRequirements(
+			requireEconomy = true,
+			requireSelected = true,
+			requiredType = "trader")
 	@Command(
 			aliases = "trader",
 			usage = "list [buy|sell]",

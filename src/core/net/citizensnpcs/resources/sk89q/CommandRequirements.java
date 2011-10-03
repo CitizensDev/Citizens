@@ -15,5 +15,7 @@ public @interface CommandRequirements {
 
 	boolean requireOwnership() default false;
 
+	boolean requireEconomy() default false;
+
 	String requiredType() default "";
 }

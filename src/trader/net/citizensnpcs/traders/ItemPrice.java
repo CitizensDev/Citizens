@@ -5,15 +5,11 @@ public class ItemPrice {
 
 	// Represents a price for an item.
 	public ItemPrice(double price) {
-		this.setPrice(price);
+		this.price = price;
 	}
 
 	public double getPrice() {
 		return this.price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
 	}
 
 	@Override

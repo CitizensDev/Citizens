@@ -2,7 +2,7 @@ name: Citizens
 main: net.citizensnpcs.Citizens
 version: 1.1
 authors: [fullwall, aPunch]
-softdepend: [bPermissions, PermissionsEx, PermissionsBukkit]
+softdepend: [iConomy, Currency, BOSEconomy, Essentials, bPermissions, PermissionsEx, PermissionsBukkit]
 commands:
     npc:
         description: Performs various NPC-related commands.
@@ -178,9 +178,9 @@ permissions:
                 children:
                     citizens.quester.admin.*:
                         children:
-                            quester.admin.quests.save: true
-                            quester.admin.quests.giveplayer: true
-                            quester.admin.quests.clear: true
+                            citizens.quester.admin.quests.save: true
+                            citizens.quester.admin.quests.giveplayer: true
+                            citizens.quester.admin.quests.clear: true
                     citizens.quester.use.*:
                         children:
                             citizens.quester.use.help: true
