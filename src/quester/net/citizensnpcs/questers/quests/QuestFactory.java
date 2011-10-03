@@ -1,9 +1,11 @@
 package net.citizensnpcs.questers.quests;
 
+import java.util.List;
+
 import net.citizensnpcs.properties.ConfigurationHandler;
-import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.api.QuestAPI;
+import net.citizensnpcs.questers.quests.Quest.QuestBuilder;
 import net.citizensnpcs.questers.rewards.Reward;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;
@@ -11,51 +13,29 @@ import net.citizensnpcs.utils.Messaging;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.collect.Lists;
+
 public class QuestFactory {
 
 	public static void instantiateQuests(ConfigurationHandler quests) {
 		questLoop: for (Object questName : quests.getKeys(null)) {
 			String path = questName.toString();
-			Quest quest = new Quest(questName.toString());
-			quest.setDescription(quests.getString(path + ".texts.description"));
-			quest.setCompletedText(quests.getString(path + ".texts.completion"));
-			quest.setAcceptanceText(quests
-					.getString(path + ".texts.acceptance"));
-			quest.setRepeatLimit(quests.getInt(path + ".repeats"));
+			QuestBuilder quest = new QuestBuilder(questName.toString());
+			quest.description(quests.getString(path + ".texts.description"));
+			quest.granter(new RewardGranter(quests.getString(path
+					+ ".texts.completion"), loadRewards(quests, path
+					+ ".rewards")));
+			quest.acceptanceText(quests.getString(path + ".texts.acceptance"));
+			quest.repeatLimit(quests.getInt(path + ".repeats"));
+			quest.requirements(loadRewards(quests, path + ".requirements"));
 			String tempPath = path;
-			if (quests.pathExists(path + ".rewards")) {
-				for (String reward : quests.getKeys(path + ".rewards")) {
-					tempPath = path + ".rewards." + reward;
-					Reward builder = loadReward(quests, tempPath);
-					if (builder == null) {
-						Messaging.log("Invalid reward type specified ("
-								+ quests.getString(tempPath + ".type")
-								+ "). Quest " + questName + " not loaded.");
-						continue questLoop;
-					}
-					quest.addReward(builder);
-				}
-			}
-			if (quests.pathExists(path + ".requirements")) {
-				for (String requirement : quests
-						.getKeys(path + ".requirements")) {
-					tempPath = path + ".requirements." + requirement;
-					Reward builder = loadReward(quests, tempPath);
-					if (builder == null) {
-						Messaging.log("Invalid requirement type specified ("
-								+ quests.getString(tempPath + ".type")
-								+ "). Quest " + questName + " not loaded.");
-						continue questLoop;
-					}
-					quest.addRequirement(builder);
-				}
-			}
+
 			Objectives objectives = new Objectives();
 			path = tempPath = questName + ".objectives";
 			if (quests.pathExists(path)) {
 				for (Object step : quests.getKeys(path)) {
-					QuestStep tempStep = new QuestStep();
 					tempPath = questName + ".objectives." + step;
+					List<Objective> tempStep = Lists.newArrayList();
 					for (Object objective : quests.getKeys(tempPath)) {
 						path = tempPath + "." + objective;
 						String type = quests.getString(path + ".type");
@@ -85,12 +65,14 @@ public class QuestFactory {
 							obj.location(LocationUtils.loadLocation(quests,
 									path, false));
 						}
-						if (quests.pathExists(path + ".string")) {
-							obj.string(quests.getString(path + ".string"));
-						}
-						if (quests.pathExists(path + ".message")) {
-							obj.message(quests.getString(path + ".message"));
-						}
+						obj.string(quests.getString(path + ".string"));
+						obj.optional(quests.getBoolean(path + ".optional"));
+						obj.completeHere(quests
+								.getBoolean(path + ".finishhere"));
+						obj.granter(new RewardGranter(quests.getString(path
+								+ ".message"), loadRewards(quests, path
+								+ ".rewards")));
+
 						if (quests.pathExists(path + ".materialid")) {
 							if (quests.getInt(path + ".materialid") != 0)
 								obj.material(Material.getMaterial(quests
@@ -98,7 +80,10 @@ public class QuestFactory {
 						}
 						tempStep.add(obj.build());
 					}
-					objectives.add(tempStep);
+					RewardGranter granter = new RewardGranter(
+							quests.getString(tempPath + ".message"),
+							loadRewards(quests, tempPath + ".rewards"));
+					objectives.add(new QuestStep(tempStep, granter));
 				}
 			}
 			if (objectives.steps().size() == 0) {
@@ -107,20 +92,21 @@ public class QuestFactory {
 						+ " is invalid - no objectives set.");
 				continue;
 			}
-			quest.setObjectives(objectives);
-			QuestManager.addQuest(quest);
+			quest.objectives(objectives);
+			QuestManager.addQuest(quest.create());
 		}
 	}
 
 	public static void saveQuest(ConfigurationHandler quests, Quest quest) {
 		String path = quest.getName();
 		quests.setString(path + ".texts.description", quest.getDescription());
-		quests.setString(path + ".texts.completion", quest.getCompletedText());
-		quests.setString(path + ".texts.acceptance", quest.getCompletedText());
+		quests.setString(path + ".texts.completion", quest.getGranter()
+				.getCompletionMessage());
+		quests.setString(path + ".texts.acceptance", quest.getAcceptanceText());
 		quests.setInt(path + ".repeats", quest.getRepeatLimit());
 		String temp = path + ".rewards";
 		int count = 0;
-		for (Reward reward : quest.getRewards()) {
+		for (Reward reward : quest.getGranter().getRewards()) {
 			path = temp + "." + count;
 			quests.setBoolean(path + ".take", reward.isTake());
 			reward.save(quests, path);
@@ -145,8 +131,9 @@ public class QuestFactory {
 				if (objective.getDestNPCID() != -1)
 					quests.setInt(temp + ".npcdestination",
 							objective.getDestNPCID());
-				if (!objective.getMessage().isEmpty())
-					quests.setString(temp + ".message", objective.getMessage());
+				if (!objective.getGranter().getCompletionMessage().isEmpty())
+					quests.setString(temp + ".message", objective.getGranter()
+							.getCompletionMessage());
 				if (objective.getItem() != null) {
 					ItemStack item = objective.getItem();
 					quests.setInt(temp + ".item.id", item.getTypeId());
@@ -168,10 +155,25 @@ public class QuestFactory {
 		// TODO: save rewards + requirements.
 	}
 
-	public static Reward loadReward(Storage source, String root) {
-		boolean take = source.getBoolean(root + ".take", false);
-		String type = source.getString(root + ".type");
-		return QuestAPI.getBuilder(type) == null ? null : QuestAPI.getBuilder(
-				type).build(source, root, take);
+	private static List<Reward> loadRewards(ConfigurationHandler source,
+			String root) {
+		List<Reward> rewards = Lists.newArrayList();
+		String path;
+		List<String> keys = source.getKeys(root);
+		if (keys == null)
+			return Lists.newArrayList();
+		for (String key : keys) {
+			path = root + "." + key;
+			boolean take = source.getBoolean(path + ".take", false);
+			String type = source.getString(path + ".type");
+			Reward builder = QuestAPI.getBuilder(type) == null ? null
+					: QuestAPI.getBuilder(type).build(source, path, take);
+			if (builder != null) {
+				rewards.add(builder);
+			} else
+				Messaging.log("Invalid type identifier " + type
+						+ " for reward at " + path + ": reward not loaded.");
+		}
+		return rewards;
 	}
 }

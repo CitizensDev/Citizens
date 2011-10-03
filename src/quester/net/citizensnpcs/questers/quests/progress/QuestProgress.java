@@ -2,7 +2,6 @@ package net.citizensnpcs.questers.quests.progress;
 
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.Objectives.ObjectiveCycler;
-import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -39,6 +38,8 @@ public class QuestProgress {
 	}
 
 	private void addObjectives() {
+		if (objectives.current().objectives().size() == 0)
+			return;
 		int size = objectives.current().objectives().size();
 		this.progress = new ObjectiveProgress[size];
 		while (objectives.hasNext()) {
@@ -61,7 +62,7 @@ public class QuestProgress {
 		if (progress == null)
 			return true;
 		for (ObjectiveProgress prog : progress) {
-			if (prog != null) {
+			if (prog != null && !prog.getObjective().isOptional()) {
 				return false;
 			}
 		}
@@ -92,12 +93,8 @@ public class QuestProgress {
 					continue;
 				}
 				if (progress.update(event)) {
-					Messaging.log("Clearing objective " + idx);
+					progress.getObjective().onCompletion(player, this);
 					this.progress[idx] = null;
-					if (!progress.getObjective().getMessage().isEmpty()) {
-						Messaging.send(player, progress.getObjective()
-								.getMessage());
-					}
 				}
 				++idx;
 			}
@@ -118,5 +115,9 @@ public class QuestProgress {
 
 	public ObjectiveProgress[] getProgress() {
 		return progress;
+	}
+
+	public void onStepCompletion() {
+		this.objectives.current().onCompletion(player, this);
 	}
 }

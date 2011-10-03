@@ -1,7 +1,11 @@
 package net.citizensnpcs.questers.quests;
 
+import net.citizensnpcs.questers.QuestManager;
+import net.citizensnpcs.questers.quests.progress.QuestProgress;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -18,49 +22,51 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Objective {
 	private final int amount;
-	private final int destination;
 
+	private final boolean completeHere;
+	private final int destination;
+	private final RewardGranter granter;
 	private final ItemStack item;
 	private final Location location;
-	private final String string;
-	private final String message;
 	private final Material material;
+	private final boolean optional;
 	private final String questType;
 
-	private Objective(String type, int amount, int destination, ItemStack item,
-			String message, String string, Material material, Location location) {
+	private final String string;
+
+	private Objective(String type, boolean optional, boolean completeHere,
+			int amount, int destination, ItemStack item, String string,
+			Material material, Location location, RewardGranter granter) {
 		this.questType = type;
 		this.amount = amount;
 		this.destination = destination;
 		this.item = item;
 		this.string = string;
-		this.message = message;
 		this.material = material;
 		this.location = location;
-	}
-
-	public String getType() {
-		return questType;
-	}
-
-	public int getDestNPCID() {
-		return destination;
-	}
-
-	public ItemStack getItem() {
-		return item;
+		this.granter = granter;
+		this.optional = optional;
+		this.completeHere = completeHere;
 	}
 
 	public int getAmount() {
 		return amount;
 	}
 
-	public Location getLocation() {
-		return location;
+	public int getDestNPCID() {
+		return destination;
 	}
 
-	public String getMessage() {
-		return this.message;
+	public RewardGranter getGranter() {
+		return this.granter;
+	}
+
+	public ItemStack getItem() {
+		return item;
+	}
+
+	public Location getLocation() {
+		return location;
 	}
 
 	public Material getMaterial() {
@@ -71,16 +77,32 @@ public class Objective {
 		return string;
 	}
 
+	public String getType() {
+		return questType;
+	}
+
+	public boolean isOptional() {
+		return optional;
+	}
+
+	public void onCompletion(Player player, QuestProgress progress) {
+		granter.onCompletion(player, progress);
+		if (this.completeHere)
+			QuestManager.completeQuest(player);
+	}
+
 	public static class Builder {
 		private int amount = -1;
-		private int destination = -1;
+		private boolean completeHere = false;
 
+		private int destination = -1;
+		private RewardGranter granter;
 		private ItemStack item = null;
 		private Location location = null;
-		private String message = "";
 		private Material material = null;
-		private final String type;
+		private boolean optional = false;
 		private String string = "";
+		private final String type;
 
 		public Builder(String type) {
 			this.type = type;
@@ -91,13 +113,23 @@ public class Objective {
 			return this;
 		}
 
-		public Builder string(String string) {
-			this.string = string;
+		public Objective build() {
+			return new Objective(type, optional, completeHere, amount,
+					destination, item, string, material, location, granter);
+		}
+
+		public Builder completeHere(boolean completeHere) {
+			this.completeHere = completeHere;
 			return this;
 		}
 
 		public Builder destination(int destination) {
 			this.destination = destination;
+			return this;
+		}
+
+		public Builder granter(RewardGranter granter) {
+			this.granter = granter;
 			return this;
 		}
 
@@ -111,19 +143,19 @@ public class Objective {
 			return this;
 		}
 
-		public Builder message(String message) {
-			this.message = message;
-			return this;
-		}
-
 		public Builder material(Material material) {
 			this.material = material;
 			return this;
 		}
 
-		public Objective build() {
-			return new Objective(type, amount, destination, item, message,
-					string, material, location);
+		public Builder optional(boolean optional) {
+			this.optional = optional;
+			return this;
+		}
+
+		public Builder string(String string) {
+			this.string = string;
+			return this;
 		}
 	}
 }

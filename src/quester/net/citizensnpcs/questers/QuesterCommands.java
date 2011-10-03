@@ -169,19 +169,19 @@ public class QuesterCommands extends CommandHandler {
 					profiles.add(profile);
 			}
 		} else {
-			PlayerProfile profile;
-			if ((profile = PlayerProfile.getProfile(name, false)) == null
-					&& !new File("plugins/Citizens/profiles/" + name + ".yml")
-							.exists()) {
+			if (!new File("plugins/Citizens/profiles/" + name + ".yml")
+					.exists() && !PlayerProfile.isOnline(name)) {
 				player.sendMessage(ChatColor.GRAY
 						+ "Couldn't find that player.");
 				return;
 			}
-			profiles.add(profile);
+			profiles.add(PlayerProfile.getProfile(name, false));
 		}
 		boolean clearCompleted = args.hasFlag('c'), matchAny = quest
 				.equals("*");
 		for (PlayerProfile profile : profiles) {
+			if (profile == null)
+				throw new IllegalStateException("player profile was null");
 			boolean changed = false;
 			if (profile.hasQuest()
 					&& (matchAny || profile.getQuest().equalsIgnoreCase(quest))) {
@@ -362,7 +362,8 @@ public class QuesterCommands extends CommandHandler {
 			if (instance.maxPages() > page)
 				break;
 			instance.push(StringUtils.wrap(quest.getName()) + " - taking "
-					+ StringUtils.wrap(quest.getHours()) + " hours. Completed "
+					+ StringUtils.wrap(quest.getMinutes())
+					+ " minutes. Completed "
 					+ StringUtils.wrap(quest.getTimesCompleted()) + " times.");
 		}
 		if (page > instance.maxPages()) {

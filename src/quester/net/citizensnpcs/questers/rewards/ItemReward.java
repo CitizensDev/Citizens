@@ -28,7 +28,7 @@ public class ItemReward implements Reward {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void grant(Player player, int UID) {
-		if (amount == 0 || material == Material.AIR)
+		if (amount <= 0 || material == null || material == Material.AIR)
 			return;
 		if (this.take) {
 			InventoryUtils.removeItems(player, material, amount);

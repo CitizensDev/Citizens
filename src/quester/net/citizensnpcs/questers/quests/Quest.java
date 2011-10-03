@@ -3,39 +3,32 @@ package net.citizensnpcs.questers.quests;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.questers.rewards.Reward;
 
+import org.bukkit.entity.Player;
+
 public class Quest {
-	private String questName = "";
-	private String completionText = "";
-	private String description = "";
-	private String acceptanceText = "";
-	private final List<Reward> rewards = new ArrayList<Reward>();
-	private final List<Reward> requirements = new ArrayList<Reward>();
-	private Objectives objectives;
-	private int repeatLimit = -1;
+	private final String acceptanceText;
+	private final String description;
+	private final RewardGranter granter;
+	private final Objectives objectives;
+	private final String questName;
+	private final int repeatLimit;
+	private final List<Reward> requirements;
 
-	public Quest(String name) {
-		this.questName = name;
+	private Quest(QuestBuilder builder) {
+		this.questName = builder.questName;
+		this.description = builder.description;
+		this.acceptanceText = builder.acceptanceText;
+		this.granter = builder.granter;
+		this.requirements = builder.requirements;
+		this.objectives = builder.objectives;
+		this.repeatLimit = builder.repeatLimit;
 	}
 
-	// Get the name of a quest
-	public String getName() {
-		return questName;
-	}
-
-	// Add a reward
-	public void addReward(Reward reward) {
-		rewards.add(reward);
-	}
-
-	// Set the name of a quest
-	public void setName(String questName) {
-		this.questName = questName;
-	}
-
-	public List<Reward> getRewards() {
-		return this.rewards;
+	public String getAcceptanceText() {
+		return acceptanceText;
 	}
 
 	// Get the description of a quest
@@ -43,52 +36,76 @@ public class Quest {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public RewardGranter getGranter() {
+		return this.granter;
 	}
 
-	// Get the text to be outputted on completion of a quest
-	public String getCompletedText() {
-		return completionText;
-	}
-
-	public void setCompletedText(String text) {
-		this.completionText = text;
-	}
-
-	public void addObjective(QuestStep step) {
-		this.objectives.add(step);
+	// Get the name of a quest
+	public String getName() {
+		return questName;
 	}
 
 	public Objectives getObjectives() {
 		return objectives;
 	}
 
-	public void setObjectives(Objectives objectives) {
-		this.objectives = objectives;
+	public int getRepeatLimit() {
+		return this.repeatLimit;
 	}
 
 	public List<Reward> getRequirements() {
 		return requirements;
 	}
 
-	public void addRequirement(Reward reward) {
-		this.requirements.add(reward);
+	public void onCompletion(Player player, QuestProgress progress) {
+		this.granter.onCompletion(player, progress);
 	}
 
-	public String getAcceptanceText() {
-		return acceptanceText;
-	}
+	public static class QuestBuilder {
+		private String acceptanceText = "";
+		private String description = "";
+		private RewardGranter granter;
+		private Objectives objectives;
+		private String questName = "";
+		private int repeatLimit = -1;
+		private List<Reward> requirements = new ArrayList<Reward>();
 
-	public void setAcceptanceText(String text) {
-		this.acceptanceText = text;
-	}
+		public QuestBuilder(String quest) {
+			this.questName = quest;
+		}
 
-	public void setRepeatLimit(int repeatLimit) {
-		this.repeatLimit = repeatLimit;
-	}
+		public QuestBuilder acceptanceText(String acceptanceText) {
+			this.acceptanceText = acceptanceText;
+			return this;
+		}
 
-	public int getRepeatLimit() {
-		return this.repeatLimit;
+		public Quest create() {
+			return new Quest(this);
+		}
+
+		public QuestBuilder description(String desc) {
+			this.description = desc;
+			return this;
+		}
+
+		public QuestBuilder granter(RewardGranter granter) {
+			this.granter = granter;
+			return this;
+		}
+
+		public QuestBuilder objectives(Objectives objectives) {
+			this.objectives = objectives;
+			return this;
+		}
+
+		public QuestBuilder repeatLimit(int repeats) {
+			this.repeatLimit = repeats;
+			return this;
+		}
+
+		public QuestBuilder requirements(List<Reward> requirements) {
+			this.requirements = requirements;
+			return this;
+		}
 	}
 }

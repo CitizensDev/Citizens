@@ -6,18 +6,13 @@ import java.util.Set;
 
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
-import net.citizensnpcs.questers.api.events.QuestCompleteEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
-import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
-import net.citizensnpcs.questers.rewards.Reward;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PageUtils;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.StringUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -151,23 +146,7 @@ public class Quester extends CitizensNPC {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
 		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
 			if (profile.getProgress().isFullyCompleted()) {
-				Quest quest = QuestManager.getQuest(profile.getProgress()
-						.getQuestName());
-				Messaging.send(player, quest.getCompletedText());
-				long elapsed = System.currentTimeMillis()
-						- profile.getProgress().getStartTime();
-				profile.setProgress(null);
-				for (Reward reward : quest.getRewards()) {
-					reward.grant(player, npc.getUID());
-				}
-				int completed = profile.hasCompleted(quest.getName()) ? profile
-						.getCompletedQuest(quest.getName()).getTimesCompleted() + 1
-						: 1;
-				CompletedQuest comp = new CompletedQuest(quest.getName(),
-						npc.getUID(), completed, elapsed);
-				profile.addCompletedQuest(comp);
-				Bukkit.getServer().getPluginManager()
-						.callEvent(new QuestCompleteEvent(quest, comp, player));
+				QuestManager.completeQuest(player);
 			} else {
 				player.sendMessage(ChatColor.GRAY
 						+ "The quest isn't completed yet.");

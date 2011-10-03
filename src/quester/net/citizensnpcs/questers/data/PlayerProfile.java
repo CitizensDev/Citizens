@@ -22,7 +22,6 @@ import com.google.common.collect.Maps;
 
 public class PlayerProfile {
 	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
-	private long lastSave;
 
 	private PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name
@@ -36,6 +35,7 @@ public class PlayerProfile {
 	}
 
 	public static PlayerProfile getProfile(String name, boolean register) {
+		name = name.toLowerCase();
 		if (profiles.get(name) == null) {
 			PlayerProfile profile = new PlayerProfile(name);
 			if (register) {
@@ -50,7 +50,12 @@ public class PlayerProfile {
 		return getProfile(name, true);
 	}
 
+	public static boolean isOnline(String name) {
+		return profiles.containsKey(name.toLowerCase());
+	}
+
 	public static void setProfile(String name, PlayerProfile profile) {
+		name = name.toLowerCase();
 		if (profile == null) {
 			profiles.remove(name);
 		} else {
@@ -64,6 +69,7 @@ public class PlayerProfile {
 		}
 	}
 
+	private long lastSave;
 	private final ConfigurationHandler profile;
 	private final Map<String, CompletedQuest> completedQuests = Maps
 			.newHashMap();
@@ -116,9 +122,9 @@ public class PlayerProfile {
 
 	public void save() {
 		this.lastSave = System.currentTimeMillis();
-		if (progress != null && progress.getProgress() != null) {
-			if (profile.pathExists("quests.current"))
-				profile.removeKey("quests.current");
+		if (profile.pathExists("quests.current"))
+			profile.removeKey("quests.current");
+		if (progress != null) {
 			String path = "quests.current", oldPath = path;
 			int count = 0;
 
@@ -126,29 +132,32 @@ public class PlayerProfile {
 			profile.setInt(path + ".step", progress.getStep());
 			profile.setLong(path + ".start-time", progress.getStartTime());
 			profile.setInt(path + ".giver", progress.getQuesterUID());
-
-			for (ObjectiveProgress current : progress.getProgress()) {
-				path = oldPath + "." + count + ".progress";
-				if (current == null) {
+			if (progress.getProgress() != null) {
+				for (ObjectiveProgress current : progress.getProgress()) {
+					path = oldPath + "." + count + ".progress";
+					if (current == null) {
+						++count;
+						continue;
+					}
+					profile.setInt(path + ".amount", current.getAmount());
+					if (current.getLastItem() != null) {
+						profile.setInt(path + ".item.id", current.getLastItem()
+								.getTypeId());
+						profile.setInt(path + ".item.amount", current
+								.getLastItem().getAmount());
+						profile.setInt(path + ".item.data", current
+								.getLastItem().getDurability());
+					}
+					if (current.getLastLocation() != null) {
+						LocationUtils.saveLocation(profile,
+								current.getLastLocation(), path, true);
+					}
 					++count;
-					continue;
 				}
-				profile.setInt(path + ".amount", current.getAmount());
-				if (current.getLastItem() != null) {
-					profile.setInt(path + ".item.id", current.getLastItem()
-							.getTypeId());
-					profile.setInt(path + ".item.amount", current.getLastItem()
-							.getAmount());
-					profile.setInt(path + ".item.data", current.getLastItem()
-							.getDurability());
-				}
-				if (current.getLastLocation() != null) {
-					LocationUtils.saveLocation(profile,
-							current.getLastLocation(), path, true);
-				}
-				++count;
 			}
 		}
+		if (profile.pathExists("quests.completed"))
+			profile.removeKey("quests.completed");
 		String path = "quests.completed.", temp;
 		for (CompletedQuest quest : this.completedQuests.values()) {
 			temp = path + quest.getName();
@@ -180,32 +189,32 @@ public class PlayerProfile {
 					Bukkit.getServer().getPlayer(name), profile.getString(path
 							+ ".name"), profile.getLong(path + ".start-time"));
 			progress.setStep(profile.getInt(path + ".step"));
-			if (progress.getProgress() == null)
-				break questLoad;
-			int count = 0;
-			for (ObjectiveProgress questProgress : progress.getProgress()) {
-				temp = path + "." + count + ".progress";
-				if (questProgress == null || !profile.pathExists(temp)) {
-					progress.getProgress()[count] = null;
+			if (progress.getProgress() != null) {
+				int count = 0;
+				for (ObjectiveProgress questProgress : progress.getProgress()) {
+					temp = path + "." + count + ".progress";
+					if (questProgress == null || !profile.pathExists(temp)) {
+						progress.getProgress()[count] = null;
+						++count;
+						continue;
+					}
+					questProgress.setAmountCompleted(this.profile.getInt(temp
+							+ ".amount"));
+					int itemID = profile.getInt(temp + ".item.id");
+					int amount = profile.getInt(temp + ".item.amount");
+					if (itemID != 0 && amount > 0) {
+						ItemStack item = null;
+						item = new ItemStack(itemID, amount);
+						item.setData(new MaterialData(itemID, (byte) profile
+								.getInt(temp + ".item.data")));
+						questProgress.setLastItem(item);
+					}
+					if (profile.pathExists(temp + ".location")) {
+						questProgress.setLastLocation(LocationUtils
+								.loadLocation(profile, temp, true));
+					}
 					++count;
-					continue;
 				}
-				questProgress.setAmountCompleted(this.profile.getInt(temp
-						+ ".amount"));
-				int itemID = profile.getInt(temp + ".item.id");
-				int amount = profile.getInt(temp + ".item.amount");
-				if (itemID != 0 && amount > 0) {
-					ItemStack item = null;
-					item = new ItemStack(itemID, amount);
-					item.setData(new MaterialData(itemID, (byte) profile
-							.getInt(temp + ".item.data")));
-					questProgress.setLastItem(item);
-				}
-				if (profile.pathExists(temp + ".location")) {
-					questProgress.setLastLocation(LocationUtils.loadLocation(
-							profile, temp, true));
-				}
-				++count;
 			}
 		}
 		if (!profile.pathExists("quests.completed")) {
@@ -213,11 +222,9 @@ public class PlayerProfile {
 		}
 		for (String key : profile.getKeys("quests.completed")) {
 			path = "quests.completed." + key;
-			completedQuests.put(
-					key,
-					new CompletedQuest(key, profile.getInt(path + ".quester"),
-							profile.getInt(path + ".completed"), profile
-									.getLong(path + ".elapsed")));
+			addCompletedQuest(new CompletedQuest(key, profile.getInt(path
+					+ ".quester"), profile.getInt(path + ".completed"),
+					profile.getLong(path + ".elapsed")));
 		}
 	}
 
