@@ -1,0 +1,158 @@
+# ----- Quest Design Guide -----
+#
+# First, let's cover the basic fields in a quest.
+# Each root node is the quest name - below, the two quest names are 'example' and 'example2'.
+# This is what you will use ingame to identify each quest.
+# Inside this, we see the text nodes - pretty self-explanatory. Note that you can use
+# <br> to denote a line break.
+#
+# The repeats option allows a quest to be completed a certain number of times. It acts as a limit. -1 denotes an
+# unlimited completion times limit. Let's take an example. A limit of 1 would allow the quest to be completed once.
+#
+# Now we move on to the configuration of the two main configuration options - objectives and rewards.
+#
+# --- Objectives ---
+#
+# Thus far, objectives have a set structure - a number of different 'steps' and a number of objectives
+# within each step. This allows for more freeform quest design. Note that each step should be marked
+# by an ascending number, *with quotes* around it. Each objective within a step is incremented concurrently.
+#
+# The message variable is sent to the player on completion of each objective.
+#
+# --- Objective types ---
+#
+# To aid with generic objective design, each objective can use one of a common set of variables
+# - amount, string, materialid, location, string, item and npcdestination (destination NPC ID).
+# Each objective type may use one or more of these variables - a reference is provided below.
+#
+#  - Specifying item and locations -
+# Item nodes have three sub-nodes, two that must be included and one optional.
+# The id sub-node designates the item/block ID.
+# The amount sub-node specifies the item amount.
+# The optional data sub-node specifies the item data value to be used.
+#
+# Location nodes have 4 required sub-nodes, two optional.
+# The world node specifies the world name of the location.
+# The x ,y and z nodes specifies the x,y and z values.
+# The pitch/yaw optional nodes specify the rotation (think aeroplanes) of the location.
+#
+# Example syntax:
+# location:
+#     x: 123 
+#     y: 124
+#     z: 111
+#     world: 'world'
+#
+# Block destroy quest (destroy block) - break a certain amount of blocks.
+# Uses: amount - the amount of blocks to break. materialid - the block ID to break.
+#
+# Build quest (build) - place a certain number of blocks
+# Uses: materialid - the block ID to place. amount - the amount that must be placed.
+#
+# Combat quest (player combat) - kill a certain number of players.
+# Uses: amount - the amount of players to kill. string - a list of which players should be targeted. '*' signifies all, '-' as the first character signifies a
+# whitelist, g:group specifies a group to target.
+#
+# Collect quest (collect) - pick up a certain number of items.
+# Uses: amount - the number of items to pick up. materialid - the ID to pick up.
+#
+# Delivery quest (delivery)- deliver an item to an npc.
+# Uses: npcdestination - the NPC ID to deliver to. materialid - the material that must be in hand.
+# amount - the amount of the material that must be in hand.
+#
+# Distance quest (move distance)- walk a certain number of blocks.
+# Uses: amount - the amount of blocks to walk.
+#
+# Hunt quest (hunt) - kill a certain number of monsters.
+# Uses: amount - the number of monsters to kill. string - which monsters to kill. '*' signifies all, '-' at 
+# the start signifies that monsters not in the list will be counted.
+#
+# Location quest (move location)- be within a certain range of a location.
+# Uses: location - the base location to move to. amount - the amount in blocks that the player can be away from the location before finishing.
+#
+#
+# --- Rewards ---
+#
+# These can be used as both rewards *and* requirements to start a quest.
+# As rewards, they can be either give rewards, or take rewards. As requirements, they can only be used
+# to take from a player.
+#
+# Rank reward (rank) - grants a group ('rank') to a player.
+# Specified by the rank: node.
+#
+# Permission reward (permission) - grants a permission to a player.
+# Specified by the permission: node.
+#
+# Quest reward (quest) - grants a quest to a player. Note that it cannot be taken away from a player.
+# Specified by the quest: node.
+#
+# Item reward (item) - gives an item to a player.
+# Loaded from the item: nodes.
+#
+# Health reward (health) - gives health to a player.
+# Loaded from the amount: node.
+#
+# Money reward (money) - gives money to a player.
+# Loaded from the money: node.
+
+example:
+    texts:
+        description: A build quest
+        completion: <g>You win! Here's some stone.
+        acceptance: <g>Challenge <y>accepted<g>.
+    requirements:
+        '0':
+            type: rank
+            rank: 'your-rank-here'
+    repeats: -1
+    objectives:
+        '0':
+            '0':
+                type: build
+                materialid: 1
+                amount: 3
+                message: Built. Now come back here!
+    rewards:
+        '0':
+            type: item
+            id: 1
+            amount: 64
+            take: false
+example2:
+    texts:
+        description: A fetch quest
+        completion: <g>You win! Give me that stone.
+        acceptance: <g>Challenge <y>accepted<g>.
+    repeats: 1
+    objectives:
+        '0':
+            '0':
+                type: collect
+                materialid: 1
+                amount: 3
+                message: A voice echoes... "I want that stone now!"
+    rewards:
+         '0':
+            type: item
+            id: 1
+            amount: 3
+            take: true
+example3:
+    texts:
+        description: A mob quest - kill any 3 of zombie, pig or chicken
+        completion: <g>You win!
+        acceptance: <g>Challenge <y>accepted<g>.
+    repeats: 2
+    objectives:
+        '0':
+            '0':
+                type: hunt
+                string: 'zombie, pig, chicken'
+                amount: 3
+                message: Monsters slain \o/.
+    rewards:
+         '0':
+            type: item
+            id: 1
+            amount: 3
+            take: true

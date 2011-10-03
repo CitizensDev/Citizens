@@ -113,3 +113,18 @@ By fullwall and aPunch
 -added NPCToggleTypeEvent
 -added CitizensManager, use this for checking isNPC, getting an NPC from a UID or entity, etc; we recommend
  to no longer use NPCManager
+ *--- v1.1.1 ---
+ *KEY FEATURES
+ - new admin quester commands
+ - optional quest objectives
+ - rewards for quest steps and objectives
+ *ADDED
+ - support for more permissions plugins
+ * FIXED
+ - fixed Spout incompatibility issues
+ - fixed waypoint issues
+ - fixed numerous quester issues
+ - better multiworld support
+ - many other bugfixes
+ *API CHANGES
+ - added a few Quest events - QuestBeginEvent, QuestAbortEvent, QuestCompleteEvent
