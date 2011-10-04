@@ -84,10 +84,10 @@ public class ItemReward implements Reward {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
 			int id = storage.getInt(root + ".id");
-			int amount = storage.getInt(root + ".amount");
-			short data = 0;
-			if (storage.keyExists(root + ".data"))
-				data = (short) storage.getInt(root + ".data");
+			int amount = storage.keyExists(root + ".amount") ? storage
+					.getInt(root + ".amount") : 1;
+			short data = storage.keyExists(root + ".data") ? data = (short) storage
+					.getInt(root + ".data") : 0;
 			return new ItemReward(Material.getMaterial(id), amount, data, take);
 		}
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.questers.rewards.Reward;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.entity.Player;
 
@@ -19,7 +20,7 @@ public class RewardGranter {
 
 	public void onCompletion(Player player, QuestProgress progress) {
 		if (!this.completionMessage.isEmpty()) {
-			player.sendMessage(completionMessage);
+			Messaging.send(player, completionMessage);
 		}
 		for (Reward reward : this.getRewards()) {
 			reward.grant(player, progress.getQuesterUID());

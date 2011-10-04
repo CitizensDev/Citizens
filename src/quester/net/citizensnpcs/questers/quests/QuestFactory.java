@@ -87,7 +87,8 @@ public class QuestFactory {
 					RewardGranter granter = new RewardGranter(
 							quests.getString(tempPath + ".message"),
 							loadRewards(quests, tempPath + ".rewards"));
-					objectives.add(new QuestStep(tempStep, granter));
+					objectives.add(new QuestStep(tempStep, granter, quests
+							.getBoolean(tempPath + ".finishhere")));
 				}
 			}
 			if (objectives.steps().size() == 0) {
