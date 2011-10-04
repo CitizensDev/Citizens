@@ -3,7 +3,6 @@ package net.citizensnpcs.questers.rewards;
 import net.citizensnpcs.properties.Storage;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandReward implements Reward {
@@ -19,8 +18,8 @@ public class CommandReward implements Reward {
 	public void grant(Player player, int UID) {
 		String localCommand = command.replaceAll("<player>", player.getName());
 		if (isServerCommand) {
-			Bukkit.getServer().dispatchCommand(
-					new ConsoleCommandSender(Bukkit.getServer()), localCommand);
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+					localCommand);
 		} else {
 			player.performCommand(localCommand);
 		}

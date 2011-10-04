@@ -3,7 +3,6 @@ package net.citizensnpcs.permissions;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Sets;
@@ -31,7 +30,7 @@ public class PermissionsBukkitProvider implements PermissionsProvider {
 			return;
 		String modifier = take ? "removegroup" : "addgroup";
 		Bukkit.getServer().dispatchCommand(
-				new ConsoleCommandSender(Bukkit.getServer()),
+				Bukkit.getConsoleSender(),
 				"perm player " + modifier + " " + player.getName() + " "
 						+ group);
 	}
@@ -39,15 +38,14 @@ public class PermissionsBukkitProvider implements PermissionsProvider {
 	@Override
 	public void grantPermission(Player player, String perm, boolean take) {
 		Bukkit.getServer().dispatchCommand(
-				new ConsoleCommandSender(Bukkit.getServer()),
+				Bukkit.getConsoleSender(),
 				"perm player setperm " + player.getName() + " " + perm + " "
 						+ take);
 	}
 
 	@Override
 	public void setGroup(Player player, String group) {
-		Bukkit.getServer().dispatchCommand(
-				new ConsoleCommandSender(Bukkit.getServer()),
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 				"perm player setgroup " + player.getName() + " " + group);
 	}
 
