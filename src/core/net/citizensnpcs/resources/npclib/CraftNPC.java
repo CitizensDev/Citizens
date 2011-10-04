@@ -45,6 +45,7 @@ public class CraftNPC extends PathNPC {
 		this.animations.performAnimation(action);
 	}
 
+	@SuppressWarnings("unused")
 	private boolean chunkLoaded() {
 		return this.bukkitEntity.getWorld().isChunkLoaded(this.npc.getChunkX(),
 				this.npc.getChunkZ());

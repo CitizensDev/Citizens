@@ -9,6 +9,7 @@ import net.citizensnpcs.questers.quests.Quest.QuestBuilder;
 import net.citizensnpcs.questers.rewards.Reward;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -34,6 +35,9 @@ public class QuestFactory {
 			path = tempPath = questName + ".objectives";
 			if (quests.pathExists(path)) {
 				for (Object step : quests.getKeys(path)) {
+					if (!StringUtils.isNumber(step.toString()))
+						continue; // fix checking for objectives under rewards:
+									// or messages:
 					tempPath = questName + ".objectives." + step;
 					List<Objective> tempStep = Lists.newArrayList();
 					for (Object objective : quests.getKeys(tempPath)) {

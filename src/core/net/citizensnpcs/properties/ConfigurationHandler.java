@@ -9,7 +9,6 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.util.config.Configuration;
-import org.bukkit.util.config.ConfigurationNode;
 
 public class ConfigurationHandler implements Storage {
 	private final Configuration config;
@@ -259,10 +258,6 @@ public class ConfigurationHandler implements Storage {
 
 	public List<String> getKeys(String path) {
 		return this.config.getKeys(path);
-	}
-
-	public ConfigurationNode getNode(String path) {
-		return this.config.getNode(path);
 	}
 
 	@Override

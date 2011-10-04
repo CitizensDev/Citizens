@@ -65,7 +65,7 @@ public class NPCAnimator {
 	}
 
 	private DataWatcher getWatcher() {
-		return this.npc.al();
+		return this.npc.getDataWatcher();
 	}
 
 	private void sendMetadataPacket() {

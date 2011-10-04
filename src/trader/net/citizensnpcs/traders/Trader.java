@@ -129,7 +129,7 @@ public class Trader extends CitizensNPC {
 			}
 			TraderTask task = new TraderTask(npc, player, mode);
 			int id = Bukkit.getServer().getScheduler()
-					.scheduleSyncRepeatingTask(Citizens.plugin, task, 2, 1);
+					.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
 			task.addID(id);
 			trader.setFree(false);
 			InventoryUtils.showInventory(npc, player);
