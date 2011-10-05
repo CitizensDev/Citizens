@@ -101,12 +101,13 @@ public class QuesterCommands extends CommandHandler {
 			min = 4,
 			flags = "f")
 	@CommandRequirements()
+	@ServerCommand()
 	@CommandPermissions("quester.admin.quests.giveplayer")
-	public static void assignQuestToPlayer(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void assignQuestToPlayer(CommandContext args,
+			CommandSender sender, HumanNPC npc) {
 		String quest = args.getJoinedStrings(3);
 		if (!QuestManager.isValidQuest(quest)) {
-			player.sendMessage(ChatColor.GRAY
+			sender.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
 			return;
 		}
@@ -115,14 +116,14 @@ public class QuesterCommands extends CommandHandler {
 		if (other == null
 				&& !new File("plugins/Citizens/profiles/" + name + ".yml")
 						.exists()) {
-			player.sendMessage(ChatColor.GRAY
+			sender.sendMessage(ChatColor.GRAY
 					+ "Couldn't find the offline player quest file.");
 			return;
 		}
 		PlayerProfile profile = PlayerProfile.getProfile(args.getString(1),
 				false);
 		if (profile.hasQuest() && !args.hasFlag('f')) {
-			player.sendMessage(ChatColor.GRAY
+			sender.sendMessage(ChatColor.GRAY
 					+ "Player already has a quest. Use the -f flag to force add the quest.");
 			return;
 		}
@@ -130,7 +131,7 @@ public class QuesterCommands extends CommandHandler {
 				System.currentTimeMillis()));
 		if (other == null)
 			profile.save();
-		player.sendMessage(ChatColor.GREEN + "Quest added.");
+		sender.sendMessage(ChatColor.GREEN + "Quest added.");
 	}
 
 	@Command(
@@ -141,12 +142,13 @@ public class QuesterCommands extends CommandHandler {
 			min = 3,
 			flags = "c")
 	@CommandRequirements()
+	@ServerCommand()
 	@CommandPermissions("quester.admin.quests.clear")
-	public static void clearQuests(CommandContext args, Player player,
+	public static void clearQuests(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		String quest = args.getJoinedStrings(2);
 		if (!quest.equals("*") && !QuestManager.isValidQuest(quest)) {
-			player.sendMessage(ChatColor.GRAY
+			sender.sendMessage(ChatColor.GRAY
 					+ "There is no quest by that name.");
 			return;
 		}
@@ -156,7 +158,7 @@ public class QuesterCommands extends CommandHandler {
 		if (name.equals("*")) {
 			File dir = new File("plugins/Citizens/profiles/");
 			if (!dir.exists() || !dir.isDirectory()) {
-				player.sendMessage(ChatColor.GRAY
+				sender.sendMessage(ChatColor.GRAY
 						+ "Profile directory is non-existent.");
 				return;
 			}
@@ -171,7 +173,7 @@ public class QuesterCommands extends CommandHandler {
 		} else {
 			if (!new File("plugins/Citizens/profiles/" + name + ".yml")
 					.exists() && !PlayerProfile.isOnline(name)) {
-				player.sendMessage(ChatColor.GRAY
+				sender.sendMessage(ChatColor.GRAY
 						+ "Couldn't find that player.");
 				return;
 			}
@@ -198,7 +200,7 @@ public class QuesterCommands extends CommandHandler {
 			if (changed && !profile.isOnline())
 				profile.save();
 		}
-		player.sendMessage(ChatColor.GREEN + "Quests cleared.");
+		sender.sendMessage(ChatColor.GREEN + "Quests cleared.");
 	}
 
 	@Command(
@@ -262,15 +264,16 @@ public class QuesterCommands extends CommandHandler {
 			modifiers = "saveall",
 			min = 1,
 			max = 1)
+	@ServerCommand()
 	@CommandPermissions("quester.admin.quests.save")
-	public static void saveProfiles(CommandContext args, Player player,
+	public static void saveProfiles(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		int count = 0;
 		for (PlayerProfile profile : PlayerProfile.getOnline()) {
 			profile.save();
 			++count;
 		}
-		player.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
+		sender.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
 				+ " profiles.");
 	}
 
