@@ -10,8 +10,7 @@ public class NPCSocket extends Socket {
 
 	@Override
 	public InputStream getInputStream() {
-		byte[] buf = new byte[1];
-		return new ByteArrayInputStream(buf);
+		return new ByteArrayInputStream(new byte[10]);
 	}
 
 	@Override
