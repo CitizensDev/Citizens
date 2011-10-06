@@ -129,3 +129,11 @@ By fullwall and aPunch
 -many other bugfixes
 *API CHANGES
 -added a few Quest events - QuestBeginEvent, QuestAbortEvent, QuestCompleteEvent
+
+*--- v1.1.2 ---
+*KEY FEATURES
+-updated to latest CraftBukkit Recommended Build
+*ADDED
+-added ability to execute some quest commands in the console
+*FIXED
+-various quest fixes/changes
