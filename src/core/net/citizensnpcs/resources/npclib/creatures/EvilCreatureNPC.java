@@ -1,7 +1,5 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
-import java.util.Random;
-
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
@@ -75,11 +73,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 							"You cannot tame this Evil NPC because you have reached the NPC creation limit.");
 			return;
 		}
-		if (npc.getHandle() instanceof CreatureNPC
-				&& player.getItemInHand().getTypeId() == SettingsManager
-						.getInt("EvilTameItem")) {
-			if (new Random().nextInt(100) <= SettingsManager
-					.getInt("EvilTameChance")) {
+		if (player.getItemInHand().getTypeId() == SettingsManager
+				.getInt("EvilTameItem")) {
+			if (random.nextInt(100) <= SettingsManager.getInt("EvilTameChance")) {
 				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
 				CreatureTask.despawn(this, NPCRemoveReason.OTHER);

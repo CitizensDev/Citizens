@@ -69,7 +69,8 @@ public class NPCSpawner {
 				.callEvent(new NPCRemoveEvent(npc, reason));
 		PacketUtils.sendPacketToOnline(npc.getLocation(),
 				new Packet29DestroyEntity(npc.getHandle().id), null);
-		npc.getPlayer().remove();
+		npc.getHandle().die();
+		getWorldServer(npc.getWorld()).removeEntity(npc.getHandle());
 	}
 
 	public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
