@@ -11,15 +11,21 @@ import org.bukkit.entity.Player;
 public class QuestReward implements Reward {
 	private final String reward;
 	private final boolean take;
+	private final int times;
 
-	QuestReward(String quest, boolean take) {
+	QuestReward(String quest, int times, boolean take) {
 		this.reward = quest;
 		this.take = take;
+		this.times = times;
 	}
 
 	@Override
 	public void grant(Player player, int UID) {
-		QuestManager.assignQuest(player, UID, reward);
+		if (!take)
+			QuestManager.assignQuest(player, UID, reward);
+		else if (PlayerProfile.getProfile(player.getName()).getQuest()
+				.equalsIgnoreCase(reward))
+			PlayerProfile.getProfile(player.getName()).setProgress(null);
 	}
 
 	@Override
@@ -29,13 +35,15 @@ public class QuestReward implements Reward {
 
 	@Override
 	public boolean canTake(Player player) {
-		return PlayerProfile.getProfile(player.getName()).hasCompleted(reward);
+		return times > 1 ? PlayerProfile.getProfile(player.getName())
+				.getCompletedTimes(reward) >= times : PlayerProfile.getProfile(
+				player.getName()).hasCompleted(reward);
 	}
 
 	@Override
 	public String getRequiredText(Player player) {
 		return ChatColor.GRAY + "You must have completed the quest "
-				+ StringUtils.wrap(reward) + ".";
+				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
 	}
 
 	@Override
@@ -46,7 +54,8 @@ public class QuestReward implements Reward {
 	public static class QuestRewardBuilder implements RewardBuilder {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
-			return new QuestReward(storage.getString(root + ".quest"), take);
+			return new QuestReward(storage.getString(root + ".quest"),
+					storage.getInt(root + ".times"), take);
 		}
 	}
 }

@@ -54,6 +54,11 @@ public class PlayerProfile {
 		return profiles.containsKey(name.toLowerCase());
 	}
 
+	public int getCompletedTimes(String reward) {
+		return hasCompleted(reward) ? getCompletedQuest(reward)
+				.getTimesCompleted() : 0;
+	}
+
 	public static void setProfile(String name, PlayerProfile profile) {
 		name = name.toLowerCase();
 		if (profile == null) {
