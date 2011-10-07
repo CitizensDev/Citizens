@@ -66,7 +66,7 @@ public class QuestReward implements Reward {
 
 		public void schedule() {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
-					this, 10);
+					this, 1);
 		}
 
 		@Override

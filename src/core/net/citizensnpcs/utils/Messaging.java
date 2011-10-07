@@ -101,4 +101,9 @@ public class Messaging {
 		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
 		return message;
 	}
+
+	public static void dualSend(Player player, Object... string) {
+		log(string);
+		send(player, StringUtils.join(string));
+	}
 }

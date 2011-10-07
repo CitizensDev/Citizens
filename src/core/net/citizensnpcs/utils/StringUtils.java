@@ -253,9 +253,12 @@ public class StringUtils {
 	}
 
 	public static String format(Location location) {
-		return join(location.getBlockX(), location.getBlockY(),
-				location.getBlockZ())
-				+ bracketize("world " + location.getWorld(), true);
+		return join(
+				location.getBlockX(),
+				location.getBlockY(),
+				location.getBlockZ(),
+				bracketize(StringUtils.wrap("world: ")
+						+ location.getWorld().getName(), true));
 	}
 
 	public static String join(Object... parts) {

@@ -63,8 +63,6 @@ public class NPCSpawner {
 						clearMap(name);
 					}
 				}, 1);
-		// TODO Auto-generated method stub
-
 	}
 
 	public static HumanNPC spawnNPC(int UID, String name, Location loc) {
@@ -100,19 +98,18 @@ public class NPCSpawner {
 
 	public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
 		WorldServer ws = getWorldServer(loc.getWorld());
-		CraftNPC handle = npc.getHandle();
 		clearMap(npc.getName());
 		npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), loc.getPitch());
 		ws.addEntity(npc.getHandle());
-		ws.players.remove(handle);
+		ws.players.remove(npc.getHandle());
 		return npc;
 	}
 
 	public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new NPCRemoveEvent(npc, reason));
-		PacketUtils.sendPacketToOnline(npc.getLocation(),
+		PacketUtils.sendPacketToOnline(
 				new Packet29DestroyEntity(npc.getHandle().id), null);
 		npc.getHandle().die();
 		getWorldServer(npc.getWorld()).removeEntity(npc.getHandle());

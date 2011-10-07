@@ -1,6 +1,7 @@
 package net.citizensnpcs.questers;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,7 +121,7 @@ public class QuestManager {
 	}
 
 	public static Collection<Quest> quests() {
-		return quests.values();
+		return Collections.unmodifiableCollection(quests.values());
 	}
 
 	public static void unload(Player player) {
@@ -129,5 +130,9 @@ public class QuestManager {
 			getProfile(player.getName()).setProgress(null);
 		}
 		PlayerProfile.setProfile(player.getName(), null);
+	}
+
+	public static void clearQuests() {
+		quests.clear();
 	}
 }

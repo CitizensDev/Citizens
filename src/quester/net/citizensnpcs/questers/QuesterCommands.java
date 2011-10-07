@@ -9,6 +9,7 @@ import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.api.events.QuestCancelEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
+import net.citizensnpcs.questers.data.QuestProperties;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
@@ -39,6 +40,28 @@ public class QuesterCommands extends CommandHandler {
 	public static final QuesterCommands INSTANCE = new QuesterCommands();
 
 	private QuesterCommands() {
+	}
+
+	@CommandRequirements()
+	@ServerCommand()
+	@Command(
+			aliases = "quest",
+			usage = "reload",
+			desc = "reloads quests from files",
+			modifiers = "reload",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.admin.quests.reload")
+	public static void reloadQuests(CommandContext args, Player player,
+			HumanNPC npc) {
+		Messaging.dualSend(player, ChatColor.GRAY + "Reloading...");
+		QuestManager.clearQuests();
+		QuestProperties.initialize();
+		Messaging.dualSend(
+				player,
+				ChatColor.GREEN + "Loaded "
+						+ StringUtils.wrap(QuestManager.quests().size())
+						+ " quests.");
 	}
 
 	@CommandRequirements()
@@ -465,6 +488,8 @@ public class QuesterCommands extends CommandHandler {
 				"clear in-progress/completed quests");
 		HelpUtils.format(sender, "quest", "completed (page)",
 				"view your completed quests");
+		HelpUtils
+				.format(sender, "quest", "reload", "reloads quests from files");
 		HelpUtils.format(sender, "quest", "save",
 				"saves current quest progress");
 		HelpUtils.format(sender, "quest", "status",

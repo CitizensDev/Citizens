@@ -36,14 +36,10 @@ public class PacketUtils {
 		}
 	}
 
-	public static void sendPacketToOnline(final Location location,
-			final Packet packet, final Player except) {
-		final World world = location.getWorld();
+	public static void sendPacketToOnline(final Packet packet,
+			final Player except) {
 		for (Player ply : Bukkit.getServer().getOnlinePlayers()) {
 			if (ply.equals(except)) {
-				continue;
-			}
-			if (world != ply.getWorld()) {
 				continue;
 			}
 			sendPacketToPlayer(ply, packet);

@@ -54,9 +54,7 @@ public class Objectives {
 		}
 
 		public boolean isCompleted() {
-			return this.steps.size() - 1 <= 0;
-			// Current quest is kept in deque, so we check if the size minus the
-			// loaded step (1) would equal 0 (completed).
+			return this.steps.size() <= 0;
 		}
 
 		public int index() {

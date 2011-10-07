@@ -32,21 +32,21 @@ public class TickTask implements Runnable {
 				npc.doTick();
 				NPCSpawner.removeNPCFromPlayerList(npc);
 				UID = entry.getKey();
-				for (Player players : online) {
-					String name = players.getName();
+				for (Player player : online) {
+					String name = player.getName();
 					if (!npc.getNPCData().isLookClose()
 							&& !npc.getNPCData().isTalkClose())
 						continue;
 					// If the player is within 'seeing' range
 					if (LocationUtils.withinRange(npc.getLocation(),
-							players.getLocation(),
+							player.getLocation(),
 							SettingsManager.getDouble("NPCRange"))) {
 						if (npc.getHandle().pathFinished()
 								&& !npc.getHandle().hasTarget()
 								&& npc.getNPCData().isLookClose()) {
-							NPCManager.faceEntity(npc, players);
+							NPCManager.faceEntity(npc, player);
 						}
-						cacheActions(players, npc, UID, name);
+						cacheActions(player, npc, UID, name);
 					} else {
 						resetActions(UID, name, npc);
 					}
