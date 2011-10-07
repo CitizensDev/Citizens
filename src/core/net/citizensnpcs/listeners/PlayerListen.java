@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
-
 	@Override
 	public void registerEvents(Citizens plugin) {
 		PluginManager pm = plugin.getServer().getPluginManager();

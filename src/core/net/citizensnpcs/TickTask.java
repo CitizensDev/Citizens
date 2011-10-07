@@ -32,23 +32,23 @@ public class TickTask implements Runnable {
 				npc.doTick();
 				NPCSpawner.removeNPCFromPlayerList(npc);
 				UID = entry.getKey();
-				for (Player p : online) {
-					String name = p.getName();
-					if (npc.getNPCData().isLookClose()
-							|| npc.getNPCData().isTalkClose()) {
-						// If the player is within 'seeing' range
-						if (LocationUtils.withinRange(npc.getLocation(),
-								p.getLocation(),
-								SettingsManager.getDouble("NPCRange"))) {
-							if (npc.getHandle().pathFinished()
-									&& !npc.getHandle().hasTarget()
-									&& npc.getNPCData().isLookClose()) {
-								NPCManager.faceEntity(npc, p);
-							}
-							cacheActions(p, npc, UID, name);
-						} else {
-							resetActions(UID, name, npc);
+				for (Player players : online) {
+					String name = players.getName();
+					if (!npc.getNPCData().isLookClose()
+							&& !npc.getNPCData().isTalkClose())
+						continue;
+					// If the player is within 'seeing' range
+					if (LocationUtils.withinRange(npc.getLocation(),
+							players.getLocation(),
+							SettingsManager.getDouble("NPCRange"))) {
+						if (npc.getHandle().pathFinished()
+								&& !npc.getHandle().hasTarget()
+								&& npc.getNPCData().isLookClose()) {
+							NPCManager.faceEntity(npc, players);
 						}
+						cacheActions(players, npc, UID, name);
+					} else {
+						resetActions(UID, name, npc);
 					}
 				}
 			}
@@ -102,13 +102,13 @@ public class TickTask implements Runnable {
 				.isTalkClose());
 	}
 
-	private void cacheActions(Player p, HumanNPC npc, int entityID, String name) {
-		CachedAction cached = ActionManager.getAction(entityID, name);
+	private void cacheActions(Player player, HumanNPC npc, int UID, String name) {
+		CachedAction cached = ActionManager.getAction(UID, name);
 		if (!cached.has("saidText") && npc.getNPCData().isTalkClose()) {
-			MessageUtils.sendText(npc, p);
+			MessageUtils.sendText(npc, player);
 			cached.set("saidText");
 		}
-		ActionManager.putAction(entityID, name, cached);
+		ActionManager.putAction(UID, name, cached);
 	}
 
 	public static void scheduleRespawn(HumanNPC npc, int delay) {

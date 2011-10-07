@@ -1,10 +1,12 @@
 package net.citizensnpcs.questers.rewards;
 
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -22,7 +24,7 @@ public class QuestReward implements Reward {
 	@Override
 	public void grant(Player player, int UID) {
 		if (!take)
-			QuestManager.assignQuest(player, UID, reward);
+			new AssignQuestRunnable(player, UID, reward).schedule();
 		else if (PlayerProfile.getProfile(player.getName()).getQuest()
 				.equalsIgnoreCase(reward))
 			PlayerProfile.getProfile(player.getName()).setProgress(null);
@@ -49,6 +51,28 @@ public class QuestReward implements Reward {
 	@Override
 	public void save(Storage storage, String root) {
 		storage.setString(root + ".quest", reward);
+	}
+
+	private static class AssignQuestRunnable implements Runnable {
+		private final Player player;
+		private final int UID;
+		private final String quest;
+
+		public AssignQuestRunnable(Player player, int UID, String quest) {
+			this.player = player;
+			this.UID = UID;
+			this.quest = quest;
+		}
+
+		public void schedule() {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+					this, 10);
+		}
+
+		@Override
+		public void run() {
+			QuestManager.assignQuest(player, UID, quest);
+		}
 	}
 
 	public static class QuestRewardBuilder implements RewardBuilder {

@@ -3,6 +3,7 @@ package net.citizensnpcs.resources.npclib;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -54,24 +55,35 @@ public class NPCSpawner {
 			playerMap.remove(name);
 	}
 
+	public static void delayedRemove(final String name) {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+				new Runnable() {
+					@Override
+					public void run() {
+						clearMap(name);
+					}
+				}, 1);
+		// TODO Auto-generated method stub
+
+	}
+
 	public static HumanNPC spawnNPC(int UID, String name, Location loc) {
-		clearMap(name);
 		WorldServer ws = getWorldServer(loc.getWorld());
+		clearMap(name);
 		CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws,
 				name, new ItemInWorldManager(ws));
 		eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), loc.getPitch());
 		ws.addEntity(eh);
 		ws.players.remove(eh);
-		clearMap(name);
 		return new HumanNPC(eh, UID, name);
 	}
 
 	public static HumanNPC spawnNPC(Location loc, CreatureNPCType type) {
 		try {
 			String name = UtilityProperties.getRandomName(type);
-			clearMap(name);
 			WorldServer ws = getWorldServer(loc.getWorld());
+			clearMap(name);
 			CraftNPC eh = type.getEntityConstructor().newInstance(
 					getMinecraftServer(ws.getServer()), ws, name,
 					new ItemInWorldManager(ws));
@@ -79,7 +91,6 @@ public class NPCSpawner {
 					loc.getYaw(), loc.getPitch());
 			ws.addEntity(eh);
 			ws.players.remove(eh);
-			clearMap(name);
 			return new HumanNPC(eh, -1 /*Fake UID*/, name);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,13 +99,13 @@ public class NPCSpawner {
 	}
 
 	public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
-		clearMap(npc.getName());
 		WorldServer ws = getWorldServer(loc.getWorld());
+		CraftNPC handle = npc.getHandle();
+		clearMap(npc.getName());
 		npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
 				loc.getYaw(), loc.getPitch());
 		ws.addEntity(npc.getHandle());
-		ws.players.remove(npc.getHandle());
-		clearMap(npc.getName());
+		ws.players.remove(handle);
 		return npc;
 	}
 
