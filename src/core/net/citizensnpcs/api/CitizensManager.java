@@ -72,7 +72,7 @@ public class CitizensManager {
 	 * @return true if the player has an NPC selected
 	 */
 	public static boolean validateSelected(Player player) {
-		return NPCManager.validateSelected(player);
+		return NPCManager.hasSelected(player);
 	}
 
 	/**
@@ -85,6 +85,6 @@ public class CitizensManager {
 	 * @return true if the player has the NPC with the given UID selected
 	 */
 	public static boolean validateSelected(Player player, int UID) {
-		return NPCManager.validateSelected(player, UID);
+		return NPCManager.hasSelected(player, UID);
 	}
 }

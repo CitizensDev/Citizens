@@ -195,7 +195,7 @@ public class Citizens extends JavaPlugin {
 			}
 
 			HumanNPC npc = null;
-			if (player != null && NPCManager.validateSelected(player)) {
+			if (player != null && NPCManager.hasSelected(player)) {
 				npc = NPCManager.get(NPCDataManager.getSelected(player));
 			}
 			try {

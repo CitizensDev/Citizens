@@ -18,7 +18,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class Guard extends CitizensNPC {
@@ -106,18 +105,19 @@ public class Guard extends CitizensNPC {
 		if (!(event.getEntity() instanceof HumanNPC)) {
 			return;
 		}
-		HumanNPC npc = (HumanNPC) event.getEntity();
-		if (isAggressive() && event.getCause() == DamageCause.ENTITY_ATTACK) {
+		if (isAggressive() && event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-			if (!isOwner(ev.getDamager(), npc)) {
+			HumanNPC npc = (HumanNPC) event.getEntity();
+			if (ev.getDamager() instanceof LivingEntity
+					&& !isOwner(ev.getDamager(), npc)) {
 				target((LivingEntity) ev.getDamager(), npc);
 			}
 		}
 	}
 
 	private boolean isOwner(Entity damager, HumanNPC npc) {
-		return damager instanceof Player ? NPCManager.validateOwnership(
-				(Player) damager, npc.getUID()) : false;
+		return damager instanceof Player ? NPCManager.isOwner((Player) damager,
+				npc.getUID()) : false;
 	}
 
 	@Override

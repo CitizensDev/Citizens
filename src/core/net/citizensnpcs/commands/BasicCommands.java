@@ -572,9 +572,9 @@ public class BasicCommands extends CommandHandler {
 			player.sendMessage(MessageUtils.mustHaveNPCSelectedMessage);
 			return;
 		}
-		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+		if ((!NPCManager.isOwner(player, npc.getUID()) && PermissionManager
 				.hasPermission(player, "citizens.admin.override.remove"))
-				|| (NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+				|| (NPCManager.isOwner(player, npc.getUID()) && PermissionManager
 						.hasPermission(player, "citizens.basic.modify.remove"))) {
 			NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
 			NPCDataManager.deselectNPC(player);
@@ -693,9 +693,9 @@ public class BasicCommands extends CommandHandler {
 			min = 2,
 			max = 2)
 	public static void setOwner(CommandContext args, Player player, HumanNPC npc) {
-		if ((!NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+		if ((!NPCManager.isOwner(player, npc.getUID()) && PermissionManager
 				.hasPermission(player, "citizens.admin.override.setowner"))
-				|| (NPCManager.validateOwnership(player, npc.getUID()) && PermissionManager
+				|| (NPCManager.isOwner(player, npc.getUID()) && PermissionManager
 						.hasPermission(player, "citizens.basic.modify.setowner"))) {
 			player.sendMessage(ChatColor.GREEN + "The owner of "
 					+ StringUtils.wrap(npc.getStrippedName()) + " is now "

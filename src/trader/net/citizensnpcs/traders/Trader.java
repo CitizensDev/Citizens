@@ -108,7 +108,7 @@ public class Trader extends CitizensNPC {
 		Trader trader = npc.getType("trader");
 		if (trader.isFree()) {
 			TraderMode mode;
-			if (NPCManager.validateOwnership(player, npc.getUID())) {
+			if (NPCManager.isOwner(player, npc.getUID())) {
 				if (!PermissionManager.hasPermission(player,
 						"citizens.trader.modify.stock")) {
 					return;

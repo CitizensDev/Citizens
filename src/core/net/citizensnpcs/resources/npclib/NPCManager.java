@@ -116,21 +116,21 @@ public class NPCManager {
 	}
 
 	// Checks if a player has an npc selected.
-	public static boolean validateSelected(Player player) {
+	public static boolean hasSelected(Player player) {
 		return NPCDataManager.selectedNPCs.get(player.getName()) != null
 				&& !NPCDataManager.selectedNPCs.get(player.getName())
 						.toString().isEmpty();
 	}
 
 	// Checks if the player has selected the given npc.
-	public static boolean validateSelected(Player player, int UID) {
-		return validateSelected(player)
+	public static boolean hasSelected(Player player, int UID) {
+		return hasSelected(player)
 				&& NPCDataManager.selectedNPCs.get(player.getName()) == UID;
 	}
 
 	// Checks if a player owns a given npc.
-	public static boolean validateOwnership(Player player, int UID) {
-		return get(UID).getOwner().equals(player.getName());
+	public static boolean isOwner(Player player, int UID) {
+		return get(UID).getOwner().equalsIgnoreCase(player.getName());
 	}
 
 	// Renames an npc.

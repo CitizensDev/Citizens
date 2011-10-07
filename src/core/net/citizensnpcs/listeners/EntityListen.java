@@ -77,7 +77,7 @@ public class EntityListen extends EntityListener implements Listener {
 			}
 			if (UtilityProperties.validateTool("items.select-items", player
 					.getItemInHand().getTypeId(), player.isSneaking())) {
-				if (!NPCManager.validateSelected(player, npc.getUID())) {
+				if (!NPCManager.hasSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
 					Messaging.send(player, npc,
 							SettingsManager.getString("SelectionMessage"));

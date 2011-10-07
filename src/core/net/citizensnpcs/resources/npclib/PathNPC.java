@@ -49,6 +49,11 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public void moveTick() {
+		if (this.dead) {
+			if (this.targetEntity != null || this.path != null)
+				resetTarget();
+			return;
+		}
 		hasAttacked = false;
 		jumping = false;
 		if (randomPather) {
