@@ -51,9 +51,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onDeath() {
-		ItemStack item;
-		if ((item = UtilityProperties.getRandomDrop(SettingsManager
-				.getString("EvilDrops"))) != null) {
+		ItemStack item = UtilityProperties.getRandomDrop(SettingsManager
+				.getString("EvilDrops"));
+		if (item != null) {
 			this.getEntity().getWorld()
 					.dropItemNaturally(this.getLocation(), item);
 		}

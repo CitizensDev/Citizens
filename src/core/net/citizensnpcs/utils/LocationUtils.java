@@ -21,16 +21,7 @@ public class LocationUtils {
 		if (loc == null || pLoc == null || loc.getWorld() != pLoc.getWorld()) {
 			return false;
 		}
-		double halved = range / 2;
-		double pX = pLoc.getX(), pY = pLoc.getY(), pZ = pLoc.getZ();
-		double lX = loc.getX(), lY = loc.getY(), lZ = loc.getZ();
-		return (pX <= lX + halved && pX >= lX - halved)
-				&& (pY >= lY - range && pY <= lY + range)
-				&& (pZ >= lZ - halved && pZ <= lZ + halved);
-	}
-
-	public static boolean withinRange(Location loc, Location second) {
-		return withinRange(loc, second, 0);
+		return Math.pow(range, 2) > loc.distanceSquared(pLoc);
 	}
 
 	public static Location loadLocation(Storage storage, String path,
