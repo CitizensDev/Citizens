@@ -33,7 +33,7 @@ public class EconpluginReward implements Reward {
 	}
 
 	@Override
-	public boolean canTake(Player player) {
+	public boolean fulfilsRequirement(Player player) {
 		return EconomyManager.getBalance(player.getName()) - reward >= 0;
 	}
 

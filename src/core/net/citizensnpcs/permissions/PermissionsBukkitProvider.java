@@ -40,7 +40,7 @@ public class PermissionsBukkitProvider implements PermissionsProvider {
 		Bukkit.getServer().dispatchCommand(
 				Bukkit.getConsoleSender(),
 				"perm player setperm " + player.getName() + " " + perm + " "
-						+ take);
+						+ !take);
 	}
 
 	@Override

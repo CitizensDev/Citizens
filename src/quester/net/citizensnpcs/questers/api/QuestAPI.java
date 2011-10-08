@@ -20,6 +20,7 @@ import net.citizensnpcs.questers.rewards.PermissionReward.PermissionRewardBuilde
 import net.citizensnpcs.questers.rewards.QuestReward.QuestRewardBuilder;
 import net.citizensnpcs.questers.rewards.RankReward.RankRewardBuilder;
 import net.citizensnpcs.questers.rewards.RewardBuilder;
+import net.citizensnpcs.questers.rewards.TeleportReward.TeleportRewardBuilder;
 
 import com.google.common.collect.Maps;
 
@@ -34,31 +35,36 @@ public class QuestAPI {
 		questTypes.put("destroy block", new DestroyQuest());
 		questTypes.put("delivery", new DeliveryQuest());
 		questTypes.put("hunt", new HuntQuest());
-		questTypes.put("move distance", new DistanceQuest());
-		questTypes.put("move location", new LocationQuest());
-		questTypes.put("player combat", new CombatQuest());
+		addQuestType(new DistanceQuest(), "move distance", "distance");
+		addQuestType(new LocationQuest(), "move location", "moveloc",
+				"location", "loc");
+		addQuestType(new CombatQuest(), "player combat", "combat");
 
-		rewards.put("command", new CommandRewardBuilder());
+		addRewardBuilder(new CommandRewardBuilder(), "command", "cmd");
 		rewards.put("health", new HealthRewardBuilder());
 		rewards.put("item", new ItemRewardBuilder());
 		rewards.put("money", new EconpluginRewardBuilder());
 		rewards.put("npc", new NPCRewardBuilder());
-		rewards.put("permission", new PermissionRewardBuilder());
+		addRewardBuilder(new PermissionRewardBuilder(), "permission", "perm");
 		rewards.put("quest", new QuestRewardBuilder());
-		rewards.put("rank", new RankRewardBuilder());
+		addRewardBuilder(new RankRewardBuilder(), "rank", "group");
+		addRewardBuilder(new TeleportRewardBuilder(), "teleport", "tp");
 	}
 
-	public static void addQuestType(String identifier, QuestUpdater instance) {
-		questTypes.put(identifier, instance);
+	public static void addQuestType(QuestUpdater instance,
+			String... identifiers) {
+		for (String identifier : identifiers)
+			questTypes.put(identifier.toLowerCase(), instance);
 	}
 
 	public static QuestUpdater getObjective(String identifier) {
 		return questTypes.get(identifier.toLowerCase());
 	}
 
-	public static void addRewardBuilder(String identifier,
-			RewardBuilder instance) {
-		rewards.put(identifier, instance);
+	public static void addRewardBuilder(RewardBuilder instance,
+			String... identifiers) {
+		for (String identifier : identifiers)
+			rewards.put(identifier.toLowerCase(), instance);
 	}
 
 	public static RewardBuilder getBuilder(String identifier) {

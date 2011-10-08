@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public interface Reward {
 	public void grant(Player player, int UID);
 
-	public boolean canTake(Player player);
+	public boolean fulfilsRequirement(Player player);
 
 	public boolean isTake();
 

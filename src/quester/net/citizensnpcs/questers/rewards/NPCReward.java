@@ -35,7 +35,7 @@ public class NPCReward implements Reward {
 	}
 
 	@Override
-	public boolean canTake(Player player) {
+	public boolean fulfilsRequirement(Player player) {
 		return false;
 	}
 

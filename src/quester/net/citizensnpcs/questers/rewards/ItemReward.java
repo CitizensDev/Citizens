@@ -57,7 +57,7 @@ public class ItemReward implements Reward {
 	}
 
 	@Override
-	public boolean canTake(Player player) {
+	public boolean fulfilsRequirement(Player player) {
 		return InventoryUtils.has(player, material, amount);
 	}
 

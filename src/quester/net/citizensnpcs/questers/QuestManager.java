@@ -39,7 +39,7 @@ public class QuestManager {
 			return false;
 		}
 		for (Reward requirement : quest.getRequirements()) {
-			if (!requirement.canTake(player)) {
+			if (!requirement.fulfilsRequirement(player)) {
 				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
 						+ requirement.getRequiredText(player));
 				return false;

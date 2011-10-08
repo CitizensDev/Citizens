@@ -26,7 +26,7 @@ public class PermissionReward implements Reward {
 	}
 
 	@Override
-	public boolean canTake(Player player) {
+	public boolean fulfilsRequirement(Player player) {
 		return PermissionManager.hasPermission(player, reward);
 	}
 
