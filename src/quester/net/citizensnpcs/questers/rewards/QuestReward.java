@@ -37,9 +37,14 @@ public class QuestReward implements Reward {
 
 	@Override
 	public boolean fulfilsRequirement(Player player) {
-		return times > 1 ? PlayerProfile.getProfile(player.getName())
-				.getCompletedTimes(reward) >= times : PlayerProfile.getProfile(
-				player.getName()).hasCompleted(reward);
+		if (times <= 0) {
+			return !PlayerProfile.getProfile(player.getName()).hasCompleted(
+					reward);
+		} else {
+			return times > 1 ? PlayerProfile.getProfile(player.getName())
+					.getCompletedTimes(reward) >= times : PlayerProfile
+					.getProfile(player.getName()).hasCompleted(reward);
+		}
 	}
 
 	@Override

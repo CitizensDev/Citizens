@@ -3,6 +3,7 @@ package net.citizensnpcs.utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
@@ -18,12 +19,33 @@ public class Messaging {
 	private final static String[] colours = { "black", "dblue", "dgreen",
 			"daqua", "dred", "dpurple", "gold", "gray", "dgray", "blue",
 			"green", "aqua", "red", "lpurple", "yellow", "white" };
+	private static final int DELAY_STR_LENGTH = "<delay".length();
 
 	public static void send(CommandSender sender, String message) {
 		send(sender, null, message);
 	}
 
-	public static void send(CommandSender sender, HumanNPC npc, String messages) {
+	public static void send(final CommandSender sender, final HumanNPC npc,
+			String messages) {
+		int index = messages.indexOf("<delay");
+		if (index != -1) {
+			index += DELAY_STR_LENGTH;
+			String assignment = messages.substring(index,
+					messages.indexOf(">", index));
+			int delay = assignment.length() <= 1 ? 1 : Integer
+					.parseInt(assignment.substring(1, assignment.length()));
+			send(sender, npc, messages.substring(0, index - DELAY_STR_LENGTH));
+			final String substr = messages.substring(
+					index + 1 + assignment.length(), messages.length());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+					new Runnable() {
+						@Override
+						public void run() {
+							send(sender, npc, substr);
+						}
+					}, delay);
+			return;
+		}
 		for (String message : Splitter.on("<br>").omitEmptyStrings()
 				.split(messages)) {
 			if (sender instanceof Player) {
@@ -94,8 +116,11 @@ public class Messaging {
 			++index;
 		}
 		for (int colour = 0; colour < 16; ++colour) {
-			message = message.replaceAll(String.format(format, colour), ""
-					+ ChatColor.getByCode(colour));
+			String chatColour = ChatColor.getByCode(colour).toString();
+			message = message.replaceAll(String.format(format, colour),
+					chatColour).replaceAll(
+					String.format(format, Integer.toHexString(colour)),
+					chatColour);
 		}
 		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
 		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
