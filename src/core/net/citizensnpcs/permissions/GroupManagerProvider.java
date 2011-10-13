@@ -88,4 +88,9 @@ public class GroupManagerProvider implements PermissionsProvider {
 		}
 		return ret;
 	}
+
+	@Override
+	public void removeGroup(Player player, String group) {
+		provider.getWorldData(player).removeGroup(group);
+	}
 }

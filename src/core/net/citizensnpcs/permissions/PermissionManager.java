@@ -74,13 +74,21 @@ public class PermissionManager {
 		return 0;
 	}
 
-	public static void grantRank(Player player, String rank, boolean replace,
-			boolean take) {
+	public static void grantRank(Player player, String rank, boolean take) {
 		if (permissionsEnabled) {
-			if (replace)
-				provider.setGroup(player, rank);
-			else
-				provider.grantGroup(player, rank, take);
+			provider.grantGroup(player, rank, take);
+		}
+	}
+
+	public static void setRank(Player player, String rank) {
+		if (permissionsEnabled) {
+			provider.setGroup(player, rank);
+		}
+	}
+
+	public static void removeRank(Player player, String rank) {
+		if (permissionsEnabled) {
+			provider.removeGroup(player, rank);
 		}
 	}
 

@@ -69,4 +69,10 @@ public class PermissionsBukkitProvider implements PermissionsProvider {
 		}
 		return null;
 	}
+
+	@Override
+	public void removeGroup(Player player, String group) {
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				"perm player removegroup " + player.getName() + " " + group);
+	}
 }

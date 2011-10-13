@@ -14,8 +14,8 @@ public class BinaryPathFinder extends PathFinder {
 	private final Map<Point, Integer> mindists = new HashMap<Point, Integer>();
 	private Path lastPath;
 	private Point start, end;
-	private final byte SIZE_INCREMENT = 20;
 	private ChunkCache cache;
+	private static final byte SIZE_INCREMENT = 20;
 
 	public BinaryPathFinder(CitizensPathHeuristic heuristic,
 			NPCPathPlayer player, CachedMinecraftPathWorld pathWorld) {

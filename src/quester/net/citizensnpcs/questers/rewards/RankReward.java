@@ -11,16 +11,26 @@ public class RankReward implements Reward {
 	private final String reward;
 	private final boolean take;
 	private final boolean replace;
+	private final String with;
 
-	RankReward(String reward, boolean replace, boolean take) {
+	RankReward(String reward, String with, boolean replace, boolean take) {
 		this.reward = reward;
 		this.replace = replace;
 		this.take = take;
+		this.with = with;
 	}
 
 	@Override
 	public void grant(Player player, int UID) {
-		PermissionManager.grantRank(player, reward, replace, take);
+		if (replace && !with.isEmpty()) {
+			PermissionManager.removeRank(player, reward);
+			PermissionManager.grantRank(player, with, false);
+		} else {
+			if (replace)
+				PermissionManager.setRank(player, reward);
+			else
+				PermissionManager.grantRank(player, reward, take);
+		}
 	}
 
 	@Override
@@ -49,7 +59,8 @@ public class RankReward implements Reward {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
 			return new RankReward(storage.getString(root + ".rank"),
-					storage.getBoolean(root + ".replace", false), take);
+					storage.getString(root + ".with"), storage.getBoolean(root
+							+ ".replace", false), take);
 		}
 	}
 }

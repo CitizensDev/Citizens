@@ -13,6 +13,8 @@ public interface PermissionsProvider {
 
 	public void setGroup(Player player, String group);
 
+	public void removeGroup(Player player, String group);
+
 	public CitizensGroup getGroup(String group);
 
 	public Set<CitizensGroup> getGroups(Player player);

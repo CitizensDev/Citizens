@@ -53,4 +53,9 @@ public class BPermissionsProvider implements PermissionsProvider {
 		}
 		return groups;
 	}
+
+	@Override
+	public void removeGroup(Player player, String group) {
+		getPermissions(player).removeGroup(player, group);
+	}
 }

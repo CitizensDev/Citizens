@@ -69,4 +69,12 @@ public class PermissionsExProvider implements PermissionsProvider {
 		}
 		return null;
 	}
+
+	@Override
+	public void removeGroup(Player player, String group) {
+		if (provider.getUser(player) != null
+				&& provider.getGroup(group) != null) {
+			provider.getUser(player).removeGroup(group);
+		}
+	}
 }
