@@ -13,7 +13,7 @@ import net.citizensnpcs.utils.Messaging;
 
 public class SettingsManager {
 	private static List<Node> nodes = new ArrayList<Node>();
-	private static Map<String, Object> loadedNodes = new HashMap<String, Object>();
+	private static Map<String, Node> loadedNodes = new HashMap<String, Node>();
 
 	public enum SettingsType {
 		/**
@@ -26,9 +26,13 @@ public class SettingsManager {
 		MOB;
 	}
 
+	public static String getPath(String key) {
+		return loadedNodes.get(key).getPath();
+	}
+
 	public static boolean getBoolean(String name) {
 		try {
-			return (Boolean) loadedNodes.get(name);
+			return (Boolean) loadedNodes.get(name).getValue();
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
@@ -38,7 +42,7 @@ public class SettingsManager {
 
 	public static int getInt(String name) {
 		try {
-			return (Integer) loadedNodes.get(name);
+			return (Integer) loadedNodes.get(name).getValue();
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
@@ -48,7 +52,7 @@ public class SettingsManager {
 
 	public static String getString(String name) {
 		try {
-			return (String) loadedNodes.get(name);
+			return (String) loadedNodes.get(name).getValue();
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
@@ -58,12 +62,13 @@ public class SettingsManager {
 
 	public static double getDouble(String name) {
 		try {
-			if (loadedNodes.get(name) instanceof Float) {
-				return (Float) loadedNodes.get(name);
-			} else if (loadedNodes.get(name) instanceof Double) {
-				return (Double) loadedNodes.get(name);
+			Object value = loadedNodes.get(name).getValue();
+			if (value instanceof Float) {
+				return (Float) value;
+			} else if (value instanceof Double) {
+				return (Double) value;
 			} else {
-				return (Integer) loadedNodes.get(name);
+				return (Integer) value;
 			}
 		} catch (NullPointerException e) {
 			Messaging.log("Report this error ASAP.");
@@ -99,7 +104,7 @@ public class SettingsManager {
 			} else {
 				node.set(local.getRaw(node.getPath()));
 			}
-			loadedNodes.put(node.getName(), node.getValue());
+			loadedNodes.put(node.getName(), node);
 			local.save();
 		}
 	}

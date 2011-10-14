@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -11,6 +12,7 @@ import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class UtilityProperties {
@@ -71,9 +73,9 @@ public class UtilityProperties {
 	}
 
 	// returns whether the given item ID is usable as a tool
-	public static boolean validateTool(String key, int type, boolean sneaking) {
-		List<String> item = Arrays.asList(getSettings()
-				.getString(key).split(","));
+	public static boolean isHoldingTool(String key, Player player) {
+		List<String> item = Arrays.asList(getSettings().getString(
+				SettingsManager.getPath(key)).split(","));
 		if (item.contains("*")) {
 			return true;
 		}
@@ -83,7 +85,8 @@ public class UtilityProperties {
 				s = s.replace("SHIFT-", "");
 				isShift = true;
 			}
-			if (Integer.parseInt(s) == type && isShift == sneaking) {
+			if (Integer.parseInt(s) == player.getItemInHand().getTypeId()
+					&& isShift == player.isSneaking()) {
 				return true;
 			}
 		}

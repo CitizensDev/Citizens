@@ -16,19 +16,29 @@ public class WizardManager {
 		/**
 		 * Teleports players
 		 */
-		TELEPORT,
+		TELEPORT("teleport"),
 		/**
 		 * Changes the time of the world
 		 */
-		TIME,
+		TIME("changetime"),
 		/**
 		 * Spawns mobs into the world
 		 */
-		SPAWN,
+		SPAWN("spawnmob"),
 		/**
 		 * Strikes lightning/makes it rain
 		 */
-		WEATHER;
+		WEATHER("togglestorm");
+		private final String string;
+
+		WizardMode(String toString) {
+			this.string = toString;
+		}
+
+		@Override
+		public String toString() {
+			return string;
+		}
 
 		public static WizardMode parse(String string) {
 			try {

@@ -4,6 +4,7 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -213,7 +214,8 @@ public class Wizard extends CitizensNPC {
 
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
-		if (PermissionManager.hasPermission(player, "citizens.wizard.use.interact")) {
+		if (PermissionManager.hasPermission(player,
+				"citizens.wizard.use.interact")) {
 			if (player.getItemInHand().getTypeId() == SettingsManager
 					.getInt("WizardInteractItem")) {
 				Wizard wizard = npc.getType("wizard");
@@ -255,27 +257,14 @@ public class Wizard extends CitizensNPC {
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		if (PermissionManager.hasPermission(player, "citizens.wizard.use.interact")) {
+		if (PermissionManager.hasPermission(player,
+				"citizens.wizard.use.interact")) {
 			Wizard wizard = npc.getType("wizard");
-			if (player.getItemInHand().getTypeId() == SettingsManager
-					.getInt("WizardInteractItem")) {
-				String op = "";
-				switch (wizard.getMode()) {
-				case TELEPORT:
-					op = "teleport";
-					break;
-				case TIME:
-					op = "changetime";
-					break;
-				case SPAWN:
-					op = "spawnmob";
-					break;
-				case WEATHER:
-					op = "togglestorm";
-				}
-				WizardManager.handleRightClick(player, npc, "wizard." + op);
-			} else if (player.getItemInHand().getTypeId() == SettingsManager
-					.getInt("WizardManaRegenItem")) {
+			if (UtilityProperties.isHoldingTool("WizardInteractItem", player)) {
+				WizardManager.handleRightClick(player, npc, "wizard."
+						+ wizard.getMode().toString());
+			} else if (UtilityProperties.isHoldingTool("WizardManaRegenItem",
+					player)) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
 				if (wizard.getMana() + 10 < SettingsManager
