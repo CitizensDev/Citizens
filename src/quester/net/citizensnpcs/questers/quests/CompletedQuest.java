@@ -5,12 +5,14 @@ import java.util.concurrent.TimeUnit;
 public class CompletedQuest {
 	private final int npcID;
 	private final String name;
-	private final long elapsed, seconds, minutes, hours;
+	private final long elapsed, seconds, minutes, hours, finishTime;
 	private int timesCompleted;
 
-	public CompletedQuest(String quest, int npcID, int completed, long elapsed) {
+	public CompletedQuest(String quest, int npcID, int completed, long elapsed,
+			long finishTime) {
 		this.elapsed = elapsed;
 		this.timesCompleted = completed;
+		this.finishTime = finishTime;
 		this.minutes = TimeUnit.MINUTES.convert(elapsed, TimeUnit.MILLISECONDS);
 		this.seconds = TimeUnit.SECONDS.convert(elapsed, TimeUnit.MILLISECONDS);
 		this.hours = TimeUnit.HOURS.convert(elapsed, TimeUnit.MILLISECONDS);
@@ -48,5 +50,9 @@ public class CompletedQuest {
 
 	public void setTimeCompleted(int completed) {
 		this.timesCompleted = completed;
+	}
+
+	public long getFinishTime() {
+		return this.finishTime;
 	}
 }

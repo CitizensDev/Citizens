@@ -168,6 +168,7 @@ public class PlayerProfile {
 			temp = path + quest.getName();
 			profile.setInt(temp + ".completed", quest.getTimesCompleted());
 			profile.setLong(temp + ".elapsed", quest.getElapsed());
+			profile.setLong(temp + ".finish", quest.getFinishTime());
 			profile.setInt(temp + ".quester", quest.getQuesterUID());
 		}
 		profile.save();
@@ -229,7 +230,8 @@ public class PlayerProfile {
 			path = "quests.completed." + key;
 			addCompletedQuest(new CompletedQuest(key, profile.getInt(path
 					+ ".quester"), profile.getInt(path + ".completed"),
-					profile.getLong(path + ".elapsed")));
+					profile.getLong(path + ".elapsed"), profile.getLong(path
+							+ ".finish")));
 		}
 	}
 

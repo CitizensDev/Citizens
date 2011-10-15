@@ -29,6 +29,7 @@ public class QuestFactory {
 			quest.acceptanceText(quests.getString(path + ".texts.acceptance"));
 			quest.repeatLimit(quests.getInt(path + ".repeats"));
 			quest.requirements(loadRewards(quests, path + ".requirements"));
+			quest.delay(quests.getLong(path + ".delay"));
 			String tempPath = path;
 
 			Objectives objectives = new Objectives();

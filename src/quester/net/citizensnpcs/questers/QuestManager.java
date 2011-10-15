@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.questers.api.events.QuestBeginEvent;
 import net.citizensnpcs.questers.api.events.QuestCompleteEvent;
@@ -13,6 +14,7 @@ import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.questers.rewards.Reward;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,16 +29,34 @@ public class QuestManager {
 		quests.put(quest.getName().toLowerCase(), quest);
 	}
 
-	public static boolean assignQuest(Player player, int UID, String q) {
-		q = q.toLowerCase();
-		if (!isValidQuest(q)) {
+	public static boolean assignQuest(Player player, int UID, String questName) {
+		questName = questName.toLowerCase();
+		if (!isValidQuest(questName)) {
 			throw new IllegalArgumentException("Given quest does not exist");
 		}
-		Quest quest = quests.get(q);
+		Quest quest = quests.get(questName);
 		if (!canRepeat(player, quest)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You are not allowed to repeat this quest again.");
 			return false;
+		}
+		if (getProfile(player.getName()).hasCompleted(questName)
+				&& quest.getDelay() > 0) {
+			long delayDifference = getDelayDifference(
+					getProfile(player.getName()).getCompletedQuest(questName),
+					quest);
+			if (delayDifference > 0) {
+				long hours = TimeUnit.HOURS.convert(delayDifference,
+						TimeUnit.MINUTES);
+				long minutes = delayDifference
+						- TimeUnit.MINUTES.convert(hours, TimeUnit.HOURS);
+				player.sendMessage(ChatColor.GRAY + "You must wait "
+						+ StringUtils.wrap(hours, ChatColor.GRAY)
+						+ " hours and "
+						+ StringUtils.wrap(minutes, ChatColor.GRAY)
+						+ " minutes before attempting this quest again.");
+				return false;
+			}
 		}
 		for (Reward requirement : quest.getRequirements()) {
 			if (!requirement.fulfilsRequirement(player)) {
@@ -53,9 +73,16 @@ public class QuestManager {
 			return false;
 		}
 		getProfile(player.getName()).setProgress(
-				new QuestProgress(UID, player, q, System.currentTimeMillis()));
+				new QuestProgress(UID, player, questName, System
+						.currentTimeMillis()));
 		Messaging.send(player, quest.getAcceptanceText());
 		return true;
+	}
+
+	private static long getDelayDifference(CompletedQuest completed, Quest quest) {
+		return quest.getDelay()
+				- TimeUnit.MINUTES.convert(System.currentTimeMillis()
+						- completed.getFinishTime(), TimeUnit.MILLISECONDS);
 	}
 
 	public static boolean canRepeat(Player player, Quest quest) {
@@ -81,7 +108,7 @@ public class QuestManager {
 		int completed = profile.hasCompleted(quest.getName()) ? profile
 				.getCompletedQuest(quest.getName()).getTimesCompleted() + 1 : 1;
 		CompletedQuest comp = new CompletedQuest(quest.getName(), UID,
-				completed, elapsed);
+				completed, elapsed, System.currentTimeMillis());
 		profile.addCompletedQuest(comp);
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new QuestCompleteEvent(quest, comp, player));

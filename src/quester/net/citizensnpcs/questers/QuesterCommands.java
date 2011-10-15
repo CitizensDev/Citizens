@@ -43,28 +43,6 @@ public class QuesterCommands extends CommandHandler {
 	}
 
 	@CommandRequirements()
-	@ServerCommand()
-	@Command(
-			aliases = "quest",
-			usage = "reload",
-			desc = "reloads quests from files",
-			modifiers = "reload",
-			min = 1,
-			max = 1)
-	@CommandPermissions("quester.admin.quests.reload")
-	public static void reloadQuests(CommandContext args, Player player,
-			HumanNPC npc) {
-		Messaging.dualSend(player, ChatColor.GRAY + "Reloading...");
-		QuestManager.clearQuests();
-		QuestProperties.initialize();
-		Messaging.dualSend(
-				player,
-				ChatColor.GREEN + "Loaded "
-						+ StringUtils.wrap(QuestManager.quests().size())
-						+ " quests.");
-	}
-
-	@CommandRequirements()
 	@Command(
 			aliases = "quest",
 			usage = "abort",
@@ -224,6 +202,28 @@ public class QuesterCommands extends CommandHandler {
 				profile.save();
 		}
 		sender.sendMessage(ChatColor.GREEN + "Quests cleared.");
+	}
+
+	@CommandRequirements()
+	@ServerCommand()
+	@Command(
+			aliases = "quest",
+			usage = "reload",
+			desc = "reloads quests from files",
+			modifiers = "reload",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.admin.quests.reload")
+	public static void reloadQuests(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		Messaging.dualSend(sender, ChatColor.GRAY + "Reloading...");
+		QuestManager.clearQuests();
+		QuestProperties.initialize();
+		Messaging.dualSend(
+				sender,
+				ChatColor.GREEN + "Loaded "
+						+ StringUtils.wrap(QuestManager.quests().size())
+						+ " quests.");
 	}
 
 	@Command(

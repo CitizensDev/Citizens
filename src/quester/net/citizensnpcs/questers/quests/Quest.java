@@ -16,9 +16,11 @@ public class Quest {
 	private final String questName;
 	private final int repeatLimit;
 	private final List<Reward> requirements;
+	private final long delay;
 
 	private Quest(QuestBuilder builder) {
 		this.questName = builder.questName;
+		this.delay = builder.delay;
 		this.description = builder.description;
 		this.acceptanceText = builder.acceptanceText;
 		this.granter = builder.granter;
@@ -34,6 +36,10 @@ public class Quest {
 	// Get the description of a quest
 	public String getDescription() {
 		return description;
+	}
+
+	public long getDelay() {
+		return this.delay;
 	}
 
 	public RewardGranter getGranter() {
@@ -68,6 +74,7 @@ public class Quest {
 		private Objectives objectives;
 		private String questName = "";
 		private int repeatLimit = -1;
+		private long delay;
 		private List<Reward> requirements = new ArrayList<Reward>();
 
 		public QuestBuilder(String quest) {
@@ -81,6 +88,11 @@ public class Quest {
 
 		public Quest create() {
 			return new Quest(this);
+		}
+
+		public QuestBuilder delay(long delay) {
+			this.delay = delay;
+			return this;
 		}
 
 		public QuestBuilder description(String desc) {

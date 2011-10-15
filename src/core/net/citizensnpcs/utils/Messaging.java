@@ -127,8 +127,8 @@ public class Messaging {
 		return message;
 	}
 
-	public static void dualSend(Player player, Object... string) {
+	public static void dualSend(CommandSender sender, String string) {
 		log(string);
-		send(player, StringUtils.join(string));
+		send(sender, StringUtils.join(string));
 	}
 }
