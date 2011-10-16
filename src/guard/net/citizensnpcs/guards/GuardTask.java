@@ -80,19 +80,22 @@ public class GuardTask implements Runnable {
 				if (guard.isBouncer()) {
 					handleTarget(npc.getPlayer(), npc, guard);
 				} else if (guard.isBodyguard()) {
-					Player p = Bukkit.getServer().getPlayer(npc.getOwner());
-					if (p != null) {
-						handleTarget(p, npc, guard);
+					Player player = Bukkit.getServer()
+							.getPlayer(npc.getOwner());
+					if (player != null) {
 						if (!LocationUtils.withinRange(npc.getLocation(),
-								p.getLocation(), guard.getProtectionRadius())) {
+								player.getLocation(),
+								guard.getProtectionRadius())) {
 							double range = SettingsManager
 									.getDouble("PathfindingRange");
 							if (!LocationUtils.withinRange(npc.getLocation(),
-									p.getLocation(), range))
-								npc.teleport(p.getLocation());
+									player.getLocation(), range))
+								npc.teleport(player.getLocation());
 							else
-								PathUtils.target(npc, p, false, -1, -1, range);
-						}
+								PathUtils.target(npc, player, false, -1, -1,
+										range);
+						} else
+							handleTarget(player, npc, guard);
 					} else {
 						if (CitizensManager.getNPC(npc.getUID()) != null) {
 							toRespawn.put(
@@ -108,21 +111,21 @@ public class GuardTask implements Runnable {
 		}
 	}
 
-	private void handleTarget(Player player, HumanNPC npc, Guard guard) {
+	private void handleTarget(Entity entity, HumanNPC npc, Guard guard) {
 		if (!guard.isAggressive()) {
 			return;
 		}
 		FlagList flags = guard.getFlags();
-		flags.processEntities(npc, player.getLocation(),
-				getNearby(player, guard));
+		flags.processEntities(npc, entity.getLocation(),
+				getNearby(entity, guard));
 		if (flags.getResult() != null) {
 			guard.target(flags.getResult(), npc);
 			npc.setPaused(true);
 		}
 	}
 
-	private List<Entity> getNearby(Player player, Guard guard) {
-		return player.getNearbyEntities(guard.getHalvedProtectionRadius(),
+	private List<Entity> getNearby(Entity entity, Guard guard) {
+		return entity.getNearbyEntities(guard.getHalvedProtectionRadius(),
 				guard.getProtectionRadius(), guard.getHalvedProtectionRadius());
 	}
 

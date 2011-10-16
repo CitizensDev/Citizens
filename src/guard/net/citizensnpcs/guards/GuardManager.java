@@ -43,8 +43,7 @@ public class GuardManager {
 				return;
 			}
 		} else {
-			loc = npc.getWaypoints().size() > 0 ? npc.getWaypoints().current()
-					.getLocation() : npc.getNPCData().getLocation();
+			loc = npc.getBaseLocation();
 		}
 		if (npc.getLocation().distance(loc) > guard.getProtectionRadius()) {
 			npc.teleport(loc);
