@@ -170,15 +170,10 @@ public class HumanNPC extends NPC {
 		return this.types.values();
 	}
 
-	public boolean callDamageEvent(EntityDamageEvent event) {
-		boolean found = false;
+	public void callDamageEvent(EntityDamageEvent event) {
 		for (CitizensNPC type : types.values()) {
 			type.onDamage(event);
-			if (!found) {
-				found = true;
-			}
 		}
-		return found;
 	}
 
 	public void callDeathEvent(EntityDeathEvent event) {
