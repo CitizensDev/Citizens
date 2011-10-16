@@ -1,46 +1,64 @@
 package net.citizensnpcs.questers.quests.types;
 
-import java.util.Set;
+import java.util.EnumMap;
+import java.util.Map;
 
-import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Item;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 
 public class CollectQuest implements QuestUpdater {
-	private static final Type[] EVENTS = { Type.PLAYER_DROP_ITEM,
-			Type.PLAYER_PICKUP_ITEM };
-	private static final Set<Item> dropped = Sets.newHashSet();
+	private static final Type[] EVENTS = { Type.PLAYER_PICKUP_ITEM,
+			Type.ENTITY_DEATH, Type.BLOCK_BREAK };
+	private static final Map<Player, Map<Material, Integer>> allowed = Maps
+			.newHashMap();
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof PlayerDropItemEvent) {
-			PlayerDropItemEvent ev = (PlayerDropItemEvent) event;
-			dropped.add(ev.getItemDrop());
-			new ItemCheck(ev.getItemDrop()).run();
+		if (event instanceof PlayerEvent)
+			verifyMap(((PlayerEvent) event).getPlayer());
+		if (event instanceof BlockBreakEvent) {
+			BlockBreakEvent ev = (BlockBreakEvent) event;
+			incrementMap(progress.getPlayer(), ev.getBlock().getType());
+		} else if (event instanceof EntityDeathEvent) {
+			EntityDeathEvent ev = (EntityDeathEvent) event;
+			for (ItemStack drop : ev.getDrops()) {
+				incrementMap(progress.getPlayer(), drop.getType(),
+						drop.getAmount());
+			}
 		} else if (event instanceof PlayerPickupItemEvent) {
 			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
-			if (dropped.contains(ev.getItem())) {
-				return progress.getAmount() >= progress.getObjective()
-						.getAmount();
-			}
-			if (ev.getItem().getItemStack().getType() == progress
-					.getObjective().getMaterial()) {
-				progress.addAmount(ev.getItem().getItemStack().getAmount());
+			Map<Material, Integer> previous = allowed.get(ev.getPlayer());
+			ItemStack stack = ev.getItem().getItemStack();
+			if (previous.containsKey(stack.getType())) {
+				int amount = previous.get(stack.getType()) - stack.getAmount();
+				if (amount <= 0) {
+					previous.remove(stack.getType());
+				} else
+					previous.put(stack.getType(), amount);
+				progress.addAmount(amount <= 0 ? stack.getAmount() + amount
+						: stack.getAmount());
 			}
 		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
+		boolean completed = progress.getAmount() >= progress.getObjective()
+				.getAmount();
+		if (completed) {
+			allowed.remove(progress.getPlayer());
+		}
+		return completed;
 	}
 
 	@Override
@@ -56,22 +74,18 @@ public class CollectQuest implements QuestUpdater {
 				+ " collected");
 	}
 
-	private static class ItemCheck implements Runnable {
-		private final Item item;
+	private void verifyMap(Player player) {
+		if (!allowed.containsKey(player))
+			allowed.put(player, new EnumMap<Material, Integer>(Material.class));
+	}
 
-		ItemCheck(Item item) {
-			this.item = item;
-		}
+	private void incrementMap(Player player, Material material) {
+		incrementMap(player, material, 1);
+	}
 
-		@Override
-		public void run() {
-			if (item == null || item.isDead()) {
-				dropped.remove(item);
-			} else {
-				Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
-						this, SettingsManager.getInt("ItemExploitCheckDelay"));
-			}
-		}
-
+	private void incrementMap(Player player, Material material, int existing) {
+		Map<Material, Integer> inner = allowed.get(player);
+		int amount = inner.containsKey(material) ? inner.get(material) : 0;
+		inner.put(material, amount + existing);
 	}
 }
