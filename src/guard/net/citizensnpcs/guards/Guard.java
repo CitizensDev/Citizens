@@ -105,10 +105,12 @@ public class Guard extends CitizensNPC {
 		if (!(event.getEntity() instanceof HumanNPC)) {
 			return;
 		}
-		if (isAggressive() && event instanceof EntityDamageByEntityEvent) {
+		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
 			HumanNPC npc = (HumanNPC) event.getEntity();
-			if (ev.getDamager() instanceof LivingEntity
+			if (isOwner(ev.getDamager(), npc))
+				event.setCancelled(true);
+			if (isAggressive() && ev.getDamager() instanceof LivingEntity
 					&& !isOwner(ev.getDamager(), npc)) {
 				target((LivingEntity) ev.getDamager(), npc);
 			}

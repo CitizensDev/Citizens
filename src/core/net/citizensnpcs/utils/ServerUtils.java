@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.server.ServerCommandEvent;
 
 public class ServerUtils {
 
@@ -16,5 +17,11 @@ public class ServerUtils {
 			}
 		}
 		return null;
+	}
+
+	public static void dispatchCommandWithEvent(String command) {
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		Bukkit.getPluginManager().callEvent(
+				new ServerCommandEvent(Bukkit.getConsoleSender(), command));
 	}
 }

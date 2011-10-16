@@ -1,8 +1,8 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.utils.ServerUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CommandReward implements Reward {
@@ -18,8 +18,7 @@ public class CommandReward implements Reward {
 	public void grant(Player player, int UID) {
 		String localCommand = command.replaceAll("<player>", player.getName());
 		if (isServerCommand) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
-					localCommand);
+			ServerUtils.dispatchCommandWithEvent(localCommand);
 		} else {
 			player.performCommand(localCommand);
 		}
