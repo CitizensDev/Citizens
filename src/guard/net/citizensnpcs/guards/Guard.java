@@ -104,7 +104,7 @@ public class Guard extends CitizensNPC {
 	public void onDamage(EntityDamageEvent event) {
 		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-			HumanNPC npc = (HumanNPC) event.getEntity();
+			HumanNPC npc = NPCManager.get(event.getEntity());
 			boolean owner = isOwner(ev.getDamager(), npc);
 			if (owner)
 				event.setCancelled(true);

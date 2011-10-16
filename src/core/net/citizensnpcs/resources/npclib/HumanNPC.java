@@ -182,15 +182,10 @@ public class HumanNPC extends NPC {
 		}
 	}
 
-	public boolean callTargetEvent(EntityTargetEvent event) {
-		boolean found = false;
+	public void callTargetEvent(EntityTargetEvent event) {
 		for (CitizensNPC type : types.values()) {
 			type.onTarget(event);
-			if (!found) {
-				found = true;
-			}
 		}
-		return found;
 	}
 
 	public int getChunkX() {

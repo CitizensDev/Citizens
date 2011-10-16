@@ -174,12 +174,10 @@ public class BasicCommands extends CommandHandler {
 		int newUID = NPCManager.register(npc.getName(), player.getLocation(),
 				player.getName(), NPCCreateReason.COMMAND);
 		HumanNPC newNPC = NPCManager.get(newUID);
-		newNPC.teleport(player.getLocation());
 		PropertyManager.copyNPCs(npc.getUID(), newUID);
-		PropertyManager.save(newNPC);
 		PropertyManager.load(newNPC);
+		newNPC.teleport(player.getLocation());
 		newNPC.getNPCData().setLocation(player.getLocation());
-		PropertyManager.save(newNPC);
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " has been copied at your location.");
 	}
