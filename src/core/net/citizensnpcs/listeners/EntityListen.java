@@ -36,14 +36,12 @@ public class EntityListen extends EntityListener implements Listener {
 
 	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.isCancelled())
-			return;
 		CreatureTask.onDamage(event.getEntity(), event);
 		HumanNPC npc = NPCManager.get(event.getEntity());
 		if (npc != null) {
 			npc.callDamageEvent(event);
 		}
-		if (!event.isCancelled() && event instanceof EntityDamageByEntityEvent) {
+		if (event instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			if (npc != null) {
 				if (e.getDamager() instanceof Player) {
