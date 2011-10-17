@@ -171,6 +171,10 @@ public class HumanNPC extends NPC {
 	}
 
 	public void callDamageEvent(EntityDamageEvent event) {
+		if (types.size() == 0) {
+			event.setCancelled(true);
+			return;
+		}
 		for (CitizensNPC type : types.values()) {
 			type.onDamage(event);
 		}
