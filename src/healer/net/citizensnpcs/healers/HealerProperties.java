@@ -10,9 +10,9 @@ import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class HealerProperties extends PropertyManager implements Properties {
-	private final String isHealer = ".healer.toggle";
-	private final String health = ".healer.health";
-	private final String level = ".healer.level";
+	private static final String isHealer = ".healer.toggle";
+	private static final String health = ".healer.health";
+	private static final String level = ".healer.level";
 
 	public static final HealerProperties INSTANCE = new HealerProperties();
 

@@ -25,6 +25,28 @@ public class Messaging {
 		send(sender, null, message);
 	}
 
+	public static void delay(final Runnable runnable, String messages) {
+		int index = messages.indexOf("<delay");
+		if (index != -1) {
+			index += DELAY_STR_LENGTH;
+			String assignment = messages.substring(index,
+					messages.indexOf(">", index));
+			int delay = assignment.length() <= 1 ? 1 : Integer
+					.parseInt(assignment.substring(1, assignment.length()));
+			final String substr = messages.substring(
+					index + 1 + assignment.length(), messages.length());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+					new Runnable() {
+						@Override
+						public void run() {
+							delay(runnable, substr);
+						}
+					}, delay);
+			return;
+		}
+		runnable.run();
+	}
+
 	public static void send(final CommandSender sender, final HumanNPC npc,
 			String messages) {
 		int index = messages.indexOf("<delay");

@@ -14,10 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.base.Joiner;
 
 public class TraderProperties extends PropertyManager implements Properties {
-	private final String isTrader = ".trader.toggle";
-	private final String stock = ".trader.stock";
-	private final String unlimited = ".trader.unlimited";
-	private final String balance = ".trader.balance";
+	private static final String isTrader = ".trader.toggle";
+	private static final String stock = ".trader.stock";
+	private static final String unlimited = ".trader.unlimited";
+	private static final String balance = ".trader.balance";
 
 	public static final TraderProperties INSTANCE = new TraderProperties();
 

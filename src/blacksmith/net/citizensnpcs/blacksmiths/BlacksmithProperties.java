@@ -3,14 +3,14 @@ package net.citizensnpcs.blacksmiths;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.citizensnpcs.SettingsManager.SettingsType;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.SettingsManager.SettingsType;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class BlacksmithProperties extends PropertyManager implements Properties {
-	private final String isBlacksmith = ".blacksmith.toggle";
+	private static final String isBlacksmith = ".blacksmith.toggle";
 
 	public static final BlacksmithProperties INSTANCE = new BlacksmithProperties();
 

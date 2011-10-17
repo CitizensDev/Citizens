@@ -36,16 +36,17 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 public class BasicProperties extends PropertyManager implements Properties {
-	private final String name = ".basic.name";
-	private final String color = ".basic.color";
-	private final String items = ".basic.items";
-	private final String inventory = ".basic.inventory";
-	private final String location = ".basic.location";
-	private final String lookWhenClose = ".basic.look-when-close";
-	private final String talkWhenClose = ".basic.talk-when-close";
-	private final String waypoints = ".basic.waypoints";
-	private final String owner = ".basic.owner";
-	private final String text = ".basic.text";
+	private static final String name = ".basic.name";
+	private static final String color = ".basic.color";
+	private static final String items = ".basic.items";
+	private static final String inventory = ".basic.inventory";
+	private static final String location = ".basic.location";
+	private static final String lookWhenClose = ".basic.look-when-close";
+	private static final String talkWhenClose = ".basic.talk-when-close";
+	private static final String waypoints = ".basic.waypoints";
+	private static final String owner = ".basic.owner";
+	private static final String text = ".basic.text";
+	private static final String talk = ".basic.talk";
 
 	public void saveName(int UID, String npcName) {
 		profiles.setString(UID + name, npcName);
@@ -141,10 +142,10 @@ public class BasicProperties extends PropertyManager implements Properties {
 	// Gets a map of items
 	public List<ItemData> getItems(int UID) {
 		List<ItemData> items = Lists.newArrayList();
-		String current = profiles.getString(UID + this.items);
+		String current = profiles.getString(UID + BasicProperties.items);
 		if (current.isEmpty()) {
 			current = "0:0,0:0,0:0,0:0,0:0,";
-			profiles.setString(UID + this.items, current);
+			profiles.setString(UID + BasicProperties.items, current);
 		}
 		for (String s : current.split(",")) {
 			if (!s.contains(":")) {
@@ -164,7 +165,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 			temp.append(items.get(i).getID() + ":"
 					+ (durability == -1 ? 0 : durability) + ",");
 		}
-		profiles.setString(UID + this.items, temp.toString());
+		profiles.setString(UID + BasicProperties.items, temp.toString());
 	}
 
 	public ChatColor getColour(int UID) {
@@ -203,6 +204,14 @@ public class BasicProperties extends PropertyManager implements Properties {
 		profiles.setString(UID + text, Joiner.on(";").skipNulls().join(texts));
 	}
 
+	public boolean isTalk(int UID) {
+		return profiles.getBoolean(UID + talk, true);
+	}
+
+	private void saveTalk(int UID, boolean talk) {
+		profiles.setBoolean(UID + BasicProperties.talk, talk);
+	}
+
 	public boolean isLookWhenClose(int UID) {
 		return profiles.getBoolean(UID + lookWhenClose,
 				SettingsManager.getBoolean("DefaultLookAt"));
@@ -232,11 +241,12 @@ public class BasicProperties extends PropertyManager implements Properties {
 	private void saveWaypoints(int UID, List<Waypoint> list) {
 		if (list.size() == 0)
 			return;
-		profiles.removeKey(UID + this.waypoints); // clear old waypoints.
+		profiles.removeKey(UID + BasicProperties.waypoints); // clear old
+																// waypoints.
 		int count = 0, innercount = 0;
 		String path = "", root = "";
 		for (Waypoint waypoint : list) {
-			path = UID + this.waypoints + "." + count;
+			path = UID + BasicProperties.waypoints + "." + count;
 			LocationUtils.saveLocation(profiles, waypoint.getLocation(), path,
 					true);
 
@@ -256,10 +266,10 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 	private List<Waypoint> getWaypoints(int UID, World world) {
 		List<Waypoint> temp = new ArrayList<Waypoint>();
-		if (!profiles.pathExists(UID + this.waypoints)) {
+		if (!profiles.pathExists(UID + BasicProperties.waypoints)) {
 			return temp;
 		}
-		String read = profiles.getString(UID + this.waypoints);
+		String read = profiles.getString(UID + BasicProperties.waypoints);
 		if (!read.isEmpty()) {
 			for (String str : read.split(";")) {
 				String[] split = str.split(",");
@@ -271,8 +281,8 @@ public class BasicProperties extends PropertyManager implements Properties {
 		}
 		String path = "", root = "";
 		WaypointModifier modifier = null;
-		for (int key : profiles.getIntegerKeys(UID + this.waypoints)) {
-			root = UID + this.waypoints + "." + key;
+		for (int key : profiles.getIntegerKeys(UID + BasicProperties.waypoints)) {
+			root = UID + BasicProperties.waypoints + "." + key;
 			Waypoint waypoint = new Waypoint(LocationUtils.loadLocation(
 					profiles, root, true));
 
@@ -298,6 +308,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 	@Override
 	public void saveState(HumanNPC npc) {
 		int UID = npc.getUID();
+
 		NPCData npcdata = npc.getNPCData();
 
 		saveName(npc.getUID(), npcdata.getName());
@@ -308,6 +319,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 		saveText(UID, npcdata.getTexts());
 		saveLookWhenClose(UID, npcdata.isLookClose());
 		saveTalkWhenClose(UID, npcdata.isTalkClose());
+		saveTalk(UID, npcdata.isTalk());
 		saveWaypoints(UID, npc.getWaypoints().getWaypoints());
 		saveOwner(UID, npcdata.getOwner());
 	}
@@ -315,8 +327,10 @@ public class BasicProperties extends PropertyManager implements Properties {
 	@Override
 	public void loadState(HumanNPC npc) {
 		int UID = npc.getUID();
+
 		NPCData npcdata = npc.getNPCData();
 
+		npcdata.setTalk(isTalk(UID));
 		npcdata.setName(getName(UID));
 		npcdata.setLocation(getLocation(UID));
 		npcdata.setColour(getColour(UID));
@@ -355,6 +369,9 @@ public class BasicProperties extends PropertyManager implements Properties {
 		if (profiles.pathExists(UID + location)) {
 			profiles.setString(nextUID + location,
 					profiles.getString(UID + location));
+		}
+		if (profiles.pathExists(UID + talk)) {
+			profiles.setBoolean(nextUID + talk, profiles.getBoolean(UID + talk));
 		}
 		if (profiles.pathExists(UID + color)) {
 			profiles.setString(nextUID + color, profiles.getString(UID + color));

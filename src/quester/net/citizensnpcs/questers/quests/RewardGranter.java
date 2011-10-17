@@ -18,13 +18,18 @@ public class RewardGranter {
 		this.rewards = rewards;
 	}
 
-	public void onCompletion(Player player, QuestProgress progress) {
+	public void onCompletion(final Player player, final QuestProgress progress) {
 		if (!this.completionMessage.isEmpty()) {
 			Messaging.send(player, completionMessage);
 		}
-		for (Reward reward : this.getRewards()) {
-			reward.grant(player, progress.getQuesterUID());
-		}
+		Messaging.delay(new Runnable() {
+			@Override
+			public void run() {
+				for (Reward reward : rewards) {
+					reward.grant(player, progress.getQuesterUID());
+				}
+			}
+		}, completionMessage);
 	}
 
 	public String getCompletionMessage() {

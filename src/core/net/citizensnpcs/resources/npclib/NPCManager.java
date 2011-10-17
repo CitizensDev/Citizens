@@ -36,11 +36,6 @@ public class NPCManager {
 		return list;
 	}
 
-	// Gets the global list of UIDs.
-	public Map<Integer, String> getUIDs() {
-		return GlobalUIDs;
-	}
-
 	// Checks if a given entity is an npc.
 	public static boolean isNPC(Entity entity) {
 		return list.getNPC(entity) != null;
@@ -168,8 +163,9 @@ public class NPCManager {
 
 		npc.setNPCData(new NPCData(npcName, UID, loc, colour, PropertyManager
 				.getBasic().getItems(UID), NPCDataManager.NPCTexts.get(UID),
-				PropertyManager.getBasic().isLookWhenClose(UID),
-				PropertyManager.getBasic().isTalkWhenClose(UID), owner));
+				PropertyManager.getBasic().isTalk(UID), PropertyManager
+						.getBasic().isLookWhenClose(UID), PropertyManager
+						.getBasic().isTalkWhenClose(UID), owner));
 		PropertyManager.getBasic().saveOwner(UID, owner);
 		PropertyManager.load(npc);
 

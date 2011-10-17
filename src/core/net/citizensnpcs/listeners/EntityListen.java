@@ -84,7 +84,8 @@ public class EntityListen extends EntityListener implements Listener {
 				}
 			}
 			// Call NPC talk event
-			if (UtilityProperties.isHoldingTool("TalkItems", player)) {
+			if (npc.getNPCData().isTalk()
+					&& UtilityProperties.isHoldingTool("TalkItems", player)) {
 				Player target = (Player) e.getTarget();
 				NPCTalkEvent talkEvent = new NPCTalkEvent(npc, target,
 						MessageUtils.getText(npc, target));

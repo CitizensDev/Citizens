@@ -16,11 +16,12 @@ public class NPCData {
 	private boolean lookClose;
 	private boolean talkClose;
 	private String owner;
+	private boolean talk;
 
 	// Acts as a container for various npc data.
 	public NPCData(String name, int UID, Location loc, ChatColor colour,
-			List<ItemData> items, Deque<String> texts, boolean lookClose,
-			boolean talkClose, String owner) {
+			List<ItemData> items, Deque<String> texts, boolean talk,
+			boolean lookClose, boolean talkClose, String owner) {
 		this.setName(name);
 		this.setUID(UID);
 		this.setLocation(loc);
@@ -30,6 +31,7 @@ public class NPCData {
 		this.setLookClose(lookClose);
 		this.setTalkClose(talkClose);
 		this.setOwner(owner);
+		this.setTalk(talk);
 	}
 
 	public void setName(String name) {
@@ -102,5 +104,13 @@ public class NPCData {
 
 	public String getOwner() {
 		return owner;
+	}
+
+	public boolean isTalk() {
+		return this.talk;
+	}
+
+	public void setTalk(boolean talk) {
+		this.talk = talk;
 	}
 }

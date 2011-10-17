@@ -42,6 +42,8 @@ public class QuestFactory {
 					tempPath = questName + ".objectives." + step;
 					List<Objective> tempStep = Lists.newArrayList();
 					for (Object objective : quests.getKeys(tempPath)) {
+						if (!StringUtils.isNumber(objective.toString()))
+							continue;
 						path = tempPath + "." + objective;
 						String type = quests.getString(path + ".type");
 						if (type == null || type.isEmpty()

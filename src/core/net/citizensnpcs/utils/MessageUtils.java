@@ -37,6 +37,8 @@ public class MessageUtils {
 
 	// Parses a basic npc's text for sending.
 	public static void sendText(HumanNPC npc, Player player) {
+		if (!npc.getNPCData().isTalk())
+			return;
 		String text = getText(npc, player);
 		if (!text.isEmpty()) {
 			Messaging.send(player, npc, text);

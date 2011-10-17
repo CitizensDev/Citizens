@@ -605,6 +605,21 @@ public class BasicCommands extends CommandHandler {
 
 	@Command(
 			aliases = "npc",
+			usage = "talk",
+			desc = "toggle NPC talking on/off",
+			modifiers = "talk",
+			min = 1,
+			max = 1)
+	@CommandPermissions("basic.modify.talk")
+	public static void talk(CommandContext args, Player player, HumanNPC npc) {
+		npc.getNPCData().setTalk(!npc.getNPCData().isTalk());
+		player.sendMessage(StringUtils.wrap(npc.getName())
+				+ ((npc.getNPCData().isTalk()) ? "is now talking."
+						: "has stopped talking"));
+	}
+
+	@Command(
+			aliases = "npc",
 			usage = "reset",
 			desc = "reset the text of an NPC",
 			modifiers = "reset",
