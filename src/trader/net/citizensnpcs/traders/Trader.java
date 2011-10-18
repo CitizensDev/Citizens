@@ -17,6 +17,8 @@ import net.citizensnpcs.utils.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.Maps;
+
 public class Trader extends CitizensNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
@@ -31,28 +33,30 @@ public class Trader extends CitizensNPC {
 	}
 
 	public void addStockable(Stockable s) {
-		stocking.put(
-				new Check(s.getStockingId(), s.getStockingDataValue(), s
-						.isSelling()), s);
+		stocking.put(s.createCheck(), s);
 	}
 
-	public Stockable fetchStockable(int itemID, short dataValue, boolean selling) {
-		return stocking.get(new Check(itemID, dataValue, selling));
+	private Stockable fetchStockable(int itemID, short dataValue,
+			boolean selling) {
+		Check check = new Check(itemID, dataValue, selling);
+		return stocking.containsKey(check) ? stocking.get(check) : globalStock
+				.get(check);
 	}
 
 	public Stockable getStockable(int itemID, short dataValue, boolean selling) {
 		return fetchStockable(itemID, dataValue, selling);
 	}
 
-	public Stockable getStockable(Stockable s) {
-		return getStockable(s.getStockingId(), s.getStockingDataValue(),
-				s.isSelling());
+	public Stockable getStockable(Stockable stockable) {
+		return getStockable(stockable.getStocking().getTypeId(), stockable
+				.getStocking().getDurability(), stockable.isSelling());
 	}
 
 	public List<Stockable> getStockables(int itemID, boolean selling) {
 		List<Stockable> stockables = new ArrayList<Stockable>();
 		for (Stockable s : stocking.values())
-			if (itemID == s.getStockingId() && selling == s.isSelling()) {
+			if (itemID == s.getStocking().getTypeId()
+					&& selling == s.isSelling()) {
 				stockables.add(s);
 			}
 		return stockables;
@@ -69,8 +73,7 @@ public class Trader extends CitizensNPC {
 	}
 
 	public void removeStockable(int ID, short dataValue, boolean selling) {
-		stocking.remove(new Check(ID, dataValue, selling));
-
+		removeStockable(new Check(ID, dataValue, selling));
 	}
 
 	public void removeStockable(Check check) {
@@ -83,8 +86,8 @@ public class Trader extends CitizensNPC {
 	}
 
 	public boolean isStocked(Stockable s) {
-		return isStocked(s.getStockingId(), s.getStockingDataValue(),
-				s.isSelling());
+		return isStocked(s.getStocking().getTypeId(), s.getStocking()
+				.getDurability(), s.isSelling());
 	}
 
 	public void setFree(boolean free) {
@@ -142,5 +145,15 @@ public class Trader extends CitizensNPC {
 	@Override
 	public CitizensNPCType getType() {
 		return new TraderType();
+	}
+
+	private static Map<Check, Stockable> globalStock = Maps.newHashMap();
+
+	public static void addGlobal(Stockable stock) {
+		globalStock.put(stock.createCheck(), stock);
+	}
+
+	public static void clearGlobal() {
+		globalStock.clear();
 	}
 }

@@ -19,18 +19,8 @@ public class TeleportReward implements Reward {
 	}
 
 	@Override
-	public boolean fulfilsRequirement(Player player) {
-		return true;
-	}
-
-	@Override
 	public boolean isTake() {
 		return false;
-	}
-
-	@Override
-	public String getRequiredText(Player player) {
-		return "";
 	}
 
 	@Override

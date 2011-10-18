@@ -25,18 +25,8 @@ public class CommandReward implements Reward {
 	}
 
 	@Override
-	public boolean fulfilsRequirement(Player player) {
-		return false;
-	}
-
-	@Override
 	public boolean isTake() {
 		return false;
-	}
-
-	@Override
-	public String getRequiredText(Player player) {
-		return ""; // This should never execute.
 	}
 
 	@Override

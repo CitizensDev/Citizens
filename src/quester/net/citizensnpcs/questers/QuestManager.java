@@ -12,7 +12,7 @@ import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
-import net.citizensnpcs.questers.rewards.Reward;
+import net.citizensnpcs.questers.rewards.Requirement;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -58,7 +58,7 @@ public class QuestManager {
 				return false;
 			}
 		}
-		for (Reward requirement : quest.getRequirements()) {
+		for (Requirement requirement : quest.getRequirements()) {
 			if (!requirement.fulfilsRequirement(player)) {
 				player.sendMessage(ChatColor.GRAY + "Missing requirement. "
 						+ requirement.getRequiredText(player));

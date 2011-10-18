@@ -29,6 +29,8 @@ public class BlacksmithManager {
 						getBlacksmithPrice(player, repairType))) {
 					double paid = EconomyManager.pay(player,
 							getBlacksmithPrice(player, repairType));
+					EconomyManager.pay(npc,
+							getBlacksmithPrice(player, repairType));
 					if (paid > 0) {
 						player.sendMessage(StringUtils.wrap(npc
 								.getStrippedName())

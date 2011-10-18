@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
-import net.citizensnpcs.questers.rewards.Reward;
+import net.citizensnpcs.questers.rewards.Requirement;
 
 import org.bukkit.entity.Player;
 
@@ -15,7 +15,7 @@ public class Quest {
 	private final Objectives objectives;
 	private final String questName;
 	private final int repeatLimit;
-	private final List<Reward> requirements;
+	private final List<Requirement> requirements;
 	private final long delay;
 
 	private Quest(QuestBuilder builder) {
@@ -59,7 +59,7 @@ public class Quest {
 		return this.repeatLimit;
 	}
 
-	public List<Reward> getRequirements() {
+	public List<Requirement> getRequirements() {
 		return requirements;
 	}
 
@@ -75,7 +75,7 @@ public class Quest {
 		private String questName = "";
 		private int repeatLimit = -1;
 		private long delay;
-		private List<Reward> requirements = new ArrayList<Reward>();
+		private List<Requirement> requirements = new ArrayList<Requirement>();
 
 		public QuestBuilder(String quest) {
 			this.questName = quest;
@@ -115,7 +115,7 @@ public class Quest {
 			return this;
 		}
 
-		public QuestBuilder requirements(List<Reward> requirements) {
+		public QuestBuilder requirements(List<Requirement> requirements) {
 			this.requirements = requirements;
 			return this;
 		}

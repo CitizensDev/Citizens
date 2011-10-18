@@ -1,5 +1,7 @@
 package net.citizensnpcs.properties;
 
+import java.util.List;
+
 public interface Storage {
 	public void load();
 
@@ -74,4 +76,6 @@ public interface Storage {
 	public void setRaw(String path, Object value);
 
 	public boolean keyExists(String path);
+
+	public List<String> getKeys(String string);
 }

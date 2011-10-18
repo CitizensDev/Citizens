@@ -6,7 +6,7 @@ import net.citizensnpcs.properties.Storage;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class PermissionReward implements Reward {
+public class PermissionReward implements Requirement, Reward {
 	private final String reward;
 	private final boolean take;
 

@@ -6,7 +6,7 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class HealthReward implements Reward {
+public class HealthReward implements Requirement, Reward {
 	private final int reward;
 	private final boolean take;
 

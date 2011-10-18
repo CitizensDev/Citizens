@@ -70,8 +70,8 @@ public class HelpUtils {
 			break;
 		case 3:
 			header(sender, "General", 3, 3);
-			format(sender, "waypoint", "modifier [type]",
-					"add a waypoint modifier to an NPC");
+			format(sender, "npc", "money (give|take) (amount)",
+					"control an npc's money");
 			footer(sender);
 			break;
 		default:

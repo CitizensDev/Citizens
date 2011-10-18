@@ -7,7 +7,7 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class RankReward implements Reward {
+public class RankReward implements Requirement, Reward {
 	private final String reward;
 	private final boolean take;
 	private final boolean replace;

@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class QuestReward implements Reward {
+public class QuestReward implements Requirement, Reward {
 	private final String reward;
 	private final boolean take;
 	private final int times;
@@ -40,11 +40,9 @@ public class QuestReward implements Reward {
 		if (times <= 0) {
 			return !PlayerProfile.getProfile(player.getName()).hasCompleted(
 					reward);
-		} else {
-			return times > 1 ? PlayerProfile.getProfile(player.getName())
-					.getCompletedTimes(reward) >= times : PlayerProfile
-					.getProfile(player.getName()).hasCompleted(reward);
 		}
+		return PlayerProfile.getProfile(player.getName()).getCompletedTimes(
+				reward) >= times;
 	}
 
 	@Override

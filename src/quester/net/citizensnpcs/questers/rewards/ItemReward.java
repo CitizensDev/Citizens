@@ -12,7 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemReward implements Reward {
+public class ItemReward implements Requirement, Reward {
 	private final Material material;
 	private final int amount;
 	private final short durability;

@@ -19,7 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TickTask implements Runnable {
-
 	@Override
 	public void run() {
 		HumanNPC npc;

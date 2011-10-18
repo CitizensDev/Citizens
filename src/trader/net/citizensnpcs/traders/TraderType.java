@@ -6,7 +6,6 @@ import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.properties.Properties;
 
 public class TraderType extends CitizensNPCType {
-
 	@Override
 	public Properties getProperties() {
 		return TraderProperties.INSTANCE;

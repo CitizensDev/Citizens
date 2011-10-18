@@ -159,6 +159,90 @@ public class BasicCommands extends CommandHandler {
 
 	@Command(
 			aliases = "npc",
+			usage = "money (give|take) (amount)",
+			desc = "control an npc's balance",
+			modifiers = "money",
+			min = 1,
+			max = 3)
+	public static void money(CommandContext args, Player player, HumanNPC npc) {
+		switch (args.argsLength()) {
+		case 1:
+			if (PermissionManager.hasPermission(player,
+					"citizens.basic.use.showmoney")) {
+				player.sendMessage(StringUtils.wrap(npc.getName())
+						+ " has "
+						+ StringUtils.wrap(EconomyManager.format(npc
+								.getBalance())) + ".");
+			} else {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+			}
+			break;
+		case 3:
+			if (!PermissionManager.hasPermission(player,
+					"citizens.basic.modify.money")) {
+				player.sendMessage(MessageUtils.noPermissionsMessage);
+				return;
+			}
+			double amount;
+			try {
+				amount = Double.parseDouble(args.getString(2));
+			} catch (NumberFormatException e) {
+				Messaging.sendError(player,
+						"Invalid balance change amount entered.");
+				return;
+			}
+			String keyword = "Took ";
+			if (args.getString(1).contains("g")) {
+				if (EconomyManager.hasEnough(player, amount)) {
+					keyword = "Gave ";
+					EconomyManager.pay(npc, -amount);
+					EconomyManager.pay(player, amount);
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "You don't have enough money for that! Need "
+							+ StringUtils.wrap(
+									EconomyManager.format(amount
+											- EconomyManager.getBalance(player
+													.getName())), ChatColor.RED)
+							+ " more.");
+					return;
+				}
+			} else if (args.getString(1).contains("t")) {
+				if (EconomyManager.hasEnough(npc, amount)) {
+					EconomyManager.pay(npc, amount);
+					EconomyManager.pay(player, -amount);
+				} else {
+					player.sendMessage(ChatColor.RED
+							+ "The npc doesn't have enough money for that! It needs "
+							+ StringUtils.wrap(
+									EconomyManager.format(amount
+											- npc.getBalance()), ChatColor.RED)
+							+ " more in its balance.");
+					return;
+				}
+			} else {
+				player.sendMessage(ChatColor.RED + "Invalid argument type "
+						+ StringUtils.wrap(args.getString(1), ChatColor.RED)
+						+ ".");
+				return;
+			}
+			player.sendMessage(ChatColor.GREEN
+					+ keyword
+					+ StringUtils.wrap(EconomyManager.format(amount))
+					+ " to "
+					+ StringUtils.wrap(npc.getStrippedName())
+					+ ". Your balance is now "
+					+ StringUtils.wrap(EconomyManager
+							.getFormattedBalance(player.getName())) + ".");
+			break;
+		default:
+			Messaging.sendError(player, "Incorrect syntax. See /npc help");
+			break;
+		}
+	}
+
+	@Command(
+			aliases = "npc",
 			usage = "copy",
 			desc = "copy an NPC",
 			modifiers = "copy",

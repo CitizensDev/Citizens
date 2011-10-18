@@ -7,7 +7,7 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class EconpluginReward implements Reward {
+public class EconpluginReward implements Requirement, Reward {
 	private final double reward;
 	private final boolean take;
 

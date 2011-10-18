@@ -6,6 +6,7 @@ import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.api.QuestAPI;
 import net.citizensnpcs.questers.quests.Quest.QuestBuilder;
+import net.citizensnpcs.questers.rewards.Requirement;
 import net.citizensnpcs.questers.rewards.Reward;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.Messaging;
@@ -14,6 +15,7 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 public class QuestFactory {
@@ -28,7 +30,8 @@ public class QuestFactory {
 					+ ".rewards")));
 			quest.acceptanceText(quests.getString(path + ".texts.acceptance"));
 			quest.repeatLimit(quests.getInt(path + ".repeats"));
-			quest.requirements(loadRewards(quests, path + ".requirements"));
+			quest.requirements(Lists.transform(
+					loadRewards(quests, path + ".requirements"), transformer));
 			quest.delay(quests.getLong(path + ".delay"));
 			String tempPath = path;
 
@@ -121,7 +124,7 @@ public class QuestFactory {
 			++count;
 		}
 		count = 0;
-		for (Reward reward : quest.getRequirements()) {
+		for (Requirement reward : quest.getRequirements()) {
 			path = temp + "." + count;
 			quests.setBoolean(path + ".take", reward.isTake());
 			reward.save(quests, path);
@@ -184,4 +187,11 @@ public class QuestFactory {
 		}
 		return rewards;
 	}
+
+	private static final Function<Reward, Requirement> transformer = new Function<Reward, Requirement>() {
+		@Override
+		public Requirement apply(Reward arg0) {
+			return arg0 instanceof Requirement ? (Requirement) arg0 : null;
+		}
+	};
 }
