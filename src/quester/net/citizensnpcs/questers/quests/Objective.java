@@ -1,5 +1,8 @@
 package net.citizensnpcs.questers.quests;
 
+import java.util.Map;
+
+import net.citizensnpcs.properties.RawYAMLObject;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 
@@ -7,6 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.google.common.collect.Maps;
 
 /**
  * Represents what is necessary to complete a quest objective. In order to
@@ -31,12 +36,13 @@ public class Objective {
 	private final Material material;
 	private final boolean optional;
 	private final String questType;
-
+	private final Map<String, RawYAMLObject> parameters;
 	private final String string;
 
 	private Objective(String type, boolean optional, boolean completeHere,
 			int amount, int destination, ItemStack item, String string,
-			Material material, Location location, RewardGranter granter) {
+			Material material, Location location, RewardGranter granter,
+			Map<String, RawYAMLObject> params) {
 		this.questType = type;
 		this.amount = amount;
 		this.destination = destination;
@@ -47,6 +53,15 @@ public class Objective {
 		this.granter = granter;
 		this.optional = optional;
 		this.completeHere = completeHere;
+		this.parameters = params;
+	}
+
+	public RawYAMLObject getParameter(String name) {
+		return parameters.get(name);
+	}
+
+	public boolean hasParameter(String string) {
+		return parameters.get(string) != null;
 	}
 
 	public int getAmount() {
@@ -103,9 +118,15 @@ public class Objective {
 		private boolean optional = false;
 		private String string = "";
 		private final String type;
+		private final Map<String, RawYAMLObject> params = Maps.newHashMap();
 
 		public Builder(String type) {
 			this.type = type;
+		}
+
+		public Builder param(String name, RawYAMLObject value) {
+			this.params.put(name, value);
+			return this;
 		}
 
 		public Builder amount(int amount) {
@@ -115,7 +136,8 @@ public class Objective {
 
 		public Objective build() {
 			return new Objective(type, optional, completeHere, amount,
-					destination, item, string, material, location, granter);
+					destination, item, string, material, location, granter,
+					params);
 		}
 
 		public Builder completeHere(boolean completeHere) {

@@ -1,8 +1,10 @@
 package net.citizensnpcs.questers.quests;
 
 import java.util.List;
+import java.util.Set;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
+import net.citizensnpcs.properties.RawYAMLObject;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.api.QuestAPI;
 import net.citizensnpcs.questers.quests.Quest.QuestBuilder;
@@ -17,8 +19,12 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class QuestFactory {
+	private static final Set<String> usedKeys = Sets.newHashSet("type",
+			"amount", "item", "npcdestination", "rewards", "location",
+			"string", "optional", "finishhere", "materialid", "message");
 
 	public static void instantiateQuests(ConfigurationHandler quests) {
 		questLoop: for (Object questName : quests.getKeys(null)) {
@@ -57,6 +63,14 @@ public class QuestFactory {
 							continue questLoop;
 						}
 						Objective.Builder obj = new Objective.Builder(type);
+						for (String key : quests.getKeys(path)) {
+							if (!usedKeys.contains(key)) {
+								obj.param(
+										key,
+										new RawYAMLObject(quests.getRaw(path
+												+ "." + key)));
+							}
+						}
 						if (quests.pathExists(path + ".amount"))
 							obj.amount(quests.getInt(path + ".amount"));
 						if (quests.pathExists(path + ".npcdestination"))
