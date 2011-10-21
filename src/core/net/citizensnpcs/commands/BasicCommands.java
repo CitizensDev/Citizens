@@ -387,7 +387,8 @@ public class BasicCommands extends CommandHandler {
 			return;
 		} else if (editing != UID) {
 			player.sendMessage(ChatColor.GRAY + "Now editing "
-					+ StringUtils.wrap(npc.getStrippedName()) + "'s equipment.");
+					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
+					+ "'s equipment.");
 			editing = UID;
 		}
 		NPCDataManager.equipmentEditors.put(player, editing);

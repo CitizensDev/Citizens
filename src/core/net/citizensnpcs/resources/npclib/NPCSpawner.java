@@ -66,6 +66,11 @@ public class NPCSpawner {
 	}
 
 	public static HumanNPC spawnNPC(int UID, String name, Location loc) {
+		if (loc.getWorld() == null) {
+			Messaging.log("Null world while spawning", name, "UID", UID
+					+ ". Is there a multiworld conflict?");
+			return null;
+		}
 		WorldServer ws = getWorldServer(loc.getWorld());
 		clearMap(name);
 		CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws,

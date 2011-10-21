@@ -132,17 +132,17 @@ public class WizardCommands extends CommandHandler {
 			return;
 		}
 		String locations[] = wizard.getLocations().split(":");
-		String newLoc = "";
 		String removedName = "";
+		StringBuilder newLoc = new StringBuilder();
 		for (int i = 0; i < locations.length; i++) {
 			if (i + 1 != Integer.parseInt(args.getString(1))) {
-				newLoc = newLoc + locations[i];
+				newLoc.append(locations[i]);
 			} else {
 				removedName = locations[i].split(",")[0].replace("(", "");
 			}
 		}
 		wizard.cycle(npc, WizardMode.TELEPORT);
-		wizard.setLocations(newLoc);
+		wizard.setLocations(newLoc.toString());
 		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
 				+ " has amnesia and forgot about "
 				+ StringUtils.wrap(removedName) + ".");

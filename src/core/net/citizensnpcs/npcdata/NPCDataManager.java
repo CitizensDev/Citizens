@@ -64,14 +64,17 @@ public class NPCDataManager {
 		List<ItemStack> toAdd = Lists.newArrayList();
 		if (player.getItemInHand() == null
 				|| player.getItemInHand().getType() == Material.AIR) {
+			boolean found = false;
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i).getID() != 0) {
 					toAdd.add(items.get(i).createStack());
+					found = true;
 				}
 				items.set(i, new ItemData(0, (short) 0));
 			}
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-					+ " is now naked. Here are the items!");
+			player.sendMessage(found ? StringUtils.wrap(npc.getStrippedName())
+					+ " is now naked. Here are the items!" : ChatColor.GRAY
+					+ "There were no items to take.");
 		} else {
 			int itemID = hand.getTypeId();
 			String error = npc.getStrippedName() + " is already equipped with "

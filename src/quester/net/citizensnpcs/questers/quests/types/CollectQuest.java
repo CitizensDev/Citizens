@@ -32,6 +32,14 @@ public class CollectQuest implements QuestUpdater {
 			verifyMap(((PlayerEvent) event).getPlayer());
 		if (event instanceof BlockBreakEvent) {
 			BlockBreakEvent ev = (BlockBreakEvent) event;
+			Material type = ev.getBlock().getType();
+			switch (type) {
+			case STONE:
+				type = Material.COBBLESTONE;
+				break;
+			default:
+				break;
+			}
 			incrementMap(progress.getPlayer(), ev.getBlock().getType());
 		} else if (event instanceof EntityDeathEvent) {
 			EntityDeathEvent ev = (EntityDeathEvent) event;

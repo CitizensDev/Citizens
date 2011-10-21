@@ -377,7 +377,7 @@ public class QuesterCommands extends CommandHandler {
 					+ "You haven't completed any quests yet.");
 			return;
 		}
-		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
+		int page = args.argsLength() == 2 ? args.getInteger(1) : 1;
 		if (page < 0)
 			page = 1;
 		PageInstance instance = PageUtils.newInstance(player);

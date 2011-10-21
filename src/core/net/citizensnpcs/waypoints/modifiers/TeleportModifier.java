@@ -38,7 +38,7 @@ public class TeleportModifier extends WaypointModifier {
 		super.resetExit();
 		if (message.getMessage().equalsIgnoreCase("current")) {
 			Location pLoc = player.getLocation();
-			if (pLoc.getWorld() != waypoint.getLocation()) {
+			if (pLoc.getWorld() != waypoint.getLocation().getWorld()) {
 				player.sendMessage(ChatColor.GRAY
 						+ "You must be in the same world as the waypoint.");
 				return false;

@@ -26,6 +26,7 @@ public class CitizensNPCLoader {
 							new InputStreamReader(
 									jarFile.getInputStream(element)));
 					mainClass = reader.readLine().substring(6);
+					reader.close();
 					break;
 				}
 			}

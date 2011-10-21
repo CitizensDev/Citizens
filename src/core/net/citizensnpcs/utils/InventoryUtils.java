@@ -165,14 +165,14 @@ public class InventoryUtils {
 		}
 
 		public ItemStack get(PlayerInventory inventory) {
-			switch (slot) {
-			case 0:
+			switch (this) {
+			case HELMET:
 				return inventory.getHelmet();
-			case 1:
+			case CHESTPLATE:
 				return inventory.getChestplate();
-			case 2:
+			case LEGGINGS:
 				return inventory.getLeggings();
-			case 3:
+			case BOOTS:
 				return inventory.getBoots();
 			}
 			return null;
@@ -201,17 +201,17 @@ public class InventoryUtils {
 		}
 
 		public void set(PlayerInventory inventory, ItemStack item) {
-			switch (slot) {
-			case 0:
+			switch (this) {
+			case HELMET:
 				inventory.setHelmet(item);
 				break;
-			case 1:
+			case CHESTPLATE:
 				inventory.setChestplate(item);
 				break;
-			case 2:
+			case LEGGINGS:
 				inventory.setLeggings(item);
 				break;
-			case 3:
+			case BOOTS:
 				inventory.setBoots(item);
 				break;
 			}
