@@ -6,6 +6,7 @@ import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.EntityUtils;
 
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -17,6 +18,9 @@ public class HuntQuest implements QuestUpdater {
 	public boolean update(Event event, ObjectiveProgress progress) {
 		if (event instanceof EntityDeathEvent) {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
+			if (ev.getEntity() instanceof Player)
+				return progress.getAmount() >= progress.getObjective()
+						.getAmount();
 			LivingEntity entity = (LivingEntity) ev.getEntity();
 			String search = progress.getObjective().getString();
 			boolean found = search.contains(EntityUtils.getMonsterName(entity))
