@@ -338,7 +338,7 @@ public class QuesterCommands extends CommandHandler {
 	@CommandPermissions("quester.use.quests.view")
 	public static void viewAssignedQuests(CommandContext args, Player player,
 			HumanNPC npc) {
-		int page = args.argsLength() == 2 ? args.getInteger(2) : 1;
+		int page = args.argsLength() == 2 ? args.getInteger(1) : 1;
 		if (page < 0)
 			page = 1;
 		PageInstance instance = PageUtils.newInstance(player);
