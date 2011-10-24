@@ -246,6 +246,8 @@ public class StringUtils {
 	}
 
 	public static String format(Enum<?> toFormat, boolean capitalise) {
+		if (toFormat == null)
+			return "";
 		String[] split = toFormat.name().toLowerCase().split("_");
 		if (capitalise)
 			split[0] = capitalise(split[0]);

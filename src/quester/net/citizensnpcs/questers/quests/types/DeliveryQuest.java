@@ -26,11 +26,12 @@ public class DeliveryQuest implements QuestUpdater {
 					&& e.getNPC().getUID() == progress.getObjective()
 							.getDestNPCID()) {
 				Player player = e.getPlayer();
-				
-				if(progress.getObjective().getMaterial() == null || progress.getObjective().getMaterial() == Material.AIR){
+
+				if (progress.getObjective().getMaterial() == null
+						|| progress.getObjective().getMaterial() == Material.AIR) {
 					return true;
 				}
-				
+
 				if (player.getItemInHand().getType() == progress.getObjective()
 						.getMaterial()) {
 					boolean completed = player.getItemInHand().getAmount() >= progress
@@ -67,6 +68,13 @@ public class DeliveryQuest implements QuestUpdater {
 					+ "Cancelling quest due to missing destination NPC.");
 		}
 		int amount = progress.getObjective().getAmount();
+		if (progress.getObjective().getMaterial() == null
+				|| progress.getObjective().getMaterial() == Material.AIR)
+			return ChatColor.GREEN
+					+ "Talking to "
+					+ StringUtils.wrap(CitizensManager.getNPC(
+							progress.getObjective().getDestNPCID()).getName())
+					+ ".";
 		return ChatColor.GREEN
 				+ "Delivering "
 				+ StringUtils.wrap(amount)
