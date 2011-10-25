@@ -31,6 +31,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 	public void onSpawn() {
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
+		this.health = SettingsManager.getInt("EvilHealth");
 		super.onSpawn();
 	}
 

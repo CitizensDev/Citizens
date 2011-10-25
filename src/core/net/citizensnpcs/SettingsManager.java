@@ -183,6 +183,8 @@ public class SettingsManager {
 				"evil.spawn.chance", 100));
 		nodes.add(new Node("EvilNames", SettingsType.MOB, "evil.misc.names",
 				"Evil_aPunch,Evil_fullwall,Evil_Notch,Herobrine,"));
+		nodes.add(new Node("EvilHealth", SettingsType.MOB, "evil.misc.health",
+				20));
 		nodes.add(new Node("EvilDrops", SettingsType.MOB, "evil.items.drops",
 				"260,357,2256,"));
 		nodes.add(new Node("SpawnEvils", SettingsType.MOB, "evil.spawn.spawn",
