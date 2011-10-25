@@ -6,6 +6,7 @@ import java.util.Set;
 
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.Quest;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -172,5 +173,23 @@ public class Quester extends CitizensNPC {
 	@Override
 	public CitizensNPCType getType() {
 		return new QuesterType();
+	}
+
+	@Override
+	public void save(Storage profiles, int UID) {
+		if (profiles.keyExists(UID + ".quester.quests"))
+			for (String quest : profiles.getString(UID + ".quester.quests")
+					.split(";")) {
+				addQuest(quest);
+			}
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		StringBuilder quests = new StringBuilder();
+		for (String quest : this.quests) {
+			quests.append(quest);
+		}
+		profiles.setString(UID + ".quester.quests", quests.toString());
 	}
 }

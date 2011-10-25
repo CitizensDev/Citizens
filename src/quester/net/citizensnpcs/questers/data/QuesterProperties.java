@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers.data;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
@@ -18,44 +19,21 @@ public class QuesterProperties extends PropertyManager implements Properties {
 	}
 
 	private static final String isQuester = ".quester.toggle";
-	private static final String quests = ".quester.quests";
 
 	@Override
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isType("quester"));
-			setQuests(npc);
-		}
-	}
-
-	private void setQuests(HumanNPC npc) {
-		StringBuilder write = new StringBuilder();
-		Quester quester = npc.getType("quester");
-		for (String quest : quester.getQuests()) {
-			if (!write.toString().contains(quest))
-				write.append(quest + ";");
-		}
-		profiles.setString(npc.getUID() + quests, write.toString());
-	}
-
-	private String getQuests(HumanNPC npc) {
-		if (profiles.pathExists(npc.getUID() + quests)) {
 			Quester quester = npc.getType("quester");
-			for (String quest : profiles.getString(npc.getUID() + quests)
-					.split(";")) {
-				quester.addQuest(quest);
-			}
-			return profiles.getString(npc.getUID() + quests);
+			quester.save(profiles, npc.getUID());
 		}
-		return "";
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		if (getEnabled(npc)) {
-			npc.registerType("quester");
-			getQuests(npc);
-		}
+		npc.registerType("quester");
+		Quester quester = npc.getType("quester");
+		quester.load(profiles, npc.getUID());
 		saveState(npc);
 	}
 
@@ -67,18 +45,6 @@ public class QuesterProperties extends PropertyManager implements Properties {
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isQuester);
-	}
-
-	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isQuester)) {
-			profiles.setString(nextUID + isQuester,
-					profiles.getString(UID + isQuester));
-		}
-		if (profiles.pathExists(UID + quests)) {
-			profiles.setString(nextUID + quests,
-					profiles.getString(UID + quests));
-		}
 	}
 
 	@Override
@@ -96,4 +62,12 @@ public class QuesterProperties extends PropertyManager implements Properties {
 				"quests.exploits.blocks.tracking-remove-delay", 6000));
 		return nodes;
 	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return nodesForCopy;
+	}
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"quester.toggle", "quester.quests");
 }

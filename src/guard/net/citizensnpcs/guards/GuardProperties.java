@@ -1,11 +1,10 @@
 package net.citizensnpcs.guards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.SettingsManager.SettingsType;
-import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -14,41 +13,13 @@ import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
+import com.google.common.collect.Lists;
+
 public class GuardProperties extends PropertyManager implements Properties {
-	private static final String isGuard = ".guard.toggle";
-	private static final String type = ".guard.type";
-	private static final String radius = ".guard.radius";
-	private static final String flag = ".guard.flags";
-	private static final String aggressive = ".guard.aggressive";
 
 	public static final GuardProperties INSTANCE = new GuardProperties();
 
 	private GuardProperties() {
-	}
-
-	private void saveProtectionRadius(int UID, double rad) {
-		profiles.setDouble(UID + radius, rad);
-	}
-
-	private double getProtectionRadius(int UID) {
-		return profiles.getDouble(UID + radius,
-				SettingsManager.getDouble("DefaultBouncerProtectionRadius"));
-	}
-
-	private void saveAggressive(int UID, boolean aggro) {
-		profiles.setBoolean(UID + aggressive, aggro);
-	}
-
-	private boolean isAggressive(int UID) {
-		return profiles.getBoolean(UID + aggressive, true);
-	}
-
-	private GuardState getGuardState(int UID) {
-		return GuardState.parse(profiles.getString(UID + type));
-	}
-
-	private void saveGuardState(int UID, GuardState state) {
-		profiles.setString(UID + type, state.name());
 	}
 
 	private void loadFlags(Guard guard, int UID) {
@@ -85,10 +56,8 @@ public class GuardProperties extends PropertyManager implements Properties {
 			setEnabled(npc, is);
 			if (is) {
 				Guard guard = npc.getType("guard");
-				saveGuardState(npc.getUID(), guard.getGuardState());
+				guard.save(profiles, npc.getUID());
 				saveFlags(npc.getUID(), guard.getFlags());
-				saveProtectionRadius(npc.getUID(), guard.getProtectionRadius());
-				saveAggressive(npc.getUID(), guard.isAggressive());
 			}
 		}
 	}
@@ -98,10 +67,8 @@ public class GuardProperties extends PropertyManager implements Properties {
 		if (getEnabled(npc)) {
 			npc.registerType("guard");
 			Guard guard = npc.getType("guard");
+			guard.load(profiles, npc.getUID());
 			loadFlags(guard, npc.getUID());
-			guard.setGuardState(getGuardState(npc.getUID()));
-			guard.setProtectionRadius(getProtectionRadius(npc.getUID()));
-			guard.setAggressive(isAggressive(npc.getUID()));
 		}
 		saveState(npc);
 	}
@@ -117,28 +84,6 @@ public class GuardProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isGuard)) {
-			profiles.setString(nextUID + isGuard,
-					profiles.getString(UID + isGuard));
-		}
-		if (profiles.pathExists(UID + type)) {
-			profiles.setString(nextUID + type, profiles.getString(UID + type));
-		}
-		if (profiles.pathExists(UID + flag)) {
-			profiles.setString(nextUID + flag, profiles.getString(UID + flag));
-		}
-		if (profiles.pathExists(UID + radius)) {
-			profiles.setString(nextUID + radius,
-					profiles.getString(UID + radius));
-		}
-		if (profiles.pathExists(UID + aggressive)) {
-			profiles.setString(nextUID + aggressive,
-					profiles.getString(UID + aggressive));
-		}
-	}
-
-	@Override
 	public List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node("MaxStationaryReturnTicks", SettingsType.GENERAL,
@@ -150,4 +95,15 @@ public class GuardProperties extends PropertyManager implements Properties {
 				"guards.bouncers.default.protection-radius", 10));
 		return nodes;
 	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return nodesForCopy;
+	}
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"guard.toggle", "guard.type", "guard.radius", "guard.flags",
+			"guard.aggressive");
+	private static final String isGuard = ".guard.toggle";
+	private static final String flag = ".guard.flags";
 }

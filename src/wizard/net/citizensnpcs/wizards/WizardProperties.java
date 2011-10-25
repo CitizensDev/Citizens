@@ -1,6 +1,7 @@
 package net.citizensnpcs.wizards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
@@ -8,77 +9,13 @@ import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.wizards.WizardManager.WizardMode;
 
-import org.bukkit.entity.CreatureType;
+import com.google.common.collect.Lists;
 
 public class WizardProperties extends PropertyManager implements Properties {
-	private static final String isWizard = ".wizard.toggle";
-	private static final String locations = ".wizard.locations";
-	private static final String mana = ".wizard.mana";
-	private static final String mode = ".wizard.mode";
-	private static final String time = ".wizard.time";
-	private static final String mob = ".wizard.mob";
-	private static final String unlimitedMana = ".wizard.unlimited-mana";
-
 	public static final WizardProperties INSTANCE = new WizardProperties();
 
 	private WizardProperties() {
-	}
-
-	private void saveLocations(int UID, String locationString) {
-		profiles.setString(UID + locations, locationString.replace(")(", "):("));
-	}
-
-	private String getLocations(int UID) {
-		return profiles.getString(UID + locations).replace(")(", "):(");
-	}
-
-	private void saveMana(int UID, int manaLevel) {
-		profiles.setInt(UID + mana, manaLevel);
-	}
-
-	private int getMana(int UID) {
-		return profiles.getInt(UID + mana, 10);
-	}
-
-	private void saveMode(int UID, WizardMode wizardMode) {
-		profiles.setString(UID + mode, wizardMode.name());
-	}
-
-	private WizardMode getMode(int UID) {
-		if (profiles.pathExists(UID + mode)
-				&& WizardMode.parse(profiles.getString(UID + mode)) != null) {
-			return WizardMode.parse(profiles.getString(UID + mode));
-		}
-		return WizardMode.TELEPORT;
-	}
-
-	private void saveTime(int UID, String worldTime) {
-		profiles.setString(UID + time, worldTime);
-	}
-
-	private String getTime(int UID) {
-		return profiles.getString(UID + time, "morning");
-	}
-
-	private void saveMob(int UID, CreatureType type) {
-		profiles.setString(UID + mob, type.getName());
-	}
-
-	private CreatureType getMob(int UID) {
-		if (CreatureType.fromName(profiles.getString(UID + mob)) != null) {
-			return CreatureType.fromName(profiles.getString(UID + mob));
-		}
-		return CreatureType.CREEPER;
-	}
-
-	private void saveUnlimitedMana(int UID, boolean unlimited) {
-		profiles.setBoolean(UID + unlimitedMana, unlimited);
-	}
-
-	private boolean hasUnlimitedMana(int UID) {
-		return profiles.getBoolean(UID + unlimitedMana);
 	}
 
 	@Override
@@ -88,12 +25,7 @@ public class WizardProperties extends PropertyManager implements Properties {
 			setEnabled(npc, is);
 			if (is) {
 				Wizard wizard = npc.getType("wizard");
-				saveLocations(npc.getUID(), wizard.getLocations());
-				saveMana(npc.getUID(), wizard.getMana());
-				saveMode(npc.getUID(), wizard.getMode());
-				saveTime(npc.getUID(), wizard.getTime());
-				saveMob(npc.getUID(), wizard.getMob());
-				saveUnlimitedMana(npc.getUID(), wizard.hasUnlimitedMana());
+				wizard.save(profiles, npc.getUID());
 			}
 		}
 	}
@@ -103,12 +35,7 @@ public class WizardProperties extends PropertyManager implements Properties {
 		if (getEnabled(npc)) {
 			npc.registerType("wizard");
 			Wizard wizard = npc.getType("wizard");
-			wizard.setLocations(getLocations(npc.getUID()));
-			wizard.setMana(getMana(npc.getUID()));
-			wizard.setMode(getMode(npc.getUID()));
-			wizard.setTime(getTime(npc.getUID()));
-			wizard.setMob(getMob(npc.getUID()));
-			wizard.setUnlimitedMana(hasUnlimitedMana(npc.getUID()));
+			wizard.load(profiles, npc.getUID());
 		}
 		saveState(npc);
 	}
@@ -121,34 +48,6 @@ public class WizardProperties extends PropertyManager implements Properties {
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isWizard);
-	}
-
-	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isWizard)) {
-			profiles.setString(nextUID + isWizard,
-					profiles.getString(UID + isWizard));
-		}
-		if (profiles.pathExists(UID + locations)) {
-			profiles.setString(nextUID + locations,
-					profiles.getString(UID + locations));
-		}
-		if (profiles.pathExists(UID + mana)) {
-			profiles.setString(nextUID + mana, profiles.getString(UID + mana));
-		}
-		if (profiles.pathExists(UID + mode)) {
-			profiles.setString(nextUID + mode, profiles.getString(UID + mode));
-		}
-		if (profiles.pathExists(UID + time)) {
-			profiles.setString(nextUID + time, profiles.getString(UID + time));
-		}
-		if (profiles.pathExists(UID + mob)) {
-			profiles.setString(nextUID + mob, profiles.getString(UID + mob));
-		}
-		if (profiles.pathExists(UID + unlimitedMana)) {
-			profiles.setString(nextUID + unlimitedMana,
-					profiles.getString(UID + unlimitedMana));
-		}
 	}
 
 	@Override
@@ -184,4 +83,15 @@ public class WizardProperties extends PropertyManager implements Properties {
 				"wizards.regen-mana", true));
 		return nodes;
 	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return nodesForCopy;
+	}
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"wizard.toggle", "wizard.locations", "wizard.mana", "wizard.mode",
+			"wizard.time", "wizard.mob", "wizard.unlimited-mana");
+
+	private static final String isWizard = ".wizard.toggle";
 }

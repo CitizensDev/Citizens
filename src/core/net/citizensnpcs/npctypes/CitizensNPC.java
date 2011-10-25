@@ -1,5 +1,6 @@
 package net.citizensnpcs.npctypes;
 
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
@@ -16,6 +17,10 @@ public abstract class CitizensNPC {
 	 * @return CitizensNPCType subclass
 	 */
 	public abstract CitizensNPCType getType();
+
+	public abstract void save(Storage profiles, int UID);
+
+	public abstract void load(Storage profiles, int UID);
 
 	/**
 	 * Called when a player left clicks the NPC - this can cause a damage event

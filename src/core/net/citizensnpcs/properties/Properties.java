@@ -1,5 +1,6 @@
 package net.citizensnpcs.properties;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -46,16 +47,6 @@ public interface Properties {
 	public abstract boolean getEnabled(HumanNPC npc);
 
 	/**
-	 * Copy the NPC type data of an NPC
-	 * 
-	 * @param UID
-	 *            UID of NPC to copy
-	 * @param nextUID
-	 *            UID of duplicated NPC
-	 */
-	public abstract void copy(int UID, int nextUID);
-
-	/**
 	 * Get a list of configuration nodes for an NPC type
 	 * 
 	 * @see net.citizensnpcs.properties.Node Node for info on creating nodes
@@ -63,4 +54,6 @@ public interface Properties {
 	 * @return list of configuration nodes
 	 */
 	public abstract List<Node> getNodes();
+
+	public abstract Collection<String> getNodesForCopy();
 }

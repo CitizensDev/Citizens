@@ -6,6 +6,7 @@ import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.PathUtils;
@@ -152,5 +153,20 @@ public class Guard extends CitizensNPC {
 
 	public boolean isReturning() {
 		return returning;
+	}
+
+	@Override
+	public void save(Storage profiles, int UID) {
+		profiles.setString(UID + ".guard.type", guardState.name());
+		profiles.setBoolean(UID + ".guard.aggressive", isAggressive);
+		profiles.setDouble(UID + ".guard.radius", radius);
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		guardState = GuardState.parse(profiles.getString(UID + ".guard.type"));
+		isAggressive = profiles.getBoolean(UID + ".guard.aggressive");
+		radius = profiles.getDouble(UID + ".guard.radius",
+				SettingsManager.getDouble("DefaultBouncerProtectionRadius"));
 	}
 }

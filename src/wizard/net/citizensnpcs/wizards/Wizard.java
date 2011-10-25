@@ -4,6 +4,7 @@ import net.citizensnpcs.SettingsManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -292,5 +293,32 @@ public class Wizard extends CitizensNPC {
 	@Override
 	public CitizensNPCType getType() {
 		return new WizardType();
+	}
+
+	@Override
+	public void save(Storage profiles, int UID) {
+		profiles.setBoolean(UID + ".wizard.unlimited-mana", unlimitedMana);
+		profiles.setString(UID + ".wizard.time", time);
+		profiles.setString(UID + ".wizard.mode", mode.name());
+		profiles.setInt(UID + ".wizard.mana", mana);
+		profiles.setString(UID + ".wizard.locations",
+				locations.replace(")(", "):("));
+		profiles.setString(UID + ".wizard.mob", mob.name());
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		unlimitedMana = profiles.getBoolean(UID + ".wizard.unlimited-mana");
+		time = profiles.getString(UID + ".wizard.time", "morning");
+		mode = (profiles.keyExists(UID + ".wizard.mode") && WizardMode
+				.parse(profiles.getString(UID + ".wizard.mode")) != null) ? WizardMode
+				.parse(profiles.getString(UID + ".wizard.mode"))
+				: WizardMode.TELEPORT;
+		mana = profiles.getInt(UID + ".wizard.mana", 10);
+		locations = profiles.getString(UID + ".wizard.locations").replace(")(",
+				"):(");
+		mob = (CreatureType.fromName(profiles.getString(UID + ".wizard.mob")) != null) ? CreatureType
+				.fromName(profiles.getString(UID + ".wizard.mob"))
+				: CreatureType.CREEPER;
 	}
 }

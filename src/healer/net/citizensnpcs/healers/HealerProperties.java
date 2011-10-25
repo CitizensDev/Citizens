@@ -1,6 +1,7 @@
 package net.citizensnpcs.healers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
@@ -9,30 +10,12 @@ import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
-public class HealerProperties extends PropertyManager implements Properties {
-	private static final String isHealer = ".healer.toggle";
-	private static final String health = ".healer.health";
-	private static final String level = ".healer.level";
+import com.google.common.collect.Lists;
 
+public class HealerProperties extends PropertyManager implements Properties {
 	public static final HealerProperties INSTANCE = new HealerProperties();
 
 	private HealerProperties() {
-	}
-
-	private void saveHealth(int UID, int healPower) {
-		profiles.setInt(UID + health, healPower);
-	}
-
-	private int getHealth(int UID) {
-		return profiles.getInt(UID + health, 10);
-	}
-
-	private void saveLevel(int UID, int currentLevel) {
-		profiles.setInt(UID + level, currentLevel);
-	}
-
-	private int getLevel(int UID) {
-		return profiles.getInt(UID + level, 1);
 	}
 
 	@Override
@@ -42,8 +25,7 @@ public class HealerProperties extends PropertyManager implements Properties {
 			setEnabled(npc, is);
 			if (is) {
 				Healer healer = npc.getType("healer");
-				saveHealth(npc.getUID(), healer.getHealth());
-				saveLevel(npc.getUID(), healer.getLevel());
+				healer.save(profiles, npc.getUID());
 			}
 		}
 	}
@@ -53,8 +35,7 @@ public class HealerProperties extends PropertyManager implements Properties {
 		if (getEnabled(npc)) {
 			npc.registerType("healer");
 			Healer healer = npc.getType("healer");
-			healer.setHealth(getHealth(npc.getUID()));
-			healer.setLevel(getLevel(npc.getUID()));
+			healer.load(profiles, npc.getUID());
 		}
 		saveState(npc);
 	}
@@ -67,21 +48,6 @@ public class HealerProperties extends PropertyManager implements Properties {
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isHealer);
-	}
-
-	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isHealer)) {
-			profiles.setString(nextUID + isHealer,
-					profiles.getString(UID + isHealer));
-		}
-		if (profiles.pathExists(UID + health)) {
-			profiles.setString(nextUID + health,
-					profiles.getString(UID + health));
-		}
-		if (profiles.pathExists(UID + level)) {
-			profiles.setString(nextUID + level, profiles.getString(UID + level));
-		}
 	}
 
 	@Override
@@ -101,4 +67,14 @@ public class HealerProperties extends PropertyManager implements Properties {
 				"healers.regen-health", true));
 		return nodes;
 	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return nodesForCopy;
+	}
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"healer.toggle", "healer.health", "healer.level");
+
+	private static final String isHealer = ".healer.toggle";
 }

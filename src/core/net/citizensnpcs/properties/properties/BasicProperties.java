@@ -3,6 +3,7 @@ package net.citizensnpcs.properties.properties;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 
@@ -36,18 +37,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 public class BasicProperties extends PropertyManager implements Properties {
-	private static final String name = ".basic.name";
-	private static final String color = ".basic.color";
-	private static final String items = ".basic.items";
-	private static final String inventory = ".basic.inventory";
-	private static final String location = ".basic.location";
-	private static final String lookWhenClose = ".basic.look-when-close";
-	private static final String talkWhenClose = ".basic.talk-when-close";
-	private static final String waypoints = ".basic.waypoints";
-	private static final String owner = ".basic.owner";
-	private static final String text = ".basic.text";
-	private static final String talk = ".basic.talk";
-
 	public void saveName(int UID, String npcName) {
 		profiles.setString(UID + name, npcName);
 	}
@@ -311,6 +300,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 		NPCData npcdata = npc.getNPCData();
 
+		saveBalance(npc.getUID(), npc.getBalance());
 		saveName(npc.getUID(), npcdata.getName());
 		saveLocation(npcdata.getLocation(), UID);
 		saveColour(UID, npcdata.getColour());
@@ -322,6 +312,19 @@ public class BasicProperties extends PropertyManager implements Properties {
 		saveTalk(UID, npcdata.isTalk());
 		saveWaypoints(UID, npc.getWaypoints().getWaypoints());
 		saveOwner(UID, npcdata.getOwner());
+	}
+
+	private void saveBalance(int UID, double balance) {
+		profiles.setDouble(UID + ".basic.balance", balance);
+	}
+
+	private double getBalance(int UID) {
+		if (profiles.pathExists(UID + ".trader.balance")) {
+			double previous = profiles.getDouble(UID + ".trader.balance");
+			profiles.removeKey(UID + ".trader.balance");
+			return previous;
+		}
+		return profiles.getDouble(UID + ".basic.balance");
 	}
 
 	@Override
@@ -340,6 +343,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 		npcdata.setTalkClose(isTalkWhenClose(UID));
 		npcdata.setOwner(getOwner(UID));
 		npc.getWaypoints().setPoints(getWaypoints(UID, npc.getWorld()));
+		npc.setBalance(getBalance(npc.getUID()));
 
 		NPCDataManager.addItems(npc, npcdata.getItems());
 		if (getInventory(npc.getUID()) != null) {
@@ -358,44 +362,6 @@ public class BasicProperties extends PropertyManager implements Properties {
 		return true;
 	}
 
-	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + name)) {
-			profiles.setString(nextUID + name, profiles.getString(UID + name));
-		}
-		if (profiles.pathExists(UID + text)) {
-			profiles.setString(nextUID + text, profiles.getString(UID + text));
-		}
-		if (profiles.pathExists(UID + location)) {
-			profiles.setString(nextUID + location,
-					profiles.getString(UID + location));
-		}
-		if (profiles.pathExists(UID + talk)) {
-			profiles.setBoolean(nextUID + talk, profiles.getBoolean(UID + talk));
-		}
-		if (profiles.pathExists(UID + color)) {
-			profiles.setString(nextUID + color, profiles.getString(UID + color));
-		}
-		if (profiles.pathExists(UID + owner)) {
-			profiles.setString(nextUID + owner, profiles.getString(UID + owner));
-		}
-		if (profiles.pathExists(UID + items)) {
-			profiles.setString(nextUID + items, profiles.getString(UID + items));
-		}
-		if (profiles.pathExists(UID + inventory)) {
-			profiles.setString(nextUID + inventory,
-					profiles.getString(UID + inventory));
-		}
-		if (profiles.pathExists(UID + talkWhenClose)) {
-			profiles.setString(nextUID + talkWhenClose,
-					profiles.getString(UID + talkWhenClose));
-		}
-		if (profiles.pathExists(UID + lookWhenClose)) {
-			profiles.setString(nextUID + lookWhenClose,
-					profiles.getString(UID + lookWhenClose));
-		}
-	}
-
 	public int getNewNpcID() {
 		int count = 0;
 		while (profiles.pathExists(count))
@@ -407,4 +373,26 @@ public class BasicProperties extends PropertyManager implements Properties {
 	public List<Node> getNodes() {
 		return null;
 	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return nodesForCopy;
+	}
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"basic.name", "basic.color", "basic.items", "basic.inventory",
+			"basic.location", "basic.look-when-close", "basic.talk-when-close",
+			"basic.waypoints", "basic.owner", "basic.talk", "basic.text");
+
+	private static final String name = ".basic.name";
+	private static final String color = ".basic.color";
+	private static final String items = ".basic.items";
+	private static final String inventory = ".basic.inventory";
+	private static final String location = ".basic.location";
+	private static final String lookWhenClose = ".basic.look-when-close";
+	private static final String talkWhenClose = ".basic.talk-when-close";
+	private static final String waypoints = ".basic.waypoints";
+	private static final String owner = ".basic.owner";
+	private static final String text = ".basic.text";
+	private static final String talk = ".basic.talk";
 }

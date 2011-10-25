@@ -1,6 +1,7 @@
 package net.citizensnpcs.blacksmiths;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.citizensnpcs.SettingsManager.SettingsType;
@@ -8,6 +9,8 @@ import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+
+import com.google.common.collect.Lists;
 
 public class BlacksmithProperties extends PropertyManager implements Properties {
 	private static final String isBlacksmith = ".blacksmith.toggle";
@@ -21,6 +24,8 @@ public class BlacksmithProperties extends PropertyManager implements Properties 
 	public void saveState(HumanNPC npc) {
 		if (exists(npc)) {
 			setEnabled(npc, npc.isType("blacksmith"));
+			Blacksmith blacksmith = npc.getType("blacksmith");
+			blacksmith.save(profiles, npc.getUID());
 		}
 	}
 
@@ -28,6 +33,8 @@ public class BlacksmithProperties extends PropertyManager implements Properties 
 	public void loadState(HumanNPC npc) {
 		if (getEnabled(npc)) {
 			npc.registerType("blacksmith");
+			Blacksmith blacksmith = npc.getType("blacksmith");
+			blacksmith.load(profiles, npc.getUID());
 		}
 		saveState(npc);
 	}
@@ -40,14 +47,6 @@ public class BlacksmithProperties extends PropertyManager implements Properties 
 	@Override
 	public boolean getEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isBlacksmith);
-	}
-
-	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isBlacksmith)) {
-			profiles.setString(nextUID + isBlacksmith,
-					profiles.getString(UID + isBlacksmith));
-		}
 	}
 
 	@Override
@@ -76,5 +75,10 @@ public class BlacksmithProperties extends PropertyManager implements Properties 
 		nodes.add(new Node("", SettingsType.GENERAL,
 				"economy.prices.blacksmith.toolrepair.misc", 0.50));
 		return nodes;
+	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return Lists.newArrayList();
 	}
 }

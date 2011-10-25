@@ -5,6 +5,7 @@ import net.citizensnpcs.economy.EconomyManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -127,5 +128,18 @@ public class Healer extends CitizensNPC {
 	@Override
 	public CitizensNPCType getType() {
 		return new HealerType();
+	}
+
+	@Override
+	public void save(Storage profiles, int UID) {
+		profiles.setInt(UID + ".healer.health", health);
+		profiles.setInt(UID + ".healer.level", level);
+
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		health = profiles.getInt(UID + ".healer.health", 10);
+		level = profiles.getInt(UID + ".healer.level", 1);
 	}
 }

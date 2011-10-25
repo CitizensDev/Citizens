@@ -7,6 +7,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -79,5 +80,17 @@ public class Alchemist extends CitizensNPC {
 	@Override
 	public CitizensNPCType getType() {
 		return new AlchemistType();
+	}
+
+	@Override
+	public void save(Storage profiles, int UID) {
+		profiles.setInt(UID + ".alchemist.recipes.current", currentRecipeID);
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		currentRecipeID = profiles
+				.getInt(UID + ".alchemist.recipes.current", 0);
+
 	}
 }

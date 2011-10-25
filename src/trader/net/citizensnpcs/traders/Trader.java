@@ -9,6 +9,7 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -22,7 +23,13 @@ import com.google.common.collect.Maps;
 public class Trader extends CitizensNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
+	private boolean clearOldest = false;
 	private Map<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
+	private int lastBoughtSlot;
+
+	public int getLastBoughtSlot() {
+		return this.lastBoughtSlot;
+	}
 
 	public Map<Check, Stockable> getStocking() {
 		return stocking;
@@ -98,6 +105,18 @@ public class Trader extends CitizensNPC {
 		return this.free;
 	}
 
+	public boolean isClearOldest() {
+		return clearOldest;
+	}
+
+	public void setClearOldest(boolean clearOldest) {
+		this.clearOldest = clearOldest;
+	}
+
+	public void setLastBoughtSlot(int lastBoughtSlot) {
+		this.lastBoughtSlot = lastBoughtSlot;
+	}
+
 	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
 	}
@@ -155,5 +174,19 @@ public class Trader extends CitizensNPC {
 
 	public static void clearGlobal() {
 		globalStock.clear();
+	}
+
+	@Override
+	public void save(Storage profiles, int UID) {
+		profiles.setBoolean(UID + ".trader.unlimited", unlimited);
+		profiles.setBoolean(UID + ".trader.clear-oldest", clearOldest);
+		profiles.setInt(UID + ".trader.last-bought", lastBoughtSlot);
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		unlimited = profiles.getBoolean(UID + ".trader.unlimited");
+		clearOldest = profiles.getBoolean(UID + ".trader.clear-oldest");
+		lastBoughtSlot = profiles.getInt(UID + ".trader.last-bought", -1);
 	}
 }

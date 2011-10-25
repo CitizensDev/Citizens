@@ -1,5 +1,6 @@
 package net.citizensnpcs.properties;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import net.citizensnpcs.properties.properties.BasicProperties;
@@ -75,7 +76,25 @@ public class PropertyManager {
 
 	public static void copyNPCs(int UID, int newUID) {
 		for (Properties saveable : properties.values()) {
-			saveable.copy(UID, newUID);
+			Collection<String> copyNodes = saveable.getNodesForCopy();
+			if (copyNodes == null)
+				continue;
+			for (String node : copyNodes) {
+				if (node.startsWith("."))
+					node = node.replaceFirst(".", "");
+				recurseCopy("." + node, UID, newUID);
+			}
+		}
+	}
+
+	private static void recurseCopy(String root, int UID, int newUID) {
+		if (!profiles.pathExists(UID + root))
+			return;
+		if (!profiles.getString(UID + root).isEmpty()) {
+			profiles.setString(newUID + root, profiles.getString(UID + root));
+		}
+		for (Object deeper : profiles.getKeys(UID + root)) {
+			recurseCopy(root + "." + deeper, UID, newUID);
 		}
 	}
 

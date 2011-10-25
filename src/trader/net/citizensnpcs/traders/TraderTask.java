@@ -191,7 +191,14 @@ public class TraderTask implements Runnable {
 		}
 		InventoryUtils.removeItems(player, selling, slot);
 		Map<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
+		Trader trader = npc.getType("trader");
 		if (mode != TraderMode.INFINITE) {
+			if (!npc.getInventory().contains(0)) {
+				if (trader.isClearOldest() && trader.getLastBoughtSlot() != -1) {
+					npc.getInventory().clear(trader.getLastBoughtSlot());
+					trader.setLastBoughtSlot(-1);
+				}
+			}
 			unsold = npc.getInventory().addItem(selling);
 		}
 		if (unsold.size() >= 1) {
@@ -202,6 +209,7 @@ public class TraderTask implements Runnable {
 					+ " to the trader's stock.");
 			return;
 		}
+		trader.setLastBoughtSlot(slot);
 		double price = stockable.getPrice().getPrice();
 		EconomyManager.add(player.getName(), price);
 		npc.getPlayer().updateInventory();

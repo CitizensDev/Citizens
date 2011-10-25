@@ -14,32 +14,15 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 public class TraderProperties extends PropertyManager implements Properties {
 	private static final String isTrader = ".trader.toggle";
 	private static final String stock = ".trader.stock";
-	private static final String unlimited = ".trader.unlimited";
-	private static final String balance = ".trader.balance";
 
 	public static final TraderProperties INSTANCE = new TraderProperties();
 
 	private TraderProperties() {
-	}
-
-	private void saveBalance(int UID, double traderBalance) {
-		profiles.setDouble(UID + balance, traderBalance);
-	}
-
-	private double getBalance(int UID) {
-		return profiles.getDouble(UID + balance);
-	}
-
-	private void saveUnlimited(int UID, boolean value) {
-		profiles.setBoolean(UID + unlimited, value);
-	}
-
-	private boolean isUnlimited(int UID) {
-		return profiles.getBoolean(UID + unlimited);
 	}
 
 	private void setStockables(int UID, String set) {
@@ -97,9 +80,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 			setEnabled(npc, is);
 			if (is) {
 				Trader trader = npc.getType("trader");
-				saveUnlimited(npc.getUID(), trader.isUnlimited());
+				trader.save(profiles, npc.getUID());
 				saveStockables(npc.getUID(), trader.getStocking());
-				saveBalance(npc.getUID(), npc.getBalance());
 			}
 		}
 	}
@@ -109,9 +91,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 		if (getEnabled(npc)) {
 			npc.registerType("trader");
 			Trader trader = npc.getType("trader");
-			npc.setBalance(getBalance(npc.getUID()));
-			trader.setUnlimited(isUnlimited(npc.getUID()));
 			trader.setStocking(getStockables(npc.getUID()));
+			trader.load(profiles, npc.getUID());
 		}
 		saveState(npc);
 	}
@@ -127,22 +108,13 @@ public class TraderProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public void copy(int UID, int nextUID) {
-		if (profiles.pathExists(UID + isTrader)) {
-			profiles.setString(nextUID + isTrader,
-					profiles.getString(UID + isTrader));
-		}
-		if (profiles.pathExists(UID + stock)) {
-			profiles.setString(nextUID + stock, profiles.getString(UID + stock));
-		}
-		if (profiles.pathExists(UID + unlimited)) {
-			profiles.setString(nextUID + unlimited,
-					profiles.getString(UID + unlimited));
-		}
-		if (profiles.pathExists(UID + balance)) {
-			profiles.setString(nextUID + balance, UID + balance);
-		}
+	public List<String> getNodesForCopy() {
+		return nodesForCopy;
 	}
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"trader.toggle", "trader.stock", "trader.unlimited",
+			"trader.clear-oldest", "trader.last-bought");
 
 	@Override
 	public List<Node> getNodes() {
@@ -151,7 +123,7 @@ public class TraderProperties extends PropertyManager implements Properties {
 
 	public static void loadGlobal() {
 		Storage storage = UtilityProperties.getSettings();
-		for (String key : storage.getKeys("traders.global-prices")) {
+		for (Object key : storage.getKeys("traders.global-prices")) {
 			String path = "traders.global-prices." + key;
 			int itemID = storage.getInt(path + ".id", 1);
 			int amount = storage.getInt(path + ".amount", 1);
