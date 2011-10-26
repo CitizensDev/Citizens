@@ -24,7 +24,7 @@ public class DefaultSpawner implements Spawner {
 
 	@Override
 	public HumanNPC spawn(CreatureNPCType type, Location loc) {
-		if (random.nextInt(100) > type.getSpawnChance())
+		if (!type.shouldSpawn())
 			return null;
 		// TODO: Make this more random.
 		int offset = 25 * getRandomInt(1);
@@ -45,27 +45,19 @@ public class DefaultSpawner implements Spawner {
 				for (int z = offsetZ - searchXZ; z <= offsetZ + searchXZ; ++z) {
 					shiftedX = x >> 4;
 					shiftedZ = z >> 4;
-					if (world.isChunkLoaded(shiftedX, shiftedZ)) {
-						if (type.spawnOn().isValid(
-								world.getBlockTypeIdAt(x, y - 1, z))
-								&& type.spawnIn().isValid(
-										world.getBlockTypeIdAt(x, y, z))
-								&& type.spawnIn().isValid(
-										world.getBlockTypeIdAt(x, y + 1, z))) {
-							if (!areEntitiesOnBlock(
-									world.getChunkAt(shiftedX, shiftedZ), x, y,
-									z) && type.isSpawn()) {
-								HumanNPC npc = NPCSpawner.spawnNPC(
-										new Location(loc.getWorld(), x, y, z,
-												random.nextInt(360), 0), type);
-								// call NPC creation event with reason of
-								// SPAWN
-								Bukkit.getPluginManager().callEvent(
-										new NPCCreateEvent(npc,
-												NPCCreateReason.SPAWN, loc));
-								return npc;
-							}
-						}
+					if (!world.isChunkLoaded(shiftedX, shiftedZ)
+							|| !type.validSpawnPosition(world, x, y, z)
+							|| !type.isSpawn())
+						continue;
+					if (!areEntitiesOnBlock(
+							world.getChunkAt(shiftedX, shiftedZ), x, y, z)) {
+						HumanNPC npc = NPCSpawner.spawnNPC(
+								new Location(loc.getWorld(), x, y, z, random
+										.nextInt(360), 0), type);
+						Bukkit.getPluginManager().callEvent(
+								new NPCCreateEvent(npc, NPCCreateReason.SPAWN,
+										loc));
+						return npc;
 					}
 				}
 			}
@@ -82,12 +74,12 @@ public class DefaultSpawner implements Spawner {
 
 	private boolean areEntitiesOnBlock(Chunk chunk, int x, int y, int z) {
 		for (Entity entity : chunk.getEntities()) {
-			if (entity instanceof LivingEntity) {
-				Location loc = entity.getLocation();
-				if (loc.getBlockX() == x && loc.getBlockY() == y
-						&& loc.getBlockZ() == z) {
-					return false;
-				}
+			if (!(entity instanceof LivingEntity))
+				continue;
+			Location loc = entity.getLocation();
+			if (loc.getBlockX() == x && loc.getBlockY() == y
+					&& loc.getBlockZ() == z) {
+				return false;
 			}
 		}
 		return true;

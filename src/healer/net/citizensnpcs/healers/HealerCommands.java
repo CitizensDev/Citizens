@@ -52,7 +52,7 @@ public class HealerCommands extends CommandHandler {
 	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		Healer healer = npc.getType("healer");
 		player.sendMessage(ChatColor.GREEN
-				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
+				+ StringUtils.listify(StringUtils.wrap(npc.getName()
 						+ "'s Healer Status")));
 		player.sendMessage(ChatColor.YELLOW + "Health: " + ChatColor.GREEN
 				+ healer.getHealth() + ChatColor.RED + "/"
@@ -86,13 +86,13 @@ public class HealerCommands extends CommandHandler {
 			newLevel = level + levelsUp;
 			healer.setLevel(newLevel);
 		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has reached the maximum level.");
 			return;
 		}
 		String noPaymentMsg = ChatColor.GREEN
 				+ "You have leveled up the healer "
-				+ StringUtils.wrap(npc.getStrippedName()) + " to "
+				+ StringUtils.wrap(npc.getName()) + " to "
 				+ StringUtils.wrap("level " + newLevel) + ".";
 		if (Economy.useEconPlugin()) {
 			double price = UtilityProperties.getPrice("healer.levelup")
@@ -102,7 +102,7 @@ public class HealerCommands extends CommandHandler {
 				if (paid > 0) {
 					player.sendMessage(ChatColor.GREEN
 							+ "You have leveled up the healer "
-							+ StringUtils.wrap(npc.getStrippedName()) + " to "
+							+ StringUtils.wrap(npc.getName()) + " to "
 							+ StringUtils.wrap("level " + newLevel) + " for "
 							+ StringUtils.wrap(Economy.format(paid))
 							+ ".");
@@ -112,7 +112,7 @@ public class HealerCommands extends CommandHandler {
 			} else {
 				Messaging.sendError(player,
 						"You need " + Economy.format(price)
-								+ " more to level-up " + npc.getStrippedName()
+								+ " more to level-up " + npc.getName()
 								+ ".");
 			}
 		} else {

@@ -111,6 +111,10 @@ public class Settings {
 
 	static {
 		// citizens.yml
+		nodes.add(new Node("MinArrowRange", SettingsType.GENERAL,
+				"range.arrow.min", 3));
+		nodes.add(new Node("MaxArrowRange", SettingsType.GENERAL,
+				"range.arrow.max", 13));
 		nodes.add(new Node("MaxStationaryTicks", SettingsType.GENERAL,
 				"ticks.pathing.max-stationary", -1));
 		nodes.add(new Node("MaxPathingTicks", SettingsType.GENERAL,

@@ -72,12 +72,12 @@ public class NPCDataManager {
 				}
 				items.set(i, new ItemData(0, (short) 0));
 			}
-			player.sendMessage(found ? StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(found ? StringUtils.wrap(npc.getName())
 					+ " is now naked. Here are the items!" : ChatColor.GRAY
 					+ "There were no items to take.");
 		} else {
 			int itemID = hand.getTypeId();
-			String error = npc.getStrippedName() + " is already equipped with "
+			String error = npc.getName() + " is already equipped with "
 					+ MessageUtils.getMaterialName(itemID) + ".";
 			String slot = "";
 			if (player.isSneaking()) {
@@ -122,7 +122,7 @@ public class NPCDataManager {
 							new ItemData(hand.getTypeId(), hand.getDurability()));
 				}
 			}
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s ")
+			player.sendMessage(StringUtils.wrap(npc.getName() + "'s ")
 					+ slot + " was set to "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(itemID))
 					+ ".");

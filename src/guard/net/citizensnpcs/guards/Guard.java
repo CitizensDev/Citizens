@@ -127,7 +127,7 @@ public class Guard extends CitizensNPC {
 		Player player = Bukkit.getServer().getPlayer(npc.getOwner());
 		if (player != null) {
 			player.sendMessage(ChatColor.GRAY + "Your guard NPC "
-					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
+					+ StringUtils.wrap(npc.getName(), ChatColor.GRAY)
 					+ " died.");
 		}
 		event.getDrops().clear();

@@ -47,7 +47,7 @@ public class MessageUtils {
 
 	// Gets the text to be said for a basic NPC
 	public static String getText(HumanNPC npc, Player player) {
-		String name = StringUtils.stripColour(npc.getStrippedName());
+		String name = StringUtils.stripColour(npc.getName());
 		Deque<String> array = NPCDataManager.getText(npc.getUID());
 		String text = "";
 		if (array != null && array.size() > 0) {
@@ -61,7 +61,7 @@ public class MessageUtils {
 		if (!text.isEmpty()) {
 			if (Settings.getBoolean("UseNPCColors")) {
 				text = StringUtils.colourise(Settings.getString(
-						"ChatFormat").replace("%name%", npc.getStrippedName()))
+						"ChatFormat").replace("%name%", npc.getName()))
 						+ text;
 			} else {
 				text = StringUtils.colourise(Settings.getString(
@@ -162,7 +162,7 @@ public class MessageUtils {
 		for (HumanNPC hnpc : NPCManager.getList().values()) {
 			if (hnpc.getOwner().equals(toDisplay.getName())) {
 				paginate.push(ChatColor.GRAY + "" + hnpc.getUID()
-						+ ChatColor.YELLOW + " " + hnpc.getStrippedName());
+						+ ChatColor.YELLOW + " " + hnpc.getName());
 			}
 		}
 		int page = Integer.parseInt(passed);

@@ -55,7 +55,7 @@ public class Alchemist extends CitizensNPC {
 		}
 		if (!AlchemistManager.hasClickedOnce(player.getName())) {
 			if (recipes.size() == 0) {
-				Messaging.sendError(player, npc.getStrippedName()
+				Messaging.sendError(player, npc.getName()
 						+ " has no recipes.");
 				return;
 			}

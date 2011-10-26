@@ -9,7 +9,6 @@ import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -43,11 +42,6 @@ public class UtilityProperties {
 
 	public static String getItemOverride(int ID) {
 		return settings.getString("items.overrides." + ID);
-	}
-
-	public static String getRandomName(CreatureNPCType type) {
-		String[] split = type.getPossibleNames().split(",");
-		return split[new Random().nextInt(split.length)];
 	}
 
 	public static ItemStack getRandomDrop(String drops) {

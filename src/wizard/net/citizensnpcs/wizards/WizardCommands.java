@@ -54,14 +54,14 @@ public class WizardCommands extends CommandHandler {
 			Wizard wizard = npc.getType("wizard");
 			if (wizardMode != wizard.getMode()) {
 				wizard.setMode(wizardMode);
-				player.sendMessage(StringUtils.wrap(npc.getStrippedName()
+				player.sendMessage(StringUtils.wrap(npc.getName()
 						+ "'s")
 						+ " mode was set to "
 						+ StringUtils
 								.wrap(wizardMode.name().toLowerCase() + "")
 						+ ".");
 			} else {
-				player.sendMessage(ChatColor.RED + npc.getStrippedName()
+				player.sendMessage(ChatColor.RED + npc.getName()
 						+ " is already that mode.");
 			}
 		} else {
@@ -80,7 +80,7 @@ public class WizardCommands extends CommandHandler {
 	@CommandPermissions("wizard.use.status")
 	public static void status(CommandContext args, Player player, HumanNPC npc) {
 		player.sendMessage(ChatColor.YELLOW
-				+ StringUtils.listify(ChatColor.GREEN + npc.getStrippedName()
+				+ StringUtils.listify(ChatColor.GREEN + npc.getName()
 						+ "'s Wizard Status" + ChatColor.YELLOW));
 		Wizard wizard = npc.getType("wizard");
 		player.sendMessage(ChatColor.GREEN + "    Mode: "
@@ -105,12 +105,12 @@ public class WizardCommands extends CommandHandler {
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getMode() != WizardMode.TELEPORT) {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " is not in teleport mode.");
 			return;
 		}
 		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.wrap(npc.getStrippedName()) + ChatColor.GREEN
+				+ StringUtils.wrap(npc.getName()) + ChatColor.GREEN
 				+ " as " + StringUtils.wrap(args.getString(1)) + ".");
 		wizard.addLocation(player.getLocation(), args.getString(1));
 	}
@@ -127,7 +127,7 @@ public class WizardCommands extends CommandHandler {
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getMode() != WizardMode.TELEPORT) {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " is not in teleport mode.");
 			return;
 		}
@@ -143,7 +143,7 @@ public class WizardCommands extends CommandHandler {
 		}
 		wizard.cycle(npc, WizardMode.TELEPORT);
 		wizard.setLocations(newLoc.toString());
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " has amnesia and forgot about "
 				+ StringUtils.wrap(removedName) + ".");
 	}
@@ -160,12 +160,12 @@ public class WizardCommands extends CommandHandler {
 			HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getMode() != WizardMode.TELEPORT) {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " is not in teleport mode.");
 			return;
 		}
 		player.sendMessage(ChatColor.GREEN
-				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
+				+ StringUtils.listify(StringUtils.wrap(npc.getName()
 						+ "'s Wizard Locations")));
 		String locations[] = wizard.getLocations().split(":");
 		for (int i = 0; i < locations.length; i++) {
@@ -188,10 +188,10 @@ public class WizardCommands extends CommandHandler {
 		Wizard wizard = npc.getType("wizard");
 		wizard.setUnlimitedMana(!wizard.hasUnlimitedMana());
 		if (wizard.hasUnlimitedMana()) {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " now has unlimited mana.");
 		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " no longer has unlimited mana.");
 		}
 	}

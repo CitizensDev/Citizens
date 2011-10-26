@@ -291,7 +291,7 @@ public class TraderTask implements Runnable {
 			break;
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD + "Stocking of "
-					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GOLD)
+					+ StringUtils.wrap(npc.getName(), ChatColor.GOLD)
 					+ " started.");
 			break;
 		}
@@ -306,7 +306,7 @@ public class TraderTask implements Runnable {
 			break;
 		case STOCK:
 			player.sendMessage(ChatColor.GOLD + "Stocking of "
-					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GOLD)
+					+ StringUtils.wrap(npc.getName(), ChatColor.GOLD)
 					+ " finished.");
 			break;
 		}

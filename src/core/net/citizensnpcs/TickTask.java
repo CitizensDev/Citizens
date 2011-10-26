@@ -1,10 +1,9 @@
 package net.citizensnpcs;
 
-import java.util.Map.Entry;
+import java.util.Map;
 
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.misc.ActionManager;
-import net.citizensnpcs.misc.ActionManager.CachedAction;
+import net.citizensnpcs.misc.Actions;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
@@ -18,37 +17,34 @@ import net.citizensnpcs.waypoints.WaypointPath;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.MapMaker;
+
 public class TickTask implements Runnable {
+	private static final Map<HumanNPC, Actions> cachedActions = new MapMaker()
+			.weakKeys().makeMap();
+
 	@Override
 	public void run() {
-		HumanNPC npc;
-		int UID;
 		Player[] online = Bukkit.getServer().getOnlinePlayers();
-		for (Entry<Integer, HumanNPC> entry : NPCManager.getList().entrySet()) {
-			{
-				npc = entry.getValue();
-				updateWaypoints(npc);
-				npc.doTick();
-				NPCSpawner.removeNPCFromPlayerList(npc);
-				UID = entry.getKey();
-				for (Player player : online) {
-					String name = player.getName();
-					if (!npc.getNPCData().isLookClose()
-							&& !npc.getNPCData().isTalkClose())
-						continue;
-					// If the player is within 'seeing' range
-					if (LocationUtils.withinRange(npc.getLocation(),
-							player.getLocation(),
-							Settings.getDouble("NPCRange"))) {
-						if (npc.getHandle().pathFinished()
-								&& !npc.getHandle().hasTarget()
-								&& npc.getNPCData().isLookClose()) {
-							NPCManager.faceEntity(npc, player);
-						}
-						cacheActions(player, npc, UID, name);
-					} else {
-						resetActions(UID, name, npc);
+		for (HumanNPC npc : NPCManager.getList().values()) {
+			updateWaypoints(npc);
+			npc.doTick();
+			NPCSpawner.removeNPCFromPlayerList(npc);
+			for (Player player : online) {
+				if (!npc.getNPCData().isLookClose()
+						&& !npc.getNPCData().isTalkClose())
+					continue;
+				// If the player is within 'seeing' range
+				if (LocationUtils.withinRange(npc.getLocation(),
+						player.getLocation(), Settings.getDouble("NPCRange"))) {
+					if (npc.getHandle().pathFinished()
+							&& !npc.getHandle().hasTarget()
+							&& npc.getNPCData().isLookClose()) {
+						NPCManager.faceEntity(npc, player);
 					}
+					cacheActions(npc, player);
+				} else {
+					clearActions(npc, player);
 				}
 			}
 		}
@@ -72,8 +68,7 @@ public class TickTask implements Runnable {
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
 					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
-							-1, -1,
-							Settings.getDouble("PathfindingRange"));
+							-1, -1, Settings.getDouble("PathfindingRange"));
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
@@ -96,18 +91,26 @@ public class TickTask implements Runnable {
 		}
 	}
 
-	private void resetActions(int entityID, String name, HumanNPC npc) {
-		ActionManager.resetAction(entityID, name, "saidText", npc.getNPCData()
-				.isTalkClose());
+	private void clearActions(HumanNPC npc, Player player) {
+		Actions actions = cachedActions.get(npc);
+		if (actions == null) {
+			cachedActions.put(npc, new Actions());
+			return;
+		}
+		actions.clear("saidText", player.getName());
 	}
 
-	private void cacheActions(Player player, HumanNPC npc, int UID, String name) {
-		CachedAction cached = ActionManager.getAction(UID, name);
-		if (!cached.has("saidText") && npc.getNPCData().isTalkClose()) {
-			MessageUtils.sendText(npc, player);
-			cached.set("saidText");
+	private void cacheActions(HumanNPC npc, Player player) {
+		Actions actions = cachedActions.get(npc);
+		if (actions == null) {
+			cachedActions.put(npc, new Actions());
+			return;
 		}
-		ActionManager.putAction(UID, name, cached);
+		if (!actions.has("saidText", player.getName())
+				&& npc.getNPCData().isTalkClose()) {
+			MessageUtils.sendText(npc, player);
+			actions.set("saidText", player.getName());
+		}
 	}
 
 	public static void scheduleRespawn(HumanNPC npc, int delay) {

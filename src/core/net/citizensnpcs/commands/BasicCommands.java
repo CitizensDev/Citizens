@@ -51,7 +51,7 @@ public class BasicCommands extends CommandHandler {
 		String text = args.getJoinedStrings(1);
 		NPCDataManager.addText(npc.getUID(), text);
 		player.sendMessage(StringUtils.wrap(text) + " was added to "
-				+ StringUtils.wrap(npc.getStrippedName() + "'s") + " text.");
+				+ StringUtils.wrap(npc.getName() + "'s") + " text.");
 	}
 
 	@Command(aliases = "citizens", desc = "view Citizens info", max = 0)
@@ -151,7 +151,7 @@ public class BasicCommands extends CommandHandler {
 			}
 			npc.getNPCData().setColour(ChatColor.getByCode(colour));
 			NPCManager.setColour(npc.getUID(), npc.getOwner());
-			player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
+			player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
 					+ "}'s name color is now "
 					+ args.getString(1).replace("&", "\u00A7") + "this}."));
 		}
@@ -230,7 +230,7 @@ public class BasicCommands extends CommandHandler {
 					+ keyword
 					+ StringUtils.wrap(Economy.format(amount))
 					+ " to "
-					+ StringUtils.wrap(npc.getStrippedName())
+					+ StringUtils.wrap(npc.getName())
 					+ ". Your balance is now "
 					+ StringUtils.wrap(Economy
 							.getFormattedBalance(player.getName())) + ".");
@@ -262,7 +262,7 @@ public class BasicCommands extends CommandHandler {
 		PropertyManager.load(newNPC);
 		newNPC.teleport(player.getLocation());
 		newNPC.getNPCData().setLocation(player.getLocation());
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " has been copied at your location.");
 	}
 
@@ -368,7 +368,7 @@ public class BasicCommands extends CommandHandler {
 		if (editing == null) {
 			player.sendMessage(ChatColor.GREEN
 					+ StringUtils.listify(StringUtils.wrap("Now Editing "
-							+ npc.getStrippedName() + "'s Items")));
+							+ npc.getName() + "'s Items")));
 			player.sendMessage(StringUtils.wrap("Right-click")
 					+ " to set an NPC's equipment.");
 			player.sendMessage(ChatColor.GREEN
@@ -387,7 +387,7 @@ public class BasicCommands extends CommandHandler {
 			return;
 		} else if (editing != UID) {
 			player.sendMessage(ChatColor.GRAY + "Now editing "
-					+ StringUtils.wrap(npc.getStrippedName(), ChatColor.GRAY)
+					+ StringUtils.wrap(npc.getName(), ChatColor.GRAY)
 					+ "'s equipment.");
 			editing = UID;
 		}
@@ -446,10 +446,10 @@ public class BasicCommands extends CommandHandler {
 	public static void lookAt(CommandContext args, Player player, HumanNPC npc) {
 		npc.getNPCData().setLookClose(!npc.getNPCData().isLookClose());
 		if (npc.getNPCData().isLookClose()) {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " will now look at players.");
 		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " will stop looking at players.");
 		}
 	}
@@ -470,7 +470,7 @@ public class BasicCommands extends CommandHandler {
 					+ "You don't have permission to move NPCs between worlds.");
 			return;
 		}
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " is en route to your location!");
 		npc.teleport(player.getLocation());
 		npc.getNPCData().setLocation(player.getLocation());
@@ -547,7 +547,7 @@ public class BasicCommands extends CommandHandler {
 				z, pitch, yaw);
 		npc.teleport(loc);
 		npc.getNPCData().setLocation(loc);
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " moved to the coordinates " + StringUtils.wrap(x) + ", "
 				+ StringUtils.wrap(y) + ", " + StringUtils.wrap(z)
 				+ " in the world " + StringUtils.wrap(world) + ".");
@@ -559,7 +559,7 @@ public class BasicCommands extends CommandHandler {
 	public static void npc(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		sender.sendMessage(ChatColor.GREEN
-				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName())));
+				+ StringUtils.listify(StringUtils.wrap(npc.getName())));
 		sender.sendMessage(ChatColor.GREEN + "ID: "
 				+ StringUtils.wrap(npc.getUID()));
 		sender.sendMessage(ChatColor.GREEN + "Owner: "
@@ -661,7 +661,7 @@ public class BasicCommands extends CommandHandler {
 						.hasPermission(player, "citizens.basic.modify.remove"))) {
 			NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
 			NPCDataManager.deselectNPC(player);
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName(),
+			player.sendMessage(StringUtils.wrap(npc.getName(),
 					ChatColor.GRAY) + " disappeared.");
 			return;
 		}
@@ -713,7 +713,7 @@ public class BasicCommands extends CommandHandler {
 	@CommandPermissions("basic.modify.resettext")
 	public static void reset(CommandContext args, Player player, HumanNPC npc) {
 		NPCDataManager.resetText(npc.getUID());
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+		player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
 				+ " text was reset!");
 	}
 
@@ -778,7 +778,7 @@ public class BasicCommands extends CommandHandler {
 		ArrayDeque<String> texts = new ArrayDeque<String>();
 		texts.add(text);
 		NPCDataManager.setText(npc.getUID(), texts);
-		player.sendMessage(StringUtils.wrapFull("{" + npc.getStrippedName()
+		player.sendMessage(StringUtils.wrapFull("{" + npc.getName()
 				+ "}'s text was set to {" + text + "}."));
 	}
 
@@ -796,7 +796,7 @@ public class BasicCommands extends CommandHandler {
 				|| (NPCManager.isOwner(player, npc.getUID()) && PermissionManager
 						.hasPermission(player, "citizens.basic.modify.setowner"))) {
 			player.sendMessage(ChatColor.GREEN + "The owner of "
-					+ StringUtils.wrap(npc.getStrippedName()) + " is now "
+					+ StringUtils.wrap(npc.getName()) + " is now "
 					+ StringUtils.wrap(args.getString(1)) + ".");
 			npc.getNPCData().setOwner(args.getString(1));
 			return;
@@ -816,10 +816,10 @@ public class BasicCommands extends CommandHandler {
 			HumanNPC npc) {
 		npc.getNPCData().setTalkClose(!npc.getNPCData().isTalkClose());
 		if (npc.getNPCData().isTalkClose()) {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " will now talk to nearby players.");
 		} else {
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " will stop talking to nearby players.");
 		}
 	}
@@ -835,7 +835,7 @@ public class BasicCommands extends CommandHandler {
 	public static void teleport(CommandContext args, Player player, HumanNPC npc) {
 		player.teleport(npc.getNPCData().getLocation());
 		player.sendMessage(ChatColor.GREEN + "Teleported you to "
-				+ StringUtils.wrap(npc.getStrippedName()) + ". Enjoy!");
+				+ StringUtils.wrap(npc.getName()) + ". Enjoy!");
 	}
 
 	@Command(
@@ -875,7 +875,7 @@ public class BasicCommands extends CommandHandler {
 				return;
 			} else if (editing != UID) {
 				player.sendMessage(ChatColor.GRAY + "Now editing "
-						+ StringUtils.wrap(npc.getStrippedName())
+						+ StringUtils.wrap(npc.getName())
 						+ "'s waypoints.");
 				editing = UID;
 			}

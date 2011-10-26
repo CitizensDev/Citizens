@@ -7,10 +7,14 @@ import java.util.Map;
 import java.util.Random;
 
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.World;
+
+import org.bukkit.Location;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,14 +23,13 @@ public enum CreatureNPCType {
 	EVIL(EvilCreatureNPC.class, "Evil", SpawnValidator.DEFAULT_SPAWNIN,
 			SpawnValidator.DEFAULT_SPAWNON);
 
-	private final int max;
-	private final int spawnChance;
-	private final String possible;
+	private final int max, spawnChance;
+	private final String[] possible;
 	private final boolean spawn;
 	private Constructor<? extends CreatureNPC> instance;
 	private final SpawnValidator spawnIn;
 	private final SpawnValidator spawnOn;
-	private Spawner spawner = DefaultSpawner.INSTANCE;
+	private final Spawner spawner = DefaultSpawner.INSTANCE;
 	private final String name;
 
 	CreatureNPCType(Class<? extends CreatureNPC> instance, String name,
@@ -36,62 +39,46 @@ public enum CreatureNPCType {
 			this.instance = instance.getConstructor(MinecraftServer.class,
 					World.class, String.class, ItemInWorldManager.class);
 		} catch (Exception ex) {
+			Messaging.log("Unable to get constructor for", name + ".");
 		}
 		this.spawn = Settings.getBoolean("Spawn" + name + "s");
 		this.max = Settings.getInt("Max" + name + "s");
 		this.spawnChance = Settings.getInt(name + "SpawnChance");
-		this.possible = Settings.getString(name + "Names");
+		this.possible = Settings.getString(name + "Names").split(",");
 		this.spawnIn = spawnIn;
 		this.spawnOn = spawnOn;
 		this.name = name;
 	}
 
-	private final static Map<String, CreatureNPCType> mapping = Maps
-			.newHashMap();
-	private final static List<CreatureNPCType> spawning = Lists.newArrayList();
-
-	static {
-		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
-			mapping.put(type.name, type);
-			if (type.isSpawn())
-				spawning.add(type);
-		}
+	public boolean canSpawn(int spawned) {
+		return max > spawned;
 	}
 
-	public int getMaxSpawnable() {
-		return this.max;
-	}
-
-	public String getPossibleNames() {
-		return possible;
+	public String chooseRandomName() {
+		return possible[random.nextInt(possible.length)];
 	}
 
 	public Constructor<? extends CreatureNPC> getEntityConstructor() {
 		return instance;
 	}
 
-	public SpawnValidator spawnIn() {
-		return spawnIn;
+	public boolean validSpawnPosition(org.bukkit.World world, int x, int y,
+			int z) {
+		return spawnOn.isValid(world.getBlockTypeIdAt(x, y - 1, z))
+				&& spawnIn.isValid(world.getBlockTypeIdAt(x, y, z))
+				&& spawnIn.isValid(world.getBlockTypeIdAt(x, y + 1, z));
 	}
 
-	public SpawnValidator spawnOn() {
-		return spawnOn;
-	}
-
-	public Spawner getSpawner() {
-		return spawner;
-	}
-
-	public void setSpawner(Spawner spawner) {
-		this.spawner = spawner;
+	public HumanNPC spawn(Location location) {
+		return spawner.spawn(this, location);
 	}
 
 	public static CreatureNPCType fromName(String mob) {
 		return mapping.get(mob);
 	}
 
-	public int getSpawnChance() {
-		return this.spawnChance;
+	public boolean shouldSpawn() {
+		return random.nextInt(100) > this.spawnChance;
 	}
 
 	public boolean isSpawn() {
@@ -105,5 +92,18 @@ public enum CreatureNPCType {
 
 	public static boolean hasSpawning() {
 		return spawning.size() > 0;
+	}
+
+	private static final Random random = new Random();
+	private static final Map<String, CreatureNPCType> mapping = Maps
+			.newHashMap();
+	private static final List<CreatureNPCType> spawning = Lists.newArrayList();
+
+	static {
+		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
+			mapping.put(type.name, type);
+			if (type.isSpawn())
+				spawning.add(type);
+		}
 	}
 }

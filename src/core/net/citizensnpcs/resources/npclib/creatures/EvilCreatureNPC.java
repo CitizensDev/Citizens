@@ -83,7 +83,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 				NPCManager.register(npc.getName(), player.getLocation(),
 						player.getName(), NPCCreateReason.RESPAWN);
 				player.sendMessage(ChatColor.GREEN + "You have tamed "
-						+ StringUtils.wrap(npc.getStrippedName())
+						+ StringUtils.wrap(npc.getName())
 						+ "! You can now toggle it to be any type.");
 			} else {
 				Messaging.send(
@@ -91,7 +91,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 						this.npc,
 						StringUtils.colourise(Settings.getString(
 								"ChatFormat").replace("%name%",
-								npc.getStrippedName()))
+								npc.getName()))
 								+ ChatColor.WHITE
 								+ MessageUtils.getRandomMessage(Settings
 										.getString("EvilFailedTameMessages")));

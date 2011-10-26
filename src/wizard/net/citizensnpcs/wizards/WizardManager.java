@@ -60,7 +60,7 @@ public class WizardManager {
 			}
 			return false;
 		}
-		Messaging.sendError(player, npc.getStrippedName()
+		Messaging.sendError(player, npc.getName()
 				+ " has no locations.");
 		return false;
 	}
@@ -115,11 +115,11 @@ public class WizardManager {
 		}
 		if (wizard.getMana() - mana >= 0) {
 			wizard.setMana(wizard.getMana() - mana);
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has lost " + mana + " mana.");
 			return true;
 		}
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " does not have enough mana to do that.");
 		return false;
 	}
@@ -143,7 +143,7 @@ public class WizardManager {
 				return;
 			}
 		}
-		String msg = StringUtils.wrap(npc.getStrippedName());
+		String msg = StringUtils.wrap(npc.getName());
 		if (op.equals("wizard.teleport")) {
 			msg += " teleported you to "
 					+ StringUtils.wrap(wizard.getCurrentLocationName()) + ".";

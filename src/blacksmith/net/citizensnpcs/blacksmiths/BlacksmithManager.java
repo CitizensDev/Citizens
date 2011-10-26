@@ -20,7 +20,7 @@ public class BlacksmithManager {
 	public static void repairItem(Player player, HumanNPC npc, String repairType) {
 		ItemStack item = player.getItemInHand();
 		if (item.getDurability() > 0) {
-			String noPaymentMsg = StringUtils.wrap(npc.getStrippedName())
+			String noPaymentMsg = StringUtils.wrap(npc.getName())
 					+ " has repaired your "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(item
 							.getTypeId()) + ".");
@@ -33,7 +33,7 @@ public class BlacksmithManager {
 							getBlacksmithPrice(player, repairType));
 					if (paid > 0) {
 						player.sendMessage(StringUtils.wrap(npc
-								.getStrippedName())
+								.getName())
 								+ " has repaired your "
 								+ StringUtils.wrap(MessageUtils
 										.getMaterialName(item.getTypeId()))

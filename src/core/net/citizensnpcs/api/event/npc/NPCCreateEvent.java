@@ -7,8 +7,8 @@ import org.bukkit.Location;
 public class NPCCreateEvent extends NPCEvent {
 	private static final long serialVersionUID = -6321822806485360689L;
 
-	private NPCCreateReason reason;
-	private Location loc;
+	private final NPCCreateReason reason;
+	private final Location loc;
 
 	public NPCCreateEvent(HumanNPC npc, NPCCreateReason reason, Location loc) {
 		super("NPCSpawnEvent", npc);

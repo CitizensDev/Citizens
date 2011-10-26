@@ -59,7 +59,7 @@ public class Healer extends CitizensNPC {
 					return;
 				}
 				if (healerHealth == 0) {
-					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					player.sendMessage(StringUtils.wrap(npc.getName())
 							+ " does not have enough health remaining for you to take.");
 					return;
 				}
@@ -70,7 +70,7 @@ public class Healer extends CitizensNPC {
 								UtilityProperties.getPrice("healer.heal"));
 						if (paid >= 0) {
 							player.sendMessage(StringUtils.wrap(npc
-									.getStrippedName())
+									.getName())
 									+ " has healed you for "
 									+ StringUtils.wrap(Economy.format(paid))
 									+ ".");
@@ -81,7 +81,7 @@ public class Healer extends CitizensNPC {
 						return;
 					}
 				} else {
-					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					player.sendMessage(StringUtils.wrap(npc.getName())
 							+ " has healed you.");
 				}
 				player.setHealth(player.getHealth() + 1);
@@ -94,25 +94,25 @@ public class Healer extends CitizensNPC {
 						healer.setHealth(healerHealth + 1);
 						player.sendMessage(ChatColor.GREEN
 								+ "You donated some health to the healer "
-								+ StringUtils.wrap(npc.getStrippedName()) + ".");
+								+ StringUtils.wrap(npc.getName()) + ".");
 					} else {
 						player.sendMessage(StringUtils.wrap(npc
-								.getStrippedName()) + " is fully healed.");
+								.getName()) + " is fully healed.");
 					}
 				} else {
 					player.sendMessage(ChatColor.GREEN
 							+ "You do not have enough health remaining to heal "
-							+ StringUtils.wrap(npc.getStrippedName()));
+							+ StringUtils.wrap(npc.getName()));
 				}
 			} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
 				if (healerHealth != healer.getMaxHealth()) {
 					healer.setHealth(healer.getMaxHealth());
 					player.sendMessage(ChatColor.GREEN + "You restored all of "
-							+ StringUtils.wrap(npc.getStrippedName())
+							+ StringUtils.wrap(npc.getName())
 							+ "'s health with a magical block of diamond.");
 					InventoryUtils.decreaseItemInHand(player);
 				} else {
-					player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					player.sendMessage(StringUtils.wrap(npc.getName())
 							+ " is fully healed.");
 				}
 			}

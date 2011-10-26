@@ -60,7 +60,7 @@ public class AlchemistCommands extends CommandHandler {
 		Map<Integer, String> recipes = ((Alchemist) npc.getType("alchemist"))
 				.getRecipes();
 		if (recipes.size() == 0) {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " has no recipes.");
 			return;
 		}
@@ -74,7 +74,7 @@ public class AlchemistCommands extends CommandHandler {
 			page = args.getInteger(1);
 		}
 		instance.header(ChatColor.GREEN
-				+ StringUtils.listify(StringUtils.wrap(npc.getStrippedName()
+				+ StringUtils.listify(StringUtils.wrap(npc.getName()
 						+ "'s Recipes " + ChatColor.WHITE + "<%x/%y>")));
 		for (int entry : recipes.keySet()) {
 			instance.push(" - "
@@ -146,7 +146,7 @@ public class AlchemistCommands extends CommandHandler {
 		}
 		alchemist.addRecipe(itemID, recipe);
 		alchemist.setCurrentRecipeID(itemID);
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+		player.sendMessage(StringUtils.wrap(npc.getName())
 				+ " has changed the recipe for "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}
@@ -167,12 +167,12 @@ public class AlchemistCommands extends CommandHandler {
 		int itemID = args.getInteger(1);
 		Alchemist alchemist = npc.getType("alchemist");
 		if (alchemist.getRecipe(itemID) == null) {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " does not have that recipe.");
 			return;
 		}
 		alchemist.setCurrentRecipeID(itemID);
-		player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+		player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
 				+ " recipe has been set to "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}

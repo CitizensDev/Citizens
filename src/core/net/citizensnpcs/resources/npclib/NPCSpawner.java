@@ -6,7 +6,6 @@ import java.util.Map;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
-import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PacketUtils;
@@ -84,7 +83,7 @@ public class NPCSpawner {
 
 	public static HumanNPC spawnNPC(Location loc, CreatureNPCType type) {
 		try {
-			String name = UtilityProperties.getRandomName(type);
+			String name = type.chooseRandomName();
 			WorldServer ws = getWorldServer(loc.getWorld());
 			clearMap(name);
 			CraftNPC eh = type.getEntityConstructor().newInstance(

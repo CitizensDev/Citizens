@@ -42,7 +42,7 @@ public class AlchemistManager {
 						+ MessageUtils.getMaterialName(currentRecipe)
 						+ ChatColor.WHITE + " <%x/%y>")));
 		if (alchemist.getRecipe(currentRecipe) == null) {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " has no recipes.");
 		}
 		for (String item : alchemist.getRecipe(currentRecipe).split(",")) {

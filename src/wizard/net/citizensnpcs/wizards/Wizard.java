@@ -229,7 +229,7 @@ public class Wizard extends CitizensNPC {
 								+ StringUtils.wrap(wizard
 										.getCurrentLocationName());
 					} else {
-						msg += ChatColor.RED + npc.getStrippedName()
+						msg += ChatColor.RED + npc.getName()
 								+ " has no locations.";
 					}
 					break;
@@ -266,7 +266,7 @@ public class Wizard extends CitizensNPC {
 						+ wizard.getMode().toString());
 			} else if (UtilityProperties.isHoldingTool("WizardManaRegenItem",
 					player)) {
-				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
+				String msg = StringUtils.wrap(npc.getName() + "'s");
 				int mana = 0;
 				if (wizard.getMana() + 10 < Settings
 						.getInt("WizardMaxMana")) {

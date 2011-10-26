@@ -71,11 +71,11 @@ public class GuardCommands extends CommandHandler {
 		}
 		if (guard.getGuardState() != state) {
 			guard.setGuardState(state);
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " is now a " + state.name().toLowerCase() + ".");
 		} else {
 			guard.clear();
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has stopped being a " + state.name().toLowerCase()
 					+ ".");
 		}
@@ -106,7 +106,7 @@ public class GuardCommands extends CommandHandler {
 		Guard guard = npc.getType("guard");
 		FlagList flagList = guard.getFlags();
 		Map<String, FlagInfo> flags;
-		String header = npc.getStrippedName() + "'s ";
+		String header = npc.getName() + "'s ";
 		if (args.hasFlag('g')) {
 			flags = flagList.getFlags(FlagType.GROUP);
 			header += "Group Flags";
@@ -271,11 +271,11 @@ public class GuardCommands extends CommandHandler {
 		Guard guard = npc.getType("guard");
 		if (guard.isBouncer()) {
 			guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName() + "'s")
+			player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
 					+ " protection radius has been set to "
 					+ StringUtils.wrap(args.getString(1)) + ".");
 		} else {
-			Messaging.sendError(player, npc.getStrippedName()
+			Messaging.sendError(player, npc.getName()
 					+ " must be a bouncer first.");
 		}
 	}

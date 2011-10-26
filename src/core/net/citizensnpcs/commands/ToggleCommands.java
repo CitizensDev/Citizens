@@ -101,12 +101,12 @@ public class ToggleCommands extends CommandHandler {
 		if (!npc.isType(type)) {
 			PropertyManager.get(type).setEnabled(npc, true);
 			npc.addType(type);
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " is now a " + type + "!");
 		} else {
 			PropertyManager.get(type).setEnabled(npc, false);
 			npc.removeType(type);
-			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has stopped being a " + type + ".");
 		}
 		Bukkit.getServer().getPluginManager()
@@ -129,7 +129,7 @@ public class ToggleCommands extends CommandHandler {
 				Messaging.send(
 						player,
 						MessageUtils.getPaidMessage(player, toggle, toggle
-								+ ".creation", npc.getStrippedName(), true));
+								+ ".creation", npc.getName(), true));
 			}
 			toggleState(player, npc, type.getName());
 		} else {

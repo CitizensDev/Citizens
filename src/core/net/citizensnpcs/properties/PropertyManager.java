@@ -82,7 +82,7 @@ public class PropertyManager {
 				continue;
 			for (String node : copyNodes) {
 				if (node.startsWith("."))
-					node = node.replaceFirst(".", "");
+					node = node.replaceFirst("\\.", "");
 				recurseCopy("." + node, UID, newUID);
 			}
 		}

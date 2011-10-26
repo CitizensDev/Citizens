@@ -79,7 +79,7 @@ public class Messaging {
 			}
 			message = colourise(StringUtils.colourise(message));
 			if (npc != null) {
-				message = message.replace("<npc>", npc.getStrippedName());
+				message = message.replace("<npc>", npc.getName());
 				message = message.replace("<npcid>", "" + npc.getUID());
 			}
 			sender.sendMessage(message);

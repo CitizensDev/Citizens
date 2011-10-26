@@ -44,8 +44,8 @@ public class CreatureTask implements Runnable {
 	private void spawnCreature(CreatureNPCType type, Location location) {
 		if (spawned.get(type) == null) {
 			spawned.put(type, 0);
-		} else if (spawned.get(type) <= type.getMaxSpawnable() - 1) {
-			HumanNPC npc = type.getSpawner().spawn(type, location);
+		} else if (type.canSpawn(spawned.get(type))) {
+			HumanNPC npc = type.spawn(location);
 			if (npc != null) {
 				spawned.put(type, spawned.get(type) + 1);
 				creatureNPCs.put(npc.getPlayer().getEntityId(),
