@@ -177,19 +177,20 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public void save(Storage profiles, int UID) {
-		if (profiles.keyExists(UID + ".quester.quests"))
-			for (String quest : profiles.getString(UID + ".quester.quests")
-					.split(";")) {
-				addQuest(quest);
-			}
-	}
-
-	@Override
-	public void load(Storage profiles, int UID) {
 		StringBuilder quests = new StringBuilder();
 		for (String quest : this.quests) {
 			quests.append(quest);
 		}
 		profiles.setString(UID + ".quester.quests", quests.toString());
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		if (profiles.keyExists(UID + ".quester.quests")) {
+			for (String quest : profiles.getString(UID + ".quester.quests")
+					.split(";")) {
+				addQuest(quest);
+			}
+		}
 	}
 }

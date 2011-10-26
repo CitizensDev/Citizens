@@ -103,16 +103,17 @@ public class Guard extends CitizensNPC {
 
 	@Override
 	public void onDamage(EntityDamageEvent event) {
-		if (event instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-			HumanNPC npc = NPCManager.get(event.getEntity());
-			boolean owner = isOwner(ev.getDamager(), npc);
-			if (owner)
-				event.setCancelled(true);
-			if (isAggressive() && !owner
-					&& ev.getDamager() instanceof LivingEntity) {
-				target((LivingEntity) ev.getDamager(), npc);
-			}
+		if (!(event instanceof EntityDamageByEntityEvent))
+			return;
+		EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
+		if (!(ev.getDamager() instanceof LivingEntity))
+			return;
+		HumanNPC npc = NPCManager.get(event.getEntity());
+		boolean owner = isOwner(ev.getDamager(), npc);
+		if (owner)
+			event.setCancelled(true);
+		if (this.isAggressive && !owner) {
+			target((LivingEntity) ev.getDamager(), npc);
 		}
 	}
 
@@ -131,8 +132,7 @@ public class Guard extends CitizensNPC {
 					+ " died.");
 		}
 		event.getDrops().clear();
-		TickTask.scheduleRespawn(npc,
-				Settings.getInt("GuardRespawnDelay"));
+		TickTask.scheduleRespawn(npc, Settings.getInt("GuardRespawnDelay"));
 	}
 
 	public void target(LivingEntity entity, HumanNPC npc) {

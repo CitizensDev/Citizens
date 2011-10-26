@@ -1,6 +1,6 @@
 name: Citizens
 main: net.citizensnpcs.Citizens
-version: 1.1.2
+version: 1.1.1
 authors: [fullwall, aPunch]
 softdepend: [iConomy, Currency, BOSEconomy, Essentials, bPermissions, PermissionsEx, PermissionsBukkit]
 commands:
@@ -90,15 +90,14 @@ permissions:
                     citizens.trader.use.*:
                         children:
                             citizens.trader.use.help: true
-                            citizens.trader.use.showmoney: true
                             citizens.trader.use.list: true
                             citizens.trader.use.trade: true
                     citizens.trader.modify.*:
                         children:
-                            citizens.trader.modify.money: true
                             citizens.trader.modify.unlimited: true
                             citizens.trader.modify.stock: true
                             citizens.trader.modify.clearstock: true
+                            citizens.trader.modify.lock: true
             citizens.basic.*:
                 children:
                         citizens.basic.create: true
@@ -109,6 +108,7 @@ permissions:
                                 citizens.basic.use.list: true
                                 citizens.basic.use.teleport: true
                                 citizens.basic.use.info: true
+                                citizens.basic.use.showmoney: true
                         citizens.basic.modify.*:
                             children:
                                 citizens.basic.modify.move: true
@@ -124,6 +124,7 @@ permissions:
                                 citizens.basic.modify.lookat: true
                                 citizens.basic.modify.talkclose: true
                                 citizens.basic.modify.setowner: true
+                                citizens.basic.modify.money: true
                                 citizens.basic.modify.remove.*:
                                     children:
                                         citizens.basic.modify.remove: true

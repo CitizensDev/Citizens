@@ -260,7 +260,7 @@ public class TraderCommands extends CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("trader.modify.lock")
-	public static void setClearOld(CommandContext args, Player player,
+	public static void setLock(CommandContext args, Player player,
 			HumanNPC npc) {
 		Trader trader = npc.getType("trader");
 		trader.setLocked(!trader.isLocked());
