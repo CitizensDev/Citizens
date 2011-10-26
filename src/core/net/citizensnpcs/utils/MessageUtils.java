@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Random;
 
-import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.Settings;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -56,18 +56,18 @@ public class MessageUtils {
 			NPCDataManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
-			text = getRandomMessage(SettingsManager.getString("DefaultText"));
+			text = getRandomMessage(Settings.getString("DefaultText"));
 		}
 		if (!text.isEmpty()) {
-			if (SettingsManager.getBoolean("UseNPCColors")) {
-				text = StringUtils.colourise(SettingsManager.getString(
+			if (Settings.getBoolean("UseNPCColors")) {
+				text = StringUtils.colourise(Settings.getString(
 						"ChatFormat").replace("%name%", npc.getStrippedName()))
 						+ text;
 			} else {
-				text = StringUtils.colourise(SettingsManager.getString(
+				text = StringUtils.colourise(Settings.getString(
 						"ChatFormat").replace(
 						"%name%",
-						"&" + SettingsManager.getString("NPCColor") + name
+						"&" + Settings.getString("NPCColor") + name
 								+ ChatColor.WHITE))
 						+ text;
 			}
@@ -82,7 +82,7 @@ public class MessageUtils {
 		message = ChatColor.RED
 				+ "You need "
 				+ StringUtils.wrap(
-						EconomyManager.format(EconomyManager.getRemainder(
+						Economy.format(Economy.getRemainder(
 								player, UtilityProperties.getPrice(path))),
 						ChatColor.RED) + " more to do that.";
 		return message;
@@ -94,7 +94,7 @@ public class MessageUtils {
 		String message;
 		message = ChatColor.GREEN
 				+ "Paid "
-				+ StringUtils.wrap(EconomyManager.format(UtilityProperties
+				+ StringUtils.wrap(Economy.format(UtilityProperties
 						.getPrice(path))) + " for ";
 		if (useType) {
 			message += StringUtils.wrap(npcName) + " to become a "
@@ -149,7 +149,7 @@ public class MessageUtils {
 	public static String getRandomMessage(String messages) {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
-		if (text.equals(SettingsManager.getString("DefaultText"))) {
+		if (text.equals(Settings.getString("DefaultText"))) {
 			return text.replace('&', '§');
 		}
 		return text;

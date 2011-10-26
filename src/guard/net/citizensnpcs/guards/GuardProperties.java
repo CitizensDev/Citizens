@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.Settings.SettingsType;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -24,7 +24,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 
 	private void loadFlags(Guard guard, int UID) {
 		String root = UID + flag, path = root;
-		if (!profiles.pathExists(root)) {
+		if (!profiles.keyExists(root)) {
 			return;
 		}
 		FlagList flags = guard.getFlags();
@@ -64,7 +64,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		if (getEnabled(npc)) {
+		if (isEnabled(npc)) {
 			npc.registerType("guard");
 			Guard guard = npc.getType("guard");
 			guard.load(profiles, npc.getUID());
@@ -79,7 +79,7 @@ public class GuardProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public boolean getEnabled(HumanNPC npc) {
+	public boolean isEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isGuard);
 	}
 

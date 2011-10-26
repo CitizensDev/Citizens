@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.util.config.Configuration;
@@ -55,7 +55,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void removeKey(String path) {
 		this.config.removeProperty(path);
-		if (SettingsManager.getBoolean("SaveOften")) {
+		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}
@@ -104,7 +104,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setString(String path, String value) {
 		this.config.setProperty(path, value);
-		if (SettingsManager.getBoolean("SaveOften")) {
+		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}
@@ -140,7 +140,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setInt(String path, int value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (SettingsManager.getBoolean("SaveOften")) {
+		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}
@@ -176,7 +176,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setDouble(String path, double value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (SettingsManager.getBoolean("SaveOften")) {
+		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}
@@ -212,7 +212,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setLong(String path, long value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (SettingsManager.getBoolean("SaveOften")) {
+		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}
@@ -246,7 +246,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public void setBoolean(String path, boolean value) {
 		this.config.setProperty(path, String.valueOf(value));
-		if (SettingsManager.getBoolean("SaveOften")) {
+		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}

@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
@@ -103,13 +103,13 @@ public class Messaging {
 	}
 
 	public static void debug(Object message) {
-		if (SettingsManager.getBoolean("DebugMode")) {
+		if (Settings.getBoolean("DebugMode")) {
 			log(message);
 		}
 	}
 
 	public static void debug(Object... messages) {
-		if (SettingsManager.getBoolean("DebugMode")) {
+		if (Settings.getBoolean("DebugMode")) {
 			log(messages);
 		}
 	}

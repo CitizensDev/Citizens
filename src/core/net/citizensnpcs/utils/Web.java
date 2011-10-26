@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -97,7 +97,7 @@ public class Web {
 	}
 
 	public static void initErrorReporting() {
-		if (!SettingsManager.getBoolean("ErrorReporting")) {
+		if (!Settings.getBoolean("ErrorReporting")) {
 			return;
 		}
 		Bukkit.getServer().getLogger().addHandler(new LogHandler());
@@ -116,7 +116,7 @@ public class Web {
 					+ URLEncoder.encode("Ident", "UTF-8")
 					+ "="
 					+ URLEncoder.encode(
-							SettingsManager.getString("ErrorReportingIdent"),
+							Settings.getString("ErrorReportingIdent"),
 							"UTF-8");
 			// Send data
 			URL url = new URL("http://errorreport.citizensnpcs.net");

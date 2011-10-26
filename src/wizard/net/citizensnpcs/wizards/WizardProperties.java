@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.Settings.SettingsType;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
@@ -32,7 +32,7 @@ public class WizardProperties extends PropertyManager implements Properties {
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		if (getEnabled(npc)) {
+		if (isEnabled(npc)) {
 			npc.registerType("wizard");
 			Wizard wizard = npc.getType("wizard");
 			wizard.load(profiles, npc.getUID());
@@ -46,7 +46,7 @@ public class WizardProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public boolean getEnabled(HumanNPC npc) {
+	public boolean isEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isWizard);
 	}
 

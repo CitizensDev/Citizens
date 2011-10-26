@@ -1,6 +1,6 @@
 package net.citizensnpcs.blacksmiths;
 
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
@@ -24,12 +24,12 @@ public class BlacksmithManager {
 					+ " has repaired your "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(item
 							.getTypeId()) + ".");
-			if (EconomyManager.useEconPlugin()) {
-				if (EconomyManager.hasEnough(player,
+			if (Economy.useEconPlugin()) {
+				if (Economy.hasEnough(player,
 						getBlacksmithPrice(player, repairType))) {
-					double paid = EconomyManager.pay(player,
+					double paid = Economy.pay(player,
 							getBlacksmithPrice(player, repairType));
-					EconomyManager.pay(npc,
+					Economy.pay(npc,
 							getBlacksmithPrice(player, repairType));
 					if (paid > 0) {
 						player.sendMessage(StringUtils.wrap(npc
@@ -38,7 +38,7 @@ public class BlacksmithManager {
 								+ StringUtils.wrap(MessageUtils
 										.getMaterialName(item.getTypeId()))
 								+ " for "
-								+ StringUtils.wrap(EconomyManager.format(paid))
+								+ StringUtils.wrap(Economy.format(paid))
 								+ ".");
 					} else if (paid == 0) {
 						player.sendMessage(noPaymentMsg);

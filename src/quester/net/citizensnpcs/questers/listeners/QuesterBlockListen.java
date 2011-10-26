@@ -3,7 +3,7 @@ package net.citizensnpcs.questers.listeners;
 import java.util.Set;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.questers.QuestManager;
 
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class QuesterBlockListen extends BlockListener {
 		placed.add(event.getBlock().getLocation());
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
 				new RemoveBlockTask(event.getBlock()),
-				SettingsManager.getInt("BlockTrackingRemoveDelay"));
+				Settings.getInt("BlockTrackingRemoveDelay"));
 		QuestManager.incrementQuest(event.getPlayer(), event);
 	}
 

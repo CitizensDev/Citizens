@@ -3,7 +3,7 @@ package net.citizensnpcs.wizards.listeners;
 import org.bukkit.Bukkit;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.npc.NPCListener;
 import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
 import net.citizensnpcs.wizards.WizardTask;
@@ -20,8 +20,8 @@ public class WizardNPCListen extends NPCListener {
 					.getServer()
 					.getScheduler()
 					.scheduleSyncRepeatingTask(Citizens.plugin, task,
-							SettingsManager.getInt("WizardManaRegenRate"),
-							SettingsManager.getInt("WizardManaRegenRate")));
+							Settings.getInt("WizardManaRegenRate"),
+							Settings.getInt("WizardManaRegenRate")));
 		} else {
 			if ((task = WizardTask.getTask(event.getNPC().getUID())) != null) {
 				task.cancel();

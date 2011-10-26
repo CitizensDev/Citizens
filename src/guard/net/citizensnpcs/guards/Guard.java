@@ -1,6 +1,6 @@
 package net.citizensnpcs.guards;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagList;
@@ -132,14 +132,14 @@ public class Guard extends CitizensNPC {
 		}
 		event.getDrops().clear();
 		TickTask.scheduleRespawn(npc,
-				SettingsManager.getInt("GuardRespawnDelay"));
+				Settings.getInt("GuardRespawnDelay"));
 	}
 
 	public void target(LivingEntity entity, HumanNPC npc) {
 		npc.setPaused(true);
 		this.setAttacking(true);
 		PathUtils.target(npc, entity, true, -1, -1,
-				SettingsManager.getDouble("PathfindingRange"));
+				Settings.getDouble("PathfindingRange"));
 	}
 
 	@Override
@@ -167,6 +167,6 @@ public class Guard extends CitizensNPC {
 		guardState = GuardState.parse(profiles.getString(UID + ".guard.type"));
 		isAggressive = profiles.getBoolean(UID + ".guard.aggressive");
 		radius = profiles.getDouble(UID + ".guard.radius",
-				SettingsManager.getDouble("DefaultBouncerProtectionRadius"));
+				Settings.getDouble("DefaultBouncerProtectionRadius"));
 	}
 }

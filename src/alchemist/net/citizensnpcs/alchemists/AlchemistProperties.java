@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.Settings.SettingsType;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
@@ -79,7 +79,7 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public boolean getEnabled(HumanNPC npc) {
+	public boolean isEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isAlchemist);
 	}
 

@@ -31,10 +31,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -470,6 +472,13 @@ public abstract class CommandsManager<T extends Player> {
 				if (requirements.requireEconomy() && Citizens.economy == null) {
 					throw new RequirementMissingException(
 							MessageUtils.noEconomyMessage);
+				}
+				if (requirements.requiredMoney() != -1
+						&& !Economy.hasEnough(player,
+								requirements.requiredMoney())) {
+					throw new RequirementMissingException("You need at least "
+							+ StringUtils.wrap(Economy.format(requirements
+									.requiredMoney())));
 				}
 				if (requirements.requireSelected() && npc == null) {
 					throw new RequirementMissingException(

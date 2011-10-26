@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.api.events.QuestCancelEvent;
@@ -312,12 +312,12 @@ public class QuesterCommands extends CommandHandler {
 	public static void saveProfile(CommandContext args, Player player,
 			HumanNPC npc) {
 		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		if (System.currentTimeMillis() - profile.getLastSaveTime() < SettingsManager
+		if (System.currentTimeMillis() - profile.getLastSaveTime() < Settings
 				.getInt("QuestSaveDelay")) {
 			player.sendMessage(ChatColor.GRAY
 					+ "Please wait "
 					+ TimeUnit.SECONDS.convert(
-							SettingsManager.getInt("QuestSaveDelay")
+							Settings.getInt("QuestSaveDelay")
 									- (System.currentTimeMillis() - profile
 											.getLastSaveTime()),
 							TimeUnit.MILLISECONDS)

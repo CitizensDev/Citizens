@@ -13,7 +13,6 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 public class TraderProperties extends PropertyManager implements Properties {
@@ -23,14 +22,6 @@ public class TraderProperties extends PropertyManager implements Properties {
 	public static final TraderProperties INSTANCE = new TraderProperties();
 
 	private TraderProperties() {
-	}
-
-	private void setStockables(int UID, String set) {
-		profiles.setString(UID + stock, set);
-	}
-
-	private void saveStockables(int UID, Map<Check, Stockable> stockables) {
-		setStockables(UID, Joiner.on(";").join(stockables.values()));
 	}
 
 	private Map<Check, Stockable> getStockables(int UID) {
@@ -81,14 +72,13 @@ public class TraderProperties extends PropertyManager implements Properties {
 			if (is) {
 				Trader trader = npc.getType("trader");
 				trader.save(profiles, npc.getUID());
-				saveStockables(npc.getUID(), trader.getStocking());
 			}
 		}
 	}
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		if (getEnabled(npc)) {
+		if (isEnabled(npc)) {
 			npc.registerType("trader");
 			Trader trader = npc.getType("trader");
 			trader.setStocking(getStockables(npc.getUID()));
@@ -103,7 +93,7 @@ public class TraderProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public boolean getEnabled(HumanNPC npc) {
+	public boolean isEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isTrader);
 	}
 

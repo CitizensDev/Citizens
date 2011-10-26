@@ -3,11 +3,11 @@ package net.citizensnpcs.commands;
 import java.util.ArrayDeque;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.citizens.CitizensReloadEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -171,7 +171,7 @@ public class BasicCommands extends CommandHandler {
 					"citizens.basic.use.showmoney")) {
 				player.sendMessage(StringUtils.wrap(npc.getName())
 						+ " has "
-						+ StringUtils.wrap(EconomyManager.format(npc
+						+ StringUtils.wrap(Economy.format(npc
 								.getBalance())) + ".");
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
@@ -193,29 +193,29 @@ public class BasicCommands extends CommandHandler {
 			}
 			String keyword = "Took ";
 			if (args.getString(1).contains("g")) {
-				if (EconomyManager.hasEnough(player, amount)) {
+				if (Economy.hasEnough(player, amount)) {
 					keyword = "Gave ";
-					EconomyManager.pay(npc, -amount);
-					EconomyManager.pay(player, amount);
+					Economy.pay(npc, -amount);
+					Economy.pay(player, amount);
 				} else {
 					player.sendMessage(ChatColor.RED
 							+ "You don't have enough money for that! Need "
 							+ StringUtils.wrap(
-									EconomyManager.format(amount
-											- EconomyManager.getBalance(player
+									Economy.format(amount
+											- Economy.getBalance(player
 													.getName())), ChatColor.RED)
 							+ " more.");
 					return;
 				}
 			} else if (args.getString(1).contains("t")) {
-				if (EconomyManager.hasEnough(npc, amount)) {
-					EconomyManager.pay(npc, amount);
-					EconomyManager.pay(player, -amount);
+				if (Economy.hasEnough(npc, amount)) {
+					Economy.pay(npc, amount);
+					Economy.pay(player, -amount);
 				} else {
 					player.sendMessage(ChatColor.RED
 							+ "The npc doesn't have enough money for that! It needs "
 							+ StringUtils.wrap(
-									EconomyManager.format(amount
+									Economy.format(amount
 											- npc.getBalance()), ChatColor.RED)
 							+ " more in its balance.");
 					return;
@@ -228,11 +228,11 @@ public class BasicCommands extends CommandHandler {
 			}
 			player.sendMessage(ChatColor.GREEN
 					+ keyword
-					+ StringUtils.wrap(EconomyManager.format(amount))
+					+ StringUtils.wrap(Economy.format(amount))
 					+ " to "
 					+ StringUtils.wrap(npc.getStrippedName())
 					+ ". Your balance is now "
-					+ StringUtils.wrap(EconomyManager
+					+ StringUtils.wrap(Economy
 							.getFormattedBalance(player.getName())) + ".");
 			break;
 		default:
@@ -289,10 +289,10 @@ public class BasicCommands extends CommandHandler {
 					+ "The name of this NPC will be truncated - max name length is 16.");
 			firstArg = args.getString(1).substring(0, 16);
 		}
-		if (EconomyManager.useEconPlugin()) {
-			if (EconomyManager.hasEnough(player,
+		if (Economy.useEconPlugin()) {
+			if (Economy.hasEnough(player,
 					UtilityProperties.getPrice("basic.creation"))) {
-				double paid = EconomyManager.pay(player,
+				double paid = Economy.pay(player,
 						UtilityProperties.getPrice("basic.creation"));
 				if (paid > 0) {
 					player.sendMessage(MessageUtils.getPaidMessage(player,
@@ -312,11 +312,11 @@ public class BasicCommands extends CommandHandler {
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
 		Messaging.send(player, created,
-				SettingsManager.getString("CreationMessage"));
+				Settings.getString("CreationMessage"));
 
 		NPCDataManager.selectNPC(player, NPCManager.get(UID));
 		Messaging.send(player, created,
-				SettingsManager.getString("SelectionMessage"));
+				Settings.getString("SelectionMessage"));
 	}
 
 	@CommandRequirements()
@@ -331,7 +331,7 @@ public class BasicCommands extends CommandHandler {
 	@CommandPermissions("admin.debug")
 	public static void debug(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
-		boolean debug = SettingsManager.getBoolean("DebugMode");
+		boolean debug = Settings.getBoolean("DebugMode");
 		UtilityProperties.getSettings().setRaw("general.debug-mode", !debug);
 		debug = !debug;
 		if (debug) {
@@ -615,7 +615,7 @@ public class BasicCommands extends CommandHandler {
 		UtilityProperties.initialize();
 		PropertyManager.saveState();
 		PropertyManager.loadAll();
-		SettingsManager.setupVariables();
+		Settings.setupVariables();
 
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new CitizensReloadEvent());
@@ -762,7 +762,7 @@ public class BasicCommands extends CommandHandler {
 		} else {
 			NPCDataManager.selectNPC(player, npc);
 			Messaging.send(player, npc,
-					SettingsManager.getString("SelectionMessage"));
+					Settings.getString("SelectionMessage"));
 		}
 	}
 

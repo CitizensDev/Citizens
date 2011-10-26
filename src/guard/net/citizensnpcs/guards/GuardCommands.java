@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -63,28 +64,20 @@ public class GuardCommands extends CommandHandler {
 	public static void type(CommandContext args, Player player, HumanNPC npc) {
 		Guard guard = npc.getType("guard");
 		PathUtils.cancelTarget(npc);
-		if (args.getString(0).equalsIgnoreCase("bodyguard")) {
-			if (!guard.isBodyguard()) {
-				guard.setBodyguard();
-				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-						+ " is now a bodyguard.");
-			} else {
-				guard.clear();
-				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-						+ " has stopped being a bodyguard.");
-			}
-		} else if (args.getString(0).equalsIgnoreCase("bouncer")) {
-			if (!guard.isBouncer()) {
-				guard.setBouncer();
-				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-						+ " is now a bouncer.");
-			} else {
-				guard.clear();
-				player.sendMessage(StringUtils.wrap(npc.getStrippedName())
-						+ " has stopped being a bouncer.");
-			}
-		} else {
+		GuardState state = GuardState.parse(args.getString(0));
+		if (state == GuardState.NULL) {
 			Messaging.sendError(player, "That is not a valid guard type.");
+			return;
+		}
+		if (guard.getGuardState() != state) {
+			guard.setGuardState(state);
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " is now a " + state.name().toLowerCase() + ".");
+		} else {
+			guard.clear();
+			player.sendMessage(StringUtils.wrap(npc.getStrippedName())
+					+ " has stopped being a " + state.name().toLowerCase()
+					+ ".");
 		}
 	}
 

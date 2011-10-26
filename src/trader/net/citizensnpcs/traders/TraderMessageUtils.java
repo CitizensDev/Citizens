@@ -1,6 +1,6 @@
 package net.citizensnpcs.traders;
 
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -11,7 +11,7 @@ public class TraderMessageUtils {
 	// Formats the price message for an ItemPrice.
 	public static String getPriceMessage(ItemPrice price, ChatColor colour) {
 		return StringUtils
-				.wrap(EconomyManager.format(price.getPrice()), colour);
+				.wrap(Economy.format(price.getPrice()), colour);
 	}
 
 	// Formats the ItemStack contained in a stockable to a string.

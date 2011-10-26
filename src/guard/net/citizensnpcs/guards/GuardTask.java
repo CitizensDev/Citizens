@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
@@ -66,7 +66,7 @@ public class GuardTask implements Runnable {
 					npc.setPaused(false);
 				}
 			} else if (guard.isReturning()
-					&& npc.getHandle().getStationaryTicks() > SettingsManager
+					&& npc.getHandle().getStationaryTicks() > Settings
 							.getInt("MaxStationaryReturnTicks")) {
 				npc.teleport(npc.getBaseLocation());
 				guard.setReturning(false);
@@ -84,7 +84,7 @@ public class GuardTask implements Runnable {
 				if (player != null) {
 					if (!LocationUtils.withinRange(npc.getLocation(),
 							player.getLocation(), guard.getProtectionRadius())) {
-						double range = SettingsManager
+						double range = Settings
 								.getDouble("PathfindingRange");
 						if (!LocationUtils.withinRange(npc.getLocation(),
 								player.getLocation(), range))

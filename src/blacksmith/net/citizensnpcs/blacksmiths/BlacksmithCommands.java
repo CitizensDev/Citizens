@@ -1,7 +1,7 @@
 package net.citizensnpcs.blacksmiths;
 
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
@@ -68,10 +68,10 @@ public class BlacksmithCommands extends CommandHandler {
 				+ "Item: "
 				+ StringUtils.wrap(MessageUtils.getMaterialName(item
 						.getTypeId())));
-		if (EconomyManager.useEconPlugin()) {
+		if (Economy.useEconPlugin()) {
 			player.sendMessage(ChatColor.GREEN
 					+ "Cost: "
-					+ StringUtils.wrap(EconomyManager.format(BlacksmithManager
+					+ StringUtils.wrap(Economy.format(BlacksmithManager
 							.getBlacksmithPrice(player, repairType))));
 		}
 		player.sendMessage(ChatColor.GREEN

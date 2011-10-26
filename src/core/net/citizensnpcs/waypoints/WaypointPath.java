@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
 
@@ -125,7 +125,7 @@ public class WaypointPath {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, target, -1, -1,
-					SettingsManager.getDouble("PathfindingRange"));
+					Settings.getDouble("PathfindingRange"));
 		}
 	}
 
@@ -141,7 +141,7 @@ public class WaypointPath {
 		@Override
 		public void run() {
 			PathUtils.createPath(npc, point, -1, -1,
-					SettingsManager.getDouble("PathfindingRange"));
+					Settings.getDouble("PathfindingRange"));
 			npc.setPaused(false);
 		}
 	}

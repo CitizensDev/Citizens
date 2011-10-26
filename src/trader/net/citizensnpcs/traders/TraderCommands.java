@@ -254,19 +254,19 @@ public class TraderCommands extends CommandHandler {
 
 	@Command(
 			aliases = "trader",
-			usage = "clearold",
-			desc = "toggle clearing of last bought item while buying",
+			usage = "lock",
+			desc = "toggle placing bought items into inventory",
 			modifiers = "clearold",
 			min = 1,
 			max = 1)
-	@CommandPermissions("trader.modify.clearold")
+	@CommandPermissions("trader.modify.lock")
 	public static void setClearOld(CommandContext args, Player player,
 			HumanNPC npc) {
 		Trader trader = npc.getType("trader");
-		trader.setClearOldest(!trader.isClearOldest());
+		trader.setLocked(!trader.isLocked());
 		player.sendMessage(ChatColor.GREEN
-				+ (trader.isClearOldest() ? "The trader will now clear the oldest bought item if inventory is full."
-						: "The trader has stopped clearing the oldest bought item."));
+				+ (trader.isLocked() ? "The trader's inventory is now locked while buying."
+						: "The trader's inventory is no longer locked while buying."));
 	}
 
 	private static ItemPrice createItemPrice(Player player, String price) {

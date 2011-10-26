@@ -2,7 +2,7 @@ package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Plugins;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.resources.register.payment.Methods;
 import net.citizensnpcs.utils.Messaging;
 
@@ -31,7 +31,7 @@ public class ServerListen extends ServerListener implements Listener {
 		if (!Methods.hasMethod()) {
 			if (Methods.setMethod(Bukkit.getPluginManager())) {
 				Citizens.setMethod(Methods.getMethod());
-				EconomyManager.setServerEconomyEnabled(true);
+				Economy.setServerEconomyEnabled(true);
 				Messaging.log("Economy plugin found ("
 						+ Methods.getMethod().getName() + " v"
 						+ Methods.getMethod().getVersion() + ")");
@@ -46,7 +46,7 @@ public class ServerListen extends ServerListener implements Listener {
 	@Override
 	public void onPluginDisable(PluginDisableEvent event) {
 		if (this.methods != null && Methods.hasMethod()) {
-			EconomyManager.setServerEconomyEnabled(false);
+			Economy.setServerEconomyEnabled(false);
 		}
 	}
 }

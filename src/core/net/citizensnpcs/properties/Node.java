@@ -1,6 +1,6 @@
 package net.citizensnpcs.properties;
 
-import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.Settings.SettingsType;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 
 /**

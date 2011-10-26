@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -18,11 +18,11 @@ public class EconpluginReward implements Requirement, Reward {
 
 	@Override
 	public void grant(Player player, int UID) {
-		if (EconomyManager.useEconPlugin()) {
+		if (Economy.useEconPlugin()) {
 			if (this.take) {
-				EconomyManager.subtract(player.getName(), reward);
+				Economy.subtract(player.getName(), reward);
 			} else {
-				EconomyManager.add(player.getName(), reward);
+				Economy.add(player.getName(), reward);
 			}
 		}
 	}
@@ -34,7 +34,7 @@ public class EconpluginReward implements Requirement, Reward {
 
 	@Override
 	public boolean fulfilsRequirement(Player player) {
-		return EconomyManager.getBalance(player.getName()) - reward >= 0;
+		return Economy.getBalance(player.getName()) - reward >= 0;
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class EconpluginReward implements Requirement, Reward {
 		return ChatColor.GRAY
 				+ "You need "
 				+ StringUtils.wrap(
-						EconomyManager.format(reward
-								- EconomyManager.getBalance(player.getName())),
+						Economy.format(reward
+								- Economy.getBalance(player.getName())),
 						ChatColor.GRAY) + " more.";
 	}
 

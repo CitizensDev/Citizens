@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.npcdata.ItemData;
 import net.citizensnpcs.npcdata.NPCData;
 import net.citizensnpcs.npcdata.NPCDataManager;
@@ -203,7 +203,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 	public boolean isLookWhenClose(int UID) {
 		return profiles.getBoolean(UID + lookWhenClose,
-				SettingsManager.getBoolean("DefaultLookAt"));
+				Settings.getBoolean("DefaultLookAt"));
 	}
 
 	public void saveLookWhenClose(int UID, boolean value) {
@@ -212,7 +212,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 	public boolean isTalkWhenClose(int UID) {
 		return profiles.getBoolean(UID + talkWhenClose,
-				SettingsManager.getBoolean("DefaultTalkClose"));
+				Settings.getBoolean("DefaultTalkClose"));
 	}
 
 	public void saveTalkWhenClose(int UID, boolean value) {
@@ -255,7 +255,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 	private List<Waypoint> getWaypoints(int UID, World world) {
 		List<Waypoint> temp = new ArrayList<Waypoint>();
-		if (!profiles.pathExists(UID + BasicProperties.waypoints)) {
+		if (!profiles.keyExists(UID + BasicProperties.waypoints)) {
 			return temp;
 		}
 		String read = profiles.getString(UID + BasicProperties.waypoints);
@@ -277,7 +277,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 
 			waypoint.setDelay(profiles.getInt(root + ".delay"));
 
-			if (profiles.pathExists(root + ".modifiers")) {
+			if (profiles.keyExists(root + ".modifiers")) {
 				root += ".modifiers";
 				for (int innerKey : profiles.getIntegerKeys(root)) {
 					path = root + "." + innerKey;
@@ -319,7 +319,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 	}
 
 	private double getBalance(int UID) {
-		if (profiles.pathExists(UID + ".trader.balance")) {
+		if (profiles.keyExists(UID + ".trader.balance")) {
 			double previous = profiles.getDouble(UID + ".trader.balance");
 			profiles.removeKey(UID + ".trader.balance");
 			return previous;
@@ -358,13 +358,13 @@ public class BasicProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public boolean getEnabled(HumanNPC npc) {
+	public boolean isEnabled(HumanNPC npc) {
 		return true;
 	}
 
 	public int getNewNpcID() {
 		int count = 0;
-		while (profiles.pathExists(count))
+		while (profiles.keyExists("" + count))
 			++count;
 		return count;
 	}

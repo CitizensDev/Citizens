@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -178,12 +178,12 @@ public class NPCDataManager {
 				}
 				if (npc.getWaypoints().size() > 0
 						&& npc.getWaypoints().getLast().getLocation()
-								.distance(loc) > SettingsManager
+								.distance(loc) > Settings
 								.getDouble("PathfindingRange")) {
 					event.getPlayer().sendMessage(
 							ChatColor.GRAY
 									+ "Points can't be more than "
-									+ StringUtils.wrap(SettingsManager
+									+ StringUtils.wrap(Settings
 											.getDouble("PathfindingRange"),
 											ChatColor.GRAY)
 									+ " blocks away from each other.");

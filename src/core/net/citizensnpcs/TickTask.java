@@ -39,7 +39,7 @@ public class TickTask implements Runnable {
 					// If the player is within 'seeing' range
 					if (LocationUtils.withinRange(npc.getLocation(),
 							player.getLocation(),
-							SettingsManager.getDouble("NPCRange"))) {
+							Settings.getDouble("NPCRange"))) {
 						if (npc.getHandle().pathFinished()
 								&& !npc.getHandle().hasTarget()
 								&& npc.getNPCData().isLookClose()) {
@@ -73,7 +73,7 @@ public class TickTask implements Runnable {
 				if (!npc.getWaypoints().isStarted()) {
 					PathUtils.createPath(npc, npc.getNPCData().getLocation(),
 							-1, -1,
-							SettingsManager.getDouble("PathfindingRange"));
+							Settings.getDouble("PathfindingRange"));
 					waypoints.setStarted(true);
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {

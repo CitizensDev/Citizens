@@ -2,7 +2,7 @@ package net.citizensnpcs.resources.npclib;
 
 import java.util.Map;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
@@ -149,8 +149,8 @@ public class NPCManager {
 		ChatColor colour = PropertyManager.getBasic().getColour(UID);
 		String name = PropertyManager.getBasic().getName(UID);
 		name = ChatColor.stripColor(name);
-		if (!SettingsManager.getString("SpaceChar").isEmpty()) {
-			name = name.replace(SettingsManager.getString("SpaceChar"), " ");
+		if (!Settings.getString("SpaceChar").isEmpty()) {
+			name = name.replace(Settings.getString("SpaceChar"), " ");
 		}
 		String npcName = name;
 		if (colour != ChatColor.WHITE) {
@@ -182,9 +182,9 @@ public class NPCManager {
 		int UID = PropertyManager.getBasic().getNewNpcID();
 		PropertyManager.getBasic().saveLocation(loc, UID);
 		PropertyManager.getBasic().saveLookWhenClose(UID,
-				SettingsManager.getBoolean("DefaultLookAt"));
+				Settings.getBoolean("DefaultLookAt"));
 		PropertyManager.getBasic().saveTalkWhenClose(UID,
-				SettingsManager.getBoolean("DefaultTalkClose"));
+				Settings.getBoolean("DefaultTalkClose"));
 		PropertyManager.getBasic().saveName(UID, name);
 		register(UID, owner, reason);
 		return UID;

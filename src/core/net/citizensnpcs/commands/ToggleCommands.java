@@ -2,7 +2,7 @@ package net.citizensnpcs.commands;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
@@ -121,9 +121,9 @@ public class ToggleCommands extends CommandHandler {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
 		}
-		if (EconomyManager.hasEnough(player,
+		if (Economy.hasEnough(player,
 				UtilityProperties.getPrice(toggle + ".creation"))) {
-			double paid = EconomyManager.pay(player,
+			double paid = Economy.pay(player,
 					UtilityProperties.getPrice(toggle + ".creation"));
 			if (paid > 0) {
 				Messaging.send(

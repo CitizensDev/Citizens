@@ -3,7 +3,7 @@ package net.citizensnpcs.questers.data;
 import java.util.Collection;
 import java.util.List;
 
-import net.citizensnpcs.SettingsManager.SettingsType;
+import net.citizensnpcs.Settings.SettingsType;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
@@ -43,7 +43,7 @@ public class QuesterProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public boolean getEnabled(HumanNPC npc) {
+	public boolean isEnabled(HumanNPC npc) {
 		return profiles.getBoolean(npc.getUID() + isQuester);
 	}
 

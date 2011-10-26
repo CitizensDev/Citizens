@@ -1,6 +1,6 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -217,7 +217,7 @@ public class Wizard extends CitizensNPC {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (PermissionManager.hasPermission(player,
 				"citizens.wizard.use.interact")) {
-			if (player.getItemInHand().getTypeId() == SettingsManager
+			if (player.getItemInHand().getTypeId() == Settings
 					.getInt("WizardInteractItem")) {
 				Wizard wizard = npc.getType("wizard");
 				String msg = ChatColor.GREEN + "";
@@ -268,14 +268,14 @@ public class Wizard extends CitizensNPC {
 					player)) {
 				String msg = StringUtils.wrap(npc.getStrippedName() + "'s");
 				int mana = 0;
-				if (wizard.getMana() + 10 < SettingsManager
+				if (wizard.getMana() + 10 < Settings
 						.getInt("WizardMaxMana")) {
 					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
-				} else if (wizard.getMana() + 10 == SettingsManager
+				} else if (wizard.getMana() + 10 == Settings
 						.getInt("WizardMaxMana")) {
-					mana = SettingsManager.getInt("WizardMaxMana");
+					mana = Settings.getInt("WizardMaxMana");
 					msg += " mana has been fully replenished.";
 				} else {
 					msg += " mana cannot be regenerated with that item any further.";

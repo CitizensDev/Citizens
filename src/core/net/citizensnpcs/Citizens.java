@@ -78,7 +78,7 @@ public class Citizens extends JavaPlugin {
 		loadNPCTypes();
 
 		// load settings
-		SettingsManager.setupVariables();
+		Settings.setupVariables();
 
 		// initialize error reporting
 		Web.initErrorReporting();
@@ -106,15 +106,15 @@ public class Citizens extends JavaPlugin {
 		if (CreatureNPCType.hasSpawning()) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new CreatureTask(),
-					SettingsManager.getInt("CreatureNPCSpawnDelay"),
-					SettingsManager.getInt("CreatureNPCSpawnDelay"));
+					Settings.getInt("CreatureNPCSpawnDelay"),
+					Settings.getInt("CreatureNPCSpawnDelay"));
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new CreatureTask.CreatureTick(), 0, 1);
 		}
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new TickTask(), 0, 1);
 
-		if (SettingsManager.getBoolean("UseSaveTask")) {
+		if (Settings.getBoolean("UseSaveTask")) {
 			getServer().getScheduler().scheduleSyncRepeatingTask(this,
 					new Runnable() {
 						@Override
@@ -123,8 +123,8 @@ public class Citizens extends JavaPlugin {
 							PropertyManager.saveState();
 							Messaging.log("Saved.");
 						}
-					}, SettingsManager.getInt("SavingDelay"),
-					SettingsManager.getInt("SavingDelay"));
+					}, Settings.getInt("SavingDelay"),
+					Settings.getInt("SavingDelay"));
 		}
 
 		Messaging.log("version [" + localVersion() + "] loaded.");
@@ -283,17 +283,19 @@ public class Citizens extends JavaPlugin {
 		Collections.sort(sorted);
 		int max = sorted.size() == 0 ? 0 : sorted.get(sorted.size() - 1), count = 0;
 		while (count <= max) {
-			if (PropertyManager.getNPCProfiles().pathExists(count)) {
-				int UID = count;
-				Location loc = PropertyManager.getBasic().getLocation(UID);
-				if (loc != null && loc.getWorld() != null) {
-					NPCManager.register(UID, PropertyManager.getBasic()
-							.getOwner(UID), NPCCreateReason.SPAWN);
-					Deque<String> text = PropertyManager.getBasic()
-							.getText(UID);
-					if (text != null) {
-						NPCDataManager.setText(UID, text);
-					}
+			if (!PropertyManager.getNPCProfiles().keyExists("" + count)) {
+				++count;
+				continue;
+			}
+			int UID = count;
+			Location loc = PropertyManager.getBasic().getLocation(UID);
+			if (loc != null && loc.getWorld() != null) {
+				NPCManager.register(UID,
+						PropertyManager.getBasic().getOwner(UID),
+						NPCCreateReason.SPAWN);
+				Deque<String> text = PropertyManager.getBasic().getText(UID);
+				if (text != null) {
+					NPCDataManager.setText(UID, text);
 				}
 			}
 			++count;

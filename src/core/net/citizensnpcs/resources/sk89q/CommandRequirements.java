@@ -18,4 +18,6 @@ public @interface CommandRequirements {
 	boolean requireEconomy() default false;
 
 	String requiredType() default "";
+
+	double requiredMoney() default -1;
 }

@@ -2,6 +2,7 @@ package net.citizensnpcs.properties;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import net.citizensnpcs.properties.properties.BasicProperties;
 import net.citizensnpcs.properties.properties.UtilityProperties;
@@ -9,7 +10,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 
 public class PropertyManager {
-	private static final HashMap<String, Properties> properties = new HashMap<String, Properties>();
+	private static final Map<String, Properties> properties = new HashMap<String, Properties>();
 	protected static final CachedYAMLHandler profiles = new CachedYAMLHandler(
 			"plugins/Citizens/npc-profiles.yml");
 
@@ -27,11 +28,11 @@ public class PropertyManager {
 	}
 
 	public static boolean npcHasType(HumanNPC npc, String type) {
-		return profiles.pathExists(npc.getUID() + "." + type);
+		return profiles.keyExists(npc.getUID() + "." + type);
 	}
 
 	protected static boolean exists(HumanNPC npc) {
-		return profiles.pathExists(npc.getUID());
+		return profiles.keyExists("" + npc.getUID());
 	}
 
 	public static BasicProperties getBasic() {
@@ -40,30 +41,30 @@ public class PropertyManager {
 
 	public static void load(HumanNPC npc) {
 		for (Properties saveable : properties.values()) {
-			if (exists(npc) && saveable.getEnabled(npc)) {
-				saveable.loadState(npc);
-			}
+			if (!exists(npc) || !saveable.isEnabled(npc))
+				continue;
+			saveable.loadState(npc);
 		}
 	}
 
 	public static void load(String type, HumanNPC npc) {
-		if (exists(npc) && get(type).getEnabled(npc)) {
-			get(type).loadState(npc);
-		}
+		if (!exists(npc) || !get(type).isEnabled(npc))
+			return;
+		get(type).loadState(npc);
 	}
 
 	public static void save(HumanNPC npc) {
 		for (Properties saveable : properties.values()) {
-			if (saveable.getEnabled(npc)) {
-				saveable.saveState(npc);
-			}
+			if (!saveable.isEnabled(npc))
+				continue;
+			saveable.saveState(npc);
 		}
 	}
 
 	public static void save(String type, HumanNPC npc) {
-		if (exists(npc) && get(type).getEnabled(npc)) {
-			get(type).saveState(npc);
-		}
+		if (!exists(npc) || !get(type).isEnabled(npc))
+			return;
+		get(type).saveState(npc);
 	}
 
 	public static void remove(HumanNPC npc) {
@@ -88,7 +89,7 @@ public class PropertyManager {
 	}
 
 	private static void recurseCopy(String root, int UID, int newUID) {
-		if (!profiles.pathExists(UID + root))
+		if (!profiles.keyExists(UID + root))
 			return;
 		if (!profiles.getString(UID + root).isEmpty()) {
 			profiles.setString(newUID + root, profiles.getString(UID + root));

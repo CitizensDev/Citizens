@@ -2,7 +2,7 @@ package net.citizensnpcs.questers.quests.types;
 
 import java.util.Map;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.permissions.CitizensGroup;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.QuestUtils;
@@ -48,11 +48,11 @@ public class CombatQuest implements QuestUpdater {
 			if ((reversed && !found) || (!reversed && found)) {
 				KillDetails details = playerKills.get(progress.getPlayer());
 				if (details == null
-						|| details.getTimes() < SettingsManager
+						|| details.getTimes() < Settings
 								.getInt("CombatExploitTimes")
 						|| !LocationUtils.withinRange(player.getLocation(),
 								details.getLocation(),
-								SettingsManager.getInt("CombatExploitRadius"))) {
+								Settings.getInt("CombatExploitRadius"))) {
 					progress.addAmount(1);
 				}
 				int times = (details == null || !details.getPlayer().equals(

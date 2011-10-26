@@ -3,7 +3,7 @@ package net.citizensnpcs.traders;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
@@ -23,14 +23,14 @@ import org.bukkit.inventory.PlayerInventory;
 public class TraderTask implements Runnable {
 	private final HumanNPC npc;
 	private final CraftPlayer player;
-	private int taskID;
-	private int prevTraderSlot = -1;
-	private int prevPlayerSlot = -1;
 	private final PlayerInventory previousTraderInv;
 	private final PlayerInventory previousPlayerInv;
 	private final TraderMode mode;
 	private boolean stop;
 	private boolean said;
+	private int taskID;
+	private int prevTraderSlot = -1;
+	private int prevPlayerSlot = -1;
 
 	// Gets run every tick, checks the inventory for changes.
 	public TraderTask(HumanNPC npc, Player player, TraderMode mode) {
@@ -147,7 +147,7 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		ItemStack buying = stockable.getStocking().clone();
-		EconomyManager.pay(player, stockable.getPrice().getPrice());
+		Economy.pay(player, stockable.getPrice().getPrice());
 		if (mode != TraderMode.INFINITE) {
 			InventoryUtils.removeItems(npc.getPlayer(), buying, slot);
 		}
@@ -187,19 +187,14 @@ public class TraderTask implements Runnable {
 		}
 		ItemStack selling = stockable.getStocking().clone();
 		if (mode != TraderMode.INFINITE) {
-			EconomyManager.pay(npc, stockable.getPrice().getPrice());
+			Economy.pay(npc, stockable.getPrice().getPrice());
 		}
 		InventoryUtils.removeItems(player, selling, slot);
 		Map<Integer, ItemStack> unsold = new HashMap<Integer, ItemStack>();
 		Trader trader = npc.getType("trader");
 		if (mode != TraderMode.INFINITE) {
-			if (!npc.getInventory().contains(0)) {
-				if (trader.isClearOldest() && trader.getLastBoughtSlot() != -1) {
-					npc.getInventory().clear(trader.getLastBoughtSlot());
-					trader.setLastBoughtSlot(-1);
-				}
-			}
-			unsold = npc.getInventory().addItem(selling);
+			if (!trader.isLocked())
+				unsold = npc.getInventory().addItem(selling);
 		}
 		if (unsold.size() >= 1) {
 			rewind();
@@ -209,9 +204,8 @@ public class TraderTask implements Runnable {
 					+ " to the trader's stock.");
 			return;
 		}
-		trader.setLastBoughtSlot(slot);
 		double price = stockable.getPrice().getPrice();
-		EconomyManager.add(player.getName(), price);
+		Economy.add(player.getName(), price);
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
@@ -233,8 +227,7 @@ public class TraderTask implements Runnable {
 				sendNoMoneyMessage(stocking, false);
 				return true;
 			}
-			if (!EconomyManager.hasEnough(player, stockable.getPrice()
-					.getPrice())) {
+			if (!Economy.hasEnough(player, stockable.getPrice().getPrice())) {
 				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
@@ -243,7 +236,7 @@ public class TraderTask implements Runnable {
 				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
-			if (!EconomyManager.hasEnough(npc, stockable.getPrice().getPrice())) {
+			if (!Economy.hasEnough(npc, stockable.getPrice().getPrice())) {
 				sendNoMoneyMessage(stocking, false);
 				return true;
 			}

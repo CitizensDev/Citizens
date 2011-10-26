@@ -1,6 +1,6 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -31,7 +31,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 	public void onSpawn() {
 		npc.getInventory().setItemInHand(
 				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
-		this.health = SettingsManager.getInt("EvilHealth");
+		this.health = Settings.getInt("EvilHealth");
 		super.onSpawn();
 	}
 
@@ -52,7 +52,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void onDeath() {
-		ItemStack item = UtilityProperties.getRandomDrop(SettingsManager
+		ItemStack item = UtilityProperties.getRandomDrop(Settings
 				.getString("EvilDrops"));
 		if (item != null) {
 			this.getEntity().getWorld()
@@ -74,9 +74,9 @@ public class EvilCreatureNPC extends CreatureNPC {
 							"You cannot tame this Evil NPC because you have reached the NPC creation limit.");
 			return;
 		}
-		if (player.getItemInHand().getTypeId() == SettingsManager
+		if (player.getItemInHand().getTypeId() == Settings
 				.getInt("EvilTameItem")) {
-			if (random.nextInt(100) <= SettingsManager.getInt("EvilTameChance")) {
+			if (random.nextInt(100) <= Settings.getInt("EvilTameChance")) {
 				InventoryUtils.decreaseItemInHand(player);
 				isTame = true;
 				CreatureTask.despawn(this, NPCRemoveReason.OTHER);
@@ -89,11 +89,11 @@ public class EvilCreatureNPC extends CreatureNPC {
 				Messaging.send(
 						player,
 						this.npc,
-						StringUtils.colourise(SettingsManager.getString(
+						StringUtils.colourise(Settings.getString(
 								"ChatFormat").replace("%name%",
 								npc.getStrippedName()))
 								+ ChatColor.WHITE
-								+ MessageUtils.getRandomMessage(SettingsManager
+								+ MessageUtils.getRandomMessage(Settings
 										.getString("EvilFailedTameMessages")));
 			}
 		}

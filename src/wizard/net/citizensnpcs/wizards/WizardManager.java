@@ -1,7 +1,7 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.Settings;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
@@ -54,7 +54,7 @@ public class WizardManager {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getNumberOfLocations() > 0) {
 			if (decreaseMana(player, npc,
-					SettingsManager.getInt("TeleportManaCost"))) {
+					Settings.getInt("TeleportManaCost"))) {
 				player.teleport(wizard.getCurrentLocation());
 				return true;
 			}
@@ -79,7 +79,7 @@ public class WizardManager {
 			time = 10000;
 		}
 		if (decreaseMana(player, npc,
-				SettingsManager.getInt("ChangeTimeManaCost"))) {
+				Settings.getInt("ChangeTimeManaCost"))) {
 			player.getWorld().setTime(time);
 			return true;
 		}
@@ -89,7 +89,7 @@ public class WizardManager {
 	// Spawn mob(s) at the specified location
 	private static boolean spawnMob(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc,
-				SettingsManager.getInt("SpawnMobManaCost"))) {
+				Settings.getInt("SpawnMobManaCost"))) {
 			player.getWorld().spawnCreature(player.getLocation(),
 					((Wizard) npc.getType("wizard")).getMob());
 			return true;
@@ -100,7 +100,7 @@ public class WizardManager {
 	// Toggle a storm in the player's world
 	private static boolean toggleStorm(Player player, HumanNPC npc) {
 		if (decreaseMana(player, npc,
-				SettingsManager.getInt("ToggleStormManaCost"))) {
+				Settings.getInt("ToggleStormManaCost"))) {
 			player.getWorld().setStorm(!player.getWorld().hasStorm());
 			return true;
 		}
@@ -128,14 +128,14 @@ public class WizardManager {
 	public static void handleRightClick(Player player, HumanNPC npc, String op) {
 		Wizard wizard = npc.getType("wizard");
 		String econMsg = "";
-		if (EconomyManager.useEconPlugin()) {
-			if (EconomyManager
+		if (Economy.useEconPlugin()) {
+			if (Economy
 					.hasEnough(player, UtilityProperties.getPrice(op))) {
-				double paid = EconomyManager.pay(player,
+				double paid = Economy.pay(player,
 						UtilityProperties.getPrice(op));
 				if (paid > 0) {
 					econMsg = ChatColor.GREEN + "Paid "
-							+ StringUtils.wrap(EconomyManager.format(paid))
+							+ StringUtils.wrap(Economy.format(paid))
 							+ ":";
 				}
 			} else {
@@ -170,7 +170,7 @@ public class WizardManager {
 				return;
 			}
 		}
-		if (EconomyManager.useEconPlugin()) {
+		if (Economy.useEconPlugin()) {
 			player.sendMessage(econMsg);
 		}
 		player.sendMessage(msg);

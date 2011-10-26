@@ -1,7 +1,7 @@
 package net.citizensnpcs.healers;
 
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -94,24 +94,24 @@ public class HealerCommands extends CommandHandler {
 				+ "You have leveled up the healer "
 				+ StringUtils.wrap(npc.getStrippedName()) + " to "
 				+ StringUtils.wrap("level " + newLevel) + ".";
-		if (EconomyManager.useEconPlugin()) {
+		if (Economy.useEconPlugin()) {
 			double price = UtilityProperties.getPrice("healer.levelup")
 					* levelsUp;
-			if (EconomyManager.hasEnough(player, price)) {
-				double paid = EconomyManager.pay(player, price);
+			if (Economy.hasEnough(player, price)) {
+				double paid = Economy.pay(player, price);
 				if (paid > 0) {
 					player.sendMessage(ChatColor.GREEN
 							+ "You have leveled up the healer "
 							+ StringUtils.wrap(npc.getStrippedName()) + " to "
 							+ StringUtils.wrap("level " + newLevel) + " for "
-							+ StringUtils.wrap(EconomyManager.format(paid))
+							+ StringUtils.wrap(Economy.format(paid))
 							+ ".");
 				} else if (paid == 0) {
 					player.sendMessage(noPaymentMsg);
 				}
 			} else {
 				Messaging.sendError(player,
-						"You need " + EconomyManager.format(price)
+						"You need " + Economy.format(price)
 								+ " more to level-up " + npc.getStrippedName()
 								+ ".");
 			}

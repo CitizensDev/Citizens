@@ -6,7 +6,7 @@ import java.util.Random;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class AlchemistTask implements Runnable {
@@ -42,11 +42,11 @@ public class AlchemistTask implements Runnable {
 		required.clear();
 		// add the resulting item into the inventory
 		int result;
-		if (new Random().nextInt(100) <= SettingsManager
+		if (new Random().nextInt(100) <= Settings
 				.getInt("AlchemistFailedCraftChance")) {
 			result = alchemist.getCurrentRecipeID();
 		} else {
-			result = SettingsManager.getInt("AlchemistFailedCraftItem");
+			result = Settings.getInt("AlchemistFailedCraftItem");
 		}
 		npcInv.addItem(new ItemStack(result, 1));
 		npc.getPlayer().updateInventory();

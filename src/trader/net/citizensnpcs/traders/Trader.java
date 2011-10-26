@@ -18,18 +18,14 @@ import net.citizensnpcs.utils.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
 public class Trader extends CitizensNPC {
 	private boolean unlimited = false;
 	private boolean free = true;
-	private boolean clearOldest = false;
+	private boolean locked = false;
 	private Map<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
-	private int lastBoughtSlot;
-
-	public int getLastBoughtSlot() {
-		return this.lastBoughtSlot;
-	}
 
 	public Map<Check, Stockable> getStocking() {
 		return stocking;
@@ -57,16 +53,6 @@ public class Trader extends CitizensNPC {
 	public Stockable getStockable(Stockable stockable) {
 		return getStockable(stockable.getStocking().getTypeId(), stockable
 				.getStocking().getDurability(), stockable.isSelling());
-	}
-
-	public List<Stockable> getStockables(int itemID, boolean selling) {
-		List<Stockable> stockables = new ArrayList<Stockable>();
-		for (Stockable s : stocking.values())
-			if (itemID == s.getStocking().getTypeId()
-					&& selling == s.isSelling()) {
-				stockables.add(s);
-			}
-		return stockables;
 	}
 
 	public List<Stockable> getStockables(boolean selling) {
@@ -105,16 +91,12 @@ public class Trader extends CitizensNPC {
 		return this.free;
 	}
 
-	public boolean isClearOldest() {
-		return clearOldest;
+	public boolean isLocked() {
+		return locked;
 	}
 
-	public void setClearOldest(boolean clearOldest) {
-		this.clearOldest = clearOldest;
-	}
-
-	public void setLastBoughtSlot(int lastBoughtSlot) {
-		this.lastBoughtSlot = lastBoughtSlot;
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	public void setUnlimited(boolean unlimited) {
@@ -179,14 +161,14 @@ public class Trader extends CitizensNPC {
 	@Override
 	public void save(Storage profiles, int UID) {
 		profiles.setBoolean(UID + ".trader.unlimited", unlimited);
-		profiles.setBoolean(UID + ".trader.clear-oldest", clearOldest);
-		profiles.setInt(UID + ".trader.last-bought", lastBoughtSlot);
+		profiles.setBoolean(UID + ".trader.locked", locked);
+		profiles.setString(UID + ".trader.stock",
+				Joiner.on(";").join(stocking.values()));
 	}
 
 	@Override
 	public void load(Storage profiles, int UID) {
 		unlimited = profiles.getBoolean(UID + ".trader.unlimited");
-		clearOldest = profiles.getBoolean(UID + ".trader.clear-oldest");
-		lastBoughtSlot = profiles.getInt(UID + ".trader.last-bought", -1);
+		locked = profiles.getBoolean(UID + ".trader.locked");
 	}
 }

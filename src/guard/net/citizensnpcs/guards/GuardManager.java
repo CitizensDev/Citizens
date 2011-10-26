@@ -1,6 +1,6 @@
 package net.citizensnpcs.guards;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
 
@@ -25,7 +25,8 @@ public class GuardManager {
 
 		public static GuardState parse(String string) {
 			try {
-				return GuardState.valueOf(string.toUpperCase());
+				return GuardState.valueOf(string.toUpperCase()
+						.replace(" ", "_"));
 			} catch (Exception ex) {
 				return NULL;
 			}
@@ -51,6 +52,6 @@ public class GuardManager {
 		}
 		guard.setReturning(true);
 		PathUtils.createPath(npc, loc, -1, -1,
-				SettingsManager.getDouble("PathfindingRange"));
+				Settings.getDouble("PathfindingRange"));
 	}
 }

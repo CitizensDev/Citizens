@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.properties.ConfigurationHandler;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.resources.npclib.HumanNPC;
@@ -75,7 +75,7 @@ public class UtilityProperties {
 	// returns whether the given item ID is usable as a tool
 	public static boolean isHoldingTool(String key, Player player) {
 		List<String> item = Arrays.asList(getSettings().getString(
-				SettingsManager.getPath(key)).split(","));
+				Settings.getPath(key)).split(","));
 		if (item.contains("*")) {
 			return true;
 		}

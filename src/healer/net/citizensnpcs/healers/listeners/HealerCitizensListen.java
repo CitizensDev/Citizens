@@ -1,7 +1,7 @@
 package net.citizensnpcs.healers.listeners;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
@@ -16,7 +16,7 @@ public class HealerCitizensListen extends CitizensListener {
 
 	@Override
 	public void onCitizensEnable(CitizensEnableEvent event) {
-		if (!SettingsManager.getBoolean("RegenHealerHealth")) {
+		if (!Settings.getBoolean("RegenHealerHealth")) {
 			return;
 		}
 		for (HumanNPC entry : CitizensManager.getList().values()) {

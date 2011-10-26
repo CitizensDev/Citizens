@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.utils.StringUtils;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -37,10 +37,10 @@ public enum CreatureNPCType {
 					World.class, String.class, ItemInWorldManager.class);
 		} catch (Exception ex) {
 		}
-		this.spawn = SettingsManager.getBoolean("Spawn" + name + "s");
-		this.max = SettingsManager.getInt("Max" + name + "s");
-		this.spawnChance = SettingsManager.getInt(name + "SpawnChance");
-		this.possible = SettingsManager.getString(name + "Names");
+		this.spawn = Settings.getBoolean("Spawn" + name + "s");
+		this.max = Settings.getInt("Max" + name + "s");
+		this.spawnChance = Settings.getInt(name + "SpawnChance");
+		this.possible = Settings.getString(name + "Names");
 		this.spawnIn = spawnIn;
 		this.spawnOn = spawnOn;
 		this.name = name;

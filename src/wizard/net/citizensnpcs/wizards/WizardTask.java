@@ -3,7 +3,7 @@ package net.citizensnpcs.wizards;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Bukkit;
@@ -20,7 +20,7 @@ public class WizardTask implements Runnable {
 	@Override
 	public void run() {
 		Wizard wizard = npc.getType("wizard");
-		if (wizard.getMana() + 1 < SettingsManager.getInt("WizardMaxMana")) {
+		if (wizard.getMana() + 1 < Settings.getInt("WizardMaxMana")) {
 			wizard.setMana(wizard.getMana() + 1);
 		}
 	}

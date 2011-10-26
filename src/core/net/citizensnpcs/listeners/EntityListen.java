@@ -1,7 +1,7 @@
 package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
 import net.citizensnpcs.api.event.npc.NPCTalkEvent;
 import net.citizensnpcs.api.event.npc.NPCTargetEvent;
@@ -77,8 +77,8 @@ public class EntityListen extends EntityListener implements Listener {
 				if (!NPCManager.hasSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
 					Messaging.send(player, npc,
-							SettingsManager.getString("SelectionMessage"));
-					if (!SettingsManager.getBoolean("QuickSelect")) {
+							Settings.getString("SelectionMessage"));
+					if (!Settings.getBoolean("QuickSelect")) {
 						return;
 					}
 				}
@@ -105,7 +105,7 @@ public class EntityListen extends EntityListener implements Listener {
 						&& npc.getWaypoints().current() != null) {
 					npc.getWaypoints().scheduleDelay(npc,
 							npc.getWaypoints().current().getLocation(),
-							SettingsManager.getInt("RightClickPause"));
+							Settings.getInt("RightClickPause"));
 				}
 				npc.callRightClick(player, npc);
 			}

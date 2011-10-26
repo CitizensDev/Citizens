@@ -1,7 +1,7 @@
 package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.npc.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -42,7 +42,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if (PermissionManager.hasPermission(event.getPlayer(),
 				"citizens.admin.notifyupdates")
-				&& SettingsManager.getBoolean("NotifyUpdates")) {
+				&& Settings.getBoolean("NotifyUpdates")) {
 			Web.notifyUpdate(event.getPlayer());
 		}
 	}

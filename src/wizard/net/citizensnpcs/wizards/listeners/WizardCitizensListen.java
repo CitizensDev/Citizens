@@ -1,7 +1,7 @@
 package net.citizensnpcs.wizards.listeners;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
 import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
@@ -15,7 +15,7 @@ public class WizardCitizensListen extends CitizensListener {
 
 	@Override
 	public void onCitizensEnable(CitizensEnableEvent event) {
-		if (!SettingsManager.getBoolean("RegenWizardMana")) {
+		if (!Settings.getBoolean("RegenWizardMana")) {
 			return;
 		}
 		for (HumanNPC entry : CitizensManager.getList().values()) {
@@ -25,8 +25,8 @@ public class WizardCitizensListen extends CitizensListener {
 						.getServer()
 						.getScheduler()
 						.scheduleSyncRepeatingTask(Citizens.plugin, task,
-								SettingsManager.getInt("WizardManaRegenRate"),
-								SettingsManager.getInt("WizardManaRegenRate")));
+								Settings.getInt("WizardManaRegenRate"),
+								Settings.getInt("WizardManaRegenRate")));
 			}
 		}
 	}

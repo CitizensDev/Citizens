@@ -44,7 +44,7 @@ public interface Properties {
 	 *            NPC to get the state of
 	 * @return true if the given NPC is the type
 	 */
-	public abstract boolean getEnabled(HumanNPC npc);
+	public abstract boolean isEnabled(HumanNPC npc);
 
 	/**
 	 * Get a list of configuration nodes for an NPC type

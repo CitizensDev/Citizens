@@ -1,6 +1,6 @@
 package net.citizensnpcs.utils;
 
-import net.citizensnpcs.SettingsManager;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Location;
@@ -16,16 +16,16 @@ public class PathUtils {
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks,
 			int stationaryTicks) {
 		return createPath(npc, loc, pathTicks, stationaryTicks,
-				SettingsManager.getDouble("PathfindingRange"));
+				Settings.getDouble("PathfindingRange"));
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc, int pathTicks) {
 		return createPath(npc, loc, pathTicks,
-				SettingsManager.getInt("MaxStationaryTicks"));
+				Settings.getInt("MaxStationaryTicks"));
 	}
 
 	public static boolean createPath(HumanNPC npc, Location loc) {
-		return createPath(npc, loc, SettingsManager.getInt("MaxPathingTicks"));
+		return createPath(npc, loc, Settings.getInt("MaxPathingTicks"));
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
@@ -37,17 +37,17 @@ public class PathUtils {
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks, int stationaryTicks) {
 		target(npc, entity, aggro, pathTicks, stationaryTicks,
-				SettingsManager.getDouble("PathfindingRange"));
+				Settings.getDouble("PathfindingRange"));
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro,
 			int pathTicks) {
 		target(npc, entity, aggro, pathTicks,
-				SettingsManager.getInt("MaxStationaryTicks"));
+				Settings.getInt("MaxStationaryTicks"));
 	}
 
 	public static void target(HumanNPC npc, LivingEntity entity, boolean aggro) {
-		target(npc, entity, aggro, SettingsManager.getInt("MaxPathingTicks"));
+		target(npc, entity, aggro, Settings.getInt("MaxPathingTicks"));
 	}
 
 	public static boolean pathFinished(HumanNPC npc) {

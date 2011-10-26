@@ -1,7 +1,7 @@
 package net.citizensnpcs.healers;
 
-import net.citizensnpcs.SettingsManager;
-import net.citizensnpcs.economy.EconomyManager;
+import net.citizensnpcs.Settings;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -51,7 +51,7 @@ public class Healer extends CitizensNPC {
 			Healer healer = npc.getType("healer");
 			int playerHealth = player.getHealth();
 			int healerHealth = healer.getHealth();
-			if (player.getItemInHand().getTypeId() == SettingsManager
+			if (player.getItemInHand().getTypeId() == Settings
 					.getInt("HealerTakeHealthItem")) {
 				if (playerHealth == 20) {
 					player.sendMessage(ChatColor.GREEN
@@ -63,17 +63,17 @@ public class Healer extends CitizensNPC {
 							+ " does not have enough health remaining for you to take.");
 					return;
 				}
-				if (EconomyManager.useEconPlugin()) {
-					if (EconomyManager.hasEnough(player,
+				if (Economy.useEconPlugin()) {
+					if (Economy.hasEnough(player,
 							UtilityProperties.getPrice("healer.heal"))) {
-						double paid = EconomyManager.pay(player,
+						double paid = Economy.pay(player,
 								UtilityProperties.getPrice("healer.heal"));
 						if (paid >= 0) {
 							player.sendMessage(StringUtils.wrap(npc
 									.getStrippedName())
 									+ " has healed you for "
-									+ StringUtils.wrap(EconomyManager
-											.format(paid)) + ".");
+									+ StringUtils.wrap(Economy.format(paid))
+									+ ".");
 						}
 					} else {
 						player.sendMessage(MessageUtils.getNoMoneyMessage(
@@ -86,7 +86,7 @@ public class Healer extends CitizensNPC {
 				}
 				player.setHealth(player.getHealth() + 1);
 				healer.setHealth(healer.getHealth() - 1);
-			} else if (player.getItemInHand().getTypeId() == SettingsManager
+			} else if (player.getItemInHand().getTypeId() == Settings
 					.getInt("HealerGiveHealthItem")) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
@@ -121,7 +121,7 @@ public class Healer extends CitizensNPC {
 
 	// Get the health regeneration rate for a healer based on its level
 	public int getHealthRegenRate() {
-		return SettingsManager.getInt("HealerHealthRegenIncrement")
+		return Settings.getInt("HealerHealthRegenIncrement")
 				* (11 - (getLevel()));
 	}
 
@@ -134,7 +134,6 @@ public class Healer extends CitizensNPC {
 	public void save(Storage profiles, int UID) {
 		profiles.setInt(UID + ".healer.health", health);
 		profiles.setInt(UID + ".healer.level", level);
-
 	}
 
 	@Override
