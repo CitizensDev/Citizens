@@ -2,22 +2,22 @@ package net.citizensnpcs.properties;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.utils.Messaging;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigurationHandler implements Storage {
-	private final Configuration config;
-	private final String fileName;
+	private final FileConfiguration config;
+	private final File file;
 
 	public ConfigurationHandler(String fileName) {
-		this.fileName = fileName;
-		File file = getFile();
-		this.config = new Configuration(file);
+		this.file = new File(fileName);
+		this.config = new YamlConfiguration();
 		if (!file.exists()) {
 			create();
 			save();
@@ -28,18 +28,26 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void load() {
-		this.config.load();
+		try {
+			this.config.load(file);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override
 	public void save() {
-		this.config.save();
+		try {
+			this.config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void create() {
-		File file = getFile();
 		try {
-			Messaging.log("Creating new config file at " + fileName + ".");
+			Messaging
+					.log("Creating new config file at " + file.getName() + ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
@@ -48,13 +56,9 @@ public class ConfigurationHandler implements Storage {
 		}
 	}
 
-	private File getFile() {
-		return new File(this.fileName);
-	}
-
 	@Override
 	public void removeKey(String path) {
-		this.config.removeProperty(path);
+		this.config.set(path, null);
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -66,7 +70,7 @@ public class ConfigurationHandler implements Storage {
 	}
 
 	public boolean pathExists(String path) {
-		return this.config.getProperty(path) != null;
+		return this.config.get(path) != null;
 	}
 
 	public boolean pathExists(int path) {
@@ -103,7 +107,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setString(String path, String value) {
-		this.config.setProperty(path, value);
+		this.config.set(path, value);
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -139,7 +143,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setInt(String path, int value) {
-		this.config.setProperty(path, String.valueOf(value));
+		this.config.set(path, String.valueOf(value));
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -175,7 +179,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setDouble(String path, double value) {
-		this.config.setProperty(path, String.valueOf(value));
+		this.config.set(path, String.valueOf(value));
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -211,7 +215,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setLong(String path, long value) {
-		this.config.setProperty(path, String.valueOf(value));
+		this.config.set(path, String.valueOf(value));
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -245,7 +249,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setBoolean(String path, boolean value) {
-		this.config.setProperty(path, String.valueOf(value));
+		this.config.set(path, String.valueOf(value));
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -256,18 +260,19 @@ public class ConfigurationHandler implements Storage {
 		setBoolean("" + path, value);
 	}
 
-	public List<String> getKeys(String path) {
-		return this.config.getKeys(path);
+	@Override
+	public Set<String> getKeys(String path) {
+		return this.config.getConfigurationSection(path).getKeys(false);
 	}
 
 	@Override
 	public Object getRaw(String path) {
-		return config.getProperty(path);
+		return config.get(path);
 	}
 
 	@Override
 	public void setRaw(String path, Object value) {
-		config.setProperty(path, value);
+		config.set(path, value);
 	}
 
 	@Override

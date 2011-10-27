@@ -24,7 +24,7 @@ import com.platymuus.bukkit.permissions.PermissionsPlugin;
 public class PermissionManager {
 	private static PermissionsProvider provider = null;
 	private static boolean permissionsEnabled;
-	private static List<String> permissions = new ArrayList<String>();
+	private static final List<String> permissions = new ArrayList<String>();
 
 	public PermissionManager(PluginManager pm) {
 		String permPlugin = "";
@@ -62,7 +62,8 @@ public class PermissionManager {
 	public static boolean canCreate(Player player) {
 		return hasPermission(player, "citizens.admin")
 				|| hasPermission(player, "citizens.npccount.unlimited")
-				|| UtilityProperties.getNPCCount(player.getName()) < getMaxNPCs(player);
+				|| getMaxNPCs(player) > UtilityProperties.getNPCCount(player
+						.getName());
 	}
 
 	private static int getMaxNPCs(Player player) {

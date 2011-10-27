@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers.quests;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -183,10 +184,10 @@ public class QuestFactory {
 	private static List<Reward> loadRewards(ConfigurationHandler source,
 			String root) {
 		List<Reward> rewards = Lists.newArrayList();
-		String path;
-		List<String> keys = source.getKeys(root);
+		Collection<String> keys = source.getKeys(root);
 		if (keys == null)
 			return Lists.newArrayList();
+		String path;
 		for (String key : keys) {
 			path = root + "." + key;
 			boolean take = source.getBoolean(path + ".take", false);

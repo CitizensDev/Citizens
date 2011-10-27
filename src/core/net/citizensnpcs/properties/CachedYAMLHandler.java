@@ -11,19 +11,19 @@ import java.util.logging.Level;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.collect.Lists;
 
 public class CachedYAMLHandler implements Storage {
 	private final SettingsTree tree = new SettingsTree();
-	private final Configuration config;
-	private final String fileName;
+	private final FileConfiguration config;
+	private final File file;
 
 	public CachedYAMLHandler(String fileName) {
-		this.fileName = fileName;
-		File file = getFile();
-		this.config = new Configuration(file);
+		this.file = new File(fileName);
+		this.config = new YamlConfiguration();
 		if (!file.exists()) {
 			create();
 			save();
@@ -35,9 +35,13 @@ public class CachedYAMLHandler implements Storage {
 	@Override
 	public void load() {
 		clear();
-		config.load();
-		for (Entry<String, Object> entry : this.config.getAll().entrySet()) {
-			tree.set(entry.getKey(), entry.getValue().toString());
+		try {
+			config.load(file);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		for (String entry : this.config.getKeys(true)) {
+			tree.set(entry, config.get(entry).toString());
 		}
 		clear();
 	}
@@ -48,33 +52,33 @@ public class CachedYAMLHandler implements Storage {
 		for (Entry<String, String> entry : tree.getTree().entrySet()) {
 			if (entry.getValue() != null && !entry.getValue().isEmpty()
 					&& !StringUtils.isNumber(entry.getKey())) {
-				this.config.setProperty(entry.getKey(), entry.getValue());
+				this.config.set(entry.getKey(), entry.getValue());
 			}
 		}
-		this.config.save();
+		try {
+			this.config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		clear();
 	}
 
 	private void clear() {
-		for (String path : config.getKeys()) {
-			config.removeProperty(path);
+		for (String path : config.getKeys(false)) {
+			config.set(path, null);
 		}
 	}
 
 	private void create() {
-		File file = getFile();
 		try {
-			Messaging.log("Creating new config file at " + fileName + ".");
+			Messaging
+					.log("Creating new config file at " + file.getName() + ".");
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		} catch (IOException ex) {
 			Messaging.log("Unable to create " + file.getPath() + ".",
 					Level.SEVERE);
 		}
-	}
-
-	private File getFile() {
-		return new File(this.fileName);
 	}
 
 	@Override
@@ -143,7 +147,7 @@ public class CachedYAMLHandler implements Storage {
 
 	public void forceSetString(String path, String value) {
 		setString(path, value);
-		this.config.setProperty(path, value);
+		this.config.set(path, value);
 	}
 
 	@Override
@@ -295,6 +299,7 @@ public class CachedYAMLHandler implements Storage {
 		setBoolean("" + path, value);
 	}
 
+	@Override
 	public List<String> getKeys(String path) {
 		if (path == null)
 			path = "";
@@ -327,12 +332,12 @@ public class CachedYAMLHandler implements Storage {
 
 	@Override
 	public Object getRaw(String string) {
-		return config.getProperty(string);
+		return config.get(string);
 	}
 
 	@Override
 	public void setRaw(String path, Object value) {
-		config.setProperty(path, value);
+		config.set(path, value);
 	}
 
 	@Override

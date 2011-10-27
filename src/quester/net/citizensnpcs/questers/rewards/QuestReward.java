@@ -82,7 +82,7 @@ public class QuestReward implements Requirement, Reward {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
 			return new QuestReward(storage.getString(root + ".quest"),
-					storage.getInt(root + ".times"), take);
+					storage.getInt(root + ".times", 1), take);
 		}
 	}
 }

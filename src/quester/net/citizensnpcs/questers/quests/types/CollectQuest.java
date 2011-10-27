@@ -37,6 +37,9 @@ public class CollectQuest implements QuestUpdater {
 			case STONE:
 				type = Material.COBBLESTONE;
 				break;
+			case REDSTONE_ORE:
+				type = Material.REDSTONE;
+				break;
 			default:
 				break;
 			}
