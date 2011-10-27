@@ -262,6 +262,8 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public Set<String> getKeys(String path) {
+		if (path == null || path.isEmpty())
+			return this.config.getRoot().getKeys(false);
 		return this.config.getConfigurationSection(path).getKeys(false);
 	}
 
