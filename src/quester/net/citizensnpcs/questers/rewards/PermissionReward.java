@@ -2,6 +2,7 @@ package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -32,7 +33,8 @@ public class PermissionReward implements Requirement, Reward {
 
 	@Override
 	public String getRequiredText(Player player) {
-		return ChatColor.GRAY + "You don't have the necessary permissions.";
+		return ChatColor.GRAY + "You don't have the permission "
+				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
 	}
 
 	@Override

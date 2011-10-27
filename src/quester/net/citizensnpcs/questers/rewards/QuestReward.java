@@ -47,8 +47,13 @@ public class QuestReward implements Requirement, Reward {
 
 	@Override
 	public String getRequiredText(Player player) {
-		return ChatColor.GRAY + "You must have completed the quest "
-				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
+		return ChatColor.GRAY
+				+ (times > 0 ? "You must have completed the quest "
+						+ StringUtils
+								.wrap(reward + " " + times, ChatColor.GRAY)
+						+ StringUtils.pluralise("time", times) + "."
+						: "You've already completed the quest "
+								+ StringUtils.wrap(reward) + ".");
 	}
 
 	@Override
