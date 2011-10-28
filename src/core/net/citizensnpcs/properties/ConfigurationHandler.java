@@ -277,8 +277,6 @@ public class ConfigurationHandler implements Storage {
 		if (path == null || path.isEmpty())
 			return this.config.getRoot().getKeys(false);
 		if (config.getConfigurationSection(path) == null) {
-			Messaging.log(Level.SEVERE, "configuration section not found for "
-					+ path + "!");
 			return Sets.newHashSet();
 		}
 		return this.config.getConfigurationSection(path).getKeys(false);
