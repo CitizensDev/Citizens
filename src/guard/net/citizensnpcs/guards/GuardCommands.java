@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.guards.GuardManager.GuardState;
 import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
@@ -57,7 +56,7 @@ public class GuardCommands extends CommandHandler {
 			aliases = "guard",
 			usage = "[type]",
 			desc = "change a guard's type",
-			modifiers = { "bodyguard", "bouncer" },
+			modifiers = { "soldier", "bodyguard", "bouncer" },
 			min = 1,
 			max = 1)
 	@CommandPermissions("guard.modify.type")
@@ -69,12 +68,12 @@ public class GuardCommands extends CommandHandler {
 			Messaging.sendError(player, "That is not a valid guard type.");
 			return;
 		}
-		if (guard.getGuardState() != state) {
+		if (!guard.isState(state)) {
 			guard.setGuardState(state);
-			player.sendMessage(StringUtils.wrap(npc.getName())
-					+ " is now a " + state.name().toLowerCase() + ".");
+			player.sendMessage(StringUtils.wrap(npc.getName()) + " is now a "
+					+ state.name().toLowerCase() + ".");
 		} else {
-			guard.clear();
+			guard.setGuardState(GuardState.NULL);
 			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has stopped being a " + state.name().toLowerCase()
 					+ ".");
@@ -269,7 +268,7 @@ public class GuardCommands extends CommandHandler {
 	@CommandPermissions("guard.modify.radius")
 	public static void radius(CommandContext args, Player player, HumanNPC npc) {
 		Guard guard = npc.getType("guard");
-		if (guard.isBouncer()) {
+		if (guard.isState(GuardState.BOUNCER)) {
 			guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
 			player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
 					+ " protection radius has been set to "

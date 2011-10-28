@@ -93,6 +93,12 @@ public class GuardProperties extends PropertyManager implements Properties {
 		nodes.add(new Node("DefaultBouncerProtectionRadius",
 				SettingsType.GENERAL,
 				"guards.bouncers.default.protection-radius", 10));
+		nodes.add(new Node("SoldierSelectTool", SettingsType.GENERAL,
+				"guards.soldiers.items.select", "*"));
+		nodes.add(new Node("SoldierReturnTool", SettingsType.GENERAL,
+				"guards.soldiers.items.return", "288,"));
+		nodes.add(new Node("SoldierDeselectAllTool", SettingsType.GENERAL,
+				"guards.soldiers.items.deselect-all", "352,"));
 		return nodes;
 	}
 

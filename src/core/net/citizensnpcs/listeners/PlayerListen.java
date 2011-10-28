@@ -2,6 +2,7 @@ package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.TickTask;
 import net.citizensnpcs.api.event.npc.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -55,6 +56,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		NPCDataManager.pathEditors.remove(event.getPlayer().getName());
+		TickTask.clearActions(event.getPlayer());
 		CreatureTask.setDirty();
 		ConversationUtils.verify();
 	}

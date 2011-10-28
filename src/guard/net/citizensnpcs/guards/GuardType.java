@@ -2,7 +2,6 @@ package net.citizensnpcs.guards;
 
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.guards.listeners.GuardCitizensListen;
-import net.citizensnpcs.guards.listeners.GuardPlayerListen;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
@@ -24,8 +23,6 @@ public class GuardType extends CitizensNPCType {
 
 	@Override
 	public void registerEvents() {
-		NPCTypeManager
-				.registerEvent(Type.PLAYER_LOGIN, new GuardPlayerListen());
 		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new GuardCitizensListen());
 	}

@@ -91,7 +91,7 @@ public class TickTask implements Runnable {
 		}
 	}
 
-	private void clearActions(HumanNPC npc, Player player) {
+	private static void clearActions(HumanNPC npc, Player player) {
 		Actions actions = cachedActions.get(npc);
 		if (actions == null) {
 			cachedActions.put(npc, new Actions());
@@ -100,7 +100,7 @@ public class TickTask implements Runnable {
 		actions.clear("saidText", player.getName());
 	}
 
-	private void cacheActions(HumanNPC npc, Player player) {
+	private static void cacheActions(HumanNPC npc, Player player) {
 		Actions actions = cachedActions.get(npc);
 		if (actions == null) {
 			cachedActions.put(npc, new Actions());
@@ -138,6 +138,12 @@ public class TickTask implements Runnable {
 			Messaging.sendUncertain(owner,
 					StringUtils.wrap(NPCManager.get(UID).getName())
 							+ " has respawned.");
+		}
+	}
+
+	public static void clearActions(Player player) {
+		for (HumanNPC npc : cachedActions.keySet()) {
+			clearActions(npc, player);
 		}
 	}
 }

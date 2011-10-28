@@ -3,6 +3,7 @@ package net.citizensnpcs.resources.npclib;
 import net.citizensnpcs.Plugins;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
+import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PathEntity;
+import net.minecraft.server.PathPoint;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
 
@@ -21,6 +23,7 @@ import org.bukkit.entity.Player;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
+//TODO: FIX UP THIS WHOLE CLASS
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity path;
@@ -51,8 +54,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	public PathNPC(MinecraftServer minecraftserver, World world, String s,
-			ItemInWorldManager iteminworldmanager,
-			AutoPathfinder autoPathfinder) {
+			ItemInWorldManager iteminworldmanager, AutoPathfinder autoPathfinder) {
 		super(minecraftserver, world, s, iteminworldmanager);
 		this.autoPathfinder = autoPathfinder;
 	}
@@ -327,6 +329,12 @@ public class PathNPC extends EntityPlayer {
 		++pathTicks;
 		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
 				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
+			if (!(this instanceof CreatureNPC)) {
+				PathPoint end = path.c();
+				this.getPlayer().teleport(
+						new Location(this.getPlayer().getWorld(), end.a, end.b,
+								end.c));
+			}
 			reset();
 		}
 		prevX = loc.getBlockX();

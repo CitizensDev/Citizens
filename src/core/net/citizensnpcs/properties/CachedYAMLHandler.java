@@ -64,7 +64,7 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	private void clear() {
-		for (String path : config.getKeys(false)) {
+		for (String path : config.getKeys(true)) {
 			config.set(path, null);
 		}
 	}
