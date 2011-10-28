@@ -184,9 +184,9 @@ public class QuestFactory {
 	private static List<Reward> loadRewards(ConfigurationHandler source,
 			String root) {
 		List<Reward> rewards = Lists.newArrayList();
+		if (!source.pathExists(root) || source.getKeys(root) == null)
+			return rewards;
 		Collection<String> keys = source.getKeys(root);
-		if (keys == null)
-			return Lists.newArrayList();
 		String path;
 		for (String key : keys) {
 			path = root + "." + key;

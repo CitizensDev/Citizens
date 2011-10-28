@@ -121,6 +121,8 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public int getInt(String path) {
 		if (pathExists(path)) {
+			if (config.getString(path) == null)
+				return config.getInt(path);
 			return Integer.parseInt(this.config.getString(path));
 		}
 		return 0;
@@ -143,7 +145,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setInt(String path, int value) {
-		this.config.set(path, String.valueOf(value));
+		this.config.set(path, value);
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -157,6 +159,8 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public double getDouble(String path) {
 		if (pathExists(path)) {
+			if (config.getString(path) == null)
+				return config.getDouble(path);
 			return Double.parseDouble(this.config.getString(path));
 		}
 		return 0;
@@ -193,6 +197,8 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public long getLong(String path) {
 		if (pathExists(path)) {
+			if (config.getString(path) == null)
+				return config.getLong(path);
 			return Long.parseLong(this.config.getString(path));
 		}
 		return 0;
@@ -215,7 +221,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setLong(String path, long value) {
-		this.config.set(path, String.valueOf(value));
+		this.config.set(path, value);
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
@@ -228,8 +234,12 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public boolean getBoolean(String path) {
-		return pathExists(path)
-				&& Boolean.parseBoolean(this.config.getString(path));
+		if (pathExists(path)) {
+			if (config.getString(path) == null)
+				return config.getBoolean(path);
+			return Boolean.parseBoolean(this.config.getString(path));
+		}
+		return false;
 	}
 
 	@Override
@@ -249,7 +259,7 @@ public class ConfigurationHandler implements Storage {
 
 	@Override
 	public void setBoolean(String path, boolean value) {
-		this.config.set(path, String.valueOf(value));
+		this.config.set(path, value);
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
