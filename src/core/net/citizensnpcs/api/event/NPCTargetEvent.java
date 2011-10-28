@@ -1,4 +1,4 @@
-package net.citizensnpcs.api.event.npc;
+package net.citizensnpcs.api.event;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityTargetEvent;

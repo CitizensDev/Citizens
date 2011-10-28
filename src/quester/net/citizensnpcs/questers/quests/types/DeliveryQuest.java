@@ -1,7 +1,7 @@
 package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.questers.QuestCancelException;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;

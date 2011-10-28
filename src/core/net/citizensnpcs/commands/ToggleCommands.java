@@ -1,8 +1,8 @@
 package net.citizensnpcs.commands;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
-import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.Economy;
+import net.citizensnpcs.api.event.NPCToggleTypeEvent;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;

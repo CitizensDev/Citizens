@@ -1,4 +1,4 @@
-package net.citizensnpcs.api.event.citizens;
+package net.citizensnpcs.api.event;
 
 public class CitizensDisableEvent extends CitizensEvent {
 	private static final long serialVersionUID = 1L;

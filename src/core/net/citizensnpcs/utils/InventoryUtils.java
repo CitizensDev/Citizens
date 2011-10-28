@@ -3,7 +3,7 @@ package net.citizensnpcs.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.api.event.npc.NPCInventoryOpenEvent;
+import net.citizensnpcs.api.event.NPCInventoryOpenEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.Material;

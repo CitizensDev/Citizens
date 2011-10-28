@@ -2,7 +2,7 @@ package net.citizensnpcs;
 
 import java.util.Map;
 
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.misc.Actions;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;

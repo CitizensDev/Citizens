@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.InventoryUtils;

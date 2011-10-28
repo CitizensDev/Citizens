@@ -2,9 +2,9 @@ package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.npc.NPCRightClickEvent;
-import net.citizensnpcs.api.event.npc.NPCTalkEvent;
-import net.citizensnpcs.api.event.npc.NPCTargetEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.event.NPCTalkEvent;
+import net.citizensnpcs.api.event.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;

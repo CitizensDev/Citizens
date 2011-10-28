@@ -1,8 +1,8 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.NPCManager;

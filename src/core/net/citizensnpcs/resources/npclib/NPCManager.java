@@ -3,9 +3,9 @@ package net.citizensnpcs.resources.npclib;
 import java.util.Map;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.NPCCreateEvent;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.npcdata.NPCData;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.PropertyManager;

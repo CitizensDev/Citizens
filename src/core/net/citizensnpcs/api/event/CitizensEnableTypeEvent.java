@@ -1,4 +1,4 @@
-package net.citizensnpcs.api.event.citizens;
+package net.citizensnpcs.api.event;
 
 import net.citizensnpcs.npctypes.CitizensNPCType;
 

@@ -1,7 +1,5 @@
-package net.citizensnpcs.economy;
+package net.citizensnpcs;
 
-import net.citizensnpcs.Citizens;
-import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;

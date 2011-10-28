@@ -3,7 +3,7 @@ package net.citizensnpcs.traders;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;

@@ -3,11 +3,11 @@ package net.citizensnpcs.commands;
 import java.util.ArrayDeque;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.citizens.CitizensReloadEvent;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
-import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.api.event.CitizensReloadEvent;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -227,12 +227,10 @@ public class BasicCommands extends CommandHandler {
 
 		HumanNPC created = NPCManager.get(UID);
 		created.getNPCData().setOwner(player.getName());
-		Messaging.send(player, created,
-				Settings.getString("CreationMessage"));
+		Messaging.send(player, created, Settings.getString("CreationMessage"));
 
 		NPCDataManager.selectNPC(player, NPCManager.get(UID));
-		Messaging.send(player, created,
-				Settings.getString("SelectionMessage"));
+		Messaging.send(player, created, Settings.getString("SelectionMessage"));
 	}
 
 	@CommandRequirements()
@@ -382,10 +380,9 @@ public class BasicCommands extends CommandHandler {
 		case 1:
 			if (PermissionManager.hasPermission(player,
 					"citizens.basic.use.showmoney")) {
-				player.sendMessage(StringUtils.wrap(npc.getName())
-						+ " has "
-						+ StringUtils.wrap(Economy.format(npc
-								.getBalance())) + ".");
+				player.sendMessage(StringUtils.wrap(npc.getName()) + " has "
+						+ StringUtils.wrap(Economy.format(npc.getBalance()))
+						+ ".");
 			} else {
 				player.sendMessage(MessageUtils.noPermissionsMessage);
 			}
@@ -428,9 +425,8 @@ public class BasicCommands extends CommandHandler {
 					player.sendMessage(ChatColor.RED
 							+ "The npc doesn't have enough money for that! It needs "
 							+ StringUtils.wrap(
-									Economy.format(amount
-											- npc.getBalance()), ChatColor.RED)
-							+ " more in its balance.");
+									Economy.format(amount - npc.getBalance()),
+									ChatColor.RED) + " more in its balance.");
 					return;
 				}
 			} else {
@@ -445,8 +441,8 @@ public class BasicCommands extends CommandHandler {
 					+ " to "
 					+ StringUtils.wrap(npc.getName())
 					+ ". Your balance is now "
-					+ StringUtils.wrap(Economy
-							.getFormattedBalance(player.getName())) + ".");
+					+ StringUtils.wrap(Economy.getFormattedBalance(player
+							.getName())) + ".");
 			break;
 		default:
 			Messaging.sendError(player, "Incorrect syntax. See /npc help");
@@ -661,8 +657,8 @@ public class BasicCommands extends CommandHandler {
 						.hasPermission(player, "citizens.basic.modify.remove"))) {
 			NPCManager.remove(npc.getUID(), NPCRemoveReason.COMMAND);
 			NPCDataManager.deselectNPC(player);
-			player.sendMessage(StringUtils.wrap(npc.getName(),
-					ChatColor.GRAY) + " disappeared.");
+			player.sendMessage(StringUtils.wrap(npc.getName(), ChatColor.GRAY)
+					+ " disappeared.");
 			return;
 		}
 		Messaging.sendError(player, MessageUtils.noPermissionsMessage);
@@ -761,8 +757,7 @@ public class BasicCommands extends CommandHandler {
 					+ " exists.");
 		} else {
 			NPCDataManager.selectNPC(player, npc);
-			Messaging.send(player, npc,
-					Settings.getString("SelectionMessage"));
+			Messaging.send(player, npc, Settings.getString("SelectionMessage"));
 		}
 	}
 
@@ -875,8 +870,7 @@ public class BasicCommands extends CommandHandler {
 				return;
 			} else if (editing != UID) {
 				player.sendMessage(ChatColor.GRAY + "Now editing "
-						+ StringUtils.wrap(npc.getName())
-						+ "'s waypoints.");
+						+ StringUtils.wrap(npc.getName()) + "'s waypoints.");
 				editing = UID;
 			}
 			NPCDataManager.pathEditors.put(player.getName(), editing);

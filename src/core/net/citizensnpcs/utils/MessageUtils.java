@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Random;
 
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;

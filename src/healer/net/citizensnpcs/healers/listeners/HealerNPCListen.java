@@ -3,8 +3,8 @@ package net.citizensnpcs.healers.listeners;
 import org.bukkit.Bukkit;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.event.npc.NPCListener;
-import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
+import net.citizensnpcs.api.event.NPCListener;
+import net.citizensnpcs.api.event.NPCToggleTypeEvent;
 import net.citizensnpcs.healers.Healer;
 import net.citizensnpcs.healers.HealerTask;
 

@@ -2,8 +2,8 @@ package net.citizensnpcs.resources.npclib.creatures;
 
 import java.util.Random;
 
-import net.citizensnpcs.api.event.npc.NPCCreateEvent;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.NPCCreateEvent;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCSpawner;
 

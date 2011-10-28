@@ -260,13 +260,29 @@ public class TraderCommands extends CommandHandler {
 			min = 1,
 			max = 1)
 	@CommandPermissions("trader.modify.lock")
-	public static void setLock(CommandContext args, Player player,
-			HumanNPC npc) {
+	public static void setLock(CommandContext args, Player player, HumanNPC npc) {
 		Trader trader = npc.getType("trader");
 		trader.setLocked(!trader.isLocked());
 		player.sendMessage(ChatColor.GREEN
 				+ (trader.isLocked() ? "The trader's inventory is now locked while buying."
 						: "The trader's inventory is no longer locked while buying."));
+	}
+
+	@Command(
+			aliases = "trader",
+			usage = "useglobal",
+			desc = "toggle usage of global stock",
+			modifiers = "useglobal",
+			min = 1,
+			max = 1)
+	@CommandPermissions("trader.admin.useglobal")
+	public static void setUseGlobal(CommandContext args, Player player,
+			HumanNPC npc) {
+		Trader trader = npc.getType("trader");
+		trader.setUseGlobal(!trader.isUseGlobal());
+		player.sendMessage(ChatColor.GREEN
+				+ (trader.isLocked() ? "The trader will now use global stock."
+						: "The trader will no longer use global stock."));
 	}
 
 	private static ItemPrice createItemPrice(Player player, String price) {

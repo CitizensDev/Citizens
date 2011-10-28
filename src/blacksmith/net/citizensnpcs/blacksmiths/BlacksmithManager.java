@@ -1,6 +1,6 @@
 package net.citizensnpcs.blacksmiths;
 
-import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;

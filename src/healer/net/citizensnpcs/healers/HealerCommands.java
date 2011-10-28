@@ -1,7 +1,7 @@
 package net.citizensnpcs.healers;
 
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;

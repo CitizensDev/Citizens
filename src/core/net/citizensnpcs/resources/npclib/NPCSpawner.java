@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.event.npc.NPCRemoveEvent;
-import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.NPCRemoveEvent;
+import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PacketUtils;

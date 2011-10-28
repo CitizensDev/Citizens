@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.npc.NPCListener;
-import net.citizensnpcs.api.event.npc.NPCToggleTypeEvent;
+import net.citizensnpcs.api.event.NPCListener;
+import net.citizensnpcs.api.event.NPCToggleTypeEvent;
 import net.citizensnpcs.wizards.WizardTask;
 
 public class WizardNPCListen extends NPCListener {

@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.api.events;
 
-import net.citizensnpcs.api.event.citizens.CitizensEvent;
+import net.citizensnpcs.api.event.CitizensEvent;
 import net.citizensnpcs.questers.quests.Quest;
 
 import org.bukkit.entity.Player;

@@ -1,9 +1,9 @@
 package net.citizensnpcs.traders;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.npctypes.CitizensNPC;
@@ -22,17 +22,21 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
 public class Trader extends CitizensNPC {
+	public static void addGlobal(Stockable stock) {
+		globalStock.put(stock.createCheck(), stock);
+	}
+
 	private boolean unlimited = false;
 	private boolean free = true;
 	private boolean locked = false;
-	private Map<Check, Stockable> stocking = new ConcurrentHashMap<Check, Stockable>();
+	private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
 
-	public Map<Check, Stockable> getStocking() {
-		return stocking;
-	}
+	private boolean useGlobal;
 
-	public void setStocking(Map<Check, Stockable> stocking) {
-		this.stocking = stocking;
+	private static Map<Check, Stockable> globalStock = Maps.newHashMap();
+
+	public static void clearGlobal() {
+		globalStock.clear();
 	}
 
 	public void addStockable(Stockable s) {
@@ -42,8 +46,8 @@ public class Trader extends CitizensNPC {
 	private Stockable fetchStockable(int itemID, short dataValue,
 			boolean selling) {
 		Check check = new Check(itemID, dataValue, selling);
-		return stocking.containsKey(check) ? stocking.get(check) : globalStock
-				.get(check);
+		return stocking.containsKey(check) ? stocking.get(check)
+				: isUseGlobal() ? globalStock.get(check) : null;
 	}
 
 	public Stockable getStockable(int itemID, short dataValue, boolean selling) {
@@ -65,13 +69,21 @@ public class Trader extends CitizensNPC {
 		return stockables;
 	}
 
-	public void removeStockable(int ID, short dataValue, boolean selling) {
-		removeStockable(new Check(ID, dataValue, selling));
+	public Map<Check, Stockable> getStocking() {
+		return stocking;
 	}
 
-	public void removeStockable(Check check) {
-		this.stocking.remove(check);
+	@Override
+	public CitizensNPCType getType() {
+		return new TraderType();
+	}
 
+	public boolean isFree() {
+		return this.free;
+	}
+
+	public boolean isLocked() {
+		return locked;
 	}
 
 	public boolean isStocked(int itemID, short dataValue, boolean selling) {
@@ -83,28 +95,19 @@ public class Trader extends CitizensNPC {
 				.getDurability(), s.isSelling());
 	}
 
-	public void setFree(boolean free) {
-		this.free = free;
-	}
-
-	public boolean isFree() {
-		return this.free;
-	}
-
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
-
-	public void setUnlimited(boolean unlimited) {
-		this.unlimited = unlimited;
-	}
-
 	public boolean isUnlimited() {
 		return this.unlimited;
+	}
+
+	public boolean isUseGlobal() {
+		return useGlobal;
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		unlimited = profiles.getBoolean(UID + ".trader.unlimited");
+		locked = profiles.getBoolean(UID + ".trader.locked");
+		useGlobal = profiles.getBoolean(UID + ".trader.use-global", true);
 	}
 
 	@Override
@@ -143,32 +146,41 @@ public class Trader extends CitizensNPC {
 		}
 	}
 
-	@Override
-	public CitizensNPCType getType() {
-		return new TraderType();
+	public void removeStockable(Check check) {
+		this.stocking.remove(check);
+
 	}
 
-	private static Map<Check, Stockable> globalStock = Maps.newHashMap();
-
-	public static void addGlobal(Stockable stock) {
-		globalStock.put(stock.createCheck(), stock);
-	}
-
-	public static void clearGlobal() {
-		globalStock.clear();
+	public void removeStockable(int ID, short dataValue, boolean selling) {
+		removeStockable(new Check(ID, dataValue, selling));
 	}
 
 	@Override
 	public void save(Storage profiles, int UID) {
 		profiles.setBoolean(UID + ".trader.unlimited", unlimited);
 		profiles.setBoolean(UID + ".trader.locked", locked);
+		profiles.setBoolean(UID + ".trader.use-global", useGlobal);
 		profiles.setString(UID + ".trader.stock",
 				Joiner.on(";").join(stocking.values()));
 	}
 
-	@Override
-	public void load(Storage profiles, int UID) {
-		unlimited = profiles.getBoolean(UID + ".trader.unlimited");
-		locked = profiles.getBoolean(UID + ".trader.locked");
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+
+	public void setStocking(Map<Check, Stockable> stocking) {
+		this.stocking = stocking;
+	}
+
+	public void setUnlimited(boolean unlimited) {
+		this.unlimited = unlimited;
+	}
+
+	public void setUseGlobal(boolean useGlobal) {
+		this.useGlobal = useGlobal;
 	}
 }

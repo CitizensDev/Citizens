@@ -1,6 +1,5 @@
-package net.citizensnpcs.api.event.npc;
+package net.citizensnpcs.api.event;
 
-import net.citizensnpcs.api.event.citizens.CitizensEvent;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 public class NPCEvent extends CitizensEvent {

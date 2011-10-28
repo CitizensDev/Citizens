@@ -3,7 +3,7 @@ package net.citizensnpcs.listeners;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.TickTask;
-import net.citizensnpcs.api.event.npc.NPCTargetEvent;
+import net.citizensnpcs.api.event.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;

@@ -11,11 +11,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.citizensnpcs.api.event.citizens.CitizensDisableEvent;
-import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
-import net.citizensnpcs.api.event.citizens.CitizensEnableTypeEvent;
-import net.citizensnpcs.api.event.npc.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.npc.NPCRemoveEvent.NPCRemoveReason;
+import net.citizensnpcs.api.event.CitizensDisableEvent;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
+import net.citizensnpcs.api.event.CitizensEnableTypeEvent;
+import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;

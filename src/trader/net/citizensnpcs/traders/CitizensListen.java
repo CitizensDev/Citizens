@@ -1,7 +1,7 @@
 package net.citizensnpcs.traders;
 
-import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
-import net.citizensnpcs.api.event.citizens.CitizensListener;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
+import net.citizensnpcs.api.event.CitizensListener;
 
 public class CitizensListen extends CitizensListener {
 	@Override

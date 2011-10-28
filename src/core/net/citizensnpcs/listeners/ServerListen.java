@@ -1,8 +1,8 @@
 package net.citizensnpcs.listeners;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.Plugins;
-import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.resources.register.payment.Methods;
 import net.citizensnpcs.utils.Messaging;
 

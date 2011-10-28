@@ -1,18 +1,17 @@
-package net.citizensnpcs.api.event.npc;
+package net.citizensnpcs.api.event;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
+public class NPCInventoryOpenEvent extends NPCPlayerEvent implements
+		Cancellable {
 	private static final long serialVersionUID = 1L;
 	private boolean cancelled = false;
-	private String text;
 
-	public NPCTalkEvent(HumanNPC npc, Player player, String text) {
-		super("NPCDisplayTextEvent", npc, player);
-		this.text = text;
+	public NPCInventoryOpenEvent(HumanNPC npc, Player player) {
+		super("NPCInventoryOpenEvent", npc, player);
 	}
 
 	/**
@@ -34,24 +33,5 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
 	@Override
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
-	}
-
-	/**
-	 * Get the text involved in the event.
-	 * 
-	 * @return text involved in the event.
-	 */
-	public String getText() {
-		return this.text;
-	}
-
-	/**
-	 * Set the text involved in the event.
-	 * 
-	 * @param text
-	 *            the text you want displayed.
-	 */
-	public void setText(String text) {
-		this.text = text;
 	}
 }

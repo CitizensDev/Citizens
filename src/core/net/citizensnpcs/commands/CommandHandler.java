@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
  * Every main NPC type class requires a class that implements this.
  */
 public abstract class CommandHandler {
-
 	/**
 	 * Add permissions to be registered by superperms
 	 */

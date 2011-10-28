@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.StringUtils;
 

@@ -1,8 +1,8 @@
 package net.citizensnpcs.guards.listeners;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.event.citizens.CitizensEnableEvent;
-import net.citizensnpcs.api.event.citizens.CitizensListener;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
+import net.citizensnpcs.api.event.CitizensListener;
 import net.citizensnpcs.guards.GuardTask;
 
 import org.bukkit.Bukkit;

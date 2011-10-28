@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.Economy;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.MessageUtils;
