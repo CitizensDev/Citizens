@@ -6,6 +6,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCTalkEvent;
 import net.citizensnpcs.api.event.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
@@ -76,8 +77,10 @@ public class EntityListen extends EntityListener implements Listener {
 			if (UtilityProperties.isHoldingTool("SelectItems", player)) {
 				if (!NPCManager.hasSelected(player, npc.getUID())) {
 					NPCDataManager.selectNPC(player, npc);
-					Messaging.send(player, npc,
-							Settings.getString("SelectionMessage"));
+					if (PermissionManager.hasPermission(player,
+							"citizens.basic.modify.select"))
+						Messaging.send(player, npc,
+								Settings.getString("SelectionMessage"));
 					if (!Settings.getBoolean("QuickSelect")) {
 						return;
 					}

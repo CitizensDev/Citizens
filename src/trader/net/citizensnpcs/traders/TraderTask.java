@@ -236,7 +236,8 @@ public class TraderTask implements Runnable {
 				sendNoMoneyMessage(stocking, true);
 				return true;
 			}
-			if (!Economy.hasEnough(npc, stockable.getPrice().getPrice())) {
+			if (mode != TraderMode.INFINITE
+					&& !Economy.hasEnough(npc, stockable.getPrice().getPrice())) {
 				sendNoMoneyMessage(stocking, false);
 				return true;
 			}

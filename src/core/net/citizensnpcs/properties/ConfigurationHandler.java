@@ -11,6 +11,8 @@ import net.citizensnpcs.utils.Messaging;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.google.common.collect.Sets;
+
 public class ConfigurationHandler implements Storage {
 	private final FileConfiguration config;
 	private final File file;
@@ -274,6 +276,11 @@ public class ConfigurationHandler implements Storage {
 	public Set<String> getKeys(String path) {
 		if (path == null || path.isEmpty())
 			return this.config.getRoot().getKeys(false);
+		if (config.getConfigurationSection(path) == null) {
+			Messaging.log(Level.SEVERE, "configuration section not found for "
+					+ path + "!");
+			return Sets.newHashSet();
+		}
 		return this.config.getConfigurationSection(path).getKeys(false);
 	}
 

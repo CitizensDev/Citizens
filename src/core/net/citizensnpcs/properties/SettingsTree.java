@@ -1,12 +1,13 @@
 package net.citizensnpcs.properties;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.utils.Messaging;
 
 public class SettingsTree {
-	private final Map<String, String> tree = new HashMap<String, String>(100);
+	private final Map<String, String> tree = new ConcurrentHashMap<String, String>(
+			100);
 
 	public void populate(String path) {
 		StringBuilder progressive = new StringBuilder();
