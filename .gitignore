@@ -2,8 +2,7 @@
 /bin
 .project
 .classpath
-\types
-/types
+types
 \build
 /build
 \doc
