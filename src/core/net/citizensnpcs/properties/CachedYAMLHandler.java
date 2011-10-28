@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
 
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -41,7 +42,8 @@ public class CachedYAMLHandler implements Storage {
 			ex.printStackTrace();
 		}
 		for (String entry : this.config.getKeys(true)) {
-			tree.set(entry, config.get(entry).toString());
+			if (!(config.get(entry) instanceof MemorySection))
+				tree.set(entry, config.get(entry).toString());
 		}
 		clear();
 	}
