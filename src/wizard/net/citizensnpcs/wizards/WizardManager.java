@@ -53,15 +53,13 @@ public class WizardManager {
 	private static boolean teleportPlayer(Player player, HumanNPC npc) {
 		Wizard wizard = npc.getType("wizard");
 		if (wizard.getNumberOfLocations() > 0) {
-			if (decreaseMana(player, npc,
-					Settings.getInt("TeleportManaCost"))) {
+			if (decreaseMana(player, npc, Settings.getInt("TeleportManaCost"))) {
 				player.teleport(wizard.getCurrentLocation());
 				return true;
 			}
 			return false;
 		}
-		Messaging.sendError(player, npc.getName()
-				+ " has no locations.");
+		Messaging.sendError(player, npc.getName() + " has no locations.");
 		return false;
 	}
 
@@ -78,8 +76,7 @@ public class WizardManager {
 		} else if (wizard.getTime().equals("afternoon")) {
 			time = 10000;
 		}
-		if (decreaseMana(player, npc,
-				Settings.getInt("ChangeTimeManaCost"))) {
+		if (decreaseMana(player, npc, Settings.getInt("ChangeTimeManaCost"))) {
 			player.getWorld().setTime(time);
 			return true;
 		}
@@ -88,8 +85,7 @@ public class WizardManager {
 
 	// Spawn mob(s) at the specified location
 	private static boolean spawnMob(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc,
-				Settings.getInt("SpawnMobManaCost"))) {
+		if (decreaseMana(player, npc, Settings.getInt("SpawnMobManaCost"))) {
 			player.getWorld().spawnCreature(player.getLocation(),
 					((Wizard) npc.getType("wizard")).getMob());
 			return true;
@@ -99,8 +95,7 @@ public class WizardManager {
 
 	// Toggle a storm in the player's world
 	private static boolean toggleStorm(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc,
-				Settings.getInt("ToggleStormManaCost"))) {
+		if (decreaseMana(player, npc, Settings.getInt("ToggleStormManaCost"))) {
 			player.getWorld().setStorm(!player.getWorld().hasStorm());
 			return true;
 		}
@@ -115,8 +110,8 @@ public class WizardManager {
 		}
 		if (wizard.getMana() - mana >= 0) {
 			wizard.setMana(wizard.getMana() - mana);
-			player.sendMessage(StringUtils.wrap(npc.getName())
-					+ " has lost " + mana + " mana.");
+			player.sendMessage(StringUtils.wrap(npc.getName()) + " has lost "
+					+ mana + " mana.");
 			return true;
 		}
 		player.sendMessage(StringUtils.wrap(npc.getName())
@@ -127,22 +122,6 @@ public class WizardManager {
 	// Handle the right-clicking of a wizard
 	public static void handleRightClick(Player player, HumanNPC npc, String op) {
 		Wizard wizard = npc.getType("wizard");
-		String econMsg = "";
-		if (Economy.useEconPlugin()) {
-			if (Economy
-					.hasEnough(player, UtilityProperties.getPrice(op))) {
-				double paid = Economy.pay(player,
-						UtilityProperties.getPrice(op));
-				if (paid > 0) {
-					econMsg = ChatColor.GREEN + "Paid "
-							+ StringUtils.wrap(Economy.format(paid))
-							+ ":";
-				}
-			} else {
-				player.sendMessage(MessageUtils.getNoMoneyMessage(player, op));
-				return;
-			}
-		}
 		String msg = StringUtils.wrap(npc.getName());
 		if (op.equals("wizard.teleport")) {
 			msg += " teleported you to "
@@ -167,6 +146,20 @@ public class WizardManager {
 			msg += " toggled a thunderstorm in the world "
 					+ StringUtils.wrap(player.getWorld().getName()) + ".";
 			if (!toggleStorm(player, npc)) {
+				return;
+			}
+		}
+		String econMsg = "";
+		if (Economy.useEconPlugin()) {
+			if (Economy.hasEnough(player, UtilityProperties.getPrice(op))) {
+				double paid = Economy.pay(player,
+						UtilityProperties.getPrice(op));
+				if (paid > 0) {
+					econMsg = ChatColor.GREEN + "Paid "
+							+ StringUtils.wrap(Economy.format(paid)) + ":";
+				}
+			} else {
+				player.sendMessage(MessageUtils.getNoMoneyMessage(player, op));
 				return;
 			}
 		}
