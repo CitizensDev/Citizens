@@ -72,17 +72,22 @@ public class Guard extends CitizensNPC {
 		if (!(ev.getDamager() instanceof LivingEntity))
 			return;
 		HumanNPC npc = NPCManager.get(event.getEntity());
-		boolean owner = isOwner(ev.getDamager(), npc);
-		if (owner) {
+		if (isOwner(ev.getDamager(), npc) || isCoOwned(ev.getDamager(), npc)) {
 			event.setCancelled(true);
 			return;
 		}
 		if (guardState != GuardState.NULL)
 			guardState.getUpdater().onDamage(npc,
 					(LivingEntity) ev.getDamager());
-		else if (this.isAggressive && !owner) {
+		else if (this.isAggressive) {
 			target((LivingEntity) ev.getDamager(), npc);
 		}
+	}
+
+	private boolean isCoOwned(Entity damager, HumanNPC npc) {
+		HumanNPC other = NPCManager.get(damager);
+		return other != null
+				&& other.getOwner().equalsIgnoreCase(npc.getOwner());
 	}
 
 	@Override
@@ -121,6 +126,8 @@ public class Guard extends CitizensNPC {
 	}
 
 	public void target(LivingEntity entity, HumanNPC npc) {
+		if (isOwner(entity, npc) || isCoOwned(entity, npc))
+			return;
 		npc.setPaused(true);
 		PathUtils.target(npc, entity, true, -1, -1,
 				Settings.getDouble("PathfindingRange"));

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -17,7 +15,7 @@ import com.google.common.collect.Maps;
 
 public class FlagList {
 	private final Map<FlagType, Map<String, FlagInfo>> flags = getPopulatedMap();
-	final FlagSorter predicates = new FlagSorter(this);
+	private final FlagSorter predicates = new FlagSorter(this);
 	private LivingEntity result;
 
 	private Map<FlagType, Map<String, FlagInfo>> getPopulatedMap() {
@@ -29,13 +27,12 @@ public class FlagList {
 		return populated;
 	}
 
-	public boolean process(HumanNPC npc, Location base,
-			List<LivingEntity> toProcess) {
+	public boolean process(Location base, List<LivingEntity> toProcess) {
 		if (toProcess == null)
 			return false;
 		Iterable<LivingEntity> filtered = Iterables.filter(toProcess,
 				predicates.getSorter());
-		List<LivingEntity> possible = predicates.getPossible(npc, filtered);
+		List<LivingEntity> possible = predicates.getPossible(filtered);
 		switch (possible.size()) {
 		case 0:
 			return false;
@@ -58,9 +55,8 @@ public class FlagList {
 		}
 	}
 
-	public void processEntities(HumanNPC npc, Location base,
-			List<Entity> entities) {
-		process(npc, base, predicates.transformToLiving(entities));
+	public void processEntities(Location base, List<Entity> entities) {
+		process(base, predicates.transformToLiving(entities));
 	}
 
 	public LivingEntity getResult() {

@@ -11,7 +11,7 @@ import org.bukkit.entity.LivingEntity;
 public class Targeter {
 	public static LivingEntity findTarget(List<Entity> possible, HumanNPC npc) {
 		FlagList flags = ((Guard) npc.getType("guard")).getFlags();
-		flags.processEntities(npc, npc.getLocation(), possible);
+		flags.processEntities(npc.getLocation(), possible);
 		return flags.getResult();
 	}
 
