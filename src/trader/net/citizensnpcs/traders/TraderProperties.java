@@ -112,7 +112,7 @@ public class TraderProperties extends PropertyManager implements Properties {
 	}
 
 	public static void loadGlobal() {
-		Storage storage = UtilityProperties.getSettings();
+		Storage storage = UtilityProperties.getConfig();
 		for (Object key : storage.getKeys("traders.global-prices")) {
 			String path = "traders.global-prices." + key;
 			int itemID = storage.getInt(path + ".id", 1);

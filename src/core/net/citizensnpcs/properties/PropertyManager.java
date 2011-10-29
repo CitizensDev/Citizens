@@ -16,7 +16,7 @@ public class PropertyManager {
 
 	public static void registerProperties() {
 		add("basic", new BasicProperties());
-		UtilityProperties.initialize();
+		UtilityProperties.load();
 	}
 
 	public static void add(String type, Properties saveable) {

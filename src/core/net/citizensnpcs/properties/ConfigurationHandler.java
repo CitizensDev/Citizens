@@ -82,7 +82,7 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public String getString(String path) {
 		if (pathExists(path)) {
-			return this.config.getString(path);
+			return this.config.get(path).toString();
 		}
 		return "";
 	}

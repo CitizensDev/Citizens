@@ -15,16 +15,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class UtilityProperties {
-	private static ConfigurationHandler settings;
-	private static ConfigurationHandler mobs;
+	private static final Storage config = new ConfigurationHandler(
+			"plugins/Citizens/citizens.yml");
+	private static final Storage mobs = new ConfigurationHandler(
+			"plugins/Citizens/mobs.yml");
 
-	public static void initialize() {
-		settings = new ConfigurationHandler("plugins/Citizens/citizens.yml");
-		mobs = new ConfigurationHandler("plugins/Citizens/mobs.yml");
+	public static void load() {
+		config.load();
+		mobs.load();
 	}
 
-	public static Storage getSettings() {
-		return settings;
+	public static Storage getConfig() {
+		return config;
 	}
 
 	public static Storage getMobSettings() {
@@ -32,16 +34,16 @@ public class UtilityProperties {
 	}
 
 	public static double getPrice(String path) {
-		return settings.getDouble("economy.prices." + path);
+		return config.getDouble("economy.prices." + path);
 	}
 
 	public static int getCurrencyID(String string) {
-		int ID = settings.getInt(string);
+		int ID = config.getInt(string);
 		return ID == -1 ? 1 : ID;
 	}
 
 	public static String getItemOverride(int ID) {
-		return settings.getString("items.overrides." + ID);
+		return config.getString("items.overrides." + ID);
 	}
 
 	public static ItemStack getRandomDrop(String drops) {
@@ -68,7 +70,7 @@ public class UtilityProperties {
 
 	// returns whether the given item ID is usable as a tool
 	public static boolean isHoldingTool(String key, Player player) {
-		List<String> item = Arrays.asList(getSettings().getString(
+		List<String> item = Arrays.asList(config.getString(
 				Settings.getPath(key)).split(","));
 		if (item.contains("*")) {
 			return true;

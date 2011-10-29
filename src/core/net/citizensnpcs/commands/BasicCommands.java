@@ -246,7 +246,7 @@ public class BasicCommands extends CommandHandler {
 	public static void debug(CommandContext args, CommandSender sender,
 			HumanNPC npc) {
 		boolean debug = Settings.getBoolean("DebugMode");
-		UtilityProperties.getSettings().setRaw("general.debug-mode", !debug);
+		UtilityProperties.getConfig().setRaw("general.debug-mode", !debug);
 		debug = !debug;
 		if (debug) {
 			Messaging.log("Debug mode is now on.");
@@ -608,8 +608,7 @@ public class BasicCommands extends CommandHandler {
 					+ StringUtils.wrap("Citizens") + "] Reloading....");
 		}
 
-		UtilityProperties.initialize();
-		PropertyManager.saveState();
+		UtilityProperties.load();
 		PropertyManager.loadAll();
 		Settings.setupVariables();
 

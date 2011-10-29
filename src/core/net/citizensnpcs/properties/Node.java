@@ -22,7 +22,7 @@ public class Node {
 	public Storage getFile() {
 		switch (this.getType()) {
 		case GENERAL:
-			return UtilityProperties.getSettings();
+			return UtilityProperties.getConfig();
 		case MOB:
 			return UtilityProperties.getMobSettings();
 		}
