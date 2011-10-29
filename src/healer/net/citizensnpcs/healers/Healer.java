@@ -51,8 +51,7 @@ public class Healer extends CitizensNPC {
 			Healer healer = npc.getType("healer");
 			int playerHealth = player.getHealth();
 			int healerHealth = healer.getHealth();
-			if (player.getItemInHand().getTypeId() == Settings
-					.getInt("HealerTakeHealthItem")) {
+			if (UtilityProperties.isHoldingTool("HealerTakeHealthItem", player)) {
 				if (playerHealth == 20) {
 					player.sendMessage(ChatColor.GREEN
 							+ "You are fully healed.");
@@ -69,8 +68,7 @@ public class Healer extends CitizensNPC {
 						double paid = Economy.pay(player,
 								UtilityProperties.getPrice("healer.heal"));
 						if (paid >= 0) {
-							player.sendMessage(StringUtils.wrap(npc
-									.getName())
+							player.sendMessage(StringUtils.wrap(npc.getName())
 									+ " has healed you for "
 									+ StringUtils.wrap(Economy.format(paid))
 									+ ".");
@@ -86,8 +84,8 @@ public class Healer extends CitizensNPC {
 				}
 				player.setHealth(player.getHealth() + 1);
 				healer.setHealth(healer.getHealth() - 1);
-			} else if (player.getItemInHand().getTypeId() == Settings
-					.getInt("HealerGiveHealthItem")) {
+			} else if (UtilityProperties.isHoldingTool("HealerGiveHealthItem",
+					player)) {
 				if (playerHealth >= 1) {
 					if (healerHealth < healer.getMaxHealth()) {
 						player.setHealth(playerHealth - 1);
@@ -96,8 +94,8 @@ public class Healer extends CitizensNPC {
 								+ "You donated some health to the healer "
 								+ StringUtils.wrap(npc.getName()) + ".");
 					} else {
-						player.sendMessage(StringUtils.wrap(npc
-								.getName()) + " is fully healed.");
+						player.sendMessage(StringUtils.wrap(npc.getName())
+								+ " is fully healed.");
 					}
 				} else {
 					player.sendMessage(ChatColor.GREEN

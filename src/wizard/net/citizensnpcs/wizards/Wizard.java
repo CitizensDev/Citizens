@@ -217,8 +217,7 @@ public class Wizard extends CitizensNPC {
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (PermissionManager.hasPermission(player,
 				"citizens.wizard.use.interact")) {
-			if (player.getItemInHand().getTypeId() == Settings
-					.getInt("WizardInteractItem")) {
+			if (UtilityProperties.isHoldingTool("WizardInteractItem", player)) {
 				Wizard wizard = npc.getType("wizard");
 				String msg = ChatColor.GREEN + "";
 				switch (wizard.getMode()) {
@@ -268,8 +267,7 @@ public class Wizard extends CitizensNPC {
 					player)) {
 				String msg = StringUtils.wrap(npc.getName() + "'s");
 				int mana = 0;
-				if (wizard.getMana() + 10 < Settings
-						.getInt("WizardMaxMana")) {
+				if (wizard.getMana() + 10 < Settings.getInt("WizardMaxMana")) {
 					mana = wizard.getMana() + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
