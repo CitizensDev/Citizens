@@ -1,6 +1,6 @@
 name: Citizens
 main: net.citizensnpcs.Citizens
-version: 1.1.1
+version: 1.1.2
 authors: [fullwall, aPunch]
 softdepend: [iConomy, Currency, BOSEconomy, Essentials, bPermissions, PermissionsEx, PermissionsBukkit]
 commands:
@@ -98,6 +98,9 @@ permissions:
                             citizens.trader.modify.stock: true
                             citizens.trader.modify.clearstock: true
                             citizens.trader.modify.lock: true
+                    citizens.trader.admin.*:
+                        children:
+                            citizens.trader.admin.useglobal: true
             citizens.basic.*:
                 children:
                         citizens.basic.create: true
@@ -111,6 +114,7 @@ permissions:
                                 citizens.basic.use.showmoney: true
                         citizens.basic.modify.*:
                             children:
+                                citizens.basic.modify.select: true
                                 citizens.basic.modify.move: true
                                 citizens.basic.modify.moveto: true
                                 citizens.basic.modify.copy: true
