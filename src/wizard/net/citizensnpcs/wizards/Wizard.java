@@ -1,5 +1,9 @@
 package net.citizensnpcs.wizards;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
@@ -18,18 +22,21 @@ import org.bukkit.Location;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+
 public class Wizard extends CitizensNPC {
 	// TODO: using a string as storage for locations is baaaaad.
-	private String locations = "";
+	private final List<String> locations = Lists.newArrayList();
 	private int currentLocation = 0;
-	private int numberOfLocations = 0;
 	private Location currentLoc;
 	private WizardMode mode = WizardMode.TELEPORT;
 	private int mana = 10;
 	private String time = "morning";
 	private CreatureType mob = CreatureType.CHICKEN;
+	private int mobIndex = 0;
 	private boolean unlimitedMana = false;
-	private String command = "";
 
 	// Adds a location to the main location sting.
 	public void addLocation(Location location, String locName) {
@@ -37,111 +44,64 @@ public class Wizard extends CitizensNPC {
 		addedLoc = "(" + locName + "," + location.getWorld().getName() + ","
 				+ location.getX() + "," + location.getY() + ","
 				+ location.getZ() + "," + location.getYaw() + ","
-				+ location.getPitch() + "):";
-		locations = locations + addedLoc;
-		numberOfLocations = locations.split(":").length;
-		if (numberOfLocations == 1 && locations.split(":")[0].isEmpty()) {
-			numberOfLocations = 0;
-			locations = "";
-		}
+				+ location.getPitch() + ")";
+		locations.add(addedLoc);
 	}
 
 	// Returns the main location string
-	public String getLocations() {
+	public Collection<String> getLocations() {
 		return locations;
 	}
 
-	// Sets all the locations of the wizard (one big combined string)
-	public void setLocations(String locationsinc) {
-		locations = locationsinc;
-		numberOfLocations = locations.split(":").length;
-		if (numberOfLocations == 1 && locations.split(":")[0].isEmpty()) {
-			numberOfLocations = 0;
-			locations = "";
+	public boolean removeLocation(String string) {
+		Iterator<String> iter = locations.iterator();
+		while (iter.hasNext()) {
+			if (iter.next().split(",")[0].replace("(", "").equalsIgnoreCase(
+					string)) {
+				iter.remove();
+				return true;
+			}
 		}
+		return false;
 	}
 
 	// Sets the next location in the list as active.
-	public void cycle(HumanNPC npc, WizardMode mode) {
-		Wizard wizard = npc.getType("wizard");
+	public void cycle() {
 		switch (mode) {
 		case TELEPORT:
-			currentLocation++;
-			if (currentLocation >= numberOfLocations) {
+			if (++currentLocation >= locations.size()) {
 				currentLocation = 0;
 			}
 			break;
 		case SPAWN:
-			CreatureType type = wizard.getMob();
-			CreatureType newType = null;
-			switch (type) {
-			case PIG:
-				newType = CreatureType.WOLF;
-				break;
-			case WOLF:
-				newType = CreatureType.COW;
-				break;
-			case COW:
-				newType = CreatureType.CHICKEN;
-				break;
-			case CHICKEN:
-				newType = CreatureType.SHEEP;
-				break;
-			case SHEEP:
-				newType = CreatureType.SQUID;
-				break;
-			case SQUID:
-				newType = CreatureType.PIG_ZOMBIE;
-				break;
-			case PIG_ZOMBIE:
-				newType = CreatureType.GHAST;
-				break;
-			case GHAST:
-				newType = CreatureType.GIANT;
-				break;
-			case GIANT:
-				newType = CreatureType.CREEPER;
-				break;
-			case CREEPER:
-				newType = CreatureType.ZOMBIE;
-				break;
-			case ZOMBIE:
-				newType = CreatureType.SPIDER;
-				break;
-			case SPIDER:
-				newType = CreatureType.SKELETON;
-				break;
-			case SKELETON:
-				newType = CreatureType.PIG;
-				break;
-			}
-			wizard.setMob(newType);
+			this.mob = CreatureType.values()[mobIndex >= CreatureType.values().length ? (mobIndex = 0)
+					: ++mobIndex];
 			break;
 		case TIME:
-			String time = wizard.getTime();
+			String time = this.time;
 			String newTime = "";
-			if (time.equals("day")) {
-				newTime = "afternoon";
-			} else if (time.equals("night")) {
-				newTime = "morning";
-			} else if (time.equals("morning")) {
+			if (time.equals("morning")) {
 				newTime = "day";
+			} else if (time.equals("day")) {
+				newTime = "afternoon";
 			} else if (time.equals("afternoon")) {
 				newTime = "night";
+			} else if (time.equals("night")) {
+				newTime = "morning";
 			}
-			wizard.setTime(newTime);
+			this.time = newTime;
 			break;
 		}
 	}
 
 	// Returns the total amount of locations bound to the wizard.
 	public int getNumberOfLocations() {
-		return numberOfLocations;
+		return locations.size();
 	}
 
 	// Return the current active teleport location for the wizard.
 	public Location getCurrentLocation() {
-		String locs[] = locations.split(":")[currentLocation].split(",");
+		String locs[] = locations.get(currentLocation).split(",");
 		this.currentLoc = new Location(Bukkit.getServer().getWorld(locs[1]),
 				Double.parseDouble(locs[2]), Double.parseDouble(locs[3]),
 				Double.parseDouble(locs[4]), Float.parseFloat(locs[5]),
@@ -151,8 +111,7 @@ public class Wizard extends CitizensNPC {
 
 	// Return the current active teleport location name for the wizard.
 	public String getCurrentLocationName() {
-		String locs[] = locations.split(":")[currentLocation].split(",");
-		return locs[0].replace("(", "");
+		return locations.get(mobIndex).split(",")[0].replace("(", "");
 	}
 
 	// Get the mana that a wizard NPC has remaining
@@ -190,11 +149,6 @@ public class Wizard extends CitizensNPC {
 		return mob;
 	}
 
-	// Set the mob that a wizard will spawn
-	public void setMob(CreatureType mob) {
-		this.mob = mob;
-	}
-
 	// Get whether a wizard has unlimited mana
 	public boolean hasUnlimitedMana() {
 		return unlimitedMana;
@@ -205,45 +159,31 @@ public class Wizard extends CitizensNPC {
 		this.unlimitedMana = unlimitedMana;
 	}
 
-	// Get a wizard's current command to execute
-	public String getCommand() {
-		return command;
-	}
-
-	// Set the command for a wizard to execute
-	public void setCommand(String command) {
-		this.command = command;
-	}
-
 	@Override
 	public void onLeftClick(Player player, HumanNPC npc) {
 		if (PermissionManager.hasPermission(player,
 				"citizens.wizard.use.interact")) {
 			if (UtilityProperties.isHoldingTool("WizardInteractItem", player)) {
-				Wizard wizard = npc.getType("wizard");
-				String msg = ChatColor.GREEN + "";
-				switch (wizard.getMode()) {
+				String msg = ChatColor.GREEN.toString();
+				switch (mode) {
 				case TELEPORT:
-					if (wizard.getNumberOfLocations() > 0) {
-						wizard.cycle(npc, WizardMode.TELEPORT);
+					if (locations.size() > 0) {
+						cycle();
 						msg += "Location set to "
-								+ StringUtils.wrap(wizard
-										.getCurrentLocationName());
+								+ StringUtils.wrap(getCurrentLocationName());
 					} else {
 						msg += ChatColor.RED + npc.getName()
 								+ " has no locations.";
 					}
 					break;
 				case SPAWN:
-					wizard.cycle(npc, WizardMode.SPAWN);
+					cycle();
 					msg += "Mob to spawn set to "
-							+ StringUtils.wrap(StringUtils.format(wizard
-									.getMob()));
+							+ StringUtils.wrap(StringUtils.format(mob));
 					break;
 				case TIME:
-					wizard.cycle(npc, WizardMode.TIME);
-					msg += "Time setting set to "
-							+ StringUtils.wrap(wizard.getTime());
+					cycle();
+					msg += "Time setting set to " + StringUtils.wrap(time);
 					break;
 				case WEATHER:
 					return;
@@ -302,7 +242,7 @@ public class Wizard extends CitizensNPC {
 		profiles.setString(UID + ".wizard.mode", mode.name());
 		profiles.setInt(UID + ".wizard.mana", mana);
 		profiles.setString(UID + ".wizard.locations",
-				locations.replace(")(", "):("));
+				Joiner.on(":").join(locations).replace(")(", "):("));
 		profiles.setString(UID + ".wizard.mob", mob.name());
 	}
 
@@ -315,10 +255,12 @@ public class Wizard extends CitizensNPC {
 				.parse(profiles.getString(UID + ".wizard.mode"))
 				: WizardMode.TELEPORT;
 		mana = profiles.getInt(UID + ".wizard.mana", 10);
-		locations = profiles.getString(UID + ".wizard.locations").replace(")(",
-				"):(");
+		for (String location : Splitter.on(":").split(
+				profiles.getString(UID + ".wizard.locations")))
+			locations.add(location);
 		mob = (CreatureType.fromName(profiles.getString(UID + ".wizard.mob")) != null) ? CreatureType
 				.fromName(profiles.getString(UID + ".wizard.mob"))
 				: CreatureType.CREEPER;
+		mobIndex = mob.ordinal();
 	}
 }

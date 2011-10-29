@@ -54,8 +54,7 @@ public class WizardCommands extends CommandHandler {
 			Wizard wizard = npc.getType("wizard");
 			if (wizardMode != wizard.getMode()) {
 				wizard.setMode(wizardMode);
-				player.sendMessage(StringUtils.wrap(npc.getName()
-						+ "'s")
+				player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
 						+ " mode was set to "
 						+ StringUtils
 								.wrap(wizardMode.name().toLowerCase() + "")
@@ -98,8 +97,7 @@ public class WizardCommands extends CommandHandler {
 			usage = "addloc [location]",
 			desc = "add a location to a wizard",
 			modifiers = "addloc",
-			min = 2,
-			max = 2)
+			min = 2)
 	@CommandPermissions("wizard.modify.addloc")
 	public static void addLocation(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -110,9 +108,9 @@ public class WizardCommands extends CommandHandler {
 			return;
 		}
 		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.wrap(npc.getName()) + ChatColor.GREEN
-				+ " as " + StringUtils.wrap(args.getString(1)) + ".");
-		wizard.addLocation(player.getLocation(), args.getString(1));
+				+ StringUtils.wrap(npc.getName()) + " as "
+				+ StringUtils.wrap(args.getJoinedStrings(1)) + ".");
+		wizard.addLocation(player.getLocation(), args.getJoinedStrings(1));
 	}
 
 	@Command(
@@ -121,7 +119,7 @@ public class WizardCommands extends CommandHandler {
 			desc = "remove a location from a wizard",
 			modifiers = "removeloc",
 			min = 2,
-			max = 2)
+			max = -1)
 	@CommandPermissions("wizard.modify.removeloc")
 	public static void removeLocation(CommandContext args, Player player,
 			HumanNPC npc) {
@@ -131,21 +129,12 @@ public class WizardCommands extends CommandHandler {
 					+ " is not in teleport mode.");
 			return;
 		}
-		String locations[] = wizard.getLocations().split(":");
-		String removedName = "";
-		StringBuilder newLoc = new StringBuilder();
-		for (int i = 0; i < locations.length; i++) {
-			if (i + 1 != Integer.parseInt(args.getString(1))) {
-				newLoc.append(locations[i]);
-			} else {
-				removedName = locations[i].split(",")[0].replace("(", "");
-			}
-		}
-		wizard.cycle(npc, WizardMode.TELEPORT);
-		wizard.setLocations(newLoc.toString());
-		player.sendMessage(StringUtils.wrap(npc.getName())
+		boolean success = wizard.removeLocation(args.getJoinedStrings(1));
+		wizard.cycle();
+		player.sendMessage((success ? StringUtils.wrap(npc.getName())
 				+ " has amnesia and forgot about "
-				+ StringUtils.wrap(removedName) + ".");
+				+ StringUtils.wrap(args.getString(1)) + "."
+				: "No location by that name found."));
 	}
 
 	@Command(
@@ -167,11 +156,11 @@ public class WizardCommands extends CommandHandler {
 		player.sendMessage(ChatColor.GREEN
 				+ StringUtils.listify(StringUtils.wrap(npc.getName()
 						+ "'s Wizard Locations")));
-		String locations[] = wizard.getLocations().split(":");
-		for (int i = 0; i < locations.length; i++) {
-			player.sendMessage(ChatColor.YELLOW + "" + (i + 1)
-					+ ChatColor.GREEN + ": "
-					+ locations[i].split(",")[0].replace("(", ""));
+		int i = 1;
+		for (String location : wizard.getLocations()) {
+			player.sendMessage(StringUtils.wrap(i) + ": "
+					+ location.split(",")[0].replace("(", ""));
+			++i;
 		}
 	}
 
