@@ -53,7 +53,6 @@ public class NPCReward implements Reward {
 	public static class NPCRewardBuilder implements RewardBuilder {
 		@Override
 		public Reward build(Storage storage, String root, boolean take) {
-			root += ".npc";
 			if (storage.keyExists(root + ".npcid"))
 				return new NPCGiveReward(storage.getInt(root + ".npcid"));
 			return new NPCReward(storage.getString(root + ".name"), storage
