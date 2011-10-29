@@ -51,37 +51,35 @@ public class Soldier implements GuardUpdater {
 
 		@Override
 		public void onPlayerInteract(PlayerInteractEvent event) {
+			Selection<HumanNPC> selection = getSelection(event.getPlayer());
 			if (event.getAction() != Action.RIGHT_CLICK_BLOCK
+					|| selection.size() == 0
 					|| !UtilityProperties.isHoldingTool("SoldierSelectTool",
 							event.getPlayer())) {
 				if ((event.getAction() == Action.RIGHT_CLICK_AIR || event
 						.getAction() == Action.RIGHT_CLICK_BLOCK)
+						&& selection.size() > 0
 						&& UtilityProperties.isHoldingTool(
 								"SoldierDeselectAllTool", event.getPlayer())) {
-					Selection<HumanNPC> selection = getSelection(event
-							.getPlayer());
-					if (selection.size() > 0)
-						event.getPlayer().sendMessage(
-								ChatColor.GRAY
-										+ "Deselecting "
-										+ StringUtils.wrap(selection.size(),
-												ChatColor.GRAY)
-										+ StringUtils.pluralise(" NPC",
-												selection.size()) + ".");
+					event.getPlayer().sendMessage(
+							ChatColor.GRAY
+									+ "Deselecting "
+									+ StringUtils.wrap(selection.size(),
+											ChatColor.GRAY)
+									+ StringUtils.pluralise(" NPC",
+											selection.size()) + ".");
 					selection.deselectAll();
 				}
 				return;
 			}
-			int count = 0;
 			for (HumanNPC npc : getSelection(event.getPlayer())) {
 				PathUtils.createPath(npc,
 						event.getClickedBlock().getLocation(), -1);
-				++count;
 			}
 			event.getPlayer().sendMessage(
-					count > 0 ? StringUtils.wrap(count) + " "
-							+ StringUtils.pluralise("NPC", count) + " enroute."
-							: ChatColor.GRAY + "No NPCs selected.");
+					StringUtils.wrap(selection.size()) + " "
+							+ StringUtils.pluralise("NPC", selections.size())
+							+ " enroute.");
 		}
 
 		@Override
