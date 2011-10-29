@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.inventory.ItemStack;
@@ -109,21 +107,5 @@ public class TraderProperties extends PropertyManager implements Properties {
 	@Override
 	public List<Node> getNodes() {
 		return null;
-	}
-
-	public static void loadGlobal() {
-		Storage storage = UtilityProperties.getConfig();
-		for (Object key : storage.getKeys("traders.global-prices")) {
-			String path = "traders.global-prices." + key;
-			int itemID = storage.getInt(path + ".id", 1);
-			int amount = storage.getInt(path + ".amount", 1);
-			short data = (short) storage.getInt(path + ".data");
-			double price = storage.getDouble(path + ".price");
-			boolean selling = storage.getBoolean(path + ".selling", false);
-			if (itemID > 0 && amount > 0) {
-				Trader.addGlobal(new Stockable(new ItemStack(itemID, amount,
-						data), new ItemPrice(price), selling));
-			}
-		}
 	}
 }

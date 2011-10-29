@@ -6,6 +6,6 @@ import net.citizensnpcs.api.event.CitizensListener;
 public class CitizensListen extends CitizensListener {
 	@Override
 	public void onCitizensEnable(CitizensEnableEvent event) {
-		TraderProperties.loadGlobal();
+		Trader.loadGlobal();
 	}
 }

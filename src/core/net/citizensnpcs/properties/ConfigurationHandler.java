@@ -161,8 +161,11 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public double getDouble(String path) {
 		if (pathExists(path)) {
-			if (config.getString(path) == null)
+			if (config.getString(path) == null) {
+				if (config.get(path) instanceof Integer)
+					return config.getInt(path);
 				return config.getDouble(path);
+			}
 			return Double.parseDouble(this.config.getString(path));
 		}
 		return 0;

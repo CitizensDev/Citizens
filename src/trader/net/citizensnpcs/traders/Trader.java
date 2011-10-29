@@ -10,6 +10,7 @@ import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -17,13 +18,28 @@ import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
 public class Trader extends CitizensNPC {
-	public static void addGlobal(Stockable stock) {
-		globalStock.put(stock.createCheck(), stock);
+
+	public static void loadGlobal() {
+		Storage storage = UtilityProperties.getConfig();
+		for (Object key : storage.getKeys("traders.global-prices")) {
+			String path = "traders.global-prices." + key;
+			int itemID = storage.getInt(path + ".id", 1);
+			int amount = storage.getInt(path + ".amount", 1);
+			short data = (short) storage.getInt(path + ".data");
+			double price = storage.getDouble(path + ".price");
+			boolean selling = storage.getBoolean(path + ".selling", false);
+			if (itemID > 0 && amount > 0) {
+				Stockable stock = new Stockable(new ItemStack(itemID, amount,
+						data), new ItemPrice(price), selling);
+				globalStock.put(stock.createCheck(), stock);
+			}
+		}
 	}
 
 	private boolean unlimited = false;
