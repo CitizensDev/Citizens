@@ -65,7 +65,8 @@ public class GuardProperties extends PropertyManager implements Properties {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (isEnabled(npc)) {
-			npc.registerType("guard");
+			if (!npc.isType("guard"))
+				npc.registerType("guard");
 			Guard guard = npc.getType("guard");
 			guard.load(profiles, npc.getUID());
 			loadFlags(guard, npc.getUID());

@@ -39,6 +39,9 @@ public class HumanNPC extends NPC {
 	}
 
 	public <T extends CitizensNPC> void addType(String type) {
+		if (!NPCTypeManager.validType(type))
+			throw new IllegalArgumentException("illegal type: " + type
+					+ " added to: " + this.getUID());
 		registerType(type);
 		PropertyManager.load(type, this);
 	}

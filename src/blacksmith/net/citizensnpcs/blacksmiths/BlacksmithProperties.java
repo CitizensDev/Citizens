@@ -32,7 +32,8 @@ public class BlacksmithProperties extends PropertyManager implements Properties 
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (isEnabled(npc)) {
-			npc.registerType("blacksmith");
+			if (!npc.isType("blacksmith"))
+				npc.registerType("blacksmith");
 			Blacksmith blacksmith = npc.getType("blacksmith");
 			blacksmith.load(profiles, npc.getUID());
 		}

@@ -33,7 +33,8 @@ public class WizardProperties extends PropertyManager implements Properties {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (isEnabled(npc)) {
-			npc.registerType("wizard");
+			if (!npc.isType("wizard"))
+				npc.registerType("wizard");
 			Wizard wizard = npc.getType("wizard");
 			wizard.load(profiles, npc.getUID());
 		}

@@ -31,7 +31,8 @@ public class QuesterProperties extends PropertyManager implements Properties {
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.registerType("quester");
+		if (!npc.isType("quester"))
+			npc.registerType("quester");
 		Quester quester = npc.getType("quester");
 		quester.load(profiles, npc.getUID());
 		saveState(npc);

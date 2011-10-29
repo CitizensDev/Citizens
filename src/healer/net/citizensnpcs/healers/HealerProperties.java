@@ -33,7 +33,8 @@ public class HealerProperties extends PropertyManager implements Properties {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (isEnabled(npc)) {
-			npc.registerType("healer");
+			if (!npc.isType("healer"))
+				npc.registerType("healer");
 			Healer healer = npc.getType("healer");
 			healer.load(profiles, npc.getUID());
 		}

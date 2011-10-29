@@ -608,7 +608,6 @@ public class BasicCommands extends CommandHandler {
 					+ StringUtils.wrap("Citizens") + "] Reloading....");
 		}
 
-		UtilityProperties.load();
 		PropertyManager.loadAll();
 		Settings.setupVariables();
 

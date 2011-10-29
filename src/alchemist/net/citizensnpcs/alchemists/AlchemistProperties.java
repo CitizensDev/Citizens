@@ -65,7 +65,8 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 
 	@Override
 	public void loadState(HumanNPC npc) {
-		npc.registerType("alchemist");
+		if (!npc.isType("alchemist"))
+			npc.registerType("alchemist");
 		Alchemist alchemist = npc.getType("alchemist");
 		alchemist.load(profiles, npc.getUID());
 		alchemist.setRecipes(getRecipes(npc.getUID()));

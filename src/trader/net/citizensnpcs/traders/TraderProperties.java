@@ -77,7 +77,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 	@Override
 	public void loadState(HumanNPC npc) {
 		if (isEnabled(npc)) {
-			npc.registerType("trader");
+			if (!npc.isType("trader"))
+				npc.registerType("trader");
 			Trader trader = npc.getType("trader");
 			trader.setStocking(getStockables(npc.getUID()));
 			trader.load(profiles, npc.getUID());

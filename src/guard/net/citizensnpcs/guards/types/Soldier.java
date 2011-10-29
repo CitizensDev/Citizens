@@ -111,6 +111,8 @@ public class Soldier implements GuardUpdater {
 
 		private void attack(Player player, LivingEntity attack,
 				Selection<HumanNPC> selection) {
+			if (selection.size() == 0)
+				return;
 			for (HumanNPC npc : selection) {
 				PathUtils.target(npc, attack, true, -1);
 			}
