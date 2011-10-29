@@ -270,19 +270,23 @@ public class TraderCommands extends CommandHandler {
 
 	@Command(
 			aliases = "trader",
-			usage = "useglobal",
+			usage = "useglobal [buy|sell]",
 			desc = "toggle usage of global stock",
 			modifiers = "useglobal",
-			min = 1,
-			max = 1)
+			min = 2,
+			max = 2)
 	@CommandPermissions("trader.admin.useglobal")
 	public static void setUseGlobal(CommandContext args, Player player,
 			HumanNPC npc) {
 		Trader trader = npc.getType("trader");
-		trader.setUseGlobal(!trader.isUseGlobal());
+		boolean selling = args.getString(1).equalsIgnoreCase("sell");
+		String keyword = selling ? "selling" : "buying";
+		trader.setUseGlobal(!trader.isUseGlobal(selling), selling);
 		player.sendMessage(ChatColor.GREEN
-				+ (trader.isLocked() ? "The trader will now use global stock."
-						: "The trader will no longer use global stock."));
+				+ (trader.isLocked() ? "The trader will now use global "
+						+ keyword + " stock."
+						: "The trader will no longer use global " + keyword
+								+ " stock."));
 	}
 
 	private static ItemPrice createItemPrice(Player player, String price) {
@@ -350,6 +354,8 @@ public class TraderCommands extends CommandHandler {
 		HelpUtils.format(sender, "trader",
 				"[buy|sell] edit [itemID(:amount:data)] [price]",
 				"edit a trader's stock");
+		HelpUtils.format(sender, "trader", "useglobal [buy|sell]",
+				"toggle using global stock");
 		HelpUtils.format(sender, "trader", "unlimited",
 				"set whether a trader has unlimited stock");
 		HelpUtils.format(sender, "trader", "clear [buy|sell]",

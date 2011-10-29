@@ -31,7 +31,7 @@ public class Trader extends CitizensNPC {
 	private boolean locked = false;
 	private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
 
-	private boolean useGlobal;
+	private boolean useGlobalBuy, useGlobalSell;
 
 	private static Map<Check, Stockable> globalStock = Maps.newHashMap();
 
@@ -46,8 +46,9 @@ public class Trader extends CitizensNPC {
 	private Stockable fetchStockable(int itemID, short dataValue,
 			boolean selling) {
 		Check check = new Check(itemID, dataValue, selling);
-		return stocking.containsKey(check) ? stocking.get(check)
-				: isUseGlobal() ? globalStock.get(check) : null;
+		return stocking.containsKey(check) ? stocking.get(check) : (!selling
+				&& useGlobalBuy || selling && useGlobalSell) ? globalStock
+				.get(check) : null;
 	}
 
 	public Stockable getStockable(int itemID, short dataValue, boolean selling) {
@@ -99,15 +100,18 @@ public class Trader extends CitizensNPC {
 		return this.unlimited;
 	}
 
-	public boolean isUseGlobal() {
-		return useGlobal;
+	public boolean isUseGlobal(boolean sell) {
+		return sell ? useGlobalSell : useGlobalBuy;
 	}
 
 	@Override
 	public void load(Storage profiles, int UID) {
 		unlimited = profiles.getBoolean(UID + ".trader.unlimited");
 		locked = profiles.getBoolean(UID + ".trader.locked");
-		useGlobal = profiles.getBoolean(UID + ".trader.use-global", true);
+		useGlobalBuy = profiles
+				.getBoolean(UID + ".trader.use-global.buy", true);
+		useGlobalSell = profiles.getBoolean(UID + ".trader.use-global.sell",
+				true);
 	}
 
 	@Override
@@ -159,7 +163,8 @@ public class Trader extends CitizensNPC {
 	public void save(Storage profiles, int UID) {
 		profiles.setBoolean(UID + ".trader.unlimited", unlimited);
 		profiles.setBoolean(UID + ".trader.locked", locked);
-		profiles.setBoolean(UID + ".trader.use-global", useGlobal);
+		profiles.setBoolean(UID + ".trader.use-global.sell", useGlobalSell);
+		profiles.setBoolean(UID + ".trader.use-global.buy", useGlobalBuy);
 		profiles.setString(UID + ".trader.stock",
 				Joiner.on(";").join(stocking.values()));
 	}
@@ -180,7 +185,10 @@ public class Trader extends CitizensNPC {
 		this.unlimited = unlimited;
 	}
 
-	public void setUseGlobal(boolean useGlobal) {
-		this.useGlobal = useGlobal;
+	public void setUseGlobal(boolean useGlobal, boolean sell) {
+		if (sell)
+			this.useGlobalSell = useGlobal;
+		else
+			this.useGlobalBuy = useGlobal;
 	}
 }
