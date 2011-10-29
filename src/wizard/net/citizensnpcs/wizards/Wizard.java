@@ -55,8 +55,9 @@ public class Wizard extends CitizensNPC {
 	public void setLocations(String locationsinc) {
 		locations = locationsinc;
 		numberOfLocations = locations.split(":").length;
-		if (locations.split(":")[0].isEmpty()) {
+		if (numberOfLocations == 1 && locations.split(":")[0].isEmpty()) {
 			numberOfLocations = 0;
+			locations = "";
 		}
 	}
 

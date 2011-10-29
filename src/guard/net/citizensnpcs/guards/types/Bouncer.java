@@ -13,7 +13,7 @@ import org.bukkit.entity.LivingEntity;
 public class Bouncer implements GuardUpdater {
 
 	private boolean continueReturn(HumanNPC npc) {
-		return LocationUtils.withinRange(npc.getLocation(),
+		return !LocationUtils.withinRange(npc.getLocation(),
 				npc.getBaseLocation(), 3.5);
 	}
 
