@@ -33,7 +33,7 @@ public class Trader extends CitizensNPC {
 			int amount = storage.getInt(path + ".amount", 1);
 			short data = (short) storage.getInt(path + ".data");
 			double price = storage.getDouble(path + ".price");
-			boolean selling = storage.getBoolean(path + ".selling", false);
+			boolean selling = !storage.getBoolean(path + ".selling", false);
 			if (itemID > 0 && amount > 0) {
 				Stockable stock = new Stockable(new ItemStack(itemID, amount,
 						data), new ItemPrice(price), selling);

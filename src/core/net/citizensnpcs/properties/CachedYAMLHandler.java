@@ -88,11 +88,6 @@ public class CachedYAMLHandler implements Storage {
 		this.tree.remove(path);
 	}
 
-	@Override
-	public void removeKey(int path) {
-		removeKey("" + path);
-	}
-
 	public boolean pathExists(String path) {
 		return this.tree.get(path) != null;
 	}
@@ -118,11 +113,6 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public String getString(int path) {
-		return getString("" + path);
-	}
-
-	@Override
 	public String getString(String path, String value) {
 		if (valueExists(path)) {
 			return get(path);
@@ -133,18 +123,8 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public String getString(int path, String value) {
-		return getString("" + path, value);
-	}
-
-	@Override
 	public void setString(String path, String value) {
 		this.tree.set(path, value);
-	}
-
-	@Override
-	public void setString(int path, String value) {
-		setString("" + path, value);
 	}
 
 	public void forceSetString(String path, String value) {
@@ -161,11 +141,6 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public int getInt(int path) {
-		return getInt("" + path);
-	}
-
-	@Override
 	public int getInt(String path, int value) {
 		if (valueExists(path)) {
 			return getInt(path);
@@ -176,18 +151,8 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public int getInt(int path, int value) {
-		return getInt("" + path, value);
-	}
-
-	@Override
 	public void setInt(String path, int value) {
 		this.tree.set(path, String.valueOf(value));
-	}
-
-	@Override
-	public void setInt(int path, int value) {
-		setInt("" + path, value);
 	}
 
 	@Override
@@ -196,11 +161,6 @@ public class CachedYAMLHandler implements Storage {
 			return Double.parseDouble(get(path));
 		}
 		return 0;
-	}
-
-	@Override
-	public double getDouble(int path) {
-		return getDouble("" + path);
 	}
 
 	@Override
@@ -214,18 +174,8 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public double getDouble(int path, double value) {
-		return getDouble("" + path, value);
-	}
-
-	@Override
 	public void setDouble(String path, double value) {
 		this.tree.set(path, String.valueOf(value));
-	}
-
-	@Override
-	public void setDouble(int path, double value) {
-		setDouble("" + path, value);
 	}
 
 	@Override
@@ -234,11 +184,6 @@ public class CachedYAMLHandler implements Storage {
 			return Long.parseLong(get(path));
 		}
 		return 0;
-	}
-
-	@Override
-	public long getLong(int path) {
-		return getLong("" + path);
 	}
 
 	@Override
@@ -252,28 +197,13 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public long getLong(int path, long value) {
-		return getLong("" + path, value);
-	}
-
-	@Override
 	public void setLong(String path, long value) {
 		this.tree.set(path, String.valueOf(value));
 	}
 
 	@Override
-	public void setLong(int path, long value) {
-		setLong("" + path, value);
-	}
-
-	@Override
 	public boolean getBoolean(String path) {
 		return pathExists(path) && Boolean.parseBoolean(get(path));
-	}
-
-	@Override
-	public boolean getBoolean(int path) {
-		return getBoolean("" + path);
 	}
 
 	@Override
@@ -287,18 +217,8 @@ public class CachedYAMLHandler implements Storage {
 	}
 
 	@Override
-	public boolean getBoolean(int path, boolean value) {
-		return getBoolean("" + path, value);
-	}
-
-	@Override
 	public void setBoolean(String path, boolean value) {
 		this.tree.set(path, String.valueOf(value));
-	}
-
-	@Override
-	public void setBoolean(int path, boolean value) {
-		setBoolean("" + path, value);
 	}
 
 	@Override

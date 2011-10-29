@@ -88,7 +88,7 @@ public class Soldier implements GuardUpdater {
 		public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 			HumanNPC npc = NPCManager.get(event.getRightClicked());
 			boolean holding = UtilityProperties.isHoldingTool(
-					"SoldierSelectItem", event.getPlayer());
+					"SoldierSelectTool", event.getPlayer());
 			if (npc == null) {
 				if (holding && event.getRightClicked() instanceof LivingEntity)
 					attack(event.getPlayer(),

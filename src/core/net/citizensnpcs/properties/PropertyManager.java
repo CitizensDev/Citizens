@@ -68,7 +68,7 @@ public class PropertyManager {
 	}
 
 	public static void remove(HumanNPC npc) {
-		profiles.removeKey(npc.getUID());
+		profiles.removeKey("" + npc.getUID());
 	}
 
 	public static Properties get(String string) {
