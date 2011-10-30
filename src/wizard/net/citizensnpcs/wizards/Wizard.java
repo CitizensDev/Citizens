@@ -39,11 +39,10 @@ public class Wizard extends CitizensNPC {
 
 	// Adds a location to the main location sting.
 	public void addLocation(Location location, String locName) {
-		String addedLoc = "";
-		addedLoc = "(" + locName + "," + location.getWorld().getName() + ","
+		String addedLoc = locName + "," + location.getWorld().getName() + ","
 				+ location.getX() + "," + location.getY() + ","
 				+ location.getZ() + "," + location.getYaw() + ","
-				+ location.getPitch() + ")";
+				+ location.getPitch();
 		locations.add(addedLoc);
 	}
 
@@ -55,8 +54,7 @@ public class Wizard extends CitizensNPC {
 	public boolean removeLocation(String string) {
 		Iterator<String> iter = locations.iterator();
 		while (iter.hasNext()) {
-			if (iter.next().split(",")[0].replace("(", "").equalsIgnoreCase(
-					string)) {
+			if (iter.next().split(",")[0].equalsIgnoreCase(string)) {
 				iter.remove();
 				return true;
 			}
@@ -107,14 +105,14 @@ public class Wizard extends CitizensNPC {
 		return new Location(Bukkit.getServer().getWorld(locs[1]),
 				Double.parseDouble(locs[2]), Double.parseDouble(locs[3]),
 				Double.parseDouble(locs[4]), Float.parseFloat(locs[5]),
-				Float.parseFloat(locs[6].replace(")", "")));
+				Float.parseFloat(locs[6]));
 	}
 
 	// Return the current active teleport location name for the wizard.
 	public String getCurrentLocationName() {
 		if (currentLocation >= locations.size())
 			currentLocation = 0;
-		return locations.get(currentLocation).split(",")[0].replace("(", "");
+		return locations.get(currentLocation).split(",")[0];
 	}
 
 	// Get the mana that a wizard NPC has remaining
@@ -242,8 +240,8 @@ public class Wizard extends CitizensNPC {
 		profiles.setString(UID + ".wizard.time", time);
 		profiles.setString(UID + ".wizard.mode", mode.name());
 		profiles.setInt(UID + ".wizard.mana", mana);
-		profiles.setString(UID + ".wizard.locations",
-				Joiner.on(":").join(locations).replace(")(", "):("));
+		profiles.setString(UID + ".wizard.locations", Joiner.on(":")
+				.skipNulls().join(locations));
 		profiles.setString(UID + ".wizard.mob", mob.name());
 	}
 
@@ -256,12 +254,16 @@ public class Wizard extends CitizensNPC {
 				.parse(profiles.getString(UID + ".wizard.mode"))
 				: WizardMode.TELEPORT;
 		mana = profiles.getInt(UID + ".wizard.mana", 10);
-		for (String location : Splitter.on(":").split(
-				profiles.getString(UID + ".wizard.locations")))
-			locations.add(location);
+		for (String location : splitter.split(profiles.getString(UID
+				+ ".wizard.locations"))) {
+			locations.add(location.replace("(", "").replace(")", ""));
+		}
 		mob = (CreatureType.fromName(profiles.getString(UID + ".wizard.mob")) != null) ? CreatureType
 				.fromName(profiles.getString(UID + ".wizard.mob"))
 				: CreatureType.CREEPER;
 		mobIndex = mob.ordinal();
 	}
+
+	private static final Splitter splitter = Splitter.on(":")
+			.omitEmptyStrings().trimResults();
 }

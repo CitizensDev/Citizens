@@ -159,7 +159,7 @@ public class WizardCommands extends CommandHandler {
 		int i = 1;
 		for (String location : wizard.getLocations()) {
 			player.sendMessage(StringUtils.wrap(i) + ": "
-					+ location.split(",")[0].replace("(", ""));
+					+ location.split(",")[0]);
 			++i;
 		}
 	}
