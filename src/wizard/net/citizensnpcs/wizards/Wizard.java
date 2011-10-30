@@ -30,7 +30,6 @@ public class Wizard extends CitizensNPC {
 	// TODO: using a string as storage for locations is baaaaad.
 	private final List<String> locations = Lists.newArrayList();
 	private int currentLocation = 0;
-	private Location currentLoc;
 	private WizardMode mode = WizardMode.TELEPORT;
 	private int mana = 10;
 	private String time = "morning";
@@ -69,7 +68,8 @@ public class Wizard extends CitizensNPC {
 	public void cycle() {
 		switch (mode) {
 		case TELEPORT:
-			if (++currentLocation >= locations.size()) {
+			++currentLocation;
+			if (currentLocation >= locations.size()) {
 				currentLocation = 0;
 			}
 			break;
@@ -101,17 +101,20 @@ public class Wizard extends CitizensNPC {
 
 	// Return the current active teleport location for the wizard.
 	public Location getCurrentLocation() {
+		if (currentLocation >= locations.size())
+			currentLocation = 0;
 		String locs[] = locations.get(currentLocation).split(",");
-		this.currentLoc = new Location(Bukkit.getServer().getWorld(locs[1]),
+		return new Location(Bukkit.getServer().getWorld(locs[1]),
 				Double.parseDouble(locs[2]), Double.parseDouble(locs[3]),
 				Double.parseDouble(locs[4]), Float.parseFloat(locs[5]),
 				Float.parseFloat(locs[6].replace(")", "")));
-		return this.currentLoc;
 	}
 
 	// Return the current active teleport location name for the wizard.
 	public String getCurrentLocationName() {
-		return locations.get(mobIndex).split(",")[0].replace("(", "");
+		if (currentLocation >= locations.size())
+			currentLocation = 0;
+		return locations.get(currentLocation).split(",")[0].replace("(", "");
 	}
 
 	// Get the mana that a wizard NPC has remaining
@@ -201,20 +204,18 @@ public class Wizard extends CitizensNPC {
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (PermissionManager.hasPermission(player,
 				"citizens.wizard.use.interact")) {
-			Wizard wizard = npc.getType("wizard");
 			if (UtilityProperties.isHoldingTool("WizardInteractItem", player)) {
-				WizardManager.handleRightClick(player, npc, "wizard."
-						+ wizard.getMode().toString());
+				WizardManager.handleRightClick(player, npc,
+						"wizard." + mode.toString());
 			} else if (UtilityProperties.isHoldingTool("WizardManaRegenItem",
 					player)) {
 				String msg = StringUtils.wrap(npc.getName() + "'s");
 				int mana = 0;
-				if (wizard.getMana() + 10 < Settings.getInt("WizardMaxMana")) {
-					mana = wizard.getMana() + 10;
+				if (mana + 10 < Settings.getInt("WizardMaxMana")) {
+					mana = mana + 10;
 					msg += " mana has been increased to "
 							+ StringUtils.wrap(mana) + ".";
-				} else if (wizard.getMana() + 10 == Settings
-						.getInt("WizardMaxMana")) {
+				} else if (mana + 10 == Settings.getInt("WizardMaxMana")) {
 					mana = Settings.getInt("WizardMaxMana");
 					msg += " mana has been fully replenished.";
 				} else {
@@ -223,7 +224,7 @@ public class Wizard extends CitizensNPC {
 				}
 				InventoryUtils.decreaseItemInHand(player);
 				player.sendMessage(msg);
-				wizard.setMana(mana);
+				this.mana = mana;
 			}
 		} else {
 			player.sendMessage(MessageUtils.noPermissionsMessage);
