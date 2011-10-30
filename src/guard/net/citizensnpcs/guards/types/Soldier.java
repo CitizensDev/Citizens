@@ -29,6 +29,7 @@ import com.google.common.collect.Maps;
 public class Soldier implements GuardUpdater {
 	public Soldier() {
 		PlayerListener listener = new SelectionHooks();
+		NPCTypeManager.registerEvent(Type.PLAYER_QUIT, listener);
 		NPCTypeManager.registerEvent(Type.PLAYER_LOGIN, listener);
 		NPCTypeManager.registerEvent(Type.PLAYER_INTERACT, listener);
 		NPCTypeManager.registerEvent(Type.PLAYER_INTERACT_ENTITY, listener);

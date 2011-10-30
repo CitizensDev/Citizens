@@ -10,6 +10,7 @@ import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
@@ -27,7 +28,8 @@ public class LocationQuest implements QuestUpdater {
 			PlayerMoveEvent ev = (PlayerMoveEvent) event;
 			Objective objective = progress.getObjective();
 			if (LocationUtils.withinRange(ev.getTo(), objective.getLocation(),
-					objective.getAmount())) {
+					objective.getAmount())
+					&& withinYawRange(ev.getTo(), objective)) {
 				if (!objective.hasParameter("time"))
 					return true;
 				return updateTime(objective.getParameter("time").getInt(),
@@ -36,6 +38,18 @@ public class LocationQuest implements QuestUpdater {
 				reachTimes.remove(progress.getPlayer());
 		}
 		return false;
+	}
+
+	private boolean withinYawRange(Location to, Objective objective) {
+		if (objective.getLocation().getYaw() == 0
+				&& objective.getLocation().getPitch() == 0)
+			return true;
+		float yaw1 = to.getYaw(), yaw2 = objective.getLocation().getYaw(), pitch1 = to
+				.getPitch(), pitch2 = objective.getLocation().getPitch();
+		return (yaw1 + objective.getAmount() >= yaw2 && yaw2 >= yaw1
+				- objective.getAmount())
+				&& (pitch1 + objective.getAmount() >= pitch2 && pitch2 >= pitch1
+						- objective.getAmount());
 	}
 
 	private boolean updateTime(int ticks, Player player) {
