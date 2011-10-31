@@ -17,6 +17,7 @@ public class BlacksmithManager {
 			"stone", "iron", "diamond", "leather", "chainmail" };
 
 	// Repair an item
+	@SuppressWarnings("deprecation")
 	public static void repairItem(Player player, HumanNPC npc, String repairType) {
 		ItemStack item = player.getItemInHand();
 		if (item.getDurability() > 0) {
@@ -24,42 +25,42 @@ public class BlacksmithManager {
 					+ " has repaired your "
 					+ StringUtils.wrap(MessageUtils.getMaterialName(item
 							.getTypeId()) + ".");
-			if (Economy.useEconPlugin()) {
-				if (Economy.hasEnough(player,
-						getBlacksmithPrice(player, repairType))) {
-					double paid = Economy.pay(player,
-							getBlacksmithPrice(player, repairType));
-					Economy.pay(npc,
-							getBlacksmithPrice(player, repairType));
-					if (paid > 0) {
-						player.sendMessage(StringUtils.wrap(npc
-								.getName())
-								+ " has repaired your "
-								+ StringUtils.wrap(MessageUtils
-										.getMaterialName(item.getTypeId()))
-								+ " for "
-								+ StringUtils.wrap(Economy.format(paid))
-								+ ".");
-					} else if (paid == 0) {
-						player.sendMessage(noPaymentMsg);
-					}
-				} else {
-					Messaging.sendError(
-							player,
-							"You don't have enough to repair your "
-									+ MessageUtils.getMaterialName(item
-											.getTypeId()));
-					return;
+			if (!Economy.useEconPlugin()) {
+				player.sendMessage(noPaymentMsg);
+			} else if (Economy.hasEnough(player,
+					getBlacksmithPrice(player, repairType))) {
+				double paid = Economy.pay(player,
+						getBlacksmithPrice(player, repairType));
+				Economy.pay(npc, getBlacksmithPrice(player, repairType));
+				if (paid > 0) {
+					player.sendMessage(StringUtils.wrap(npc.getName())
+							+ " has repaired your "
+							+ StringUtils.wrap(MessageUtils
+									.getMaterialName(item.getTypeId()))
+							+ " for " + StringUtils.wrap(Economy.format(paid))
+							+ ".");
+				} else if (paid == 0) {
+					player.sendMessage(noPaymentMsg);
 				}
 			} else {
-				player.sendMessage(noPaymentMsg);
+				Messaging
+						.sendError(
+								player,
+								"You don't have enough to repair your "
+										+ MessageUtils.getMaterialName(item
+												.getTypeId()));
+				return;
 			}
+
 			item.setDurability((short) 0);
 			player.setItemInHand(item);
+			player.updateInventory();
 		} else {
-			player.sendMessage(ChatColor.RED + "Your "
-					+ MessageUtils.getMaterialName(item.getTypeId())
-					+ ChatColor.RED + " is already fully repaired.");
+			player.sendMessage(ChatColor.GRAY
+					+ "Your "
+					+ StringUtils.wrap(
+							MessageUtils.getMaterialName(item.getTypeId()),
+							ChatColor.GRAY) + " is already fully repaired.");
 		}
 	}
 

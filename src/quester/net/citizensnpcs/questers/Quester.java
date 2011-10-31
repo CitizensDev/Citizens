@@ -17,6 +17,7 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -177,20 +178,17 @@ public class Quester extends CitizensNPC {
 
 	@Override
 	public void save(Storage profiles, int UID) {
-		StringBuilder quests = new StringBuilder();
-		for (String quest : this.quests) {
-			quests.append(quest);
-		}
-		profiles.setString(UID + ".quester.quests", quests.toString());
+		profiles.setString(UID + ".quester.quests", Joiner.on(";").skipNulls()
+				.join(quests));
 	}
 
 	@Override
 	public void load(Storage profiles, int UID) {
-		if (profiles.keyExists(UID + ".quester.quests")) {
-			for (String quest : profiles.getString(UID + ".quester.quests")
-					.split(";")) {
-				addQuest(quest);
-			}
+		if (!profiles.keyExists(UID + ".quester.quests"))
+			return;
+		for (String quest : Splitter.on(";").omitEmptyStrings()
+				.split(profiles.getString(UID + ".quester.quests"))) {
+			addQuest(quest);
 		}
 	}
 }

@@ -31,7 +31,6 @@ public class PathNPC extends EntityPlayer {
 	protected final NPCAnimator animations = new NPCAnimator(this);
 	protected Entity targetEntity;
 	protected boolean targetAggro = false;
-	protected boolean jumping = false;
 	protected boolean randomPather = false;
 	protected boolean autoPathToTarget = true;
 	protected float pathingRange = 16;
@@ -75,30 +74,21 @@ public class PathNPC extends EntityPlayer {
 			this.getPlayer().shootArrow();
 		} else {
 			this.performAction(Animation.SWING_ARM);
-			LivingEntity e = (LivingEntity) entity.getBukkitEntity();
-			e.damage(this.inventory.a(entity));
+			LivingEntity other = (LivingEntity) entity.getBukkitEntity();
+			other.damage(this.inventory.a(entity));
 		}
 		hasAttacked = true;
-		incrementAttackTimes();
-	}
 
-	public void cancelPath() {
-		reset();
-	}
-
-	public void cancelTarget() {
-		resetTarget();
+		if (this.attackTimesLimit == -1)
+			return;
+		++this.attackTimes;
+		if (this.attackTimes >= this.attackTimesLimit) {
+			cancelTarget();
+		}
 	}
 
 	PathEntity createPathEntity(int x, int y, int z) {
 		return this.world.a(this, x, y, z, pathingRange);
-	}
-
-	void createPathEntity(Location loc) {
-		if (loc == null)
-			return;
-		this.path = createPathEntity(loc.getBlockX(), loc.getBlockY(),
-				loc.getBlockZ());
 	}
 
 	private double distance(Entity entity) {
@@ -122,7 +112,7 @@ public class PathNPC extends EntityPlayer {
 			// Is path finished?
 			if (this.path.b()) {
 				vec3d = null;
-				reset();
+				cancelPath();
 			} else {
 				vec3d = this.path.a(this);
 			}
@@ -168,28 +158,16 @@ public class PathNPC extends EntityPlayer {
 
 			this.yaw += diffYaw;
 			if (diffY > 0.0D) {
-				jumping = true;
+				jump();
 			}
 			// Walk.
-			moveOnCurrentHeading();
+			this.a(this.aP, this.aQ);
 		}
 		if (this.positionChanged && !this.pathFinished()) {
-			jumping = true;
+			jump();
 		}
 		if (this.random.nextFloat() < 0.8F && (inWater || onFire)) {
-			jumping = true;
-		}
-		if (jumping) {
-			jump(inWater, onFire);
-		}
-	}
-
-	private void incrementAttackTimes() {
-		if (this.attackTimesLimit != -1) {
-			++this.attackTimes;
-			if (this.attackTimes >= this.attackTimesLimit) {
-				resetTarget();
-			}
+			this.motY += 0.04D;
 		}
 	}
 
@@ -203,37 +181,29 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private boolean isWithinAttackRange(Entity entity, double distance) {
-		// Bow distance from EntitySkeleton.
-		// Other from EntityCreature.
+		// Distance from EntityCreature.
 		return this.attackTicks <= 0
 				&& ((isHoldingBow() && (distance > Settings
 						.getDouble("MinArrowRange") && distance < Settings
 						.getDouble("MaxArrowRange"))) || (distance < 1.5F
-						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e));
+						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
+						&& this.f(entity));
 	}
 
-	private void jump(boolean inWater, boolean inLava) {
-		// Both magic values taken from minecraft source.
-		if (inWater || inLava) {
-			this.motY += 0.04D;
-		} else if (this.onGround) {
+	protected void jump() {
+		if (this.onGround) {
 			this.motY = 0.42D + JUMP_FACTOR;
 			// Augment defaults to actually get over a block.
 		}
 	}
 
-	private void moveOnCurrentHeading() {
-		this.a(this.aP, this.aQ);
-	}
-
 	public void moveTick() {
 		if (this.dead) {
 			if (this.targetEntity != null || this.path != null)
-				resetTarget();
+				cancelTarget();
 			return;
 		}
 		hasAttacked = false;
-		jumping = false;
 		if (randomPather) {
 			takeRandomPath();
 		}
@@ -244,8 +214,6 @@ public class PathNPC extends EntityPlayer {
 			if (vector != null) {
 				handleMove(vector);
 			}
-		} else {
-			this.path = null;
 		}
 		--this.attackTicks;
 		--this.noDamageTicks; // Update entity
@@ -259,23 +227,19 @@ public class PathNPC extends EntityPlayer {
 		this.animations.performAnimation(action);
 	}
 
-	private void reset() {
+	public void cancelPath() {
 		this.path = null;
 		this.pathTicks = this.stationaryTicks = 0;
 		this.pathTickLimit = this.stationaryTickLimit = -1;
 		this.pathingRange = 16;
 	}
 
-	private void resetTarget() {
+	public void cancelTarget() {
 		this.targetEntity = null;
 		this.targetAggro = false;
 		this.attackTimes = 0;
 		this.attackTimesLimit = -1;
-		reset();
-	}
-
-	public void setAttackTimes(int times) {
-		this.attackTimesLimit = times;
+		cancelPath();
 	}
 
 	public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
@@ -300,7 +264,10 @@ public class PathNPC extends EntityPlayer {
 		this.stationaryTickLimit = maxStationaryTicks;
 		this.pathingRange = (float) range;
 
-		createPathEntity(loc);
+		if (loc != null) {
+			this.path = createPathEntity(loc.getBlockX(), loc.getBlockY(),
+					loc.getBlockZ());
+		}
 		return pathFinished();
 	}
 
@@ -331,11 +298,12 @@ public class PathNPC extends EntityPlayer {
 				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
 			if (!(this instanceof CreatureNPC)) {
 				PathPoint end = path.c();
-				this.getPlayer().teleport(
-						new Location(this.getPlayer().getWorld(), end.a, end.b,
-								end.c));
+				if (end != null)
+					this.getPlayer().teleport(
+							new Location(this.getPlayer().getWorld(), end.a,
+									end.b, end.c));
 			}
-			reset();
+			cancelPath();
 		}
 		prevX = loc.getBlockX();
 		prevY = loc.getBlockY();
@@ -347,18 +315,15 @@ public class PathNPC extends EntityPlayer {
 			this.path = this.world.findPath(this, this.targetEntity,
 					pathingRange);
 		}
-		if (targetEntity != null) {
-			if (this.targetEntity.dead) {
-				resetTarget();
-			}
-			if (targetEntity != null && targetAggro) {
-				if (isInSight(this.targetEntity)) {
-					if (isWithinAttackRange(this.targetEntity,
-							distance(this.targetEntity))) {
-						this.attackEntity(this.targetEntity);
-					}
-				}
-			}
+		if (targetEntity == null)
+			return;
+		if (this.targetEntity.dead) {
+			cancelTarget();
+		}
+		if (!targetAggro)
+			return;
+		if (isWithinAttackRange(this.targetEntity, distance(this.targetEntity))) {
+			this.attackEntity(this.targetEntity);
 		}
 	}
 }

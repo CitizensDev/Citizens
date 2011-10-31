@@ -28,6 +28,11 @@ public class Bouncer implements GuardUpdater {
 
 	private boolean keepAttacking(HumanNPC npc) {
 		Guard guard = npc.getType("guard");
+		if (npc.getHandle().getStationaryTicks() > Settings
+				.getInt("MaxStationaryReturnTicks")) {
+			npc.teleport(npc.getBaseLocation());
+			npc.getHandle().cancelTarget();
+		}
 		return npc.getHandle().hasTarget()
 				&& LocationUtils.withinRange(npc.getLocation(),
 						npc.getBaseLocation(), guard.getProtectionRadius());

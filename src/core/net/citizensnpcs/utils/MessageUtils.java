@@ -1,6 +1,5 @@
 package net.citizensnpcs.utils;
 
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.Random;
 
@@ -16,6 +15,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.google.common.base.Joiner;
 
 public class MessageUtils {
 	public static final String noPermissionsMessage = ChatColor.RED
@@ -60,15 +61,14 @@ public class MessageUtils {
 		}
 		if (!text.isEmpty()) {
 			if (Settings.getBoolean("UseNPCColors")) {
-				text = StringUtils.colourise(Settings.getString(
-						"ChatFormat").replace("%name%", npc.getName()))
-						+ text;
+				text = StringUtils.colourise(Settings.getString("ChatFormat")
+						.replace("%name%", npc.getName())) + text;
 			} else {
-				text = StringUtils.colourise(Settings.getString(
-						"ChatFormat").replace(
-						"%name%",
-						"&" + Settings.getString("NPCColor") + name
-								+ ChatColor.WHITE))
+				text = StringUtils.colourise(Settings.getString("ChatFormat")
+						.replace(
+								"%name%",
+								"&" + Settings.getString("NPCColor") + name
+										+ ChatColor.WHITE))
 						+ text;
 			}
 			return text;
@@ -81,10 +81,9 @@ public class MessageUtils {
 		String message;
 		message = ChatColor.RED
 				+ "You need "
-				+ StringUtils.wrap(
-						Economy.format(Economy.getRemainder(
-								player, UtilityProperties.getPrice(path))),
-						ChatColor.RED) + " more to do that.";
+				+ StringUtils.wrap(Economy.format(Economy.getRemainder(player,
+						UtilityProperties.getPrice(path))), ChatColor.RED)
+				+ " more to do that.";
 		return message;
 	}
 
@@ -122,16 +121,10 @@ public class MessageUtils {
 	public static String getMaterialName(int itemID) {
 		String[] parts = Material.getMaterial(itemID).name().toLowerCase()
 				.split("_");
-		int count = 0;
-		for (String s : parts) {
-			parts[count] = StringUtils.capitalise(s);
-			if (count < parts.length - 1) {
-				parts[count] += " ";
-			}
-			++count;
+		for (int i = 0; i < parts.length; ++i) {
+			parts[i] = StringUtils.capitalise(parts[i]);
 		}
-		return Arrays.toString(parts).replace("[", "").replace("]", "")
-				.replace(", ", "");
+		return Joiner.on(" ").skipNulls().join(parts);
 	}
 
 	public static String getStackString(ItemStack item) {
@@ -170,9 +163,10 @@ public class MessageUtils {
 			page = 1;
 		}
 		if (page <= paginate.maxPages()) {
-			paginate.header(ChatColor.GREEN + "========== NPC List for "
-					+ StringUtils.wrap(toDisplay.getName())
-					+ " (%x/%y) ==========");
+			paginate.header(ChatColor.GREEN
+					+ StringUtils.listify("NPC List for "
+							+ StringUtils.wrap(toDisplay.getName())
+							+ " (%x/%y)"));
 			paginate.process(page);
 		} else {
 			sender.sendMessage(MessageUtils.getMaxPagesMessage(page,

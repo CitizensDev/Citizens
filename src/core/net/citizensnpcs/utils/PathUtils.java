@@ -65,8 +65,4 @@ public class PathUtils {
 	public static boolean hasTarget(HumanNPC npc) {
 		return npc.getHandle().hasTarget();
 	}
-
-	public static void setAttackTimes(HumanNPC npc, int times) {
-		npc.getHandle().setAttackTimes(times);
-	}
 }
