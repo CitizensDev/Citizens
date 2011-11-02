@@ -14,7 +14,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,10 +27,9 @@ public class CollectQuest implements QuestUpdater {
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof PlayerEvent)
-			verifyMap(((PlayerEvent) event).getPlayer());
 		if (event instanceof BlockBreakEvent) {
 			BlockBreakEvent ev = (BlockBreakEvent) event;
+			verifyMap(progress.getPlayer());
 			Material type = ev.getBlock().getType();
 			switch (type) {
 			case STONE:
@@ -46,12 +44,14 @@ public class CollectQuest implements QuestUpdater {
 			incrementMap(progress.getPlayer(), ev.getBlock().getType());
 		} else if (event instanceof EntityDeathEvent) {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
+			verifyMap(progress.getPlayer());
 			for (ItemStack drop : ev.getDrops()) {
 				incrementMap(progress.getPlayer(), drop.getType(),
 						drop.getAmount());
 			}
 		} else if (event instanceof PlayerPickupItemEvent) {
 			PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
+			verifyMap(progress.getPlayer());
 			Map<Material, Integer> previous = allowed.get(ev.getPlayer());
 			ItemStack stack = ev.getItem().getItemStack();
 			if (previous.containsKey(stack.getType())) {
