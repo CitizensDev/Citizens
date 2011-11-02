@@ -61,6 +61,8 @@ public class Bouncer implements GuardUpdater {
 
 	@Override
 	public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
+		if (npc.getHandle().hasTarget() && current == GuardStatus.NORMAL)
+			current = GuardStatus.ATTACKING;
 		switch (current) {
 		case NORMAL:
 			if (findTarget(npc)) {

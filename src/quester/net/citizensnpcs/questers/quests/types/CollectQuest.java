@@ -38,10 +38,21 @@ public class CollectQuest implements QuestUpdater {
 			case REDSTONE_ORE:
 				type = Material.REDSTONE;
 				break;
+			case GRASS:
+				type = Material.DIRT;
+				break;
+			case DIAMOND_ORE:
+				type = Material.DIAMOND;
+				break;
+			case BED_BLOCK:
+				type = Material.BED;
+				break;
+
 			default:
 				break;
 			}
-			incrementMap(progress.getPlayer(), ev.getBlock().getType());
+			if (type != Material.AIR && type != null)
+				incrementMap(progress.getPlayer(), ev.getBlock().getType());
 		} else if (event instanceof EntityDeathEvent) {
 			EntityDeathEvent ev = (EntityDeathEvent) event;
 			verifyMap(progress.getPlayer());
