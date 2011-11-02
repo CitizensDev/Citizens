@@ -186,6 +186,7 @@ public class Quester extends CitizensNPC {
 	public void load(Storage profiles, int UID) {
 		if (!profiles.keyExists(UID + ".quester.quests"))
 			return;
+		quests.clear();
 		for (String quest : Splitter.on(";").omitEmptyStrings()
 				.split(profiles.getString(UID + ".quester.quests"))) {
 			addQuest(quest);

@@ -254,6 +254,7 @@ public class Wizard extends CitizensNPC {
 				.parse(profiles.getString(UID + ".wizard.mode"))
 				: WizardMode.TELEPORT;
 		mana = profiles.getInt(UID + ".wizard.mana", 10);
+		locations.clear();
 		for (String location : splitter.split(profiles.getString(UID
 				+ ".wizard.locations"))) {
 			locations.add(location.replace("(", "").replace(")", ""));
