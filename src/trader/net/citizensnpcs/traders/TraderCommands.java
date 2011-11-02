@@ -70,15 +70,9 @@ public class TraderCommands extends CommandHandler {
 		boolean selling = args.getString(1).contains("s");
 		Trader trader = npc.getType("trader");
 		List<Stockable> stock = trader.getStockables(!selling);
-		int page = 1;
-		if (args.argsLength() == 3)
-			page = args.getInteger(2);
-		String keyword = "Buying ";
-		if (selling)
-			keyword = "Selling ";
 		if (stock.size() == 0) {
 			player.sendMessage(ChatColor.GRAY + "This trader isn't "
-					+ keyword.toLowerCase() + "any items.");
+					+ (selling ? "selling" : "buying") + " any items.");
 			return;
 		}
 		PageInstance instance = PageUtils.newInstance(player);
@@ -87,15 +81,16 @@ public class TraderCommands extends CommandHandler {
 			if (stockable == null)
 				continue;
 			instance.push(ChatColor.GREEN
-					+ keyword
+					+ (selling ? "Selling " : "Buying ")
 					+ TraderMessageUtils.getStockableMessage(stockable,
 							ChatColor.GREEN) + ".");
 		}
+		int page = args.argsLength() == 3 ? args.getInteger(2) : 1;
 		if (page <= instance.maxPages()) {
 			instance.header(ChatColor.YELLOW
 					+ StringUtils.listify(ChatColor.GREEN + "Trader "
-							+ StringUtils.wrap(keyword) + "List (Page %x/%y)"
-							+ ChatColor.YELLOW));
+							+ StringUtils.wrap(selling ? "Selling" : "Buying")
+							+ " List (Page %x/%y)" + ChatColor.YELLOW));
 			instance.process(page);
 		} else {
 			player.sendMessage(MessageUtils.getMaxPagesMessage(page,

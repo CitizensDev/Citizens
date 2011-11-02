@@ -56,15 +56,15 @@ public class NPCManager {
 		if (zDiff < 0.0) {
 			yaw = yaw + (Math.abs(180 - yaw) * 2);
 		}
-		npc.teleport(loc.getX(), loc.getY(), loc.getZ(), (float) yaw - 90,
-				(float) pitch);
+		npc.getHandle().yaw = (float) yaw - 90;
+		npc.getHandle().pitch = (float) pitch;
+
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
 			if (npc.getOwner().equals(player.getName())) {
 				loc = npc.getNPCData().getLocation();
 				loc.setPitch(npc.getLocation().getPitch());
 				loc.setYaw(npc.getLocation().getYaw());
-				npc.getNPCData().setLocation(loc);
 			}
 		}
 	}

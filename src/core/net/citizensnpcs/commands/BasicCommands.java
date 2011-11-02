@@ -16,6 +16,7 @@ import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.CraftNPC;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.resources.npclib.NPCSpawner;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
@@ -104,14 +105,14 @@ public class BasicCommands extends CommandHandler {
 			for (Entity entity : world.getEntities()) {
 				net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
 						.getHandle();
-				if (mcEntity instanceof CraftNPC
-						&& !(mcEntity instanceof CreatureNPC)) {
-					HumanNPC found = ((CraftNPC) mcEntity).npc;
-					if (NPCManager.getList().get(found.getUID()) != found) {
-						found.getPlayer().remove();
-						++count;
-					}
-				}
+				if (!(mcEntity instanceof CraftNPC)
+						|| mcEntity instanceof CreatureNPC)
+					continue;
+				HumanNPC found = ((CraftNPC) mcEntity).npc;
+				if (NPCManager.get(found.getUID()) == found)
+					continue;
+				NPCSpawner.despawnNPC(found, NPCRemoveReason.OTHER);
+				++count;
 			}
 		}
 		sender.sendMessage(ChatColor.GREEN + "Done. Removed "

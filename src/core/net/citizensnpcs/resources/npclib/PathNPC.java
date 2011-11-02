@@ -160,6 +160,7 @@ public class PathNPC extends EntityPlayer {
 			if (diffY > 0.0D) {
 				jump();
 			}
+			// TODO: adjust pitch.
 			// Walk.
 			this.a(this.aP, this.aQ);
 		}
@@ -298,10 +299,11 @@ public class PathNPC extends EntityPlayer {
 				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
 			if (!(this instanceof CreatureNPC)) {
 				PathPoint end = path.c();
-				if (end != null)
+				if (end != null) {
 					this.getPlayer().teleport(
 							new Location(this.getPlayer().getWorld(), end.a,
 									end.b, end.c));
+				}
 			}
 			cancelPath();
 		}
@@ -320,6 +322,7 @@ public class PathNPC extends EntityPlayer {
 		if (this.targetEntity.dead) {
 			cancelTarget();
 		}
+		NPCManager.faceEntity(this.npc, targetEntity.getBukkitEntity());
 		if (!targetAggro)
 			return;
 		if (isWithinAttackRange(this.targetEntity, distance(this.targetEntity))) {
