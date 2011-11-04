@@ -321,6 +321,7 @@ public class PathNPC extends EntityPlayer {
 			return;
 		if (this.targetEntity.dead) {
 			cancelTarget();
+			return;
 		}
 		NPCManager.faceEntity(this.npc, targetEntity.getBukkitEntity());
 		if (!targetAggro)

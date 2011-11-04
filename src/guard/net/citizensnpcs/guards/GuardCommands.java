@@ -253,7 +253,7 @@ public class GuardCommands extends CommandHandler {
 			player.sendMessage(ChatColor.GRAY + "Specified flag not found.");
 			return;
 		}
-		guard.getFlags().getFlags(type).remove(args.getJoinedStrings(1));
+		guard.getFlags().removeFlag(type, args.getJoinedStrings(1));
 		player.sendMessage(StringUtils.wrap(args.getJoinedStrings(1))
 				+ " removed.");
 	}

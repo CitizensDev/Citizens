@@ -7,9 +7,9 @@ import net.citizensnpcs.properties.properties.UtilityProperties;
  * A Node of Citizens is a property value that can be generated in citizens.yml
  */
 public class Node {
-	private String name;
-	private SettingsType type;
-	private String path;
+	private final String name;
+	private final SettingsType type;
+	private final String path;
 	private Object value;
 
 	public Node(String name, SettingsType type, String path, Object value) {

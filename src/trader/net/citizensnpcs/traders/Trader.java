@@ -142,17 +142,17 @@ public class Trader extends CitizensNPC {
 				}
 				mode = TraderMode.STOCK;
 			} else if (trader.isUnlimited()) {
+				if (!PermissionManager.hasPermission(player,
+						"citizens.trader.use.trade")) {
+					return;
+				}
 				mode = TraderMode.INFINITE;
-				if (!PermissionManager.hasPermission(player,
-						"citizens.trader.use.trade")) {
-					return;
-				}
 			} else {
-				mode = TraderMode.NORMAL;
 				if (!PermissionManager.hasPermission(player,
 						"citizens.trader.use.trade")) {
 					return;
 				}
+				mode = TraderMode.NORMAL;
 			}
 			TraderTask task = new TraderTask(npc, player, mode);
 			int id = Bukkit.getServer().getScheduler()
