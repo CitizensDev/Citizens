@@ -209,7 +209,9 @@ public class PathNPC extends EntityPlayer {
 			takeRandomPath();
 		}
 		updateTarget();
-		updatePathingState();
+		if (this.path != null || this.targetEntity != null) {
+			updatePathingState();
+		}
 		if (this.path != null) {
 			Vec3D vector = getPathVector();
 			if (vector != null) {
@@ -297,13 +299,11 @@ public class PathNPC extends EntityPlayer {
 		++pathTicks;
 		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
 				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
-			if (!(this instanceof CreatureNPC)) {
+			if (path.c() != null && !(this instanceof CreatureNPC)) {
 				PathPoint end = path.c();
-				if (end != null) {
-					this.getPlayer().teleport(
-							new Location(this.getPlayer().getWorld(), end.a,
-									end.b, end.c));
-				}
+				this.getPlayer().teleport(
+						new Location(this.getPlayer().getWorld(), end.a, end.b,
+								end.c));
 			}
 			cancelPath();
 		}
