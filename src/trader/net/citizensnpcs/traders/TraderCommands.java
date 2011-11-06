@@ -137,7 +137,7 @@ public class TraderCommands extends CommandHandler {
 			keyword = "selling";
 		}
 
-		if (args.argsLength() == 3 && item.contains("edit")) {
+		if (args.argsLength() == 4 && item.contains("edit")) {
 			ItemStack stack = parseItemStack(player, price.split(":"));
 			if (stack == null)
 				return;
@@ -152,8 +152,8 @@ public class TraderCommands extends CommandHandler {
 						selling).setPrice(createItemPrice(player, cost));
 				player.sendMessage(ChatColor.GREEN
 						+ "Edited "
-						+ StringUtils.wrap(StringUtils.capitalise(stack
-								.getType().name().toLowerCase())) + "'s price.");
+						+ StringUtils.wrap(MessageUtils.getItemName(stack
+								.getTypeId())) + "'s price.");
 			}
 			return;
 		}

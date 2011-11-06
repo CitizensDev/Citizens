@@ -47,7 +47,6 @@ public class CollectQuest implements QuestUpdater {
 			case BED_BLOCK:
 				type = Material.BED;
 				break;
-
 			default:
 				break;
 			}
