@@ -2,15 +2,18 @@ package net.citizensnpcs.properties;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public class ConfigurationHandler implements Storage {
@@ -221,5 +224,22 @@ public class ConfigurationHandler implements Storage {
 	@Override
 	public boolean keyExists(String path) {
 		return pathExists(path);
+	}
+
+	@Override
+	public List<Integer> getIntegerKeys(String string) {
+		if (config.getConfigurationSection(string) == null) {
+			return Lists.newArrayList();
+		}
+		Set<String> keys = config.getConfigurationSection(string)
+				.getKeys(false);
+		List<Integer> parsed = Lists.newArrayList();
+		for (String key : keys) {
+			if (!StringUtils.isNumber(key)) {
+				continue;
+			}
+			parsed.add(Integer.parseInt(key));
+		}
+		return parsed;
 	}
 }

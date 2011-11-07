@@ -67,7 +67,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 		String locale = loc.getWorld().getName() + "," + loc.getX() + ","
 				+ loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + ","
 				+ loc.getPitch();
-		profiles.forceSetString(UID + location, locale);
+		profiles.setString(UID + location, locale);
 	}
 
 	private void saveInventory(int UID, PlayerInventory inv) {

@@ -9,6 +9,7 @@ import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.npcdata.PathEditingSession;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
@@ -273,7 +274,7 @@ public class BasicCommands extends CommandHandler {
 			max = 1)
 	@CommandPermissions("basic.modify.equip")
 	public static void equip(CommandContext args, Player player, HumanNPC npc) {
-		if (NPCDataManager.pathEditors.containsKey(player.getName())) {
+		if (NPCDataManager.pathEditors.containsKey(player)) {
 			Messaging.sendError(player,
 					"You can only be in one editor at a time.");
 			return;
@@ -842,42 +843,60 @@ public class BasicCommands extends CommandHandler {
 	@CommandPermissions("waypoints.edit")
 	public static void waypoints(CommandContext args, Player player,
 			HumanNPC npc) {
-		if (args.length() == 2) {
-			if (NPCDataManager.equipmentEditors.containsKey(player)) {
-				Messaging.sendError(player,
-						"You can only be in one editor at a time.");
-				return;
-			}
-			Integer editing = NPCDataManager.pathEditors.get(player.getName());
-			int UID = npc.getUID();
-			if (editing == null) {
-				player.sendMessage(ChatColor.AQUA
-						+ StringUtils.listify("Waypoint Editing Controls"));
-				player.sendMessage(StringUtils.wrap("Left")
-						+ " click adds a waypoint, while "
-						+ StringUtils.wrap("right") + " click acts as an undo.");
-				player.sendMessage(StringUtils.wrap("Repeat")
-						+ " this command to finish.");
-				editing = UID;
-				npc.setPaused(true);
-			} else if (editing == UID) {
-				player.sendMessage(StringUtils.wrap("Finished")
-						+ " editing waypoints.");
-				NPCDataManager.pathEditors.remove(player.getName());
-				editing = null;
-				npc.setPaused(false);
-				return;
-			} else if (editing != UID) {
-				player.sendMessage(ChatColor.GRAY + "Now editing "
-						+ StringUtils.wrap(npc.getName()) + "'s waypoints.");
-				editing = UID;
-			}
-			NPCDataManager.pathEditors.put(player.getName(), editing);
-		} else if (args.length() >= 3 && args.getString(1).equals("reset")) {
+		if (args.argsLength() >= 2
+				&& args.getString(1).equalsIgnoreCase("reset")) {
 			npc.getWaypoints().resetWaypoints();
 			player.sendMessage(ChatColor.GREEN + "Waypoints "
 					+ StringUtils.wrap("reset") + ".");
+			return;
 		}
+		if (NPCDataManager.equipmentEditors.containsKey(player)) {
+			Messaging.sendError(player,
+					"You can only be in one editor at a time.");
+			return;
+		}
+		int index = npc.getWaypoints().size() - 1;
+		if (args.argsLength() == 2 && StringUtils.isNumber(args.getString(1))) {
+			index = args.getInteger(1) - 1;
+			if (index < 0)
+				index = 0;
+			if (npc.getWaypoints().size() != 0
+					&& index >= npc.getWaypoints().size()) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Index out of bounds. This NPC has only "
+						+ StringUtils.wrap(npc.getWaypoints().size())
+						+ " waypoints.");
+				return;
+			}
+		}
+		PathEditingSession editing = NPCDataManager.pathEditors.get(player);
+		int UID = npc.getUID();
+		if (editing == null) {
+			player.sendMessage(ChatColor.AQUA
+					+ StringUtils.listify("Waypoint Editing Controls"));
+			player.sendMessage(StringUtils.wrap("Left")
+					+ " click adds a waypoint, while "
+					+ StringUtils.wrap("right") + " click acts as an undo.");
+			player.sendMessage(StringUtils.wrap("Right clicking")
+					+ " the NPC will cause him to restart from the current index.");
+			player.sendMessage(StringUtils.wrap("Repeat")
+					+ " this command to finish.");
+			editing = new PathEditingSession(UID, index);
+		} else if (editing.getUID() == UID && args.argsLength() == 1) {
+			player.sendMessage(StringUtils.wrap("Finished")
+					+ " editing waypoints.");
+			NPCDataManager.pathEditors.remove(player);
+			return;
+		} else if (editing.getUID() != UID) {
+			player.sendMessage(ChatColor.GRAY + "Now editing "
+					+ StringUtils.wrap(npc.getName()) + "'s waypoints.");
+			editing = new PathEditingSession(UID, index);
+		}
+		if (npc.getWaypoints().size() > 0) {
+			npc.getWaypoints().setIndex(index);
+			npc.teleport(npc.getWaypoints().get(index).getLocation());
+		}
+		NPCDataManager.pathEditors.put(player, editing);
 	}
 
 	@Override

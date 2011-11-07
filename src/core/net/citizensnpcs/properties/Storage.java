@@ -1,6 +1,7 @@
 package net.citizensnpcs.properties;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface Storage {
 	public void load();
@@ -46,4 +47,6 @@ public interface Storage {
 	public boolean keyExists(String path);
 
 	public Collection<String> getKeys(String string);
+
+	public List<Integer> getIntegerKeys(String string);
 }

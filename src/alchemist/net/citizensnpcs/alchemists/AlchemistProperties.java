@@ -12,7 +12,6 @@ import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.Messaging;
 
 import com.google.common.collect.Lists;
 
@@ -32,20 +31,11 @@ public class AlchemistProperties extends PropertyManager implements Properties {
 
 	private Map<Integer, String> getRecipes(int UID) {
 		Map<Integer, String> recipeMap = new HashMap<Integer, String>();
-		if (profiles.getKeys(UID + recipes).size() == 0) {
+		if (profiles.getIntegerKeys(UID + recipes).size() == 0) {
 			return recipeMap;
 		}
-		for (String key : profiles.getKeys(UID + recipes)) {
-			int itemID;
-			try {
-				itemID = Integer.parseInt(key);
-			} catch (NumberFormatException e) {
-				Messaging.log("Number expected at path: " + (UID + recipes)
-						+ ". Make sure it is a number.");
-				return recipeMap;
-			}
-			recipeMap.put(itemID,
-					profiles.getString(UID + recipes + "." + itemID));
+		for (int key : profiles.getIntegerKeys(UID + recipes)) {
+			recipeMap.put(key, profiles.getString(UID + recipes + "." + key));
 		}
 		return recipeMap;
 	}

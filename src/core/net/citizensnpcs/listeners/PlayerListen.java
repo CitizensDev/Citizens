@@ -55,7 +55,7 @@ public class PlayerListen extends PlayerListener implements Listener {
 
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		NPCDataManager.pathEditors.remove(event.getPlayer().getName());
+		NPCDataManager.pathEditors.remove(event.getPlayer());
 		TickTask.clearActions(event.getPlayer());
 		CreatureTask.setDirty();
 		ConversationUtils.verify();

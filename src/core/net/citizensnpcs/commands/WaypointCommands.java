@@ -5,6 +5,7 @@ import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.sk89q.Command;
 import net.citizensnpcs.resources.sk89q.CommandContext;
+import net.citizensnpcs.resources.sk89q.CommandPermissions;
 import net.citizensnpcs.resources.sk89q.CommandRequirements;
 import net.citizensnpcs.utils.ConversationUtils;
 import net.citizensnpcs.utils.HelpUtils;
@@ -29,7 +30,7 @@ public class WaypointCommands extends CommandHandler {
 			min = 2,
 			max = 2)
 	public static void modifier(CommandContext args, Player player, HumanNPC npc) {
-		if (!NPCDataManager.pathEditors.containsKey(player.getName())) {
+		if (!NPCDataManager.pathEditors.containsKey(player)) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You must be editing your NPC's path.");
 			return;
@@ -66,7 +67,31 @@ public class WaypointCommands extends CommandHandler {
 				"view waypoint modifiers");
 		HelpUtils.format(player, "waypoint", "modifier|mod [type]",
 				"add a modifier to the current waypoint");
+		HelpUtils.format(player, "waypoint", "restart",
+				"moves an NPC to the beginning of their path");
 		HelpUtils.footer(player);
+	}
+
+	@Command(
+			aliases = { "wp", "waypoint" },
+			usage = "restart",
+			desc = "moves npc to the beginning of their waypoint",
+			modifiers = { "restart" },
+			min = 1,
+			max = 1)
+	@CommandPermissions("waypoints.modify.restart")
+	@CommandRequirements(requireOwnership = true, requireSelected = true)
+	public static void resetPath(CommandContext args, Player player,
+			HumanNPC npc) {
+		if (npc.getWaypoints().size() == 0) {
+			player.sendMessage(ChatColor.GRAY + "NPC has no waypoints.");
+			return;
+		}
+		npc.teleport(npc.getWaypoints().get(0).getLocation());
+		npc.getWaypoints().setIndex(0);
+		player.sendMessage(StringUtils.wrap(npc.getName())
+				+ " has restarted their path.");
+
 	}
 
 	@Command(
@@ -101,7 +126,7 @@ public class WaypointCommands extends CommandHandler {
 	@Override
 	public void addPermissions() {
 		for (WaypointModifierType modifier : WaypointModifierType.values()) {
-			PermissionManager.addPermission("waypoints.modifier."
+			PermissionManager.addPermission("citizens.waypoints.modifier."
 					+ modifier.name().toLowerCase());
 		}
 	}

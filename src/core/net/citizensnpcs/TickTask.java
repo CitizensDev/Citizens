@@ -63,7 +63,6 @@ public class TickTask implements Runnable {
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 					waypoints.setIndex(0);
-					waypoints.setStarted(false);
 				}
 			} else {
 				if (!npc.getWaypoints().isStarted()) {
@@ -73,20 +72,21 @@ public class TickTask implements Runnable {
 				}
 				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 					waypoints.setIndex(1);
-					waypoints.setStarted(false);
 				}
+			}
+			if (!npc.isPaused() && npc.getHandle().pathFinished()) {
+				waypoints.setStarted(false);
+				waypoints.onReach(npc);
 			}
 			break;
 		default:
 			if (!waypoints.isStarted()) {
-				if (waypoints.currentIndex() + 1 > waypoints.size()) {
-					waypoints.setIndex(0);
-				}
 				waypoints.scheduleNext(npc);
 			}
 			if (!npc.isPaused() && npc.getHandle().pathFinished()) {
 				waypoints.setIndex(waypoints.currentIndex() + 1);
 				waypoints.setStarted(false);
+				waypoints.onReach(npc);
 			}
 		}
 	}

@@ -12,12 +12,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class WaypointPath {
-	private List<Waypoint> points = new ArrayList<Waypoint>();
+	private final List<Waypoint> points = new ArrayList<Waypoint>();
 	private boolean started = false;
 	private int index = 0;
 
 	public void resetWaypoints() {
-		setPoints(new ArrayList<Waypoint>());
+		this.points.clear();
 		this.index = 0;
 	}
 
@@ -26,13 +26,14 @@ public class WaypointPath {
 	}
 
 	public Waypoint current() {
-		if (points.size() > index) {
-			return this.get(index);
-		}
-		return null;
+		if (points.size() == 0)
+			return null;
+		return this.get(currentIndex());
 	}
 
 	public int currentIndex() {
+		if (index >= points.size())
+			index = 0;
 		return index;
 	}
 
@@ -49,19 +50,20 @@ public class WaypointPath {
 	}
 
 	public void setPoints(List<Waypoint> waypoints) {
-		this.points = waypoints;
+		this.points.clear();
+		this.points.addAll(waypoints);
 	}
 
 	public Waypoint get(int index) {
 		return this.points.get(index);
 	}
 
-	public void add(Waypoint location) {
-		this.points.add(location);
+	public void insert(Waypoint location, int index) {
+		this.points.add(index, location);
 	}
 
-	public void removeLast() {
-		this.points.remove(this.points.size() - 1);
+	public void remove(int index) {
+		this.points.remove(index);
 	}
 
 	public int size() {
@@ -75,7 +77,7 @@ public class WaypointPath {
 		return points.get(points.size() - 1);
 	}
 
-	private void onReach(HumanNPC npc) {
+	public void onReach(HumanNPC npc) {
 		if (current() != null)
 			current().onReach(npc);
 	}
@@ -85,7 +87,6 @@ public class WaypointPath {
 	}
 
 	public void schedule(HumanNPC npc, int index) {
-		onReach(npc);
 		this.setStarted(true);
 		WaypointScheduler scheduler = new WaypointScheduler(npc, points.get(
 				index).getLocation());

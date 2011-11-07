@@ -11,7 +11,7 @@ import net.citizensnpcs.resources.npclib.NPCManager;
 
 public class PropertyManager {
 	private static final Map<String, Properties> properties = new HashMap<String, Properties>();
-	protected static final CachedYAMLHandler profiles = new CachedYAMLHandler(
+	protected static final Storage profiles = new CachedYAMLHandler(
 			"plugins/Citizens/npc-profiles.yml");
 
 	public static void registerProperties() {
@@ -23,7 +23,7 @@ public class PropertyManager {
 		properties.put(type, saveable);
 	}
 
-	public static CachedYAMLHandler getNPCProfiles() {
+	public static Storage getNPCProfiles() {
 		return profiles;
 	}
 
