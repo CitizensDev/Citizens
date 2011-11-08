@@ -65,7 +65,7 @@ public class HelpUtils {
 			format(sender, "npc", "talkclose", "make an NPC talk to players");
 			format(sender, "npc", "lookat", "make an NPC look at players");
 			format(sender, "npc", "list (name) (page)", "show a list of NPCs");
-			format(sender, "npc", "[path|waypoints] (reset)",
+			format(sender, "npc", "[path|waypoints] (reset|index)",
 					"control an NPC's waypoints");
 			break;
 		case 3:

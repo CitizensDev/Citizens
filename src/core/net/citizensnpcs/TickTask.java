@@ -61,7 +61,8 @@ public class TickTask implements Runnable {
 				if (!waypoints.isStarted()) {
 					waypoints.schedule(npc, 0);
 				}
-				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
+				if (waypoints.isStarted() && !npc.isPaused()
+						&& npc.getHandle().pathFinished()) {
 					waypoints.setIndex(0);
 				}
 			} else {
@@ -70,11 +71,13 @@ public class TickTask implements Runnable {
 							-1, -1, Settings.getDouble("PathfindingRange"));
 					waypoints.setStarted(true);
 				}
-				if (!npc.isPaused() && npc.getHandle().pathFinished()) {
+				if (waypoints.isStarted() && !npc.isPaused()
+						&& npc.getHandle().pathFinished()) {
 					waypoints.setIndex(1);
 				}
 			}
-			if (!npc.isPaused() && npc.getHandle().pathFinished()) {
+			if (waypoints.isStarted() && !npc.isPaused()
+					&& npc.getHandle().pathFinished()) {
 				waypoints.setStarted(false);
 				waypoints.onReach(npc);
 			}
@@ -83,7 +86,8 @@ public class TickTask implements Runnable {
 			if (!waypoints.isStarted()) {
 				waypoints.scheduleNext(npc);
 			}
-			if (!npc.isPaused() && npc.getHandle().pathFinished()) {
+			if (waypoints.isStarted() && !npc.isPaused()
+					&& npc.getHandle().pathFinished()) {
 				waypoints.setIndex(waypoints.currentIndex() + 1);
 				waypoints.setStarted(false);
 				waypoints.onReach(npc);

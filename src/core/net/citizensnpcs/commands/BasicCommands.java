@@ -835,7 +835,7 @@ public class BasicCommands extends CommandHandler {
 
 	@Command(
 			aliases = "npc",
-			usage = "[path|waypoints] (reset)",
+			usage = "[path|waypoints] (reset|index)",
 			desc = "toggle waypoint editing",
 			modifiers = { "path", "waypoints" },
 			min = 1,
