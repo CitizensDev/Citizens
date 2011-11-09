@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 public class PlayerProfile {
@@ -237,7 +238,7 @@ public class PlayerProfile {
 
 	@Override
 	public int hashCode() {
-		return 31 + ((name == null) ? 0 : name.hashCode());
+		return Objects.hashCode(name);
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package net.citizensnpcs.resources.npclib;
 
 import org.bukkit.ChatColor;
 
+import com.google.common.base.Objects;
+
 public class NPC {
 	private final String name;
 	private final int UID;
@@ -21,7 +23,7 @@ public class NPC {
 
 	@Override
 	public int hashCode() {
-		return 31 + UID;
+		return Objects.hashCode(UID);
 	}
 
 	@Override

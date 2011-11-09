@@ -1,5 +1,7 @@
 package net.citizensnpcs.resources.sk89q;
 
+import com.google.common.base.Objects;
+
 public class CommandIdentifier {
 	private final String modifier;
 	private final String command;
@@ -11,12 +13,7 @@ public class CommandIdentifier {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((command == null) ? 0 : command.hashCode());
-		result = prime * result
-				+ ((modifier == null) ? 0 : modifier.hashCode());
-		return result;
+		return Objects.hashCode(command, modifier);
 	}
 
 	@Override

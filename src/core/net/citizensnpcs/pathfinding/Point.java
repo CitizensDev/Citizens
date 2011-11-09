@@ -1,5 +1,7 @@
 package net.citizensnpcs.pathfinding;
 
+import com.google.common.base.Objects;
+
 public final class Point {
 	public final int x;
 	public final int y;
@@ -13,7 +15,7 @@ public final class Point {
 
 	@Override
 	public int hashCode() {
-		return 169 * x + 13 * y + z + 2197;
+		return Objects.hashCode(x, y, z);
 	}
 
 	@Override

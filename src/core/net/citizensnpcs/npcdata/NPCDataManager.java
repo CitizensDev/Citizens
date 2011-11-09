@@ -219,8 +219,9 @@ public class NPCDataManager {
 	}
 
 	public static void handlePathRestart(NPCRightClickEvent event) {
-		if (!pathEditors.containsKey(event.getPlayer())
-				&& pathEditors.get(event.getPlayer()).getUID() == event
+		if (event == null
+				|| !pathEditors.containsKey(event.getPlayer())
+				|| pathEditors.get(event.getPlayer()).getUID() != event
 						.getNPC().getUID())
 			return;
 		pathEditors.get(event.getPlayer()).restartAtIndex();

@@ -1,5 +1,7 @@
 package net.citizensnpcs.traders;
 
+import com.google.common.base.Objects;
+
 public class Check {
 	private final int itemID;
 	private final short dataValue;
@@ -14,7 +16,7 @@ public class Check {
 
 	@Override
 	public int hashCode() {
-		return 31 * (31 * (31 + itemID) + dataValue) + (selling ? 1231 : 1237);
+		return Objects.hashCode(itemID, dataValue, selling);
 	}
 
 	@Override
