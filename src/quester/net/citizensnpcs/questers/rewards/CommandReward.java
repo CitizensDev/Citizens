@@ -16,7 +16,8 @@ public class CommandReward implements Reward {
 
 	@Override
 	public void grant(Player player, int UID) {
-		String localCommand = command.replaceAll("<player>", player.getName());
+		String localCommand = command.replaceAll("<player>", player.getName())
+				.replaceAll("<world>", player.getWorld().getName());
 		if (isServerCommand) {
 			ServerUtils.dispatchCommandWithEvent(localCommand);
 		} else {
