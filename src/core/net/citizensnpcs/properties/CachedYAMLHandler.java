@@ -17,7 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.collect.Lists;
 
-public class CachedYAMLHandler implements Storage {
+public class CachedYAMLHandler extends AbstractStorage {
 	private final SettingsTree tree = new SettingsTree();
 	private final FileConfiguration config;
 	private final File file;
@@ -96,10 +96,6 @@ public class CachedYAMLHandler implements Storage {
 		return pathExists(path) && !this.tree.get(path).isEmpty();
 	}
 
-	public boolean pathExists(int path) {
-		return pathExists("" + path);
-	}
-
 	private String get(String path) {
 		return this.tree.get(path);
 	}
@@ -125,11 +121,6 @@ public class CachedYAMLHandler implements Storage {
 	@Override
 	public void setString(String path, String value) {
 		this.tree.set(path, value);
-	}
-
-	public void forceSetString(String path, String value) {
-		setString(path, value);
-		this.config.set(path, value);
 	}
 
 	@Override
@@ -240,6 +231,7 @@ public class CachedYAMLHandler implements Storage {
 		return keys;
 	}
 
+	@Override
 	public List<Integer> getIntegerKeys(String path) {
 		List<Integer> ret = new ArrayList<Integer>();
 		for (String str : getKeys(path)) {

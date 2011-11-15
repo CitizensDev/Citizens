@@ -16,7 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-public class ConfigurationHandler implements Storage {
+public class ConfigurationHandler extends AbstractStorage {
 	private final FileConfiguration config;
 	private final File file;
 

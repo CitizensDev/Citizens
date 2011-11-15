@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Set;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -25,6 +26,7 @@ import com.google.common.collect.Sets;
 public class Web {
 	private static Set<Player> told = Sets.newHashSet();
 	private static String build = "";
+	private static final Handler handler = new LogHandler();
 
 	// Check the Citizens thread on the Bukkit forums if there is a new version
 	// available, or use Citizens.getLatestBuildVersion() for devBuilds.
@@ -100,7 +102,14 @@ public class Web {
 		if (!Settings.getBoolean("ErrorReporting")) {
 			return;
 		}
-		Bukkit.getServer().getLogger().addHandler(new LogHandler());
+		Bukkit.getLogger().addHandler(handler);
+	}
+
+	public static void disableErrorReporting() {
+		if (!Settings.getBoolean("ErrorReporting")) {
+			return;
+		}
+		Bukkit.getLogger().removeHandler(handler);
 	}
 
 	private static void report(String error) {
@@ -116,8 +125,7 @@ public class Web {
 					+ URLEncoder.encode("Ident", "UTF-8")
 					+ "="
 					+ URLEncoder.encode(
-							Settings.getString("ErrorReportingIdent"),
-							"UTF-8");
+							Settings.getString("ErrorReportingIdent"), "UTF-8");
 			// Send data
 			URL url = new URL("http://errorreport.citizensnpcs.net");
 			URLConnection conn = url.openConnection();

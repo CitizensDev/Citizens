@@ -152,6 +152,7 @@ public class Citizens extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		// save the local copy of our files to disk
+		Web.disableErrorReporting();
 		PropertyManager.saveState();
 		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
 		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
