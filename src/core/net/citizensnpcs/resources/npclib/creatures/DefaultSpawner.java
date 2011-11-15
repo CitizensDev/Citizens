@@ -49,16 +49,17 @@ public class DefaultSpawner implements Spawner {
 							|| !type.validSpawnPosition(world, x, y, z)
 							|| !type.isSpawn())
 						continue;
-					if (!areEntitiesOnBlock(
-							world.getChunkAt(shiftedX, shiftedZ), x, y, z)) {
-						HumanNPC npc = NPCSpawner.spawnNPC(
-								new Location(loc.getWorld(), x, y, z, random
-										.nextInt(360), 0), type);
-						Bukkit.getPluginManager().callEvent(
-								new NPCCreateEvent(npc, NPCCreateReason.SPAWN,
-										loc));
-						return npc;
-					}
+					if (areEntitiesOnBlock(
+							world.getChunkAt(shiftedX, shiftedZ), x, y, z))
+						continue;
+					HumanNPC npc = NPCSpawner.spawnNPC(
+							new Location(loc.getWorld(), x, y, z, random
+									.nextInt(360), 0), type);
+					Bukkit.getPluginManager()
+							.callEvent(
+									new NPCCreateEvent(npc,
+											NPCCreateReason.SPAWN, loc));
+					return npc;
 				}
 			}
 		}
@@ -79,9 +80,9 @@ public class DefaultSpawner implements Spawner {
 			Location loc = entity.getLocation();
 			if (loc.getBlockX() == x && loc.getBlockY() == y
 					&& loc.getBlockZ() == z) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 }

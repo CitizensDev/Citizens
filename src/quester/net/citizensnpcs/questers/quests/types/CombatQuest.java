@@ -30,18 +30,19 @@ public class CombatQuest implements QuestUpdater {
 			if (!(ev.getEntity() instanceof Player))
 				return false;
 			Player player = (Player) ev.getEntity();
-			String search = progress.getObjective().getString();
+			String search = progress.getObjective().getString().toLowerCase();
 			boolean found = false, reversed = !search.isEmpty()
 					&& search.charAt(0) == '-';
-			if (search.contains(player.getName().toLowerCase())
-					|| search.contains("*")) {
+			if (search.contains("*")
+					|| search.contains(player.getName().toLowerCase())) {
 				found = true;
-			} else if (search.contains("g:") && PermissionManager.hasBackend()) {
+			} else if (PermissionManager.hasBackend() && search.contains("g:")) {
 				// Should be the last else statement, as it needs to do
 				// extra processing.
 				for (CitizensGroup group : PermissionManager.getGroups(player)) {
 					if (search.contains("g:" + group.getName().toLowerCase())) {
 						found = true;
+						break;
 					}
 				}
 			}
