@@ -65,9 +65,9 @@ public class NPCSpawner {
 	}
 
 	public static HumanNPC spawnNPC(int UID, String name, Location loc) {
-		if (loc.getWorld() == null) {
-			Messaging.log("Null world while spawning", name, "UID", UID
-					+ ". Is there a multiworld conflict?");
+		if (loc == null || loc.getWorld() == null) {
+			Messaging.log("Null location or world while spawning", name, "UID",
+					UID + ". Is the location unloaded or missing?");
 			return null;
 		}
 		WorldServer ws = getWorldServer(loc.getWorld());
