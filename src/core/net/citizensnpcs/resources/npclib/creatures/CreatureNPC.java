@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public abstract class CreatureNPC extends CraftNPC {
 	protected final double range = 25;
-	protected final Integer[] weapons = { 267, 268, 272, 283 };
+	protected final int[] weapons = { 267, 268, 272, 283 };
 
 	public CreatureNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -41,8 +41,8 @@ public abstract class CreatureNPC extends CraftNPC {
 	}
 
 	/**
-	 * Called when the creature dies. Can be used for loot drops or effects to
-	 * play.
+	 * Called when the creature dies. Can be used for loot drops or playing
+	 * sound effects.
 	 */
 	public abstract void onDeath();
 
@@ -67,8 +67,6 @@ public abstract class CreatureNPC extends CraftNPC {
 
 	/**
 	 * Returns the type of this creature.
-	 * 
-	 * @return
 	 */
 	public abstract CreatureNPCType getType();
 

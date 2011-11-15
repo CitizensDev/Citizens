@@ -22,7 +22,7 @@ public class HuntQuest implements QuestUpdater {
 				return progress.getAmount() >= progress.getObjective()
 						.getAmount();
 			LivingEntity entity = (LivingEntity) ev.getEntity();
-			String search = progress.getObjective().getString();
+			String search = progress.getObjective().getString().toLowerCase();
 			boolean found = search.contains(EntityUtils.getMonsterName(entity))
 					|| search.contains("*"), reversed = !search.isEmpty()
 					&& search.charAt(0) == '-';

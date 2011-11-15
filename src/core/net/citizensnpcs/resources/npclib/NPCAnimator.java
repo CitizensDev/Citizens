@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class NPCAnimator {
+
 	private final PathNPC npc;
 
 	public enum Animation {
@@ -46,6 +47,7 @@ public class NPCAnimator {
 			uncrouch();
 			break;
 		default:
+			break;
 		}
 	}
 

@@ -61,7 +61,7 @@ public class NPCSpawner {
 					public void run() {
 						clearMap(name);
 					}
-				}, 1);
+				}, -1);
 	}
 
 	public static HumanNPC spawnNPC(int UID, String name, Location loc) {

@@ -24,7 +24,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.google.common.collect.MapMaker;
 
 public class HumanNPC extends NPC {
-	private CraftNPC mcEntity;
+	private final CraftNPC mcEntity;
 	private NPCData npcdata;
 	private double balance;
 	private boolean paused;
@@ -46,133 +46,6 @@ public class HumanNPC extends NPC {
 		PropertyManager.load(type, this);
 	}
 
-	public void removeType(String type) {
-		this.types.remove(type);
-		PropertyManager.save(type, this);
-	}
-
-	public boolean isType(String type) {
-		return this.types.get(type) != null;
-	}
-
-	public void registerType(String type) {
-		this.types.put(type, NPCTypeManager.getType(type).getInstance());
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T getType(String type) {
-		return (T) this.types.get(type);
-	}
-
-	public WaypointPath getWaypoints() {
-		if (waypoints == null) {
-			this.waypoints = new WaypointPath();
-		}
-		return this.waypoints;
-	}
-
-	public Player getPlayer() {
-		return (Player) this.mcEntity.getBukkitEntity();
-	}
-
-	public CraftNPC getHandle() {
-		return this.mcEntity;
-	}
-
-	public void setHandle(CraftNPC handle) {
-		this.mcEntity = handle;
-	}
-
-	protected CraftNPC getMCEntity() {
-		return this.mcEntity;
-	}
-
-	public void teleport(double x, double y, double z, float yaw, float pitch) {
-		this.mcEntity.setLocation(x, y, z, yaw, pitch);
-	}
-
-	public void teleport(Location loc) {
-		boolean multiworld = loc.getWorld() != this.getWorld();
-		this.getPlayer().teleport(loc);
-		if (multiworld) {
-			((CraftServer) Bukkit.getServer()).getHandle().players
-					.remove(this.mcEntity);
-		}
-	}
-
-	public void doTick() {
-		this.mcEntity.moveTick();
-		this.mcEntity.applyGravity();
-	}
-
-	public void performAction(Animation action) {
-		this.mcEntity.performAction(action);
-	}
-
-	public String getOwner() {
-		return this.npcdata.getOwner();
-	}
-
-	public void setNPCData(NPCData npcdata) {
-		this.npcdata = npcdata;
-	}
-
-	public Location getLocation() {
-		return this.getPlayer().getLocation();
-	}
-
-	public int getHealth() {
-		return this.getPlayer().getHealth();
-	}
-
-	public void setHealth(int health) {
-		this.getPlayer().setHealth(health);
-	}
-
-	public NPCData getNPCData() {
-		return npcdata;
-	}
-
-	public PlayerInventory getInventory() {
-		return this.getPlayer().getInventory();
-	}
-
-	public World getWorld() {
-		return this.getPlayer().getWorld();
-	}
-
-	public double getBalance() {
-		return this.balance;
-	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
-	public boolean isPaused() {
-		return this.paused;
-	}
-
-	public void setPaused(boolean paused) {
-		this.paused = paused;
-	}
-
-	public void callLeftClick(Player player, HumanNPC npc) {
-		for (CitizensNPC type : types.values()) {
-			type.onLeftClick(player, npc);
-		}
-	}
-
-	public void callRightClick(Player player, HumanNPC npc) {
-		for (CitizensNPC type : types.values()) {
-			type.onRightClick(player, npc);
-		}
-	}
-
-	public Collection<CitizensNPC> types() {
-		return this.types.values();
-	}
-
 	public void callDamageEvent(EntityDamageEvent event) {
 		if (types.size() == 0) {
 			event.setCancelled(true);
@@ -189,10 +62,36 @@ public class HumanNPC extends NPC {
 		}
 	}
 
+	public void callLeftClick(Player player, HumanNPC npc) {
+		for (CitizensNPC type : types.values()) {
+			type.onLeftClick(player, npc);
+		}
+	}
+
+	public void callRightClick(Player player, HumanNPC npc) {
+		for (CitizensNPC type : types.values()) {
+			type.onRightClick(player, npc);
+		}
+	}
+
 	public void callTargetEvent(EntityTargetEvent event) {
 		for (CitizensNPC type : types.values()) {
 			type.onTarget(event);
 		}
+	}
+
+	public void doTick() {
+		this.mcEntity.moveTick();
+		this.mcEntity.applyGravity();
+	}
+
+	public double getBalance() {
+		return this.balance;
+	}
+
+	public Location getBaseLocation() {
+		return this.waypoints.getLast() != null ? this.waypoints.getLast()
+				.getLocation() : this.npcdata.getLocation();
 	}
 
 	public int getChunkX() {
@@ -203,16 +102,101 @@ public class HumanNPC extends NPC {
 		return this.getLocation().getBlockZ() >> 4;
 	}
 
+	public CraftNPC getHandle() {
+		return this.mcEntity;
+	}
+
+	public PlayerInventory getInventory() {
+		return this.getPlayer().getInventory();
+	}
+
 	public ItemStack getItemInHand() {
 		return this.getPlayer().getItemInHand();
+	}
+
+	public Location getLocation() {
+		return this.getPlayer().getLocation();
+	}
+
+	public NPCData getNPCData() {
+		return npcdata;
+	}
+
+	public String getOwner() {
+		return this.npcdata.getOwner();
+	}
+
+	public Player getPlayer() {
+		return (Player) this.mcEntity.getBukkitEntity();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getType(String type) {
+		return (T) this.types.get(type);
+	}
+
+	public WaypointPath getWaypoints() {
+		if (waypoints == null) {
+			this.waypoints = new WaypointPath();
+		}
+		return this.waypoints;
+	}
+
+	public World getWorld() {
+		return this.getPlayer().getWorld();
+	}
+
+	public boolean isPaused() {
+		return this.paused;
+	}
+
+	public boolean isType(String type) {
+		return this.types.get(type) != null;
+	}
+
+	public void performAction(Animation action) {
+		this.mcEntity.performAction(action);
+	}
+
+	public void registerType(String type) {
+		this.types.put(type, NPCTypeManager.getType(type).getInstance());
+	}
+
+	public void removeType(String type) {
+		this.types.remove(type);
+		PropertyManager.save(type, this);
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public void setItemInHand(ItemStack item) {
 		this.getPlayer().setItemInHand(item);
 	}
 
-	public Location getBaseLocation() {
-		return this.waypoints.getLast() != null ? this.waypoints.getLast()
-				.getLocation() : this.npcdata.getLocation();
+	public void setNPCData(NPCData npcdata) {
+		this.npcdata = npcdata;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+
+	public void teleport(double x, double y, double z, float yaw, float pitch) {
+		this.mcEntity.setLocation(x, y, z, yaw, pitch);
+	}
+
+	public void teleport(Location loc) {
+		boolean multiworld = loc.getWorld() != this.getWorld();
+		this.getPlayer().teleport(loc);
+		if (multiworld) {
+			((CraftServer) Bukkit.getServer()).getHandle().players
+					.remove(this.mcEntity);
+		}
+	}
+
+	public Collection<CitizensNPC> types() {
+		return this.types.values();
 	}
 }

@@ -13,9 +13,7 @@ public class MinecraftAutoPathfinder implements AutoPathfinder {
 		if (random.nextInt(70) != 0 || random.nextInt(70) != 0)
 			return null;
 		boolean flag = false;
-		int x = -1;
-		int y = -1;
-		int z = -1;
+		int x = -1, y = -1, z = -1;
 		double pathWeight = -99999.0F;
 		for (int l = 0; l < 10; ++l) {
 			int x2 = MathHelper

@@ -9,12 +9,12 @@ public class NPC {
 	private final int UID;
 
 	public NPC(int UID, String name) {
-		this.name = name;
+		this.name = ChatColor.stripColor(name);
 		this.UID = UID;
 	}
 
 	public String getName() {
-		return ChatColor.stripColor(this.name);
+		return this.name;
 	}
 
 	public int getUID() {

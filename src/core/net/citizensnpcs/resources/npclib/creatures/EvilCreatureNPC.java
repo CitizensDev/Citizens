@@ -37,27 +37,26 @@ public class EvilCreatureNPC extends CreatureNPC {
 
 	@Override
 	public void doTick() {
-		if (!isTame) {
-			EntityHuman closest = getClosestPlayer(this.range);
-			if (!hasTarget() && closest != null) {
-				if (!PermissionManager.hasPermission(
-						(Player) closest.getBukkitEntity(),
-						"citizens.evils.immune")) {
-					targetClosestPlayer(true, this.range);
-				}
+		if (isTame)
+			return;
+		EntityHuman closest = getClosestPlayer(this.range);
+		if (!hasTarget() && closest != null) {
+			if (!PermissionManager
+					.hasPermission((Player) closest.getBukkitEntity(),
+							"citizens.evils.immune")) {
+				targetClosestPlayer(true, this.range);
 			}
-			super.doTick();
 		}
+		super.doTick();
 	}
 
 	@Override
 	public void onDeath() {
 		ItemStack item = UtilityProperties.getRandomDrop(Settings
 				.getString("EvilDrops"));
-		if (item != null) {
-			this.getEntity().getWorld()
-					.dropItemNaturally(this.getLocation(), item);
-		}
+		if (item == null)
+			return;
+		this.getEntity().getWorld().dropItemNaturally(this.getLocation(), item);
 	}
 
 	@Override
@@ -74,28 +73,27 @@ public class EvilCreatureNPC extends CreatureNPC {
 							"You cannot tame this Evil NPC because you have reached the NPC creation limit.");
 			return;
 		}
-		if (player.getItemInHand().getTypeId() == Settings
-				.getInt("EvilTameItem")) {
-			if (random.nextInt(100) <= Settings.getInt("EvilTameChance")) {
-				InventoryUtils.decreaseItemInHand(player);
-				isTame = true;
-				CreatureTask.despawn(this, NPCRemoveReason.OTHER);
-				NPCManager.register(npc.getName(), player.getLocation(),
-						player.getName(), NPCCreateReason.RESPAWN);
-				player.sendMessage(ChatColor.GREEN + "You have tamed "
-						+ StringUtils.wrap(npc.getName())
-						+ "! You can now toggle it to be any type.");
-			} else {
-				Messaging.send(
-						player,
-						this.npc,
-						StringUtils.colourise(Settings.getString(
-								"ChatFormat").replace("%name%",
-								npc.getName()))
-								+ ChatColor.WHITE
-								+ MessageUtils.getRandomMessage(Settings
-										.getString("EvilFailedTameMessages")));
-			}
+		if (player.getItemInHand().getTypeId() != Settings
+				.getInt("EvilTameItem"))
+			return;
+		if (random.nextInt(100) <= Settings.getInt("EvilTameChance")) {
+			InventoryUtils.decreaseItemInHand(player);
+			isTame = true;
+			CreatureTask.despawn(this, NPCRemoveReason.OTHER);
+			NPCManager.register(npc.getName(), player.getLocation(),
+					player.getName(), NPCCreateReason.RESPAWN);
+			player.sendMessage(ChatColor.GREEN + "You have tamed "
+					+ StringUtils.wrap(npc.getName())
+					+ "! You can now toggle it to be any type.");
+		} else {
+			Messaging.send(
+					player,
+					this.npc,
+					StringUtils.colourise(Settings.getString("ChatFormat")
+							.replace("%name%", npc.getName()))
+							+ ChatColor.WHITE
+							+ MessageUtils.getRandomMessage(Settings
+									.getString("EvilFailedTameMessages")));
 		}
 	}
 
