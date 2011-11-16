@@ -15,11 +15,11 @@ public class NPCAnimator {
 
 	public enum Animation {
 		ACT_HURT,
-		CROUCH,
+		SNEAK,
 		SLEEP,
 		SWING_ARM,
 		UNSLEEP,
-		UNCROUCH;
+		UNSNEAK;
 	}
 
 	public NPCAnimator(PathNPC pathNPC) {
@@ -31,8 +31,8 @@ public class NPCAnimator {
 		case ACT_HURT:
 			actHurt();
 			break;
-		case CROUCH:
-			crouch();
+		case SNEAK:
+			sneak();
 			break;
 		case SLEEP:
 			sleep();
@@ -43,8 +43,8 @@ public class NPCAnimator {
 		case UNSLEEP:
 			unsleep();
 			break;
-		case UNCROUCH:
-			uncrouch();
+		case UNSNEAK:
+			unsneak();
 			break;
 		default:
 			break;
@@ -80,12 +80,12 @@ public class NPCAnimator {
 		return new Packet18ArmAnimation(this.npc, data);
 	}
 
-	private void crouch() {
+	private void sneak() {
 		npc.setSneak(true);
 		sendMetadataPacket();
 	}
 
-	private void uncrouch() {
+	private void unsneak() {
 		npc.setSneak(false);
 		sendMetadataPacket();
 	}
