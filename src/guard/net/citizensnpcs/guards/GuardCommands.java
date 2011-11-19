@@ -268,15 +268,10 @@ public class GuardCommands extends CommandHandler {
 	@CommandPermissions("guard.modify.radius")
 	public static void radius(CommandContext args, Player player, HumanNPC npc) {
 		Guard guard = npc.getType("guard");
-		if (guard.isState(GuardState.BOUNCER)) {
-			guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
-			player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
-					+ " protection radius has been set to "
-					+ StringUtils.wrap(args.getString(1)) + ".");
-		} else {
-			Messaging.sendError(player, npc.getName()
-					+ " must be a bouncer first.");
-		}
+		guard.setProtectionRadius(Double.parseDouble(args.getString(1)));
+		player.sendMessage(StringUtils.wrap(npc.getName() + "'s")
+				+ " protection radius has been set to "
+				+ StringUtils.wrap(args.getString(1)) + ".");
 	}
 
 	@Command(

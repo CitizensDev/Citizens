@@ -31,13 +31,13 @@ public class Bodyguard implements GuardUpdater {
 			public void onPlayerLogin(PlayerLoginEvent event) {
 				Player player = event.getPlayer();
 				String owner = player.getName();
-				if (toRespawn.containsKey(owner)) {
-					NPCManager.register(toRespawn.get(owner).getUID(), owner,
-							NPCCreateReason.RESPAWN);
-					CitizensManager.getNPC(toRespawn.get(owner).getUID())
-							.teleport(player.getLocation());
-					toRespawn.remove(owner);
-				}
+				if (!toRespawn.containsKey(owner))
+					return;
+				NPCManager.register(toRespawn.get(owner).getUID(), owner,
+						NPCCreateReason.RESPAWN);
+				CitizensManager.getNPC(toRespawn.get(owner).getUID()).teleport(
+						player.getLocation());
+				toRespawn.remove(owner);
 			}
 		});
 	}

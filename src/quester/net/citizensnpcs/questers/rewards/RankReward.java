@@ -53,6 +53,7 @@ public class RankReward implements Requirement, Reward {
 	public void save(Storage storage, String root) {
 		storage.setString(root + ".rank", reward);
 		storage.setBoolean(root + ".replace", replace);
+		storage.setString(root + ".with", with);
 	}
 
 	public static class RankRewardBuilder implements RewardBuilder {
