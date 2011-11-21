@@ -11,7 +11,6 @@ import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PathEntity;
-import net.minecraft.server.PathPoint;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
 
@@ -27,6 +26,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 public class PathNPC extends EntityPlayer {
 	public HumanNPC npc;
 	private PathEntity path;
+	private Location dest;
 
 	protected final NPCAnimator animations = new NPCAnimator(this);
 	protected Entity targetEntity;
@@ -132,7 +132,7 @@ public class PathNPC extends EntityPlayer {
 		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float diffYaw = vectorYaw - this.yaw;
 
-		for (this.aQ = this.aU; diffYaw < -180.0F; diffYaw += 360.0F) {
+		for (this.aU = this.aY; diffYaw < -180.0F; diffYaw += 360.0F) {
 		}
 		while (diffYaw >= 180.0F) {
 			diffYaw -= 360.0F;
@@ -162,7 +162,7 @@ public class PathNPC extends EntityPlayer {
 			}
 			// TODO: adjust pitch.
 			// Walk.
-			this.a(this.aP, this.aQ);
+			this.a(this.aT, this.aU);
 		}
 		if (this.positionChanged && !this.pathFinished()) {
 			jump();
@@ -178,7 +178,7 @@ public class PathNPC extends EntityPlayer {
 	}
 
 	private boolean isInSight(Entity entity) {
-		return this.f(entity);
+		return this.g(entity);
 	}
 
 	private boolean isWithinAttackRange(Entity entity, double distance) {
@@ -188,7 +188,7 @@ public class PathNPC extends EntityPlayer {
 						.getDouble("MinArrowRange") && distance < Settings
 						.getDouble("MaxArrowRange"))) || (distance < 1.5F
 						&& entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
-						&& this.f(entity));
+						&& this.g(entity));
 	}
 
 	protected void jump() {
@@ -232,6 +232,7 @@ public class PathNPC extends EntityPlayer {
 
 	public void cancelPath() {
 		this.path = null;
+		this.dest = null;
 		this.pathTicks = this.stationaryTicks = 0;
 		this.pathTickLimit = this.stationaryTickLimit = -1;
 		this.pathingRange = 16;
@@ -270,6 +271,7 @@ public class PathNPC extends EntityPlayer {
 		if (loc != null) {
 			this.path = createPathEntity(loc.getBlockX(), loc.getBlockY(),
 					loc.getBlockZ());
+			this.dest = loc.clone();
 		}
 		return pathFinished();
 	}
@@ -279,6 +281,7 @@ public class PathNPC extends EntityPlayer {
 				&& (this.path == null || this.random.nextInt(20) == 0)) {
 			this.path = this.world.findPath(this, this.targetEntity,
 					pathingRange);
+			this.dest = this.targetEntity.getBukkitEntity().getLocation();
 		} else if (!hasAttacked && this.path == null)
 			autoPathfinder.find(this);
 	}
@@ -299,11 +302,8 @@ public class PathNPC extends EntityPlayer {
 		++pathTicks;
 		if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
 				|| (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
-			if (path.c() != null && !(this instanceof CreatureNPC)) {
-				PathPoint end = path.c();
-				this.getPlayer().teleport(
-						new Location(this.getPlayer().getWorld(), end.a, end.b,
-								end.c));
+			if (dest != null && !(this instanceof CreatureNPC)) {
+				this.getPlayer().teleport(dest);
 			}
 			cancelPath();
 		}
@@ -316,6 +316,7 @@ public class PathNPC extends EntityPlayer {
 		if (!this.hasAttacked && this.targetEntity != null && autoPathToTarget) {
 			this.path = this.world.findPath(this, this.targetEntity,
 					pathingRange);
+			this.dest = this.targetEntity.getBukkitEntity().getLocation();
 		}
 		if (targetEntity == null)
 			return;
