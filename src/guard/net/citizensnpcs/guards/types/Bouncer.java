@@ -19,11 +19,17 @@ public class Bouncer implements GuardUpdater {
 
 	private boolean findTarget(HumanNPC npc) {
 		Guard guard = npc.getType("guard");
+		if (!guard.isAggressive())
+			return false;
 		LivingEntity entity = Targeter.findTarget(Targeter.getNearby(
 				npc.getPlayer(), guard.getProtectionRadius()), npc);
-		if (entity != null)
+		if (entity != null
+				&& LocationUtils.withinRange(entity.getLocation(),
+						npc.getBaseLocation(), guard.getProtectionRadius())) {
 			guard.target(entity, npc);
-		return entity != null;
+			return true;
+		}
+		return false;
 	}
 
 	private boolean keepAttacking(HumanNPC npc) {
@@ -45,15 +51,8 @@ public class Bouncer implements GuardUpdater {
 	}
 
 	private boolean startReturning(HumanNPC npc) {
-		Guard guard = npc.getType("guard");
-		LivingEntity test = Targeter.findTarget(Targeter.getNearby(
-				npc.getPlayer(), guard.getProtectionRadius()), npc);
-		if (test != null
-				&& LocationUtils.withinRange(test.getLocation(),
-						npc.getBaseLocation(), guard.getProtectionRadius())) {
-			guard.target(test, npc);
+		if (findTarget(npc))
 			return false;
-		}
 		PathUtils.createPath(npc, npc.getBaseLocation(), -1,
 				Settings.getInt("MaxStationaryReturnTicks"));
 		return true;
@@ -72,10 +71,11 @@ public class Bouncer implements GuardUpdater {
 			break;
 		case ATTACKING:
 			if (!keepAttacking(npc)) {
+				npc.getHandle().cancelTarget();
 				if (startReturning(npc)) {
 					return GuardStatus.RETURNING;
 				} else {
-					return GuardStatus.NORMAL;
+					return GuardStatus.ATTACKING;
 				}
 			}
 			break;

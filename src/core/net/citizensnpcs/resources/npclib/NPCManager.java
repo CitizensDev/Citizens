@@ -61,7 +61,7 @@ public class NPCManager {
 
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
-			if (npc.getOwner().equals(player.getName())) {
+			if (npc.getOwner().equalsIgnoreCase(player.getName())) {
 				loc = npc.getNPCData().getLocation();
 				loc.setPitch(npc.getLocation().getPitch());
 				loc.setYaw(npc.getLocation().getYaw());

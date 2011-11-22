@@ -95,9 +95,9 @@ public class Citizens extends JavaPlugin {
 		new PlayerListen().registerEvents(this);
 
 		// register our commands
-		Citizens.commands.register(BasicCommands.class);
-		Citizens.commands.register(ToggleCommands.class);
-		Citizens.commands.register(WaypointCommands.class);
+		commands.register(BasicCommands.class);
+		commands.register(ToggleCommands.class);
+		commands.register(WaypointCommands.class);
 
 		// initialize permissions system
 		new PermissionManager(getServer().getPluginManager());
