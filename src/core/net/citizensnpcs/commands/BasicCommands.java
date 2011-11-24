@@ -863,12 +863,14 @@ public class BasicCommands extends CommandHandler {
 			if (npc.getWaypoints().size() != 0
 					&& index >= npc.getWaypoints().size()) {
 				player.sendMessage(ChatColor.GRAY
-						+ "Index out of bounds. This NPC has only "
+						+ "Index out of bounds. This NPC only has "
 						+ StringUtils.wrap(npc.getWaypoints().size())
 						+ " waypoints.");
 				return;
 			}
 		}
+		if (index < 0)
+			index = 0;
 		PathEditingSession editing = NPCDataManager.pathEditors.get(player);
 		int UID = npc.getUID();
 		if (editing == null) {

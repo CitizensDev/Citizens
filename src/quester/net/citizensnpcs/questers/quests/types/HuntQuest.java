@@ -26,7 +26,7 @@ public class HuntQuest implements QuestUpdater {
 			boolean found = search.contains(EntityUtils.getMonsterName(entity))
 					|| search.contains("*"), reversed = !search.isEmpty()
 					&& search.charAt(0) == '-';
-			if ((reversed && !found) || (!reversed && found)) {
+			if (reversed ^ found) {
 				progress.addAmount(1);
 			}
 		}

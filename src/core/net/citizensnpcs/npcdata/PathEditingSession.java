@@ -32,6 +32,8 @@ public class PathEditingSession {
 
 	public void remove(WaypointPath waypoints) {
 		waypoints.remove(index--);
+		if (index < 0)
+			index = 0;
 	}
 
 	public void restartAtIndex() {
