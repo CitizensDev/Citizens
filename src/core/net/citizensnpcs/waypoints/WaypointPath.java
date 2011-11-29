@@ -91,27 +91,22 @@ public class WaypointPath {
 		WaypointScheduler scheduler = new WaypointScheduler(npc, points.get(
 				index).getLocation());
 		if (points.get(index).getDelay() > 0) {
-			Bukkit.getServer()
-					.getScheduler()
-					.scheduleSyncDelayedTask(Citizens.plugin, scheduler,
-							points.get(index).getDelay());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+					scheduler, points.get(index).getDelay());
 		} else {
 			scheduler.run();
 		}
 	}
 
 	public void scheduleDelay(HumanNPC npc, Location target, int delay) {
-		onReach(npc);
 		RestartPathTask task = new RestartPathTask(npc, target);
+		npc.setPaused(true);
 		if (delay > 0) {
-			Bukkit.getServer()
-					.getScheduler()
-					.scheduleSyncDelayedTask(Citizens.plugin,
-							new RestartPathTask(npc, target), delay);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+					new RestartPathTask(npc, target), delay);
 		} else {
 			task.run();
 		}
-		npc.setPaused(true);
 	}
 
 	private static class WaypointScheduler implements Runnable {

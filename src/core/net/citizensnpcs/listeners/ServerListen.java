@@ -30,7 +30,7 @@ public class ServerListen extends ServerListener implements Listener {
 	public void onPluginEnable(PluginEnableEvent event) {
 		if (!Methods.hasMethod()) {
 			if (Methods.setMethod(Bukkit.getPluginManager())) {
-				Citizens.setMethod(Methods.getMethod());
+				Economy.setMethod(Methods.getMethod());
 				Economy.setServerEconomyEnabled(true);
 				Messaging.log("Economy plugin found ("
 						+ Methods.getMethod().getName() + " v"

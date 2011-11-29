@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Economy;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
@@ -469,7 +468,7 @@ public abstract class CommandsManager<T extends Player> {
 			CommandRequirements requirements = this.requirements.get(method);
 
 			if (requirements != null) {
-				if (requirements.requireEconomy() && Citizens.economy == null) {
+				if (requirements.requireEconomy() && !Economy.hasMethod()) {
 					throw new RequirementMissingException(
 							MessageUtils.noEconomyMessage);
 				}
