@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.citizensnpcs.utils.EffectUtils.Effects.IEffect;
-import net.minecraft.server.Packet61;
+import net.minecraft.server.Packet61WorldEvent;
 
 import org.bukkit.Location;
 
@@ -149,8 +149,9 @@ public class EffectUtils {
 
 	public static void playSound(IEffect effect, Location location, int data) {
 		int packetData = effect.getIdentifier();
-		Packet61 packet = new Packet61(packetData, location.getBlockX(),
-				location.getBlockY(), location.getBlockZ(), data);
+		Packet61WorldEvent packet = new Packet61WorldEvent(packetData,
+				location.getBlockX(), location.getBlockY(),
+				location.getBlockZ(), data);
 		PacketUtils.sendPacketNearby(location, 64, packet);
 	}
 }

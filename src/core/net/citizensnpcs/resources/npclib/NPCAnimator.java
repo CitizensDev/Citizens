@@ -2,7 +2,7 @@ package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.utils.PacketUtils;
 import net.minecraft.server.DataWatcher;
-import net.minecraft.server.Packet17;
+import net.minecraft.server.Packet17EntityLocationAction;
 import net.minecraft.server.Packet18ArmAnimation;
 import net.minecraft.server.Packet40EntityMetadata;
 
@@ -53,8 +53,8 @@ public class NPCAnimator {
 
 	private void sleep() {
 		Location loc = getPlayer().getLocation();
-		Packet17 packet17 = new Packet17(npc, 0, loc.getBlockX(),
-				loc.getBlockY(), loc.getBlockZ());
+		Packet17EntityLocationAction packet17 = new Packet17EntityLocationAction(
+				npc, 0, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
 		// getPlayer().teleport(loc);
 		PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64, packet17,

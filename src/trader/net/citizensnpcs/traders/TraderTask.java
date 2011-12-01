@@ -9,7 +9,6 @@ import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.InventoryPlayer;
 import net.minecraft.server.Packet103SetSlot;
 
 import org.bukkit.Bukkit;
@@ -37,10 +36,10 @@ public class TraderTask implements Runnable {
 		this.npc = npc;
 		this.player = (CraftPlayer) player;
 		// Create the inventory objects
-		this.previousTraderInv = new CraftInventoryPlayer(new InventoryPlayer(
-				null));
-		this.previousPlayerInv = new CraftInventoryPlayer(new InventoryPlayer(
-				null));
+		this.previousTraderInv = new CraftInventoryPlayer(
+				new net.minecraft.server.PlayerInventory(null));
+		this.previousPlayerInv = new CraftInventoryPlayer(
+				new net.minecraft.server.PlayerInventory(null));
 		// clone the items to the newly created inventory objects
 		clonePlayerInventory(npc.getInventory(), this.previousTraderInv);
 		clonePlayerInventory(player.getInventory(), this.previousPlayerInv);

@@ -21,7 +21,6 @@ import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointModifier;
 import net.citizensnpcs.waypoints.WaypointModifierType;
-import net.minecraft.server.InventoryPlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -122,7 +121,7 @@ public class BasicProperties extends PropertyManager implements Properties {
 			}
 		}
 		PlayerInventory inv = new CraftInventoryPlayer(
-				new InventoryPlayer(null));
+				new net.minecraft.server.PlayerInventory(null));
 		ItemStack[] stacks = inv.getContents();
 		inv.setContents(array.toArray(stacks));
 		return inv;
