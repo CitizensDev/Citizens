@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public class HealthModifier extends WaypointModifier {
 	private boolean take;
 	private int amount;
-	private final int AMOUNT = 0, TAKE = 1;
+	private static final int AMOUNT = 0, TAKE = 1;
 
 	public HealthModifier(Waypoint waypoint) {
 		super(waypoint);

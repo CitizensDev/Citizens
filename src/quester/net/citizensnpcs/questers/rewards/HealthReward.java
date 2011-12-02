@@ -17,8 +17,9 @@ public class HealthReward implements Requirement, Reward {
 
 	@Override
 	public void grant(Player player, int UID) {
-		player.setHealth(take ? player.getHealth() - reward : player
-				.getHealth() + reward);
+		player.setHealth(Math.min(player.getMaxHealth(),
+				take ? player.getHealth() - reward : player.getHealth()
+						+ reward));
 	}
 
 	@Override

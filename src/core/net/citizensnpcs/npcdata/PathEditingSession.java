@@ -23,7 +23,9 @@ public class PathEditingSession {
 	}
 
 	public void insert(WaypointPath waypoints, Waypoint waypoint) {
+		rangeCheck(waypoints);
 		waypoints.insert(waypoint, index++);
+		rangeCheck(waypoints);
 	}
 
 	public int getIndex() {
@@ -31,9 +33,9 @@ public class PathEditingSession {
 	}
 
 	public void remove(WaypointPath waypoints) {
+		rangeCheck(waypoints);
 		waypoints.remove(index--);
-		if (index < 0)
-			index = 0;
+		rangeCheck(waypoints);
 	}
 
 	public void restartAtIndex() {
@@ -42,5 +44,11 @@ public class PathEditingSession {
 			return;
 		path.setIndex(index);
 		getNPC().teleport(path.current().getLocation());
+	}
+
+	private void rangeCheck(WaypointPath points) {
+		if (index >= points.size())
+			index = points.size() - 1;
+		index = Math.max(index, 0);
 	}
 }

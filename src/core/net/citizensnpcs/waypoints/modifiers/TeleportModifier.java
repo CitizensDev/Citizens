@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 public class TeleportModifier extends WaypointModifier {
 	private Location loc;
 	private final ConstructableLocation construct = new ConstructableLocation();
-	private final int X = 0, Y = 1, Z = 2, PITCH = 3, YAW = 4;
+	private static final int X = 0, Y = 1, Z = 2, PITCH = 3, YAW = 4;
 
 	public TeleportModifier(Waypoint waypoint) {
 		super(waypoint);

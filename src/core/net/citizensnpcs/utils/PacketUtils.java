@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 public class PacketUtils {
 	public static void sendPacketToPlayer(final Player ply, final Packet packet) {
+		if (ply == null)
+			return;
 		((CraftPlayer) ply).getHandle().netServerHandler.sendPacket(packet);
 	}
 
@@ -23,10 +25,7 @@ public class PacketUtils {
 		radius *= radius;
 		final World world = location.getWorld();
 		for (Player ply : Bukkit.getServer().getOnlinePlayers()) {
-			if (ply.equals(except)) {
-				continue;
-			}
-			if (world != ply.getWorld()) {
+			if (ply == null || ply.equals(except) || world != ply.getWorld()) {
 				continue;
 			}
 			if (location.distanceSquared(ply.getLocation()) > radius) {
@@ -39,7 +38,7 @@ public class PacketUtils {
 	public static void sendPacketToOnline(final Packet packet,
 			final Player except) {
 		for (Player ply : Bukkit.getServer().getOnlinePlayers()) {
-			if (ply.equals(except)) {
+			if (ply == null || ply.equals(except)) {
 				continue;
 			}
 			sendPacketToPlayer(ply, packet);

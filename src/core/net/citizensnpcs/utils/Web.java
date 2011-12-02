@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -21,6 +22,7 @@ import net.citizensnpcs.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public class Web {
@@ -170,12 +172,33 @@ public class Web {
 	private static class LogHandler extends ConsoleHandler {
 		@Override
 		public void publish(LogRecord record) {
-			if (record.getMessage() != null && record.getThrown() != null
-					&& record.getLevel() == Level.SEVERE) {
-				if (record.getMessage().contains("Citizens")) {
-					report(stackToString(record.getThrown()));
+			if (record.getMessage() == null || record.getThrown() == null
+					|| record.getLevel() != Level.SEVERE
+					|| !record.getMessage().contains("Citizens"))
+				return;
+			for (String pattern : illegalStacks.keySet()) {
+				if (record.getMessage().matches(pattern)) {
+					if (!illegalStacks.get(pattern).isEmpty())
+						Messaging.log(illegalStacks.get(pattern));
+					return;
 				}
 			}
+			report(stackToString(record.getThrown()));
 		}
+	}
+
+	private static Map<String, String> illegalStacks = Maps.newHashMap();
+	static {
+		illegalStacks.put("org.yaml.snakeyaml",
+				"Something went wrong with config.");
+		illegalStacks
+				.put("NoSuchFieldError",
+						"A bukkit update has changed obfuscation, wait for a Citizens update.");
+		illegalStacks
+				.put("OutOfMemoryError",
+						"Uh oh - your server is out of memory - can you report this on the forums?");
+		illegalStacks
+				.put("NoClassDefFoundError",
+						"A required class is missing - usually, the type JARs are incompatible with the core Citizens JAR or there's an economy/permissions class missing.");
 	}
 }
