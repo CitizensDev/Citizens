@@ -44,7 +44,11 @@ public class PlayerListen extends PlayerListener implements Listener {
 		if (PermissionManager.hasPermission(event.getPlayer(),
 				"citizens.admin.notifyupdates")
 				&& Settings.getBoolean("NotifyUpdates")) {
-			Web.notifyUpdate(event.getPlayer());
+			(new Thread() {
+				public void run() {
+					Web.notifyUpdate(event.getPlayer());
+				}
+			}).start();
 		}
 	}
 
