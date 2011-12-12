@@ -2,8 +2,6 @@ package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Plugins;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
@@ -104,8 +102,7 @@ public class PathNPC extends EntityPlayer {
 
 	private Vec3D getPathVector() {
 		Vec3D vec3d = path.a(this);
-		double length = (this.length * 1.82F);
-		// 2.0 -> 1.82 - closer to destination before stopping.
+		double length = (this.width * 2.0F);
 		while (vec3d != null
 				&& vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
 			this.path.a(); // Increment path index.
