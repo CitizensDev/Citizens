@@ -2,6 +2,8 @@ package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Plugins;
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.resources.npclib.NPCAnimator.Animation; 
+import net.citizensnpcs.resources.npclib.creatures.CreatureNPC; 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
