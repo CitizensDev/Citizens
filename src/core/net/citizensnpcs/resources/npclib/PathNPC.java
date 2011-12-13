@@ -118,11 +118,7 @@ public class PathNPC extends EntityPlayer {
 		}
 		return vec3d;
 	}
-
-	private Player getPlayer() {
-		return (Player) this.bukkitEntity;
-	}
-
+    
 	public int getStationaryTicks() {
 		return this.stationaryTicks;
 	}
