@@ -58,15 +58,6 @@ public class NPCManager {
 		}
 		npc.getHandle().yaw = (float) yaw - 90;
 		npc.getHandle().pitch = (float) pitch;
-
-		if (entity instanceof Player) {
-			Player player = (Player) entity;
-			if (npc.getOwner().equalsIgnoreCase(player.getName())) {
-				loc = npc.getNPCData().getLocation();
-				loc.setPitch(npc.getLocation().getPitch());
-				loc.setYaw(npc.getLocation().getYaw());
-			}
-		}
 	}
 
 	// Despawns an NPC.
