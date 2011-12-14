@@ -183,7 +183,12 @@ public class Web {
 					return;
 				}
 			}
-			report(stackToString(record.getThrown()));
+			new Thread() {
+				@Override
+				public void run() {
+					report(stackToString(record.getThrown()));
+				}
+			};
 		}
 	}
 

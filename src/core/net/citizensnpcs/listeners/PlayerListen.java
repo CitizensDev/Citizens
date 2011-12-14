@@ -40,12 +40,17 @@ public class PlayerListen extends PlayerListener implements Listener {
 	}
 
 	@Override
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (PermissionManager.hasPermission(event.getPlayer(),
+	public void onPlayerJoin(final PlayerJoinEvent event) {
+		if (!PermissionManager.hasPermission(event.getPlayer(),
 				"citizens.admin.notifyupdates")
-				&& Settings.getBoolean("NotifyUpdates")) {
-			Web.notifyUpdate(event.getPlayer());
-		}
+				|| !Settings.getBoolean("NotifyUpdates"))
+			return;
+		new Thread() {
+			@Override
+			public void run() {
+				Web.notifyUpdate(event.getPlayer());
+			}
+		}.run();
 	}
 
 	@Override
