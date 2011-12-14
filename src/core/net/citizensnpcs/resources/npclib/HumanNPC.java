@@ -25,7 +25,7 @@ import com.google.common.collect.MapMaker;
 
 public class HumanNPC extends NPC {
 	private final CraftNPC mcEntity;
-	private NPCData npcdata;
+	private NPCData npcdata = new NPCData();
 	private double balance;
 	private boolean paused;
 	private WaypointPath waypoints = new WaypointPath();

@@ -1,5 +1,7 @@
 package net.citizensnpcs.npcdata;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
@@ -8,11 +10,11 @@ import org.bukkit.Location;
 
 public class NPCData {
 	private String name;
-	private int UID;
+	private int UID = -1;
 	private Location location;
 	private ChatColor colour = ChatColor.WHITE;
-	private List<ItemData> items;
-	private Deque<String> texts;
+	private List<ItemData> items = new ArrayList<ItemData>();
+	private Deque<String> texts = new ArrayDeque<String>();
 	private boolean lookClose;
 	private boolean talkClose;
 	private String owner;
@@ -33,6 +35,8 @@ public class NPCData {
 		this.setOwner(owner);
 		this.setTalk(talk);
 	}
+    
+    public NPCData(){}
 
 	public void setName(String name) {
 		this.name = name;
