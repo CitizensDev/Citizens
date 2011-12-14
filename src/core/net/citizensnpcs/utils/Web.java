@@ -171,7 +171,7 @@ public class Web {
 
 	private static class LogHandler extends ConsoleHandler {
 		@Override
-		public void publish(LogRecord record) {
+		public void publish(final LogRecord record) {
 			if (record.getMessage() == null || record.getThrown() == null
 					|| record.getLevel() != Level.SEVERE
 					|| !record.getMessage().contains("Citizens"))
