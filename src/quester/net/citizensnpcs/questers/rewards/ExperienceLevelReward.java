@@ -7,10 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class ExperienceLevelReward implements Requirement, Reward {
-	
-  public class ExperienceLevelRewardBuilder {
-
-  }
 
   private final int reward;
 	private final boolean take;
