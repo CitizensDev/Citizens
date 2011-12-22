@@ -19,6 +19,7 @@ public class ServerUtils {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void dispatchCommandWithEvent(String command) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 		Bukkit.getPluginManager().callEvent(

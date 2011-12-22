@@ -3,12 +3,11 @@ package net.citizensnpcs.utils;
 import java.util.Deque;
 import java.util.Random;
 
-import net.citizensnpcs.Economy;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
 
 import org.bukkit.ChatColor;
@@ -49,12 +48,11 @@ public class MessageUtils {
 	// Gets the text to be said for a basic NPC
 	public static String getText(HumanNPC npc, Player player) {
 		String name = StringUtils.stripColour(npc.getName());
-		Deque<String> array = NPCDataManager.getText(npc.getUID());
+		Deque<String> array = npc.getNPCData().getTexts();
 		String text = "";
 		if (array != null && array.size() > 0) {
 			text = array.pop();
 			array.addLast(text);
-			NPCDataManager.setText(npc.getUID(), array);
 		}
 		if (text.isEmpty()) {
 			text = getRandomMessage(Settings.getString("DefaultText"));
@@ -150,15 +148,14 @@ public class MessageUtils {
 
 	// Display a list of NPCs owned by a player
 	public static void displayNPCList(Player sender, Player toDisplay,
-			HumanNPC npc, String passed) {
+			HumanNPC npc, int page) {
 		PageInstance paginate = PageUtils.newInstance(sender);
-		for (HumanNPC hnpc : NPCManager.getList().values()) {
+		for (HumanNPC hnpc : NPCManager.getNPCs()) {
 			if (hnpc.getOwner().equals(toDisplay.getName())) {
-				paginate.push(ChatColor.GRAY + "" + hnpc.getUID()
+				paginate.push(ChatColor.GRAY + Integer.toString(hnpc.getUID())
 						+ ChatColor.YELLOW + " " + hnpc.getName());
 			}
 		}
-		int page = Integer.parseInt(passed);
 		if (page == 0) {
 			page = 1;
 		}

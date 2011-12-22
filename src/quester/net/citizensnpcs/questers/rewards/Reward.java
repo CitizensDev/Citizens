@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 
 import org.bukkit.entity.Player;
 
@@ -9,5 +9,5 @@ public interface Reward {
 
 	public boolean isTake();
 
-	public void save(Storage storage, String root);
+	public void save(DataKey root);
 }

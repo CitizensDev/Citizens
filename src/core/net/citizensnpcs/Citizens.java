@@ -2,8 +2,6 @@ package net.citizensnpcs;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +13,13 @@ import net.citizensnpcs.api.event.CitizensDisableEvent;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.CitizensEnableTypeEvent;
 import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.commands.BasicCommands;
 import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
+import net.citizensnpcs.lib.creatures.CreatureNPCType;
+import net.citizensnpcs.lib.creatures.CreatureTask;
 import net.citizensnpcs.listeners.EntityListen;
 import net.citizensnpcs.listeners.PlayerListen;
 import net.citizensnpcs.listeners.ServerListen;
@@ -28,19 +29,16 @@ import net.citizensnpcs.npctypes.CitizensNPCLoader;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
-import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
-import net.citizensnpcs.resources.sk89q.CitizensCommandsManager;
-import net.citizensnpcs.resources.sk89q.CommandPermissionsException;
-import net.citizensnpcs.resources.sk89q.CommandUsageException;
-import net.citizensnpcs.resources.sk89q.MissingNestedCommandException;
-import net.citizensnpcs.resources.sk89q.RequirementMissingException;
-import net.citizensnpcs.resources.sk89q.ServerCommandException;
-import net.citizensnpcs.resources.sk89q.UnhandledCommandException;
-import net.citizensnpcs.resources.sk89q.WrappedCommandException;
+import net.citizensnpcs.sk89q.CitizensCommandsManager;
+import net.citizensnpcs.sk89q.CommandPermissionsException;
+import net.citizensnpcs.sk89q.CommandUsageException;
+import net.citizensnpcs.sk89q.MissingNestedCommandException;
+import net.citizensnpcs.sk89q.RequirementMissingException;
+import net.citizensnpcs.sk89q.ServerCommandException;
+import net.citizensnpcs.sk89q.UnhandledCommandException;
+import net.citizensnpcs.sk89q.WrappedCommandException;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
@@ -48,7 +46,6 @@ import net.citizensnpcs.utils.Web;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -62,8 +59,6 @@ import com.google.common.base.Joiner;
 public class Citizens extends JavaPlugin {
 	public static Citizens plugin;
 	public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
-
-	public static boolean initialized = false;
 
 	public static List<String> loadedTypes = new ArrayList<String>();
 
@@ -151,8 +146,10 @@ public class Citizens extends JavaPlugin {
 		// save the local copy of our files to disk
 		Web.disableErrorReporting();
 		PropertyManager.saveState();
-		NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
-		CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
+		NPCManager.despawnAll();
+		CreatureTask.despawnAll();
+
+		Bukkit.getScheduler().cancelTasks(this);
 
 		// call disable event
 		// TODO remove when types are made into plugins
@@ -269,30 +266,13 @@ public class Citizens extends JavaPlugin {
 
 	private void setupNPCs() {
 		PropertyManager.getNPCProfiles().load();
-		List<Integer> sorted = PropertyManager.getNPCProfiles().getIntegerKeys(
-				null);
-		Collections.sort(sorted);
-		int max = sorted.size() == 0 ? 0 : sorted.get(sorted.size() - 1), count = 0;
-		while (count <= max) {
-			if (!PropertyManager.getNPCProfiles().keyExists("" + count)) {
-				++count;
-				continue;
-			}
-			int UID = count;
-			Location loc = PropertyManager.getBasic().getLocation(UID);
-			if (loc != null && loc.getWorld() != null) {
-				NPCManager.register(UID,
-						PropertyManager.getBasic().getOwner(UID),
-						NPCCreateReason.SPAWN);
-				Deque<String> text = PropertyManager.getBasic().getText(UID);
-				if (text != null) {
-					NPCDataManager.setText(UID, text);
-				}
-			}
-			++count;
+		List<DataKey> sorted = PropertyManager.getNPCProfiles().getKey("")
+				.getIntegerSubKeys();
+		for (DataKey key : sorted) {
+			int UID = Integer.parseInt(key.name());
+			NPCManager.register(UID, NPCCreateReason.SPAWN);
 		}
-		Messaging.log("Loaded " + NPCManager.GlobalUIDs.size() + " NPCs.");
-		initialized = true;
+		Messaging.log("Loaded " + NPCManager.size() + " NPCs.");
 	}
 
 	// load NPC types in the plugins/Citizens/types directory

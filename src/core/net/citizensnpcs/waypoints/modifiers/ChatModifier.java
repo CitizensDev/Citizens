@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import joptsimple.internal.Strings;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.ConversationUtils.ChatType;
 import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
 import net.citizensnpcs.utils.StringUtils;
@@ -33,16 +33,15 @@ public class ChatModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void parse(Storage storage, String root) {
-		for (String string : Splitter.on(",").split(
-				storage.getString(root + ".messages"))) {
+	public void load(DataKey root) {
+		for (String string : Splitter.on(",").split(root.getString("messages"))) {
 			messages.add(string);
 		}
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		storage.setString(root + ".messages", Strings.join(messages, ","));
+	public void save(DataKey root) {
+		root.setString("messages", Strings.join(messages, ","));
 	}
 
 	@Override

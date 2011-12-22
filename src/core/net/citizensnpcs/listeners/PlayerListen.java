@@ -4,11 +4,11 @@ import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.api.event.NPCTargetEvent;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
+import net.citizensnpcs.lib.creatures.CreatureTask;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.ConversationUtils;
 import net.citizensnpcs.utils.Web;
 

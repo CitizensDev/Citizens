@@ -64,7 +64,8 @@ public class CollectQuest implements QuestUpdater {
 			verifyMap(progress.getPlayer());
 			Map<Material, Integer> previous = allowed.get(ev.getPlayer());
 			ItemStack stack = ev.getItem().getItemStack();
-			if (previous.containsKey(stack.getType())) {
+			if (progress.getObjective().getMaterial() == stack.getType()
+					&& previous.containsKey(stack.getType())) {
 				int amount = previous.get(stack.getType()) - stack.getAmount();
 				if (amount <= 0) {
 					previous.remove(stack.getType());

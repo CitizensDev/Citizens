@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.utils.Messaging;
 
+import com.google.common.collect.Maps;
+
 public class SettingsTree {
 	private final Map<String, String> tree = new ConcurrentHashMap<String, String>(
 			100);
@@ -47,5 +49,16 @@ public class SettingsTree {
 				continue;
 			tree.remove(key);
 		}
+	}
+
+	public void copy(String from, String to) {
+		Map<String, String> toCopy = Maps.newHashMap();
+		for (String key : tree.keySet()) {
+			if (tree.get(key).isEmpty() || !key.startsWith(from))
+				continue;
+			toCopy.put(to + key.substring(from.length(), key.length()),
+					tree.get(key));
+		}
+		tree.putAll(toCopy);
 	}
 }

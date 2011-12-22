@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.questers.api.events.QuestCancelEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
@@ -13,12 +14,11 @@ import net.citizensnpcs.questers.data.QuestProperties;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.sk89q.Command;
-import net.citizensnpcs.resources.sk89q.CommandContext;
-import net.citizensnpcs.resources.sk89q.CommandPermissions;
-import net.citizensnpcs.resources.sk89q.CommandRequirements;
-import net.citizensnpcs.resources.sk89q.ServerCommand;
+import net.citizensnpcs.sk89q.Command;
+import net.citizensnpcs.sk89q.CommandContext;
+import net.citizensnpcs.sk89q.CommandPermissions;
+import net.citizensnpcs.sk89q.CommandRequirements;
+import net.citizensnpcs.sk89q.ServerCommand;
 import net.citizensnpcs.utils.HelpUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PageUtils;
@@ -218,7 +218,7 @@ public class QuesterCommands extends CommandHandler {
 			HumanNPC npc) {
 		Messaging.dualSend(sender, ChatColor.GRAY + "Reloading...");
 		QuestManager.clearQuests();
-		QuestProperties.initialize();
+		QuestProperties.load();
 		Messaging.dualSend(
 				sender,
 				ChatColor.GREEN + "Loaded "
@@ -416,36 +416,34 @@ public class QuesterCommands extends CommandHandler {
 		if (!profile.hasQuest()) {
 			player.sendMessage(ChatColor.GRAY
 					+ "You don't have a quest at the moment.");
-		} else {
-			player.sendMessage(ChatColor.GREEN
-					+ "Currently in the middle of "
-					+ StringUtils.wrap(profile.getProgress().getQuestName())
-					+ ". You have been on this quest for "
-					+ StringUtils.wrap(TimeUnit.MINUTES.convert(
-							System.currentTimeMillis()
-									- profile.getProgress().getStartTime(),
-							TimeUnit.MILLISECONDS)) + " minutes.");
-			if (profile.getProgress().isFullyCompleted()) {
-				player.sendMessage(ChatColor.AQUA + "Quest is completed.");
-			} else {
-				player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
-						+ " Progress report " + ChatColor.GREEN + "-");
-				for (ObjectiveProgress progress : profile.getProgress()
-						.getProgress()) {
-					if (progress == null)
-						continue;
-					try {
-						Messaging.send(
-								player,
-								StringUtils.wrap("  - ", ChatColor.WHITE)
-										+ progress.getQuestUpdater().getStatus(
-												progress));
-					} catch (QuestCancelException ex) {
-						player.sendMessage(ChatColor.GRAY
-								+ "Cancelling quest. Reason: " + ex.getReason());
-						profile.setProgress(null);
-					}
-				}
+			return;
+		}
+		player.sendMessage(ChatColor.GREEN
+				+ "Currently in the middle of "
+				+ StringUtils.wrap(profile.getProgress().getQuestName())
+				+ ". You have been on this quest for "
+				+ StringUtils.wrap(TimeUnit.MINUTES.convert(
+						System.currentTimeMillis()
+								- profile.getProgress().getStartTime(),
+						TimeUnit.MILLISECONDS)) + " minutes.");
+		if (profile.getProgress().isFullyCompleted()) {
+			player.sendMessage(ChatColor.AQUA + "Quest is completed.");
+			return;
+		}
+		player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA
+				+ " Progress report " + ChatColor.GREEN + "-");
+		for (ObjectiveProgress progress : profile.getProgress().getProgress()) {
+			if (progress == null)
+				continue;
+			try {
+				Messaging.send(player,
+						StringUtils.wrap("  - ", ChatColor.WHITE)
+								+ progress.getQuestUpdater()
+										.getStatus(progress));
+			} catch (QuestCancelException ex) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Cancelling quest. Reason: " + ex.getReason());
+				profile.setProgress(null);
 			}
 		}
 	}

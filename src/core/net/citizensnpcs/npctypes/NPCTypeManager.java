@@ -3,7 +3,6 @@ package net.citizensnpcs.npctypes;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.properties.PropertyManager;
 
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
@@ -16,7 +15,6 @@ public class NPCTypeManager {
 
 	public static CitizensNPCType registerType(CitizensNPCType type) {
 		types.put(type.getName(), type);
-		PropertyManager.add(type.getName(), type.getProperties());
 		Citizens.commands.register(type.getCommands().getClass());
 		return type;
 	}

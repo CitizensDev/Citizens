@@ -3,7 +3,7 @@ package net.citizensnpcs.waypoints;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.Location;
 

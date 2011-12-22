@@ -1,23 +1,21 @@
 package net.citizensnpcs.properties.properties;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.properties.ConfigurationHandler;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.properties.DataSource;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class UtilityProperties {
-	private static final Storage config = new ConfigurationHandler(
+	private static final DataSource config = new ConfigurationHandler(
 			"plugins/Citizens/citizens.yml");
-	private static final Storage mobs = new ConfigurationHandler(
+	private static final DataSource mobs = new ConfigurationHandler(
 			"plugins/Citizens/mobs.yml");
 
 	public static void load() {
@@ -25,25 +23,25 @@ public class UtilityProperties {
 		mobs.load();
 	}
 
-	public static Storage getConfig() {
+	public static DataSource getConfig() {
 		return config;
 	}
 
-	public static Storage getMobSettings() {
+	public static DataSource getMobSettings() {
 		return mobs;
 	}
 
 	public static double getPrice(String path) {
-		return config.getDouble("economy.prices." + path);
+		return config.getKey("economy.prices").getDouble(path);
 	}
 
 	public static int getCurrencyID(String string) {
-		int ID = config.getInt(string);
+		int ID = config.getKey(string).getInt("");
 		return ID == -1 ? 1 : ID;
 	}
 
 	public static String getItemOverride(int ID) {
-		return config.getString("items.overrides." + ID);
+		return config.getKey("items.overrides").getString(Integer.toString(ID));
 	}
 
 	public static ItemStack getRandomDrop(String drops) {
@@ -60,7 +58,7 @@ public class UtilityProperties {
 
 	public static int getNPCCount(String name) {
 		int count = 0;
-		for (HumanNPC npc : NPCManager.getList().values()) {
+		for (HumanNPC npc : NPCManager.getNPCs()) {
 			if (npc.getOwner().equals(name)) {
 				count++;
 			}
@@ -70,12 +68,11 @@ public class UtilityProperties {
 
 	// returns whether the given item ID is usable as a tool
 	public static boolean isHoldingTool(String key, Player player) {
-		List<String> item = Arrays.asList(config.getString(
-				Settings.getPath(key)).split(","));
-		if (item.contains("*")) {
-			return true;
-		}
+		String[] item = config.getKey(Settings.getPath(key)).getString("")
+				.split(",");
 		for (String s : item) {
+			if (s.equals("*"))
+				return true;
 			boolean isShift = false;
 			if (s.contains("SHIFT-")) {
 				s = s.replace("SHIFT-", "");

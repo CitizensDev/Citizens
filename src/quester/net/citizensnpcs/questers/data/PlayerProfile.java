@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.properties.ConfigurationHandler;
+import net.citizensnpcs.properties.DataKey;
+import net.citizensnpcs.properties.DataSource;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
@@ -16,14 +18,11 @@ import net.citizensnpcs.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 public class PlayerProfile {
-	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
-
 	private PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name
 				+ ".yml");
@@ -31,56 +30,17 @@ public class PlayerProfile {
 		this.load();
 	}
 
-	public static Collection<PlayerProfile> getOnline() {
-		return profiles.values();
-	}
-
-	public static PlayerProfile getProfile(String name, boolean register) {
-		name = name.toLowerCase();
-		if (profiles.get(name) == null) {
-			PlayerProfile profile = new PlayerProfile(name);
-			if (register) {
-				profiles.put(name, profile);
-			}
-			return profile;
-		}
-		return profiles.get(name);
-	}
-
-	public static PlayerProfile getProfile(String name) {
-		return getProfile(name, true);
-	}
-
-	public static boolean isOnline(String name) {
-		return profiles.containsKey(name.toLowerCase());
-	}
-
 	public int getCompletedTimes(String reward) {
 		return hasCompleted(reward) ? getCompletedQuest(reward)
 				.getTimesCompleted() : 0;
 	}
 
-	public static void setProfile(String name, PlayerProfile profile) {
-		name = name.toLowerCase();
-		if (profile == null) {
-			profiles.remove(name);
-		} else {
-			profiles.put(name, profile);
-		}
-	}
-
-	public static void saveAll() {
-		for (PlayerProfile profile : profiles.values()) {
-			profile.save();
-		}
-	}
-
 	private long lastSave;
-	private final ConfigurationHandler profile;
+	private final DataSource profile;
 	private final Map<String, CompletedQuest> completedQuests = Maps
 			.newHashMap();
-	private QuestProgress progress;
 	private final String name;
+	private QuestProgress progress;
 
 	public void addCompletedQuest(CompletedQuest quest) {
 		completedQuests.put(quest.getName().toLowerCase(), quest);
@@ -128,111 +88,106 @@ public class PlayerProfile {
 
 	public void save() {
 		this.lastSave = System.currentTimeMillis();
-		if (profile.pathExists("quests.current"))
-			profile.removeKey("quests.current");
+		DataKey root = profile.getKey("quests");
+		root.removeKey("current");
 		if (progress != null) {
-			String path = "quests.current", oldPath = path;
+			root = root.getRelative("current");
 			int count = 0;
 
-			profile.setString(path + ".name", progress.getQuestName());
-			profile.setInt(path + ".step", progress.getStep());
-			profile.setLong(path + ".start-time", progress.getStartTime());
-			profile.setInt(path + ".giver", progress.getQuesterUID());
+			root.setString("name", progress.getQuestName());
+			root.setInt("step", progress.getStep());
+			root.setLong("start-time", progress.getStartTime());
+			root.setInt("giver", progress.getQuesterUID());
+			DataKey parent;
 			if (progress.getProgress() != null) {
 				for (ObjectiveProgress current : progress.getProgress()) {
-					path = oldPath + "." + count + ".progress";
+					parent = root.getRelative(count + ".progress");
 					if (current == null) {
 						++count;
 						continue;
 					}
-					profile.setInt(path + ".amount", current.getAmount());
+					parent.setInt("amount", current.getAmount());
 					if (current.getLastItem() != null) {
-						profile.setInt(path + ".item.id", current.getLastItem()
+						parent.setInt("item.id", current.getLastItem()
 								.getTypeId());
-						profile.setInt(path + ".item.amount", current
-								.getLastItem().getAmount());
-						profile.setInt(path + ".item.data", current
-								.getLastItem().getDurability());
+						parent.setInt("item.amount", current.getLastItem()
+								.getAmount());
+						parent.setInt("item.data", current.getLastItem()
+								.getDurability());
 					}
 					if (current.getLastLocation() != null) {
-						LocationUtils.saveLocation(profile,
-								current.getLastLocation(), path, true);
+						LocationUtils.saveLocation(parent,
+								current.getLastLocation(), true);
 					}
 					++count;
 				}
 			}
 		}
-		if (profile.pathExists("quests.completed"))
-			profile.removeKey("quests.completed");
-		String path = "quests.completed.", temp;
+		profile.getKey("quests").removeKey("completed");
+		root = profile.getKey("quests.completed");
+		DataKey parent;
 		for (CompletedQuest quest : this.completedQuests.values()) {
-			temp = path + quest.getName();
-			profile.setInt(temp + ".completed", quest.getTimesCompleted());
-			profile.setLong(temp + ".elapsed", quest.getElapsed());
-			profile.setLong(temp + ".finish", quest.getFinishTime());
-			profile.setInt(temp + ".quester", quest.getQuesterUID());
+			parent = root.getRelative(quest.getName());
+			parent.setInt("completed", quest.getTimesCompleted());
+			parent.setLong("elapsed", quest.getElapsed());
+			parent.setLong("finish", quest.getFinishTime());
+			parent.setInt("quester", quest.getQuesterUID());
 		}
 		profile.save();
 	}
 
 	private void load() {
-		String path = "quests.current", temp = path;
-		questLoad: if (!profile.getString(path + ".name").isEmpty()) {
-			if (QuestManager.getQuest(profile.getString(path + ".name")) == null) {
-				Bukkit.getServer()
-						.getPlayer(name)
-						.sendMessage(
-								ChatColor.GRAY
-										+ "Previous in-progress quest "
-										+ StringUtils.wrap(
-												profile.getString(path
-														+ ".name"),
-												ChatColor.GRAY)
-										+ " no longer exists and has been aborted.");
-				profile.removeKey("quests.current");
+		DataKey root = profile.getKey("quests.current");
+		questLoad: if (!root.getString("name").isEmpty()) {
+			if (QuestManager.getQuest(root.getString("name")) == null) {
+				Bukkit.getPlayer(name).sendMessage(
+						ChatColor.GRAY
+								+ "Previous in-progress quest "
+								+ StringUtils.wrap(root.getString("name"),
+										ChatColor.GRAY)
+								+ " no longer exists and has been aborted.");
+				root.removeKey("");
 				break questLoad;
 			}
-			progress = new QuestProgress(profile.getInt(path + ".giver"),
-					Bukkit.getServer().getPlayer(name), profile.getString(path
-							+ ".name"), profile.getLong(path + ".start-time"));
-			progress.setStep(profile.getInt(path + ".step"));
-			if (progress.getProgress() != null) {
-				int count = 0;
-				for (ObjectiveProgress questProgress : progress.getProgress()) {
-					temp = path + "." + count + ".progress";
-					if (questProgress == null || !profile.pathExists(temp)) {
-						progress.getProgress()[count] = null;
-						++count;
-						continue;
-					}
-					questProgress.setAmountCompleted(this.profile.getInt(temp
-							+ ".amount"));
-					int itemID = profile.getInt(temp + ".item.id");
-					int amount = profile.getInt(temp + ".item.amount");
-					if (itemID != 0 && amount > 0) {
-						ItemStack item = null;
-						item = new ItemStack(itemID, amount);
-						item.setData(new MaterialData(itemID, (byte) profile
-								.getInt(temp + ".item.data")));
-						questProgress.setLastItem(item);
-					}
-					if (profile.pathExists(temp + ".location")) {
-						questProgress.setLastLocation(LocationUtils
-								.loadLocation(profile, temp, true));
-					}
+			progress = new QuestProgress(root.getInt("giver"),
+					Bukkit.getPlayer(name), root.getString("name"),
+					root.getLong("start-time"));
+			progress.setStep(root.getInt("step"));
+			if (progress.getProgress() == null)
+				break questLoad;
+			int count = 0;
+			DataKey parent;
+			for (ObjectiveProgress questProgress : progress.getProgress()) {
+				parent = root.getRelative(count + ".progress");
+				if (questProgress == null || !parent.keyExists("")) {
+					progress.getProgress()[count] = null;
 					++count;
+					continue;
 				}
+				questProgress.setAmountCompleted(parent.getInt("amount"));
+				int itemID = parent.getInt("item.id");
+				int amount = parent.getInt("item.amount");
+				if (itemID != 0 && amount > 0) {
+					ItemStack item = null;
+					item = new ItemStack(itemID, amount);
+					item.setDurability((short) parent.getInt("item.data"));
+					questProgress.setLastItem(item);
+				}
+				if (parent.keyExists("location")) {
+					questProgress.setLastLocation(LocationUtils.loadLocation(
+							parent, true));
+				}
+				++count;
 			}
 		}
-		if (!profile.pathExists("quests.completed")) {
+		if (!profile.getKey("quests").keyExists("completed")) {
 			return;
 		}
-		for (String key : profile.getKeys("quests.completed")) {
-			path = "quests.completed." + key;
-			addCompletedQuest(new CompletedQuest(key, profile.getInt(path
-					+ ".quester"), profile.getInt(path + ".completed"),
-					profile.getLong(path + ".elapsed"), profile.getLong(path
-							+ ".finish")));
+		root = profile.getKey("quests.completed");
+		for (DataKey key : root.getSubKeys()) {
+			addCompletedQuest(new CompletedQuest(key.name(),
+					key.getInt("quester"), key.getInt("completed"),
+					key.getLong("elapsed"), key.getLong("finish")));
 		}
 	}
 
@@ -262,5 +217,46 @@ public class PlayerProfile {
 
 	public long getLastSaveTime() {
 		return lastSave;
+	}
+
+	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
+
+	public static Collection<PlayerProfile> getOnline() {
+		return profiles.values();
+	}
+
+	public static PlayerProfile getProfile(String name, boolean register) {
+		name = name.toLowerCase();
+		if (profiles.get(name) == null) {
+			PlayerProfile profile = new PlayerProfile(name);
+			if (register) {
+				profiles.put(name, profile);
+			}
+			return profile;
+		}
+		return profiles.get(name);
+	}
+
+	public static PlayerProfile getProfile(String name) {
+		return getProfile(name, true);
+	}
+
+	public static boolean isOnline(String name) {
+		return profiles.containsKey(name.toLowerCase());
+	}
+
+	public static void setProfile(String name, PlayerProfile profile) {
+		name = name.toLowerCase();
+		if (profile == null) {
+			profiles.remove(name);
+		} else {
+			profiles.put(name, profile);
+		}
+	}
+
+	public static void saveAll() {
+		for (PlayerProfile profile : profiles.values()) {
+			profile.save();
+		}
 	}
 }

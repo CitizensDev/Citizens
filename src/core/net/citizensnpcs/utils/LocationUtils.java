@@ -1,6 +1,6 @@
 package net.citizensnpcs.utils;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,13 +24,12 @@ public class LocationUtils {
 		return Math.pow(range, 2) > loc.distanceSquared(pLoc);
 	}
 
-	public static Location loadLocation(Storage storage, String path,
-			boolean shortened) {
+	public static Location loadLocation(DataKey root, boolean shortened) {
 		String world;
 		double x, y, z;
 		float pitch, yaw;
 		if (shortened) {
-			String[] read = storage.getString(path + ".location").split(",");
+			String[] read = root.getString("location").split(",");
 			world = read[0];
 			x = Double.parseDouble(read[1]);
 			y = Double.parseDouble(read[2]);
@@ -38,34 +37,35 @@ public class LocationUtils {
 			pitch = Float.parseFloat(read[4]);
 			yaw = Float.parseFloat(read[5]);
 		} else {
-			world = storage.getString(path + ".location.world");
-			x = storage.getDouble(path + ".location.x");
-			y = storage.getDouble(path + ".location.y");
-			z = storage.getDouble(path + ".location.z");
-			pitch = (float) storage.getDouble(path + ".location.pitch");
-			yaw = (float) storage.getDouble(path + ".location.yaw");
+			root = root.getRelative("location");
+			world = root.getString("world");
+			x = root.getDouble("x");
+			y = root.getDouble("y");
+			z = root.getDouble("z");
+			pitch = (float) root.getDouble("pitch");
+			yaw = (float) root.getDouble("yaw");
 		}
 		return new Location(Bukkit.getServer().getWorld(world), x, y, z, pitch,
 				yaw);
 	}
 
-	public static void saveLocation(Storage storage, Location loc, String path,
+	public static void saveLocation(DataKey root, Location loc,
 			boolean shortened) {
 		if (shortened) {
-			storage.setString(
-					path + ".location",
+			root.setString(
+					"location",
 					Joiner.on(",").join(
 							new Object[] { loc.getWorld().getName(),
 									loc.getX(), loc.getY(), loc.getZ(),
 									loc.getPitch(), loc.getYaw() }));
 		} else {
-			storage.setString(path + ".location.world", loc.getWorld()
-					.getName());
-			storage.setDouble(path + ".location.x", loc.getX());
-			storage.setDouble(path + ".location.y", loc.getY());
-			storage.setDouble(path + ".location.z", loc.getZ());
-			storage.setDouble(path + ".location.pitch", loc.getPitch());
-			storage.setDouble(path + ".location.yaw", loc.getYaw());
+			root = root.getRelative("location");
+			root.setString("world", loc.getWorld().getName());
+			root.setDouble("x", loc.getX());
+			root.setDouble("y", loc.getY());
+			root.setDouble("z", loc.getZ());
+			root.setDouble("pitch", loc.getPitch());
+			root.setDouble("yaw", loc.getYaw());
 		}
 	}
 }

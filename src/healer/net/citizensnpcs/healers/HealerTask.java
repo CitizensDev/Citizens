@@ -3,7 +3,7 @@ package net.citizensnpcs.healers;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.Bukkit;
 

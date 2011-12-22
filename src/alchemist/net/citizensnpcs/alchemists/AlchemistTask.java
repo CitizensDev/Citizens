@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 public class AlchemistTask implements Runnable {
 	private HumanNPC npc;

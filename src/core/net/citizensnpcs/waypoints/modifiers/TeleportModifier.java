@@ -1,8 +1,8 @@
 package net.citizensnpcs.waypoints.modifiers;
 
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.misc.ConstructableLocation;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -108,12 +108,12 @@ public class TeleportModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void parse(Storage storage, String root) {
-		loc = LocationUtils.loadLocation(storage, root, true);
+	public void load(DataKey root) {
+		loc = LocationUtils.loadLocation(root, true);
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		LocationUtils.saveLocation(storage, loc, root, true);
+	public void save(DataKey root) {
+		LocationUtils.saveLocation(root, loc, true);
 	}
 }

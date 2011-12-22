@@ -6,7 +6,7 @@ import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.CitizensDisableEvent;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.CitizensListener;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.wizards.WizardTask;
 
 import org.bukkit.Bukkit;
@@ -18,16 +18,16 @@ public class WizardCitizensListen extends CitizensListener {
 		if (!Settings.getBoolean("RegenWizardMana")) {
 			return;
 		}
-		for (HumanNPC entry : CitizensManager.getList().values()) {
-			if (entry.isType("wizard")) {
-				WizardTask task = new WizardTask(entry);
-				task.addID(Bukkit
-						.getServer()
-						.getScheduler()
-						.scheduleSyncRepeatingTask(Citizens.plugin, task,
-								Settings.getInt("WizardManaRegenRate"),
-								Settings.getInt("WizardManaRegenRate")));
-			}
+		for (HumanNPC entry : CitizensManager.getNPCs()) {
+			if (!entry.isType("wizard"))
+				continue;
+			WizardTask task = new WizardTask(entry);
+			task.addID(Bukkit
+					.getServer()
+					.getScheduler()
+					.scheduleSyncRepeatingTask(Citizens.plugin, task,
+							Settings.getInt("WizardManaRegenRate"),
+							Settings.getInt("WizardManaRegenRate")));
 		}
 	}
 

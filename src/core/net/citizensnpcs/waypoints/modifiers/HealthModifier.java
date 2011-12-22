@@ -1,9 +1,9 @@
 package net.citizensnpcs.waypoints.modifiers;
 
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.StringUtils;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
+import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointModifier;
 import net.citizensnpcs.waypoints.WaypointModifierType;
@@ -33,15 +33,15 @@ public class HealthModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void parse(Storage storage, String root) {
-		take = storage.getBoolean(root + ".take");
-		amount = storage.getInt(root = ".amount");
+	public void load(DataKey root) {
+		take = root.getBoolean("take");
+		amount = root.getInt("amount");
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		storage.setBoolean(root + ".take", take);
-		storage.setInt(root + ".amount", amount);
+	public void save(DataKey root) {
+		root.setBoolean("take", take);
+		root.setInt("amount", amount);
 	}
 
 	@Override

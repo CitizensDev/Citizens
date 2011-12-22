@@ -5,12 +5,12 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCTalkEvent;
 import net.citizensnpcs.api.event.NPCTargetEvent;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
+import net.citizensnpcs.lib.creatures.CreatureTask;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 
@@ -72,7 +72,7 @@ public class EntityListen extends EntityListener implements Listener {
 		if (npc != null && event.getTarget() instanceof Player) {
 			Player player = (Player) event.getTarget();
 			if (npc.getNPCData().isLookClose()) {
-				NPCManager.faceEntity(npc, player);
+				NPCManager.faceEntity(npc.getPlayer(), player);
 			}
 			if (UtilityProperties.isHoldingTool("SelectItems", player)) {
 				if (!NPCManager.hasSelected(player, npc.getUID())) {

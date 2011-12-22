@@ -1,10 +1,10 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.LocationUtils;
 
 import org.bukkit.Location;
@@ -30,9 +30,10 @@ public class NPCReward implements Reward {
 
 	@Override
 	public void grant(Player player, int UID) {
-		HumanNPC spawned = NPCManager.get(NPCManager.register(name,
-				at != null ? at : player.getLocation(), player.getName(),
-				NPCCreateReason.COMMAND));
+		HumanNPC spawned = NPCManager
+				.register(name, at != null ? at : player.getLocation(),
+						NPCCreateReason.COMMAND);
+		spawned.getNPCData().setOwner(player.getName());
 		for (String type : toggles) {
 			spawned.addType(type);
 		}
@@ -44,20 +45,20 @@ public class NPCReward implements Reward {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		root += ".npc";
-		storage.setString(root + ".name", name);
-		storage.setString(root + ".types", Joiner.on(",").join(toggles));
+	public void save(DataKey root) {
+		root = root.getRelative("npc");
+		root.setString("name", name);
+		root.setString("types", Joiner.on(",").join(toggles));
 	}
 
 	public static class NPCRewardBuilder implements RewardBuilder {
 		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			if (storage.keyExists(root + ".npcid"))
-				return new NPCGiveReward(storage.getInt(root + ".npcid"));
-			return new NPCReward(storage.getString(root + ".name"), storage
-					.getString(root + ".types").split(","),
-					LocationUtils.loadLocation(storage, root, false));
+		public Reward build(DataKey root, boolean take) {
+			if (root.keyExists("npcid"))
+				return new NPCGiveReward(root.getInt("npcid"));
+			return new NPCReward(root.getString("name"), root
+					.getString("types").split(","), LocationUtils.loadLocation(
+					root, false));
 		}
 	}
 
@@ -79,8 +80,8 @@ public class NPCReward implements Reward {
 		}
 
 		@Override
-		public void save(Storage storage, String root) {
-			storage.setInt(root + ".npcid", UID);
+		public void save(DataKey root) {
+			root.setInt("npcid", UID);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 package net.citizensnpcs.commands;
 
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.sk89q.Command;
-import net.citizensnpcs.resources.sk89q.CommandContext;
-import net.citizensnpcs.resources.sk89q.CommandPermissions;
-import net.citizensnpcs.resources.sk89q.CommandRequirements;
+import net.citizensnpcs.sk89q.Command;
+import net.citizensnpcs.sk89q.CommandContext;
+import net.citizensnpcs.sk89q.CommandPermissions;
+import net.citizensnpcs.sk89q.CommandRequirements;
 
 import org.bukkit.entity.Player;
 

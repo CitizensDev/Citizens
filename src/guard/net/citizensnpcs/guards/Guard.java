@@ -2,13 +2,15 @@ package net.citizensnpcs.guards;
 
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.TickTask;
+import net.citizensnpcs.guards.flags.FlagInfo;
 import net.citizensnpcs.guards.flags.FlagList;
+import net.citizensnpcs.guards.flags.FlagList.FlagType;
 import net.citizensnpcs.guards.types.GuardStatus;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -57,11 +59,20 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
-		guardState = GuardState.parse(profiles.getString(UID + ".guard.type"));
-		isAggressive = profiles.getBoolean(UID + ".guard.aggressive");
-		radius = profiles.getDouble(UID + ".guard.radius",
+	public void load(DataKey root) {
+		guardState = GuardState.parse(root.getString("type"));
+		isAggressive = root.getBoolean("aggressive");
+		radius = root.getDouble("radius",
 				Settings.getDouble("DefaultBouncerProtectionRadius"));
+		if (!root.keyExists("flags")) {
+			return;
+		}
+		for (DataKey key : root.getRelative("flags").getSubKeys()) {
+			boolean isSafe = key.getBoolean("safe");
+			int priority = key.getInt("priority");
+			flags.addFlag(FlagType.parse(key.getString("type")),
+					FlagInfo.newInstance(key.name(), priority, isSafe));
+		}
 	}
 
 	@Override
@@ -104,10 +115,19 @@ public class Guard extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
-		profiles.setString(UID + ".guard.type", guardState.name());
-		profiles.setBoolean(UID + ".guard.aggressive", isAggressive);
-		profiles.setDouble(UID + ".guard.radius", radius);
+	public void save(DataKey root) {
+		root.setString("type", guardState.name());
+		root.setBoolean("aggressive", isAggressive);
+		root.setDouble("radius", radius);
+		root = root.getRelative("flags");
+		for (FlagType type : FlagType.values()) {
+			for (FlagInfo info : flags.getFlags(type).values()) {
+				DataKey key = root.getRelative(info.getName());
+				key.setString("type", type.name());
+				key.setBoolean("safe", info.isSafe());
+				key.setInt("priority", info.priority());
+			}
+		}
 	}
 
 	// Set whether a bodyguard kills on sight

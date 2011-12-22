@@ -1,7 +1,7 @@
 package net.citizensnpcs.guards;
 
 import net.citizensnpcs.guards.types.GuardStatus;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.entity.LivingEntity;
 

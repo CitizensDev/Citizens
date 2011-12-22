@@ -3,8 +3,8 @@ package net.citizensnpcs.traders;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.Economy;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -49,13 +49,14 @@ public class TraderTask implements Runnable {
 	}
 
 	@Override
-	public synchronized void run() {
+	public void run() {
 		if (stop) {
 			return;
 		}
-		if ((npc == null || player == null
-				|| checkContainer(player.getHandle()) || !player.isOnline())
-				&& !said) {
+		if (!said
+				&& (npc == null || player == null
+						|| checkContainer(player.getHandle()) || !player
+							.isOnline())) {
 			kill();
 			return;
 		}
@@ -120,7 +121,7 @@ public class TraderTask implements Runnable {
 			sendLeaveMessage();
 			said = true;
 		}
-		Bukkit.getServer().getScheduler().cancelTask(taskID);
+		Bukkit.getScheduler().cancelTask(taskID);
 		run();
 	}
 
@@ -146,7 +147,6 @@ public class TraderTask implements Runnable {
 			return;
 		}
 		ItemStack buying = stockable.getStocking().clone();
-		Economy.pay(player, stockable.getPrice().getPrice());
 		if (mode != TraderMode.INFINITE) {
 			InventoryUtils.removeItems(npc.getPlayer(), buying, slot);
 		}
@@ -159,8 +159,7 @@ public class TraderTask implements Runnable {
 					+ MessageUtils.getStackString(buying, ChatColor.RED) + ".");
 			return;
 		}
-		double price = stockable.getPrice().getPrice();
-		npc.setBalance(npc.getBalance() + price);
+		npc.getAccount().add(stockable.getPrice().getPrice());
 		npc.getPlayer().updateInventory();
 		player.updateInventory();
 		player.sendMessage(ChatColor.GREEN + "Transaction successful.");
@@ -313,20 +312,13 @@ public class TraderTask implements Runnable {
 	}
 
 	private ItemStack cloneItemStack(ItemStack source) {
-		if (source == null) {// sanity check
-			return null;
-		}
-		return new ItemStack(source.getType(), source.getAmount(),
-				source.getDurability(), (source.getData() != null ? source
-						.getData().getData() : null));
+		return source == null ? null : source.clone();
 	}
 
-	// Clones the first passed PlayerInventory object to the second one.
 	private void clonePlayerInventory(PlayerInventory source,
 			PlayerInventory target) {
-		ItemStack[] contents = new ItemStack[source.getContents().length];
-		System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
-		target.setContents(contents);
+		target.setContents(source.getContents()); // getContents() clones for
+													// us.
 
 		target.setHelmet(cloneItemStack(source.getHelmet()));
 		target.setChestplate(cloneItemStack(source.getChestplate()));

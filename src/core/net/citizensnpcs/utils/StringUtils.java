@@ -78,8 +78,8 @@ public class StringUtils {
 		return mat;
 	}
 
-	public static boolean isNumber(String material) {
-		return INTEGER.matcher(material).find();
+	public static boolean isNumber(String search) {
+		return INTEGER.matcher(search).matches();
 	}
 
 	/**

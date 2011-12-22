@@ -10,10 +10,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import net.citizensnpcs.guards.flags.FlagList.FlagType;
+import net.citizensnpcs.lib.NPCManager;
+import net.citizensnpcs.lib.creatures.CreatureTask;
 import net.citizensnpcs.permissions.CitizensGroup;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.utils.EntityUtils;
 import net.citizensnpcs.utils.StringUtils;
 

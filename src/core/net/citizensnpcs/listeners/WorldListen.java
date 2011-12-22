@@ -1,18 +1,16 @@
 package net.citizensnpcs.listeners;
 
-import java.util.Map;
+import java.util.Set;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
-import net.citizensnpcs.misc.NPCLocation;
-import net.citizensnpcs.properties.PropertyManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
-import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
+import net.citizensnpcs.lib.creatures.CreatureNPC;
+import net.citizensnpcs.lib.creatures.CreatureTask;
 import net.citizensnpcs.utils.Messaging;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -20,11 +18,10 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.PluginManager;
 
-import com.google.common.collect.MapMaker;
+import com.google.common.collect.Sets;
 
 public class WorldListen extends WorldListener implements Listener {
-	private final Map<NPCLocation, Integer> toRespawn = new MapMaker()
-			.makeMap();
+	private final Set<HumanNPC> toRespawn = Sets.newHashSet();
 
 	@Override
 	public void registerEvents(Citizens plugin) {
@@ -38,45 +35,44 @@ public class WorldListen extends WorldListener implements Listener {
 		if (event.isCancelled())
 			return;
 		// Stores NPC location/name for later respawn.
-		for (int entry : NPCManager.GlobalUIDs.keySet()) {
-			HumanNPC npc = NPCManager.get(entry);
+		for (Entity entity : event.getChunk().getEntities()) {
+			HumanNPC npc = NPCManager.get(entity);
+			if (npc == null)
+				continue;
 			if (event.getWorld().equals(npc.getWorld())
 					&& event.getChunk().getX() == npc.getChunkX()
 					&& event.getChunk().getZ() == npc.getChunkZ()) {
-				NPCLocation loc = new NPCLocation(npc.getLocation(),
-						npc.getUID(), npc.getOwner());
-				toRespawn.put(loc, npc.getUID());
-				PropertyManager.save(npc);
-				NPCManager.safeDespawn(npc);
+				toRespawn.add(npc);
+				npc.save();
+				NPCManager.despawn(npc.getUID());
 				Messaging.debug("Despawned", npc.getUID(),
 						"due to chunk unload at", npc.getChunkX(),
 						npc.getChunkZ());
 			}
 		}
 		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
-			if (entry.getBukkitEntity().getLocation().getBlock().getChunk()
-					.equals(event.getChunk())) {
-				CreatureTask.despawn(entry, NPCRemoveReason.UNLOAD);
-			}
+			if (!entry.getBukkitEntity().getLocation().getBlock().getChunk()
+					.equals(event.getChunk()))
+				continue;
+			CreatureTask.despawn(entry);
 		}
 	}
 
 	@Override
 	public void onChunkLoad(ChunkLoadEvent event) {
 		// Respawns any existing NPCs in the loaded chunk
-		for (NPCLocation tempLoc : toRespawn.keySet()) {
-			if (event.getWorld().equals(tempLoc.getLocation().getWorld())
-					&& tempLoc.getChunkX() == event.getChunk().getX()
-					&& tempLoc.getChunkZ() == event.getChunk().getZ()) {
-				if (NPCManager.get(tempLoc.getUID()) != null) {
-					NPCManager.register(tempLoc.getUID(), tempLoc.getOwner(),
-							NPCCreateReason.RESPAWN);
-				}
-				toRespawn.remove(tempLoc);
-				Messaging.debug("Reloaded", tempLoc.getUID(),
-						"due to chunk load at", tempLoc.getChunkX(),
-						tempLoc.getChunkZ());
+		for (HumanNPC npc : toRespawn) {
+			if (!event.getWorld().equals(npc.getLocation().getWorld())
+					|| npc.getChunkX() != event.getChunk().getX()
+					|| npc.getChunkZ() != event.getChunk().getZ())
+				continue;
+			if (NPCManager.get(npc.getUID()) != null) {
+				NPCManager.register(npc, NPCCreateReason.RESPAWN);
 			}
+			toRespawn.remove(npc);
+			Messaging.debug("Reloaded", npc.getUID(),
+					"due to chunk load at", npc.getChunkX(),
+					npc.getChunkZ());
 		}
 	}
 }

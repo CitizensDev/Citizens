@@ -7,10 +7,10 @@ import net.citizensnpcs.guards.GuardState;
 import net.citizensnpcs.guards.GuardUpdater;
 import net.citizensnpcs.guards.OwnerSelection;
 import net.citizensnpcs.guards.Selection;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -89,10 +89,11 @@ public class Soldier implements GuardUpdater {
 			boolean holding = UtilityProperties.isHoldingTool(
 					"SoldierSelectTool", event.getPlayer());
 			if (npc == null) {
-				if (holding && event.getRightClicked() instanceof LivingEntity)
+				if (holding && event.getRightClicked() instanceof LivingEntity) {
 					attack(event.getPlayer(),
 							(LivingEntity) event.getRightClicked(),
 							getSelection(event.getPlayer()));
+				}
 				return;
 			}
 			if (isSoldier(npc)) {

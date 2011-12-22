@@ -3,7 +3,7 @@ package net.citizensnpcs.guards;
 import java.util.List;
 
 import net.citizensnpcs.guards.flags.FlagList;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

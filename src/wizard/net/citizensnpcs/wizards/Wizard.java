@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -204,7 +204,7 @@ public class Wizard extends CitizensNPC {
 				"citizens.wizard.use.interact")) {
 			if (UtilityProperties.isHoldingTool("WizardInteractItem", player)) {
 				WizardManager.handleRightClick(player, npc,
-						"wizard." + mode.toString());
+						"" + mode.toString());
 			} else if (UtilityProperties.isHoldingTool("WizardManaRegenItem",
 					player)) {
 				String msg = StringUtils.wrap(npc.getName() + "'s");
@@ -235,33 +235,29 @@ public class Wizard extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
-		profiles.setBoolean(UID + ".wizard.unlimited-mana", unlimitedMana);
-		profiles.setString(UID + ".wizard.time", time);
-		profiles.setString(UID + ".wizard.mode", mode.name());
-		profiles.setInt(UID + ".wizard.mana", mana);
-		profiles.setString(UID + ".wizard.locations", Joiner.on(":")
-				.skipNulls().join(locations));
-		profiles.setString(UID + ".wizard.mob", mob.name());
+	public void save(DataKey root) {
+		root.setBoolean("unlimited-mana", unlimitedMana);
+		root.setString("time", time);
+		root.setString("mode", mode.name());
+		root.setInt("mana", mana);
+		root.setString("locations", Joiner.on(":").skipNulls().join(locations));
+		root.setString("mob", mob.name());
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
-		unlimitedMana = profiles.getBoolean(UID + ".wizard.unlimited-mana");
-		time = profiles.getString(UID + ".wizard.time", "morning");
-		mode = (profiles.keyExists(UID + ".wizard.mode") && WizardMode
-				.parse(profiles.getString(UID + ".wizard.mode")) != null) ? WizardMode
-				.parse(profiles.getString(UID + ".wizard.mode"))
-				: WizardMode.TELEPORT;
-		mana = profiles.getInt(UID + ".wizard.mana", 10);
+	public void load(DataKey root) {
+		unlimitedMana = root.getBoolean("unlimited-mana");
+		time = root.getString("time", "morning");
+		mode = (root.keyExists("mode") && WizardMode.parse(root
+				.getString("mode")) != null) ? WizardMode.parse(root
+				.getString("mode")) : WizardMode.TELEPORT;
+		mana = root.getInt("mana", 10);
 		locations.clear();
-		for (String location : splitter.split(profiles.getString(UID
-				+ ".wizard.locations"))) {
+		for (String location : splitter.split(root.getString("locations"))) {
 			locations.add(location.replace("(", "").replace(")", ""));
 		}
-		mob = (CreatureType.fromName(profiles.getString(UID + ".wizard.mob")) != null) ? CreatureType
-				.fromName(profiles.getString(UID + ".wizard.mob"))
-				: CreatureType.CREEPER;
+		mob = (CreatureType.fromName(root.getString("mob")) != null) ? CreatureType
+				.fromName(root.getString("mob")) : CreatureType.CREEPER;
 		mobIndex = mob.ordinal();
 	}
 

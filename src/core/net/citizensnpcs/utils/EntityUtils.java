@@ -1,6 +1,6 @@
 package net.citizensnpcs.utils;
 
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
+import net.citizensnpcs.lib.creatures.CreatureNPCType;
 
 import org.bukkit.entity.Blaze;
 import org.bukkit.entity.CaveSpider;

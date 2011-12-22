@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.guards.types.GuardStatus;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import com.google.common.collect.Maps;
 
@@ -13,7 +13,7 @@ public class GuardTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (HumanNPC npc : CitizensManager.getList().values()) {
+		for (HumanNPC npc : CitizensManager.getNPCs()) {
 			if (!npc.isType("guard")) {
 				continue;
 			}

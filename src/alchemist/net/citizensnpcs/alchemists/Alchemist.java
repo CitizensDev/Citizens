@@ -2,13 +2,14 @@ package net.citizensnpcs.alchemists;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
@@ -55,8 +56,7 @@ public class Alchemist extends CitizensNPC {
 		}
 		if (!AlchemistManager.hasClickedOnce(player.getName())) {
 			if (recipes.size() == 0) {
-				Messaging.sendError(player, npc.getName()
-						+ " has no recipes.");
+				Messaging.sendError(player, npc.getName() + " has no recipes.");
 				return;
 			}
 			if (AlchemistManager.sendRecipeMessage(player, npc, 1)) {
@@ -83,14 +83,21 @@ public class Alchemist extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
-		profiles.setInt(UID + ".alchemist.recipes.current", currentRecipeID);
+	public void save(DataKey root) {
+		root.setInt("recipes.current", currentRecipeID);
+		root = root.getRelative("recipes");
+		for (Entry<Integer, String> entry : recipes.entrySet()) {
+			root.setString(Integer.toString(entry.getKey()), entry.getValue());
+		}
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
-		currentRecipeID = profiles
-				.getInt(UID + ".alchemist.recipes.current", 0);
-
+	public void load(DataKey root) {
+		currentRecipeID = root.getInt("recipes.current", 0);
+		recipes.clear();
+		root = root.getRelative("recipes");
+		for (DataKey key : root.getIntegerSubKeys()) {
+			recipes.put(Integer.parseInt(key.name()), key.getString(""));
+		}
 	}
 }

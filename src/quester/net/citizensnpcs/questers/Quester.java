@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.Quest;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.PageUtils;
 import net.citizensnpcs.utils.PageUtils.PageInstance;
 import net.citizensnpcs.utils.StringUtils;
@@ -177,18 +177,18 @@ public class Quester extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
-		profiles.setString(UID + ".quester.quests", Joiner.on(";").skipNulls()
+	public void save(DataKey root) {
+		root.setString("quester.quests", Joiner.on(";").skipNulls()
 				.join(quests));
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
-		if (!profiles.keyExists(UID + ".quester.quests"))
+	public void load(DataKey root) {
+		if (!root.keyExists("quester.quests"))
 			return;
 		quests.clear();
 		for (String quest : Splitter.on(";").omitEmptyStrings()
-				.split(profiles.getString(UID + ".quester.quests"))) {
+				.split(root.getString("quester.quests"))) {
 			addQuest(quest);
 		}
 	}

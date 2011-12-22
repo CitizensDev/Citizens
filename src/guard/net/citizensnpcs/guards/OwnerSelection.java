@@ -3,8 +3,8 @@ package net.citizensnpcs.guards;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 
 import org.bukkit.entity.Player;
 

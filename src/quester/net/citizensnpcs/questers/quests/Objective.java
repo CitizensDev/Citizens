@@ -2,7 +2,7 @@ package net.citizensnpcs.questers.quests;
 
 import java.util.Map;
 
-import net.citizensnpcs.properties.RawYAMLObject;
+import net.citizensnpcs.properties.RawObject;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 
@@ -36,13 +36,13 @@ public class Objective {
 	private final Material material;
 	private final boolean optional;
 	private final String questType;
-	private final Map<String, RawYAMLObject> parameters;
+	private final Map<String, RawObject> parameters;
 	private final String string;
 
 	private Objective(String type, boolean optional, boolean completeHere,
 			int amount, int destination, ItemStack item, String string,
 			Material material, Location location, RewardGranter granter,
-			Map<String, RawYAMLObject> params) {
+			Map<String, RawObject> params) {
 		this.questType = type;
 		this.amount = amount;
 		this.destination = destination;
@@ -56,7 +56,7 @@ public class Objective {
 		this.parameters = params;
 	}
 
-	public RawYAMLObject getParameter(String name) {
+	public RawObject getParameter(String name) {
 		return parameters.get(name);
 	}
 
@@ -118,13 +118,13 @@ public class Objective {
 		private boolean optional = false;
 		private String string = "";
 		private final String type;
-		private final Map<String, RawYAMLObject> params = Maps.newHashMap();
+		private final Map<String, RawObject> params = Maps.newHashMap();
 
 		public Builder(String type) {
 			this.type = type;
 		}
 
-		public Builder param(String name, RawYAMLObject value) {
+		public Builder param(String name, RawObject value) {
 			this.params.put(name, value);
 			return this;
 		}

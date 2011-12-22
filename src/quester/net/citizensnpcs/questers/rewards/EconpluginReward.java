@@ -1,7 +1,7 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.Economy;
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -18,12 +18,12 @@ public class EconpluginReward implements Requirement, Reward {
 
 	@Override
 	public void grant(Player player, int UID) {
-		if (Economy.useEconPlugin()) {
-			if (this.take) {
-				Economy.subtract(player.getName(), reward);
-			} else {
-				Economy.add(player.getName(), reward);
-			}
+		if (!Economy.useEconPlugin())
+			return;
+		if (this.take) {
+			Economy.getAccount(player).subtract(reward);
+		} else {
+			Economy.getAccount(player).add(reward);
 		}
 	}
 
@@ -34,7 +34,7 @@ public class EconpluginReward implements Requirement, Reward {
 
 	@Override
 	public boolean fulfilsRequirement(Player player) {
-		return Economy.getBalance(player.getName()) - reward >= 0;
+		return Economy.getAccount(player).hasEnough(reward);
 	}
 
 	@Override
@@ -43,20 +43,19 @@ public class EconpluginReward implements Requirement, Reward {
 				+ "You need "
 				+ StringUtils.wrap(
 						Economy.format(reward
-								- Economy.getBalance(player.getName())),
+								- Economy.getAccount(player).balance()),
 						ChatColor.GRAY) + " more.";
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		storage.setDouble(root + ".money", reward);
+	public void save(DataKey root) {
+		root.setDouble("money", reward);
 	}
 
 	public static class EconpluginRewardBuilder implements RewardBuilder {
 		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			return new EconpluginReward(storage.getDouble(root + ".money"),
-					take);
+		public Reward build(DataKey root, boolean take) {
+			return new EconpluginReward(root.getDouble("money"), take);
 		}
 	}
 }

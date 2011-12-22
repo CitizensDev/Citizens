@@ -1,6 +1,6 @@
 package net.citizensnpcs.traders;
 
-import net.citizensnpcs.Economy;
+import net.citizensnpcs.economy.Economy;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 

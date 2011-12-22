@@ -1,13 +1,13 @@
 package net.citizensnpcs.healers;
 
-import net.citizensnpcs.Economy;
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
@@ -129,14 +129,14 @@ public class Healer extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
-		profiles.setInt(UID + ".healer.health", health);
-		profiles.setInt(UID + ".healer.level", level);
+	public void save(DataKey root) {
+		root.setInt("health", health);
+		root.setInt("level", level);
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
-		health = profiles.getInt(UID + ".healer.health", 10);
-		level = profiles.getInt(UID + ".healer.level", 1);
+	public void load(DataKey root) {
+		health = root.getInt("health", 10);
+		level = root.getInt("level", 1);
 	}
 }

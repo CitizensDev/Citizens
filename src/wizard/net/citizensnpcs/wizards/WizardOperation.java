@@ -1,6 +1,6 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 
 import org.bukkit.entity.Player;
 
@@ -15,5 +15,5 @@ public interface WizardOperation {
 
 	String getPriceNode();
 
-	void save(Storage storage, String root);
+	void save(DataKey root);
 }

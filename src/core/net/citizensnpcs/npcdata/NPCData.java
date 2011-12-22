@@ -1,19 +1,18 @@
 package net.citizensnpcs.npcdata;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import com.google.common.collect.Lists;
+
 public class NPCData {
-	private String name;
-	private int UID = -1;
-	private Location location;
+	private Location location = null;
 	private ChatColor colour = ChatColor.WHITE;
-	private List<ItemData> items = new ArrayList<ItemData>();
+	private List<ItemData> items = Lists.newArrayList();
 	private Deque<String> texts = new ArrayDeque<String>();
 	private boolean lookClose;
 	private boolean talkClose;
@@ -21,11 +20,9 @@ public class NPCData {
 	private boolean talk;
 
 	// Acts as a container for various npc data.
-	public NPCData(String name, int UID, Location loc, ChatColor colour,
-			List<ItemData> items, Deque<String> texts, boolean talk,
-			boolean lookClose, boolean talkClose, String owner) {
-		this.setName(name);
-		this.setUID(UID);
+	public NPCData(Location loc, ChatColor colour, List<ItemData> items,
+			Deque<String> texts, boolean talk, boolean lookClose,
+			boolean talkClose, String owner) {
 		this.setLocation(loc);
 		this.setColour(colour);
 		this.setItems(items);
@@ -35,23 +32,8 @@ public class NPCData {
 		this.setOwner(owner);
 		this.setTalk(talk);
 	}
-    
-    public NPCData(){}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setUID(int UID) {
-		this.UID = UID;
-	}
-
-	public int getUID() {
-		return UID;
+	public NPCData() {
 	}
 
 	public void setLocation(Location location) {

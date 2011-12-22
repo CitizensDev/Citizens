@@ -3,7 +3,7 @@ package net.citizensnpcs.questers.rewards;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -32,23 +32,22 @@ public class ItemReward implements Requirement, Reward {
 			return;
 		if (this.take) {
 			InventoryUtils.removeItems(player, material, amount);
-		} else {
-			int temp = this.amount, other = temp;
-			Collection<ItemStack> unadded = new ArrayList<ItemStack>();
-			while (temp > 0) {
-				other = temp > material.getMaxStackSize() ? material
-						.getMaxStackSize() : temp;
-				unadded.addAll(player.getInventory()
-						.addItem(new ItemStack(material, other, durability))
-						.values());
-				temp -= other;
-			}
-			for (ItemStack stack : unadded) {
-				player.getWorld()
-						.dropItemNaturally(player.getLocation(), stack);
-			}
-			player.updateInventory();
+			return;
 		}
+		int temp = this.amount, other = temp;
+		Collection<ItemStack> unadded = new ArrayList<ItemStack>();
+		while (temp > 0) {
+			other = temp > material.getMaxStackSize() ? material
+					.getMaxStackSize() : temp;
+			unadded.addAll(player.getInventory()
+					.addItem(new ItemStack(material, other, durability))
+					.values());
+			temp -= other;
+		}
+		for (ItemStack stack : unadded) {
+			player.getWorld().dropItemNaturally(player.getLocation(), stack);
+		}
+		player.updateInventory();
 	}
 
 	@Override
@@ -74,20 +73,19 @@ public class ItemReward implements Requirement, Reward {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		storage.setInt(root + ".id", material.getId());
-		storage.setInt(root + ".amount", amount);
-		storage.setInt(root + ".data", durability);
+	public void save(DataKey root) {
+		root.setInt("id", material.getId());
+		root.setInt("amount", amount);
+		root.setInt("data", durability);
 	}
 
 	public static class ItemRewardBuilder implements RewardBuilder {
 		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			int id = storage.getInt(root + ".id");
-			int amount = storage.keyExists(root + ".amount") ? storage
-					.getInt(root + ".amount") : 1;
-			short data = storage.keyExists(root + ".data") ? data = (short) storage
-					.getInt(root + ".data") : 0;
+		public Reward build(DataKey root, boolean take) {
+			int id = root.getInt("id");
+			int amount = root.keyExists("amount") ? root.getInt("amount") : 1;
+			short data = root.keyExists("data") ? data = (short) root
+					.getInt("data") : 0;
 			return new ItemReward(Material.getMaterial(id), amount, data, take);
 		}
 	}

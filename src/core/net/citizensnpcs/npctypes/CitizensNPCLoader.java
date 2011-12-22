@@ -42,10 +42,6 @@ public class CitizensNPCLoader {
 				Class<? extends CitizensNPCType> typeClass = clazz
 						.asSubclass(CitizensNPCType.class);
 				CitizensNPCType type = typeClass.newInstance();
-				if (type.getProperties() == null) {
-					throw new InvalidNPCTypeException(type.getName()
-							+ " is missing a valid Properties class.");
-				}
 				if (type.getCommands() == null) {
 					throw new InvalidNPCTypeException(type.getName()
 							+ " is missing a valid Commands class.");

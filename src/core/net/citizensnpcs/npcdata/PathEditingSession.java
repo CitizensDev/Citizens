@@ -1,7 +1,7 @@
 package net.citizensnpcs.npcdata;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointPath;
 

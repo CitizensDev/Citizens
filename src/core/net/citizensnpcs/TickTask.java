@@ -2,11 +2,10 @@ package net.citizensnpcs;
 
 import java.util.Map;
 
-import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
+import net.citizensnpcs.lib.NPCSpawner;
 import net.citizensnpcs.misc.Actions;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.NPCSpawner;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
@@ -17,30 +16,30 @@ import net.citizensnpcs.waypoints.WaypointPath;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.MapMaker;
+import com.google.common.collect.Maps;
 
 public class TickTask implements Runnable {
-	private static final Map<HumanNPC, Actions> cachedActions = new MapMaker()
-			.weakKeys().makeMap();
+	private static final Map<HumanNPC, Actions> cachedActions = Maps
+			.newHashMap();
 
 	@Override
 	public void run() {
 		Player[] online = Bukkit.getServer().getOnlinePlayers();
-		for (HumanNPC npc : NPCManager.getList().values()) {
+		for (HumanNPC npc : NPCManager.getNPCs()) {
 			updateWaypoints(npc);
 			npc.doTick();
 			NPCSpawner.removeNPCFromPlayerList(npc);
+			if (!npc.getNPCData().isLookClose()
+					&& !npc.getNPCData().isTalkClose())
+				continue;
 			for (Player player : online) {
-				if (!npc.getNPCData().isLookClose()
-						&& !npc.getNPCData().isTalkClose())
-					continue;
 				// If the player is within 'seeing' range
 				if (LocationUtils.withinRange(npc.getLocation(),
 						player.getLocation(), Settings.getDouble("NPCRange"))) {
 					if (npc.getHandle().pathFinished()
 							&& !npc.getHandle().hasTarget()
 							&& npc.getNPCData().isLookClose()) {
-						NPCManager.faceEntity(npc, player);
+						NPCManager.faceEntity(npc.getPlayer(), player);
 					}
 					cacheActions(npc, player);
 				} else {
@@ -118,16 +117,16 @@ public class TickTask implements Runnable {
 	}
 
 	public static void scheduleRespawn(HumanNPC npc, int delay) {
-		NPCManager.removeForRespawn(npc.getUID());
+		npc.despawn();
 		new RespawnTask(npc).register(delay);
 	}
 
 	public static class RespawnTask implements Runnable {
-		private final int UID;
+		private final HumanNPC npc;
 		private final String owner;
 
 		public RespawnTask(HumanNPC npc) {
-			this.UID = npc.getUID();
+			this.npc = npc;
 			this.owner = npc.getOwner();
 		}
 
@@ -138,10 +137,9 @@ public class TickTask implements Runnable {
 
 		@Override
 		public void run() {
-			NPCManager.register(UID, owner, NPCCreateReason.RESPAWN);
-			Messaging.sendUncertain(owner,
-					StringUtils.wrap(NPCManager.get(UID).getName())
-							+ " has respawned.");
+			npc.spawn();
+			Messaging.sendUncertain(owner, StringUtils.wrap(npc.getName())
+					+ " has respawned.");
 		}
 	}
 

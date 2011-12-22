@@ -1,9 +1,9 @@
 package net.citizensnpcs.wizards;
 
-import net.citizensnpcs.Economy;
 import net.citizensnpcs.Settings;
+import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;

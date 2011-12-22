@@ -4,7 +4,7 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.guards.Guard;
 import net.citizensnpcs.guards.GuardUpdater;
 import net.citizensnpcs.guards.Targeter;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.PathUtils;
 

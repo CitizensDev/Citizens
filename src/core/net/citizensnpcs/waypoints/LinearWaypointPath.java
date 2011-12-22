@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -136,5 +137,17 @@ public class LinearWaypointPath implements WaypointPath0 {
 			player.sendMessage(StringUtils.wrap("Finished")
 					+ " editing waypoints.");
 		}
+	}
+
+	@Override
+	public void load(DataKey root) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void save(DataKey root) {
+		// TODO Auto-generated method stub
+
 	}
 }

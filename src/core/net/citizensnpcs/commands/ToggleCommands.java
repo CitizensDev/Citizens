@@ -1,20 +1,20 @@
 package net.citizensnpcs.commands;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.Economy;
 import net.citizensnpcs.api.event.NPCToggleTypeEvent;
+import net.citizensnpcs.economy.Economy;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.sk89q.Command;
-import net.citizensnpcs.resources.sk89q.CommandContext;
-import net.citizensnpcs.resources.sk89q.CommandPermissions;
-import net.citizensnpcs.resources.sk89q.CommandRequirements;
-import net.citizensnpcs.resources.sk89q.ServerCommand;
+import net.citizensnpcs.sk89q.Command;
+import net.citizensnpcs.sk89q.CommandContext;
+import net.citizensnpcs.sk89q.CommandPermissions;
+import net.citizensnpcs.sk89q.CommandRequirements;
+import net.citizensnpcs.sk89q.ServerCommand;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PageUtils;
@@ -99,12 +99,10 @@ public class ToggleCommands extends CommandHandler {
 	// Toggles an NPC state.
 	private static void toggleState(Player player, HumanNPC npc, String type) {
 		if (!npc.isType(type)) {
-			PropertyManager.get(type).setEnabled(npc, true);
 			npc.addType(type);
-			player.sendMessage(StringUtils.wrap(npc.getName())
-					+ " is now a " + type + "!");
+			player.sendMessage(StringUtils.wrap(npc.getName()) + " is now a "
+					+ type + "!");
 		} else {
-			PropertyManager.get(type).setEnabled(npc, false);
 			npc.removeType(type);
 			player.sendMessage(StringUtils.wrap(npc.getName())
 					+ " has stopped being a " + type + ".");
@@ -117,7 +115,8 @@ public class ToggleCommands extends CommandHandler {
 	private static void buyState(Player player, HumanNPC npc,
 			CitizensNPCType type) {
 		String toggle = type.getName();
-		if (!PermissionManager.hasPermission(player, "citizens.toggle." + toggle)) {
+		if (!PermissionManager.hasPermission(player, "citizens.toggle."
+				+ toggle)) {
 			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
 			return;
 		}

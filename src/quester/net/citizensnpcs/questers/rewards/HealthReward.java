@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -40,14 +40,14 @@ public class HealthReward implements Requirement, Reward {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		storage.setInt(root + ".amount", reward);
+	public void save(DataKey root) {
+		root.setInt("amount", reward);
 	}
 
 	public static class HealthRewardBuilder implements RewardBuilder {
 		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			return new HealthReward(storage.getInt(root + ".amount"), take);
+		public Reward build(DataKey root, boolean take) {
+			return new HealthReward(root.getInt("amount"), take);
 		}
 	}
 }

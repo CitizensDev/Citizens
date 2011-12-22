@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.api.event.NPCInventoryOpenEvent;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -29,16 +29,12 @@ public class InventoryUtils {
 		player.setItemInHand(decreaseItemStack(player.getItemInHand()));
 	}
 
-	public static ItemStack decreaseItemStack(ItemStack stack) {
-		if (stack.getTypeId() == 0) {
+	private static ItemStack decreaseItemStack(ItemStack stack) {
+		if (stack.getTypeId() == 0 || stack.getAmount() <= 1) {
+			// amount 1 minus 1 is an empty stack.
 			return null;
 		}
-		int amount = stack.getAmount() - 1;
-		if (amount == 0) {
-			stack = null;
-		} else {
-			stack.setAmount(amount);
-		}
+		stack.setAmount(stack.getAmount() - 1);
 		return stack;
 	}
 
@@ -54,68 +50,46 @@ public class InventoryUtils {
 		return id >= 298 && id <= 317;
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void removeItems(Player player, Material material,
-			int amount, int slot) {
+	public static ItemStack[] removeItems(ItemStack[] contents,
+			Material material, int amount, int slot) {
 		int remaining = amount;
-		ItemStack[] contents = player.getInventory().getContents();
 		if (slot != -1) {
 			ItemStack item = contents[slot];
 			if (item != null && item.getType() == material) {
-				if (remaining - item.getAmount() < 0) {
-					item.setAmount(item.getAmount() - remaining);
-					remaining = 0;
-				} else {
-					remaining -= item.getAmount();
-					item = null;
-				}
-				if (item != null && item.getAmount() == 0)
-					item = null;
-				contents[slot] = item;
+				remaining -= item.getAmount();
+				item.setAmount(Math.max(0, -remaining));
+				contents[slot] = item.getAmount() > 0 ? item : null;
 			}
-		}
-		if (remaining <= 0) {
-			player.getInventory().setContents(contents);
-			player.updateInventory();
-			return;
 		}
 		for (int i = 0; i != contents.length; ++i) {
+			if (remaining <= 0)
+				break;
 			ItemStack item = contents[i];
-			if (item != null && item.getType() == material) {
-				if (remaining - item.getAmount() < 0) {
-					item.setAmount(item.getAmount() - remaining);
-					remaining = 0;
-				} else {
-					remaining -= item.getAmount();
-					item = null;
-				}
-				if (item != null && item.getAmount() == 0)
-					item = null;
-				contents[i] = item;
-				if (remaining <= 0)
-					break;
-			}
+			if (item == null || item.getType() != material)
+				continue;
+			remaining -= item.getAmount();
+			item.setAmount(Math.max(0, -remaining));
+			contents[i] = item.getAmount() > 0 ? item : null;
 		}
-		player.getInventory().setContents(contents);
-		player.updateInventory();
+		return contents;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void removeItems(Player player, Material material, int amount) {
-		removeItems(player, material, amount, -1);
+		ItemStack[] contents = removeItems(player.getInventory().getContents(),
+				material, amount, -1);
+		player.getInventory().setContents(contents);
+		player.updateInventory();
 	}
 
 	public static int getRemainder(Player player, Material material, int amount) {
 		int remaining = amount;
 		for (ItemStack item : player.getInventory().getContents()) {
-			if (item != null && item.getType() == material) {
-				if (remaining - item.getAmount() < 0) {
-					remaining = 0;
-				} else {
-					remaining -= item.getAmount();
-				}
-				if (remaining <= 0)
-					break;
-			}
+			if (item == null || item.getType() != material)
+				continue;
+			remaining -= item.getAmount();
+			if (remaining <= 0)
+				return 0;
 		}
 		return remaining;
 	}
@@ -128,8 +102,12 @@ public class InventoryUtils {
 		return has(player, stack.getType(), stack.getAmount());
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void removeItems(Player player, ItemStack buying, int slot) {
-		removeItems(player, buying.getType(), buying.getAmount(), slot);
+		ItemStack[] contents = removeItems(player.getInventory().getContents(),
+				buying.getType(), buying.getAmount(), slot);
+		player.getInventory().setContents(contents);
+		player.updateInventory();
 	}
 
 	public static boolean isHelmet(int itemID) {

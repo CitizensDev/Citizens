@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
-import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.Messaging;
 
@@ -26,14 +26,14 @@ import com.google.common.collect.Maps;
 public class Trader extends CitizensNPC {
 
 	public static void loadGlobal() {
-		Storage storage = UtilityProperties.getConfig();
-		for (Object key : storage.getKeys("traders.global-prices")) {
-			String path = "traders.global-prices." + key;
-			int itemID = storage.getInt(path + ".id", 1);
-			int amount = storage.getInt(path + ".amount", 1);
-			short data = (short) storage.getInt(path + ".data");
-			double price = storage.getDouble(path + ".price");
-			boolean selling = !storage.getBoolean(path + ".selling", false);
+		DataKey root = UtilityProperties.getConfig().getKey(
+				"traders.global-prices");
+		for (DataKey key : root.getSubKeys()) {
+			int itemID = key.getInt("id", 1);
+			int amount = key.getInt("amount", 1);
+			short data = (short) key.getInt("data");
+			double price = key.getDouble("price");
+			boolean selling = !key.getBoolean("selling", false);
 			if (itemID > 0 && amount > 0) {
 				Stockable stock = new Stockable(new ItemStack(itemID, amount,
 						data), new ItemPrice(price), selling);
@@ -95,10 +95,6 @@ public class Trader extends CitizensNPC {
 		return new TraderType();
 	}
 
-	public boolean isFree() {
-		return this.free;
-	}
-
 	public boolean isLocked() {
 		return locked;
 	}
@@ -121,49 +117,73 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
-		unlimited = profiles.getBoolean(UID + ".trader.unlimited");
-		locked = profiles.getBoolean(UID + ".trader.locked");
-		useGlobalBuy = profiles
-				.getBoolean(UID + ".trader.use-global.buy", true);
-		useGlobalSell = profiles.getBoolean(UID + ".trader.use-global.sell",
-				true);
+	public void load(DataKey root) {
+		unlimited = root.getBoolean("unlimited");
+		locked = root.getBoolean("locked");
+		useGlobalBuy = root.getBoolean("use-global.buy", true);
+		useGlobalSell = root.getBoolean("use-global.sell", true);
+		Map<Check, Stockable> stockables = new ConcurrentHashMap<Check, Stockable>();
+		int i = 0;
+		label: for (String s : root.getString("stock").split(";")) {
+			if (s.isEmpty()) {
+				continue;
+			}
+			i = 0;
+			ItemStack stack = new ItemStack(37);
+			ItemPrice price = new ItemPrice(0);
+			boolean selling = false;
+			for (String main : s.split(",")) {
+				switch (i) {
+				case 0:
+					String[] split = main.split("/");
+					stack = new ItemStack(Integer.parseInt(split[0]),
+							Integer.parseInt(split[1]),
+							Short.parseShort(split[2]));
+					break;
+				case 1:
+					String[] parts = main.split("/");
+					if (parts.length == 1 || parts.length == 2) {
+						// TODO: remove the second if and else after 1.1
+						price = new ItemPrice(Double.parseDouble(parts[0]));
+					} else {// Ignore old prices.
+						continue label;
+					}
+					break;
+				case 2:
+					selling = Boolean.parseBoolean(main);
+					break;
+				}
+				i += 1;
+			}
+			Stockable stock = new Stockable(stack, price, selling);
+			stockables.put(stock.createCheck(), stock);
+		}
+		this.stocking = stockables;
 	}
 
 	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
-		Trader trader = npc.getType("trader");
-		if (trader.isFree()) {
-			TraderMode mode;
-			if (NPCManager.isOwner(player, npc.getUID())) {
-				if (!PermissionManager.hasPermission(player,
-						"citizens.trader.modify.stock")) {
-					return;
-				}
-				mode = TraderMode.STOCK;
-			} else if (trader.isUnlimited()) {
-				if (!PermissionManager.hasPermission(player,
-						"citizens.trader.use.trade")) {
-					return;
-				}
-				mode = TraderMode.INFINITE;
-			} else {
-				if (!PermissionManager.hasPermission(player,
-						"citizens.trader.use.trade")) {
-					return;
-				}
-				mode = TraderMode.NORMAL;
-			}
-			TraderTask task = new TraderTask(npc, player, mode);
-			int id = Bukkit.getServer().getScheduler()
-					.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
-			task.addID(id);
-			trader.setFree(false);
-			InventoryUtils.showInventory(npc, player);
-		} else {
+		if (!this.free) {
 			Messaging.sendError(player,
 					"Only one person may be served at a time!");
+			return;
 		}
+		TraderMode mode;
+		if (NPCManager.isOwner(player, npc.getUID())) {
+			mode = TraderMode.STOCK;
+		} else if (this.unlimited) {
+			mode = TraderMode.INFINITE;
+		} else {
+			mode = TraderMode.NORMAL;
+		}
+		if (!mode.hasPermission(player))
+			return;
+		TraderTask task = new TraderTask(npc, player, mode);
+		int id = Bukkit.getServer().getScheduler()
+				.scheduleSyncRepeatingTask(Citizens.plugin, task, 0, 1);
+		task.addID(id);
+		this.free = false;
+		InventoryUtils.showInventory(npc, player);
 	}
 
 	public void removeStockable(Check check) {
@@ -176,13 +196,12 @@ public class Trader extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
-		profiles.setBoolean(UID + ".trader.unlimited", unlimited);
-		profiles.setBoolean(UID + ".trader.locked", locked);
-		profiles.setBoolean(UID + ".trader.use-global.sell", useGlobalSell);
-		profiles.setBoolean(UID + ".trader.use-global.buy", useGlobalBuy);
-		profiles.setString(UID + ".trader.stock",
-				Joiner.on(";").join(stocking.values()));
+	public void save(DataKey root) {
+		root.setBoolean("unlimited", unlimited);
+		root.setBoolean("locked", locked);
+		root.setBoolean("use-global.sell", useGlobalSell);
+		root.setBoolean("use-global.buy", useGlobalBuy);
+		root.setString("stock", Joiner.on(";").join(stocking.values()));
 	}
 
 	public void setFree(boolean free) {
@@ -191,10 +210,6 @@ public class Trader extends CitizensNPC {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
-	}
-
-	public void setStocking(Map<Check, Stockable> stocking) {
-		this.stocking = stocking;
 	}
 
 	public void setUnlimited(boolean unlimited) {

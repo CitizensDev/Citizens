@@ -1,15 +1,11 @@
 package net.citizensnpcs.npcdata;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.InventoryUtils.Armor;
 import net.citizensnpcs.utils.MessageUtils;
@@ -35,8 +31,6 @@ public class NPCDataManager {
 			.newHashMap();
 	public static final Map<Player, Integer> equipmentEditors = Maps
 			.newHashMap();
-	public static final Map<Integer, Deque<String>> NPCTexts = new MapMaker()
-			.makeMap();
 	public static final Map<String, Integer> selectedNPCs = new MapMaker()
 			.makeMap();
 
@@ -149,9 +143,8 @@ public class NPCDataManager {
 		player.updateInventory();
 
 		addItems(npc, items);
-		NPCManager.removeForRespawn(npc.getUID());
-		NPCManager.register(npc.getUID(), npc.getOwner(),
-				NPCCreateReason.RESPAWN);
+		npc.despawn();
+		npc.spawn();
 	}
 
 	public static void handlePathEditor(PlayerInteractEvent event) {
@@ -175,7 +168,8 @@ public class NPCDataManager {
 				break;
 			}
 			if (npc.getWaypoints().size() > 0
-					&& npc.getWaypoints().getLast().getLocation().distance(loc) > Settings
+					&& npc.getWaypoints().get(session.getIndex()).getLocation()
+							.distance(loc) > Settings
 							.getDouble("PathfindingRange")) {
 				player.sendMessage(ChatColor.GRAY
 						+ "Points can't be more than "
@@ -242,16 +236,6 @@ public class NPCDataManager {
 		}
 	}
 
-	// Adds to an npc's text.
-	public static void addText(int UID, String text) {
-		Deque<String> texts = NPCDataManager.getText(UID);
-		if (texts == null) {
-			texts = new ArrayDeque<String>();
-		}
-		texts.add(text);
-		NPCDataManager.setText(UID, texts);
-	}
-
 	public static int getSelected(Player player) {
 		return selectedNPCs.get(player.getName());
 	}
@@ -262,22 +246,5 @@ public class NPCDataManager {
 
 	public static void deselectNPC(Player player) {
 		selectedNPCs.remove(player.getName());
-	}
-
-	// Get an npc's text.
-	public static Deque<String> getText(int UID) {
-		return NPCTexts.get(UID);
-	}
-
-	// Sets an npc's text to the given texts.
-	public static void setText(int UID, Deque<String> text) {
-		text = StringUtils.colourise(text);
-		NPCTexts.put(UID, text);
-		NPCManager.get(UID).getNPCData().setTexts(text);
-	}
-
-	// Resets an NPC's text.
-	public static void resetText(int UID) {
-		setText(UID, new ArrayDeque<String>());
 	}
 }

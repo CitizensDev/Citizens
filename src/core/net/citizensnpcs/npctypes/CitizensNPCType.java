@@ -1,7 +1,9 @@
 package net.citizensnpcs.npctypes;
 
+import java.util.List;
+
 import net.citizensnpcs.commands.CommandHandler;
-import net.citizensnpcs.properties.Properties;
+import net.citizensnpcs.properties.Setting;
 
 public abstract class CitizensNPCType {
 
@@ -11,13 +13,6 @@ public abstract class CitizensNPCType {
 	 * @return NPC type's name, use lowercase
 	 */
 	public abstract String getName();
-
-	/**
-	 * Get an NPC type's property handler
-	 * 
-	 * @return NPC type's properties object
-	 */
-	public abstract Properties getProperties();
 
 	/**
 	 * Get the commands for an NPC type
@@ -31,7 +26,7 @@ public abstract class CitizensNPCType {
 	 * 
 	 * @return instance of a type's CitizensNPC subclass
 	 */
-	public abstract CitizensNPC getInstance();
+	public abstract CitizensNPC newInstance();
 
 	/**
 	 * Register event listeners for an NPC type. Use
@@ -39,4 +34,6 @@ public abstract class CitizensNPCType {
 	 */
 	public void registerEvents() {
 	}
+
+	public abstract List<Setting> getSettings();
 }

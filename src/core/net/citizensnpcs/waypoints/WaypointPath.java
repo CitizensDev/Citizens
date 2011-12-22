@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.PathUtils;
 
 import org.bukkit.Bukkit;

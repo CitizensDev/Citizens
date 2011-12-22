@@ -1,10 +1,10 @@
 package net.citizensnpcs.waypoints;
 
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.misc.StateHolder;
 import net.citizensnpcs.utils.ConversationUtils.Converser;
 
-public abstract class WaypointModifier extends Converser {
+public abstract class WaypointModifier extends Converser implements StateHolder {
 	protected Waypoint waypoint;
 
 	public WaypointModifier(Waypoint waypoint) {
@@ -12,10 +12,6 @@ public abstract class WaypointModifier extends Converser {
 	}
 
 	public abstract void onReach(HumanNPC npc);
-
-	public abstract void parse(Storage storage, String root);
-
-	public abstract void save(Storage storage, String root);
 
 	public abstract WaypointModifierType getType();
 }

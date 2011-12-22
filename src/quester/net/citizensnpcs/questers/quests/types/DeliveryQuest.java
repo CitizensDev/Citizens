@@ -19,37 +19,36 @@ public class DeliveryQuest implements QuestUpdater {
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof NPCRightClickEvent) {
-			NPCRightClickEvent e = (NPCRightClickEvent) event;
-			if (e.getPlayer().getEntityId() == progress.getPlayer()
-					.getEntityId()
-					&& e.getNPC().getUID() == progress.getObjective()
-							.getDestNPCID()) {
-				Player player = e.getPlayer();
+		if (!(event instanceof NPCRightClickEvent))
+			return false;
+		NPCRightClickEvent e = (NPCRightClickEvent) event;
+		if (e.getPlayer().getEntityId() == progress.getPlayer().getEntityId()
+				&& e.getNPC().getUID() == progress.getObjective()
+						.getDestNPCID()) {
+			Player player = e.getPlayer();
 
-				if (progress.getObjective().getMaterial() == null
-						|| progress.getObjective().getMaterial() == Material.AIR) {
-					return true;
-				}
+			if (progress.getObjective().getMaterial() == null
+					|| progress.getObjective().getMaterial() == Material.AIR) {
+				return true;
+			}
 
-				if (player.getItemInHand().getType() == progress.getObjective()
-						.getMaterial()) {
-					boolean completed = player.getItemInHand().getAmount() >= progress
-							.getObjective().getAmount();
-					if (completed
-							&& progress.getObjective().getAmount() > 0
-							&& progress.getObjective().getMaterial() != Material.AIR) {
-						int amount = player.getItemInHand().getAmount()
-								- progress.getObjective().getAmount();
-						ItemStack item = player.getItemInHand();
-						if (amount > 0)
-							item.setAmount(amount);
-						else
-							item = null;
-						player.setItemInHand(item);
-					}
-					return completed;
+			if (player.getItemInHand().getType() == progress.getObjective()
+					.getMaterial()) {
+				boolean completed = player.getItemInHand().getAmount() >= progress
+						.getObjective().getAmount();
+				if (completed
+						&& progress.getObjective().getAmount() > 0
+						&& progress.getObjective().getMaterial() != Material.AIR) {
+					int amount = player.getItemInHand().getAmount()
+							- progress.getObjective().getAmount();
+					ItemStack item = player.getItemInHand();
+					if (amount > 0)
+						item.setAmount(amount);
+					else
+						item = null;
+					player.setItemInHand(item);
 				}
+				return completed;
 			}
 		}
 		return false;

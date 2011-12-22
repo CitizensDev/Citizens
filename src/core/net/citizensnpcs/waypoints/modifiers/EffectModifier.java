@@ -3,16 +3,16 @@ package net.citizensnpcs.waypoints.modifiers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.utils.EffectUtils;
-import net.citizensnpcs.utils.StringUtils;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.ConversationUtils.ChatType;
 import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
+import net.citizensnpcs.utils.EffectUtils;
 import net.citizensnpcs.utils.EffectUtils.EffectData;
 import net.citizensnpcs.utils.EffectUtils.Effects;
 import net.citizensnpcs.utils.EffectUtils.Effects.Effect;
 import net.citizensnpcs.utils.EffectUtils.Effects.IEffect;
+import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointModifier;
 import net.citizensnpcs.waypoints.WaypointModifierType;
@@ -41,10 +41,9 @@ public class EffectModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void parse(Storage storage, String root) {
+	public void load(DataKey root) {
 		String[] innerSplit;
-		for (String effect : Splitter.on(";").split(
-				storage.getString(root + ".effects"))) {
+		for (String effect : Splitter.on(";").split(root.getString("effects"))) {
 			innerSplit = effect.split(",");
 			effects.add(new EffectData(Effects.getByIdentifier(Integer
 					.parseInt(innerSplit[0])), Integer.parseInt(innerSplit[1])));
@@ -52,13 +51,13 @@ public class EffectModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
+	public void save(DataKey root) {
 		StringBuilder builder = new StringBuilder();
 		for (EffectData data : effects) {
 			builder.append(data.getEffect().getIdentifier() + ","
 					+ data.getData() + ";");
 		}
-		storage.setString(root + ".effects", builder.toString());
+		root.setString("effects", builder.toString());
 	}
 
 	@Override

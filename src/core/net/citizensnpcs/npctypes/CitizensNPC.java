@@ -1,14 +1,14 @@
 package net.citizensnpcs.npctypes;
 
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.misc.StateHolder;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-public abstract class CitizensNPC {
+public abstract class CitizensNPC implements StateHolder {
 
 	/**
 	 * Get the CitizensNPCType subclass that corresponds with the CitizensNPC
@@ -17,10 +17,6 @@ public abstract class CitizensNPC {
 	 * @return CitizensNPCType subclass
 	 */
 	public abstract CitizensNPCType getType();
-
-	public abstract void save(Storage profiles, int UID);
-
-	public abstract void load(Storage profiles, int UID);
 
 	/**
 	 * Called when a player left clicks the NPC - this can cause a damage event

@@ -4,16 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.guards.Guard;
 import net.citizensnpcs.guards.GuardUpdater;
 import net.citizensnpcs.guards.Targeter;
-import net.citizensnpcs.misc.NPCLocation;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.PathUtils;
 
@@ -33,11 +30,8 @@ public class Bodyguard implements GuardUpdater {
 				String owner = player.getName();
 				if (!toRespawn.containsKey(owner))
 					return;
-				NPCManager.register(toRespawn.get(owner).getUID(), owner,
-						NPCCreateReason.RESPAWN);
-				CitizensManager.getNPC(toRespawn.get(owner).getUID()).teleport(
-						player.getLocation());
-				toRespawn.remove(owner);
+				NPCManager.register(toRespawn.remove(owner),
+						NPCCreateReason.RESPAWN).teleport(player.getLocation());
 			}
 		});
 	}
@@ -74,11 +68,8 @@ public class Bodyguard implements GuardUpdater {
 	}
 
 	private void despawn(HumanNPC npc) {
-		toRespawn
-				.put(npc.getOwner(),
-						new NPCLocation(npc.getLocation(), npc.getUID(), npc
-								.getOwner()));
-		NPCManager.despawn(npc.getUID(), NPCRemoveReason.DEATH);
+		toRespawn.put(npc.getOwner(), npc);
+		NPCManager.despawn(npc.getUID());
 	}
 
 	private boolean findTarget(HumanNPC npc) {
@@ -117,7 +108,7 @@ public class Bodyguard implements GuardUpdater {
 			despawn(npc);
 	}
 
-	private final static Map<String, NPCLocation> toRespawn = new HashMap<String, NPCLocation>();
+	private final static Map<String, HumanNPC> toRespawn = new HashMap<String, HumanNPC>();
 
 	@Override
 	public void onDamage(HumanNPC npc, LivingEntity attacker) {

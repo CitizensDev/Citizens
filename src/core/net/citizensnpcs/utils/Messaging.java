@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -151,6 +151,7 @@ public class Messaging {
 
 	public static void dualSend(CommandSender sender, String string) {
 		log(string);
-		send(sender, StringUtils.join(string));
+		if (sender instanceof Player)
+			send(sender, StringUtils.join(string));
 	}
 }

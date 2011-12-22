@@ -1,7 +1,7 @@
 package net.citizensnpcs.questers.rewards;
 
 import net.citizensnpcs.Citizens;
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.utils.StringUtils;
@@ -57,8 +57,8 @@ public class QuestReward implements Requirement, Reward {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		storage.setString(root + ".quest", reward);
+	public void save(DataKey root) {
+		root.setString("quest", reward);
 	}
 
 	private static class AssignQuestRunnable implements Runnable {
@@ -85,9 +85,9 @@ public class QuestReward implements Requirement, Reward {
 
 	public static class QuestRewardBuilder implements RewardBuilder {
 		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			return new QuestReward(storage.getString(root + ".quest"),
-					storage.getInt(root + ".times", 1), take);
+		public Reward build(DataKey root, boolean take) {
+			return new QuestReward(root.getString("quest"), root.getInt(
+					"times", 1), take);
 		}
 	}
 }

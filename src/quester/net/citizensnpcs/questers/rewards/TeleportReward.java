@@ -1,6 +1,6 @@
 package net.citizensnpcs.questers.rewards;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.LocationUtils;
 
 import org.bukkit.Location;
@@ -24,15 +24,14 @@ public class TeleportReward implements Reward {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
-		LocationUtils.saveLocation(storage, reward, root, false);
+	public void save(DataKey root) {
+		LocationUtils.saveLocation(root, reward, false);
 	}
 
 	public static class TeleportRewardBuilder implements RewardBuilder {
 		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			return new TeleportReward(LocationUtils.loadLocation(storage, root,
-					false));
+		public Reward build(DataKey root, boolean take) {
+			return new TeleportReward(LocationUtils.loadLocation(root, false));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package net.citizensnpcs.api.event;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 public class NPCEvent extends CitizensEvent {
 	private static final long serialVersionUID = 1L;

@@ -1,10 +1,10 @@
 package net.citizensnpcs.blacksmiths;
 
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 
@@ -37,10 +37,10 @@ public class Blacksmith extends CitizensNPC {
 	}
 
 	@Override
-	public void save(Storage profiles, int UID) {
+	public void save(DataKey root) {
 	}
 
 	@Override
-	public void load(Storage profiles, int UID) {
+	public void load(DataKey root) {
 	}
 }

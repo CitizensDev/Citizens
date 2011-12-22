@@ -61,6 +61,9 @@ public class EffectUtils {
 			 * to play.
 			 */
 			DIG(2001),
+			ENDER_SIGNAL(2003),
+			MOBSPAWNER_FLAMES(2004),
+			POTION_BREAK(2002),
 			/*
 			 * Plays a record, uses data as the item ID of the record to play
 			 */
@@ -80,11 +83,12 @@ public class EffectUtils {
 
 			@Override
 			public String toString() {
-				return "" + this.getIdentifier();
+				return Integer.toString(this.getIdentifier());
 			}
 		}
 
 		public enum Sound implements IEffect {
+			BLAZE_SHOOT(1009),
 			/*
 			 * Plays the sound when dispensers are fired
 			 */
@@ -101,6 +105,8 @@ public class EffectUtils {
 			 * Plays the sound when a fire is extinguished
 			 */
 			FIRE_EXTINGUISH(1004),
+			GHAST_SHRIEK(1007),
+			GHAST_SHOOT(1008),
 			/*
 			 * Plays the fired arrow sound
 			 */
@@ -120,7 +126,7 @@ public class EffectUtils {
 
 			@Override
 			public String toString() {
-				return "" + this.getIdentifier();
+				return Integer.toString(this.getIdentifier());
 			}
 		}
 	}

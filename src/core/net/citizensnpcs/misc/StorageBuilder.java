@@ -1,7 +1,7 @@
 package net.citizensnpcs.misc;
 
-import net.citizensnpcs.properties.Storage;
+import net.citizensnpcs.properties.DataKey;
 
 public interface StorageBuilder<T> {
-	T create(Storage storage, String root);
+	T create(DataKey root);
 }

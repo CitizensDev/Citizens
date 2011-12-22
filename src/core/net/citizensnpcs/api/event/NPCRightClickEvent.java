@@ -1,6 +1,6 @@
 package net.citizensnpcs.api.event;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

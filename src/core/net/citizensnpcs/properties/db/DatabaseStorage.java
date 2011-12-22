@@ -5,18 +5,17 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.citizensnpcs.properties.AbstractStorage;
+import net.citizensnpcs.properties.DataKey;
+import net.citizensnpcs.properties.DataSource;
 import net.citizensnpcs.utils.Messaging;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-public abstract class DatabaseStorage extends AbstractStorage {
+public class DatabaseStorage implements DataSource {
 	private final ConnectionInfo info;
 	private Connection connection;
 
@@ -44,8 +43,6 @@ public abstract class DatabaseStorage extends AbstractStorage {
 		this.connection = DriverManager.getConnection(info.url, info.username,
 				info.password);
 	}
-
-	protected abstract void getTable(String key);
 
 	public boolean tableExists(String table) {
 		if (aliases.containsKey(table))
@@ -78,6 +75,12 @@ public abstract class DatabaseStorage extends AbstractStorage {
 	}
 
 	@Override
+	public DataKey getKey(String root) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public void load() {
 	}
 
@@ -89,101 +92,6 @@ public abstract class DatabaseStorage extends AbstractStorage {
 		} catch (SQLException ex) {
 			Messaging.log("Unable to save database, error: " + ex.getMessage());
 		}
-	}
-
-	@Override
-	public void removeKey(String key) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public String getString(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setString(String key, String value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getInt(String key) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setInt(String key, int value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getDouble(String key) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setDouble(String key, double value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public long getLong(String key) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setLong(String key, long value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean getBoolean(String key) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setBoolean(String key, boolean value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Object getRaw(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setRaw(String path, Object value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean keyExists(String path) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Collection<String> getKeys(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Integer> getIntegerKeys(String string) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public static void registerTableAlias(String alias, String table) {

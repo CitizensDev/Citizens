@@ -3,7 +3,7 @@ package net.citizensnpcs.alchemists;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;

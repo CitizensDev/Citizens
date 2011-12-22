@@ -1,7 +1,7 @@
 package net.citizensnpcs.waypoints.modifiers;
 
-import net.citizensnpcs.properties.Storage;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.utils.ConversationUtils.ConversationMessage;
 import net.citizensnpcs.waypoints.Waypoint;
 import net.citizensnpcs.waypoints.WaypointModifier;
@@ -22,11 +22,11 @@ public class DelayModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void parse(Storage storage, String root) {
+	public void load(DataKey root) {
 	}
 
 	@Override
-	public void save(Storage storage, String root) {
+	public void save(DataKey root) {
 	}
 
 	@Override

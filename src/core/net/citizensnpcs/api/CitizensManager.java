@@ -1,15 +1,14 @@
 package net.citizensnpcs.api;
 
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npcdata.NPCDataManager;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.npclib.NPCList;
-import net.citizensnpcs.resources.npclib.NPCManager;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class CitizensManager {
-
+	// TODO: make this into an interface
 	/**
 	 * Gets an NPC from a UID.
 	 * 
@@ -48,8 +47,8 @@ public class CitizensManager {
 	 * 
 	 * @return list of NPCs on a server
 	 */
-	public static NPCList getList() {
-		return NPCManager.getList();
+	public static Iterable<HumanNPC> getNPCs() {
+		return NPCManager.getNPCs();
 	}
 
 	/**

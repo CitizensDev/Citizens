@@ -1,7 +1,7 @@
 package net.citizensnpcs.utils;
 
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;

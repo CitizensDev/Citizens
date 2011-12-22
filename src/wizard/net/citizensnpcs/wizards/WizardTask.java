@@ -1,20 +1,27 @@
 package net.citizensnpcs.wizards;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.lib.HumanNPC;
+import net.citizensnpcs.utils.ByIdArray;
 
 import org.bukkit.Bukkit;
 
 public class WizardTask implements Runnable {
 	private final HumanNPC npc;
 	private int taskID;
-	private static final Map<Integer, WizardTask> tasks = new HashMap<Integer, WizardTask>();
 
 	public WizardTask(HumanNPC npc) {
 		this.npc = npc;
+	}
+
+	public void addID(int taskID) {
+		this.taskID = taskID;
+	}
+
+	public void cancel() {
+		Bukkit.getServer().getScheduler()
+				.cancelTask(getTask(npc.getUID()).taskID);
+		tasks.remove(npc.getUID());
 	}
 
 	@Override
@@ -25,13 +32,10 @@ public class WizardTask implements Runnable {
 		}
 	}
 
-	public void addID(int taskID) {
-		this.taskID = taskID;
-		tasks.put(npc.getUID(), this);
-	}
+	private static final ByIdArray<WizardTask> tasks = ByIdArray.create();
 
 	public static void cancelTasks() {
-		for (WizardTask entry : tasks.values()) {
+		for (WizardTask entry : tasks) {
 			Bukkit.getServer().getScheduler().cancelTask(entry.taskID);
 		}
 		tasks.clear();
@@ -39,11 +43,5 @@ public class WizardTask implements Runnable {
 
 	public static WizardTask getTask(int UID) {
 		return tasks.get(UID);
-	}
-
-	public void cancel() {
-		Bukkit.getServer().getScheduler()
-				.cancelTask(getTask(npc.getUID()).taskID);
-		tasks.remove(npc.getUID());
 	}
 }
