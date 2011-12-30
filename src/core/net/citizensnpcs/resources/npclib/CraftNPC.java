@@ -68,4 +68,8 @@ public class CraftNPC extends PathNPC {
 		}
 		return super.getBukkitEntity();
 	}
+
+         public org.bukkit.entity.Entity getTarget() {
+		return this.targetEntity.getBukkitEntity();
+	}
 }
