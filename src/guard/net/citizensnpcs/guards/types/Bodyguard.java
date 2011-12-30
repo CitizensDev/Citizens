@@ -44,8 +44,6 @@ public class Bodyguard implements GuardUpdater {
 
 	@Override
 	public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
-		if (npc.getHandle().hasTarget() && current == GuardStatus.NORMAL)
-			current = GuardStatus.ATTACKING;
 		switch (current) {
 		case NORMAL:
 			if (findTarget(npc))
@@ -90,22 +88,24 @@ public class Bodyguard implements GuardUpdater {
 			despawn(npc);
 			return false;
 		}
-		if (!LocationUtils.withinRange(npc.getLocation(), player.getLocation(),
+                  double range = Settings.getDouble("PathfindingRange");
+		if (LocationUtils.withinRange(npc.getLocation(), player.getLocation(),
 				guard.getProtectionRadius())) {
-			double range = Settings.getDouble("PathfindingRange");
-			if (!LocationUtils.withinRange(npc.getLocation(),
-					player.getLocation(), range))
-				npc.teleport(player.getLocation());
-			else
-				PathUtils.target(npc, player, false, -1, -1, range);
-			return false;
-		} else {
 			LivingEntity entity = Targeter.findTarget(
 					Targeter.getNearby(player, guard.getProtectionRadius()),
 					npc);
-			if (entity != null)
+			if (entity != null) {
 				guard.target(entity, npc);
-			return entity != null;
+				return true;
+			} else if (npc.getHandle().getTarget() != player) {
+				PathUtils.target(npc, player, false, -1, -1, range);
+			}
+		} else {
+			if (!LocationUtils.withinRange(npc.getLocation(),
+					player.getLocation(), range)) {
+				npc.teleport(player.getLocation());
+			}
+			PathUtils.target(npc, player, false, -1, -1, range);
 		}
 	}
 
