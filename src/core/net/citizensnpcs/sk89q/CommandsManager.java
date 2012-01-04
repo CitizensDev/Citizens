@@ -19,27 +19,25 @@
 
 package net.citizensnpcs.sk89q;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.citizensnpcs.economy.Economy;
-import net.citizensnpcs.lib.HumanNPC;
-import net.citizensnpcs.lib.NPCManager;
-import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
-import net.citizensnpcs.utils.StringUtils;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import com.google.common.collect.Lists;
 
 /**
  * <p>
@@ -111,11 +109,315 @@ public abstract class CommandsManager<T extends Player> {
 	 */
 	protected Injector injector;
 
-	protected Map<Method, CommandRequirements> requirements = new HashMap<Method, CommandRequirements>();
+	protected List<RequirementHandler> requirementHandlers = Lists
+			.newArrayList();
 
 	protected Map<Method, ServerCommand> serverCommands = new HashMap<Method, ServerCommand>();
 
-	// TODO: abstract extra annotations out into registrable handlers.
+	public void registerRequirementHandler(RequirementHandler handler) {
+		if (handler == null)
+			throw new IllegalArgumentException("handler cannot be null");
+		if (!requirementHandlers.contains(handler))
+			requirementHandlers.add(handler);
+	}
+
+	/**
+	 * Attempt to execute a command. This version takes a separate command name
+	 * (for the root command) and then a list of following arguments.
+	 * 
+	 * @param cmd
+	 *            command to run
+	 * @param args
+	 *            arguments
+	 * @param player
+	 *            command source
+	 * @param methodArgs
+	 *            method arguments
+	 * @throws CommandException
+	 */
+	public void execute(String cmd, String[] args, T player,
+			Object... methodArgs) throws CommandException {
+
+		String[] newArgs = new String[args.length + 1];
+		System.arraycopy(args, 0, newArgs, 1, args.length);
+		newArgs[0] = cmd;
+		Object[] newMethodArgs = new Object[methodArgs.length + 1];
+		System.arraycopy(methodArgs, 0, newMethodArgs, 1, methodArgs.length);
+
+		executeMethod(null, newArgs, player, newMethodArgs, 0);
+	}
+
+	/**
+	 * Attempt to execute a command.
+	 * 
+	 * @param args
+	 * @param player
+	 * @param methodArgs
+	 * @throws CommandException
+	 */
+	public void execute(String[] args, T player, Object... methodArgs)
+			throws CommandException {
+		Object[] newMethodArgs = new Object[methodArgs.length + 1];
+		System.arraycopy(methodArgs, 0, newMethodArgs, 1, methodArgs.length);
+		executeMethod(null, args, player, newMethodArgs, 0);
+	}
+
+	/**
+	 * Attempt to execute a command.
+	 * 
+	 * @param parent
+	 * @param args
+	 * @param player
+	 * @param methodArgs
+	 * @param level
+	 * @throws CommandException
+	 */
+	public void executeMethod(Method parent, String[] args, T player,
+			Object[] methodArgs, int level) throws CommandException {
+		String cmdName = args[level];
+		String modifier = "";
+		if (args.length > level + 1) {
+			modifier = args[level + 1];
+		}
+
+		Map<CommandIdentifier, Method> map = commands.get(parent);
+		Method method = map.get(new CommandIdentifier(cmdName.toLowerCase(),
+				modifier.toLowerCase()));
+		if (method == null)
+			method = map.get(new CommandIdentifier(cmdName.toLowerCase(), "*"));
+
+		if (method != null && methodArgs != null
+				&& !method.isAnnotationPresent(ServerCommand.class)
+				&& methodArgs[1] instanceof ConsoleCommandSender) {
+			throw new ServerCommandException();
+		}
+
+		if (method == null) {
+			if (parent == null) { // Root
+				throw new UnhandledCommandException();
+			} else {
+				throw new MissingNestedCommandException("Unknown command: "
+						+ cmdName, getNestedUsage(args, level - 1, parent,
+						player));
+			}
+		}
+
+		if (methodArgs[1] instanceof Player) {
+			if (!hasPermission(method, player)) {
+				throw new CommandPermissionsException();
+			}
+		}
+
+		int argsCount = args.length - 1 - level;
+
+		if (method.isAnnotationPresent(NestedCommand.class)) {
+			if (argsCount == 0) {
+				throw new MissingNestedCommandException(
+						"Sub-command required.", getNestedUsage(args, level,
+								method, player));
+			} else {
+				executeMethod(method, args, player, methodArgs, level + 1);
+			}
+		}
+
+		for (RequirementHandler handler : requirementHandlers) {
+			Annotation requirements = method.getClass().getAnnotation(
+					handler.getRequirementAnnotation()); // default to class
+			if (requirements == null) {
+				requirements = method.getAnnotation(handler
+						.getRequirementAnnotation()); // fallback to method
+				if (requirements == null)
+					continue;
+			}
+			handler.evaluateRequirements(
+					method.getAnnotation(handler.getRequirementAnnotation()),
+					methodArgs);
+		}
+
+		Command cmd = method.getAnnotation(Command.class);
+
+		String[] newArgs = new String[args.length - level];
+		System.arraycopy(args, level, newArgs, 0, args.length - level);
+
+		CommandContext context = new CommandContext(newArgs);
+
+		if (context.argsLength() < cmd.min()) {
+			throw new CommandUsageException("Too few arguments.", getUsage(
+					args, level, cmd));
+		}
+
+		if (cmd.max() != -1 && context.argsLength() > cmd.max()) {
+			throw new CommandUsageException("Too many arguments.", getUsage(
+					args, level, cmd));
+		}
+
+		for (char flag : context.getFlags()) {
+			if (cmd.flags().indexOf(String.valueOf(flag)) == -1) {
+				throw new CommandUsageException("Unknown flag: " + flag,
+						getUsage(args, level, cmd));
+			}
+		}
+
+		methodArgs[0] = context;
+		Object instance = instances.get(method);
+		try {
+			method.invoke(instance, methodArgs);
+		} catch (IllegalArgumentException e) {
+			logger.log(Level.SEVERE, "Failed to execute command", e);
+		} catch (IllegalAccessException e) {
+			logger.log(Level.SEVERE, "Failed to execute command", e);
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof CommandException) {
+				throw (CommandException) e.getCause();
+			}
+
+			throw new WrappedCommandException(e.getCause());
+		}
+	}
+
+	/**
+	 * Get a list of command descriptions. This is only for root commands.
+	 * 
+	 * @return
+	 */
+	public Map<CommandIdentifier, String> getCommands() {
+		return descs;
+	}
+
+	/**
+	 * Get the injector used to create new instances. This can be null, in which
+	 * case only classes will be registered statically.
+	 */
+	public Injector getInjector() {
+		return injector;
+	}
+
+	/**
+	 * Get the usage string for a nested command.
+	 * 
+	 * @param args
+	 * @param level
+	 * @param method
+	 * @param player
+	 * @return
+	 * @throws CommandException
+	 */
+	protected String getNestedUsage(String[] args, int level, Method method,
+			T player) throws CommandException {
+
+		StringBuilder command = new StringBuilder();
+
+		command.append("/");
+
+		for (int i = 0; i <= level; i++) {
+			command.append(args[i] + " ");
+		}
+
+		Map<CommandIdentifier, Method> map = commands.get(method);
+		boolean found = false;
+
+		command.append("<");
+
+		Set<String> allowedCommands = new HashSet<String>();
+
+		for (Map.Entry<CommandIdentifier, Method> entry : map.entrySet()) {
+			Method childMethod = entry.getValue();
+			found = true;
+
+			if (hasPermission(childMethod, player)) {
+				Command childCmd = childMethod.getAnnotation(Command.class);
+
+				allowedCommands.add(childCmd.aliases()[0]);
+			}
+		}
+
+		if (allowedCommands.size() > 0) {
+			command.append(joinString(allowedCommands, "|", 0));
+		} else {
+			if (!found) {
+				command.append("?");
+			} else {
+				// command.append("action");
+				throw new CommandPermissionsException();
+			}
+		}
+
+		command.append(">");
+
+		return command.toString();
+	}
+
+	/**
+	 * Get the usage string for a command.
+	 * 
+	 * @param args
+	 * @param level
+	 * @param cmd
+	 * @return
+	 */
+	protected String getUsage(String[] args, int level, Command cmd) {
+		StringBuilder command = new StringBuilder();
+
+		command.append("/");
+
+		for (int i = 0; i <= level; i++) {
+			command.append(args[i] + " ");
+		}
+
+		// command.append(cmd.flags().length() > 0 ? "[-" + cmd.flags() + "] "
+		// : "");
+		// removed arbitrary positioning of flags.
+		command.append(cmd.usage());
+
+		return command.toString();
+	}
+
+	/**
+	 * Checks to see whether there is a command named such at the root level.
+	 * This will check aliases as well.
+	 * 
+	 * @param command
+	 * @return
+	 */
+	public boolean hasCommand(String command, String modifier) {
+		return commands.get(null).containsKey(
+				new CommandIdentifier(command.toLowerCase(), modifier
+						.toLowerCase()))
+				|| commands.get(null).containsKey(
+						new CommandIdentifier(command.toLowerCase(), "*"));
+	}
+
+	/**
+	 * Returns whether a player has access to a command.
+	 * 
+	 * @param method
+	 * @param player
+	 * @return
+	 */
+	protected boolean hasPermission(Method method, T player) {
+		CommandPermissions perms = method
+				.getAnnotation(CommandPermissions.class);
+		if (perms == null) {
+			return true;
+		}
+
+		for (String perm : perms.value()) {
+			if (hasPermission(player, perm)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns whether a player has permission
+	 * 
+	 * @param player
+	 * @param perm
+	 * @return
+	 */
+	public abstract boolean hasPermission(T player, String perm);
 
 	/**
 	 * Register an class that contains commands (denoted by {@link Command}. If
@@ -188,25 +490,6 @@ public abstract class CommandsManager<T extends Player> {
 				}
 			}
 
-			CommandRequirements requirements = null;
-			if (method.getDeclaringClass().isAnnotationPresent(
-					CommandRequirements.class)) {
-				requirements = method.getDeclaringClass().getAnnotation(
-						CommandRequirements.class);
-			}
-			if (method.isAnnotationPresent(CommandRequirements.class)) {
-				requirements = method.getAnnotation(CommandRequirements.class);
-			}
-			if (requirements != null)
-				this.requirements.put(method, requirements);
-
-			ServerCommand serverCommand = null;
-			if (method.isAnnotationPresent(ServerCommand.class)) {
-				serverCommand = method.getAnnotation(ServerCommand.class);
-			}
-			if (serverCommand != null)
-				this.serverCommands.put(method, serverCommand);
-
 			// We want to be able invoke with an instance
 			if (!isStatic) {
 				// Can't register this command if we don't have an instance
@@ -248,107 +531,13 @@ public abstract class CommandsManager<T extends Player> {
 	}
 
 	/**
-	 * Checks to see whether there is a command named such at the root level.
-	 * This will check aliases as well.
+	 * Set the injector for creating new instances.
 	 * 
-	 * @param command
-	 * @return
+	 * @param injector
+	 *            injector or null
 	 */
-	public boolean hasCommand(String command, String modifier) {
-		return commands.get(null).containsKey(
-				new CommandIdentifier(command.toLowerCase(), modifier
-						.toLowerCase()))
-				|| commands.get(null).containsKey(
-						new CommandIdentifier(command.toLowerCase(), "*"));
-	}
-
-	/**
-	 * Get a list of command descriptions. This is only for root commands.
-	 * 
-	 * @return
-	 */
-	public Map<CommandIdentifier, String> getCommands() {
-		return descs;
-	}
-
-	/**
-	 * Get the usage string for a command.
-	 * 
-	 * @param args
-	 * @param level
-	 * @param cmd
-	 * @return
-	 */
-	protected String getUsage(String[] args, int level, Command cmd) {
-		StringBuilder command = new StringBuilder();
-
-		command.append("/");
-
-		for (int i = 0; i <= level; i++) {
-			command.append(args[i] + " ");
-		}
-
-		// command.append(cmd.flags().length() > 0 ? "[-" + cmd.flags() + "] "
-		// : "");
-		// removed arbitrary positioning of flags.
-		command.append(cmd.usage());
-
-		return command.toString();
-	}
-
-	/**
-	 * Get the usage string for a nested command.
-	 * 
-	 * @param args
-	 * @param level
-	 * @param method
-	 * @param player
-	 * @return
-	 * @throws CommandException
-	 */
-	protected String getNestedUsage(String[] args, int level, Method method,
-			T player) throws CommandException {
-
-		StringBuilder command = new StringBuilder();
-
-		command.append("/");
-
-		for (int i = 0; i <= level; i++) {
-			command.append(args[i] + " ");
-		}
-
-		Map<CommandIdentifier, Method> map = commands.get(method);
-		boolean found = false;
-
-		command.append("<");
-
-		Set<String> allowedCommands = new HashSet<String>();
-
-		for (Map.Entry<CommandIdentifier, Method> entry : map.entrySet()) {
-			Method childMethod = entry.getValue();
-			found = true;
-
-			if (hasPermission(childMethod, player)) {
-				Command childCmd = childMethod.getAnnotation(Command.class);
-
-				allowedCommands.add(childCmd.aliases()[0]);
-			}
-		}
-
-		if (allowedCommands.size() > 0) {
-			command.append(joinString(allowedCommands, "|", 0));
-		} else {
-			if (!found) {
-				command.append("?");
-			} else {
-				// command.append("action");
-				throw new CommandPermissionsException();
-			}
-		}
-
-		command.append(">");
-
-		return command.toString();
+	public void setInjector(Injector injector) {
+		this.injector = injector;
 	}
 
 	public static String joinString(Collection<?> str, String delimiter,
@@ -368,230 +557,5 @@ public abstract class CommandsManager<T extends Player> {
 			i++;
 		}
 		return buffer.toString();
-	}
-
-	/**
-	 * Attempt to execute a command. This version takes a separate command name
-	 * (for the root command) and then a list of following arguments.
-	 * 
-	 * @param cmd
-	 *            command to run
-	 * @param args
-	 *            arguments
-	 * @param player
-	 *            command source
-	 * @param methodArgs
-	 *            method arguments
-	 * @throws CommandException
-	 */
-	public void execute(String cmd, String[] args, T player,
-			Object... methodArgs) throws CommandException {
-
-		String[] newArgs = new String[args.length + 1];
-		System.arraycopy(args, 0, newArgs, 1, args.length);
-		newArgs[0] = cmd;
-		Object[] newMethodArgs = new Object[methodArgs.length + 1];
-		System.arraycopy(methodArgs, 0, newMethodArgs, 1, methodArgs.length);
-
-		executeMethod(null, newArgs, player, newMethodArgs, 0);
-	}
-
-	/**
-	 * Attempt to execute a command.
-	 * 
-	 * @param args
-	 * @param player
-	 * @param methodArgs
-	 * @throws CommandException
-	 */
-	public void execute(String[] args, T player, Object... methodArgs)
-			throws CommandException {
-		Object[] newMethodArgs = new Object[methodArgs.length + 1];
-		System.arraycopy(methodArgs, 0, newMethodArgs, 1, methodArgs.length);
-		executeMethod(null, args, player, newMethodArgs, 0);
-	}
-
-	/**
-	 * Attempt to execute a command.
-	 * 
-	 * @param parent
-	 * @param args
-	 * @param player
-	 * @param methodArgs
-	 * @param level
-	 * @throws CommandException
-	 */
-	public void executeMethod(Method parent, String[] args, T player,
-			Object[] methodArgs, int level) throws CommandException {
-		String cmdName = args[level];
-		String modifier = "";
-		if (args.length > level + 1) {
-			modifier = args[level + 1];
-		}
-
-		Map<CommandIdentifier, Method> map = commands.get(parent);
-		Method method = map.get(new CommandIdentifier(cmdName.toLowerCase(),
-				modifier.toLowerCase()));
-		if (method == null)
-			method = map.get(new CommandIdentifier(cmdName.toLowerCase(), "*"));
-
-		if (method != null && methodArgs != null
-				&& serverCommands.get(method) == null
-				&& methodArgs[1] instanceof ConsoleCommandSender) {
-			throw new ServerCommandException();
-		}
-
-		if (method == null) {
-			if (parent == null) { // Root
-				throw new UnhandledCommandException();
-			} else {
-				throw new MissingNestedCommandException("Unknown command: "
-						+ cmdName, getNestedUsage(args, level - 1, parent,
-						player));
-			}
-		}
-
-		HumanNPC npc = (HumanNPC) methodArgs[2];
-		if (methodArgs[1] instanceof Player) {
-			if (!hasPermission(method, player)) {
-				throw new CommandPermissionsException();
-			}
-		}
-
-		int argsCount = args.length - 1 - level;
-
-		if (method.isAnnotationPresent(NestedCommand.class)) {
-			if (argsCount == 0) {
-				throw new MissingNestedCommandException(
-						"Sub-command required.", getNestedUsage(args, level,
-								method, player));
-			} else {
-				executeMethod(method, args, player, methodArgs, level + 1);
-			}
-		} else if (methodArgs[1] instanceof Player) {
-			CommandRequirements requirements = this.requirements.get(method);
-
-			if (requirements != null) {
-				if (requirements.requireEconomy() && !Economy.hasMethod()) {
-					throw new RequirementMissingException(
-							MessageUtils.noEconomyMessage);
-				}
-				if (requirements.requiredMoney() != -1
-						&& !Economy.hasEnough(player,
-								requirements.requiredMoney())) {
-					throw new RequirementMissingException("You need at least "
-							+ StringUtils.wrap(Economy.format(requirements
-									.requiredMoney()), ChatColor.RED));
-				}
-				if (requirements.requireSelected() && npc == null) {
-					throw new RequirementMissingException(
-							MessageUtils.mustHaveNPCSelectedMessage);
-				}
-				if (requirements.requireOwnership() && npc != null
-						&& !NPCManager.isOwner(player, npc.getUID())) {
-					throw new RequirementMissingException(
-							MessageUtils.notOwnerMessage);
-				}
-				if (npc != null && !requirements.requiredType().isEmpty()) {
-					if (!npc.isType(requirements.requiredType())) {
-						throw new RequirementMissingException(
-								"Your NPC isn't a "
-										+ requirements.requiredType() + " yet.");
-					}
-				}
-			} else {
-				Messaging.debug("No annotation present.");
-			}
-		}
-
-		Command cmd = method.getAnnotation(Command.class);
-
-		String[] newArgs = new String[args.length - level];
-		System.arraycopy(args, level, newArgs, 0, args.length - level);
-
-		CommandContext context = new CommandContext(newArgs);
-
-		if (context.argsLength() < cmd.min()) {
-			throw new CommandUsageException("Too few arguments.", getUsage(
-					args, level, cmd));
-		}
-
-		if (cmd.max() != -1 && context.argsLength() > cmd.max()) {
-			throw new CommandUsageException("Too many arguments.", getUsage(
-					args, level, cmd));
-		}
-
-		for (char flag : context.getFlags()) {
-			if (cmd.flags().indexOf(String.valueOf(flag)) == -1) {
-				throw new CommandUsageException("Unknown flag: " + flag,
-						getUsage(args, level, cmd));
-			}
-		}
-
-		methodArgs[0] = context;
-		Object instance = instances.get(method);
-		try {
-			method.invoke(instance, methodArgs);
-		} catch (IllegalArgumentException e) {
-			logger.log(Level.SEVERE, "Failed to execute command", e);
-		} catch (IllegalAccessException e) {
-			logger.log(Level.SEVERE, "Failed to execute command", e);
-		} catch (InvocationTargetException e) {
-			if (e.getCause() instanceof CommandException) {
-				throw (CommandException) e.getCause();
-			}
-
-			throw new WrappedCommandException(e.getCause());
-		}
-	}
-
-	/**
-	 * Returns whether a player has access to a command.
-	 * 
-	 * @param method
-	 * @param player
-	 * @return
-	 */
-	protected boolean hasPermission(Method method, T player) {
-		CommandPermissions perms = method
-				.getAnnotation(CommandPermissions.class);
-		if (perms == null) {
-			return true;
-		}
-
-		for (String perm : perms.value()) {
-			if (hasPermission(player, perm)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Returns whether a player has permission
-	 * 
-	 * @param player
-	 * @param perm
-	 * @return
-	 */
-	public abstract boolean hasPermission(T player, String perm);
-
-	/**
-	 * Get the injector used to create new instances. This can be null, in which
-	 * case only classes will be registered statically.
-	 */
-	public Injector getInjector() {
-		return injector;
-	}
-
-	/**
-	 * Set the injector for creating new instances.
-	 * 
-	 * @param injector
-	 *            injector or null
-	 */
-	public void setInjector(Injector injector) {
-		this.injector = injector;
 	}
 }

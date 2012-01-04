@@ -33,43 +33,26 @@ public class Quester extends CitizensNPC {
 		quests.add(quest);
 	}
 
-	public void removeQuest(String quest) {
-		quests.remove(quest);
+	private void attemptAssign(Player player, HumanNPC npc) {
+		if (QuestManager.assignQuest(player, npc.getUID(),
+				fetchFromList(player))) {
+			displays.remove(player);
+			pending.remove(player);
+		}
 	}
 
-	public boolean hasQuest(String string) {
-		return quests.contains(string);
-	}
-
-	public List<String> getQuests() {
-		return quests;
-	}
-
-	@Override
-	public void onLeftClick(Player player, HumanNPC npc) {
-		cycle(player);
-	}
-
-	@Override
-	public void onRightClick(Player player, HumanNPC npc) {
-		if (QuestManager.hasQuest(player)) {
-			checkCompletion(player, npc);
-		} else {
-			if (displays.get(player) == null) {
-				cycle(player);
-				return;
-			}
-			PageInstance display = displays.get(player);
-			if (!pending.contains(player)) {
-				display.displayNext();
-				if (display.currentPage() == display.maxPages()) {
-					player.sendMessage(ChatColor.GREEN
-							+ "Right click again to accept.");
-					pending.add(player);
-				}
+	private void checkCompletion(Player player, HumanNPC npc) {
+		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
+		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
+			if (profile.getProgress().isFullyCompleted()) {
+				QuestManager.completeQuest(player);
 			} else {
-				attemptAssign(player, npc);
+				player.sendMessage(ChatColor.GRAY
+						+ "The quest isn't completed yet.");
 			}
+		} else {
+			player.sendMessage(ChatColor.GRAY
+					+ "You already have a quest from another NPC.");
 		}
 	}
 
@@ -110,6 +93,80 @@ public class Quester extends CitizensNPC {
 		updateDescription(player);
 	}
 
+	private String fetch(int index) {
+		return quests.get(index);
+	}
+
+	private String fetchFromList(Player player) {
+		return quests.size() > 0 ? fetch(queue.get(player)) : "";
+	}
+
+	private Quest getQuest(String name) {
+		return QuestManager.getQuest(name);
+	}
+
+	public List<String> getQuests() {
+		return quests;
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new QuesterType();
+	}
+
+	public boolean hasQuest(String string) {
+		return quests.contains(string);
+	}
+
+	@Override
+	public void load(DataKey root) {
+		if (!root.keyExists("quester.quests"))
+			return;
+		quests.clear();
+		for (String quest : Splitter.on(";").omitEmptyStrings()
+				.split(root.getString("quester.quests"))) {
+			addQuest(quest);
+		}
+	}
+
+	@Override
+	public void onLeftClick(Player player, HumanNPC npc) {
+		cycle(player);
+	}
+
+	@Override
+	public void onRightClick(Player player, HumanNPC npc) {
+		if (QuestManager.hasQuest(player)) {
+			checkCompletion(player, npc);
+		} else {
+			if (displays.get(player) == null) {
+				cycle(player);
+				return;
+			}
+			PageInstance display = displays.get(player);
+			if (!pending.contains(player)) {
+				display.displayNext();
+				if (display.currentPage() == display.maxPages()) {
+					player.sendMessage(ChatColor.GREEN
+							+ "Right click again to accept.");
+					pending.add(player);
+				}
+			} else {
+				attemptAssign(player, npc);
+			}
+		}
+	}
+
+	public void removeQuest(String quest) {
+		quests.remove(quest);
+	}
+
+	@Override
+	public void save(DataKey root) {
+		root.setString("quester.quests", Joiner.on(";").skipNulls()
+				.join(quests));
+	}
+
 	private void updateDescription(Player player) {
 		Quest quest = getQuest(fetchFromList(player));
 		if (quest == null)
@@ -134,62 +191,5 @@ public class Quester extends CitizensNPC {
 			pending.add(player);
 		}
 		displays.put(player, display);
-	}
-
-	private void attemptAssign(Player player, HumanNPC npc) {
-		if (QuestManager.assignQuest(player, npc.getUID(),
-				fetchFromList(player))) {
-			displays.remove(player);
-			pending.remove(player);
-		}
-	}
-
-	private void checkCompletion(Player player, HumanNPC npc) {
-		PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-		if (profile.getProgress().getQuesterUID() == npc.getUID()) {
-			if (profile.getProgress().isFullyCompleted()) {
-				QuestManager.completeQuest(player);
-			} else {
-				player.sendMessage(ChatColor.GRAY
-						+ "The quest isn't completed yet.");
-			}
-		} else {
-			player.sendMessage(ChatColor.GRAY
-					+ "You already have a quest from another NPC.");
-		}
-	}
-
-	private Quest getQuest(String name) {
-		return QuestManager.getQuest(name);
-	}
-
-	private String fetch(int index) {
-		return quests.get(index);
-	}
-
-	private String fetchFromList(Player player) {
-		return quests.size() > 0 ? fetch(queue.get(player)) : "";
-	}
-
-	@Override
-	public CitizensNPCType getType() {
-		return new QuesterType();
-	}
-
-	@Override
-	public void save(DataKey root) {
-		root.setString("quester.quests", Joiner.on(";").skipNulls()
-				.join(quests));
-	}
-
-	@Override
-	public void load(DataKey root) {
-		if (!root.keyExists("quester.quests"))
-			return;
-		quests.clear();
-		for (String quest : Splitter.on(";").omitEmptyStrings()
-				.split(root.getString("quester.quests"))) {
-			addQuest(quest);
-		}
 	}
 }

@@ -29,14 +29,27 @@ import org.bukkit.plugin.PluginManager;
 
 public class PlayerListen extends PlayerListener implements Listener {
 	@Override
-	public void registerEvents(Citizens plugin) {
-		PluginManager pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Type.PLAYER_JOIN, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.PLAYER_LOGIN, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.PLAYER_QUIT, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.PLAYER_INTERACT, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.PLAYER_INTERACT_ENTITY, this, Priority.Normal,
-				plugin);
+	public void onPlayerChat(PlayerChatEvent event) {
+		ConversationUtils.onChat(event);
+	}
+
+	@Override
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		NPCDataManager.handlePathEditor(event);
+		if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer()
+				.getName()) && event.getAction() == Action.RIGHT_CLICK_AIR) {
+			event.setUseItemInHand(Result.DENY);
+		}
+	}
+
+	@Override
+	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+		HumanNPC npc = NPCManager.get(event.getRightClicked());
+		if (npc != null) {
+			EntityTargetEvent rightClickEvent = new NPCTargetEvent(
+					npc.getPlayer(), event.getPlayer());
+			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
+		}
 	}
 
 	@Override
@@ -67,26 +80,13 @@ public class PlayerListen extends PlayerListener implements Listener {
 	}
 
 	@Override
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		NPCDataManager.handlePathEditor(event);
-		if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer())
-				&& event.getAction() == Action.RIGHT_CLICK_AIR) {
-			event.setUseItemInHand(Result.DENY);
-		}
-	}
-
-	@Override
-	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		HumanNPC npc = NPCManager.get(event.getRightClicked());
-		if (npc != null) {
-			EntityTargetEvent rightClickEvent = new NPCTargetEvent(
-					npc.getPlayer(), event.getPlayer());
-			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
-		}
-	}
-
-	@Override
-	public void onPlayerChat(PlayerChatEvent event) {
-		ConversationUtils.onChat(event);
+	public void registerEvents(Citizens plugin) {
+		PluginManager pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Type.PLAYER_JOIN, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_LOGIN, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_QUIT, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_INTERACT, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.PLAYER_INTERACT_ENTITY, this, Priority.Normal,
+				plugin);
 	}
 }

@@ -19,15 +19,25 @@ public class GroupManagerProvider implements PermissionsProvider {
 	}
 
 	@Override
-	public boolean inGroup(Player player, String group) {
+	public CitizensGroup getGroup(String group) {
+		Group internalGroup = provider.getDefaultWorld().getGroup(group);
+		if (internalGroup == null)
+			return null;
+		return new CitizensGroup(internalGroup.getName());
+	}
+
+	@Override
+	public Set<CitizensGroup> getGroups(Player player) {
 		if (provider.getWorldData(player) == null
 				|| provider.getWorldData(player).getUser(player.getName()) == null)
-			return false;
-		OverloadedWorldHolder data = provider.getWorldData(player);
-		if (data.getGroup(group) == null)
-			return false;
-		return provider.getWorldData(player).getUser(player.getName())
-				.containsSubGroup(data.getGroup(group));
+			return null;
+		Set<CitizensGroup> ret = Sets.newHashSet();
+		User user = provider.getWorldData(player).getUser(player.getName());
+		ret.add(new CitizensGroup(user.getGroupName()));
+		for (String group : user.subGroupListStringCopy()) {
+			ret.add(new CitizensGroup(group));
+		}
+		return ret;
 	}
 
 	@Override
@@ -57,6 +67,23 @@ public class GroupManagerProvider implements PermissionsProvider {
 	}
 
 	@Override
+	public boolean inGroup(Player player, String group) {
+		if (provider.getWorldData(player) == null
+				|| provider.getWorldData(player).getUser(player.getName()) == null)
+			return false;
+		OverloadedWorldHolder data = provider.getWorldData(player);
+		if (data.getGroup(group) == null)
+			return false;
+		return provider.getWorldData(player).getUser(player.getName())
+				.containsSubGroup(data.getGroup(group));
+	}
+
+	@Override
+	public void removeGroup(Player player, String group) {
+		provider.getWorldData(player).removeGroup(group);
+	}
+
+	@Override
 	public void setGroup(Player player, String group) {
 		if (provider.getWorldData(player) == null
 				|| provider.getWorldData(player).getUser(player.getName()) == null)
@@ -65,32 +92,5 @@ public class GroupManagerProvider implements PermissionsProvider {
 		if (data.getGroup(group) == null)
 			return;
 		data.getUser(player.getName()).setGroup(data.getGroup(group));
-	}
-
-	@Override
-	public CitizensGroup getGroup(String group) {
-		Group internalGroup = provider.getDefaultWorld().getGroup(group);
-		if (internalGroup == null)
-			return null;
-		return new CitizensGroup(internalGroup.getName());
-	}
-
-	@Override
-	public Set<CitizensGroup> getGroups(Player player) {
-		if (provider.getWorldData(player) == null
-				|| provider.getWorldData(player).getUser(player.getName()) == null)
-			return null;
-		Set<CitizensGroup> ret = Sets.newHashSet();
-		User user = provider.getWorldData(player).getUser(player.getName());
-		ret.add(new CitizensGroup(user.getGroupName()));
-		for (String group : user.subGroupListStringCopy()) {
-			ret.add(new CitizensGroup(group));
-		}
-		return ret;
-	}
-
-	@Override
-	public void removeGroup(Player player, String group) {
-		provider.getWorldData(player).removeGroup(group);
 	}
 }

@@ -19,8 +19,6 @@ public interface DataKey {
 
 	List<DataKey> getIntegerSubKeys();
 
-	Iterable<DataKey> getSubKeys();
-
 	long getLong(String keyExt);
 
 	long getLong(String keyExt, long value);
@@ -33,7 +31,11 @@ public interface DataKey {
 
 	String getString(String keyExt, String value);
 
+	Iterable<DataKey> getSubKeys();
+
 	boolean keyExists(String keyExt);
+
+	String name();
 
 	void removeKey(String keyExt);
 
@@ -48,6 +50,4 @@ public interface DataKey {
 	void setRaw(String path, Object value);
 
 	void setString(String keyExt, String value);
-
-	String name();
 }

@@ -16,26 +16,26 @@ public class Waypoint {
 		this.waypoint = waypoint;
 	}
 
-	public void onReach(HumanNPC npc) {
-		for (WaypointModifier modifier : modifiers) {
-			modifier.onReach(npc);
-		}
-	}
-
 	public void addModifier(WaypointModifier effect) {
 		this.modifiers.add(effect);
 	}
 
-	public List<WaypointModifier> getModifiers() {
-		return this.modifiers;
+	public int getDelay() {
+		return delay;
 	}
 
 	public Location getLocation() {
 		return waypoint;
 	}
 
-	public int getDelay() {
-		return delay;
+	public List<WaypointModifier> getModifiers() {
+		return this.modifiers;
+	}
+
+	public void onReach(HumanNPC npc) {
+		for (WaypointModifier modifier : modifiers) {
+			modifier.onReach(npc);
+		}
 	}
 
 	public void setDelay(int delay) {

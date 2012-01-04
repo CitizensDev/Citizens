@@ -220,9 +220,10 @@ public class ConfigurationHandler implements DataSource {
 			return config.get(getKeyExt(keyExt)) != null;
 		}
 
-		private void trySave() {
-			if (Settings.getBoolean("SaveOften"))
-				save();
+		@Override
+		public String name() {
+			int last = current.lastIndexOf('.');
+			return current.substring(last == 0 ? 0 : last + 1);
 		}
 
 		@Override
@@ -266,10 +267,9 @@ public class ConfigurationHandler implements DataSource {
 			trySave();
 		}
 
-		@Override
-		public String name() {
-			int last = current.lastIndexOf('.');
-			return current.substring(last == 0 ? 0 : last + 1);
+		private void trySave() {
+			if (Settings.getBoolean("SaveOften"))
+				save();
 		}
 
 		@Override

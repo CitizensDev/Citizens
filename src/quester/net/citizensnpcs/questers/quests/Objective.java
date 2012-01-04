@@ -56,14 +56,6 @@ public class Objective {
 		this.parameters = params;
 	}
 
-	public RawObject getParameter(String name) {
-		return parameters.get(name);
-	}
-
-	public boolean hasParameter(String string) {
-		return parameters.get(string) != null;
-	}
-
 	public int getAmount() {
 		return amount;
 	}
@@ -88,12 +80,20 @@ public class Objective {
 		return material;
 	}
 
+	public RawObject getParameter(String name) {
+		return parameters.get(name);
+	}
+
 	public String getString() {
 		return string;
 	}
 
 	public String getType() {
 		return questType;
+	}
+
+	public boolean hasParameter(String string) {
+		return parameters.get(string) != null;
 	}
 
 	public boolean isOptional() {
@@ -122,11 +122,6 @@ public class Objective {
 
 		public Builder(String type) {
 			this.type = type;
-		}
-
-		public Builder param(String name, RawObject value) {
-			this.params.put(name, value);
-			return this;
 		}
 
 		public Builder amount(int amount) {
@@ -172,6 +167,11 @@ public class Objective {
 
 		public Builder optional(boolean optional) {
 			this.optional = optional;
+			return this;
+		}
+
+		public Builder param(String name, RawObject value) {
+			this.params.put(name, value);
 			return this;
 		}
 

@@ -2,6 +2,9 @@ package net.citizensnpcs.lib;
 
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.lib.NPCAnimator.Animation;
+import net.citizensnpcs.lib.pathfinding.PathController;
+import net.minecraft.server.EntityHuman;
+import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
@@ -15,7 +18,22 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class CraftNPC extends PathNPC {
+public class CraftNPC extends EntityPlayer {
+	private final PathController pathController = new PathController(this);
+	private final NPCAnimator animations = new NPCAnimator(this);
+	public HumanNPC npc;
+
+	public EntityHuman getClosestPlayer(double range) {
+		EntityHuman entityhuman = this.world.findNearbyPlayer(this, range);
+		return entityhuman != null && this.g(entityhuman) ? entityhuman : null;
+	}
+
+	public void tick() {
+		pathController.doTick();
+		applyGravity();
+		--this.attackTicks;
+		--this.noDamageTicks; // Update entity
+	}
 
 	public CraftNPC(MinecraftServer minecraftserver, World world, String s,
 			ItemInWorldManager iteminworldmanager) {
@@ -82,6 +100,10 @@ public class CraftNPC extends PathNPC {
 		return super.getBukkitEntity();
 	}
 
+	public PathController getPathController() {
+		return this.pathController;
+	}
+
 	public float getYawDifference(double diffZ, double diffX) {
 		float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float diffYaw = vectorYaw - this.yaw;
@@ -94,11 +116,6 @@ public class CraftNPC extends PathNPC {
 		return Math.max(-30F, Math.min(30, diffYaw));
 	}
 
-	public boolean hasTarget() {
-		return this.targetEntity != null;
-	}
-
-	@Override
 	public void jump() {
 		jump(false);
 	}
@@ -109,7 +126,6 @@ public class CraftNPC extends PathNPC {
 		}
 	}
 
-	@Override
 	public void performAction(Animation action) {
 		this.animations.performAnimation(action);
 	}
@@ -150,12 +166,10 @@ public class CraftNPC extends PathNPC {
 		return true;
 	}
 
-	@Override
 	public void walk(float x, float z) {
 		this.a(x, z);
 	}
 
-	@Override
 	public void walkOnCurrentHeading() {
 		walk(this.aT, this.aU);
 	}

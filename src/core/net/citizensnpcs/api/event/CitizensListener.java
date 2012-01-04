@@ -6,6 +6,12 @@ import org.bukkit.event.Event;
 public class CitizensListener extends CustomEventListener {
 
 	/**
+	 * Called when Citizens is disabled
+	 */
+	public void onCitizensDisable(CitizensDisableEvent event) {
+	}
+
+	/**
 	 * Called when Citizens is enabled, after all NPC types and settings have
 	 * been loaded
 	 */
@@ -16,12 +22,6 @@ public class CitizensListener extends CustomEventListener {
 	 * Called when the command /citizens reload is used in-game
 	 */
 	public void onCitizensReload(CitizensReloadEvent event) {
-	}
-
-	/**
-	 * Called when Citizens is disabled
-	 */
-	public void onCitizensDisable(CitizensDisableEvent event) {
 	}
 
 	@Override

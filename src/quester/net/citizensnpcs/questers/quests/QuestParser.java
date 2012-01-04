@@ -27,6 +27,30 @@ public class QuestParser {
 			"amount", "item", "npcdestination", "rewards", "location",
 			"string", "optional", "finishhere", "materialid", "message");
 
+	private static final Function<Reward, Requirement> transformer = new Function<Reward, Requirement>() {
+		@Override
+		public Requirement apply(Reward arg0) {
+			return arg0 instanceof Requirement ? (Requirement) arg0 : null;
+		}
+	};
+
+	private static List<Reward> loadRewards(DataKey root) {
+		List<Reward> rewards = Lists.newArrayList();
+		for (DataKey key : root.getSubKeys()) {
+			boolean take = key.getBoolean("take", false);
+			String type = key.getString("type");
+			Reward builder = QuestAPI.getBuilder(type) == null ? null
+					: QuestAPI.getBuilder(type).build(key, take);
+			if (builder != null) {
+				rewards.add(builder);
+			} else
+				Messaging.log("Invalid type identifier " + type
+						+ " for reward at " + key.name()
+						+ ": reward not loaded.");
+		}
+		return rewards;
+	}
+
 	public static void parse(DataSource quests) {
 		questLoop: for (DataKey root : quests.getKey("").getSubKeys()) {
 			String questName = root.name();
@@ -86,10 +110,10 @@ public class QuestParser {
 						obj.granter(new RewardGranter(key.getString("message"),
 								loadRewards(key.getRelative("rewards"))));
 
-						if (key.keyExists("materialid")) {
-							if (key.getInt("materialid") != 0)
-								obj.material(Material.getMaterial(key
-										.getInt("materialid")));
+						if (key.keyExists("materialid")
+								&& key.getInt("materialid") != 0) {
+							obj.material(Material.getMaterial(key
+									.getInt("materialid")));
 						}
 						tempStep.add(obj.build());
 					}
@@ -167,28 +191,4 @@ public class QuestParser {
 		}
 		// TODO: save rewards + requirements.
 	}
-
-	private static List<Reward> loadRewards(DataKey root) {
-		List<Reward> rewards = Lists.newArrayList();
-		for (DataKey key : root.getSubKeys()) {
-			boolean take = key.getBoolean("take", false);
-			String type = key.getString("type");
-			Reward builder = QuestAPI.getBuilder(type) == null ? null
-					: QuestAPI.getBuilder(type).build(key, take);
-			if (builder != null) {
-				rewards.add(builder);
-			} else
-				Messaging.log("Invalid type identifier " + type
-						+ " for reward at " + key.name()
-						+ ": reward not loaded.");
-		}
-		return rewards;
-	}
-
-	private static final Function<Reward, Requirement> transformer = new Function<Reward, Requirement>() {
-		@Override
-		public Requirement apply(Reward arg0) {
-			return arg0 instanceof Requirement ? (Requirement) arg0 : null;
-		}
-	};
 }

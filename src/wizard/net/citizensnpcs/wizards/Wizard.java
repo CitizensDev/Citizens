@@ -46,22 +46,6 @@ public class Wizard extends CitizensNPC {
 		locations.add(addedLoc);
 	}
 
-	// Returns the main location string
-	public Collection<String> getLocations() {
-		return locations;
-	}
-
-	public boolean removeLocation(String string) {
-		Iterator<String> iter = locations.iterator();
-		while (iter.hasNext()) {
-			if (iter.next().split(",")[0].equalsIgnoreCase(string)) {
-				iter.remove();
-				return true;
-			}
-		}
-		return false;
-	}
-
 	// Sets the next location in the list as active.
 	public void cycle() {
 		switch (mode) {
@@ -92,11 +76,6 @@ public class Wizard extends CitizensNPC {
 		}
 	}
 
-	// Returns the total amount of locations bound to the wizard.
-	public int getNumberOfLocations() {
-		return locations.size();
-	}
-
 	// Return the current active teleport location for the wizard.
 	public Location getCurrentLocation() {
 		if (currentLocation >= locations.size())
@@ -115,34 +94,14 @@ public class Wizard extends CitizensNPC {
 		return locations.get(currentLocation).split(",")[0];
 	}
 
+	// Returns the main location string
+	public Collection<String> getLocations() {
+		return locations;
+	}
+
 	// Get the mana that a wizard NPC has remaining
 	public int getMana() {
 		return mana;
-	}
-
-	// Set the mana of a wizard NPC
-	public void setMana(int mana) {
-		this.mana = mana;
-	}
-
-	// Get the mode of a wizard
-	public WizardMode getMode() {
-		return mode;
-	}
-
-	// Set the mode of a wizard
-	public void setMode(WizardMode mode) {
-		this.mode = mode;
-	}
-
-	// Get the time setting of a wizard
-	public String getTime() {
-		return time;
-	}
-
-	// Set the time setting for a wizard
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 	// Get the mob that a wizard will spawn
@@ -150,14 +109,46 @@ public class Wizard extends CitizensNPC {
 		return mob;
 	}
 
+	// Get the mode of a wizard
+	public WizardMode getMode() {
+		return mode;
+	}
+
+	// Returns the total amount of locations bound to the wizard.
+	public int getNumberOfLocations() {
+		return locations.size();
+	}
+
+	// Get the time setting of a wizard
+	public String getTime() {
+		return time;
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new WizardType();
+	}
+
 	// Get whether a wizard has unlimited mana
 	public boolean hasUnlimitedMana() {
 		return unlimitedMana;
 	}
 
-	// Set whether a wizard has unlimited mana
-	public void setUnlimitedMana(boolean unlimitedMana) {
-		this.unlimitedMana = unlimitedMana;
+	@Override
+	public void load(DataKey root) {
+		unlimitedMana = root.getBoolean("unlimited-mana");
+		time = root.getString("time", "morning");
+		mode = (root.keyExists("mode") && WizardMode.parse(root
+				.getString("mode")) != null) ? WizardMode.parse(root
+				.getString("mode")) : WizardMode.TELEPORT;
+		mana = root.getInt("mana", 10);
+		locations.clear();
+		for (String location : splitter.split(root.getString("locations"))) {
+			locations.add(location.replace("(", "").replace(")", ""));
+		}
+		mob = (CreatureType.fromName(root.getString("mob")) != null) ? CreatureType
+				.fromName(root.getString("mob")) : CreatureType.CREEPER;
+		mobIndex = mob.ordinal();
 	}
 
 	@Override
@@ -229,9 +220,15 @@ public class Wizard extends CitizensNPC {
 		}
 	}
 
-	@Override
-	public CitizensNPCType getType() {
-		return new WizardType();
+	public boolean removeLocation(String string) {
+		Iterator<String> iter = locations.iterator();
+		while (iter.hasNext()) {
+			if (iter.next().split(",")[0].equalsIgnoreCase(string)) {
+				iter.remove();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -244,21 +241,24 @@ public class Wizard extends CitizensNPC {
 		root.setString("mob", mob.name());
 	}
 
-	@Override
-	public void load(DataKey root) {
-		unlimitedMana = root.getBoolean("unlimited-mana");
-		time = root.getString("time", "morning");
-		mode = (root.keyExists("mode") && WizardMode.parse(root
-				.getString("mode")) != null) ? WizardMode.parse(root
-				.getString("mode")) : WizardMode.TELEPORT;
-		mana = root.getInt("mana", 10);
-		locations.clear();
-		for (String location : splitter.split(root.getString("locations"))) {
-			locations.add(location.replace("(", "").replace(")", ""));
-		}
-		mob = (CreatureType.fromName(root.getString("mob")) != null) ? CreatureType
-				.fromName(root.getString("mob")) : CreatureType.CREEPER;
-		mobIndex = mob.ordinal();
+	// Set the mana of a wizard NPC
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
+
+	// Set the mode of a wizard
+	public void setMode(WizardMode mode) {
+		this.mode = mode;
+	}
+
+	// Set the time setting for a wizard
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	// Set whether a wizard has unlimited mana
+	public void setUnlimitedMana(boolean unlimitedMana) {
+		this.unlimitedMana = unlimitedMana;
 	}
 
 	private static final Splitter splitter = Splitter.on(":")

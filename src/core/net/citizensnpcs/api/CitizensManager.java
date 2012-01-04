@@ -8,18 +8,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class CitizensManager {
-	// TODO: make this into an interface
-	/**
-	 * Gets an NPC from a UID.
-	 * 
-	 * @param UID
-	 *            UID of an NPC
-	 * @return NPC with the given ID, null if an NPC wasn't found
-	 */
-	public static HumanNPC getNPC(int UID) {
-		return NPCManager.get(UID);
-	}
-
 	/**
 	 * Gets an NPC from an entity.
 	 * 
@@ -31,15 +19,16 @@ public class CitizensManager {
 		return NPCManager.get(entity);
 	}
 
+	// TODO: make this into an interface
 	/**
-	 * Checks if a given entity is an npc.
+	 * Gets an NPC from a UID.
 	 * 
-	 * @param entity
-	 *            Bukkit Entity
-	 * @return true if the entity is an NPC
+	 * @param UID
+	 *            UID of an NPC
+	 * @return NPC with the given ID, null if an NPC wasn't found
 	 */
-	public static boolean isNPC(Entity entity) {
-		return NPCManager.isNPC(entity);
+	public static HumanNPC getNPC(int UID) {
+		return NPCManager.get(UID);
 	}
 
 	/**
@@ -61,6 +50,17 @@ public class CitizensManager {
 	 */
 	public static int getSelected(Player player) {
 		return NPCDataManager.getSelected(player);
+	}
+
+	/**
+	 * Checks if a given entity is an npc.
+	 * 
+	 * @param entity
+	 *            Bukkit Entity
+	 * @return true if the entity is an NPC
+	 */
+	public static boolean isNPC(Entity entity) {
+		return NPCManager.isNPC(entity);
 	}
 
 	/**

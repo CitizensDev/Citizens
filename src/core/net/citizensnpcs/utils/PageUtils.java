@@ -6,10 +6,6 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 public class PageUtils {
-	public static PageInstance newInstance(CommandSender sender) {
-		return new PageInstance(sender);
-	}
-
 	public static class PageInstance {
 		private String header = "";
 		private final List<String> lines = new ArrayList<String>();
@@ -22,16 +18,27 @@ public class PageUtils {
 			this.sender = sender;
 		}
 
+		private String colour(String line) {
+			return StringUtils.colourise(line);
+		}
+
+		public int currentPage() {
+			return this.currentPage;
+		}
+
+		public void displayNext() {
+			if (currentPage <= maxPages()) {
+				++currentPage;
+				process(currentPage);
+			}
+		}
+
+		public int elements() {
+			return lines.size();
+		}
+
 		public void header(String header) {
 			this.header = colour(header);
-		}
-
-		public void push(String line) {
-			lines.add(line);
-		}
-
-		public void setSmoothTransition(boolean smooth) {
-			this.smoothTransition = smooth;
 		}
 
 		public int maxPages() {
@@ -61,27 +68,20 @@ public class PageUtils {
 			}
 		}
 
-		public void displayNext() {
-			if (currentPage <= maxPages()) {
-				++currentPage;
-				process(currentPage);
-			}
-		}
-
-		public int currentPage() {
-			return this.currentPage;
+		public void push(String line) {
+			lines.add(line);
 		}
 
 		private void send(String line) {
 			Messaging.send(sender, line);
 		}
 
-		private String colour(String line) {
-			return StringUtils.colourise(line);
+		public void setSmoothTransition(boolean smooth) {
+			this.smoothTransition = smooth;
 		}
+	}
 
-		public int elements() {
-			return lines.size();
-		}
+	public static PageInstance newInstance(CommandSender sender) {
+		return new PageInstance(sender);
 	}
 }

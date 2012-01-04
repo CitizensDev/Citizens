@@ -11,44 +11,6 @@ import org.bukkit.plugin.Plugin;
  */
 public interface Method {
 	/**
-	 * Encodes the Plugin into an Object disguised as the Plugin. If you want
-	 * the original Plugin Class you must cast it to the correct Plugin, to do
-	 * so you have to verify the name and or version then cast.
-	 * 
-	 * <pre>
-	 *  if(method.getName().equalsIgnoreCase("iConomy"))
-	 *   iConomy plugin = ((iConomy)method.getPlugin());
-	 * </pre>
-	 * 
-	 * @return <code>Object</code>
-	 * @see #getName()
-	 * @see #getVersion()
-	 */
-	public Object getPlugin();
-
-	/**
-	 * Returns the actual name of this method.
-	 * 
-	 * @return <code>String</code> Plugin name.
-	 */
-	public String getName();
-
-	/**
-	 * Returns the actual version of this method.
-	 * 
-	 * @return <code>String</code> Plugin version.
-	 */
-	public String getVersion();
-
-	/**
-	 * Returns the amount of decimal places that get stored NOTE: it will return
-	 * -1 if there is no rounding
-	 * 
-	 * @return <code>int</code> for each decimal place
-	 */
-	public int fractionalDigits();
-
-	/**
 	 * Formats amounts into this payment methods style of currency display.
 	 * 
 	 * @param amount
@@ -58,42 +20,12 @@ public interface Method {
 	public String format(double amount);
 
 	/**
-	 * Allows the verification of bank API existence in this payment method.
+	 * Returns the amount of decimal places that get stored NOTE: it will return
+	 * -1 if there is no rounding
 	 * 
-	 * @return <code>boolean</code>
+	 * @return <code>int</code> for each decimal place
 	 */
-	public boolean hasBanks();
-
-	/**
-	 * Determines the existence of a bank via name.
-	 * 
-	 * @param bank
-	 *            Bank name
-	 * @return <code>boolean</code>
-	 * @see #hasBanks
-	 */
-	public boolean hasBank(String bank);
-
-	/**
-	 * Determines the existence of an account via name.
-	 * 
-	 * @param name
-	 *            Account name
-	 * @return <code>boolean</code>
-	 */
-	public boolean hasAccount(String name);
-
-	/**
-	 * Check to see if an account <code>name</code> is tied to a
-	 * <code>bank</code>.
-	 * 
-	 * @param bank
-	 *            Bank name
-	 * @param name
-	 *            Account name
-	 * @return <code>boolean</code>
-	 */
-	public boolean hasBankAccount(String bank, String name);
+	public int fractionalDigits();
 
 	/**
 	 * Returns a <code>MethodAccount</code> class for an account
@@ -118,6 +50,74 @@ public interface Method {
 	public MethodBankAccount getBankAccount(String bank, String name);
 
 	/**
+	 * Returns the actual name of this method.
+	 * 
+	 * @return <code>String</code> Plugin name.
+	 */
+	public String getName();
+
+	/**
+	 * Encodes the Plugin into an Object disguised as the Plugin. If you want
+	 * the original Plugin Class you must cast it to the correct Plugin, to do
+	 * so you have to verify the name and or version then cast.
+	 * 
+	 * <pre>
+	 *  if(method.getName().equalsIgnoreCase("iConomy"))
+	 *   iConomy plugin = ((iConomy)method.getPlugin());
+	 * </pre>
+	 * 
+	 * @return <code>Object</code>
+	 * @see #getName()
+	 * @see #getVersion()
+	 */
+	public Object getPlugin();
+
+	/**
+	 * Returns the actual version of this method.
+	 * 
+	 * @return <code>String</code> Plugin version.
+	 */
+	public String getVersion();
+
+	/**
+	 * Determines the existence of an account via name.
+	 * 
+	 * @param name
+	 *            Account name
+	 * @return <code>boolean</code>
+	 */
+	public boolean hasAccount(String name);
+
+	/**
+	 * Determines the existence of a bank via name.
+	 * 
+	 * @param bank
+	 *            Bank name
+	 * @return <code>boolean</code>
+	 * @see #hasBanks
+	 */
+	public boolean hasBank(String bank);
+
+	/**
+	 * Check to see if an account <code>name</code> is tied to a
+	 * <code>bank</code>.
+	 * 
+	 * @param bank
+	 *            Bank name
+	 * @param name
+	 *            Account name
+	 * @return <code>boolean</code>
+	 */
+	public boolean hasBankAccount(String bank, String name);
+
+	/**
+	 * Allows the verification of bank API existence in this payment method.
+	 * 
+	 * @return <code>boolean</code>
+	 */
+	public boolean hasBanks();
+
+	/**
 	 * Checks to verify the compatibility between this Method and a plugin.
 	 * Internal usage only, for the most part.
 	 * 
@@ -139,15 +139,9 @@ public interface Method {
 	 * Contains Calculator and Balance functions for Accounts.
 	 */
 	public interface MethodAccount {
-		public double balance();
-
-		public boolean set(double amount);
-
 		public boolean add(double amount);
 
-		public boolean subtract(double amount);
-
-		public boolean multiply(double amount);
+		public double balance();
 
 		public boolean divide(double amount);
 
@@ -159,7 +153,13 @@ public interface Method {
 
 		public boolean isNegative();
 
+		public boolean multiply(double amount);
+
 		public boolean remove();
+
+		public boolean set(double amount);
+
+		public boolean subtract(double amount);
 
 		@Override
 		public String toString();
@@ -169,21 +169,15 @@ public interface Method {
 	 * Contains Calculator and Balance functions for Bank Accounts.
 	 */
 	public interface MethodBankAccount {
+		public boolean add(double amount);
+
 		public double balance();
 
-		public String getBankName();
+		public boolean divide(double amount);
 
 		public int getBankId();
 
-		public boolean set(double amount);
-
-		public boolean add(double amount);
-
-		public boolean subtract(double amount);
-
-		public boolean multiply(double amount);
-
-		public boolean divide(double amount);
+		public String getBankName();
 
 		public boolean hasEnough(double amount);
 
@@ -193,7 +187,13 @@ public interface Method {
 
 		public boolean isNegative();
 
+		public boolean multiply(double amount);
+
 		public boolean remove();
+
+		public boolean set(double amount);
+
+		public boolean subtract(double amount);
 
 		@Override
 		public String toString();

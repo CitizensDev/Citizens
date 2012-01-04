@@ -28,33 +28,39 @@ import org.bukkit.entity.Player;
 
 public class ToggleCommands extends CommandHandler {
 
-	@Command(
-			aliases = { "toggle", "tog", "t" },
-			usage = "list (page)",
-			desc = "view list of toggles",
-			modifiers = { "list", "help" },
-			min = 1,
-			max = 2)
-	@ServerCommand()
-	@CommandPermissions("toggle.help")
-	@CommandRequirements()
-	public static void toggleHelp(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		PageInstance instance = PageUtils.newInstance(sender);
-		int page = 1;
-		if (args.argsLength() == 2) {
-			page = args.getInteger(1);
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("toggle.help");
+		PermissionManager.addPermission("toggle.all");
+		for (String type : Citizens.loadedTypes) {
+			PermissionManager.addPermission("toggle." + type);
 		}
-		instance.header(ChatColor.YELLOW
-				+ StringUtils.listify(ChatColor.GREEN
-						+ "NPC Toggle List <%x/%y>" + ChatColor.YELLOW));
-		for (String type : NPCTypeManager.getTypes().keySet()) {
-			instance.push(ChatColor.GREEN
-					+ "    - "
-					+ StringUtils.wrap(StringUtils.capitalise(type
-							.toLowerCase())));
+	}
+
+	// Buys an NPC state.
+	private static void buyState(Player player, HumanNPC npc,
+			CitizensNPCType type) {
+		String toggle = type.getName();
+		if (!PermissionManager.hasPermission(player, "citizens.toggle."
+				+ toggle)) {
+			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
+			return;
 		}
-		instance.process(page);
+		if (Economy.hasEnough(player,
+				UtilityProperties.getPrice(toggle + ".creation"))) {
+			double paid = Economy.pay(player,
+					UtilityProperties.getPrice(toggle + ".creation"));
+			if (paid > 0) {
+				Messaging.send(
+						player,
+						MessageUtils.getPaidMessage(player, toggle, toggle
+								+ ".creation", npc.getName(), true));
+			}
+			toggleState(player, npc, type.getName());
+		} else {
+			Messaging.send(player, npc, MessageUtils.getNoMoneyMessage(player,
+					toggle + ".creation"));
+		}
 	}
 
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
@@ -96,47 +102,6 @@ public class ToggleCommands extends CommandHandler {
 		}
 	}
 
-	// Toggles an NPC state.
-	private static void toggleState(Player player, HumanNPC npc, String type) {
-		if (!npc.isType(type)) {
-			npc.addType(type);
-			player.sendMessage(StringUtils.wrap(npc.getName()) + " is now a "
-					+ type + "!");
-		} else {
-			npc.removeType(type);
-			player.sendMessage(StringUtils.wrap(npc.getName())
-					+ " has stopped being a " + type + ".");
-		}
-		Bukkit.getServer().getPluginManager()
-				.callEvent(new NPCToggleTypeEvent(npc, type, npc.isType(type)));
-	}
-
-	// Buys an NPC state.
-	private static void buyState(Player player, HumanNPC npc,
-			CitizensNPCType type) {
-		String toggle = type.getName();
-		if (!PermissionManager.hasPermission(player, "citizens.toggle."
-				+ toggle)) {
-			Messaging.send(player, npc, MessageUtils.noPermissionsMessage);
-			return;
-		}
-		if (Economy.hasEnough(player,
-				UtilityProperties.getPrice(toggle + ".creation"))) {
-			double paid = Economy.pay(player,
-					UtilityProperties.getPrice(toggle + ".creation"));
-			if (paid > 0) {
-				Messaging.send(
-						player,
-						MessageUtils.getPaidMessage(player, toggle, toggle
-								+ ".creation", npc.getName(), true));
-			}
-			toggleState(player, npc, type.getName());
-		} else {
-			Messaging.send(player, npc, MessageUtils.getNoMoneyMessage(player,
-					toggle + ".creation"));
-		}
-	}
-
 	// Toggles all types of NPCs
 	private static void toggleAll(Player player, HumanNPC npc, boolean on) {
 		if (on) {
@@ -152,12 +117,47 @@ public class ToggleCommands extends CommandHandler {
 		}
 	}
 
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("toggle.help");
-		PermissionManager.addPermission("toggle.all");
-		for (String type : Citizens.loadedTypes) {
-			PermissionManager.addPermission("toggle." + type);
+	@Command(
+			aliases = { "toggle", "tog", "t" },
+			usage = "list (page)",
+			desc = "view list of toggles",
+			modifiers = { "list", "help" },
+			min = 1,
+			max = 2)
+	@ServerCommand()
+	@CommandPermissions("toggle.help")
+	@CommandRequirements()
+	public static void toggleHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		PageInstance instance = PageUtils.newInstance(sender);
+		int page = 1;
+		if (args.argsLength() == 2) {
+			page = args.getInteger(1);
 		}
+		instance.header(ChatColor.YELLOW
+				+ StringUtils.listify(ChatColor.GREEN
+						+ "NPC Toggle List <%x/%y>" + ChatColor.YELLOW));
+		for (String type : NPCTypeManager.getTypes().keySet()) {
+			instance.push(ChatColor.GREEN
+					+ "    - "
+					+ StringUtils.wrap(StringUtils.capitalise(type
+							.toLowerCase())));
+		}
+		instance.process(page);
+	}
+
+	// Toggles an NPC state.
+	private static void toggleState(Player player, HumanNPC npc, String type) {
+		if (!npc.isType(type)) {
+			npc.addType(type);
+			player.sendMessage(StringUtils.wrap(npc.getName()) + " is now a "
+					+ type + "!");
+		} else {
+			npc.removeType(type);
+			player.sendMessage(StringUtils.wrap(npc.getName())
+					+ " has stopped being a " + type + ".");
+		}
+		Bukkit.getServer().getPluginManager()
+				.callEvent(new NPCToggleTypeEvent(npc, type, npc.isType(type)));
 	}
 }

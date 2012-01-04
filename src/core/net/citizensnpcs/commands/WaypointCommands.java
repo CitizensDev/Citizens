@@ -22,36 +22,12 @@ import org.bukkit.entity.Player;
 @CommandRequirements()
 public class WaypointCommands extends CommandHandler {
 
-	@Command(
-			aliases = { "wp", "waypoint" },
-			usage = "modifier [type]",
-			desc = "add a modifier",
-			modifiers = { "modifier", "mod" },
-			min = 2,
-			max = 2)
-	public static void modifier(CommandContext args, Player player, HumanNPC npc) {
-		if (!NPCDataManager.pathEditors.containsKey(player)) {
-			player.sendMessage(ChatColor.GRAY
-					+ "You must be editing your NPC's path.");
-			return;
+	@Override
+	public void addPermissions() {
+		for (WaypointModifierType modifier : WaypointModifierType.values()) {
+			PermissionManager.addPermission("citizens.waypoints.modifier."
+					+ modifier.name().toLowerCase());
 		}
-		WaypointModifierType modifier = WaypointModifierType.value(args
-				.getString(1).toUpperCase());
-		if (modifier == null) {
-			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
-			return;
-		}
-		if (!PermissionManager.hasPermission(player,
-				"citizens.waypoints.modifier." + modifier.name().toLowerCase())) {
-			player.sendMessage(MessageUtils.noPermissionsMessage);
-			return;
-		}
-		player.sendMessage(ChatColor.AQUA
-				+ StringUtils.listify(StringUtils.wrap(StringUtils
-						.capitalise(modifier.name().toLowerCase()))
-						+ " chat editor" + ChatColor.AQUA));
-		Waypoint waypoint = npc.getWaypoints().getLast();
-		ConversationUtils.addConverser(player, modifier.create(waypoint));
 	}
 
 	@Command(
@@ -70,28 +46,6 @@ public class WaypointCommands extends CommandHandler {
 		HelpUtils.format(player, "waypoint", "restart",
 				"moves an NPC to the beginning of their path");
 		HelpUtils.footer(player);
-	}
-
-	@Command(
-			aliases = { "wp", "waypoint" },
-			usage = "restart",
-			desc = "moves npc to the beginning of their waypoint",
-			modifiers = { "restart" },
-			min = 1,
-			max = 1)
-	@CommandPermissions("waypoints.modify.restart")
-	@CommandRequirements(requireOwnership = true, requireSelected = true)
-	public static void resetPath(CommandContext args, Player player,
-			HumanNPC npc) {
-		if (npc.getWaypoints().size() == 0) {
-			player.sendMessage(ChatColor.GRAY + "NPC has no waypoints.");
-			return;
-		}
-		npc.teleport(npc.getWaypoints().get(0).getLocation());
-		npc.getWaypoints().setIndex(0);
-		player.sendMessage(StringUtils.wrap(npc.getName())
-				+ " has restarted their path.");
-
 	}
 
 	@Command(
@@ -123,11 +77,54 @@ public class WaypointCommands extends CommandHandler {
 		instance.process(page);
 	}
 
-	@Override
-	public void addPermissions() {
-		for (WaypointModifierType modifier : WaypointModifierType.values()) {
-			PermissionManager.addPermission("citizens.waypoints.modifier."
-					+ modifier.name().toLowerCase());
+	@Command(
+			aliases = { "wp", "waypoint" },
+			usage = "modifier [type]",
+			desc = "add a modifier",
+			modifiers = { "modifier", "mod" },
+			min = 2,
+			max = 2)
+	public static void modifier(CommandContext args, Player player, HumanNPC npc) {
+		if (!NPCDataManager.pathEditors.containsKey(player.getName())) {
+			player.sendMessage(ChatColor.GRAY
+					+ "You must be editing your NPC's path.");
+			return;
 		}
+		WaypointModifierType modifier = WaypointModifierType.value(args
+				.getString(1).toUpperCase());
+		if (modifier == null) {
+			player.sendMessage(ChatColor.GRAY + "Invalid modifier type.");
+			return;
+		}
+		if (!PermissionManager.hasPermission(player,
+				"citizens.waypoints.modifier." + modifier.name().toLowerCase())) {
+			player.sendMessage(MessageUtils.noPermissionsMessage);
+			return;
+		}
+		player.sendMessage(ChatColor.AQUA
+				+ StringUtils.listify(StringUtils.wrap(StringUtils
+						.capitalise(modifier.name().toLowerCase()))
+						+ " chat editor" + ChatColor.AQUA));
+
+		Waypoint waypoint = NPCDataManager.pathEditors.get(player.getName())
+				.getWaypointForModifier();
+		ConversationUtils.addConverser(player, modifier.create(waypoint));
+	}
+
+	@Command(
+			aliases = { "wp", "waypoint" },
+			usage = "restart",
+			desc = "moves npc to the beginning of their waypoint",
+			modifiers = { "restart" },
+			min = 1,
+			max = 1)
+	@CommandPermissions("waypoints.modify.restart")
+	@CommandRequirements(requireOwnership = true, requireSelected = true)
+	public static void resetPath(CommandContext args, Player player,
+			HumanNPC npc) {
+		npc.getWaypoints().restart();
+		player.sendMessage(StringUtils.wrap(npc.getName())
+				+ " has restarted their path.");
+
 	}
 }

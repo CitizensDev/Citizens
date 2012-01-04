@@ -17,48 +17,13 @@ public class MCUR implements Method {
 	private Currency currencyList;
 
 	@Override
-	public Object getPlugin() {
-		return this.currencyList;
-	}
-
-	@Override
-	public String getName() {
-		return "MultiCurrency";
-	}
-
-	@Override
-	public String getVersion() {
-		return "0.09";
-	}
-
-	@Override
-	public int fractionalDigits() {
-		return -1;
-	}
-
-	@Override
 	public String format(double amount) {
 		return amount + " Currency";
 	}
 
 	@Override
-	public boolean hasBanks() {
-		return false;
-	}
-
-	@Override
-	public boolean hasBank(String bank) {
-		return false;
-	}
-
-	@Override
-	public boolean hasAccount(String name) {
-		return true;
-	}
-
-	@Override
-	public boolean hasBankAccount(String bank, String name) {
-		return false;
+	public int fractionalDigits() {
+		return -1;
 	}
 
 	@Override
@@ -69,6 +34,41 @@ public class MCUR implements Method {
 	@Override
 	public MethodBankAccount getBankAccount(String bank, String name) {
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return "MultiCurrency";
+	}
+
+	@Override
+	public Object getPlugin() {
+		return this.currencyList;
+	}
+
+	@Override
+	public String getVersion() {
+		return "0.09";
+	}
+
+	@Override
+	public boolean hasAccount(String name) {
+		return true;
+	}
+
+	@Override
+	public boolean hasBank(String bank) {
+		return false;
+	}
+
+	@Override
+	public boolean hasBankAccount(String bank, String name) {
+		return false;
+	}
+
+	@Override
+	public boolean hasBanks() {
+		return false;
 	}
 
 	@Override
@@ -91,31 +91,14 @@ public class MCUR implements Method {
 		}
 
 		@Override
-		public double balance() {
-			return CurrencyList.getValue(
-					(String) CurrencyList.maxCurrency(name)[0], name);
-		}
-
-		@Override
-		public boolean set(double amount) {
-			CurrencyList.setValue((String) CurrencyList.maxCurrency(name)[0],
-					name, amount);
-			return true;
-		}
-
-		@Override
 		public boolean add(double amount) {
 			return CurrencyList.add(name, amount);
 		}
 
 		@Override
-		public boolean subtract(double amount) {
-			return CurrencyList.subtract(name, amount);
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			return CurrencyList.multiply(name, amount);
+		public double balance() {
+			return CurrencyList.getValue(
+					(String) CurrencyList.maxCurrency(name)[0], name);
 		}
 
 		@Override
@@ -144,8 +127,25 @@ public class MCUR implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			return CurrencyList.multiply(name, amount);
+		}
+
+		@Override
 		public boolean remove() {
 			return CurrencyList.remove(name);
+		}
+
+		@Override
+		public boolean set(double amount) {
+			CurrencyList.setValue((String) CurrencyList.maxCurrency(name)[0],
+					name, amount);
+			return true;
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			return CurrencyList.subtract(name, amount);
 		}
 	}
 }

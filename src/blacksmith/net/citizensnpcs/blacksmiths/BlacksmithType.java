@@ -12,18 +12,13 @@ import net.citizensnpcs.properties.Setting;
 public class BlacksmithType extends CitizensNPCType {
 
 	@Override
-	public String getName() {
-		return "blacksmith";
-	}
-
-	@Override
 	public CommandHandler getCommands() {
 		return BlacksmithCommands.INSTANCE;
 	}
 
 	@Override
-	public CitizensNPC newInstance() {
-		return new Blacksmith();
+	public String getName() {
+		return "blacksmith";
 	}
 
 	@Override
@@ -52,5 +47,10 @@ public class BlacksmithType extends CitizensNPCType {
 		nodes.add(new Setting("", SettingsType.GENERAL,
 				"economy.prices.blacksmith.toolrepair.misc", 0.50));
 		return nodes;
+	}
+
+	@Override
+	public CitizensNPC newInstance() {
+		return new Blacksmith();
 	}
 }

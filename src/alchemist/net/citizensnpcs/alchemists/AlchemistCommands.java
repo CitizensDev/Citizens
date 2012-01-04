@@ -27,9 +27,72 @@ import org.bukkit.entity.Player;
 		requireOwnership = true,
 		requiredType = "alchemist")
 public class AlchemistCommands extends CommandHandler {
+	private AlchemistCommands() {
+	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("alchemist.use.help");
+		PermissionManager.addPermission("alchemist.use.recipes.select");
+		PermissionManager.addPermission("alchemist.use.recipes.view");
+		PermissionManager.addPermission("alchemist.modify.recipes");
+		PermissionManager.addPermission("alchemist.use.interact");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender) {
+		HelpUtils.header(sender, "Alchemist", 1, 1);
+		HelpUtils.format(sender, "alchemist", "recipes",
+				"view all of an alchemist's recipes");
+		HelpUtils.format(sender, "alchemist", "select [itemID]",
+				"select a recipe");
+		HelpUtils.format(sender, "alchemist", "view (page)",
+				"view an alchemist's selected recipe");
+		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
+				"add a recipe to an alchemist");
+		HelpUtils.footer(sender);
+	}
+
 	public static final AlchemistCommands INSTANCE = new AlchemistCommands();
 
-	private AlchemistCommands() {
+	@Command(
+			aliases = { "alchemist", "alch" },
+			usage = "add [itemID] [itemID(:amt),]",
+			desc = "add a custom recipe to an alchemist",
+			modifiers = "add",
+			min = 3,
+			max = 3)
+	@CommandPermissions("alchemist.modify.recipes.add")
+	public static void add(CommandContext args, Player player, HumanNPC npc) {
+		if (!AlchemistManager.checkValidID(player, args.getString(1))) {
+			return;
+		}
+		int itemID = args.getInteger(1);
+		Alchemist alchemist = npc.getType("alchemist");
+		String recipe = args.getString(2);
+		String[] items = recipe.split(",");
+		for (String item : items) {
+			String[] split = item.split(":");
+			switch (split.length) {
+			case 1:
+				if (Material.getMaterial(StringUtils.parse(split[0])) == null) {
+					Messaging.sendError(player,
+							MessageUtils.invalidItemIDMessage);
+				}
+				break;
+			case 2:
+				if (!StringUtils.isNumber(split[1])) {
+					Messaging.sendError(player,
+							"The amount specified is not a proper number.");
+				}
+				break;
+			}
+		}
+		alchemist.addRecipe(itemID, recipe);
+		alchemist.setCurrentRecipeID(itemID);
+		player.sendMessage(StringUtils.wrap(npc.getName())
+				+ " has changed the recipe for "
+				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}
 
 	@CommandRequirements()
@@ -93,67 +156,6 @@ public class AlchemistCommands extends CommandHandler {
 	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
 	@Command(
 			aliases = { "alchemist", "alch" },
-			usage = "view (page)",
-			desc = "view the selected alchemist recipe",
-			modifiers = "view",
-			min = 1,
-			max = 2)
-	@CommandPermissions("alchemist.use.recipes.view")
-	public static void view(CommandContext args, Player player, HumanNPC npc) {
-		int page = 1;
-		if (args.argsLength() == 2) {
-			if (!StringUtils.isNumber(args.getString(1))) {
-				Messaging.sendError(player, "That is not a valid number.");
-				return;
-			}
-			page = args.getInteger(1);
-		}
-		AlchemistManager.sendRecipeMessage(player, npc, page);
-	}
-
-	@Command(
-			aliases = { "alchemist", "alch" },
-			usage = "add [itemID] [itemID(:amt),]",
-			desc = "add a custom recipe to an alchemist",
-			modifiers = "add",
-			min = 3,
-			max = 3)
-	@CommandPermissions("alchemist.modify.recipes.add")
-	public static void add(CommandContext args, Player player, HumanNPC npc) {
-		if (!AlchemistManager.checkValidID(player, args.getString(1))) {
-			return;
-		}
-		int itemID = args.getInteger(1);
-		Alchemist alchemist = npc.getType("alchemist");
-		String recipe = args.getString(2);
-		String[] items = recipe.split(",");
-		for (String item : items) {
-			String[] split = item.split(":");
-			switch (split.length) {
-			case 1:
-				if (Material.getMaterial(StringUtils.parse(split[0])) == null) {
-					Messaging.sendError(player,
-							MessageUtils.invalidItemIDMessage);
-				}
-				break;
-			case 2:
-				if (!StringUtils.isNumber(split[1])) {
-					Messaging.sendError(player,
-							"The amount specified is not a proper number.");
-				}
-				break;
-			}
-		}
-		alchemist.addRecipe(itemID, recipe);
-		alchemist.setCurrentRecipeID(itemID);
-		player.sendMessage(StringUtils.wrap(npc.getName())
-				+ " has changed the recipe for "
-				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
-	}
-
-	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
-	@Command(
-			aliases = { "alchemist", "alch" },
 			usage = "select [itemID]",
 			desc = "select a recipe",
 			modifiers = "select",
@@ -177,26 +179,24 @@ public class AlchemistCommands extends CommandHandler {
 				+ StringUtils.wrap(MessageUtils.getMaterialName(itemID)) + ".");
 	}
 
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("alchemist.use.help");
-		PermissionManager.addPermission("alchemist.use.recipes.select");
-		PermissionManager.addPermission("alchemist.use.recipes.view");
-		PermissionManager.addPermission("alchemist.modify.recipes");
-		PermissionManager.addPermission("alchemist.use.interact");
-	}
-
-	@Override
-	public void sendHelpPage(CommandSender sender) {
-		HelpUtils.header(sender, "Alchemist", 1, 1);
-		HelpUtils.format(sender, "alchemist", "recipes",
-				"view all of an alchemist's recipes");
-		HelpUtils.format(sender, "alchemist", "select [itemID]",
-				"select a recipe");
-		HelpUtils.format(sender, "alchemist", "view (page)",
-				"view an alchemist's selected recipe");
-		HelpUtils.format(sender, "alchemist", "add [itemID] [itemID(:amt),]",
-				"add a recipe to an alchemist");
-		HelpUtils.footer(sender);
+	@CommandRequirements(requireSelected = true, requiredType = "alchemist")
+	@Command(
+			aliases = { "alchemist", "alch" },
+			usage = "view (page)",
+			desc = "view the selected alchemist recipe",
+			modifiers = "view",
+			min = 1,
+			max = 2)
+	@CommandPermissions("alchemist.use.recipes.view")
+	public static void view(CommandContext args, Player player, HumanNPC npc) {
+		int page = 1;
+		if (args.argsLength() == 2) {
+			if (!StringUtils.isNumber(args.getString(1))) {
+				Messaging.sendError(player, "That is not a valid number.");
+				return;
+			}
+			page = args.getInteger(1);
+		}
+		AlchemistManager.sendRecipeMessage(player, npc, page);
 	}
 }

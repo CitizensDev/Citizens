@@ -29,6 +29,24 @@ public class DatabaseStorage implements DataSource {
 		this.connect();
 	}
 
+	public boolean columnExists(String table, String column) {
+		if (aliases.containsKey(table))
+			table = aliases.get(table);
+		try {
+			this.ensureConnection();
+			DatabaseMetaData meta = connection.getMetaData();
+			ResultSet rs = meta.getColumns(null, null, table, column);
+			return rs.next();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	private void connect() throws SQLException {
+		this.connection = DriverManager.getConnection(info.url, info.username,
+				info.password);
+	}
+
 	private void ensureConnection() throws SQLException {
 		if (this.connection.getClass().getName().startsWith("org.sqlite"))
 			return;
@@ -39,9 +57,28 @@ public class DatabaseStorage implements DataSource {
 		}
 	}
 
-	private void connect() throws SQLException {
-		this.connection = DriverManager.getConnection(info.url, info.username,
-				info.password);
+	@Override
+	public DataKey getKey(String root) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void load() {
+	}
+
+	public void performSQL(String sql) throws SQLException {
+		this.connection.prepareStatement(sql).execute();
+	}
+
+	@Override
+	public void save() {
+		try {
+			this.ensureConnection();
+			this.connection.commit();
+		} catch (SQLException ex) {
+			Messaging.log("Unable to save database, error: " + ex.getMessage());
+		}
 	}
 
 	public boolean tableExists(String table) {
@@ -57,49 +94,13 @@ public class DatabaseStorage implements DataSource {
 		}
 	}
 
-	public boolean columnExists(String table, String column) {
-		if (aliases.containsKey(table))
-			table = aliases.get(table);
-		try {
-			this.ensureConnection();
-			DatabaseMetaData meta = connection.getMetaData();
-			ResultSet rs = meta.getColumns(null, null, table, column);
-			return rs.next();
-		} catch (SQLException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
+	private static final Set<String> loadedDrivers = Sets.newHashSet();
 
-	public void performSQL(String sql) throws SQLException {
-		this.connection.prepareStatement(sql).execute();
-	}
-
-	@Override
-	public DataKey getKey(String root) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void load() {
-	}
-
-	@Override
-	public void save() {
-		try {
-			this.ensureConnection();
-			this.connection.commit();
-		} catch (SQLException ex) {
-			Messaging.log("Unable to save database, error: " + ex.getMessage());
-		}
-	}
+	private static final Map<String, String> aliases = Maps.newHashMap();
 
 	public static void registerTableAlias(String alias, String table) {
 		if (alias == null || table == null)
 			throw new IllegalArgumentException("arguments can't be null");
 		aliases.put(alias, table);
 	}
-
-	private static final Set<String> loadedDrivers = Sets.newHashSet();
-	private static final Map<String, String> aliases = Maps.newHashMap();
 }

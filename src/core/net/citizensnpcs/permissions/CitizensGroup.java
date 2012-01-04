@@ -15,23 +15,23 @@ public class CitizensGroup {
 		this.name = name;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public Set<String> getMembers() {
-		return this.members;
-	}
-
-	public void addMember(String member) {
-		this.members.add(member);
+	public void addAllMembers(Collection<String> other) {
+		this.members.addAll(other);
 	}
 
 	public void addMember(Player player) {
 		this.members.add(player.getName());
 	}
 
-	public void addAllMembers(Collection<String> other) {
-		this.members.addAll(other);
+	public void addMember(String member) {
+		this.members.add(member);
+	}
+
+	public Set<String> getMembers() {
+		return this.members;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 }

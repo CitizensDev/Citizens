@@ -23,18 +23,6 @@ public class Alchemist extends CitizensNPC {
 	private Map<Integer, String> recipes = new HashMap<Integer, String>();
 	private int currentRecipeID = 0;
 
-	public Map<Integer, String> getRecipes() {
-		return recipes;
-	}
-
-	public void setRecipes(Map<Integer, String> recipes) {
-		this.recipes = recipes;
-	}
-
-	public String getRecipe(int itemID) {
-		return recipes.get(itemID);
-	}
-
 	public void addRecipe(int itemID, String recipe) {
 		this.recipes.put(itemID, recipe);
 	}
@@ -43,8 +31,27 @@ public class Alchemist extends CitizensNPC {
 		return this.currentRecipeID;
 	}
 
-	public void setCurrentRecipeID(int currentRecipeID) {
-		this.currentRecipeID = currentRecipeID;
+	public String getRecipe(int itemID) {
+		return recipes.get(itemID);
+	}
+
+	public Map<Integer, String> getRecipes() {
+		return recipes;
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new AlchemistType();
+	}
+
+	@Override
+	public void load(DataKey root) {
+		currentRecipeID = root.getInt("recipes.current", 0);
+		recipes.clear();
+		root = root.getRelative("recipes");
+		for (DataKey key : root.getIntegerSubKeys()) {
+			recipes.put(Integer.parseInt(key.name()), key.getString(""));
+		}
 	}
 
 	@Override
@@ -78,11 +85,6 @@ public class Alchemist extends CitizensNPC {
 	}
 
 	@Override
-	public CitizensNPCType getType() {
-		return new AlchemistType();
-	}
-
-	@Override
 	public void save(DataKey root) {
 		root.setInt("recipes.current", currentRecipeID);
 		root = root.getRelative("recipes");
@@ -91,13 +93,11 @@ public class Alchemist extends CitizensNPC {
 		}
 	}
 
-	@Override
-	public void load(DataKey root) {
-		currentRecipeID = root.getInt("recipes.current", 0);
-		recipes.clear();
-		root = root.getRelative("recipes");
-		for (DataKey key : root.getIntegerSubKeys()) {
-			recipes.put(Integer.parseInt(key.name()), key.getString(""));
-		}
+	public void setCurrentRecipeID(int currentRecipeID) {
+		this.currentRecipeID = currentRecipeID;
+	}
+
+	public void setRecipes(Map<Integer, String> recipes) {
+		this.recipes = recipes;
 	}
 }

@@ -16,12 +16,24 @@ public class PermissionsBukkitProvider implements PermissionsProvider {
 	}
 
 	@Override
-	public boolean inGroup(Player player, String group) {
-		if (provider.getGroup(group) == null
-				|| provider.getPlayerInfo(player.getName()) == null)
-			return false;
-		return provider.getPlayerInfo(player.getName()).getGroups()
-				.contains(provider.getGroup(group));
+	public CitizensGroup getGroup(String group) {
+		return provider.getGroup(group) == null ? null : new CitizensGroup(
+				provider.getGroup(group).getName());
+	}
+
+	@Override
+	public Set<CitizensGroup> getGroups(Player player) {
+		if (provider.getPlayerInfo(player.getName()) != null) {
+			Set<CitizensGroup> groups = Sets.newHashSet();
+			for (com.platymuus.bukkit.permissions.Group group : provider
+					.getPlayerInfo(player.getName()).getGroups()) {
+				CitizensGroup temp = new CitizensGroup(group.getName());
+				temp.addAllMembers(group.getPlayers());
+				groups.add(temp);
+			}
+			return groups;
+		}
+		return null;
 	}
 
 	@Override
@@ -44,35 +56,23 @@ public class PermissionsBukkitProvider implements PermissionsProvider {
 	}
 
 	@Override
-	public void setGroup(Player player, String group) {
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
-				"perm player setgroup " + player.getName() + " " + group);
-	}
-
-	@Override
-	public CitizensGroup getGroup(String group) {
-		return provider.getGroup(group) == null ? null : new CitizensGroup(
-				provider.getGroup(group).getName());
-	}
-
-	@Override
-	public Set<CitizensGroup> getGroups(Player player) {
-		if (provider.getPlayerInfo(player.getName()) != null) {
-			Set<CitizensGroup> groups = Sets.newHashSet();
-			for (com.platymuus.bukkit.permissions.Group group : provider
-					.getPlayerInfo(player.getName()).getGroups()) {
-				CitizensGroup temp = new CitizensGroup(group.getName());
-				temp.addAllMembers(group.getPlayers());
-				groups.add(temp);
-			}
-			return groups;
-		}
-		return null;
+	public boolean inGroup(Player player, String group) {
+		if (provider.getGroup(group) == null
+				|| provider.getPlayerInfo(player.getName()) == null)
+			return false;
+		return provider.getPlayerInfo(player.getName()).getGroups()
+				.contains(provider.getGroup(group));
 	}
 
 	@Override
 	public void removeGroup(Player player, String group) {
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
 				"perm player removegroup " + player.getName() + " " + group);
+	}
+
+	@Override
+	public void setGroup(Player player, String group) {
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
+				"perm player setgroup " + player.getName() + " " + group);
 	}
 }

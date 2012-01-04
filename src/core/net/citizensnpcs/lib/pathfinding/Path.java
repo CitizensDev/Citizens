@@ -12,10 +12,8 @@ public class Path {
 		this.strategy = strategy;
 	}
 
-	public static Path create(PathingStrategy withStrategy) {
-		if (withStrategy == null)
-			throw new IllegalArgumentException("strategy cannot be null");
-		return new Path(withStrategy);
+	public boolean isPaused() {
+		return paused;
 	}
 
 	public void pause() {
@@ -23,6 +21,8 @@ public class Path {
 	}
 
 	public void pause(int ticks) {
+		if (paused == true)
+			return;
 		pause();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
 				new Runnable() {
@@ -41,5 +41,11 @@ public class Path {
 		if (paused)
 			return false;
 		return strategy.update();
+	}
+
+	protected static Path create(PathingStrategy withStrategy) {
+		if (withStrategy == null)
+			throw new IllegalArgumentException("strategy cannot be null");
+		return new Path(withStrategy);
 	}
 }

@@ -12,7 +12,15 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class HuntQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
+	@Override
+	public Type[] getEventTypes() {
+		return EVENTS;
+	}
+
+	@Override
+	public String getStatus(ObjectiveProgress progress) {
+		return QuestUtils.defaultAmountProgress(progress, "monsters killed");
+	}
 
 	@Override
 	public boolean update(Event event, ObjectiveProgress progress) {
@@ -33,13 +41,5 @@ public class HuntQuest implements QuestUpdater {
 		return progress.getAmount() >= progress.getObjective().getAmount();
 	}
 
-	@Override
-	public Type[] getEventTypes() {
-		return EVENTS;
-	}
-
-	@Override
-	public String getStatus(ObjectiveProgress progress) {
-		return QuestUtils.defaultAmountProgress(progress, "monsters killed");
-	}
+	private static final Type[] EVENTS = new Type[] { Type.ENTITY_DEATH };
 }

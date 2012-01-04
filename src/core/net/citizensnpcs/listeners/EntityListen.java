@@ -9,6 +9,7 @@ import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.lib.creatures.CreatureTask;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.permissions.PermissionManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.MessageUtils;
@@ -28,30 +29,33 @@ import org.bukkit.plugin.PluginManager;
 public class EntityListen extends EntityListener implements Listener {
 
 	@Override
-	public void registerEvents(Citizens plugin) {
-		PluginManager pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Type.ENTITY_DAMAGE, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.ENTITY_TARGET, this, Priority.Normal, plugin);
-		pm.registerEvent(Type.ENTITY_DEATH, this, Priority.Normal, plugin);
-	}
-
-	@Override
 	public void onEntityDamage(EntityDamageEvent event) {
 		CreatureTask.onDamage(event.getEntity(), event);
 		HumanNPC npc = NPCManager.get(event.getEntity());
 		if (npc != null) {
 			npc.callDamageEvent(event);
 		}
-		if (event instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
-			if (npc != null) {
-				if (e.getDamager() instanceof Player) {
-					Player player = (Player) e.getDamager();
-					npc.callLeftClick(player, npc);
-				}
-			} else if (e.getDamager() instanceof Player) {
-				CreatureTask.onDamage(e.getEntity(), event);
+		if (!(event instanceof EntityDamageByEntityEvent))
+			return;
+		EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
+		if (npc != null) {
+			if (e.getDamager() instanceof Player) {
+				Player player = (Player) e.getDamager();
+				for (CitizensNPC type : npc.types())
+					type.onLeftClick(player, npc);
 			}
+		} else if (e.getDamager() instanceof Player) {
+			CreatureTask.onDamage(e.getEntity(), event);
+		}
+	}
+
+	@Override
+	public void onEntityDeath(EntityDeathEvent event) {
+		CreatureTask.onEntityDeath(event.getEntity());
+		if (!NPCManager.isNPC(event.getEntity()))
+			return;
+		for (CitizensNPC type : NPCManager.get(event.getEntity()).types()) {
+			type.onDeath(event);
 		}
 	}
 
@@ -102,25 +106,21 @@ public class EntityListen extends EntityListener implements Listener {
 			NPCRightClickEvent rightClickEvent = new NPCRightClickEvent(npc,
 					player);
 			Bukkit.getServer().getPluginManager().callEvent(rightClickEvent);
-			if (!rightClickEvent.isCancelled()) {
-				NPCDataManager.handleEquipmentEditor(rightClickEvent);
-				NPCDataManager.handlePathRestart(rightClickEvent);
-				if (npc.getWaypoints().isStarted()
-						&& npc.getWaypoints().current() != null) {
-					npc.getWaypoints().scheduleDelay(npc,
-							npc.getWaypoints().current().getLocation(),
-							Settings.getInt("RightClickPause"));
-				}
-				npc.callRightClick(player, npc);
+			if (rightClickEvent.isCancelled())
+				return;
+			NPCDataManager.handleEquipmentEditor(rightClickEvent);
+			npc.getWaypoints().delay(Settings.getInt("RightClickPause"));
+			for (CitizensNPC type : npc.types()) {
+				type.onRightClick(player, npc);
 			}
 		}
 	}
 
 	@Override
-	public void onEntityDeath(EntityDeathEvent event) {
-		CreatureTask.onEntityDeath(event.getEntity());
-		if (NPCManager.isNPC(event.getEntity())) {
-			NPCManager.get(event.getEntity()).callDeathEvent(event);
-		}
+	public void registerEvents(Citizens plugin) {
+		PluginManager pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Type.ENTITY_DAMAGE, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.ENTITY_TARGET, this, Priority.Normal, plugin);
+		pm.registerEvent(Type.ENTITY_DEATH, this, Priority.Normal, plugin);
 	}
 }

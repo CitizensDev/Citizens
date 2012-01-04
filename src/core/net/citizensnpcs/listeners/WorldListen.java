@@ -24,10 +24,25 @@ public class WorldListen extends WorldListener implements Listener {
 	private final Set<HumanNPC> toRespawn = Sets.newHashSet();
 
 	@Override
-	public void registerEvents(Citizens plugin) {
-		PluginManager pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Type.CHUNK_UNLOAD, this, Priority.Monitor, plugin);
-		pm.registerEvent(Type.CHUNK_LOAD, this, Priority.Monitor, plugin);
+	public void onChunkLoad(ChunkLoadEvent event) {
+		// Respawns any existing NPCs in the loaded chunk
+		for (HumanNPC npc : toRespawn) {
+			int npcChunkX = npc.getLocation().getBlockX() >> 4;
+			int npcChunkZ = npc.getLocation().getBlockZ() >> 4;
+			if (!event.getWorld().equals(npc.getLocation().getWorld())
+					|| npcChunkX != event.getChunk().getX()
+					|| npcChunkZ != event.getChunk().getZ()
+					|| NPCManager.get(npc.getUID()) != null)
+				continue;
+			if (NPCManager.get(npc.getUID()) != null) {
+				toRespawn.remove(npc);
+				continue;
+			}
+			NPCManager.register(npc, NPCCreateReason.RESPAWN);
+			toRespawn.remove(npc);
+			Messaging.debug("Reloaded", npc.getUID(), "due to chunk load at",
+					npcChunkX, npcChunkZ);
+		}
 	}
 
 	@Override
@@ -39,19 +54,20 @@ public class WorldListen extends WorldListener implements Listener {
 			HumanNPC npc = NPCManager.get(entity);
 			if (npc == null)
 				continue;
+			int npcChunkX = npc.getLocation().getBlockX() >> 4;
+			int npcChunkZ = npc.getLocation().getBlockZ() >> 4;
 			if (event.getWorld().equals(npc.getWorld())
-					&& event.getChunk().getX() == npc.getChunkX()
-					&& event.getChunk().getZ() == npc.getChunkZ()) {
+					&& event.getChunk().getX() == npcChunkX
+					&& event.getChunk().getZ() == npcChunkZ) {
 				toRespawn.add(npc);
 				npc.save();
 				NPCManager.despawn(npc.getUID());
 				Messaging.debug("Despawned", npc.getUID(),
-						"due to chunk unload at", npc.getChunkX(),
-						npc.getChunkZ());
+						"due to chunk unload at", npcChunkX, npcChunkZ);
 			}
 		}
-		for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
-			if (!entry.getBukkitEntity().getLocation().getBlock().getChunk()
+		for (CreatureNPC entry : CreatureTask.creatureNPCs) {
+			if (!entry.getPlayer().getLocation().getBlock().getChunk()
 					.equals(event.getChunk()))
 				continue;
 			CreatureTask.despawn(entry);
@@ -59,20 +75,9 @@ public class WorldListen extends WorldListener implements Listener {
 	}
 
 	@Override
-	public void onChunkLoad(ChunkLoadEvent event) {
-		// Respawns any existing NPCs in the loaded chunk
-		for (HumanNPC npc : toRespawn) {
-			if (!event.getWorld().equals(npc.getLocation().getWorld())
-					|| npc.getChunkX() != event.getChunk().getX()
-					|| npc.getChunkZ() != event.getChunk().getZ())
-				continue;
-			if (NPCManager.get(npc.getUID()) != null) {
-				NPCManager.register(npc, NPCCreateReason.RESPAWN);
-			}
-			toRespawn.remove(npc);
-			Messaging.debug("Reloaded", npc.getUID(),
-					"due to chunk load at", npc.getChunkX(),
-					npc.getChunkZ());
-		}
+	public void registerEvents(Citizens plugin) {
+		PluginManager pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Type.CHUNK_UNLOAD, this, Priority.Monitor, plugin);
+		pm.registerEvent(Type.CHUNK_LOAD, this, Priority.Monitor, plugin);
 	}
 }

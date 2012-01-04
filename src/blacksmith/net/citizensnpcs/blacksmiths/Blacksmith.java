@@ -13,6 +13,15 @@ import org.bukkit.entity.Player;
 public class Blacksmith extends CitizensNPC {
 
 	@Override
+	public CitizensNPCType getType() {
+		return new BlacksmithType();
+	}
+
+	@Override
+	public void load(DataKey root) {
+	}
+
+	@Override
 	public void onRightClick(Player player, HumanNPC npc) {
 		if (PermissionManager.hasPermission(player,
 				"citizens.blacksmith.use.repair")) {
@@ -32,15 +41,6 @@ public class Blacksmith extends CitizensNPC {
 	}
 
 	@Override
-	public CitizensNPCType getType() {
-		return new BlacksmithType();
-	}
-
-	@Override
 	public void save(DataKey root) {
-	}
-
-	@Override
-	public void load(DataKey root) {
 	}
 }

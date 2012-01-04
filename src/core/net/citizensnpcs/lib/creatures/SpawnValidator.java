@@ -5,10 +5,6 @@ import net.citizensnpcs.lib.creatures.SpawnValidator.Spawn.Type;
 
 public class SpawnValidator {
 	private final byte[] flags = new byte[64];
-	public static final SpawnValidator DEFAULT_SPAWNIN = new SpawnValidator(
-			Type.JUST, 0), DEFAULT_SPAWNON = new SpawnValidator(Range.DEFAULT,
-			false);
-
 	public SpawnValidator() {
 	}
 
@@ -18,6 +14,16 @@ public class SpawnValidator {
 
 	public SpawnValidator(Type type, int... ids) {
 		this.change(type, ids);
+	}
+
+	private void all() {
+		for (byte i = 0; i <= 63; ++i) {
+			flags[i] = 0xF;
+		}
+	}
+
+	public SpawnValidator allExcept(int... ids) {
+		return this.change(Type.ALL_EXCEPT, ids);
 	}
 
 	public SpawnValidator change(Type type, int... ids) {
@@ -62,50 +68,21 @@ public class SpawnValidator {
 		return this;
 	}
 
-	public SpawnValidator set(Range range, boolean flag) {
-		switch (range) {
-		case ALL:
-			all();
-			break;
-		case DEFAULT:
-			all();
-			this.set(Range.LIQUIDS, false);
-			int[] banned = { 6, 17, 18, 26, 50, 51, 63, 64, 71, 77, 83, 85, 90 };
-			this.set(banned, false);
-			this.set(0, false);
-			break;
-		case LIQUIDS:
-			setRange(8, 11, flag);
-			break;
-		}
-		return this;
-	}
-
-	public SpawnValidator allExcept(int... ids) {
-		return this.change(Type.ALL_EXCEPT, ids);
+	private boolean get(int index) {
+		index &= 255;
+		int get = index / 4;
+		index %= 4;
+		return (flags[get] & 1 << index) != 0;
 	}
 
 	public boolean isValid(int id) {
 		return get(id);
 	}
 
-	private void all() {
-		for (byte i = 0; i <= 63; ++i) {
-			flags[i] = 0xF;
-		}
-	}
-
 	private void reset() {
 		for (byte i = 0; i <= 63; ++i) {
 			flags[i] = 0;
 		}
-	}
-
-	private boolean get(int index) {
-		index &= 255;
-		int get = index / 4;
-		index %= 4;
-		return (flags[get] & 1 << index) != 0;
 	}
 
 	private void set(int index, boolean flag) {
@@ -124,6 +101,25 @@ public class SpawnValidator {
 		for (int id : banned) {
 			set(id, flag);
 		}
+	}
+
+	public SpawnValidator set(Range range, boolean flag) {
+		switch (range) {
+		case ALL:
+			all();
+			break;
+		case DEFAULT:
+			all();
+			this.set(Range.LIQUIDS, false);
+			int[] banned = { 6, 17, 18, 26, 50, 51, 63, 64, 71, 77, 83, 85, 90 };
+			this.set(banned, false);
+			this.set(0, false);
+			break;
+		case LIQUIDS:
+			setRange(8, 11, flag);
+			break;
+		}
+		return this;
 	}
 
 	private void setRange(int begin, int end, boolean flag) {
@@ -149,4 +145,8 @@ public class SpawnValidator {
 			NOT_BETWEEN;
 		}
 	}
+
+	public static final SpawnValidator DEFAULT_SPAWNIN = new SpawnValidator(
+			Type.JUST, 0), DEFAULT_SPAWNON = new SpawnValidator(Range.DEFAULT,
+			false);
 }

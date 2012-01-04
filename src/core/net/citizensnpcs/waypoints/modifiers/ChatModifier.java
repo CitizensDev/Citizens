@@ -26,27 +26,8 @@ public class ChatModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void onReach(HumanNPC npc) {
-		for (String message : messages) {
-			npc.getPlayer().chat(message);
-		}
-	}
-
-	@Override
-	public void load(DataKey root) {
-		for (String string : Splitter.on(",").split(root.getString("messages"))) {
-			messages.add(string);
-		}
-	}
-
-	@Override
-	public void save(DataKey root) {
-		root.setString("messages", Strings.join(messages, ","));
-	}
-
-	@Override
-	public WaypointModifierType getType() {
-		return WaypointModifierType.CHAT;
+	public boolean allowExit() {
+		return messages.size() > 0;
 	}
 
 	@Override
@@ -74,6 +55,35 @@ public class ChatModifier extends WaypointModifier {
 	}
 
 	@Override
+	public WaypointModifierType getType() {
+		return WaypointModifierType.CHAT;
+	}
+
+	@Override
+	public void load(DataKey root) {
+		for (String string : Splitter.on(",").split(root.getString("messages"))) {
+			messages.add(string);
+		}
+	}
+
+	@Override
+	protected void onExit() {
+		waypoint.addModifier(this);
+	}
+
+	@Override
+	public void onReach(HumanNPC npc) {
+		for (String message : messages) {
+			npc.getPlayer().chat(message);
+		}
+	}
+
+	@Override
+	public void save(DataKey root) {
+		root.setString("messages", Strings.join(messages, ","));
+	}
+
+	@Override
 	public boolean special(Player player, ChatType type) {
 		if (type == ChatType.RESTART) {
 			messages.clear();
@@ -81,15 +91,5 @@ public class ChatModifier extends WaypointModifier {
 			messages.remove(messages.size() - 1);
 		}
 		return super.special(player, type);
-	}
-
-	@Override
-	public boolean allowExit() {
-		return messages.size() > 0;
-	}
-
-	@Override
-	protected void onExit() {
-		waypoint.addModifier(this);
 	}
 }

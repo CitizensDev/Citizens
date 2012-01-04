@@ -13,13 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class QuesterPlayerListen extends PlayerListener {
 
 	@Override
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		QuestManager.unload(event.getPlayer());
-	}
-
-	@Override
-	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		QuestManager.incrementQuest(event.getPlayer(), event);
+	public void onPlayerChat(PlayerChatEvent event) {
+		ConversationUtils.onChat(event);
 	}
 
 	@Override
@@ -33,7 +28,12 @@ public class QuesterPlayerListen extends PlayerListener {
 	}
 
 	@Override
-	public void onPlayerChat(PlayerChatEvent event) {
-		ConversationUtils.onChat(event);
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		QuestManager.incrementQuest(event.getPlayer(), event);
+	}
+
+	@Override
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		QuestManager.unload(event.getPlayer());
 	}
 }

@@ -12,12 +12,30 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
 public class DefaultSpawner implements Spawner {
-	public static final DefaultSpawner INSTANCE = new DefaultSpawner();
+	private final Random random = new Random(System.currentTimeMillis());
 
 	private DefaultSpawner() {
 	}
 
-	private final Random random = new Random(System.currentTimeMillis());
+	private boolean areEntitiesOnBlock(Chunk chunk, int x, int y, int z) {
+		for (Entity entity : chunk.getEntities()) {
+			if (!(entity instanceof LivingEntity))
+				continue;
+			Location loc = entity.getLocation();
+			if (loc.getBlockX() == x && loc.getBlockY() == y
+					&& loc.getBlockZ() == z) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private int getRandomInt(int max) {
+		if (max == 0)
+			max = 1;
+		int ran = random.nextInt(Math.abs(max));
+		return random.nextBoolean() ? -ran : ran;
+	}
 
 	@Override
 	public CraftNPC spawn(CreatureNPCType type, Location loc) {
@@ -59,23 +77,5 @@ public class DefaultSpawner implements Spawner {
 		return null;
 	}
 
-	private int getRandomInt(int max) {
-		if (max == 0)
-			max = 1;
-		int ran = random.nextInt(Math.abs(max));
-		return random.nextBoolean() ? -ran : ran;
-	}
-
-	private boolean areEntitiesOnBlock(Chunk chunk, int x, int y, int z) {
-		for (Entity entity : chunk.getEntities()) {
-			if (!(entity instanceof LivingEntity))
-				continue;
-			Location loc = entity.getLocation();
-			if (loc.getBlockX() == x && loc.getBlockY() == y
-					&& loc.getBlockZ() == z) {
-				return true;
-			}
-		}
-		return false;
-	}
+	public static final DefaultSpawner INSTANCE = new DefaultSpawner();
 }

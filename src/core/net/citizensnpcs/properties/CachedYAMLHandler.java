@@ -103,11 +103,6 @@ public class CachedYAMLHandler implements DataSource {
 		}
 
 		@Override
-		public boolean valueExists(String path) {
-			return keyExists(path) && !tree.get(getKeyExt(path)).isEmpty();
-		}
-
-		@Override
 		public void copy(String to) {
 			tree.copy(current, to);
 		}
@@ -219,6 +214,12 @@ public class CachedYAMLHandler implements DataSource {
 		}
 
 		@Override
+		public String name() {
+			int last = current.lastIndexOf('.');
+			return current.substring(last == 0 ? 0 : last + 1);
+		}
+
+		@Override
 		public void removeKey(String keyExt) {
 			tree.remove(getKeyExt(keyExt));
 		}
@@ -254,9 +255,8 @@ public class CachedYAMLHandler implements DataSource {
 		}
 
 		@Override
-		public String name() {
-			int last = current.lastIndexOf('.');
-			return current.substring(last == 0 ? 0 : last + 1);
+		public boolean valueExists(String path) {
+			return keyExists(path) && !tree.get(getKeyExt(path)).isEmpty();
 		}
 	}
 }

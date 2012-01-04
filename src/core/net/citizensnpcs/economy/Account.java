@@ -3,11 +3,11 @@ package net.citizensnpcs.economy;
 public interface Account {
 	void add(double amount);
 
-	void subtract(double amount);
-
-	void set(double balance);
+	double balance();
 
 	boolean hasEnough(double amount);
 
-	double balance();
+	void set(double balance);
+
+	void subtract(double amount);
 }

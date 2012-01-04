@@ -33,13 +33,13 @@ public class Quest {
 		return acceptanceText;
 	}
 
+	public long getDelay() {
+		return this.delay;
+	}
+
 	// Get the description of a quest
 	public String getDescription() {
 		return description;
-	}
-
-	public long getDelay() {
-		return this.delay;
 	}
 
 	public RewardGranter getGranter() {

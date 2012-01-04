@@ -14,39 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class BlacksmithManager {
-	// Repair an item
-	@SuppressWarnings("deprecation")
-	public static void repairItem(Player player, HumanNPC npc, String repairType) {
-		ItemStack item = player.getItemInHand();
-		String itemName = MessageUtils.getMaterialName(item.getTypeId());
-		if (item.getDurability() == 0) {
-			player.sendMessage(ChatColor.GRAY + "Your "
-					+ StringUtils.wrap(itemName, ChatColor.GRAY)
-					+ " is already fully repaired.");
-			return;
-		}
-		double price = getBlacksmithPrice(player, repairType);
-		StringBuilder repairMessage = new StringBuilder(StringUtils.wrap(npc
-				.getName()));
-		repairMessage.append(" has repaired your ");
-		repairMessage.append(StringUtils.wrap(itemName) + " for ");
-		repairMessage.append(StringUtils.wrap(Economy.format(price)));
-
-		Account account = Economy.getAccount(player);
-		if (!account.hasEnough(price)) {
-			Messaging.sendError(player,
-					"You don't have enough money to repair your " + itemName
-							+ ".");
-			return;
-		}
-		account.subtract(price);
-
-		player.sendMessage(repairMessage.append(".").toString());
-		item.setDurability((short) 0);
-		player.setItemInHand(item);
-		player.updateInventory();
-	}
-
 	// Get the price for a blacksmith operation
 	public static double getBlacksmithPrice(Player player, String repairType) {
 		ItemStack item = player.getItemInHand();
@@ -80,5 +47,38 @@ public class BlacksmithManager {
 			return "chainmail";
 		}
 		return "misc";
+	}
+
+	// Repair an item
+	@SuppressWarnings("deprecation")
+	public static void repairItem(Player player, HumanNPC npc, String repairType) {
+		ItemStack item = player.getItemInHand();
+		String itemName = MessageUtils.getMaterialName(item.getTypeId());
+		if (item.getDurability() == 0) {
+			player.sendMessage(ChatColor.GRAY + "Your "
+					+ StringUtils.wrap(itemName, ChatColor.GRAY)
+					+ " is already fully repaired.");
+			return;
+		}
+		double price = getBlacksmithPrice(player, repairType);
+		StringBuilder repairMessage = new StringBuilder(StringUtils.wrap(npc
+				.getName()));
+		repairMessage.append(" has repaired your ");
+		repairMessage.append(StringUtils.wrap(itemName) + " for ");
+		repairMessage.append(StringUtils.wrap(Economy.format(price)));
+
+		Account account = Economy.getAccount(player);
+		if (!account.hasEnough(price)) {
+			Messaging.sendError(player,
+					"You don't have enough money to repair your " + itemName
+							+ ".");
+			return;
+		}
+		account.subtract(price);
+
+		player.sendMessage(repairMessage.append(".").toString());
+		item.setDurability((short) 0);
+		player.setItemInHand(item);
+		player.updateInventory();
 	}
 }

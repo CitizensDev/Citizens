@@ -37,10 +37,6 @@ public class Methods {
 	private static Set<String> Dependencies = new HashSet<String>();
 	private static Set<Method> Attachables = new HashSet<Method>();
 
-	static {
-		_init();
-	}
-
 	/**
 	 * Implement all methods along with their respective name & class.
 	 */
@@ -62,46 +58,27 @@ public class Methods {
 		Dependencies.add("MultiCurrency");
 	}
 
-	/**
-	 * Used by the plugin to setup version
-	 * 
-	 * @param v
-	 *            version
-	 */
-	public static void setVersion(String v) {
-		version = v;
+	private static void addMethod(String name, Method method) {
+		Dependencies.add(name);
+		Methods.add(method);
 	}
 
 	/**
-	 * Use to reset methods during disable
-	 */
-	public static void reset() {
-		version = null;
-		self = false;
-		Method = null;
-		preferred = "";
-		Attachables.clear();
-	}
-
-	/**
-	 * Use to get version of Register plugin
+	 * Verify is a plugin is disabled, only does this if we there is an existing
+	 * payment method initialized in Register.
 	 * 
-	 * @return version
+	 * @param method
+	 *            Plugin data from bukkit, Internal Class file.
+	 * @return <code>boolean</code>
 	 */
-	public static String getVersion() {
-		return version;
-	}
+	public static boolean checkDisabled(Plugin method) {
+		if (!hasMethod())
+			return true;
 
-	/**
-	 * Returns an array of payment method names that have been loaded through
-	 * the <code>_init</code> method.
-	 * 
-	 * @return <code>Set<String></code> - Array of payment methods that are
-	 *         loaded.
-	 * @see #setMethod(org.bukkit.plugin.Plugin)
-	 */
-	public static Set<String> getDependencies() {
-		return Dependencies;
+		if (Method.isCompatible(method))
+			Method = null;
+
+		return (Method == null);
 	}
 
 	/**
@@ -123,9 +100,34 @@ public class Methods {
 		return null;
 	}
 
-	private static void addMethod(String name, Method method) {
-		Dependencies.add(name);
-		Methods.add(method);
+	/**
+	 * Returns an array of payment method names that have been loaded through
+	 * the <code>_init</code> method.
+	 * 
+	 * @return <code>Set<String></code> - Array of payment methods that are
+	 *         loaded.
+	 * @see #setMethod(org.bukkit.plugin.Plugin)
+	 */
+	public static Set<String> getDependencies() {
+		return Dependencies;
+	}
+
+	/**
+	 * Grab the existing and initialized (hopefully) Method Class.
+	 * 
+	 * @return <code>Method</code> <em>or</em> <code>Null</code>
+	 */
+	public static Method getMethod() {
+		return Method;
+	}
+
+	/**
+	 * Use to get version of Register plugin
+	 * 
+	 * @return version
+	 */
+	public static String getVersion() {
+		return version;
 	}
 
 	/**
@@ -137,6 +139,17 @@ public class Methods {
 	 */
 	public static boolean hasMethod() {
 		return (Method != null);
+	}
+
+	/**
+	 * Use to reset methods during disable
+	 */
+	public static void reset() {
+		version = null;
+		self = false;
+		Method = null;
+		preferred = "";
+		Attachables.clear();
 	}
 
 	/**
@@ -225,29 +238,16 @@ public class Methods {
 	}
 
 	/**
-	 * Grab the existing and initialized (hopefully) Method Class.
+	 * Used by the plugin to setup version
 	 * 
-	 * @return <code>Method</code> <em>or</em> <code>Null</code>
+	 * @param v
+	 *            version
 	 */
-	public static Method getMethod() {
-		return Method;
+	public static void setVersion(String v) {
+		version = v;
 	}
 
-	/**
-	 * Verify is a plugin is disabled, only does this if we there is an existing
-	 * payment method initialized in Register.
-	 * 
-	 * @param method
-	 *            Plugin data from bukkit, Internal Class file.
-	 * @return <code>boolean</code>
-	 */
-	public static boolean checkDisabled(Plugin method) {
-		if (!hasMethod())
-			return true;
-
-		if (Method.isCompatible(method))
-			Method = null;
-
-		return (Method == null);
+	static {
+		_init();
 	}
 }

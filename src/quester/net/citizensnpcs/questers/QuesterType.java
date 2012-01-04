@@ -13,6 +13,7 @@ import net.citizensnpcs.questers.listeners.QuesterBlockListen;
 import net.citizensnpcs.questers.listeners.QuesterCitizensListen;
 import net.citizensnpcs.questers.listeners.QuesterEntityListen;
 import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
@@ -26,8 +27,33 @@ public class QuesterType extends CitizensNPCType {
 	}
 
 	@Override
-	public void registerEvents() {
+	public String getName() {
+		return "quester";
+	}
+
+	@Override
+	public List<Setting> getSettings() {
+		List<Setting> nodes = Lists.newArrayList();
+		nodes.add(new Setting("QuestSaveDelay", SettingsType.GENERAL,
+				"quests.save.command-delay-ms", 5000));
+		nodes.add(new Setting("CombatExploitTimes", SettingsType.GENERAL,
+				"quests.exploits.combat.check-times", 2));
+		nodes.add(new Setting("CombatExploitRadius", SettingsType.GENERAL,
+				"quests.exploits.combat.check-radius", 20));
+		nodes.add(new Setting("BlockTrackingRemoveDelay", SettingsType.GENERAL,
+				"quests.exploits.blocks.tracking-remove-delay", 0));
+		return nodes;
+	}
+
+	@Override
+	public CitizensNPC newInstance() {
+		return new Quester();
+	}
+
+	@Override
+	public void onEnable() {
 		QuestProperties.load();
+		Messaging.log("Loaded " + QuestManager.quests().size() + " quests.");
 		// custom events
 		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
 				new QuesterCitizensListen());
@@ -46,31 +72,5 @@ public class QuesterType extends CitizensNPCType {
 		NPCTypeManager.registerEvent(Type.PLAYER_DROP_ITEM, pl,
 				Priority.Highest);
 		NPCTypeManager.registerEvent(Type.PLAYER_CHAT, pl, Priority.Highest);
-	}
-
-	@Override
-	public String getName() {
-		return "quester";
-	}
-
-	@Override
-	public CitizensNPC newInstance() {
-		return new Quester();
-	}
-
-	@Override
-	public List<Setting> getSettings() {
-		List<Setting> nodes = Lists.newArrayList();
-		nodes.add(new Setting("QuestSaveDelay", SettingsType.GENERAL,
-				"quests.save.command-delay-ms", 5000));
-		nodes.add(new Setting("ItemExploitCheckDelay", SettingsType.GENERAL,
-				"quests.exploits.item-pickup.check-delay", 400));
-		nodes.add(new Setting("CombatExploitTimes", SettingsType.GENERAL,
-				"quests.exploits.combat.check-times", 2));
-		nodes.add(new Setting("CombatExploitRadius", SettingsType.GENERAL,
-				"quests.exploits.combat.check-radius", 20));
-		nodes.add(new Setting("BlockTrackingRemoveDelay", SettingsType.GENERAL,
-				"quests.exploits.blocks.tracking-remove-delay", 6000));
-		return nodes;
 	}
 }

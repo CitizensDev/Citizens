@@ -23,48 +23,13 @@ public class EE17 implements Method {
 	private Essentials Essentials;
 
 	@Override
-	public Essentials getPlugin() {
-		return this.Essentials;
-	}
-
-	@Override
-	public String getName() {
-		return "Essentials";
-	}
-
-	@Override
-	public String getVersion() {
-		return "2.2";
-	}
-
-	@Override
-	public int fractionalDigits() {
-		return -1;
-	}
-
-	@Override
 	public String format(double amount) {
 		return Economy.format(amount);
 	}
 
 	@Override
-	public boolean hasBanks() {
-		return false;
-	}
-
-	@Override
-	public boolean hasBank(String bank) {
-		return false;
-	}
-
-	@Override
-	public boolean hasAccount(String name) {
-		return Economy.playerExists(name);
-	}
-
-	@Override
-	public boolean hasBankAccount(String bank, String name) {
-		return false;
+	public int fractionalDigits() {
+		return -1;
 	}
 
 	@Override
@@ -78,6 +43,41 @@ public class EE17 implements Method {
 	@Override
 	public MethodBankAccount getBankAccount(String bank, String name) {
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return "Essentials";
+	}
+
+	@Override
+	public Essentials getPlugin() {
+		return this.Essentials;
+	}
+
+	@Override
+	public String getVersion() {
+		return "2.2";
+	}
+
+	@Override
+	public boolean hasAccount(String name) {
+		return Economy.playerExists(name);
+	}
+
+	@Override
+	public boolean hasBank(String bank) {
+		return false;
+	}
+
+	@Override
+	public boolean hasBankAccount(String bank, String name) {
+		return false;
+	}
+
+	@Override
+	public boolean hasBanks() {
+		return false;
 	}
 
 	@Override
@@ -105,40 +105,6 @@ public class EE17 implements Method {
 		}
 
 		@Override
-		public double balance() {
-			Double balance = 0.0;
-
-			try {
-				balance = Economy.getMoney(this.name);
-			} catch (UserDoesNotExistException ex) {
-				System.out
-						.println("[REGISTER] Failed to grab balance in Essentials Economy: "
-								+ ex.getMessage());
-			}
-
-			return balance;
-		}
-
-		@Override
-		public boolean set(double amount) {
-			try {
-				Economy.setMoney(name, amount);
-			} catch (UserDoesNotExistException ex) {
-				System.out
-						.println("[REGISTER] User does not exist in Essentials Economy: "
-								+ ex.getMessage());
-				return false;
-			} catch (NoLoanPermittedException ex) {
-				System.out
-						.println("[REGISTER] No loan permitted in Essentials Economy: "
-								+ ex.getMessage());
-				return false;
-			}
-
-			return true;
-		}
-
-		@Override
 		public boolean add(double amount) {
 			try {
 				Economy.add(name, amount);
@@ -158,41 +124,18 @@ public class EE17 implements Method {
 		}
 
 		@Override
-		public boolean subtract(double amount) {
+		public double balance() {
+			Double balance = 0.0;
+
 			try {
-				Economy.subtract(name, amount);
+				balance = Economy.getMoney(this.name);
 			} catch (UserDoesNotExistException ex) {
 				System.out
-						.println("[REGISTER] User does not exist in Essentials Economy: "
+						.println("[REGISTER] Failed to grab balance in Essentials Economy: "
 								+ ex.getMessage());
-				return false;
-			} catch (NoLoanPermittedException ex) {
-				System.out
-						.println("[REGISTER] No loan permitted in Essentials Economy: "
-								+ ex.getMessage());
-				return false;
 			}
 
-			return true;
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			try {
-				Economy.multiply(name, amount);
-			} catch (UserDoesNotExistException ex) {
-				System.out
-						.println("[REGISTER] User does not exist in Essentials Economy: "
-								+ ex.getMessage());
-				return false;
-			} catch (NoLoanPermittedException ex) {
-				System.out
-						.println("[REGISTER] No loan permitted in Essentials Economy: "
-								+ ex.getMessage());
-				return false;
-			}
-
-			return true;
+			return balance;
 		}
 
 		@Override
@@ -267,8 +210,65 @@ public class EE17 implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			try {
+				Economy.multiply(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
 		public boolean remove() {
 			return false;
+		}
+
+		@Override
+		public boolean set(double amount) {
+			try {
+				Economy.setMoney(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			try {
+				Economy.subtract(name, amount);
+			} catch (UserDoesNotExistException ex) {
+				System.out
+						.println("[REGISTER] User does not exist in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			} catch (NoLoanPermittedException ex) {
+				System.out
+						.println("[REGISTER] No loan permitted in Essentials Economy: "
+								+ ex.getMessage());
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

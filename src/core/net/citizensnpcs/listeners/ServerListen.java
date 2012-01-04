@@ -15,10 +15,8 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class ServerListen extends ServerListener implements Listener {
 	@Override
-	public void registerEvents(Citizens plugin) {
-		PluginManager pm = plugin.getServer().getPluginManager();
-		pm.registerEvent(Type.PLUGIN_ENABLE, this, Priority.Monitor, plugin);
-		pm.registerEvent(Type.PLUGIN_DISABLE, this, Priority.Monitor, plugin);
+	public void onPluginDisable(PluginDisableEvent event) {
+		Economy.tryDisableEconomy(event.getPlugin());
 	}
 
 	@Override
@@ -31,7 +29,9 @@ public class ServerListen extends ServerListener implements Listener {
 	}
 
 	@Override
-	public void onPluginDisable(PluginDisableEvent event) {
-		Economy.tryDisableEconomy(event.getPlugin());
+	public void registerEvents(Citizens plugin) {
+		PluginManager pm = plugin.getServer().getPluginManager();
+		pm.registerEvent(Type.PLUGIN_ENABLE, this, Priority.Monitor, plugin);
+		pm.registerEvent(Type.PLUGIN_DISABLE, this, Priority.Monitor, plugin);
 	}
 }

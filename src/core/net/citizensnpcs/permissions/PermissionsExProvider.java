@@ -15,10 +15,25 @@ public class PermissionsExProvider implements PermissionsProvider {
 			.getPermissionManager();
 
 	@Override
-	public boolean inGroup(Player player, String group) {
-		if (provider.getUser(player) == null)
-			return false;
-		return provider.getUser(player).inGroup(group);
+	public CitizensGroup getGroup(String group) {
+		return provider.getGroup(group) == null ? null : new CitizensGroup(
+				provider.getGroup(group).getName());
+	}
+
+	@Override
+	public Set<CitizensGroup> getGroups(Player player) {
+		if (provider.getUser(player) != null) {
+			Set<CitizensGroup> groups = Sets.newHashSet();
+			for (PermissionGroup group : provider.getUser(player).getGroups()) {
+				CitizensGroup temp = new CitizensGroup(group.getName());
+				for (PermissionUser user : group.getUsers()) {
+					temp.addMember(user.getName());
+				}
+				groups.add(temp);
+			}
+			return groups;
+		}
+		return null;
 	}
 
 	@Override
@@ -42,32 +57,10 @@ public class PermissionsExProvider implements PermissionsProvider {
 	}
 
 	@Override
-	public void setGroup(Player player, String group) {
+	public boolean inGroup(Player player, String group) {
 		if (provider.getUser(player) == null)
-			return;
-		provider.getUser(player).setGroups(new String[] { group });
-	}
-
-	@Override
-	public CitizensGroup getGroup(String group) {
-		return provider.getGroup(group) == null ? null : new CitizensGroup(
-				provider.getGroup(group).getName());
-	}
-
-	@Override
-	public Set<CitizensGroup> getGroups(Player player) {
-		if (provider.getUser(player) != null) {
-			Set<CitizensGroup> groups = Sets.newHashSet();
-			for (PermissionGroup group : provider.getUser(player).getGroups()) {
-				CitizensGroup temp = new CitizensGroup(group.getName());
-				for (PermissionUser user : group.getUsers()) {
-					temp.addMember(user.getName());
-				}
-				groups.add(temp);
-			}
-			return groups;
-		}
-		return null;
+			return false;
+		return provider.getUser(player).inGroup(group);
 	}
 
 	@Override
@@ -76,5 +69,12 @@ public class PermissionsExProvider implements PermissionsProvider {
 				&& provider.getGroup(group) != null) {
 			provider.getUser(player).removeGroup(group);
 		}
+	}
+
+	@Override
+	public void setGroup(Player player, String group) {
+		if (provider.getUser(player) == null)
+			return;
+		provider.getUser(player).setGroups(new String[] { group });
 	}
 }

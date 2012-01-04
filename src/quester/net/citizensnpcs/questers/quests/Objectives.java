@@ -15,12 +15,12 @@ public class Objectives {
 		this.steps.add(step);
 	}
 
-	public Deque<QuestStep> steps() {
-		return steps;
-	}
-
 	public ObjectiveCycler newCycler() {
 		return new ObjectiveCycler(this);
+	}
+
+	public Deque<QuestStep> steps() {
+		return steps;
 	}
 
 	public static class ObjectiveCycler {
@@ -36,12 +36,8 @@ public class Objectives {
 			return this.steps.peek();
 		}
 
-		public Objective nextObjective() {
-			return current().objectives().get(index++);
-		}
-
-		public boolean hasNext() {
-			return index < current().objectives().size();
+		public int currentStep() {
+			return this.steps.size();
 		}
 
 		public void cycle() {
@@ -49,16 +45,20 @@ public class Objectives {
 			this.steps.pop();
 		}
 
-		public int currentStep() {
-			return this.steps.size();
+		public boolean hasNext() {
+			return index < current().objectives().size();
+		}
+
+		public int index() {
+			return this.index;
 		}
 
 		public boolean isCompleted() {
 			return this.steps.size() <= 0;
 		}
 
-		public int index() {
-			return this.index;
+		public Objective nextObjective() {
+			return current().objectives().get(index++);
 		}
 	}
 }

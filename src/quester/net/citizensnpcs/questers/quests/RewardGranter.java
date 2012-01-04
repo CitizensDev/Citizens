@@ -18,6 +18,14 @@ public class RewardGranter {
 		this.rewards = rewards;
 	}
 
+	public String getCompletionMessage() {
+		return this.completionMessage;
+	}
+
+	public List<Reward> getRewards() {
+		return rewards;
+	}
+
 	public void onCompletion(final Player player, final QuestProgress progress) {
 		if (!this.completionMessage.isEmpty()) {
 			Messaging.send(player, completionMessage);
@@ -30,13 +38,5 @@ public class RewardGranter {
 				}
 			}
 		}, completionMessage);
-	}
-
-	public String getCompletionMessage() {
-		return this.completionMessage;
-	}
-
-	public List<Reward> getRewards() {
-		return rewards;
 	}
 }

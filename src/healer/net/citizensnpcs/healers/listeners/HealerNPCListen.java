@@ -10,6 +10,7 @@ import net.citizensnpcs.healers.HealerTask;
 
 public class HealerNPCListen extends NPCListener {
 
+	@Override
 	public void onNPCToggleType(NPCToggleTypeEvent event) {
 		if (!event.getToggledType().equals("healer")) {
 			return;

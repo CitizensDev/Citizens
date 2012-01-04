@@ -16,18 +16,6 @@ public class HealthReward implements Requirement, Reward {
 	}
 
 	@Override
-	public void grant(Player player, int UID) {
-		player.setHealth(Math.min(player.getMaxHealth(),
-				take ? player.getHealth() - reward : player.getHealth()
-						+ reward));
-	}
-
-	@Override
-	public boolean isTake() {
-		return take;
-	}
-
-	@Override
 	public boolean fulfilsRequirement(Player player) {
 		return player.getHealth() - reward > 0;
 	}
@@ -37,6 +25,18 @@ public class HealthReward implements Requirement, Reward {
 		return ChatColor.GRAY + "You need "
 				+ StringUtils.wrap(player.getHealth() - reward, ChatColor.GRAY)
 				+ " more health.";
+	}
+
+	@Override
+	public void grant(Player player, int UID) {
+		player.setHealth(Math.min(player.getMaxHealth(),
+				take ? player.getHealth() - reward : player.getHealth()
+						+ reward));
+	}
+
+	@Override
+	public boolean isTake() {
+		return take;
 	}
 
 	@Override

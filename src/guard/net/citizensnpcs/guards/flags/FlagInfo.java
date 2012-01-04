@@ -13,19 +13,6 @@ public class FlagInfo {
 		this.safe = safe;
 	}
 
-	public int priority() {
-		return priority;
-	}
-
-	public boolean isSafe() {
-		return safe;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(name);
-	}
-
 	@Override
 	public boolean equals(Object that) {
 		if (this == that) {
@@ -47,6 +34,19 @@ public class FlagInfo {
 
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(name);
+	}
+
+	public boolean isSafe() {
+		return safe;
+	}
+
+	public int priority() {
+		return priority;
 	}
 
 	public static FlagInfo newInstance(String name) {

@@ -18,21 +18,8 @@ public class UtilityProperties {
 	private static final DataSource mobs = new ConfigurationHandler(
 			"plugins/Citizens/mobs.yml");
 
-	public static void load() {
-		config.load();
-		mobs.load();
-	}
-
 	public static DataSource getConfig() {
 		return config;
-	}
-
-	public static DataSource getMobSettings() {
-		return mobs;
-	}
-
-	public static double getPrice(String path) {
-		return config.getKey("economy.prices").getDouble(path);
 	}
 
 	public static int getCurrencyID(String string) {
@@ -42,6 +29,24 @@ public class UtilityProperties {
 
 	public static String getItemOverride(int ID) {
 		return config.getKey("items.overrides").getString(Integer.toString(ID));
+	}
+
+	public static DataSource getMobSettings() {
+		return mobs;
+	}
+
+	public static int getNPCCount(String name) {
+		int count = 0;
+		for (HumanNPC npc : NPCManager.getNPCs()) {
+			if (npc.getOwner().equals(name)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public static double getPrice(String path) {
+		return config.getKey("economy.prices").getDouble(path);
 	}
 
 	public static ItemStack getRandomDrop(String drops) {
@@ -54,16 +59,6 @@ public class UtilityProperties {
 			}
 		}
 		return null;
-	}
-
-	public static int getNPCCount(String name) {
-		int count = 0;
-		for (HumanNPC npc : NPCManager.getNPCs()) {
-			if (npc.getOwner().equals(name)) {
-				count++;
-			}
-		}
-		return count;
 	}
 
 	// returns whether the given item ID is usable as a tool
@@ -84,5 +79,10 @@ public class UtilityProperties {
 			}
 		}
 		return false;
+	}
+
+	public static void load() {
+		config.load();
+		mobs.load();
 	}
 }

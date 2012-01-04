@@ -21,49 +21,13 @@ public class iCo5 implements Method {
 	private iConomy iConomy;
 
 	@Override
-	public iConomy getPlugin() {
-		return this.iConomy;
-	}
-
-	@Override
-	public String getName() {
-		return "iConomy";
-	}
-
-	@Override
-	public String getVersion() {
-		return "5";
-	}
-
-	@Override
-	public int fractionalDigits() {
-		return 2;
-	}
-
-	@Override
 	public String format(double amount) {
 		return com.iConomy.iConomy.format(amount);
 	}
 
 	@Override
-	public boolean hasBanks() {
-		return Constants.Banking;
-	}
-
-	@Override
-	public boolean hasBank(String bank) {
-		return (hasBanks()) && com.iConomy.iConomy.Banks.exists(bank);
-	}
-
-	@Override
-	public boolean hasAccount(String name) {
-		return com.iConomy.iConomy.hasAccount(name);
-	}
-
-	@Override
-	public boolean hasBankAccount(String bank, String name) {
-		return (hasBank(bank))
-				&& com.iConomy.iConomy.getBank(bank).hasAccount(name);
+	public int fractionalDigits() {
+		return 2;
 	}
 
 	@Override
@@ -75,6 +39,42 @@ public class iCo5 implements Method {
 	public MethodBankAccount getBankAccount(String bank, String name) {
 		return new iCoBankAccount(com.iConomy.iConomy.getBank(bank).getAccount(
 				name));
+	}
+
+	@Override
+	public String getName() {
+		return "iConomy";
+	}
+
+	@Override
+	public iConomy getPlugin() {
+		return this.iConomy;
+	}
+
+	@Override
+	public String getVersion() {
+		return "5";
+	}
+
+	@Override
+	public boolean hasAccount(String name) {
+		return com.iConomy.iConomy.hasAccount(name);
+	}
+
+	@Override
+	public boolean hasBank(String bank) {
+		return (hasBanks()) && com.iConomy.iConomy.Banks.exists(bank);
+	}
+
+	@Override
+	public boolean hasBankAccount(String bank, String name) {
+		return (hasBank(bank))
+				&& com.iConomy.iConomy.getBank(bank).hasAccount(name);
+	}
+
+	@Override
+	public boolean hasBanks() {
+		return Constants.Banking;
 	}
 
 	@Override
@@ -98,23 +98,6 @@ public class iCo5 implements Method {
 			this.holdings = account.getHoldings();
 		}
 
-		public Account getiCoAccount() {
-			return account;
-		}
-
-		@Override
-		public double balance() {
-			return this.holdings.balance();
-		}
-
-		@Override
-		public boolean set(double amount) {
-			if (this.holdings == null)
-				return false;
-			this.holdings.set(amount);
-			return true;
-		}
-
 		@Override
 		public boolean add(double amount) {
 			if (this.holdings == null)
@@ -124,19 +107,8 @@ public class iCo5 implements Method {
 		}
 
 		@Override
-		public boolean subtract(double amount) {
-			if (this.holdings == null)
-				return false;
-			this.holdings.subtract(amount);
-			return true;
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			if (this.holdings == null)
-				return false;
-			this.holdings.multiply(amount);
-			return true;
+		public double balance() {
+			return this.holdings.balance();
 		}
 
 		@Override
@@ -145,6 +117,10 @@ public class iCo5 implements Method {
 				return false;
 			this.holdings.divide(amount);
 			return true;
+		}
+
+		public Account getiCoAccount() {
+			return account;
 		}
 
 		@Override
@@ -168,10 +144,34 @@ public class iCo5 implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			if (this.holdings == null)
+				return false;
+			this.holdings.multiply(amount);
+			return true;
+		}
+
+		@Override
 		public boolean remove() {
 			if (this.account == null)
 				return false;
 			this.account.remove();
+			return true;
+		}
+
+		@Override
+		public boolean set(double amount) {
+			if (this.holdings == null)
+				return false;
+			this.holdings.set(amount);
+			return true;
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			if (this.holdings == null)
+				return false;
+			this.holdings.subtract(amount);
 			return true;
 		}
 	}
@@ -185,33 +185,6 @@ public class iCo5 implements Method {
 			this.holdings = account.getHoldings();
 		}
 
-		public BankAccount getiCoBankAccount() {
-			return account;
-		}
-
-		@Override
-		public String getBankName() {
-			return this.account.getBankName();
-		}
-
-		@Override
-		public int getBankId() {
-			return this.account.getBankId();
-		}
-
-		@Override
-		public double balance() {
-			return this.holdings.balance();
-		}
-
-		@Override
-		public boolean set(double amount) {
-			if (this.holdings == null)
-				return false;
-			this.holdings.set(amount);
-			return true;
-		}
-
 		@Override
 		public boolean add(double amount) {
 			if (this.holdings == null)
@@ -221,19 +194,8 @@ public class iCo5 implements Method {
 		}
 
 		@Override
-		public boolean subtract(double amount) {
-			if (this.holdings == null)
-				return false;
-			this.holdings.subtract(amount);
-			return true;
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			if (this.holdings == null)
-				return false;
-			this.holdings.multiply(amount);
-			return true;
+		public double balance() {
+			return this.holdings.balance();
 		}
 
 		@Override
@@ -242,6 +204,20 @@ public class iCo5 implements Method {
 				return false;
 			this.holdings.divide(amount);
 			return true;
+		}
+
+		@Override
+		public int getBankId() {
+			return this.account.getBankId();
+		}
+
+		@Override
+		public String getBankName() {
+			return this.account.getBankName();
+		}
+
+		public BankAccount getiCoBankAccount() {
+			return account;
 		}
 
 		@Override
@@ -265,10 +241,34 @@ public class iCo5 implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			if (this.holdings == null)
+				return false;
+			this.holdings.multiply(amount);
+			return true;
+		}
+
+		@Override
 		public boolean remove() {
 			if (this.account == null)
 				return false;
 			this.account.remove();
+			return true;
+		}
+
+		@Override
+		public boolean set(double amount) {
+			if (this.holdings == null)
+				return false;
+			this.holdings.set(amount);
+			return true;
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			if (this.holdings == null)
+				return false;
+			this.holdings.subtract(amount);
 			return true;
 		}
 	}

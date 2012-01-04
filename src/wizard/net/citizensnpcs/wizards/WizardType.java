@@ -3,8 +3,12 @@ package net.citizensnpcs.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.citizensnpcs.Citizens;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.Settings.SettingsType;
+import net.citizensnpcs.api.CitizensManager;
 import net.citizensnpcs.commands.CommandHandler;
+import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.npctypes.NPCTypeManager;
@@ -12,6 +16,7 @@ import net.citizensnpcs.properties.Setting;
 import net.citizensnpcs.wizards.listeners.WizardCitizensListen;
 import net.citizensnpcs.wizards.listeners.WizardNPCListen;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event.Type;
 
 public class WizardType extends CitizensNPCType {
@@ -21,20 +26,8 @@ public class WizardType extends CitizensNPCType {
 	}
 
 	@Override
-	public void registerEvents() {
-		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
-				new WizardCitizensListen());
-		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT, new WizardNPCListen());
-	}
-
-	@Override
 	public String getName() {
 		return "wizard";
-	}
-
-	@Override
-	public CitizensNPC newInstance() {
-		return new Wizard();
 	}
 
 	@Override
@@ -69,5 +62,31 @@ public class WizardType extends CitizensNPCType {
 		settings.add(new Setting("RegenWizardMana", SettingsType.GENERAL,
 				"wizards.regen-mana", true));
 		return settings;
+	}
+
+	@Override
+	public CitizensNPC newInstance() {
+		return new Wizard();
+	}
+
+	@Override
+	public void onEnable() {
+		if (!Settings.getBoolean("RegenWizardMana")) {
+			return;
+		}
+		for (HumanNPC entry : CitizensManager.getNPCs()) {
+			if (!entry.isType("wizard"))
+				continue;
+			WizardTask task = new WizardTask(entry);
+			task.addID(Bukkit
+					.getServer()
+					.getScheduler()
+					.scheduleSyncRepeatingTask(Citizens.plugin, task,
+							Settings.getInt("WizardManaRegenRate"),
+							Settings.getInt("WizardManaRegenRate")));
+		}
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT,
+				new WizardCitizensListen());
+		NPCTypeManager.registerEvent(Type.CUSTOM_EVENT, new WizardNPCListen());
 	}
 }

@@ -18,48 +18,13 @@ public class iCo4 implements Method {
 	private iConomy iConomy;
 
 	@Override
-	public iConomy getPlugin() {
-		return this.iConomy;
-	}
-
-	@Override
-	public String getName() {
-		return "iConomy";
-	}
-
-	@Override
-	public String getVersion() {
-		return "4";
-	}
-
-	@Override
-	public int fractionalDigits() {
-		return 2;
-	}
-
-	@Override
 	public String format(double amount) {
 		return com.nijiko.coelho.iConomy.iConomy.getBank().format(amount);
 	}
 
 	@Override
-	public boolean hasBanks() {
-		return false;
-	}
-
-	@Override
-	public boolean hasBank(String bank) {
-		return false;
-	}
-
-	@Override
-	public boolean hasAccount(String name) {
-		return com.nijiko.coelho.iConomy.iConomy.getBank().hasAccount(name);
-	}
-
-	@Override
-	public boolean hasBankAccount(String bank, String name) {
-		return false;
+	public int fractionalDigits() {
+		return 2;
 	}
 
 	@Override
@@ -71,6 +36,41 @@ public class iCo4 implements Method {
 	@Override
 	public MethodBankAccount getBankAccount(String bank, String name) {
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return "iConomy";
+	}
+
+	@Override
+	public iConomy getPlugin() {
+		return this.iConomy;
+	}
+
+	@Override
+	public String getVersion() {
+		return "4";
+	}
+
+	@Override
+	public boolean hasAccount(String name) {
+		return com.nijiko.coelho.iConomy.iConomy.getBank().hasAccount(name);
+	}
+
+	@Override
+	public boolean hasBank(String bank) {
+		return false;
+	}
+
+	@Override
+	public boolean hasBankAccount(String bank, String name) {
+		return false;
+	}
+
+	@Override
+	public boolean hasBanks() {
+		return false;
 	}
 
 	@Override
@@ -93,23 +93,6 @@ public class iCo4 implements Method {
 			this.account = account;
 		}
 
-		public Account getiCoAccount() {
-			return account;
-		}
-
-		@Override
-		public double balance() {
-			return this.account.getBalance();
-		}
-
-		@Override
-		public boolean set(double amount) {
-			if (this.account == null)
-				return false;
-			this.account.setBalance(amount);
-			return true;
-		}
-
 		@Override
 		public boolean add(double amount) {
 			if (this.account == null)
@@ -119,19 +102,8 @@ public class iCo4 implements Method {
 		}
 
 		@Override
-		public boolean subtract(double amount) {
-			if (this.account == null)
-				return false;
-			this.account.subtract(amount);
-			return true;
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			if (this.account == null)
-				return false;
-			this.account.multiply(amount);
-			return true;
+		public double balance() {
+			return this.account.getBalance();
 		}
 
 		@Override
@@ -140,6 +112,10 @@ public class iCo4 implements Method {
 				return false;
 			this.account.divide(amount);
 			return true;
+		}
+
+		public Account getiCoAccount() {
+			return account;
 		}
 
 		@Override
@@ -163,10 +139,34 @@ public class iCo4 implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			if (this.account == null)
+				return false;
+			this.account.multiply(amount);
+			return true;
+		}
+
+		@Override
 		public boolean remove() {
 			if (this.account == null)
 				return false;
 			this.account.remove();
+			return true;
+		}
+
+		@Override
+		public boolean set(double amount) {
+			if (this.account == null)
+				return false;
+			this.account.setBalance(amount);
+			return true;
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			if (this.account == null)
+				return false;
+			this.account.subtract(amount);
 			return true;
 		}
 	}

@@ -93,6 +93,8 @@ public class ByIdArray<T> implements Iterable<T> {
 	}
 
 	public void put(int index, T t) {
+		if (t == null)
+			throw new IllegalArgumentException("t cannot be null");
 		++modCount;
 		if (index > highest)
 			highest = index;
@@ -101,11 +103,6 @@ public class ByIdArray<T> implements Iterable<T> {
 
 		elementData[index] = t;
 		++size;
-	}
-
-	public void trimToSize() {
-		if (elementData.length > highest)
-			elementData = Arrays.copyOf(elementData, highest + 1);
 	}
 
 	private void recalcHighest() {
@@ -117,16 +114,21 @@ public class ByIdArray<T> implements Iterable<T> {
 		++modCount;
 		if (index == highest)
 			recalcHighest();
-
 		@SuppressWarnings("unchecked")
 		T prev = (T) elementData[index];
 		elementData[index] = null;
-		--size;
+		if (prev != null)
+			--size;
 		return prev;
 	}
 
 	public int size() {
 		return size;
+	}
+
+	public void trimToSize() {
+		if (elementData.length > highest)
+			elementData = Arrays.copyOf(elementData, highest + 1);
 	}
 
 	public static <T> ByIdArray<T> create() {

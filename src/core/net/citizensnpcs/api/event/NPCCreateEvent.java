@@ -17,21 +17,21 @@ public class NPCCreateEvent extends NPCEvent {
 	}
 
 	/**
-	 * Get the reason why an NPC was created
-	 * 
-	 * @return reason for an NPC being created
-	 */
-	public NPCCreateReason getReason() {
-		return this.reason;
-	}
-
-	/**
 	 * Get the location where the NPC was created
 	 * 
 	 * @return location where NPC was created
 	 */
 	public Location getLocation() {
 		return this.loc;
+	}
+
+	/**
+	 * Get the reason why an NPC was created
+	 * 
+	 * @return reason for an NPC being created
+	 */
+	public NPCCreateReason getReason() {
+		return this.reason;
 	}
 
 	public enum NPCCreateReason {

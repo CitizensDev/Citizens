@@ -15,40 +15,16 @@ import org.bukkit.entity.Player;
 public class NPCManager {
 	private static final ByIdArray<HumanNPC> list = new ByIdArray<HumanNPC>();
 
-	public static int size() {
-		return list.size();
+	// Despawns an NPC.
+	public static void despawn(int UID) {
+		list.remove(UID).despawn();
 	}
 
-	public static HumanNPC get(int UID) {
-		return list.get(UID);
-	}
-
-	public static HumanNPC get(Entity entity) {
-		if (entity == null) {
-			return null;
+	// Despawns all NPCs.
+	public static void despawnAll() {
+		for (HumanNPC npc : list) {
+			despawn(npc.getUID());
 		}
-		net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
-				.getHandle();
-		if (mcEntity instanceof CraftNPC) {
-			HumanNPC npc = ((CraftNPC) mcEntity).npc;
-			if (npc == null)
-				return null;
-			// Compare object references to eliminate conflicting UIDs.
-			if (get(npc.getUID()) == npc) {
-				return npc;
-			}
-		}
-		return null;
-	}
-
-	// Gets the list of NPCs.
-	public static Iterable<HumanNPC> getNPCs() {
-		return list;
-	}
-
-	// Checks if a given entity is an npc.
-	public static boolean isNPC(Entity entity) {
-		return get(entity) != null;
 	}
 
 	// Rotates an NPC.
@@ -70,29 +46,31 @@ public class NPCManager {
 		((CraftEntity) to).getHandle().pitch = (float) pitch;
 	}
 
-	// Despawns an NPC.
-	public static void despawn(int UID) {
-		list.remove(UID).despawn();
-	}
-
-	// Despawns all NPCs.
-	public static void despawnAll() {
-		for (HumanNPC npc : list) {
-			despawn(npc.getUID());
+	public static HumanNPC get(Entity entity) {
+		if (entity == null) {
+			return null;
 		}
-	}
-
-	// Removes an NPC.
-	public static void remove(int UID) {
-		PropertyManager.remove(get(UID));
-		despawn(UID);
-	}
-
-	// Removes all NPCs.
-	public static void removeAll() {
-		for (HumanNPC npc : list) {
-			remove(npc.getUID());
+		net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
+				.getHandle();
+		if (mcEntity instanceof CraftNPC) {
+			HumanNPC npc = ((CraftNPC) mcEntity).npc;
+			if (npc == null)
+				return null;
+			// Compare object references to eliminate conflicting UIDs.
+			if (get(npc.getUID()) == npc) {
+				return npc;
+			}
 		}
+		return null;
+	}
+
+	public static HumanNPC get(int UID) {
+		return list.get(UID);
+	}
+
+	// Gets the list of NPCs.
+	public static Iterable<HumanNPC> getNPCs() {
+		return list;
 	}
 
 	// Checks if a player has an npc selected.
@@ -108,27 +86,20 @@ public class NPCManager {
 				&& NPCDataManager.selectedNPCs.get(player.getName()) == UID;
 	}
 
+	// Checks if a given entity is an npc.
+	public static boolean isNPC(Entity entity) {
+		return get(entity) != null;
+	}
+
 	// Checks if a player owns a given npc.
 	public static boolean isOwner(Player player, int UID) {
 		return get(UID).getOwner().equalsIgnoreCase(player.getName());
 	}
 
-	// Renames an npc.
-	public static void rename(int UID, String changeTo) {
-		HumanNPC npc = get(UID);
-		npc.setName(changeTo);
-	}
-
-	// Spawns a new NPC and registers it.
-	public static void register(int UID, NPCCreateReason reason) {
-		HumanNPC npc = new HumanNPC(UID);
-		npc.load();
-		register(npc, reason);
-	}
-
 	public static HumanNPC register(HumanNPC npc, NPCCreateReason reason) {
-		if (!npc.spawn())
+		if (npc == null)
 			return null;
+		npc.spawn();
 		list.put(npc.getUID(), npc);
 		npc.save();
 		npc.getPlayer().setSleepingIgnored(true); // Fix beds.
@@ -138,13 +109,38 @@ public class NPCManager {
 		return npc;
 	}
 
+	// Spawns a new NPC and registers it.
+	public static void register(int UID, NPCCreateReason reason) {
+		register(HumanNPC.createAndLoad(UID), reason);
+	}
+
 	// Registers a new NPC.
 	public static HumanNPC register(String name, Location loc,
 			NPCCreateReason reason) {
 		int UID = PropertyManager.getNewNpcID();
-		HumanNPC npc = new HumanNPC(UID, name);
-		npc.getNPCData().setLocation(loc);
-		npc.load();
-		return register(npc, reason);
+		return register(HumanNPC.createAndLoad(UID, name, loc), reason);
+	}
+
+	// Removes an NPC.
+	public static void remove(int UID) {
+		PropertyManager.remove(get(UID));
+		despawn(UID);
+	}
+
+	// Removes all NPCs.
+	public static void removeAll() {
+		for (HumanNPC npc : list) {
+			remove(npc.getUID());
+		}
+	}
+
+	// Renames an npc.
+	public static void rename(int UID, String changeTo) {
+		HumanNPC npc = get(UID);
+		npc.setName(changeTo);
+	}
+
+	public static int size() {
+		return list.size();
 	}
 }

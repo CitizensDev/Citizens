@@ -51,17 +51,6 @@ public class NPCReward implements Reward {
 		root.setString("types", Joiner.on(",").join(toggles));
 	}
 
-	public static class NPCRewardBuilder implements RewardBuilder {
-		@Override
-		public Reward build(DataKey root, boolean take) {
-			if (root.keyExists("npcid"))
-				return new NPCGiveReward(root.getInt("npcid"));
-			return new NPCReward(root.getString("name"), root
-					.getString("types").split(","), LocationUtils.loadLocation(
-					root, false));
-		}
-	}
-
 	private static class NPCGiveReward implements Reward {
 		private final int UID;
 
@@ -82,6 +71,17 @@ public class NPCReward implements Reward {
 		@Override
 		public void save(DataKey root) {
 			root.setInt("npcid", UID);
+		}
+	}
+
+	public static class NPCRewardBuilder implements RewardBuilder {
+		@Override
+		public Reward build(DataKey root, boolean take) {
+			if (root.keyExists("npcid"))
+				return new NPCGiveReward(root.getInt("npcid"));
+			return new NPCReward(root.getString("name"), root
+					.getString("types").split(","), LocationUtils.loadLocation(
+					root, false));
 		}
 	}
 }

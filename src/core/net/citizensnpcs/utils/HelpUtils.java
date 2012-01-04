@@ -5,36 +5,33 @@ import org.bukkit.command.CommandSender;
 
 public class HelpUtils {
 
-	// Sends the help page for /citizens help
-	public static void sendHelpPage(CommandSender sender, int page) {
-		switch (page) {
-		case 1:
-			header(sender, "General", 1, 2);
-			sender.sendMessage(ChatColor.GREEN + "  []"
-					+ StringUtils.wrap(" - required") + "  ()"
-					+ StringUtils.wrap(" - optional"));
-			format(sender, "citizens", "", "display Citizens information");
-			format(sender, "citizens", "reload", "reload Citizens files");
-			format(sender, "citizens", "save", "force a save of Citizens files");
-			format(sender, "citizens", "debug", "toggle Citizens debug mode");
-			format(sender, "citizens", "clean", "remove ghost NPCs");
-			format(sender, "toggle", "help (page)",
-					"view available toggleable types");
-			format(sender, "toggle", "[type]", "toggle an NPC type");
-			format(sender, "toggle", "all [on/off]",
-					"toggle all types for an NPC");
-			break;
-		case 2:
-			header(sender, "General", 2, 2);
-			format(sender, "npc", "help [page]", "basic NPC help pages");
-			format(sender, "[type]", "help",
-					"view the help page for an NPC type");
-			footer(sender);
-			break;
-		default:
-			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
-			break;
+	// Prints the footer for the help menus
+	public static void footer(CommandSender sender) {
+		sender.sendMessage(ChatColor.DARK_GRAY
+				+ StringUtils.listify("Coded by fullwall and aPunch"));
+	}
+
+	// Formats commands to fit a uniform style
+	public static void format(CommandSender sender, String command,
+			String args, String desc) {
+		String message = "";
+		if (args.isEmpty()) {
+			message = StringUtils.wrap("/") + command + StringUtils.wrap(" - ")
+					+ desc;
+		} else {
+			message = StringUtils.wrap("/") + command + ChatColor.RED + " "
+					+ args + StringUtils.wrap(" - ") + desc;
 		}
+		sender.sendMessage(message);
+	}
+
+	// Prints the header for the help menus
+	public static void header(CommandSender sender, String npcType, int page,
+			int maxPages) {
+		sender.sendMessage(ChatColor.YELLOW
+				+ StringUtils.listify(ChatColor.GREEN + "Citizens " + npcType
+						+ " Help" + ChatColor.WHITE + " <" + page + "/"
+						+ maxPages + ">" + ChatColor.YELLOW));
 	}
 
 	// Sends the help page for the basic npc type
@@ -80,32 +77,35 @@ public class HelpUtils {
 		}
 	}
 
-	// Prints the header for the help menus
-	public static void header(CommandSender sender, String npcType, int page,
-			int maxPages) {
-		sender.sendMessage(ChatColor.YELLOW
-				+ StringUtils.listify(ChatColor.GREEN + "Citizens " + npcType
-						+ " Help" + ChatColor.WHITE + " <" + page + "/"
-						+ maxPages + ">" + ChatColor.YELLOW));
-	}
-
-	// Formats commands to fit a uniform style
-	public static void format(CommandSender sender, String command,
-			String args, String desc) {
-		String message = "";
-		if (args.isEmpty()) {
-			message = StringUtils.wrap("/") + command + StringUtils.wrap(" - ")
-					+ desc;
-		} else {
-			message = StringUtils.wrap("/") + command + ChatColor.RED + " "
-					+ args + StringUtils.wrap(" - ") + desc;
+	// Sends the help page for /citizens help
+	public static void sendHelpPage(CommandSender sender, int page) {
+		switch (page) {
+		case 1:
+			header(sender, "General", 1, 2);
+			sender.sendMessage(ChatColor.GREEN + "  []"
+					+ StringUtils.wrap(" - required") + "  ()"
+					+ StringUtils.wrap(" - optional"));
+			format(sender, "citizens", "", "display Citizens information");
+			format(sender, "citizens", "reload", "reload Citizens files");
+			format(sender, "citizens", "save", "force a save of Citizens files");
+			format(sender, "citizens", "debug", "toggle Citizens debug mode");
+			format(sender, "citizens", "clean", "remove ghost NPCs");
+			format(sender, "toggle", "help (page)",
+					"view available toggleable types");
+			format(sender, "toggle", "[type]", "toggle an NPC type");
+			format(sender, "toggle", "all [on/off]",
+					"toggle all types for an NPC");
+			break;
+		case 2:
+			header(sender, "General", 2, 2);
+			format(sender, "npc", "help [page]", "basic NPC help pages");
+			format(sender, "[type]", "help",
+					"view the help page for an NPC type");
+			footer(sender);
+			break;
+		default:
+			sender.sendMessage(MessageUtils.getMaxPagesMessage(page, 2));
+			break;
 		}
-		sender.sendMessage(message);
-	}
-
-	// Prints the footer for the help menus
-	public static void footer(CommandSender sender) {
-		sender.sendMessage(ChatColor.DARK_GRAY
-				+ StringUtils.listify("Coded by fullwall and aPunch"));
 	}
 }

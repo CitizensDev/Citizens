@@ -10,6 +10,7 @@ import net.citizensnpcs.wizards.WizardTask;
 
 public class WizardNPCListen extends NPCListener {
 
+	@Override
 	public void onNPCToggleType(NPCToggleTypeEvent event) {
 		if (!event.getToggledType().equals("wizard")) {
 			return;

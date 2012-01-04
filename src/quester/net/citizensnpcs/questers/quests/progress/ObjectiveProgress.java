@@ -28,26 +28,6 @@ public class ObjectiveProgress {
 		this.questUpdater = QuestAPI.getObjective(objective.getType());
 	}
 
-	public boolean update(Event event) {
-		return getQuestUpdater().update(event, this);
-	}
-
-	public Event.Type[] getEventTypes() {
-		return this.questUpdater.getEventTypes();
-	}
-
-	public int getQuesterUID() {
-		return UID;
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public Objective getObjective() {
-		return this.objective;
-	}
-
 	public void addAmount(int i) {
 		if (this.getObjective().getAmount() - this.getAmount() > 0)
 			this.setAmountCompleted(this.getAmount() + 1);
@@ -59,24 +39,28 @@ public class ObjectiveProgress {
 		return amountCompleted;
 	}
 
-	public void setAmountCompleted(int amountCompleted) {
-		this.amountCompleted = amountCompleted;
-	}
-
-	public void setLastItem(ItemStack lastItem) {
-		this.lastItem = lastItem;
+	public Event.Type[] getEventTypes() {
+		return this.questUpdater.getEventTypes();
 	}
 
 	public ItemStack getLastItem() {
 		return lastItem;
 	}
 
-	public void setLastLocation(Location lastLocation) {
-		this.lastLocation = lastLocation;
-	}
-
 	public Location getLastLocation() {
 		return lastLocation;
+	}
+
+	public Objective getObjective() {
+		return this.objective;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public int getQuesterUID() {
+		return UID;
 	}
 
 	public String getQuestName() {
@@ -87,4 +71,19 @@ public class ObjectiveProgress {
 		return questUpdater;
 	}
 
+	public void setAmountCompleted(int amountCompleted) {
+		this.amountCompleted = amountCompleted;
+	}
+
+	public void setLastItem(ItemStack lastItem) {
+		this.lastItem = lastItem;
+	}
+
+	public void setLastLocation(Location lastLocation) {
+		this.lastLocation = lastLocation;
+	}
+
+	public boolean update(Event event) {
+		return getQuestUpdater().update(event, this);
+	}
 }

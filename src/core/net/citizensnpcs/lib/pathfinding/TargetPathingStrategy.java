@@ -1,7 +1,6 @@
 package net.citizensnpcs.lib.pathfinding;
 
 import net.citizensnpcs.lib.CraftNPC;
-import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.lib.NPCManager;
 
 import org.bukkit.craftbukkit.entity.CraftEntity;
@@ -10,11 +9,13 @@ import org.bukkit.entity.Entity;
 public class TargetPathingStrategy implements PathingStrategy {
 	private final CraftNPC handle;
 	private final net.minecraft.server.Entity target;
+	private final boolean aggro;
 	private PathingStrategy current = null;
 
-	public TargetPathingStrategy(HumanNPC npc, Entity target) {
-		this.handle = npc.getHandle();
+	public TargetPathingStrategy(CraftNPC handle, Entity target, boolean aggro) {
+		this.handle = handle;
 		this.target = ((CraftEntity) target).getHandle();
+		this.aggro = aggro;
 	}
 
 	@Override
@@ -25,7 +26,8 @@ public class TargetPathingStrategy implements PathingStrategy {
 				handle, target, 16F));
 		NPCManager.faceEntity(handle.getBukkitEntity(),
 				target.getBukkitEntity());
-		handle.tryAttack(target.getBukkitEntity()); // TODO: respect aggro
+		if (aggro)
+			handle.tryAttack(target.getBukkitEntity());
 		current.update();
 		return false;
 	}

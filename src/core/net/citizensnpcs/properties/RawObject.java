@@ -19,6 +19,22 @@ public class RawObject {
 		}
 	}
 
+	public double getDouble() {
+		try {
+			if (value instanceof Float) {
+				return (Float) value;
+			} else if (value instanceof Double) {
+				return (Double) value;
+			} else {
+				return (Integer) value;
+			}
+		} catch (NullPointerException e) {
+			Messaging.log("Report this error ASAP.");
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 	public int getInt() {
 		try {
 			return (Integer) value;
@@ -36,22 +52,6 @@ public class RawObject {
 			Messaging.log("Report this error ASAP.");
 			e.printStackTrace();
 			return "";
-		}
-	}
-
-	public double getDouble() {
-		try {
-			if (value instanceof Float) {
-				return (Float) value;
-			} else if (value instanceof Double) {
-				return (Double) value;
-			} else {
-				return (Integer) value;
-			}
-		} catch (NullPointerException e) {
-			Messaging.log("Report this error ASAP.");
-			e.printStackTrace();
-			return 0;
 		}
 	}
 }

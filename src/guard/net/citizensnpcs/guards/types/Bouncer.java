@@ -1,12 +1,10 @@
 package net.citizensnpcs.guards.types;
 
-import net.citizensnpcs.Settings;
 import net.citizensnpcs.guards.Guard;
 import net.citizensnpcs.guards.GuardUpdater;
 import net.citizensnpcs.guards.Targeter;
 import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.LocationUtils;
-import net.citizensnpcs.utils.PathUtils;
 
 import org.bukkit.entity.LivingEntity;
 
@@ -34,12 +32,12 @@ public class Bouncer implements GuardUpdater {
 
 	private boolean keepAttacking(HumanNPC npc) {
 		Guard guard = npc.getType("guard");
-		if (npc.getHandle().getStationaryTicks() > Settings
-				.getInt("MaxStationaryReturnTicks")) {
-			npc.teleport(npc.getBaseLocation());
-			npc.getHandle().cancelTarget();
-		}
-		return npc.getHandle().hasTarget()
+		/*	if (npc.getHandle().getStationaryTicks() > Settings
+					.getInt("MaxStationaryReturnTicks")) {
+				npc.teleport(npc.getBaseLocation());
+				npc.getHandle().cancelTarget();
+			}TODO*/
+		return npc.getPathController().isPathing()
 				&& LocationUtils.withinRange(npc.getLocation(),
 						npc.getBaseLocation(), guard.getProtectionRadius());
 	}
@@ -53,25 +51,25 @@ public class Bouncer implements GuardUpdater {
 	private boolean startReturning(HumanNPC npc) {
 		if (findTarget(npc))
 			return false;
-		PathUtils.createPath(npc, npc.getBaseLocation(), -1,
-				Settings.getInt("MaxStationaryReturnTicks"));
+		npc.getPathController().pathTo(npc.getBaseLocation());
+		// Settings.getInt("MaxStationaryReturnTicks")); TODO
 		return true;
 	}
 
 	@Override
 	public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
-		if (npc.getHandle().hasTarget() && current == GuardStatus.NORMAL)
+		if (npc.getPathController().isPathing()
+				&& current == GuardStatus.NORMAL)
 			current = GuardStatus.ATTACKING;
 		switch (current) {
 		case NORMAL:
 			if (findTarget(npc)) {
-				npc.setPaused(true);
 				return GuardStatus.ATTACKING;
 			}
 			break;
 		case ATTACKING:
 			if (!keepAttacking(npc)) {
-				npc.getHandle().cancelTarget();
+				npc.getPathController().cancel();
 				if (startReturning(npc)) {
 					return GuardStatus.RETURNING;
 				} else {
@@ -81,7 +79,6 @@ public class Bouncer implements GuardUpdater {
 			break;
 		case RETURNING:
 			if (!continueReturn(npc)) {
-				npc.setPaused(false);
 				return GuardStatus.NORMAL;
 			}
 			break;

@@ -19,11 +19,11 @@ public enum DatabaseType {
 		return driver;
 	}
 
+	private static final Map<String, DatabaseType> lookup = Maps.newHashMap();
+
 	public static DatabaseType fromName(String alias) {
 		return lookup.get(alias.toLowerCase());
 	}
-
-	private static final Map<String, DatabaseType> lookup = Maps.newHashMap();
 	static {
 		for (DatabaseType type : values()) {
 			if (type.aliases == null)

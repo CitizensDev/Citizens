@@ -12,18 +12,13 @@ import net.citizensnpcs.properties.Setting;
 public class AlchemistType extends CitizensNPCType {
 
 	@Override
-	public String getName() {
-		return "alchemist";
-	}
-
-	@Override
 	public CommandHandler getCommands() {
 		return AlchemistCommands.INSTANCE;
 	}
 
 	@Override
-	public CitizensNPC newInstance() {
-		return new Alchemist();
+	public String getName() {
+		return "alchemist";
 	}
 
 	@Override
@@ -34,6 +29,11 @@ public class AlchemistType extends CitizensNPCType {
 		nodes.add(new Setting("AlchemistFailedCraftItem", SettingsType.GENERAL,
 				"alchemists.failed-craft-item", 263));
 		return nodes;
+	}
+
+	@Override
+	public CitizensNPC newInstance() {
+		return new Alchemist();
 	}
 
 }

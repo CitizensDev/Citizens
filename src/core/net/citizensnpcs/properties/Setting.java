@@ -40,6 +40,15 @@ public class Setting {
 	}
 
 	/**
+	 * Get the path of the node
+	 * 
+	 * @return path Path of a node
+	 */
+	public String getPath() {
+		return this.path;
+	}
+
+	/**
 	 * Get the type of the node, which determines which file the node is written
 	 * to
 	 * 
@@ -47,15 +56,6 @@ public class Setting {
 	 */
 	public SettingsType getType() {
 		return this.type;
-	}
-
-	/**
-	 * Get the path of the node
-	 * 
-	 * @return path Path of a node
-	 */
-	public String getPath() {
-		return this.path;
 	}
 
 	/**

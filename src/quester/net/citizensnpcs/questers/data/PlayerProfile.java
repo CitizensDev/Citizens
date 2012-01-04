@@ -23,11 +23,49 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 public class PlayerProfile {
+	private long lastSave;
+
+	private final DataSource profile;
+
+	private final Map<String, CompletedQuest> completedQuests = Maps
+			.newHashMap();
+	private final String name;
+	private QuestProgress progress;
 	private PlayerProfile(String name) {
 		profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name
 				+ ".yml");
 		this.name = name;
 		this.load();
+	}
+	public void addCompletedQuest(CompletedQuest quest) {
+		completedQuests.put(quest.getName().toLowerCase(), quest);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		PlayerProfile other = (PlayerProfile) obj;
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	public Collection<CompletedQuest> getAllCompleted() {
+		return Collections.unmodifiableCollection(completedQuests.values());
+	}
+
+	public CompletedQuest getCompletedQuest(String name) {
+		return completedQuests.get(name.toLowerCase());
 	}
 
 	public int getCompletedTimes(String reward) {
@@ -35,105 +73,33 @@ public class PlayerProfile {
 				.getTimesCompleted() : 0;
 	}
 
-	private long lastSave;
-	private final DataSource profile;
-	private final Map<String, CompletedQuest> completedQuests = Maps
-			.newHashMap();
-	private final String name;
-	private QuestProgress progress;
-
-	public void addCompletedQuest(CompletedQuest quest) {
-		completedQuests.put(quest.getName().toLowerCase(), quest);
-	}
-
-	public void removeCompletedQuest(String name) {
-		completedQuests.remove(name.toLowerCase());
-	}
-
-	public CompletedQuest getCompletedQuest(String name) {
-		return completedQuests.get(name.toLowerCase());
-	}
-
-	public void removeAllCompletedQuests() {
-		completedQuests.clear();
-	}
-
-	public Collection<CompletedQuest> getAllCompleted() {
-		return Collections.unmodifiableCollection(completedQuests.values());
-	}
-
-	public boolean hasCompleted(String quest) {
-		return completedQuests.containsKey(quest.toLowerCase());
+	public long getLastSaveTime() {
+		return lastSave;
 	}
 
 	public QuestProgress getProgress() {
 		return progress;
 	}
 
-	public void setProgress(QuestProgress progress) {
-		this.progress = progress;
+	public String getQuest() {
+		return progress == null ? "" : progress.getQuestName();
+	}
+
+	public boolean hasCompleted(String quest) {
+		return completedQuests.containsKey(quest.toLowerCase());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(name);
 	}
 
 	public boolean hasQuest() {
 		return progress != null;
 	}
 
-	public String getQuest() {
-		return progress == null ? "" : progress.getQuestName();
-	}
-
 	public boolean isOnline() {
 		return Bukkit.getServer().getPlayer(name) != null;
-	}
-
-	public void save() {
-		this.lastSave = System.currentTimeMillis();
-		DataKey root = profile.getKey("quests");
-		root.removeKey("current");
-		if (progress != null) {
-			root = root.getRelative("current");
-			int count = 0;
-
-			root.setString("name", progress.getQuestName());
-			root.setInt("step", progress.getStep());
-			root.setLong("start-time", progress.getStartTime());
-			root.setInt("giver", progress.getQuesterUID());
-			DataKey parent;
-			if (progress.getProgress() != null) {
-				for (ObjectiveProgress current : progress.getProgress()) {
-					parent = root.getRelative(count + ".progress");
-					if (current == null) {
-						++count;
-						continue;
-					}
-					parent.setInt("amount", current.getAmount());
-					if (current.getLastItem() != null) {
-						parent.setInt("item.id", current.getLastItem()
-								.getTypeId());
-						parent.setInt("item.amount", current.getLastItem()
-								.getAmount());
-						parent.setInt("item.data", current.getLastItem()
-								.getDurability());
-					}
-					if (current.getLastLocation() != null) {
-						LocationUtils.saveLocation(parent,
-								current.getLastLocation(), true);
-					}
-					++count;
-				}
-			}
-		}
-		profile.getKey("quests").removeKey("completed");
-		root = profile.getKey("quests.completed");
-		DataKey parent;
-		for (CompletedQuest quest : this.completedQuests.values()) {
-			parent = root.getRelative(quest.getName());
-			parent.setInt("completed", quest.getTimesCompleted());
-			parent.setLong("elapsed", quest.getElapsed());
-			parent.setLong("finish", quest.getFinishTime());
-			parent.setInt("quester", quest.getQuesterUID());
-		}
-		profile.save();
 	}
 
 	private void load() {
@@ -191,38 +157,76 @@ public class PlayerProfile {
 		}
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(name);
+	public void removeAllCompletedQuests() {
+		completedQuests.clear();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		PlayerProfile other = (PlayerProfile) obj;
-		if (name == null) {
-			if (other.name != null) {
-				return false;
+	public void removeCompletedQuest(String name) {
+		completedQuests.remove(name.toLowerCase());
+	}
+
+	public void save() {
+		this.lastSave = System.currentTimeMillis();
+		DataKey root = profile.getKey("quests");
+		root.removeKey("current");
+		if (progress != null) {
+			root = root.getRelative("current");
+			int count = 0;
+
+			root.setString("name", progress.getQuestName());
+			root.setInt("step", progress.getStep());
+			root.setLong("start-time", progress.getStartTime());
+			root.setInt("giver", progress.getQuesterUID());
+			DataKey parent;
+			if (progress.getProgress() != null) {
+				for (ObjectiveProgress current : progress.getProgress()) {
+					parent = root.getRelative(count + ".progress");
+					if (current == null) {
+						++count;
+						continue;
+					}
+					parent.setInt("amount", current.getAmount());
+					if (current.getLastItem() != null) {
+						parent.setInt("item.id", current.getLastItem()
+								.getTypeId());
+						parent.setInt("item.amount", current.getLastItem()
+								.getAmount());
+						parent.setInt("item.data", current.getLastItem()
+								.getDurability());
+					}
+					if (current.getLastLocation() != null) {
+						LocationUtils.saveLocation(parent,
+								current.getLastLocation(), true);
+					}
+					++count;
+				}
 			}
-		} else if (!name.equals(other.name)) {
-			return false;
 		}
-		return true;
+		profile.getKey("quests").removeKey("completed");
+		root = profile.getKey("quests.completed");
+		DataKey parent;
+		for (CompletedQuest quest : this.completedQuests.values()) {
+			parent = root.getRelative(quest.getName());
+			parent.setInt("completed", quest.getTimesCompleted());
+			parent.setLong("elapsed", quest.getElapsed());
+			parent.setLong("finish", quest.getFinishTime());
+			parent.setInt("quester", quest.getQuesterUID());
+		}
+		profile.save();
 	}
 
-	public long getLastSaveTime() {
-		return lastSave;
+	public void setProgress(QuestProgress progress) {
+		this.progress = progress;
 	}
 
 	private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
 
 	public static Collection<PlayerProfile> getOnline() {
 		return profiles.values();
+	}
+
+	public static PlayerProfile getProfile(String name) {
+		return getProfile(name, true);
 	}
 
 	public static PlayerProfile getProfile(String name, boolean register) {
@@ -237,12 +241,14 @@ public class PlayerProfile {
 		return profiles.get(name);
 	}
 
-	public static PlayerProfile getProfile(String name) {
-		return getProfile(name, true);
-	}
-
 	public static boolean isOnline(String name) {
 		return profiles.containsKey(name.toLowerCase());
+	}
+
+	public static void saveAll() {
+		for (PlayerProfile profile : profiles.values()) {
+			profile.save();
+		}
 	}
 
 	public static void setProfile(String name, PlayerProfile profile) {
@@ -251,12 +257,6 @@ public class PlayerProfile {
 			profiles.remove(name);
 		} else {
 			profiles.put(name, profile);
-		}
-	}
-
-	public static void saveAll() {
-		for (PlayerProfile profile : profiles.values()) {
-			profile.save();
 		}
 	}
 }

@@ -10,9 +10,6 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.lib.CraftNPC;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
-import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.World;
 
 import org.bukkit.Location;
 
@@ -25,32 +22,16 @@ public enum CreatureNPCType {
 	private final int max, spawnChance;
 	private final String[] possible;
 	private final boolean spawn;
-	private Constructor<? extends CreatureNPC> instance;
+	private Constructor<? extends CreatureNPC> constructor;
 	private final SpawnValidator spawnIn, spawnOn;
 	private final Spawner spawner = DefaultSpawner.INSTANCE;
 	private final String name;
-
-	private static final Random random = new Random();
-
-	private static final Map<String, CreatureNPCType> mapping = Maps
-			.newHashMap();
-
-	private static final List<CreatureNPCType> spawning = Lists.newArrayList();
-
-	static {
-		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
-			mapping.put(type.name, type);
-			if (type.isSpawn())
-				spawning.add(type);
-		}
-	}
 
 	CreatureNPCType(Class<? extends CreatureNPC> instance, String name,
 			SpawnValidator spawnIn, SpawnValidator spawnOn) {
 		name = StringUtils.capitalise(name.toLowerCase());
 		try {
-			this.instance = instance.getConstructor(MinecraftServer.class,
-					World.class, String.class, ItemInWorldManager.class);
+			this.constructor = instance.getConstructor(CraftNPC.class);
 		} catch (Exception ex) {
 			Messaging.log("Unable to get constructor for", name + ".");
 		}
@@ -72,19 +53,24 @@ public enum CreatureNPCType {
 	}
 
 	public Constructor<? extends CreatureNPC> getEntityConstructor() {
-		return instance;
+		return constructor;
 	}
 
 	public boolean isSpawn() {
-		return spawn;
+		return constructor != null && spawn;
 	}
 
 	public boolean shouldSpawn() {
 		return this.spawnChance > random.nextInt(100);
 	}
 
-	public CraftNPC spawn(Location location) {
-		return spawner.spawn(this, location);
+	public CreatureNPC spawn(Location location) {
+		CraftNPC handle = spawner.spawn(this, location);
+		try {
+			return constructor.newInstance(handle);
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 
 	public boolean validSpawnPosition(org.bukkit.World world, int x, int y,
@@ -93,6 +79,13 @@ public enum CreatureNPCType {
 				&& spawnIn.isValid(world.getBlockTypeIdAt(x, y, z))
 				&& spawnIn.isValid(world.getBlockTypeIdAt(x, y + 1, z));
 	}
+
+	private static final Random random = new Random();
+
+	private static final Map<String, CreatureNPCType> mapping = Maps
+			.newHashMap();
+
+	private static final List<CreatureNPCType> spawning = Lists.newArrayList();
 
 	public static CreatureNPCType fromName(String mob) {
 		return mapping.get(mob);
@@ -105,5 +98,13 @@ public enum CreatureNPCType {
 
 	public static boolean hasSpawning() {
 		return spawning.size() > 0;
+	}
+
+	static {
+		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
+			mapping.put(type.name, type);
+			if (type.isSpawn())
+				spawning.add(type);
+		}
 	}
 }

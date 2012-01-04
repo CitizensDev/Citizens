@@ -16,11 +16,11 @@ public class QuestEvent extends CitizensEvent {
 		this.player = player;
 	}
 
-	public Quest getQuest() {
-		return quest;
-	}
-
 	public Player getPlayer() {
 		return player;
+	}
+
+	public Quest getQuest() {
+		return quest;
 	}
 }

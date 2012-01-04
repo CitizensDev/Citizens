@@ -79,12 +79,6 @@ public class QuestManager {
 		return true;
 	}
 
-	private static long getDelayDifference(CompletedQuest completed, Quest quest) {
-		return quest.getDelay()
-				- TimeUnit.MINUTES.convert(System.currentTimeMillis()
-						- completed.getFinishTime(), TimeUnit.MILLISECONDS);
-	}
-
 	public static boolean canRepeat(Player player, Quest quest) {
 		if (quest == null) {
 			return false;
@@ -94,6 +88,10 @@ public class QuestManager {
 				|| (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
 						quest.getName()).getTimesCompleted() < quest
 						.getRepeatLimit());
+	}
+
+	public static void clearQuests() {
+		quests.clear();
 	}
 
 	public static void completeQuest(Player player) {
@@ -112,6 +110,12 @@ public class QuestManager {
 		profile.addCompletedQuest(comp);
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new QuestCompleteEvent(quest, comp, player));
+	}
+
+	private static long getDelayDifference(CompletedQuest completed, Quest quest) {
+		return quest.getDelay()
+				- TimeUnit.MINUTES.convert(System.currentTimeMillis()
+						- completed.getFinishTime(), TimeUnit.MILLISECONDS);
 	}
 
 	private static PlayerProfile getProfile(String string) {
@@ -157,9 +161,5 @@ public class QuestManager {
 			getProfile(player.getName()).setProgress(null);
 		}
 		PlayerProfile.setProfile(player.getName(), null);
-	}
-
-	public static void clearQuests() {
-		quests.clear();
 	}
 }

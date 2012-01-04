@@ -19,33 +19,19 @@ public class StopWatch {
 	private long stopTime = 0;
 	private boolean running = false;
 
-	public void start() {
-		this.startTime = System.nanoTime();
-		this.running = true;
+	public long convertHours(long nanoseconds) {
+		return toHours(toMinutes(toSeconds(nanoseconds)));
 	}
 
-	public void timeFunction(Class<?> call, String methodName, Object instance,
-			Object... args) {
-		try {
-			Method[] methods = call.getDeclaredMethods();
-			for (Method method : methods) {
-				if (method.getName().equals(methodName)) {
-					method.setAccessible(true);
-					start();
-					method.invoke(instance, args);
-					stop();
-					printElapsed(methodName);
-				}
-			}
-		} catch (Exception ex) {
-			Messaging.log("Error while calling method " + methodName
-					+ ". Error " + ex.getMessage() + ".");
+	// elapsed time in nanoseconds
+	public long getElapsedTime() {
+		long elapsed;
+		if (running) {
+			elapsed = (System.nanoTime() - startTime);
+		} else {
+			elapsed = (stopTime - startTime);
 		}
-	}
-
-	public void stop() {
-		this.stopTime = System.nanoTime();
-		this.running = false;
+		return elapsed;
 	}
 
 	public void print() {
@@ -67,34 +53,48 @@ public class StopWatch {
 				+ ".");
 	}
 
-	public long toMilliseconds(long nanoseconds) {
-		return nanoseconds / 1000000;
+	public void start() {
+		this.startTime = System.nanoTime();
+		this.running = true;
 	}
 
-	public long toSeconds(long nanoseconds) {
-		return nanoseconds / 1000000000;
+	public void stop() {
+		this.stopTime = System.nanoTime();
+		this.running = false;
 	}
 
-	public long toMinutes(long seconds) {
-		return seconds / 60;
+	public void timeFunction(Class<?> call, String methodName, Object instance,
+			Object... args) {
+		try {
+			Method[] methods = call.getDeclaredMethods();
+			for (Method method : methods) {
+				if (method.getName().equals(methodName)) {
+					method.setAccessible(true);
+					start();
+					method.invoke(instance, args);
+					stop();
+					printElapsed(methodName);
+				}
+			}
+		} catch (Exception ex) {
+			Messaging.log("Error while calling method " + methodName
+					+ ". Error " + ex.getMessage() + ".");
+		}
 	}
 
 	public long toHours(long minutes) {
 		return minutes / 60;
 	}
 
-	public long convertHours(long nanoseconds) {
-		return toHours(toMinutes(toSeconds(nanoseconds)));
+	public long toMilliseconds(long nanoseconds) {
+		return nanoseconds / 1000000;
 	}
 
-	// elapsed time in nanoseconds
-	public long getElapsedTime() {
-		long elapsed;
-		if (running) {
-			elapsed = (System.nanoTime() - startTime);
-		} else {
-			elapsed = (stopTime - startTime);
-		}
-		return elapsed;
+	public long toMinutes(long seconds) {
+		return seconds / 60;
+	}
+
+	public long toSeconds(long nanoseconds) {
+		return nanoseconds / 1000000000;
 	}
 }

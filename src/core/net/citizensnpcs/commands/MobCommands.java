@@ -10,6 +10,11 @@ import net.citizensnpcs.sk89q.CommandRequirements;
 import org.bukkit.entity.Player;
 
 public class MobCommands extends CommandHandler {
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("creature.spawn");
+	}
+
 	@CommandRequirements()
 	@Command(
 			aliases = "npc",
@@ -19,10 +24,5 @@ public class MobCommands extends CommandHandler {
 			max = 2)
 	@CommandPermissions("creature.spawn")
 	public static void spawn(CommandContext args, Player player, HumanNPC npc) {
-	}
-
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("creature.spawn");
 	}
 }

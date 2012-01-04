@@ -18,26 +18,6 @@ public class BOSE6 implements Method {
 	private BOSEconomy BOSEconomy;
 
 	@Override
-	public BOSEconomy getPlugin() {
-		return this.BOSEconomy;
-	}
-
-	@Override
-	public String getName() {
-		return "BOSEconomy";
-	}
-
-	@Override
-	public String getVersion() {
-		return "0.6.2";
-	}
-
-	@Override
-	public int fractionalDigits() {
-		return 0;
-	}
-
-	@Override
 	public String format(double amount) {
 		String currency = this.BOSEconomy.getMoneyNamePlural();
 
@@ -48,24 +28,8 @@ public class BOSE6 implements Method {
 	}
 
 	@Override
-	public boolean hasBanks() {
-		return true;
-	}
-
-	@Override
-	public boolean hasBank(String bank) {
-		return this.BOSEconomy.bankExists(bank);
-	}
-
-	@Override
-	public boolean hasAccount(String name) {
-		return this.BOSEconomy.playerRegistered(name, false);
-	}
-
-	@Override
-	public boolean hasBankAccount(String bank, String name) {
-		return this.BOSEconomy.isBankOwner(bank, name)
-				|| this.BOSEconomy.isBankMember(bank, name);
+	public int fractionalDigits() {
+		return 0;
 	}
 
 	@Override
@@ -82,6 +46,42 @@ public class BOSE6 implements Method {
 			return null;
 
 		return new BOSEBankAccount(bank, BOSEconomy);
+	}
+
+	@Override
+	public String getName() {
+		return "BOSEconomy";
+	}
+
+	@Override
+	public BOSEconomy getPlugin() {
+		return this.BOSEconomy;
+	}
+
+	@Override
+	public String getVersion() {
+		return "0.6.2";
+	}
+
+	@Override
+	public boolean hasAccount(String name) {
+		return this.BOSEconomy.playerRegistered(name, false);
+	}
+
+	@Override
+	public boolean hasBank(String bank) {
+		return this.BOSEconomy.bankExists(bank);
+	}
+
+	@Override
+	public boolean hasBankAccount(String bank, String name) {
+		return this.BOSEconomy.isBankOwner(bank, name)
+				|| this.BOSEconomy.isBankMember(bank, name);
+	}
+
+	@Override
+	public boolean hasBanks() {
+		return true;
 	}
 
 	@Override
@@ -106,36 +106,14 @@ public class BOSE6 implements Method {
 		}
 
 		@Override
-		public double balance() {
-			return this.BOSEconomy.getPlayerMoney(this.name);
-		}
-
-		@Override
-		public boolean set(double amount) {
-			int IntAmount = (int) Math.ceil(amount);
-			return this.BOSEconomy.setPlayerMoney(this.name, IntAmount, false);
-		}
-
-		@Override
 		public boolean add(double amount) {
 			int IntAmount = (int) Math.ceil(amount);
 			return this.BOSEconomy.addPlayerMoney(this.name, IntAmount, false);
 		}
 
 		@Override
-		public boolean subtract(double amount) {
-			int IntAmount = (int) Math.ceil(amount);
-			int balance = (int) this.balance();
-			return this.BOSEconomy.setPlayerMoney(this.name,
-					(balance - IntAmount), false);
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			int IntAmount = (int) Math.ceil(amount);
-			int balance = (int) this.balance();
-			return this.BOSEconomy.setPlayerMoney(this.name,
-					(balance * IntAmount), false);
+		public double balance() {
+			return this.BOSEconomy.getPlayerMoney(this.name);
 		}
 
 		@Override
@@ -167,8 +145,30 @@ public class BOSE6 implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			int IntAmount = (int) Math.ceil(amount);
+			int balance = (int) this.balance();
+			return this.BOSEconomy.setPlayerMoney(this.name,
+					(balance * IntAmount), false);
+		}
+
+		@Override
 		public boolean remove() {
 			return false;
+		}
+
+		@Override
+		public boolean set(double amount) {
+			int IntAmount = (int) Math.ceil(amount);
+			return this.BOSEconomy.setPlayerMoney(this.name, IntAmount, false);
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			int IntAmount = (int) Math.ceil(amount);
+			int balance = (int) this.balance();
+			return this.BOSEconomy.setPlayerMoney(this.name,
+					(balance - IntAmount), false);
 		}
 	}
 
@@ -182,27 +182,6 @@ public class BOSE6 implements Method {
 		}
 
 		@Override
-		public String getBankName() {
-			return this.bank;
-		}
-
-		@Override
-		public int getBankId() {
-			return -1;
-		}
-
-		@Override
-		public double balance() {
-			return this.BOSEconomy.getBankMoney(bank);
-		}
-
-		@Override
-		public boolean set(double amount) {
-			int IntAmount = (int) Math.ceil(amount);
-			return this.BOSEconomy.setBankMoney(bank, IntAmount, true);
-		}
-
-		@Override
 		public boolean add(double amount) {
 			int IntAmount = (int) Math.ceil(amount);
 			int balance = (int) this.balance();
@@ -211,19 +190,8 @@ public class BOSE6 implements Method {
 		}
 
 		@Override
-		public boolean subtract(double amount) {
-			int IntAmount = (int) Math.ceil(amount);
-			int balance = (int) this.balance();
-			return this.BOSEconomy.setBankMoney(bank, (balance - IntAmount),
-					false);
-		}
-
-		@Override
-		public boolean multiply(double amount) {
-			int IntAmount = (int) Math.ceil(amount);
-			int balance = (int) this.balance();
-			return this.BOSEconomy.setBankMoney(bank, (balance * IntAmount),
-					false);
+		public double balance() {
+			return this.BOSEconomy.getBankMoney(bank);
 		}
 
 		@Override
@@ -232,6 +200,16 @@ public class BOSE6 implements Method {
 			int balance = (int) this.balance();
 			return this.BOSEconomy.setBankMoney(bank, (balance / IntAmount),
 					false);
+		}
+
+		@Override
+		public int getBankId() {
+			return -1;
+		}
+
+		@Override
+		public String getBankName() {
+			return this.bank;
 		}
 
 		@Override
@@ -255,8 +233,30 @@ public class BOSE6 implements Method {
 		}
 
 		@Override
+		public boolean multiply(double amount) {
+			int IntAmount = (int) Math.ceil(amount);
+			int balance = (int) this.balance();
+			return this.BOSEconomy.setBankMoney(bank, (balance * IntAmount),
+					false);
+		}
+
+		@Override
 		public boolean remove() {
 			return this.BOSEconomy.removeBank(bank);
+		}
+
+		@Override
+		public boolean set(double amount) {
+			int IntAmount = (int) Math.ceil(amount);
+			return this.BOSEconomy.setBankMoney(bank, IntAmount, true);
+		}
+
+		@Override
+		public boolean subtract(double amount) {
+			int IntAmount = (int) Math.ceil(amount);
+			int balance = (int) this.balance();
+			return this.BOSEconomy.setBankMoney(bank, (balance - IntAmount),
+					false);
 		}
 	}
 }

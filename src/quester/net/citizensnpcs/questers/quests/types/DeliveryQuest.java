@@ -5,6 +5,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.questers.QuestCancelException;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
+import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -15,45 +16,6 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.inventory.ItemStack;
 
 public class DeliveryQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.CUSTOM_EVENT };
-
-	@Override
-	public boolean update(Event event, ObjectiveProgress progress) {
-		if (!(event instanceof NPCRightClickEvent))
-			return false;
-		NPCRightClickEvent e = (NPCRightClickEvent) event;
-		if (e.getPlayer().getEntityId() == progress.getPlayer().getEntityId()
-				&& e.getNPC().getUID() == progress.getObjective()
-						.getDestNPCID()) {
-			Player player = e.getPlayer();
-
-			if (progress.getObjective().getMaterial() == null
-					|| progress.getObjective().getMaterial() == Material.AIR) {
-				return true;
-			}
-
-			if (player.getItemInHand().getType() == progress.getObjective()
-					.getMaterial()) {
-				boolean completed = player.getItemInHand().getAmount() >= progress
-						.getObjective().getAmount();
-				if (completed
-						&& progress.getObjective().getAmount() > 0
-						&& progress.getObjective().getMaterial() != Material.AIR) {
-					int amount = player.getItemInHand().getAmount()
-							- progress.getObjective().getAmount();
-					ItemStack item = player.getItemInHand();
-					if (amount > 0)
-						item.setAmount(amount);
-					else
-						item = null;
-					player.setItemInHand(item);
-				}
-				return completed;
-			}
-		}
-		return false;
-	}
-
 	@Override
 	public Type[] getEventTypes() {
 		return EVENTS;
@@ -85,4 +47,42 @@ public class DeliveryQuest implements QuestUpdater {
 						progress.getObjective().getDestNPCID()).getName())
 				+ ".";
 	}
+
+	@Override
+	public boolean update(Event event, ObjectiveProgress progress) {
+		if (!(event instanceof NPCRightClickEvent))
+			return false;
+		NPCRightClickEvent e = (NPCRightClickEvent) event;
+		if (e.getPlayer().getEntityId() == progress.getPlayer().getEntityId()
+				&& e.getNPC().getUID() == progress.getObjective()
+						.getDestNPCID()) {
+			Player player = e.getPlayer();
+
+			if (progress.getObjective().getMaterial() == null
+					|| progress.getObjective().getMaterial() == Material.AIR) {
+				return true;
+			}
+
+			boolean completed = InventoryUtils.has(player, progress
+					.getObjective().getMaterial(), progress.getObjective()
+					.getAmount());
+			if (completed && progress.getObjective().getAmount() > 0) {
+				InventoryUtils.removeItems(player, progress.getObjective()
+						.getMaterial(), progress.getObjective().getAmount(),
+						player.getInventory().getHeldItemSlot());
+				int amount = player.getItemInHand().getAmount()
+						- progress.getObjective().getAmount();
+				ItemStack item = player.getItemInHand();
+				if (amount > 0)
+					item.setAmount(amount);
+				else
+					item = null;
+				player.setItemInHand(item);
+			}
+			return completed;
+		}
+		return false;
+	}
+
+	private static final Type[] EVENTS = new Type[] { Type.CUSTOM_EVENT };
 }

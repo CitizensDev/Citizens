@@ -37,10 +37,39 @@ import com.google.common.collect.Lists;
 		requireOwnership = true,
 		requiredType = "quester")
 public class QuesterCommands extends CommandHandler {
-	public static final QuesterCommands INSTANCE = new QuesterCommands();
-
 	private QuesterCommands() {
 	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("quester.use.help");
+		PermissionManager.addPermission("quester.modify.quests.assign");
+		PermissionManager.addPermission("quester.modify.quests.remove");
+		PermissionManager.addPermission("quester.use.quests.abort");
+		PermissionManager.addPermission("quester.use.quests.help");
+		PermissionManager.addPermission("quester.use.quests.status");
+		PermissionManager.addPermission("quester.use.quests.save");
+		PermissionManager.addPermission("quester.use.quests.view");
+		PermissionManager.addPermission("quester.admin.quests.clear");
+		PermissionManager.addPermission("quester.admin.quests.save");
+		PermissionManager.addPermission("quester.admin.quests.giveplayer");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender) {
+		HelpUtils.header(sender, "Quester", 1, 1);
+		HelpUtils.format(sender, "quest", "help",
+				"see more commands for quests");
+		HelpUtils.format(sender, "quester", "assign [quest]",
+				"assign a quest to an NPC");
+		HelpUtils.format(sender, "quester", "remove [quest]",
+				"remove a quest from an NPC");
+		HelpUtils.format(sender, "quester", "quests (page)",
+				"view a quester's assigned quests");
+		HelpUtils.footer(sender);
+	}
+
+	public static final QuesterCommands INSTANCE = new QuesterCommands();
 
 	@CommandRequirements()
 	@Command(
@@ -207,6 +236,36 @@ public class QuesterCommands extends CommandHandler {
 	@CommandRequirements()
 	@ServerCommand()
 	@Command(
+			aliases = "quester",
+			usage = "help",
+			desc = "view the quester help page",
+			modifiers = "help",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.use.help")
+	public static void questerHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		INSTANCE.sendHelpPage(sender);
+	}
+
+	@CommandRequirements()
+	@ServerCommand()
+	@Command(
+			aliases = "quest",
+			usage = "help",
+			desc = "view the quests help page",
+			modifiers = "help",
+			min = 1,
+			max = 1)
+	@CommandPermissions("quester.use.quests.help")
+	public static void questHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		sendQuestHelp(sender);
+	}
+
+	@CommandRequirements()
+	@ServerCommand()
+	@Command(
 			aliases = "quest",
 			usage = "reload",
 			desc = "reloads quests from files",
@@ -250,57 +309,6 @@ public class QuesterCommands extends CommandHandler {
 	}
 
 	@CommandRequirements()
-	@ServerCommand()
-	@Command(
-			aliases = "quest",
-			usage = "help",
-			desc = "view the quests help page",
-			modifiers = "help",
-			min = 1,
-			max = 1)
-	@CommandPermissions("quester.use.quests.help")
-	public static void questHelp(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		sendQuestHelp(sender);
-	}
-
-	@CommandRequirements()
-	@ServerCommand()
-	@Command(
-			aliases = "quester",
-			usage = "help",
-			desc = "view the quester help page",
-			modifiers = "help",
-			min = 1,
-			max = 1)
-	@CommandPermissions("quester.use.help")
-	public static void questerHelp(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		INSTANCE.sendHelpPage(sender);
-	}
-
-	@CommandRequirements()
-	@Command(
-			aliases = "quest",
-			usage = "saveall",
-			desc = "saves all profiles",
-			modifiers = "saveall",
-			min = 1,
-			max = 1)
-	@ServerCommand()
-	@CommandPermissions("quester.admin.quests.save")
-	public static void saveProfiles(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		int count = 0;
-		for (PlayerProfile profile : PlayerProfile.getOnline()) {
-			profile.save();
-			++count;
-		}
-		sender.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
-				+ " profiles.");
-	}
-
-	@CommandRequirements()
 	@Command(
 			aliases = "quest",
 			usage = "save",
@@ -326,6 +334,45 @@ public class QuesterCommands extends CommandHandler {
 		}
 		profile.save();
 		player.sendMessage(ChatColor.GREEN + "Saved current progress.");
+	}
+
+	@CommandRequirements()
+	@Command(
+			aliases = "quest",
+			usage = "saveall",
+			desc = "saves all profiles",
+			modifiers = "saveall",
+			min = 1,
+			max = 1)
+	@ServerCommand()
+	@CommandPermissions("quester.admin.quests.save")
+	public static void saveProfiles(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		int count = 0;
+		for (PlayerProfile profile : PlayerProfile.getOnline()) {
+			profile.save();
+			++count;
+		}
+		sender.sendMessage(ChatColor.GREEN + "Saved " + StringUtils.wrap(count)
+				+ " profiles.");
+	}
+
+	private static void sendQuestHelp(CommandSender sender) {
+		HelpUtils.header(sender, "Quests", 1, 1);
+		HelpUtils.format(sender, "quest", "abort", "abort your current quest");
+		HelpUtils.format(sender, "quest", "add [player] [npcID] [quest] (-f)",
+				"gives a quest to a player");
+		HelpUtils.format(sender, "quest", "clear [player|*] [quest|*] (-c)",
+				"clear in-progress/completed quests");
+		HelpUtils.format(sender, "quest", "completed (page)",
+				"view your completed quests");
+		HelpUtils
+				.format(sender, "quest", "reload", "reloads quests from files");
+		HelpUtils.format(sender, "quest", "save",
+				"saves current quest progress");
+		HelpUtils.format(sender, "quest", "status",
+				"view your current quest status");
+		HelpUtils.footer(sender);
 	}
 
 	@Command(
@@ -446,52 +493,5 @@ public class QuesterCommands extends CommandHandler {
 				profile.setProgress(null);
 			}
 		}
-	}
-
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("quester.use.help");
-		PermissionManager.addPermission("quester.modify.quests.assign");
-		PermissionManager.addPermission("quester.modify.quests.remove");
-		PermissionManager.addPermission("quester.use.quests.abort");
-		PermissionManager.addPermission("quester.use.quests.help");
-		PermissionManager.addPermission("quester.use.quests.status");
-		PermissionManager.addPermission("quester.use.quests.save");
-		PermissionManager.addPermission("quester.use.quests.view");
-		PermissionManager.addPermission("quester.admin.quests.clear");
-		PermissionManager.addPermission("quester.admin.quests.save");
-		PermissionManager.addPermission("quester.admin.quests.giveplayer");
-	}
-
-	@Override
-	public void sendHelpPage(CommandSender sender) {
-		HelpUtils.header(sender, "Quester", 1, 1);
-		HelpUtils.format(sender, "quest", "help",
-				"see more commands for quests");
-		HelpUtils.format(sender, "quester", "assign [quest]",
-				"assign a quest to an NPC");
-		HelpUtils.format(sender, "quester", "remove [quest]",
-				"remove a quest from an NPC");
-		HelpUtils.format(sender, "quester", "quests (page)",
-				"view a quester's assigned quests");
-		HelpUtils.footer(sender);
-	}
-
-	private static void sendQuestHelp(CommandSender sender) {
-		HelpUtils.header(sender, "Quests", 1, 1);
-		HelpUtils.format(sender, "quest", "abort", "abort your current quest");
-		HelpUtils.format(sender, "quest", "add [player] [npcID] [quest] (-f)",
-				"gives a quest to a player");
-		HelpUtils.format(sender, "quest", "clear [player|*] [quest|*] (-c)",
-				"clear in-progress/completed quests");
-		HelpUtils.format(sender, "quest", "completed (page)",
-				"view your completed quests");
-		HelpUtils
-				.format(sender, "quest", "reload", "reloads quests from files");
-		HelpUtils.format(sender, "quest", "save",
-				"saves current quest progress");
-		HelpUtils.format(sender, "quest", "status",
-				"view your current quest status");
-		HelpUtils.footer(sender);
 	}
 }

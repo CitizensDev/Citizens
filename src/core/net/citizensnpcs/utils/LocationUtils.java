@@ -9,21 +9,6 @@ import com.google.common.base.Joiner;
 
 public class LocationUtils {
 
-	/**
-	 * Checks whether two locations are within range of each other.
-	 * 
-	 * @param loc
-	 * @param pLoc
-	 * @param range
-	 * @return
-	 */
-	public static boolean withinRange(Location loc, Location pLoc, double range) {
-		if (loc == null || pLoc == null || loc.getWorld() != pLoc.getWorld()) {
-			return false;
-		}
-		return Math.pow(range, 2) > loc.distanceSquared(pLoc);
-	}
-
 	public static Location loadLocation(DataKey root, boolean shortened) {
 		String world;
 		double x, y, z;
@@ -67,5 +52,20 @@ public class LocationUtils {
 			root.setDouble("pitch", loc.getPitch());
 			root.setDouble("yaw", loc.getYaw());
 		}
+	}
+
+	/**
+	 * Checks whether two locations are within range of each other.
+	 * 
+	 * @param loc
+	 * @param pLoc
+	 * @param range
+	 * @return
+	 */
+	public static boolean withinRange(Location loc, Location pLoc, double range) {
+		if (loc == null || pLoc == null || loc.getWorld() != pLoc.getWorld()) {
+			return false;
+		}
+		return Math.pow(range, 2) > loc.distanceSquared(pLoc);
 	}
 }

@@ -15,11 +15,6 @@ public class Check {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hashCode(itemID, dataValue, selling);
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -30,6 +25,11 @@ public class Check {
 		Check other = (Check) obj;
 		return itemID == other.itemID && dataValue == other.dataValue
 				&& selling == other.selling;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(itemID, dataValue, selling);
 	}
 
 	public boolean isSelling() {

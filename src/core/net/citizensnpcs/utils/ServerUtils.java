@@ -8,6 +8,13 @@ import org.bukkit.event.server.ServerCommandEvent;
 
 public class ServerUtils {
 
+	@SuppressWarnings("deprecation")
+	public static void dispatchCommandWithEvent(String command) {
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		Bukkit.getPluginManager().callEvent(
+				new ServerCommandEvent(Bukkit.getConsoleSender(), command));
+	}
+
 	// Get a player object from the provided name
 	public static Player matchPlayer(String name) {
 		List<Player> players = Bukkit.getServer().matchPlayer(name);
@@ -17,12 +24,5 @@ public class ServerUtils {
 			}
 		}
 		return null;
-	}
-
-	@SuppressWarnings("deprecation")
-	public static void dispatchCommandWithEvent(String command) {
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-		Bukkit.getPluginManager().callEvent(
-				new ServerCommandEvent(Bukkit.getConsoleSender(), command));
 	}
 }

@@ -18,11 +18,11 @@ public class ItemData {
 		return new ItemStack(this.id, 1, this.durability);
 	}
 
-	public int getID() {
-		return this.id;
-	}
-
 	public short getDurability() {
 		return this.durability;
+	}
+
+	public int getID() {
+		return this.id;
 	}
 }

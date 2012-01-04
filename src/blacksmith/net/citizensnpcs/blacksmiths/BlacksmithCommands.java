@@ -23,10 +23,25 @@ import org.bukkit.inventory.ItemStack;
 
 @CommandRequirements(requiredType = "blacksmith")
 public class BlacksmithCommands extends CommandHandler {
-	public static final BlacksmithCommands INSTANCE = new BlacksmithCommands();
-
 	private BlacksmithCommands() {
 	}
+
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("blacksmith.use.help");
+		PermissionManager.addPermission("blacksmith.use.status");
+		PermissionManager.addPermission("blacksmith.use.repair");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender) {
+		HelpUtils.header(sender, "Blacksmith", 1, 1);
+		HelpUtils.format(sender, "blacksmith", "status",
+				"view the status of your in-hand item");
+		HelpUtils.footer(sender);
+	}
+
+	public static final BlacksmithCommands INSTANCE = new BlacksmithCommands();
 
 	@CommandRequirements()
 	@Command(
@@ -78,20 +93,5 @@ public class BlacksmithCommands extends CommandHandler {
 				+ "Durability Remaining: "
 				+ StringUtils.wrap(Material.getMaterial(item.getTypeId())
 						.getMaxDurability() - item.getDurability()));
-	}
-
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("blacksmith.use.help");
-		PermissionManager.addPermission("blacksmith.use.status");
-		PermissionManager.addPermission("blacksmith.use.repair");
-	}
-
-	@Override
-	public void sendHelpPage(CommandSender sender) {
-		HelpUtils.header(sender, "Blacksmith", 1, 1);
-		HelpUtils.format(sender, "blacksmith", "status",
-				"view the status of your in-hand item");
-		HelpUtils.footer(sender);
 	}
 }

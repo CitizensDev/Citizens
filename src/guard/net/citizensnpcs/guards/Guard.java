@@ -11,7 +11,6 @@ import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.properties.DataKey;
-import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.Bukkit;
@@ -47,6 +46,12 @@ public class Guard extends CitizensNPC {
 	// Get whether a bodyguard NPC kills on sight
 	public boolean isAggressive() {
 		return isAggressive;
+	}
+
+	private boolean isCoOwned(Entity damager, HumanNPC npc) {
+		HumanNPC other = NPCManager.get(damager);
+		return other != null
+				&& other.getOwner().equalsIgnoreCase(npc.getOwner());
 	}
 
 	private boolean isOwner(Entity damager, HumanNPC npc) {
@@ -93,12 +98,6 @@ public class Guard extends CitizensNPC {
 		else if (this.isAggressive) {
 			target((LivingEntity) ev.getDamager(), npc);
 		}
-	}
-
-	private boolean isCoOwned(Entity damager, HumanNPC npc) {
-		HumanNPC other = NPCManager.get(damager);
-		return other != null
-				&& other.getOwner().equalsIgnoreCase(npc.getOwner());
 	}
 
 	@Override
@@ -148,9 +147,7 @@ public class Guard extends CitizensNPC {
 	public void target(LivingEntity entity, HumanNPC npc) {
 		if (isOwner(entity, npc) || isCoOwned(entity, npc))
 			return;
-		npc.setPaused(true);
-		PathUtils.target(npc, entity, true, -1, -1,
-				Settings.getDouble("PathfindingRange"));
+		npc.getPathController().target(entity, true);
 	}
 
 	public GuardStatus updateStatus(GuardStatus guardStatus, HumanNPC npc) {

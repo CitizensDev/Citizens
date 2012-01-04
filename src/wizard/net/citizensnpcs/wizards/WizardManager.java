@@ -49,20 +49,6 @@ public class WizardManager {
 		}
 	}
 
-	// Teleport a player to one of a wizard's locations
-	private static boolean teleportPlayer(Player player, HumanNPC npc) {
-		Wizard wizard = npc.getType("wizard");
-		if (wizard.getNumberOfLocations() > 0) {
-			if (decreaseMana(player, npc, Settings.getInt("TeleportManaCost"))) {
-				player.teleport(wizard.getCurrentLocation());
-				return true;
-			}
-			return false;
-		}
-		Messaging.sendError(player, npc.getName() + " has no locations.");
-		return false;
-	}
-
 	// Change the time in the player's world
 	private static boolean changeTime(Player player, HumanNPC npc) {
 		long time = 0;
@@ -78,25 +64,6 @@ public class WizardManager {
 		}
 		if (decreaseMana(player, npc, Settings.getInt("ChangeTimeManaCost"))) {
 			player.getWorld().setTime(time);
-			return true;
-		}
-		return false;
-	}
-
-	// Spawn mob(s) at the specified location
-	private static boolean spawnMob(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc, Settings.getInt("SpawnMobManaCost"))) {
-			player.getWorld().spawnCreature(player.getLocation(),
-					((Wizard) npc.getType("wizard")).getMob());
-			return true;
-		}
-		return false;
-	}
-
-	// Toggle a storm in the player's world
-	private static boolean toggleStorm(Player player, HumanNPC npc) {
-		if (decreaseMana(player, npc, Settings.getInt("ToggleStormManaCost"))) {
-			player.getWorld().setStorm(!player.getWorld().hasStorm());
 			return true;
 		}
 		return false;
@@ -167,5 +134,38 @@ public class WizardManager {
 			player.sendMessage(econMsg);
 		}
 		player.sendMessage(msg);
+	}
+
+	// Spawn mob(s) at the specified location
+	private static boolean spawnMob(Player player, HumanNPC npc) {
+		if (decreaseMana(player, npc, Settings.getInt("SpawnMobManaCost"))) {
+			player.getWorld().spawnCreature(player.getLocation(),
+					((Wizard) npc.getType("wizard")).getMob());
+			return true;
+		}
+		return false;
+	}
+
+	// Teleport a player to one of a wizard's locations
+	private static boolean teleportPlayer(Player player, HumanNPC npc) {
+		Wizard wizard = npc.getType("wizard");
+		if (wizard.getNumberOfLocations() > 0) {
+			if (decreaseMana(player, npc, Settings.getInt("TeleportManaCost"))) {
+				player.teleport(wizard.getCurrentLocation());
+				return true;
+			}
+			return false;
+		}
+		Messaging.sendError(player, npc.getName() + " has no locations.");
+		return false;
+	}
+
+	// Toggle a storm in the player's world
+	private static boolean toggleStorm(Player player, HumanNPC npc) {
+		if (decreaseMana(player, npc, Settings.getInt("ToggleStormManaCost"))) {
+			player.getWorld().setStorm(!player.getWorld().hasStorm());
+			return true;
+		}
+		return false;
 	}
 }

@@ -29,6 +29,26 @@ public class QuestAPI {
 			.newHashMap();
 	private final static Map<String, RewardBuilder> rewards = Maps.newHashMap();
 
+	public static void addQuestType(QuestUpdater instance,
+			String... identifiers) {
+		for (String identifier : identifiers)
+			questTypes.put(identifier.toLowerCase(), instance);
+	}
+
+	public static void addRewardBuilder(RewardBuilder instance,
+			String... identifiers) {
+		for (String identifier : identifiers)
+			rewards.put(identifier.toLowerCase(), instance);
+	}
+
+	public static RewardBuilder getBuilder(String identifier) {
+		return rewards.get(identifier.toLowerCase());
+	}
+
+	public static QuestUpdater getObjective(String identifier) {
+		return questTypes.get(identifier.toLowerCase());
+	}
+
 	static {
 		questTypes.put("build", new BuildQuest());
 		questTypes.put("collect", new CollectQuest());
@@ -49,25 +69,5 @@ public class QuestAPI {
 		rewards.put("quest", new QuestRewardBuilder());
 		addRewardBuilder(new RankRewardBuilder(), "rank", "group");
 		addRewardBuilder(new TeleportRewardBuilder(), "teleport", "tp");
-	}
-
-	public static void addQuestType(QuestUpdater instance,
-			String... identifiers) {
-		for (String identifier : identifiers)
-			questTypes.put(identifier.toLowerCase(), instance);
-	}
-
-	public static QuestUpdater getObjective(String identifier) {
-		return questTypes.get(identifier.toLowerCase());
-	}
-
-	public static void addRewardBuilder(RewardBuilder instance,
-			String... identifiers) {
-		for (String identifier : identifiers)
-			rewards.put(identifier.toLowerCase(), instance);
-	}
-
-	public static RewardBuilder getBuilder(String identifier) {
-		return rewards.get(identifier.toLowerCase());
 	}
 }

@@ -25,6 +25,23 @@ public class ItemReward implements Requirement, Reward {
 		this.take = take;
 	}
 
+	@Override
+	public boolean fulfilsRequirement(Player player) {
+		return InventoryUtils.has(player, material, amount);
+	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		int remainder = InventoryUtils.getRemainder(player, material, amount);
+		return ChatColor.GRAY
+				+ "You need "
+				+ StringUtils.wrap(remainder, ChatColor.GRAY)
+				+ " more "
+				+ StringUtils
+						.pluralise(StringUtils.format(material), remainder)
+				+ ".";
+	}
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void grant(Player player, int UID) {
@@ -53,23 +70,6 @@ public class ItemReward implements Requirement, Reward {
 	@Override
 	public boolean isTake() {
 		return take;
-	}
-
-	@Override
-	public boolean fulfilsRequirement(Player player) {
-		return InventoryUtils.has(player, material, amount);
-	}
-
-	@Override
-	public String getRequiredText(Player player) {
-		int remainder = InventoryUtils.getRemainder(player, material, amount);
-		return ChatColor.GRAY
-				+ "You need "
-				+ StringUtils.wrap(remainder, ChatColor.GRAY)
-				+ " more "
-				+ StringUtils
-						.pluralise(StringUtils.format(material), remainder)
-				+ ".";
 	}
 
 	@Override

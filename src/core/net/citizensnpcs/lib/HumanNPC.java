@@ -1,7 +1,6 @@
 package net.citizensnpcs.lib;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +9,7 @@ import java.util.Map;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.economy.Account;
 import net.citizensnpcs.lib.NPCAnimator.Animation;
+import net.citizensnpcs.lib.pathfinding.PathController;
 import net.citizensnpcs.npcdata.ItemData;
 import net.citizensnpcs.npcdata.NPCData;
 import net.citizensnpcs.npcdata.NPCDataManager;
@@ -19,9 +19,7 @@ import net.citizensnpcs.properties.DataKey;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.StringUtils;
-import net.citizensnpcs.waypoints.Waypoint;
-import net.citizensnpcs.waypoints.WaypointModifier;
-import net.citizensnpcs.waypoints.WaypointModifierType;
+import net.citizensnpcs.waypoints.LinearWaypointPath;
 import net.citizensnpcs.waypoints.WaypointPath;
 
 import org.bukkit.Bukkit;
@@ -30,9 +28,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -72,17 +70,32 @@ public class HumanNPC extends NPC<Player> {
 			balance -= amount;
 		}
 	};
-	private boolean paused;
-	private WaypointPath waypoints = new WaypointPath();
+	private final WaypointPath waypoints;
 
 	private final Map<String, CitizensNPC> types = new MapMaker().makeMap();
 
-	public HumanNPC(int UID) {
+	private boolean spawned = false;
+
+	private HumanNPC(int UID) {
 		super(UID, getRoot(UID).getString("basic.name"));
+		String[] location = getRoot().getRelative("basic")
+				.getString("location").split(",");
+		if (location.length == 6) {
+			npcdata.setLocation(new Location(Bukkit.getServer().getWorld(
+					location[0]), Double.parseDouble(location[1]), Double
+					.parseDouble(location[2]), Double.parseDouble(location[3]),
+					Float.parseFloat(location[4]), Float
+							.parseFloat(location[5])));
+			tryCreateMCEntity();
+		}
+		waypoints = mcEntity == null ? null : new LinearWaypointPath(this);
 	}
 
-	public HumanNPC(int UID, String name) {
+	private HumanNPC(int UID, String name, Location location) {
 		super(UID, name);
+		this.npcdata.setLocation(location);
+		tryCreateMCEntity();
+		waypoints = new LinearWaypointPath(this);
 	}
 
 	public <T extends CitizensNPC> void addType(String type) {
@@ -106,18 +119,6 @@ public class HumanNPC extends NPC<Player> {
 		}
 	}
 
-	public void callDeathEvent(EntityDeathEvent event) {
-		for (CitizensNPC type : types.values()) {
-			type.onDeath(event);
-		}
-	}
-
-	public void callLeftClick(Player player, HumanNPC npc) {
-		for (CitizensNPC type : types.values()) {
-			type.onLeftClick(player, npc);
-		}
-	}
-
 	public void callRightClick(Player player, HumanNPC npc) {
 		for (CitizensNPC type : types.values()) {
 			type.onRightClick(player, npc);
@@ -131,12 +132,14 @@ public class HumanNPC extends NPC<Player> {
 	}
 
 	public void despawn() {
+		if (!spawned)
+			return;
 		this.mcEntity.world.removeEntity(this.mcEntity);
+		spawned = false;
 	}
 
 	public void doTick() {
-		this.mcEntity.moveTick();
-		this.mcEntity.applyGravity();
+		this.mcEntity.tick();
 	}
 
 	public Account getAccount() {
@@ -144,16 +147,7 @@ public class HumanNPC extends NPC<Player> {
 	}
 
 	public Location getBaseLocation() {
-		return this.waypoints.getLast() != null ? this.waypoints.getLast()
-				.getLocation() : this.npcdata.getLocation();
-	}
-
-	public int getChunkX() {
-		return this.getLocation().getBlockX() >> 4;
-	}
-
-	public int getChunkZ() {
-		return this.getLocation().getBlockZ() >> 4;
+		return this.npcdata.getLocation();
 	}
 
 	public CraftNPC getHandle() {
@@ -180,6 +174,10 @@ public class HumanNPC extends NPC<Player> {
 		return this.npcdata.getOwner();
 	}
 
+	public PathController getPathController() {
+		return this.mcEntity.getPathController();
+	}
+
 	public Player getPlayer() {
 		return (Player) this.mcEntity.getBukkitEntity();
 	}
@@ -188,28 +186,17 @@ public class HumanNPC extends NPC<Player> {
 		return getRoot(this.getUID());
 	}
 
-	private static DataKey getRoot(int UID) {
-		return PropertyManager.getNPCProfiles().getKey(Integer.toString(UID));
-	}
-
 	@SuppressWarnings("unchecked")
 	public <T> T getType(String type) {
 		return (T) this.types.get(type);
 	}
 
 	public WaypointPath getWaypoints() {
-		if (waypoints == null) {
-			this.waypoints = new WaypointPath();
-		}
 		return this.waypoints;
 	}
 
 	public World getWorld() {
 		return this.getPlayer().getWorld();
-	}
-
-	public boolean isPaused() {
-		return this.paused;
 	}
 
 	public boolean isType(String type) {
@@ -248,12 +235,13 @@ public class HumanNPC extends NPC<Player> {
 				Settings.getBoolean("DefaultTalkClose")));
 		npcdata.setLookClose(root.getBoolean("look-when-close",
 				Settings.getBoolean("DefaultLookAt")));
-		npcdata.setOwner(root.getString("owner"));
+		if (root.keyExists("owner"))
+			npcdata.setOwner(root.getString("owner"));
 		npcdata.setTexts(new ArrayDeque<String>(Arrays.asList(root.getString(
 				"text").split(";"))));
 		npcdata.setColour(ChatColor.getByCode(Integer.parseInt(root.getString(
 				"color", "15"))));
-		account.set(root.getDouble("balance"));
+		account.set(root.getDouble("balance", 0D));
 
 		List<ItemData> items = Lists.newArrayList();
 		String current = root.getString("items", "0:0,0:0,0:0,0:0,0:0,");
@@ -286,26 +274,7 @@ public class HumanNPC extends NPC<Player> {
 				--count;
 			}
 		}
-
-		List<Waypoint> points = new ArrayList<Waypoint>();
-		for (DataKey key : root.getRelative("waypoints").getIntegerSubKeys()) {
-			Waypoint waypoint = new Waypoint(LocationUtils.loadLocation(key,
-					true));
-			waypoint.setDelay(key.getInt("delay"));
-
-			if (key.keyExists("modifiers")) {
-				key = key.getRelative("modifiers");
-				for (DataKey innerKey : key.getIntegerSubKeys()) {
-					WaypointModifier modifier = WaypointModifierType.valueOf(
-							innerKey.getString("type")).create(waypoint);
-					modifier.load(innerKey);
-					waypoint.addModifier(modifier);
-				}
-			}
-			if (waypoint != null)
-				points.add(waypoint);
-		}
-		waypoints.setPoints(points);
+		waypoints.load(root.getRelative("waypoints"));
 		/*if (values.length != 6) {
 					if (values[0].isEmpty()) {
 						Messaging.log("Missing location for " + UID, values.length);
@@ -323,8 +292,8 @@ public class HumanNPC extends NPC<Player> {
 	public void removeType(String type) {
 		CitizensNPC instance = this.types.remove(type);
 		DataKey root = getRoot().getRelative(instance.getType().getName());
-		root.setBoolean("toggle", false);
 		instance.save(root);
+		root.setBoolean("toggle", false);
 	}
 
 	public void save() {
@@ -380,49 +349,34 @@ public class HumanNPC extends NPC<Player> {
 			count = 0;
 		}
 		root.setString("inventory", save.toString());
-		List<Waypoint> list = waypoints.getWaypoints();
-		if (list.size() == 0)
-			return;
-		root.removeKey("waypoints"); // clear old
-										// waypoints.
-		count = 0;
-		for (Waypoint waypoint : list) {
-			DataKey key = root.getRelative("waypoints." + count);
-			LocationUtils.saveLocation(key, waypoint.getLocation(), true);
-			key.setInt("delay", waypoint.getDelay());
-			key = key.getRelative("modifiers");
-
-			int innercount = 0;
-			for (WaypointModifier modifier : waypoint.getModifiers()) {
-				DataKey inner = key.getRelative(Integer.toString(innercount));
-				inner.setString("type", modifier.getType().name());
-				modifier.save(inner);
-				++innercount;
-			}
-			++count;
-		}
+		waypoints.save(root);
 	}
 
 	public void setItemInHand(ItemStack item) {
 		this.getPlayer().setItemInHand(item);
 	}
 
+	@Override
+	public void setName(String changeTo) {
+		super.setName(changeTo);
+		this.mcEntity.name = changeTo;
+		despawn();
+		spawn();
+	}
+
 	public void setNPCData(NPCData npcdata) {
 		this.npcdata = npcdata;
 	}
 
-	public void setPaused(boolean paused) {
-		this.paused = paused;
-	}
-
-	public boolean spawn() {
-		if (!tryCreateMCEntity())
-			return false;
+	public void spawn() {
+		if (spawned)
+			return;
+		spawned = true;
 		this.mcEntity.name = this.npcdata.getColour() == ChatColor.WHITE ? this
 				.getName() : this.npcdata.getColour() + this.getName();
-		this.mcEntity.world.addEntity(this.mcEntity);
+		((CraftWorld) this.getPlayer().getLocation().getWorld()).getHandle()
+				.addEntity(this.mcEntity);
 		this.mcEntity.world.players.remove(this.mcEntity);
-		return true;
 	}
 
 	public void teleport(Location loc) {
@@ -438,7 +392,7 @@ public class HumanNPC extends NPC<Player> {
 		if (this.mcEntity == null) {
 			String name = this.npcdata.getColour() == ChatColor.WHITE ? this
 					.getName() : this.npcdata.getColour() + this.getName();
-			this.mcEntity = NPCSpawner.createNPC(this.getUID(), name,
+			this.mcEntity = NPCSpawner.createNPC(name,
 					this.npcdata.getLocation());
 			if (mcEntity == null)
 				return false;
@@ -450,11 +404,22 @@ public class HumanNPC extends NPC<Player> {
 		return this.types.values();
 	}
 
-	@Override
-	public void setName(String changeTo) {
-		super.setName(changeTo);
-		this.mcEntity.name = changeTo;
-		despawn();
-		spawn();
+	public static HumanNPC createAndLoad(int UID) {
+		HumanNPC npc = new HumanNPC(UID);
+		if (npc.getNPCData().getLocation() == null || npc.getHandle() == null)
+			return null;
+		npc.load();
+		return npc;
+	}
+
+	public static HumanNPC createAndLoad(int UID, String name,
+			Location location) {
+		HumanNPC npc = new HumanNPC(UID, name, location);
+		npc.load();
+		return npc;
+	}
+
+	private static DataKey getRoot(int UID) {
+		return PropertyManager.getNPCProfiles().getKey(Integer.toString(UID));
 	}
 }

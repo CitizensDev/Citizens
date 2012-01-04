@@ -21,15 +21,18 @@ public class OwnerSelection implements Selection<HumanNPC> {
 	}
 
 	@Override
-	public void select(HumanNPC selection) {
-		if (isOwner(selection.getUID()))
-			selected.add(selection.getUID());
-	}
-
-	@Override
 	public void deselect(HumanNPC selection) {
 		if (isOwner(selection.getUID()))
 			selected.remove(selection.getUID());
+	}
+
+	@Override
+	public void deselectAll() {
+		selected.clear();
+	}
+
+	private boolean isOwner(int UID) {
+		return NPCManager.isOwner(owner, UID);
 	}
 
 	@Override
@@ -38,17 +41,20 @@ public class OwnerSelection implements Selection<HumanNPC> {
 				&& selected.contains(selection.getUID());
 	}
 
-	private boolean isOwner(int UID) {
-		return NPCManager.isOwner(owner, UID);
-	}
-
-	public int size() {
-		return selected.size();
-	}
-
 	@Override
 	public Iterator<HumanNPC> iterator() {
 		return Iterators.transform(selected.iterator(), UIDToNPC);
+	}
+
+	@Override
+	public void select(HumanNPC selection) {
+		if (isOwner(selection.getUID()))
+			selected.add(selection.getUID());
+	}
+
+	@Override
+	public int size() {
+		return selected.size();
 	}
 
 	private static Function<Integer, HumanNPC> UIDToNPC = new Function<Integer, HumanNPC>() {
@@ -57,9 +63,4 @@ public class OwnerSelection implements Selection<HumanNPC> {
 			return NPCManager.get(arg0);
 		}
 	};
-
-	@Override
-	public void deselectAll() {
-		selected.clear();
-	}
 }

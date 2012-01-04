@@ -12,11 +12,6 @@ public class CommandIdentifier {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hashCode(command, modifier);
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -45,11 +40,16 @@ public class CommandIdentifier {
 		return true;
 	}
 
+	public String getCommand() {
+		return this.command;
+	}
+
 	public String getModifier() {
 		return this.modifier;
 	}
 
-	public String getCommand() {
-		return this.command;
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(command, modifier);
 	}
 }

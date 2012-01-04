@@ -11,7 +11,6 @@ import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
-import net.citizensnpcs.utils.PathUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
@@ -36,18 +35,32 @@ public class Soldier implements GuardUpdater {
 	}
 
 	@Override
+	public void onDamage(HumanNPC npc, LivingEntity attacker) {
+	}
+
+	@Override
 	public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
 		return current;
 	}
 
-	@Override
-	public void onDamage(HumanNPC npc, LivingEntity attacker) {
-	}
-
 	private static class SelectionHooks extends PlayerListener {
-		@Override
-		public void onPlayerQuit(PlayerQuitEvent event) {
-			selections.remove(event.getPlayer());
+		private void attack(Player player, LivingEntity attack,
+				Selection<HumanNPC> selection) {
+			if (selection.size() == 0)
+				return;
+			for (HumanNPC npc : selection) {
+				npc.getPathController().target(attack, true);
+			}
+			player.sendMessage(ChatColor.GREEN + "Set "
+					+ StringUtils.wrap(selection.size())
+					+ StringUtils.pluralise(" NPC", selection.size())
+					+ " on your target.");
+		}
+
+		private boolean isSoldier(HumanNPC npc) {
+			return npc.isType("guard")
+					&& ((Guard) npc.getType("guard"))
+							.isState(GuardState.SOLDIER);
 		}
 
 		@Override
@@ -74,8 +87,8 @@ public class Soldier implements GuardUpdater {
 				return;
 			}
 			for (HumanNPC npc : getSelection(event.getPlayer())) {
-				PathUtils.createPath(npc,
-						event.getClickedBlock().getLocation(), -1);
+				npc.getPathController().pathTo(
+						event.getClickedBlock().getLocation());
 			}
 			event.getPlayer().sendMessage(
 					StringUtils.wrap(selection.size()) + " "
@@ -102,24 +115,16 @@ public class Soldier implements GuardUpdater {
 							getSelection(event.getPlayer()));
 				} else if (UtilityProperties.isHoldingTool("SoldierReturnTool",
 						event.getPlayer())) {
-					npc.getHandle().cancelTarget();
+					npc.getPathController().cancel();
 					npc.teleport(npc.getBaseLocation());
 				}
 				return;
 			}
 		}
 
-		private void attack(Player player, LivingEntity attack,
-				Selection<HumanNPC> selection) {
-			if (selection.size() == 0)
-				return;
-			for (HumanNPC npc : selection) {
-				PathUtils.target(npc, attack, true, -1);
-			}
-			player.sendMessage(ChatColor.GREEN + "Set "
-					+ StringUtils.wrap(selection.size())
-					+ StringUtils.pluralise(" NPC", selection.size())
-					+ " on your target.");
+		@Override
+		public void onPlayerQuit(PlayerQuitEvent event) {
+			selections.remove(event.getPlayer());
 		}
 
 		private void select(Player player, HumanNPC npc,
@@ -128,7 +133,7 @@ public class Soldier implements GuardUpdater {
 				selection.deselect(npc);
 			} else {
 				selection.select(npc);
-				PathUtils.target(npc, player, false, -1);
+				npc.getPathController().target(player, false);
 			}
 			player.sendMessage(ChatColor.GREEN
 					+ (selection.isSelected(npc) ? "Selected" : "Deselected")
@@ -138,20 +143,14 @@ public class Soldier implements GuardUpdater {
 					+ " now selected.");
 
 		}
-
-		private boolean isSoldier(HumanNPC npc) {
-			return npc.isType("guard")
-					&& ((Guard) npc.getType("guard"))
-							.isState(GuardState.SOLDIER);
-		}
 	}
+
+	private static final Map<Player, Selection<HumanNPC>> selections = Maps
+			.newHashMap();
 
 	private static Selection<HumanNPC> getSelection(Player player) {
 		if (!selections.containsKey(player))
 			selections.put(player, new OwnerSelection(player));
 		return selections.get(player);
 	}
-
-	private static final Map<Player, Selection<HumanNPC>> selections = Maps
-			.newHashMap();
 }

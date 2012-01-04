@@ -19,6 +19,25 @@ public abstract class CitizensNPC implements StateHolder {
 	public abstract CitizensNPCType getType();
 
 	/**
+	 * Called when an NPC type is damaged.
+	 * 
+	 * @param event
+	 *            Bukkit's EntityDamageEvent
+	 */
+	public void onDamage(EntityDamageEvent event) {
+		event.setCancelled(true);
+	}
+
+	/**
+	 * Called when an NPC type is killed.
+	 * 
+	 * @param event
+	 *            Bukkit's EntityDeathEvent
+	 */
+	public void onDeath(EntityDeathEvent event) {
+	}
+
+	/**
 	 * Called when a player left clicks the NPC - this can cause a damage event
 	 * as well.
 	 * 
@@ -49,24 +68,5 @@ public abstract class CitizensNPC implements StateHolder {
 	 */
 	public void onTarget(EntityTargetEvent event) {
 		event.setCancelled(true);
-	}
-
-	/**
-	 * Called when an NPC type is damaged.
-	 * 
-	 * @param event
-	 *            Bukkit's EntityDamageEvent
-	 */
-	public void onDamage(EntityDamageEvent event) {
-		event.setCancelled(true);
-	}
-
-	/**
-	 * Called when an NPC type is killed.
-	 * 
-	 * @param event
-	 *            Bukkit's EntityDeathEvent
-	 */
-	public void onDeath(EntityDeathEvent event) {
 	}
 }

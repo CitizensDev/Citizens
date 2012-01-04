@@ -12,7 +12,6 @@ import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.lib.NPCManager;
 import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.utils.LocationUtils;
-import net.citizensnpcs.utils.PathUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -36,10 +35,69 @@ public class Bodyguard implements GuardUpdater {
 		});
 	}
 
+	private void despawn(HumanNPC npc) {
+		toRespawn.put(npc.getOwner(), npc);
+		NPCManager.despawn(npc.getUID());
+	}
+
+	private boolean findTarget(HumanNPC npc) {
+		Guard guard = npc.getType("guard");
+		if (!guard.isAggressive())
+			return false;
+		Player player = Bukkit.getPlayerExact(npc.getOwner());
+		if (player == null) {
+			despawn(npc);
+			return false;
+		}
+		double range = Settings.getDouble("PathfindingRange");
+		if (LocationUtils.withinRange(npc.getLocation(), player.getLocation(),
+				guard.getProtectionRadius())) {
+			LivingEntity entity = Targeter.findTarget(
+					Targeter.getNearby(player, guard.getProtectionRadius()),
+					npc);
+			if (entity != null) {
+				guard.target(entity, npc);
+				return true;
+			} else {
+				npc.getPathController().target(player, false);
+			}
+		} else {
+			if (!LocationUtils.withinRange(npc.getLocation(),
+					player.getLocation(), range)) {
+				npc.teleport(player.getLocation());
+			}
+			npc.getPathController().target(player, false);
+		}
+		return false;
+	}
+
+	private boolean keepAttacking(HumanNPC npc) {
+		Player owner = Bukkit.getPlayerExact(npc.getOwner());
+		if (owner == null) {
+			despawn(npc);
+			return false;
+		}
+		Guard guard = npc.getType("guard");
+		return npc.getPathController().isPathing()
+				&& LocationUtils.withinRange(owner.getLocation(),
+						npc.getLocation(), guard.getProtectionRadius());
+	}
+
+	@Override
+	public void onDamage(HumanNPC npc, LivingEntity attacker) {
+	}
+
+	private void teleportHome(HumanNPC npc) {
+		Player owner = Bukkit.getServer().getPlayerExact(npc.getOwner());
+		if (owner != null) {
+			npc.teleport(owner.getLocation());
+		} else {
+			despawn(npc);
+		}
+	}
+
 	@Override
 	public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
-		if (npc.getHandle().hasTarget() && current == GuardStatus.NORMAL)
-			current = GuardStatus.ATTACKING;
 		switch (current) {
 		case NORMAL:
 			if (findTarget(npc))
@@ -55,62 +113,5 @@ public class Bodyguard implements GuardUpdater {
 		return current;
 	}
 
-	private boolean keepAttacking(HumanNPC npc) {
-		Player owner = Bukkit.getPlayerExact(npc.getOwner());
-		if (owner == null) {
-			despawn(npc);
-			return false;
-		}
-		Guard guard = npc.getType("guard");
-		return npc.getHandle().hasTarget()
-				&& LocationUtils.withinRange(owner.getLocation(),
-						npc.getLocation(), guard.getProtectionRadius());
-	}
-
-	private void despawn(HumanNPC npc) {
-		toRespawn.put(npc.getOwner(), npc);
-		NPCManager.despawn(npc.getUID());
-	}
-
-	private boolean findTarget(HumanNPC npc) {
-		Guard guard = npc.getType("guard");
-		if (!guard.isAggressive())
-			return false;
-		Player player = Bukkit.getPlayerExact(npc.getOwner());
-		if (player == null) {
-			despawn(npc);
-			return false;
-		}
-		if (!LocationUtils.withinRange(npc.getLocation(), player.getLocation(),
-				guard.getProtectionRadius())) {
-			double range = Settings.getDouble("PathfindingRange");
-			if (!LocationUtils.withinRange(npc.getLocation(),
-					player.getLocation(), range))
-				npc.teleport(player.getLocation());
-			else
-				PathUtils.target(npc, player, false, -1, -1, range);
-			return false;
-		} else {
-			LivingEntity entity = Targeter.findTarget(
-					Targeter.getNearby(player, guard.getProtectionRadius()),
-					npc);
-			if (entity != null)
-				guard.target(entity, npc);
-			return entity != null;
-		}
-	}
-
-	private void teleportHome(HumanNPC npc) {
-		Player owner = Bukkit.getServer().getPlayerExact(npc.getOwner());
-		if (owner != null) {
-			npc.teleport(owner.getLocation());
-		} else
-			despawn(npc);
-	}
-
 	private final static Map<String, HumanNPC> toRespawn = new HashMap<String, HumanNPC>();
-
-	@Override
-	public void onDamage(HumanNPC npc, LivingEntity attacker) {
-	}
 }

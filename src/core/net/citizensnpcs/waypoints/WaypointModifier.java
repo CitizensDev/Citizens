@@ -11,7 +11,7 @@ public abstract class WaypointModifier extends Converser implements StateHolder 
 		this.waypoint = waypoint;
 	}
 
-	public abstract void onReach(HumanNPC npc);
-
 	public abstract WaypointModifierType getType();
+
+	public abstract void onReach(HumanNPC npc);
 }

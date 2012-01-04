@@ -17,23 +17,6 @@ public abstract class NPC<T> {
 		this.UID = UID;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = ChatColor.stripColor(name);
-	}
-
-	public int getUID() {
-		return this.UID;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(UID);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -45,5 +28,22 @@ public abstract class NPC<T> {
 		@SuppressWarnings("unchecked")
 		NPC<T> other = (NPC<T>) obj;
 		return UID == other.UID;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public int getUID() {
+		return this.UID;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(UID);
+	}
+
+	public void setName(String name) {
+		this.name = ChatColor.stripColor(name);
 	}
 }

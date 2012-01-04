@@ -20,16 +20,32 @@ public class AlchemistManager {
 
 	private static List<String> hasClickedOnce = new ArrayList<String>();
 
-	public static boolean hasClickedOnce(String name) {
-		return hasClickedOnce.contains(name);
+	public static boolean checkValidID(Player player, String itemID) {
+		if (!StringUtils.isNumber(itemID)) {
+			Messaging.sendError(player, "That is not a valid number.");
+			return false;
+		}
+		int id = Integer.parseInt(itemID);
+		if (Material.getMaterial(id) == null
+				|| Material.getMaterial(id) == Material.AIR) {
+			Messaging.sendError(player, MessageUtils.invalidItemIDMessage);
+			return false;
+		}
+		return true;
 	}
 
-	public static void setClickedOnce(String name, boolean clicked) {
-		if (clicked) {
-			hasClickedOnce.add(name);
-		} else {
-			hasClickedOnce.remove(name);
+	public static ItemStack getStackByString(String string) {
+		String[] required = string.split(":");
+		int itemID = StringUtils.parse(required[0]);
+		int amount = 1;
+		if (required.length == 2) {
+			amount = StringUtils.parse(required[1]);
 		}
+		return new ItemStack(itemID, amount);
+	}
+
+	public static boolean hasClickedOnce(String name) {
+		return hasClickedOnce.contains(name);
 	}
 
 	public static boolean sendRecipeMessage(Player player, HumanNPC npc,
@@ -53,27 +69,11 @@ public class AlchemistManager {
 		return true;
 	}
 
-	public static ItemStack getStackByString(String string) {
-		String[] required = string.split(":");
-		int itemID = StringUtils.parse(required[0]);
-		int amount = 1;
-		if (required.length == 2) {
-			amount = StringUtils.parse(required[1]);
+	public static void setClickedOnce(String name, boolean clicked) {
+		if (clicked) {
+			hasClickedOnce.add(name);
+		} else {
+			hasClickedOnce.remove(name);
 		}
-		return new ItemStack(itemID, amount);
-	}
-
-	public static boolean checkValidID(Player player, String itemID) {
-		if (!StringUtils.isNumber(itemID)) {
-			Messaging.sendError(player, "That is not a valid number.");
-			return false;
-		}
-		int id = Integer.parseInt(itemID);
-		if (Material.getMaterial(id) == null
-				|| Material.getMaterial(id) == Material.AIR) {
-			Messaging.sendError(player, MessageUtils.invalidItemIDMessage);
-			return false;
-		}
-		return true;
 	}
 }

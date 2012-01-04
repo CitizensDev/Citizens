@@ -19,6 +19,9 @@ public class NPCData {
 	private String owner;
 	private boolean talk;
 
+	public NPCData() {
+	}
+
 	// Acts as a container for various npc data.
 	public NPCData(Location loc, ChatColor colour, List<ItemData> items,
 			Deque<String> texts, boolean talk, boolean lookClose,
@@ -33,70 +36,67 @@ public class NPCData {
 		this.setTalk(talk);
 	}
 
-	public NPCData() {
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setColour(ChatColor code) {
-		this.colour = code;
-	}
-
 	public ChatColor getColour() {
 		return colour;
-	}
-
-	public void setItems(List<ItemData> items) {
-		this.items = items;
 	}
 
 	public List<ItemData> getItems() {
 		return items;
 	}
 
-	public void setTexts(Deque<String> text) {
-		this.texts = text;
-	}
-
-	public Deque<String> getTexts() {
-		return texts;
-	}
-
-	public void setLookClose(boolean lookClose) {
-		this.lookClose = lookClose;
-	}
-
-	public boolean isLookClose() {
-		return lookClose;
-	}
-
-	public void setTalkClose(boolean talkClose) {
-		this.talkClose = talkClose;
-	}
-
-	public boolean isTalkClose() {
-		return talkClose;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public Location getLocation() {
+		return location;
 	}
 
 	public String getOwner() {
 		return owner;
 	}
 
+	public Deque<String> getTexts() {
+		return texts;
+	}
+
+	public boolean isLookClose() {
+		return lookClose;
+	}
+
 	public boolean isTalk() {
 		return this.talk;
 	}
 
+	public boolean isTalkClose() {
+		return talkClose;
+	}
+
+	public void setColour(ChatColor code) {
+		this.colour = code;
+	}
+
+	public void setItems(List<ItemData> items) {
+		this.items = items;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public void setLookClose(boolean lookClose) {
+		this.lookClose = lookClose;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
 	public void setTalk(boolean talk) {
 		this.talk = talk;
+	}
+
+	public void setTalkClose(boolean talkClose) {
+		this.talkClose = talkClose;
+	}
+
+	public void setTexts(Deque<String> text) {
+		this.texts = text;
 	}
 }

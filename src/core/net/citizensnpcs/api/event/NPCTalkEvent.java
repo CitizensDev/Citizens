@@ -16,6 +16,15 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
 	}
 
 	/**
+	 * Get the text involved in the event.
+	 * 
+	 * @return text involved in the event.
+	 */
+	public String getText() {
+		return this.text;
+	}
+
+	/**
 	 * Get the cancellation state of the event.
 	 * 
 	 * @return true if the event is cancelled
@@ -34,15 +43,6 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
 	@Override
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
-	}
-
-	/**
-	 * Get the text involved in the event.
-	 * 
-	 * @return text involved in the event.
-	 */
-	public String getText() {
-		return this.text;
 	}
 
 	/**

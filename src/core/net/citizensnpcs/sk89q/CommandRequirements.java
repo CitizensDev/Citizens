@@ -11,13 +11,13 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandRequirements {
-	boolean requireSelected() default false;
-
-	boolean requireOwnership() default false;
-
-	boolean requireEconomy() default false;
+	double requiredMoney() default -1;
 
 	String requiredType() default "";
 
-	double requiredMoney() default -1;
+	boolean requireEconomy() default false;
+
+	boolean requireOwnership() default false;
+
+	boolean requireSelected() default false;
 }

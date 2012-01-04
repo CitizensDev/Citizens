@@ -25,18 +25,6 @@ public class QuestProgress {
 		addObjectives();
 	}
 
-	public void cycle() {
-		next();
-		if (!this.objectives.isCompleted()) {
-			addObjectives();
-		}
-	}
-
-	private void next() {
-		this.progress = null;
-		this.objectives.cycle();
-	}
-
 	private void addObjectives() {
 		if (objectives.current().objectives().size() == 0)
 			return;
@@ -48,14 +36,35 @@ public class QuestProgress {
 		}
 	}
 
+	public void cycle() {
+		next();
+		if (!this.objectives.isCompleted()) {
+			addObjectives();
+		}
+	}
+
+	public ObjectiveProgress[] getProgress() {
+		return progress;
+	}
+
+	public int getQuesterUID() {
+		return this.UID;
+	}
+
+	public String getQuestName() {
+		return questName;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
 	public int getStep() {
 		return this.objectives.currentStep();
 	}
 
-	public void setStep(int step) {
-		while (this.objectives.currentStep() != step) {
-			cycle();
-		}
+	public boolean isFullyCompleted() {
+		return isStepCompleted() && this.objectives.isCompleted();
 	}
 
 	public boolean isStepCompleted() {
@@ -69,8 +78,19 @@ public class QuestProgress {
 		return true;
 	}
 
-	public boolean isFullyCompleted() {
-		return isStepCompleted() && this.objectives.isCompleted();
+	private void next() {
+		this.progress = null;
+		this.objectives.cycle();
+	}
+
+	public void onStepCompletion() {
+		this.objectives.current().onCompletion(player, this);
+	}
+
+	public void setStep(int step) {
+		while (this.objectives.currentStep() != step) {
+			cycle();
+		}
 	}
 
 	public void updateProgress(Player player, Event event) {
@@ -99,25 +119,5 @@ public class QuestProgress {
 				++idx;
 			}
 		}
-	}
-
-	public int getQuesterUID() {
-		return this.UID;
-	}
-
-	public String getQuestName() {
-		return questName;
-	}
-
-	public long getStartTime() {
-		return startTime;
-	}
-
-	public ObjectiveProgress[] getProgress() {
-		return progress;
-	}
-
-	public void onStepCompletion() {
-		this.objectives.current().onCompletion(player, this);
 	}
 }

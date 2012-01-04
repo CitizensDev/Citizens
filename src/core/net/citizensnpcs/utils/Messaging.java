@@ -21,8 +21,36 @@ public class Messaging {
 			"green", "aqua", "red", "lpurple", "yellow", "white" };
 	private static final int DELAY_STR_LENGTH = "<delay".length();
 
-	public static void send(CommandSender sender, String message) {
-		send(sender, null, message);
+	private static String colourise(String message) {
+		String format = "<%s>";
+		byte index = 0;
+		for (String colour : colours) {
+			message = message.replaceAll(String.format(format, colour), ""
+					+ ChatColor.getByCode(index));
+			++index;
+		}
+		for (int colour = 0; colour < 16; ++colour) {
+			String chatColour = ChatColor.getByCode(colour).toString();
+			message = message.replaceAll(String.format(format, colour),
+					chatColour).replaceAll(
+					String.format(format, Integer.toHexString(colour)),
+					chatColour);
+		}
+		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
+		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
+		return message;
+	}
+
+	public static void debug(Object message) {
+		if (Settings.getBoolean("DebugMode")) {
+			log(message);
+		}
+	}
+
+	public static void debug(Object... messages) {
+		if (Settings.getBoolean("DebugMode")) {
+			log(messages);
+		}
 	}
 
 	public static void delay(final Runnable runnable, String messages) {
@@ -45,6 +73,28 @@ public class Messaging {
 			return;
 		}
 		runnable.run();
+	}
+
+	public static void dualSend(CommandSender sender, String string) {
+		log(string);
+		if (sender instanceof Player)
+			send(sender, StringUtils.join(string));
+	}
+
+	public static void log(Object... messages) {
+		StringBuilder builder = new StringBuilder();
+		for (Object string : messages) {
+			builder.append(string == null ? "null " : string.toString() + " ");
+		}
+		log(builder.toString(), Level.INFO);
+	}
+
+	public static void log(Object message) {
+		log(message, Level.INFO);
+	}
+
+	public static void log(Object message, Level level) {
+		log.log(level, "[Citizens] " + message);
 	}
 
 	public static void send(final CommandSender sender, final HumanNPC npc,
@@ -86,40 +136,16 @@ public class Messaging {
 		}
 	}
 
-	public static void log(Object... messages) {
-		StringBuilder builder = new StringBuilder();
-		for (Object string : messages) {
-			builder.append(string == null ? "null " : string.toString() + " ");
-		}
-		log(builder.toString(), Level.INFO);
-	}
-
-	public static void log(Object message, Level level) {
-		log.log(level, "[Citizens] " + message);
-	}
-
-	public static void log(Object message) {
-		log(message, Level.INFO);
-	}
-
-	public static void debug(Object message) {
-		if (Settings.getBoolean("DebugMode")) {
-			log(message);
-		}
-	}
-
-	public static void debug(Object... messages) {
-		if (Settings.getBoolean("DebugMode")) {
-			log(messages);
-		}
-	}
-
-	public static void sendError(Player player, String error) {
-		send(player, null, ChatColor.RED + error);
+	public static void send(CommandSender sender, String message) {
+		send(sender, null, message);
 	}
 
 	public static void sendError(CommandSender sender, String error) {
 		send(sender, null, ChatColor.RED + error);
+	}
+
+	public static void sendError(Player player, String error) {
+		send(player, null, ChatColor.RED + error);
 	}
 
 	public static void sendUncertain(String name, String message) {
@@ -127,31 +153,5 @@ public class Messaging {
 		if (player != null) {
 			send(player, null, message);
 		}
-	}
-
-	private static String colourise(String message) {
-		String format = "<%s>";
-		byte index = 0;
-		for (String colour : colours) {
-			message = message.replaceAll(String.format(format, colour), ""
-					+ ChatColor.getByCode(index));
-			++index;
-		}
-		for (int colour = 0; colour < 16; ++colour) {
-			String chatColour = ChatColor.getByCode(colour).toString();
-			message = message.replaceAll(String.format(format, colour),
-					chatColour).replaceAll(
-					String.format(format, Integer.toHexString(colour)),
-					chatColour);
-		}
-		message = message.replaceAll("<g>", "" + ChatColor.GREEN);
-		message = message.replaceAll("<y>", "" + ChatColor.YELLOW);
-		return message;
-	}
-
-	public static void dualSend(CommandSender sender, String string) {
-		log(string);
-		if (sender instanceof Player)
-			send(sender, StringUtils.join(string));
 	}
 }

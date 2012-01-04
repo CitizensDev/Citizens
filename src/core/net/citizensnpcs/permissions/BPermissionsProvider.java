@@ -13,13 +13,22 @@ import de.bananaco.permissions.worlds.WorldPermissionsManager;
 public class BPermissionsProvider implements PermissionsProvider {
 	WorldPermissionsManager provider = Permissions.getWorldPermissionsManager();
 
-	private PermissionSet getPermissions(Player player) {
-		return provider.getPermissionSet(player.getWorld().getName());
+	@Override
+	public CitizensGroup getGroup(String group) {
+		return null; // bPermissions API needs multiworld for some reason.
 	}
 
 	@Override
-	public boolean inGroup(Player player, String group) {
-		return getPermissions(player).getGroups(player).contains(group);
+	public Set<CitizensGroup> getGroups(Player player) {
+		Set<CitizensGroup> groups = Sets.newHashSet();
+		for (String name : getPermissions(player).getGroups(player)) {
+			groups.add(new CitizensGroup(name));
+		}
+		return groups;
+	}
+
+	private PermissionSet getPermissions(Player player) {
+		return provider.getPermissionSet(player.getWorld().getName());
 	}
 
 	@Override
@@ -36,26 +45,17 @@ public class BPermissionsProvider implements PermissionsProvider {
 	}
 
 	@Override
-	public void setGroup(Player player, String group) {
-		getPermissions(player).setGroup(player, group);
-	}
-
-	@Override
-	public CitizensGroup getGroup(String group) {
-		return null; // bPermissions API needs multiworld for some reason.
-	}
-
-	@Override
-	public Set<CitizensGroup> getGroups(Player player) {
-		Set<CitizensGroup> groups = Sets.newHashSet();
-		for (String name : getPermissions(player).getGroups(player)) {
-			groups.add(new CitizensGroup(name));
-		}
-		return groups;
+	public boolean inGroup(Player player, String group) {
+		return getPermissions(player).getGroups(player).contains(group);
 	}
 
 	@Override
 	public void removeGroup(Player player, String group) {
 		getPermissions(player).removeGroup(player, group);
+	}
+
+	@Override
+	public void setGroup(Player player, String group) {
+		getPermissions(player).setGroup(player, group);
 	}
 }

@@ -1,33 +1,21 @@
 package net.citizensnpcs.lib.creatures;
 
 import net.citizensnpcs.lib.CraftNPC;
-import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.World;
+import net.citizensnpcs.lib.pathfinding.MinecraftAutoPathfinder;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public abstract class CreatureNPC extends CraftNPC {
-	protected final double range = 25;
+public abstract class CreatureNPC {
+	protected final CraftNPC handle;
 	protected final int[] weapons = { 267, 268, 272, 283 };
 
-	public CreatureNPC(MinecraftServer minecraftserver, World world, String s,
-			ItemInWorldManager iteminworldmanager) {
-		super(minecraftserver, world, s, iteminworldmanager);
-	}
-
-	/**
-	 * Called when a creature spawns. Provides a default method, which sets the
-	 * creature to randomly path in updateMove().
-	 */
-	public void onSpawn() {
-		this.randomPather = true;
+	protected CreatureNPC(CraftNPC handle) {
+		this.handle = handle;
 	}
 
 	/**
@@ -36,15 +24,22 @@ public abstract class CreatureNPC extends CraftNPC {
 	 * closest player based on a predefined range, else takes a random path.
 	 */
 	public void doTick() {
-		moveTick();
-		applyGravity();
+		handle.tick();
 	}
 
 	/**
-	 * Called when the creature dies. Can be used for loot drops or playing
-	 * sound effects.
+	 * Helper method.
+	 * 
+	 * @return
 	 */
-	public abstract void onDeath();
+	public Location getLocation() {
+		return this.getPlayer().getLocation();
+	}
+
+	/**
+	 * Returns the type of this creature.
+	 */
+	public abstract CreatureNPCType getType();
 
 	/**
 	 * Called when the creature is damaged. Can be used for targeting attacker
@@ -59,34 +54,24 @@ public abstract class CreatureNPC extends CraftNPC {
 			EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
 			Entity damager = e.getDamager();
 			if (damager != null && damager instanceof LivingEntity) {
-				this.targetAggro = true;
-				this.targetEntity = ((CraftEntity) damager).getHandle();
+				handle.getPathController().target(damager, true);
 			}
 		}
 	}
 
 	/**
-	 * Returns the type of this creature.
+	 * Called when the creature dies. Can be used for loot drops or playing
+	 * sound effects.
 	 */
-	public abstract CreatureNPCType getType();
+	public abstract void onDeath();
 
 	/**
-	 * Helper method.
+	 * Called when a player left clicks the NPC - this can cause a damage event
+	 * as well.
 	 * 
-	 * @return
+	 * @param player
 	 */
-	public Player getEntity() {
-		return (Player) this.bukkitEntity;
-	}
-
-	/**
-	 * Helper method.
-	 * 
-	 * @return
-	 */
-	public Location getLocation() {
-		return this.getEntity().getLocation();
-	}
+	public abstract void onLeftClick(Player player);
 
 	/**
 	 * Called when a player right clicks the NPC.
@@ -96,10 +81,19 @@ public abstract class CreatureNPC extends CraftNPC {
 	public abstract void onRightClick(Player player);
 
 	/**
-	 * Called when a player left clicks the NPC - this can cause a damage event
-	 * as well.
-	 * 
-	 * @param player
+	 * Called when a creature spawns. Provides a default method, which sets the
+	 * creature to randomly path in updateMove().
 	 */
-	public abstract void onLeftClick(Player player);
+	public void onSpawn() {
+		handle.getPathController().setAutoPathfinder(
+				new MinecraftAutoPathfinder());
+	}
+
+	public Player getPlayer() {
+		return (Player) this.handle.getBukkitEntity();
+	}
+
+	public CraftNPC getHandle() {
+		return this.handle;
+	}
 }

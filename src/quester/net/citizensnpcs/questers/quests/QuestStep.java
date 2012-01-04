@@ -20,13 +20,13 @@ public class QuestStep {
 		this.finishHere = finishHere;
 	}
 
+	public List<Objective> objectives() {
+		return Collections.unmodifiableList(objectives);
+	}
+
 	public void onCompletion(Player player, QuestProgress progress) {
 		this.granter.onCompletion(player, progress);
 		if (this.finishHere)
 			QuestManager.completeQuest(player);
-	}
-
-	public List<Objective> objectives() {
-		return Collections.unmodifiableList(objectives);
 	}
 }

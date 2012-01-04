@@ -26,33 +26,40 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public class Web {
-	private static Set<Player> told = Sets.newHashSet();
-	private static String build = "";
-	private static final Handler handler = new LogHandler();
-
-	// Check the Citizens thread on the Bukkit forums if there is a new version
-	// available, or use Citizens.getLatestBuildVersion() for devBuilds.
-	public static void notifyUpdate(Player player) {
-		if (told.contains(player))
-			return;
-		if (build.isEmpty()) {
-			if (Citizens.localVersion().contains("devBuild")) {
-				String temp = fetchLatestBuildVersion();
-				if (!temp.equals(Citizens.localVersion())) {
-					build = temp;
-				}
-			} else {
-				String temp = fetchLatestVersion();
-				if (!temp.equals(Citizens.localVersion())) {
-					build = temp;
+	private static class LogHandler extends ConsoleHandler {
+		@Override
+		public void publish(final LogRecord record) {
+			if (record.getMessage() == null || record.getThrown() == null
+					|| record.getLevel() != Level.SEVERE
+					|| !record.getMessage().contains("Citizens"))
+				return;
+			for (String pattern : illegalStacks.keySet()) {
+				if (record.getMessage().matches(pattern)) {
+					if (!illegalStacks.get(pattern).isEmpty())
+						Messaging.log(illegalStacks.get(pattern));
+					return;
 				}
 			}
+			new Thread() {
+				@Override
+				public void run() {
+					report(stackToString(record.getThrown()));
+				}
+			};
 		}
-		if (!build.isEmpty()) {
-			player.sendMessage(StringUtils.wrap("**ALERT** ")
-					+ "A new version of Citizens is available!"
-					+ " The latest version is " + StringUtils.wrap(build) + ".");
+	}
+	private static Set<Player> told = Sets.newHashSet();
+	private static String build = "";
+
+	private static final Handler handler = new LogHandler();
+
+	private static Map<String, String> illegalStacks = Maps.newHashMap();
+
+	public static void disableErrorReporting() {
+		if (!Settings.getBoolean("ErrorReporting")) {
+			return;
 		}
+		Bukkit.getLogger().removeHandler(handler);
 	}
 
 	/**
@@ -107,11 +114,29 @@ public class Web {
 		Bukkit.getLogger().addHandler(handler);
 	}
 
-	public static void disableErrorReporting() {
-		if (!Settings.getBoolean("ErrorReporting")) {
+	// Check the Citizens thread on the Bukkit forums if there is a new version
+	// available, or use Citizens.getLatestBuildVersion() for devBuilds.
+	public static void notifyUpdate(Player player) {
+		if (told.contains(player))
 			return;
+		if (build.isEmpty()) {
+			if (Citizens.localVersion().contains("devBuild")) {
+				String temp = fetchLatestBuildVersion();
+				if (!temp.equals(Citizens.localVersion())) {
+					build = temp;
+				}
+			} else {
+				String temp = fetchLatestVersion();
+				if (!temp.equals(Citizens.localVersion())) {
+					build = temp;
+				}
+			}
 		}
-		Bukkit.getLogger().removeHandler(handler);
+		if (!build.isEmpty()) {
+			player.sendMessage(StringUtils.wrap("**ALERT** ")
+					+ "A new version of Citizens is available!"
+					+ " The latest version is " + StringUtils.wrap(build) + ".");
+		}
 	}
 
 	private static void report(String error) {
@@ -168,31 +193,6 @@ public class Web {
 			return "Invalid stacktrace";
 		}
 	}
-
-	private static class LogHandler extends ConsoleHandler {
-		@Override
-		public void publish(final LogRecord record) {
-			if (record.getMessage() == null || record.getThrown() == null
-					|| record.getLevel() != Level.SEVERE
-					|| !record.getMessage().contains("Citizens"))
-				return;
-			for (String pattern : illegalStacks.keySet()) {
-				if (record.getMessage().matches(pattern)) {
-					if (!illegalStacks.get(pattern).isEmpty())
-						Messaging.log(illegalStacks.get(pattern));
-					return;
-				}
-			}
-			new Thread() {
-				@Override
-				public void run() {
-					report(stackToString(record.getThrown()));
-				}
-			};
-		}
-	}
-
-	private static Map<String, String> illegalStacks = Maps.newHashMap();
 	static {
 		illegalStacks.put("org.yaml.snakeyaml",
 				"Something went wrong with config.");

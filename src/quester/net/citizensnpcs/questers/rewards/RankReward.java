@@ -21,6 +21,17 @@ public class RankReward implements Requirement, Reward {
 	}
 
 	@Override
+	public boolean fulfilsRequirement(Player player) {
+		return PermissionManager.hasRank(player, reward);
+	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		return ChatColor.GRAY + "You must be in the group "
+				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
+	}
+
+	@Override
 	public void grant(Player player, int UID) {
 		if (replace && !with.isEmpty()) {
 			PermissionManager.removeRank(player, reward);
@@ -36,17 +47,6 @@ public class RankReward implements Requirement, Reward {
 	@Override
 	public boolean isTake() {
 		return take;
-	}
-
-	@Override
-	public boolean fulfilsRequirement(Player player) {
-		return PermissionManager.hasRank(player, reward);
-	}
-
-	@Override
-	public String getRequiredText(Player player) {
-		return ChatColor.GRAY + "You must be in the group "
-				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
 	}
 
 	@Override

@@ -25,35 +25,12 @@ import com.google.common.collect.Maps;
 
 public class Trader extends CitizensNPC {
 
-	public static void loadGlobal() {
-		DataKey root = UtilityProperties.getConfig().getKey(
-				"traders.global-prices");
-		for (DataKey key : root.getSubKeys()) {
-			int itemID = key.getInt("id", 1);
-			int amount = key.getInt("amount", 1);
-			short data = (short) key.getInt("data");
-			double price = key.getDouble("price");
-			boolean selling = !key.getBoolean("selling", false);
-			if (itemID > 0 && amount > 0) {
-				Stockable stock = new Stockable(new ItemStack(itemID, amount,
-						data), new ItemPrice(price), selling);
-				globalStock.put(stock.createCheck(), stock);
-			}
-		}
-	}
-
 	private boolean unlimited = false;
+
 	private boolean free = true;
 	private boolean locked = false;
 	private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
-
 	private boolean useGlobalBuy, useGlobalSell;
-
-	private static Map<Check, Stockable> globalStock = Maps.newHashMap();
-
-	public static void clearGlobal() {
-		globalStock.clear();
-	}
 
 	public void addStockable(Stockable s) {
 		stocking.put(s.createCheck(), s);
@@ -221,5 +198,28 @@ public class Trader extends CitizensNPC {
 			this.useGlobalSell = useGlobal;
 		else
 			this.useGlobalBuy = useGlobal;
+	}
+
+	private static Map<Check, Stockable> globalStock = Maps.newHashMap();
+
+	public static void clearGlobal() {
+		globalStock.clear();
+	}
+
+	public static void loadGlobal() {
+		DataKey root = UtilityProperties.getConfig().getKey(
+				"traders.global-prices");
+		for (DataKey key : root.getSubKeys()) {
+			int itemID = key.getInt("id", 1);
+			int amount = key.getInt("amount", 1);
+			short data = (short) key.getInt("data");
+			double price = key.getDouble("price");
+			boolean selling = !key.getBoolean("selling", false);
+			if (itemID > 0 && amount > 0) {
+				Stockable stock = new Stockable(new ItemStack(itemID, amount,
+						data), new ItemPrice(price), selling);
+				globalStock.put(stock.createCheck(), stock);
+			}
+		}
 	}
 }

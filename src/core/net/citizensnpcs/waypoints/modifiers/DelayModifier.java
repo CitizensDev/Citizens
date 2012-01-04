@@ -18,20 +18,8 @@ public class DelayModifier extends WaypointModifier {
 	}
 
 	@Override
-	public void onReach(HumanNPC npc) {
-	}
-
-	@Override
-	public void load(DataKey root) {
-	}
-
-	@Override
-	public void save(DataKey root) {
-	}
-
-	@Override
-	public WaypointModifierType getType() {
-		return WaypointModifierType.DELAY;
+	public boolean allowExit() {
+		return step > 0;
 	}
 
 	@Override
@@ -57,12 +45,24 @@ public class DelayModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean allowExit() {
-		return step > 0;
+	public WaypointModifierType getType() {
+		return WaypointModifierType.DELAY;
+	}
+
+	@Override
+	public void load(DataKey root) {
 	}
 
 	@Override
 	protected void onExit() {
 		waypoint.setDelay(this.delay);
+	}
+
+	@Override
+	public void onReach(HumanNPC npc) {
+	}
+
+	@Override
+	public void save(DataKey root) {
 	}
 }

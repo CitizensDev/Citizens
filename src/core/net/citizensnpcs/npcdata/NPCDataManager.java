@@ -3,7 +3,6 @@ package net.citizensnpcs.npcdata;
 import java.util.List;
 import java.util.Map;
 
-import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.lib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
@@ -11,10 +10,9 @@ import net.citizensnpcs.utils.InventoryUtils.Armor;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
-import net.citizensnpcs.waypoints.Waypoint;
+import net.citizensnpcs.waypoints.PathEditor;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,25 +20,32 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 
 public class NPCDataManager {
 	// TODO: make editors an interface.
-	public static final Map<Player, PathEditingSession> pathEditors = Maps
+	public static final Map<String, PathEditor> pathEditors = Maps.newHashMap();
+	public static final Map<String, Integer> equipmentEditors = Maps
 			.newHashMap();
-	public static final Map<Player, Integer> equipmentEditors = Maps
-			.newHashMap();
-	public static final Map<String, Integer> selectedNPCs = new MapMaker()
-			.makeMap();
+	public static final Map<String, Integer> selectedNPCs = Maps.newHashMap();
 
-	public static void handleEquipmentEditor(NPCRightClickEvent event) {
-		Player player = event.getPlayer();
-		HumanNPC npc = event.getNPC();
-		if (equipmentEditors.containsKey(player)
-				&& equipmentEditors.get(player) == npc.getUID()) {
-			equip(player, npc);
+	// Adds items to an npc so that they are visible.
+	public static void addItems(HumanNPC npc, List<ItemData> items) {
+		if (items != null) {
+			npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0)
+					.createStack());
+			for (int i = 0; i < items.size() - 1; i++) {
+				Armor.getArmor(i).set(
+						npc.getInventory(),
+						items.get(i + 1).getID() == 0 ? null : items.get(i + 1)
+								.createStack());
+			}
+			npc.getNPCData().setItems(items);
 		}
+	}
+
+	public static void deselectNPC(Player player) {
+		selectedNPCs.remove(player.getName());
 	}
 
 	// equip an NPC based on a player's item-in-hand
@@ -147,104 +152,36 @@ public class NPCDataManager {
 		npc.spawn();
 	}
 
-	public static void handlePathEditor(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
-		if (pathEditors.get(player) == null)
-			return;
-		PathEditingSession session = pathEditors.get(player);
-		HumanNPC npc = session.getNPC();
-		if (npc == null) {
-			pathEditors.remove(player);
-			player.sendMessage(ChatColor.GRAY
-					+ "Something went wrong (NPC is dead?).");
-			return;
-		}
-		switch (event.getAction()) {
-		case LEFT_CLICK_BLOCK:
-			Location loc = event.getClickedBlock().getLocation();
-			if (!npc.getWorld().equals(player.getWorld())) {
-				player.sendMessage(ChatColor.GRAY
-						+ "Waypoints must be in the same world as the npc.");
-				break;
-			}
-			if (npc.getWaypoints().size() > 0
-					&& npc.getWaypoints().get(session.getIndex()).getLocation()
-							.distance(loc) > Settings
-							.getDouble("PathfindingRange")) {
-				player.sendMessage(ChatColor.GRAY
-						+ "Points can't be more than "
-						+ StringUtils.wrap(
-								Settings.getDouble("PathfindingRange"),
-								ChatColor.GRAY)
-						+ " blocks away from each other.");
-				break;
-			}
-			session.insert(npc.getWaypoints(), new Waypoint(loc));
-			event.getPlayer().sendMessage(
-					StringUtils.wrap("Added")
-							+ " waypoint at index "
-							+ StringUtils.wrap(session.getIndex())
-							+ " ("
-							+ StringUtils.wrap(loc.getBlockX())
-							+ ", "
-							+ StringUtils.wrap(loc.getBlockY())
-							+ ", "
-							+ StringUtils.wrap(loc.getBlockZ())
-							+ ") ("
-							+ StringUtils.wrap(npc.getWaypoints().size())
-							+ " "
-							+ StringUtils.pluralise("waypoint", npc
-									.getWaypoints().size()) + ")");
-			break;
-		case RIGHT_CLICK_BLOCK:
-		case RIGHT_CLICK_AIR:
-			if (npc.getWaypoints().size() > 0) {
-				session.remove(npc.getWaypoints());
-				event.getPlayer().sendMessage(
-						StringUtils.wrap("Undid") + " the last waypoint ("
-								+ StringUtils.wrap(npc.getWaypoints().size())
-								+ " remaining)");
-
-			} else
-				event.getPlayer().sendMessage(
-						ChatColor.GRAY + "No more waypoints.");
-			break;
-		}
-	}
-
-	public static void handlePathRestart(NPCRightClickEvent event) {
-		if (event == null
-				|| !pathEditors.containsKey(event.getPlayer())
-				|| pathEditors.get(event.getPlayer()).getUID() != event
-						.getNPC().getUID())
-			return;
-		pathEditors.get(event.getPlayer()).restartAtIndex();
-	}
-
-	// Adds items to an npc so that they are visible.
-	public static void addItems(HumanNPC npc, List<ItemData> items) {
-		if (items != null) {
-			npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0)
-					.createStack());
-			for (int i = 0; i < items.size() - 1; i++) {
-				Armor.getArmor(i).set(
-						npc.getInventory(),
-						items.get(i + 1).getID() == 0 ? null : items.get(i + 1)
-								.createStack());
-			}
-			npc.getNPCData().setItems(items);
-		}
-	}
-
 	public static int getSelected(Player player) {
 		return selectedNPCs.get(player.getName());
 	}
 
-	public static void selectNPC(Player player, HumanNPC npc) {
-		selectedNPCs.put(player.getName(), npc.getUID());
+	public static void handleEquipmentEditor(NPCRightClickEvent event) {
+		Player player = event.getPlayer();
+		HumanNPC npc = event.getNPC();
+		if (equipmentEditors.containsKey(player.getName())
+				&& equipmentEditors.get(player.getName()) == npc.getUID()) {
+			equip(player, npc);
+		}
 	}
 
-	public static void deselectNPC(Player player) {
-		selectedNPCs.remove(player.getName());
+	public static void handlePathEditor(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		if (pathEditors.get(player.getName()) == null)
+			return;
+		PathEditor session = pathEditors.get(player.getName());
+		switch (event.getAction()) {
+		case LEFT_CLICK_BLOCK:
+			session.onLeftClick(event.getClickedBlock());
+			break;
+		case RIGHT_CLICK_BLOCK:
+		case RIGHT_CLICK_AIR:
+			session.onRightClick(event.getClickedBlock());
+			break;
+		}
+	}
+
+	public static void selectNPC(Player player, HumanNPC npc) {
+		selectedNPCs.put(player.getName(), npc.getUID());
 	}
 }

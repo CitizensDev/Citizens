@@ -2,8 +2,8 @@ package net.citizensnpcs.lib.pathfinding;
 
 import java.util.Random;
 
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.lib.CraftNPC;
-import net.citizensnpcs.lib.HumanNPC;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.PathEntity;
 import net.minecraft.server.Vec3D;
@@ -15,16 +15,32 @@ public class MinecraftPathingStrategy implements PathingStrategy {
 	private final CraftNPC handle;
 	private final PathEntity path;
 
+	public MinecraftPathingStrategy(CraftNPC handle, Location destination) {
+		this.handle = handle;
+		this.path = handle.world.a(handle, destination.getBlockX(),
+				destination.getBlockY(), destination.getBlockZ(),
+				(float) Settings.getDouble("PathfindingRange"));
+	}
+
 	MinecraftPathingStrategy(CraftNPC handle, PathEntity path) {
 		this.handle = handle;
 		this.path = path;
 	}
 
-	public MinecraftPathingStrategy(HumanNPC npc, Location destination) {
-		this.handle = npc.getHandle();
-		this.path = npc.getHandle().world.a(npc.getHandle(),
-				destination.getBlockX(), destination.getBlockY(),
-				destination.getBlockZ(), 16F);
+	private Vec3D getVector() {
+		Vec3D vec3d = path.a(handle);
+		double lengthSq = (handle.width * 2.0F);
+		lengthSq *= lengthSq;
+		while (vec3d != null
+				&& vec3d.d(handle.locX, vec3d.b, handle.locZ) < lengthSq) {
+			this.path.a(); // Increment path index.
+			if (this.path.b()) { // finished.
+				return null;
+			} else {
+				vec3d = this.path.a(handle);
+			}
+		}
+		return vec3d;
 	}
 
 	@Override
@@ -43,9 +59,8 @@ public class MinecraftPathingStrategy implements PathingStrategy {
 		handle.yaw += handle.getYawDifference(diffZ, diffX);
 		if (vector.b - yHeight > 0.0D) {
 			handle.jump();
-		}
-		// TODO: adjust pitch.
-		// Walk.
+		} // TODO: adjust pitch?
+
 		handle.walkOnCurrentHeading();
 
 		if (handle.positionChanged) {
@@ -55,21 +70,5 @@ public class MinecraftPathingStrategy implements PathingStrategy {
 			handle.motY += 0.04D;
 		}
 		return false;
-	}
-
-	private Vec3D getVector() {
-		Vec3D vec3d = path.a(handle);
-		double lengthSq = (handle.width * 2.0F);
-		lengthSq *= lengthSq;
-		while (vec3d != null
-				&& vec3d.d(handle.locX, vec3d.b, handle.locZ) < lengthSq) {
-			this.path.a(); // Increment path index.
-			if (this.path.b()) { // finished.
-				return null;
-			} else {
-				vec3d = this.path.a(handle);
-			}
-		}
-		return vec3d;
 	}
 }
