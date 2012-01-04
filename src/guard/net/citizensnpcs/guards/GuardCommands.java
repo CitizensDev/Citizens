@@ -168,9 +168,9 @@ public class GuardCommands extends CommandHandler {
 			player.sendMessage(ChatColor.GRAY + "No name given.");
 			return;
 		}
-		boolean isSafe = args.getString(offset).charAt(0) == '-';
+		boolean isSafe = args.getString(offset).charAt(0) == '~';
 
-		String name = isSafe ? args.getJoinedStrings(offset).replaceFirst("-",
+		String name = isSafe ? args.getJoinedStrings(offset).replaceFirst("~",
 				"") : args.getJoinedStrings(offset);
 		name = name.toLowerCase().trim();
 
@@ -235,6 +235,8 @@ public class GuardCommands extends CommandHandler {
 			return;
 		} else if (flags.contains('a')) {
 			for (Character character : flags) {
+				player.sendMessage(ChatColor.GRAY + "Skipping unknown flag type "
+							+ character + ".");
 				guard.getFlags().getFlags(FlagType.fromCharacter(character))
 						.clear();
 			}
