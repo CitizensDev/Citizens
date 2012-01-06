@@ -2,8 +2,8 @@ package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.Plugins;
 import net.citizensnpcs.Settings;
-import net.citizensnpcs.resources.npclib.NPCAnimator.Animation; 
-import net.citizensnpcs.resources.npclib.creatures.CreatureNPC; 
+import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
+import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
@@ -118,7 +118,7 @@ public class PathNPC extends EntityPlayer {
 		}
 		return vec3d;
 	}
-    
+
 	public int getStationaryTicks() {
 		return this.stationaryTicks;
 	}
@@ -213,8 +213,10 @@ public class PathNPC extends EntityPlayer {
 				handleMove(vector);
 			}
 		}
-		--this.attackTicks;
-		--this.noDamageTicks; // Update entity
+		if (this.attackTicks > 0)
+			--this.attackTicks;
+		if (this.noDamageTicks > 0)
+			--this.noDamageTicks; // Update entity
 	}
 
 	public boolean pathFinished() {

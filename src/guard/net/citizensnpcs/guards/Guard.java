@@ -82,6 +82,7 @@ public class Guard extends CitizensNPC {
 		else if (this.isAggressive) {
 			target((LivingEntity) ev.getDamager(), npc);
 		}
+		event.setCancelled(false);
 	}
 
 	private boolean isCoOwned(Entity damager, HumanNPC npc) {

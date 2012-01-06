@@ -88,7 +88,7 @@ public class Bodyguard implements GuardUpdater {
 			despawn(npc);
 			return false;
 		}
-                  double range = Settings.getDouble("PathfindingRange");
+		double range = Settings.getDouble("PathfindingRange");
 		if (LocationUtils.withinRange(npc.getLocation(), player.getLocation(),
 				guard.getProtectionRadius())) {
 			LivingEntity entity = Targeter.findTarget(
@@ -107,6 +107,7 @@ public class Bodyguard implements GuardUpdater {
 			}
 			PathUtils.target(npc, player, false, -1, -1, range);
 		}
+		return false;
 	}
 
 	private void teleportHome(HumanNPC npc) {
