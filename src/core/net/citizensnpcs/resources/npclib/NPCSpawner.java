@@ -111,6 +111,9 @@ public class NPCSpawner {
 	}
 
 	public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
+		if (getWorldServer(npc.getWorld()).getEntity(npc.getHandle().id) != npc
+				.getHandle())
+			return;
 		Bukkit.getServer().getPluginManager()
 				.callEvent(new NPCRemoveEvent(npc, reason));
 		PacketUtils.sendPacketToOnline(

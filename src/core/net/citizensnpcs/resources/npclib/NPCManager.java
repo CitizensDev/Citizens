@@ -63,6 +63,8 @@ public class NPCManager {
 	// Despawns an NPC.
 	public static void despawn(int UID, NPCRemoveReason reason) {
 		GlobalUIDs.remove(UID);
+		if (list.get(UID) == null)
+			return;
 		NPCSpawner.despawnNPC(list.remove(UID), reason);
 	}
 
