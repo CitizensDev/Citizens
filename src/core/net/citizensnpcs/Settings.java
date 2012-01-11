@@ -135,6 +135,8 @@ public class Settings {
 				"Hello.;How are you today?;Having a nice day?;Good weather today.;Stop hitting me!;I'm bored.;"));
 		nodes.add(new Node("NPCColor", SettingsType.GENERAL,
 				"general.colors.npc-colour", "f"));
+		nodes.add(new Node("RealisticPathing", SettingsType.GENERAL,
+				"general.pathing.realistic", false));
 		nodes.add(new Node("TalkItems", SettingsType.GENERAL,
 				"items.talk-items", "340,"));
 		nodes.add(new Node("SelectItems", SettingsType.GENERAL,

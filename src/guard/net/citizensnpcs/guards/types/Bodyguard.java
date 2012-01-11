@@ -81,16 +81,15 @@ public class Bodyguard implements GuardUpdater {
 
 	private boolean findTarget(HumanNPC npc) {
 		Guard guard = npc.getType("guard");
-		if (!guard.isAggressive())
-			return false;
 		Player player = Bukkit.getPlayerExact(npc.getOwner());
 		if (player == null) {
 			despawn(npc);
 			return false;
 		}
 		double range = Settings.getDouble("PathfindingRange");
-		if (LocationUtils.withinRange(npc.getLocation(), player.getLocation(),
-				guard.getProtectionRadius())) {
+		if (guard.isAggressive()
+				&& LocationUtils.withinRange(npc.getLocation(),
+						player.getLocation(), guard.getProtectionRadius())) {
 			LivingEntity entity = Targeter.findTarget(
 					Targeter.getNearby(player, guard.getProtectionRadius()),
 					npc);

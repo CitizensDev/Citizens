@@ -39,6 +39,7 @@ public class CitizensNPCLoader {
 					// load extended classes.
 					Class.forName(subclazz.getName(), true, loader);
 				}
+
 				Class<? extends CitizensNPCType> typeClass = clazz
 						.asSubclass(CitizensNPCType.class);
 				CitizensNPCType type = typeClass.newInstance();

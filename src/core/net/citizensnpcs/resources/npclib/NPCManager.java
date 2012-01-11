@@ -13,6 +13,7 @@ import net.citizensnpcs.properties.PropertyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -44,6 +45,10 @@ public class NPCManager {
 	// Rotates an NPC.
 	public static void faceEntity(HumanNPC npc, Entity entity) {
 		if (npc.getWorld() != entity.getWorld())
+			return;
+		if (Settings.getBoolean("RealisticPathing")
+				&& !npc.getHandle().isInSight(
+						((CraftEntity) entity).getHandle()))
 			return;
 		Location loc = npc.getLocation(), pl = entity.getLocation();
 		double xDiff = pl.getX() - loc.getX();

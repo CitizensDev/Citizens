@@ -14,6 +14,7 @@ import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -128,6 +129,10 @@ public class Guard extends CitizensNPC {
 
 	public void target(LivingEntity entity, HumanNPC npc) {
 		if (isOwner(entity, npc) || isCoOwned(entity, npc))
+			return;
+		if (Settings.getBoolean("RealisticPathing")
+				&& !npc.getHandle().isInSight(
+						((CraftEntity) entity).getHandle()))
 			return;
 		npc.setPaused(true);
 		PathUtils.target(npc, entity, true, -1, -1,
