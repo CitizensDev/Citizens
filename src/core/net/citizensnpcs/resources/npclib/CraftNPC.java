@@ -1,5 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
+import java.io.IOException;
+
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -16,7 +18,9 @@ public class CraftNPC extends PathNPC {
 		super(minecraftserver, world, s, iteminworldmanager);
 		iteminworldmanager.a(0);
 
-		NetworkManager netMgr = new NPCNetworkManager(new NPCSocket(),
+		NPCSocket socket = new NPCSocket();
+		
+		NetworkManager netMgr = new NPCNetworkManager(socket,
 				"npc mgr", new NetHandler() {
 					@Override
 					public boolean c() {
@@ -25,6 +29,12 @@ public class CraftNPC extends PathNPC {
 				});
 		this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
 		netMgr.a(this.netServerHandler);
+		
+		try{
+			socket.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 	public void applyGravity() {
