@@ -15,75 +15,78 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.inventory.ItemStack;
 
 public class DeliveryQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.CUSTOM_EVENT };
+    private static final Type[] EVENTS = new Type[] { Type.CUSTOM_EVENT };
 
-	@Override
-	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof NPCRightClickEvent) {
-			NPCRightClickEvent e = (NPCRightClickEvent) event;
-			if (e.getPlayer().getEntityId() == progress.getPlayer()
-					.getEntityId()
-					&& e.getNPC().getUID() == progress.getObjective()
-							.getDestNPCID()) {
-				Player player = e.getPlayer();
+    @Override
+    public boolean update(Event event, ObjectiveProgress progress) {
+        if (!(event instanceof NPCRightClickEvent))
+            return false;
+        NPCRightClickEvent e = (NPCRightClickEvent) event;
+        if (e.getPlayer().getEntityId() != progress.getPlayer().getEntityId()
+                || e.getNPC().getUID() != progress.getObjective()
+                        .getDestNPCID())
+            return false;
+        Player player = progress.getPlayer();
 
-				if (progress.getObjective().getMaterial() == null
-						|| progress.getObjective().getMaterial() == Material.AIR) {
-					return true;
-				}
+        if (progress.getObjective().getMaterial() == null
+                || progress.getObjective().getMaterial() == Material.AIR) {
+            return true;
+        }
 
-				if (player.getItemInHand().getType() == progress.getObjective()
-						.getMaterial()) {
-					boolean completed = player.getItemInHand().getAmount() >= progress
-							.getObjective().getAmount();
-					if (completed
-							&& progress.getObjective().getAmount() > 0
-							&& progress.getObjective().getMaterial() != Material.AIR) {
-						int amount = player.getItemInHand().getAmount()
-								- progress.getObjective().getAmount();
-						ItemStack item = player.getItemInHand();
-						if (amount > 0)
-							item.setAmount(amount);
-						else
-							item = null;
-						player.setItemInHand(item);
-					}
-					return completed;
-				}
-			}
-		}
-		return false;
-	}
+        if (player.getItemInHand().getType() == progress.getObjective()
+                .getMaterial()) {
+            if (progress.getObjective().hasParameter("data")) {
+                if (player.getItemInHand().getDurability() != progress
+                        .getObjective().getParameter("data").getInt())
+                    return false;
+            }
+            boolean completed = player.getItemInHand().getAmount() >= progress
+                    .getObjective().getAmount();
+            if (completed && progress.getObjective().getAmount() > 0
+                    && progress.getObjective().getMaterial() != Material.AIR) {
+                int amount = player.getItemInHand().getAmount()
+                        - progress.getObjective().getAmount();
+                ItemStack item = player.getItemInHand();
+                if (amount > 0)
+                    item.setAmount(amount);
+                else
+                    item = null;
+                player.setItemInHand(item);
+            }
+            return completed;
+        }
+        return false;
+    }
 
-	@Override
-	public Type[] getEventTypes() {
-		return EVENTS;
-	}
+    @Override
+    public Type[] getEventTypes() {
+        return EVENTS;
+    }
 
-	@Override
-	public String getStatus(ObjectiveProgress progress)
-			throws QuestCancelException {
-		if (CitizensManager.getNPC(progress.getObjective().getDestNPCID()) == null) {
-			throw new QuestCancelException(ChatColor.GRAY
-					+ "Cancelling quest due to missing destination NPC.");
-		}
-		int amount = progress.getObjective().getAmount();
-		if (progress.getObjective().getMaterial() == null
-				|| progress.getObjective().getMaterial() == Material.AIR)
-			return ChatColor.GREEN
-					+ "Talking to "
-					+ StringUtils.wrap(CitizensManager.getNPC(
-							progress.getObjective().getDestNPCID()).getName())
-					+ ".";
-		return ChatColor.GREEN
-				+ "Delivering "
-				+ StringUtils.wrap(amount)
-				+ " "
-				+ StringUtils.formatter(progress.getObjective().getMaterial())
-						.plural(amount)
-				+ " to "
-				+ StringUtils.wrap(CitizensManager.getNPC(
-						progress.getObjective().getDestNPCID()).getName())
-				+ ".";
-	}
+    @Override
+    public String getStatus(ObjectiveProgress progress)
+            throws QuestCancelException {
+        if (CitizensManager.getNPC(progress.getObjective().getDestNPCID()) == null) {
+            throw new QuestCancelException(ChatColor.GRAY
+                    + "Cancelling quest due to missing destination NPC.");
+        }
+        int amount = progress.getObjective().getAmount();
+        if (progress.getObjective().getMaterial() == null
+                || progress.getObjective().getMaterial() == Material.AIR)
+            return ChatColor.GREEN
+                    + "Talking to "
+                    + StringUtils.wrap(CitizensManager.getNPC(
+                            progress.getObjective().getDestNPCID()).getName())
+                    + ".";
+        return ChatColor.GREEN
+                + "Delivering "
+                + StringUtils.wrap(amount)
+                + " "
+                + StringUtils.formatter(progress.getObjective().getMaterial())
+                        .plural(amount)
+                + " to "
+                + StringUtils.wrap(CitizensManager.getNPC(
+                        progress.getObjective().getDestNPCID()).getName())
+                + ".";
+    }
 }

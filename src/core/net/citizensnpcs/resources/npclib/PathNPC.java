@@ -127,7 +127,7 @@ public class PathNPC extends EntityPlayer {
         float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
         float diffYaw = vectorYaw - this.yaw;
 
-        for (this.aU = this.aY; diffYaw < -180.0F; diffYaw += 360.0F) {
+        for (this.aX = this.bb; diffYaw < -180.0F; diffYaw += 360.0F) {
         }
         while (diffYaw >= 180.0F) {
             diffYaw -= 360.0F;
@@ -157,7 +157,7 @@ public class PathNPC extends EntityPlayer {
             }
             // TODO: adjust pitch.
             // Walk.
-            this.a(this.aT, this.aU);
+            this.a(this.aW, this.aX);
         }
         if (this.positionChanged && !this.pathFinished()) {
             jump();
