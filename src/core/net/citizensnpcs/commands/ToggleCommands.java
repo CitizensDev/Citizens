@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 public class ToggleCommands extends CommandHandler {
 
 	@Command(
-			aliases = { "toggle", "tog", "t" },
+			aliases = { "toggle", "tog" },
 			usage = "list (page)",
 			desc = "view list of toggles",
 			modifiers = { "list", "help" },
@@ -59,7 +59,7 @@ public class ToggleCommands extends CommandHandler {
 
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
-			aliases = { "toggle", "tog", "t" },
+			aliases = { "toggle", "tog" },
 			usage = "[type]",
 			desc = "toggle an NPC type",
 			modifiers = "*",
@@ -80,7 +80,7 @@ public class ToggleCommands extends CommandHandler {
 
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
-			aliases = { "toggle", "tog", "t" },
+			aliases = { "toggle", "tog" },
 			usage = "all [on|off]",
 			desc = "toggle all NPC types",
 			modifiers = "all",
