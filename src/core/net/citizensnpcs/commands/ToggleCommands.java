@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 public class ToggleCommands extends CommandHandler {
 
 	@Command(
-			aliases = { "toggle", "tog", "t" },
+			aliases = { "toggle", "tog"},
 			usage = "list (page)",
 			desc = "view list of toggles",
 			modifiers = { "list", "help" },
