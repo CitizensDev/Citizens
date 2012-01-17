@@ -60,6 +60,8 @@ public class Bouncer implements GuardUpdater {
 
     @Override
     public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
+        if (npc.getHandle().hasTarget() && current == GuardStatus.NORMAL)
+            current = GuardStatus.ATTACKING;
         switch (current) {
         case NORMAL:
             if (findTarget(npc)) {
@@ -70,11 +72,8 @@ public class Bouncer implements GuardUpdater {
         case ATTACKING:
             if (!keepAttacking(npc)) {
                 npc.getHandle().cancelTarget();
-                if (startReturning(npc)) {
-                    return GuardStatus.RETURNING;
-                } else {
-                    return GuardStatus.ATTACKING;
-                }
+                return startReturning(npc) ? GuardStatus.RETURNING
+                        : GuardStatus.ATTACKING;
             }
             break;
         case RETURNING:
