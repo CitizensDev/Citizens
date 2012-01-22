@@ -55,6 +55,10 @@ public class PermissionManager {
 		return permissionsEnabled;
 	}
 
+	public static PermissionsProvider getProvider() {
+		return provider;
+	}
+	
 	public static boolean hasPermission(Player player, String string) {
 		return player.hasPermission(string);
 	}
