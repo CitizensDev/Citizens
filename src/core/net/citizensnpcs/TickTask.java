@@ -20,8 +20,7 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.MapMaker;
 
 public class TickTask implements Runnable {
-    private static final Map<HumanNPC, Actions> cachedActions = new MapMaker()
-            .weakKeys().makeMap();
+    private static final Map<HumanNPC, Actions> cachedActions = new MapMaker().weakKeys().makeMap();
 
     @Override
     public void run() {
@@ -31,14 +30,11 @@ public class TickTask implements Runnable {
             npc.doTick();
             NPCSpawner.removeNPCFromPlayerList(npc);
             for (Player player : online) {
-                if (!npc.getNPCData().isLookClose()
-                        && !npc.getNPCData().isTalkClose())
+                if (!npc.getNPCData().isLookClose() && !npc.getNPCData().isTalkClose())
                     continue;
                 // If the player is within 'seeing' range
-                if (LocationUtils.withinRange(npc.getLocation(),
-                        player.getLocation(), Settings.getDouble("NPCRange"))) {
-                    if (npc.getHandle().pathFinished()
-                            && !npc.getHandle().hasTarget()
+                if (LocationUtils.withinRange(npc.getLocation(), player.getLocation(), Settings.getDouble("NPCRange"))) {
+                    if (npc.getHandle().pathFinished() && !npc.getHandle().hasTarget()
                             && npc.getNPCData().isLookClose()) {
                         NPCManager.faceEntity(npc, player);
                     }
@@ -61,23 +57,20 @@ public class TickTask implements Runnable {
                 if (!waypoints.isStarted()) {
                     waypoints.schedule(npc, 0);
                 }
-                if (waypoints.isStarted() && !npc.isPaused()
-                        && npc.getHandle().pathFinished()) {
+                if (waypoints.isStarted() && !npc.isPaused() && npc.getHandle().pathFinished()) {
                     waypoints.setIndex(0);
                 }
             } else {
                 if (!npc.getWaypoints().isStarted()) {
-                    PathUtils.createPath(npc, npc.getNPCData().getLocation(),
-                            -1, -1, Settings.getDouble("PathfindingRange"));
+                    PathUtils.createPath(npc, npc.getNPCData().getLocation(), -1, -1,
+                            Settings.getDouble("PathfindingRange"));
                     waypoints.setStarted(true);
                 }
-                if (waypoints.isStarted() && !npc.isPaused()
-                        && npc.getHandle().pathFinished()) {
+                if (waypoints.isStarted() && !npc.isPaused() && npc.getHandle().pathFinished()) {
                     waypoints.setIndex(1);
                 }
             }
-            if (waypoints.isStarted() && !npc.isPaused()
-                    && npc.getHandle().pathFinished()) {
+            if (waypoints.isStarted() && !npc.isPaused() && npc.getHandle().pathFinished()) {
                 waypoints.setStarted(false);
                 waypoints.onReach(npc);
             }
@@ -86,8 +79,7 @@ public class TickTask implements Runnable {
             if (!waypoints.isStarted()) {
                 waypoints.scheduleNext(npc);
             }
-            if (waypoints.isStarted() && !npc.isPaused()
-                    && npc.getHandle().pathFinished()) {
+            if (waypoints.isStarted() && !npc.isPaused() && npc.getHandle().pathFinished()) {
                 waypoints.setIndex(waypoints.currentIndex() + 1);
                 waypoints.setStarted(false);
                 waypoints.onReach(npc);
@@ -110,8 +102,7 @@ public class TickTask implements Runnable {
             cachedActions.put(npc, new Actions());
             return;
         }
-        if (!actions.has("saidText", player.getName())
-                && npc.getNPCData().isTalkClose()) {
+        if (!actions.has("saidText", player.getName()) && npc.getNPCData().isTalkClose()) {
             MessageUtils.sendText(npc, player);
             actions.set("saidText", player.getName());
         }
@@ -132,16 +123,13 @@ public class TickTask implements Runnable {
         }
 
         public void register(int delay) {
-            Bukkit.getServer().getScheduler()
-                    .scheduleSyncDelayedTask(Citizens.plugin, this, delay);
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Citizens.plugin, this, delay);
         }
 
         @Override
         public void run() {
             NPCManager.register(UID, owner, NPCCreateReason.RESPAWN);
-            Messaging.sendUncertain(owner,
-                    StringUtils.wrap(NPCManager.get(UID).getName())
-                            + " has respawned.");
+            Messaging.sendUncertain(owner, StringUtils.wrap(NPCManager.get(UID).getName()) + " has respawned.");
         }
     }
 

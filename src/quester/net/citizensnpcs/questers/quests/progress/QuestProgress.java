@@ -74,29 +74,26 @@ public class QuestProgress {
     }
 
     public void updateProgress(Player player, Event event) {
-        if (progress != null && progress.length > 0) {
-            int idx = 0;
-            for (ObjectiveProgress progress : this.progress) {
-                if (progress == null) {
-                    ++idx;
-                    continue;
+        if (progress == null)
+            return;
+        for (int i = 0; i < progress.length; ++i) {
+            if (progress[i] == null) {
+                continue;
+            }
+            ObjectiveProgress progress = this.progress[i];
+            boolean cont = true;
+            for (Event.Type type : progress.getEventTypes()) {
+                if (type == event.getType()) {
+                    cont = false;
+                    break;
                 }
-                boolean cont = true;
-                for (Event.Type type : progress.getEventTypes()) {
-                    if (type == event.getType()) {
-                        cont = false;
-                        break;
-                    }
-                }
-                if (cont) {
-                    ++idx;
-                    continue;
-                }
-                if (progress.update(event)) {
-                    progress.getObjective().onCompletion(player, this);
-                    this.progress[idx] = null;
-                }
-                ++idx;
+            }
+            if (cont) {
+                continue;
+            }
+            if (progress.update(event)) {
+                progress.getObjective().onCompletion(player, this);
+                this.progress[i] = null;
             }
         }
     }

@@ -1,5 +1,7 @@
 package net.citizensnpcs.resources.npclib;
 
+import java.io.IOException;
+
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -11,20 +13,25 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
 public class CraftNPC extends PathNPC {
-    public CraftNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager) {
+    public CraftNPC(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
         iteminworldmanager.setGameMode(0);
 
-        NetworkManager netMgr = new NPCNetworkManager(new NPCSocket(),
-                "npc mgr", new NetHandler() {
-                    @Override
-                    public boolean c() {
-                        return false;
-                    }
-                });
+        NPCSocket socket = new NPCSocket();
+        NetworkManager netMgr = new NPCNetworkManager(socket, "npc mgr", new NetHandler() {
+            @Override
+            public boolean c() {
+                return false;
+            }
+        });
         this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
         netMgr.a(this.netServerHandler);
+        netMgr.a();
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+        }
     }
 
     public void applyGravity() {
@@ -48,13 +55,11 @@ public class CraftNPC extends PathNPC {
 
     @SuppressWarnings("unused")
     private boolean chunkLoaded() {
-        return this.bukkitEntity.getWorld().isChunkLoaded(this.npc.getChunkX(),
-                this.npc.getChunkZ());
+        return this.bukkitEntity.getWorld().isChunkLoaded(this.npc.getChunkX(), this.npc.getChunkZ());
     }
 
     public LivingEntity getTarget() {
-        return this.targetEntity == null ? null
-                : ((LivingEntity) this.targetEntity.getBukkitEntity());
+        return this.targetEntity == null ? null : ((LivingEntity) this.targetEntity.getBukkitEntity());
     }
 
     public boolean hasTarget() {

@@ -26,158 +26,153 @@ import com.google.common.collect.Maps;
  * 
  */
 public class Objective {
-	private final int amount;
+    private final int amount;
 
-	private final boolean completeHere;
-	private final int destination;
-	private final RewardGranter granter;
-	private final ItemStack item;
-	private final Location location;
-	private final Material material;
-	private final boolean optional;
-	private final String questType;
-	private final Map<String, RawYAMLObject> parameters;
-	private final String string;
+    private final boolean completeHere;
+    private final int destination;
+    private final RewardGranter granter;
+    private final ItemStack item;
+    private final Location location;
+    private final Material material;
+    private final boolean optional;
+    private final String questType;
+    private final Map<String, RawYAMLObject> parameters;
+    private final String string;
 
-	private Objective(String type, boolean optional, boolean completeHere,
-			int amount, int destination, ItemStack item, String string,
-			Material material, Location location, RewardGranter granter,
-			Map<String, RawYAMLObject> params) {
-		this.questType = type;
-		this.amount = amount;
-		this.destination = destination;
-		this.item = item;
-		this.string = string;
-		this.material = material;
-		this.location = location;
-		this.granter = granter;
-		this.optional = optional;
-		this.completeHere = completeHere;
-		this.parameters = params;
-	}
+    private Objective(Builder builder) {
+        this.questType = builder.type;
+        this.amount = builder.amount;
+        this.destination = builder.destination;
+        this.item = builder.item;
+        this.string = builder.string;
+        this.material = builder.material;
+        this.location = builder.location;
+        this.granter = builder.granter;
+        this.optional = builder.optional;
+        this.completeHere = builder.completeHere;
+        this.parameters = builder.params;
+    }
 
-	public RawYAMLObject getParameter(String name) {
-		return parameters.get(name);
-	}
+    public RawYAMLObject getParameter(String name) {
+        return parameters.get(name);
+    }
 
-	public boolean hasParameter(String string) {
-		return parameters.get(string) != null;
-	}
+    public boolean hasParameter(String string) {
+        return parameters.get(string) != null;
+    }
 
-	public int getAmount() {
-		return amount;
-	}
+    public int getAmount() {
+        return amount;
+    }
 
-	public int getDestNPCID() {
-		return destination;
-	}
+    public int getDestNPCID() {
+        return destination;
+    }
 
-	public RewardGranter getGranter() {
-		return this.granter;
-	}
+    public RewardGranter getGranter() {
+        return this.granter;
+    }
 
-	public ItemStack getItem() {
-		return item;
-	}
+    public ItemStack getItem() {
+        return item;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public Material getMaterial() {
-		return material;
-	}
+    public Material getMaterial() {
+        return material;
+    }
 
-	public String getString() {
-		return string;
-	}
+    public String getString() {
+        return string;
+    }
 
-	public String getType() {
-		return questType;
-	}
+    public String getType() {
+        return questType;
+    }
 
-	public boolean isOptional() {
-		return optional;
-	}
+    public boolean isOptional() {
+        return optional;
+    }
 
-	public void onCompletion(Player player, QuestProgress progress) {
-		granter.onCompletion(player, progress);
-		if (this.completeHere)
-			QuestManager.completeQuest(player);
-	}
+    public void onCompletion(Player player, QuestProgress progress) {
+        granter.onCompletion(player, progress);
+        if (this.completeHere)
+            QuestManager.completeQuest(player);
+    }
 
-	public static class Builder {
-		private int amount = -1;
-		private boolean completeHere = false;
+    public static class Builder {
+        private int amount = -1;
+        private boolean completeHere = false;
 
-		private int destination = -1;
-		private RewardGranter granter;
-		private ItemStack item = null;
-		private Location location = null;
-		private Material material = null;
-		private boolean optional = false;
-		private String string = "";
-		private final String type;
-		private final Map<String, RawYAMLObject> params = Maps.newHashMap();
+        private int destination = -1;
+        private RewardGranter granter;
+        private ItemStack item = null;
+        private Location location = null;
+        private Material material = null;
+        private boolean optional = false;
+        private String string = "";
+        private final String type;
+        private final Map<String, RawYAMLObject> params = Maps.newHashMap();
 
-		public Builder(String type) {
-			this.type = type;
-		}
+        public Builder(String type) {
+            this.type = type;
+        }
 
-		public Builder param(String name, RawYAMLObject value) {
-			this.params.put(name, value);
-			return this;
-		}
+        public Builder param(String name, RawYAMLObject value) {
+            this.params.put(name, value);
+            return this;
+        }
 
-		public Builder amount(int amount) {
-			this.amount = amount;
-			return this;
-		}
+        public Builder amount(int amount) {
+            this.amount = amount;
+            return this;
+        }
 
-		public Objective build() {
-			return new Objective(type, optional, completeHere, amount,
-					destination, item, string, material, location, granter,
-					params);
-		}
+        public Objective build() {
+            return new Objective(this);
+        }
 
-		public Builder completeHere(boolean completeHere) {
-			this.completeHere = completeHere;
-			return this;
-		}
+        public Builder completeHere(boolean completeHere) {
+            this.completeHere = completeHere;
+            return this;
+        }
 
-		public Builder destination(int destination) {
-			this.destination = destination;
-			return this;
-		}
+        public Builder destination(int destination) {
+            this.destination = destination;
+            return this;
+        }
 
-		public Builder granter(RewardGranter granter) {
-			this.granter = granter;
-			return this;
-		}
+        public Builder granter(RewardGranter granter) {
+            this.granter = granter;
+            return this;
+        }
 
-		public Builder item(ItemStack item) {
-			this.item = item;
-			return this;
-		}
+        public Builder item(ItemStack item) {
+            this.item = item;
+            return this;
+        }
 
-		public Builder location(Location location) {
-			this.location = location;
-			return this;
-		}
+        public Builder location(Location location) {
+            this.location = location;
+            return this;
+        }
 
-		public Builder material(Material material) {
-			this.material = material;
-			return this;
-		}
+        public Builder material(Material material) {
+            this.material = material;
+            return this;
+        }
 
-		public Builder optional(boolean optional) {
-			this.optional = optional;
-			return this;
-		}
+        public Builder optional(boolean optional) {
+            this.optional = optional;
+            return this;
+        }
 
-		public Builder string(String string) {
-			this.string = string;
-			return this;
-		}
-	}
+        public Builder string(String string) {
+            this.string = string;
+            return this;
+        }
+    }
 }
