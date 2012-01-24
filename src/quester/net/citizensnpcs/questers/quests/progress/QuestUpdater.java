@@ -5,10 +5,9 @@ import net.citizensnpcs.questers.QuestCancelException;
 import org.bukkit.event.Event;
 
 public interface QuestUpdater {
-	public Event.Type[] getEventTypes();
+    public Class<? extends Event>[] getEventTypes();
 
-	public boolean update(Event event, ObjectiveProgress progress);
+    public boolean update(Event event, ObjectiveProgress progress);
 
-	public String getStatus(ObjectiveProgress progress)
-			throws QuestCancelException;
+    public String getStatus(ObjectiveProgress progress) throws QuestCancelException;
 }

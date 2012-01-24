@@ -6,34 +6,31 @@ import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.event.Event;
-import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class DestroyQuest implements QuestUpdater {
-	private static final Type[] EVENTS = new Type[] { Type.BLOCK_BREAK };
+    private static final Class<? extends Event>[] EVENTS = new Class[] { BlockBreakEvent.class };
 
-	@Override
-	public boolean update(Event event, ObjectiveProgress progress) {
-		if (event instanceof BlockBreakEvent) {
-			BlockBreakEvent ev = (BlockBreakEvent) event;
-			if (ev.getBlock().getType() == progress.getObjective()
-					.getMaterial()) {
-				progress.addAmount(1);
-			}
-		}
-		return progress.getAmount() >= progress.getObjective().getAmount();
-	}
+    @Override
+    public boolean update(Event event, ObjectiveProgress progress) {
+        if (event instanceof BlockBreakEvent) {
+            BlockBreakEvent ev = (BlockBreakEvent) event;
+            if (ev.getBlock().getType() == progress.getObjective().getMaterial()) {
+                progress.addAmount(1);
+            }
+        }
+        return progress.getAmount() >= progress.getObjective().getAmount();
+    }
 
-	@Override
-	public Type[] getEventTypes() {
-		return EVENTS;
-	}
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
 
-	@Override
-	public String getStatus(ObjectiveProgress progress) {
-		return QuestUtils.defaultAmountProgress(progress, StringUtils
-				.formatter(progress.getObjective().getMaterial()).wrap()
-				.plural(progress.getAmount())
-				+ " destroyed");
-	}
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        return QuestUtils.defaultAmountProgress(progress, StringUtils.formatter(progress.getObjective().getMaterial())
+                .wrap().plural(progress.getAmount())
+                + " destroyed");
+    }
 }

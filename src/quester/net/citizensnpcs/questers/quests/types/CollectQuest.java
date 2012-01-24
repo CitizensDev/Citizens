@@ -6,12 +6,11 @@ import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.event.Event;
-import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class CollectQuest implements QuestUpdater {
-    private static final Type[] EVENTS = { Type.PLAYER_PICKUP_ITEM };
+    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerPickupItemEvent.class };
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -24,7 +23,7 @@ public class CollectQuest implements QuestUpdater {
     }
 
     @Override
-    public Type[] getEventTypes() {
+    public Class<? extends Event>[] getEventTypes() {
         return EVENTS;
     }
 

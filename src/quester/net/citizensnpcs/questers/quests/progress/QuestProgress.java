@@ -14,13 +14,11 @@ public class QuestProgress {
     private final int UID;
     private final Player player;
 
-    public QuestProgress(int UID, Player player, String questName,
-            long startTime) {
+    public QuestProgress(int UID, Player player, String questName, long startTime) {
         this.UID = UID;
         this.player = player;
         this.questName = questName;
-        this.objectives = QuestManager.getQuest(questName).getObjectives()
-                .newCycler();
+        this.objectives = QuestManager.getQuest(questName).getObjectives().newCycler();
         this.startTime = startTime;
         addObjectives();
     }
@@ -43,8 +41,8 @@ public class QuestProgress {
         int size = objectives.current().objectives().size();
         this.progress = new ObjectiveProgress[size];
         while (objectives.hasNext()) {
-            this.progress[objectives.index()] = new ObjectiveProgress(UID,
-                    player, questName, objectives.nextObjective());
+            this.progress[objectives.index()] = new ObjectiveProgress(UID, player, questName,
+                    objectives.nextObjective());
         }
     }
 
@@ -82,8 +80,8 @@ public class QuestProgress {
             }
             ObjectiveProgress progress = this.progress[i];
             boolean cont = true;
-            for (Event.Type type : progress.getEventTypes()) {
-                if (type == event.getType()) {
+            for (Class<? extends Event> type : progress.getEventTypes()) {
+                if (event.getClass().isAssignableFrom(type)) {
                     cont = false;
                     break;
                 }
