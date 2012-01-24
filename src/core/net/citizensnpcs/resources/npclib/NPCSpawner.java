@@ -34,8 +34,7 @@ public class NPCSpawner {
             f.setAccessible(true);
             return (Map<String, CraftPlayer>) f.get(null);
         } catch (Exception ex) {
-            Messaging.log("Unable to fetch player map from CraftEntity: "
-                    + ex.getMessage()
+            Messaging.log("Unable to fetch player map from CraftEntity: " + ex.getMessage()
                     + ". Conflicting names will do funny things.");
         }
         return null;
@@ -55,27 +54,24 @@ public class NPCSpawner {
     }
 
     public static void delayedRemove(final String name) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        clearMap(name);
-                    }
-                }, 1);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+            @Override
+            public void run() {
+                clearMap(name);
+            }
+        }, 1);
     }
 
     public static HumanNPC spawnNPC(int UID, String name, Location loc) {
         if (loc == null || loc.getWorld() == null) {
-            Messaging.log("Null location or world while spawning", name, "UID",
-                    UID + ". Is the location unloaded or missing?");
+            Messaging.log("Null location or world while spawning", name, "UID", UID
+                    + ". Is the location unloaded or missing?");
             return null;
         }
         WorldServer ws = getWorldServer(loc.getWorld());
         clearMap(name);
-        CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws,
-                name, new ItemInWorldManager(ws));
-        eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
-                loc.getYaw(), loc.getPitch());
+        CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new ItemInWorldManager(ws));
+        eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         ws.addEntity(eh);
         ws.players.remove(eh);
         return new HumanNPC(eh, UID, name);
@@ -86,11 +82,9 @@ public class NPCSpawner {
             String name = type.chooseRandomName();
             WorldServer ws = getWorldServer(loc.getWorld());
             clearMap(name);
-            CraftNPC eh = type.getEntityConstructor().newInstance(
-                    getMinecraftServer(ws.getServer()), ws, name,
+            CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()), ws, name,
                     new ItemInWorldManager(ws));
-            eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
-                    loc.getYaw(), loc.getPitch());
+            eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             ws.addEntity(eh);
             ws.players.remove(eh);
             return new HumanNPC(eh, -1 /*Fake UID*/, name);
@@ -103,21 +97,17 @@ public class NPCSpawner {
     public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
         WorldServer ws = getWorldServer(loc.getWorld());
         clearMap(npc.getName());
-        npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(),
-                loc.getYaw(), loc.getPitch());
+        npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         ws.addEntity(npc.getHandle());
         ws.players.remove(npc.getHandle());
         return npc;
     }
 
     public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
-        if (getWorldServer(npc.getWorld()).getEntity(npc.getHandle().id) != npc
-                .getHandle() || npc.getHandle().dead)
+        if (getWorldServer(npc.getWorld()).getEntity(npc.getHandle().id) != npc.getHandle() || npc.getHandle().dead)
             return;
-        Bukkit.getServer().getPluginManager()
-                .callEvent(new NPCRemoveEvent(npc, reason));
-        PacketUtils.sendPacketToOnline(
-                new Packet29DestroyEntity(npc.getHandle().id), null);
+        Bukkit.getServer().getPluginManager().callEvent(new NPCRemoveEvent(npc, reason));
+        PacketUtils.sendPacketToOnline(new Packet29DestroyEntity(npc.getHandle().id), null);
         npc.getHandle().die();
         getWorldServer(npc.getWorld()).removeEntity(npc.getHandle());
     }

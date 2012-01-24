@@ -1,9 +1,22 @@
 package net.citizensnpcs.api.event;
 
-public class CitizensDisableEvent extends CitizensEvent {
-	private static final long serialVersionUID = 1L;
+import org.bukkit.event.HandlerList;
 
-	public CitizensDisableEvent() {
-		super("CitizensDisableEvent");
-	}
+public class CitizensDisableEvent extends CitizensEvent {
+    private static final long serialVersionUID = 1L;
+
+    public CitizensDisableEvent() {
+        super("CitizensDisableEvent");
+    }
+
+    private static final HandlerList handlers = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

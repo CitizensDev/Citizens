@@ -26,7 +26,6 @@ public class CraftNPC extends PathNPC {
         });
         this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
         netMgr.a(this.netServerHandler);
-        netMgr.a();
 
         try {
             socket.close();

@@ -2,7 +2,6 @@ package net.citizensnpcs.questers.listeners;
 
 import net.citizensnpcs.api.event.CitizensDisableEvent;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
-import net.citizensnpcs.api.event.CitizensListener;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCPlayerEvent;
 import net.citizensnpcs.questers.QuestManager;
@@ -10,32 +9,29 @@ import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.data.QuestProperties;
 import net.citizensnpcs.utils.Messaging;
 
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
-public class QuesterCitizensListen extends CitizensListener {
-	@Override
-	public void onCitizensEnable(CitizensEnableEvent event) {
-		Messaging.log("Loaded " + QuestManager.quests().size() + " quests.");
-	}
+public class QuesterCitizensListen implements Listener {
+    @EventHandler
+    public void onCitizensEnable(CitizensEnableEvent event) {
+        Messaging.log("Loaded " + QuestManager.quests().size() + " quests.");
+    }
 
-	@Override
-	public void onCitizensReload(CitizensReloadEvent event) {
-		QuestProperties.load();
-	}
+    @EventHandler
+    public void onCitizensReload(CitizensReloadEvent event) {
+        QuestProperties.load();
+    }
 
-	@Override
-	public void onCitizensDisable(CitizensDisableEvent event) {
-		PlayerProfile.saveAll();
-		// QuestProperties.save(); TODO: commented out until quest saving is
-		// finished.
-	}
+    @EventHandler
+    public void onCitizensDisable(CitizensDisableEvent event) {
+        PlayerProfile.saveAll();
+        // QuestProperties.save(); TODO: commented out until quest saving is
+        // finished.
+    }
 
-	@Override
-	public void onCustomEvent(Event event) {
-		super.onCustomEvent(event);
-		if (event instanceof NPCPlayerEvent) {
-			QuestManager.incrementQuest(((NPCPlayerEvent) event).getPlayer(),
-					event);
-		}
-	}
+    @EventHandler
+    public void onPlayerEvent(NPCPlayerEvent event) {
+        QuestManager.incrementQuest(event.getPlayer(), event);
+    }
 }

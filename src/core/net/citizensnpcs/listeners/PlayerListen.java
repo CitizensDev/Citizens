@@ -1,6 +1,5 @@
 package net.citizensnpcs.listeners;
 
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.api.event.NPCTargetEvent;
@@ -13,32 +12,21 @@ import net.citizensnpcs.utils.ConversationUtils;
 import net.citizensnpcs.utils.Web;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Result;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.PluginManager;
 
-public class PlayerListen extends PlayerListener implements Listener {
-    @Override
-    public void registerEvents(Citizens plugin) {
-        PluginManager pm = plugin.getServer().getPluginManager();
-        pm.registerEvent(Type.PLAYER_JOIN, this, Priority.Normal, plugin);
-        pm.registerEvent(Type.PLAYER_LOGIN, this, Priority.Normal, plugin);
-        pm.registerEvent(Type.PLAYER_QUIT, this, Priority.Normal, plugin);
-        pm.registerEvent(Type.PLAYER_INTERACT, this, Priority.Normal, plugin);
-        pm.registerEvent(Type.PLAYER_INTERACT_ENTITY, this, Priority.Normal, plugin);
-    }
+public class PlayerListen implements Listener {
 
-    @Override
+    @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         if (!PermissionManager.hasPermission(event.getPlayer(), "citizens.admin.notifyupdates")
                 || !Settings.getBoolean("NotifyUpdates"))
@@ -51,12 +39,12 @@ public class PlayerListen extends PlayerListener implements Listener {
         }.run();
     }
 
-    @Override
+    @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         CreatureTask.setDirty();
     }
 
-    @Override
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         NPCDataManager.pathEditors.remove(event.getPlayer());
         TickTask.clearActions(event.getPlayer());
@@ -64,7 +52,7 @@ public class PlayerListen extends PlayerListener implements Listener {
         ConversationUtils.verify();
     }
 
-    @Override
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         NPCDataManager.handlePathEditor(event);
         if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer())
@@ -73,7 +61,7 @@ public class PlayerListen extends PlayerListener implements Listener {
         }
     }
 
-    @Override
+    @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         HumanNPC npc = NPCManager.get(event.getRightClicked());
         if (npc != null) {
@@ -82,7 +70,7 @@ public class PlayerListen extends PlayerListener implements Listener {
         }
     }
 
-    @Override
+    @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         ConversationUtils.onChat(event);
     }

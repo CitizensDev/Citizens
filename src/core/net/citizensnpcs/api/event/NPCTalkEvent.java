@@ -4,54 +4,66 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
 
 public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
-	private static final long serialVersionUID = 1L;
-	private boolean cancelled = false;
-	private String text;
+    private static final long serialVersionUID = 1L;
+    private boolean cancelled = false;
+    private String text;
 
-	public NPCTalkEvent(HumanNPC npc, Player player, String text) {
-		super("NPCDisplayTextEvent", npc, player);
-		this.text = text;
-	}
+    public NPCTalkEvent(HumanNPC npc, Player player, String text) {
+        super("NPCDisplayTextEvent", npc, player);
+        this.text = text;
+    }
 
-	/**
-	 * Get the cancellation state of the event.
-	 * 
-	 * @return true if the event is cancelled
-	 */
-	@Override
-	public boolean isCancelled() {
-		return this.cancelled;
-	}
+    /**
+     * Get the cancellation state of the event.
+     * 
+     * @return true if the event is cancelled
+     */
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
+    }
 
-	/**
-	 * Set the cancellation state of an event.
-	 * 
-	 * @param cancelled
-	 *            the cancellation state of the event
-	 */
-	@Override
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
-	}
+    /**
+     * Set the cancellation state of an event.
+     * 
+     * @param cancelled
+     *            the cancellation state of the event
+     */
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
 
-	/**
-	 * Get the text involved in the event.
-	 * 
-	 * @return text involved in the event.
-	 */
-	public String getText() {
-		return this.text;
-	}
+    /**
+     * Get the text involved in the event.
+     * 
+     * @return text involved in the event.
+     */
+    public String getText() {
+        return this.text;
+    }
 
-	/**
-	 * Set the text involved in the event.
-	 * 
-	 * @param text
-	 *            the text you want displayed.
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
+    /**
+     * Set the text involved in the event.
+     * 
+     * @param text
+     *            the text you want displayed.
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    private static final HandlerList handlers = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

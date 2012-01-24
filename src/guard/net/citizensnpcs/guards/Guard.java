@@ -97,9 +97,7 @@ public class Guard extends CitizensNPC {
                     + " died.");
         }
         event.getDrops().clear();
-        if (!npc.getHandle().dead) {
-            TickTask.scheduleRespawn(npc, Settings.getInt("GuardRespawnDelay"));
-        }
+        TickTask.scheduleRespawn(npc, Settings.getInt("GuardRespawnDelay"));
     }
 
     @Override
