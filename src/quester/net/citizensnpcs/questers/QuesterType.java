@@ -29,8 +29,7 @@ public class QuesterType extends CitizensNPCType {
         QuestProperties.initialize();
         // custom events
         NPCTypeManager.registerEvents(new QuesterCitizensListen());
-        QuesterEntityListen el = new QuesterEntityListen();
-        NPCTypeManager.registerEvents(el);
+        NPCTypeManager.registerEvents(new QuesterEntityListen());
         // block events
         QuesterBlockListen bl = new QuesterBlockListen();
         NPCTypeManager.registerEvents(bl);

@@ -3,7 +3,8 @@ package net.citizensnpcs.questers.listeners;
 import net.citizensnpcs.api.event.CitizensDisableEvent;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
-import net.citizensnpcs.api.event.NPCPlayerEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.event.NPCTalkEvent;
 import net.citizensnpcs.questers.QuestManager;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.data.QuestProperties;
@@ -31,7 +32,12 @@ public class QuesterCitizensListen implements Listener {
     }
 
     @EventHandler
-    public void onPlayerEvent(NPCPlayerEvent event) {
+    public void onNPCRightClick(NPCRightClickEvent event) {
+        QuestManager.incrementQuest(event.getPlayer(), event);
+    }
+
+    @EventHandler
+    public void onNPCTalk(NPCTalkEvent event) {
         QuestManager.incrementQuest(event.getPlayer(), event);
     }
 }

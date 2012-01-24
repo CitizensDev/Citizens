@@ -283,7 +283,7 @@ public class Citizens extends JavaPlugin {
                 CitizensNPCType type = CitizensNPCLoader.loadNPCType(new File(dir, f), this);
                 if (type != null) {
                     loadedTypes.add(type.getName());
-                    Bukkit.getServer().getPluginManager().callEvent(new CitizensEnableTypeEvent(type));
+                    Bukkit.getPluginManager().callEvent(new CitizensEnableTypeEvent(type));
                 }
             }
         }
