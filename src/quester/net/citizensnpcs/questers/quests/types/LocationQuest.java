@@ -26,7 +26,9 @@ public class LocationQuest implements QuestUpdater {
         if (event instanceof PlayerMoveEvent) {
             PlayerMoveEvent ev = (PlayerMoveEvent) event;
             Objective objective = progress.getObjective();
-            if (LocationUtils.withinRange(ev.getTo(), objective.getLocation(), objective.getAmount())
+            double leeway = objective.hasParameter("leeway") ? objective.getParameter("leeway").getDouble() : objective
+                    .getAmount();
+            if (LocationUtils.withinRange(ev.getTo(), objective.getLocation(), leeway)
                     && withinYawRange(ev.getTo(), objective)) {
                 if (!objective.hasParameter("time"))
                     return true;
@@ -68,7 +70,8 @@ public class LocationQuest implements QuestUpdater {
 
     @Override
     public String getStatus(ObjectiveProgress progress) {
-        int amount = progress.getObjective().getAmount();
+        double amount = progress.getObjective().hasParameter("leeway") ? progress.getObjective().getParameter("leeway")
+                .getDouble() : progress.getAmount();
         return ChatColor.GREEN
                 + "Moving to "
                 + StringUtils.format(progress.getObjective().getLocation())

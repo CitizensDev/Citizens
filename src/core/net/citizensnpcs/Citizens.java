@@ -137,6 +137,10 @@ public class Citizens extends JavaPlugin {
         }
     }
 
+    public static String localVersion() {
+        return Version.VERSION;
+    }
+
     @Override
     public void onDisable() {
         // save the local copy of our files to disk
@@ -211,11 +215,6 @@ public class Citizens extends JavaPlugin {
             Messaging.sendError(player, excp.getClass().getName() + ": " + excp.getMessage());
         }
         return true;
-    }
-
-    // get the CURRENT version of Citizens (dev-build or release)
-    public static String localVersion() {
-        return Version.VERSION;
     }
 
     // TODO: clean this up a little bit.

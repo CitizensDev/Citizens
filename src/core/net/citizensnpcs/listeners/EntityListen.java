@@ -20,7 +20,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 
 public class EntityListen implements Listener {
 
@@ -45,17 +44,14 @@ public class EntityListen implements Listener {
     }
 
     @EventHandler
-    public void onEntityTarget(EntityTargetEvent event) {
-        if (!(event instanceof NPCTargetEvent)) {
-            return;
-        }
+    public void onEntityTarget(NPCTargetEvent event) {
         if (CreatureTask.getCreature(event.getEntity()) != null) {
             CreatureTask.getCreature(event.getEntity()).onRightClick((Player) event.getTarget());
         }
         if (NPCManager.isNPC(event.getTarget())) {
             NPCManager.get(event.getTarget()).callTargetEvent(event);
         }
-        NPCTargetEvent e = (NPCTargetEvent) event;
+        NPCTargetEvent e = event;
         HumanNPC npc = NPCManager.get(e.getEntity());
         if (npc != null && event.getTarget() instanceof Player) {
             Player player = (Player) event.getTarget();
@@ -102,6 +98,7 @@ public class EntityListen implements Listener {
         CreatureTask.onEntityDeath(event.getEntity());
         if (NPCManager.isNPC(event.getEntity())) {
             NPCManager.get(event.getEntity()).callDeathEvent(event);
+            NPCManager.removeForRespawn(NPCManager.get(event.getEntity()).getUID());
         }
     }
 }

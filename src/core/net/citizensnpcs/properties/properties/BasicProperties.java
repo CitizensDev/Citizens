@@ -150,14 +150,14 @@ public class BasicProperties extends PropertyManager implements Properties {
             return ChatColor.WHITE;
         }
         try {
-            return ChatColor.getByChar((char) ('0' + Integer.parseInt(profiles.getString(UID + color))));
-        } catch (NumberFormatException ex) {
             return ChatColor.getByChar((char) ('0' + Integer.parseInt(profiles.getString(UID + color), 16)));
+        } catch (NumberFormatException ex) {
+            return ChatColor.getByChar(profiles.getString(UID + color).charAt(0));
         }
     }
 
     private void saveColour(int UID, ChatColor colour) {
-        profiles.setInt(UID + color, colour == null ? ChatColor.WHITE.getCode() : colour.getCode());
+        profiles.setString(UID + color, colour == null ? "" + ChatColor.WHITE.getChar() : "" + colour.getChar());
     }
 
     public Deque<String> getText(int UID) {
