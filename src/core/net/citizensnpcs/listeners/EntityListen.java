@@ -97,8 +97,11 @@ public class EntityListen implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         CreatureTask.onEntityDeath(event.getEntity());
         if (NPCManager.isNPC(event.getEntity())) {
-            NPCManager.get(event.getEntity()).callDeathEvent(event);
-            NPCManager.removeForRespawn(NPCManager.get(event.getEntity()).getUID());
+            HumanNPC npc = NPCManager.get(event.getEntity());
+            if (NPCManager.get(npc.getUID()) != npc)
+                return;
+            npc.callDeathEvent(event);
+            NPCManager.removeForRespawn(npc.getUID());
         }
     }
 }

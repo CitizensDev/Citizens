@@ -104,12 +104,12 @@ public class NPCSpawner {
     }
 
     public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
-        if (getWorldServer(npc.getWorld()).getEntity(npc.getHandle().id) != npc.getHandle() || npc.getHandle().dead)
+        if (getWorldServer(npc.getWorld()).getEntity(npc.getPlayer().getEntityId()) != npc.getHandle()
+                || npc.getHandle().dead)
             return;
         Bukkit.getServer().getPluginManager().callEvent(new NPCRemoveEvent(npc, reason));
         PacketUtils.sendPacketToOnline(new Packet29DestroyEntity(npc.getHandle().id), null);
         npc.getHandle().die();
-        getWorldServer(npc.getWorld()).removeEntity(npc.getHandle());
     }
 
     public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {

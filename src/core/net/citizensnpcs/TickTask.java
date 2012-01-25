@@ -109,7 +109,6 @@ public class TickTask implements Runnable {
     }
 
     public static void scheduleRespawn(HumanNPC npc, int delay) {
-        NPCManager.getList().remove(npc.getUID());
         new RespawnTask(npc).register(delay);
     }
 

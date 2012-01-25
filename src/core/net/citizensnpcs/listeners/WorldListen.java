@@ -27,8 +27,7 @@ public class WorldListen implements Listener {
         if (event.isCancelled())
             return;
         // Stores NPC location/name for later respawn.
-        for (int entry : NPCManager.GlobalUIDs.keySet()) {
-            HumanNPC npc = NPCManager.get(entry);
+        for (HumanNPC npc : NPCManager.getList().values()) {
             if (event.getWorld().equals(npc.getWorld()) && event.getChunk().getX() == npc.getChunkX()
                     && event.getChunk().getZ() == npc.getChunkZ()) {
                 NPCLocation loc = new NPCLocation(npc.getLocation(), npc.getUID(), npc.getOwner());
