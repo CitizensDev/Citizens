@@ -9,7 +9,7 @@ import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.World;
 
-import org.bukkit.entity.Entity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 
 public class CraftNPC extends PathNPC {
@@ -36,15 +36,12 @@ public class CraftNPC extends PathNPC {
     public void applyGravity() {
         return;
         /*
-        if (Citizens.initialized
-        		&& chunkLoaded()
-        		&& (!this.onGround || ((Player) this.getBukkitEntity())
-        				.getEyeLocation().getY() % 1 <= 0.62)) {
-        	// onGround only checks if they're at least below 0.62 above it ->
-        	// need to check if they actually are standing on the block.
-        	// TODO: fix this, as it's broken -- need a good way to do it.
-        }
-        */
+         * if (Citizens.initialized && chunkLoaded() && (!this.onGround ||
+         * ((Player) this.getBukkitEntity()) .getEyeLocation().getY() % 1 <=
+         * 0.62)) { // onGround only checks if they're at least below 0.62 above
+         * it -> // need to check if they actually are standing on the block. //
+         * TODO: fix this, as it's broken -- need a good way to do it. }
+         */
     }
 
     @Override
@@ -66,7 +63,7 @@ public class CraftNPC extends PathNPC {
     }
 
     @Override
-    public Entity getBukkitEntity() {
+    public CraftPlayer getBukkitEntity() {
         if (this.bukkitEntity == null) {
             NPCSpawner.delayedRemove(this.name);
         }

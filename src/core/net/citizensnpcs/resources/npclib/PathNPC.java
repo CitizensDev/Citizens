@@ -46,22 +46,19 @@ public class PathNPC extends EntityPlayer {
     private final AutoPathfinder autoPathfinder;
     private static final double JUMP_FACTOR = 0.07D;
 
-    public PathNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager) {
-        this(minecraftserver, world, s, iteminworldmanager,
-                new MinecraftAutoPathfinder());
+    public PathNPC(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
+        this(minecraftserver, world, s, iteminworldmanager, new MinecraftAutoPathfinder());
     }
 
-    public PathNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager, AutoPathfinder autoPathfinder) {
+    public PathNPC(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager,
+            AutoPathfinder autoPathfinder) {
         super(minecraftserver, world, s, iteminworldmanager);
         this.autoPathfinder = autoPathfinder;
     }
 
     private void attackEntity(Entity entity) {
         this.attackTicks = 20; // Possibly causes attack spam (maybe higher?).
-        if (isHoldingBow()
-                && distance(entity) >= Settings.getDouble("MinArrowRange")) {
+        if (isHoldingBow() && distance(entity) >= Settings.getDouble("MinArrowRange")) {
             NPCManager.faceEntity(this.npc, entity.getBukkitEntity());
 
             // make inaccuracies.
@@ -71,7 +68,7 @@ public class PathNPC extends EntityPlayer {
             up = this.random.nextBoolean();
             this.pitch += this.random.nextInt(5) * (up ? 1 : -1);
 
-            this.getPlayer().shootArrow();
+            this.getBukkitEntity().shootArrow();
         } else {
             this.performAction(Animation.SWING_ARM);
             LivingEntity other = (LivingEntity) entity.getBukkitEntity();
@@ -92,21 +89,18 @@ public class PathNPC extends EntityPlayer {
     }
 
     private double distance(Entity entity) {
-        return entity.getBukkitEntity().getLocation()
-                .distance(this.getBukkitEntity().getLocation());
+        return entity.getBukkitEntity().getLocation().distance(this.getBukkitEntity().getLocation());
     }
 
     protected EntityHuman getClosestPlayer(double range) {
         EntityHuman entityhuman = this.world.findNearbyPlayer(this, range);
-        return entityhuman != null && isInSight(entityhuman) ? entityhuman
-                : null;
+        return entityhuman != null && isInSight(entityhuman) ? entityhuman : null;
     }
 
     private Vec3D getPathVector() {
         Vec3D vec3d = path.a(this);
         double length = (this.width * 2.0F);
-        while (vec3d != null
-                && vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
+        while (vec3d != null && vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
             this.path.a(); // Increment path index.
             // Is path finished?
             if (this.path.b()) {
@@ -143,8 +137,8 @@ public class PathNPC extends EntityPlayer {
 
     private void handleMove(Vec3D vector) {
         int yHeight = MathHelper.floor(this.boundingBox.b + 0.5D);
-        boolean inWater = this.getPlayer().getRemainingAir() < 20;
-        boolean onFire = this.getPlayer().getFireTicks() > 0;
+        boolean inWater = this.getBukkitEntity().getRemainingAir() < 20;
+        boolean onFire = this.getBukkitEntity().getFireTicks() > 0;
         if (vector != null) {
             double diffX = vector.a - this.locX;
             double diffZ = vector.c - this.locZ;
@@ -168,8 +162,7 @@ public class PathNPC extends EntityPlayer {
     }
 
     private boolean isHoldingBow() {
-        return getPlayer().getItemInHand() != null
-                && getPlayer().getItemInHand().getType() == Material.BOW;
+        return getBukkitEntity().getItemInHand() != null && getBukkitEntity().getItemInHand().getType() == Material.BOW;
     }
 
     public boolean isInSight(Entity entity) {
@@ -179,10 +172,8 @@ public class PathNPC extends EntityPlayer {
     private boolean isWithinAttackRange(Entity entity, double distance) {
         // Distance from EntityCreature.
         return this.attackTicks <= 0
-                && ((isHoldingBow() && (distance > Settings
-                        .getDouble("MinArrowRange") && distance < Settings
-                        .getDouble("MaxArrowRange"))) || (distance < 1.5F
-                        && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
+                && ((isHoldingBow() && (distance > Settings.getDouble("MinArrowRange") && distance < Settings
+                        .getDouble("MaxArrowRange"))) || (distance < 1.5F && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
                         && this.g(entity));
     }
 
@@ -243,13 +234,9 @@ public class PathNPC extends EntityPlayer {
         cancelPath();
     }
 
-    public void setTarget(LivingEntity entity, boolean aggro, int maxTicks,
-            int maxStationaryTicks, double range) {
-        if (Plugins.worldGuardEnabled()
-                && Settings.getBoolean("DenyBlockedPVPTargets")
-                && entity instanceof Player) {
-            if (!Plugins.worldGuard.getGlobalRegionManager().allows(
-                    DefaultFlag.PVP, entity.getLocation()))
+    public void setTarget(LivingEntity entity, boolean aggro, int maxTicks, int maxStationaryTicks, double range) {
+        if (Plugins.worldGuardEnabled() && Settings.getBoolean("DenyBlockedPVPTargets") && entity instanceof Player) {
+            if (!Plugins.worldGuard.getGlobalRegionManager().allows(DefaultFlag.PVP, entity.getLocation()))
                 return;
         }
         this.targetEntity = ((CraftLivingEntity) entity).getHandle();
@@ -259,25 +246,21 @@ public class PathNPC extends EntityPlayer {
         this.stationaryTickLimit = maxStationaryTicks;
     }
 
-    public boolean startPath(Location loc, int maxTicks,
-            int maxStationaryTicks, double range) {
+    public boolean startPath(Location loc, int maxTicks, int maxStationaryTicks, double range) {
         this.pathTickLimit = maxTicks;
         this.stationaryTickLimit = maxStationaryTicks;
         this.pathingRange = (float) range;
 
         if (loc != null) {
-            this.path = createPathEntity(loc.getBlockX(), loc.getBlockY(),
-                    loc.getBlockZ());
+            this.path = createPathEntity(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             this.dest = loc.clone();
         }
         return pathFinished();
     }
 
     private void takeRandomPath() {
-        if (!hasAttacked && this.targetEntity != null
-                && (this.path == null || this.random.nextInt(20) == 0)) {
-            this.path = this.world.findPath(this, this.targetEntity,
-                    pathingRange);
+        if (!hasAttacked && this.targetEntity != null && (this.path == null || this.random.nextInt(20) == 0)) {
+            this.path = this.world.findPath(this, this.targetEntity, pathingRange);
             this.dest = this.targetEntity.getBukkitEntity().getLocation();
         } else if (!hasAttacked && this.path == null)
             autoPathfinder.find(this);
@@ -290,8 +273,7 @@ public class PathNPC extends EntityPlayer {
 
     private void updatePathingState() {
         Location loc = this.bukkitEntity.getLocation();
-        if (prevX == loc.getBlockX() && prevY == loc.getBlockY()
-                && prevZ == loc.getBlockZ()) {
+        if (prevX == loc.getBlockX() && prevY == loc.getBlockY() && prevZ == loc.getBlockZ()) {
             ++stationaryTicks;
         } else {
             stationaryTicks = 0;
@@ -300,7 +282,7 @@ public class PathNPC extends EntityPlayer {
         if ((pathTickLimit != -1 && pathTicks >= pathTickLimit)
                 || (stationaryTickLimit != -1 && stationaryTicks >= stationaryTickLimit)) {
             if (dest != null && !(this instanceof CreatureNPC)) {
-                this.getPlayer().teleport(dest);
+                this.getBukkitEntity().teleport(dest);
             }
             cancelPath();
         }
@@ -311,8 +293,7 @@ public class PathNPC extends EntityPlayer {
 
     private void updateTarget() {
         if (!this.hasAttacked && this.targetEntity != null && autoPathToTarget) {
-            this.path = this.world.findPath(this, this.targetEntity,
-                    pathingRange);
+            this.path = this.world.findPath(this, this.targetEntity, pathingRange);
             this.dest = this.targetEntity.getBukkitEntity().getLocation();
         }
         if (targetEntity == null)
