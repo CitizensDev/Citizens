@@ -14,6 +14,7 @@ import net.citizensnpcs.questers.quests.types.LocationQuest;
 import net.citizensnpcs.questers.rewards.CommandReward.CommandRewardBuilder;
 import net.citizensnpcs.questers.rewards.EconpluginReward.EconpluginRewardBuilder;
 import net.citizensnpcs.questers.rewards.HealthReward.HealthRewardBuilder;
+import net.citizensnpcs.questers.rewards.ExperienceLevelReward.ExperienceLevelRewardBuilder;
 import net.citizensnpcs.questers.rewards.ItemReward.ItemRewardBuilder;
 import net.citizensnpcs.questers.rewards.NPCReward.NPCRewardBuilder;
 import net.citizensnpcs.questers.rewards.PermissionReward.PermissionRewardBuilder;
@@ -42,6 +43,7 @@ public class QuestAPI {
 
 		addRewardBuilder(new CommandRewardBuilder(), "command", "cmd");
 		rewards.put("health", new HealthRewardBuilder());
+		rewards.put("experienceLevel", new ExperenceLevelRewardBuilder());
 		rewards.put("item", new ItemRewardBuilder());
 		rewards.put("money", new EconpluginRewardBuilder());
 		rewards.put("npc", new NPCRewardBuilder());
