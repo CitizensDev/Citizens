@@ -1,246 +1,245 @@
-    <project name="Citizens" default="dist" basedir=".">
-        <description>
+<project name="Citizens" default="dist" basedir=".">
+	<description>
             Citizens build file
         </description>
-      <!-- set global properties for this build -->
-      <property name="src" location="src"/>
-	  <property name="bin" location="bin"/>
-	  <property name="types" location="${bin}/types"/>
-      <property name="build" location="build"/>
-      <property name="core" location="build/core"/>
-      <property name="blacksmith" location="build/blacksmith"/>
-      <property name="guard" location="build/guard"/>
-      <property name="healer" location="build/healer"/>
-      <property name="quester" location="build/quester"/>
-      <property name="trader" location="build/trader"/>
-      <property name="wizard" location="build/wizard"/>
-      <property name="dist"  location="dist"/>
-      <property name="libs" location="libs"/>
-      <property name="releases" location="releases"/>
-      <target name="init">
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="types" location="${bin}/types" />
+	<property name="build" location="build" />
+	<property name="core" location="build/core" />
+	<property name="blacksmith" location="build/blacksmith" />
+	<property name="guard" location="build/guard" />
+	<property name="healer" location="build/healer" />
+	<property name="quester" location="build/quester" />
+	<property name="trader" location="build/trader" />
+	<property name="wizard" location="build/wizard" />
+	<property name="dist" location="dist" />
+	<property name="libs" location="libs" />
+	<property name="releases" location="releases" />
+	<target name="init">
 		<!-- Create neccesary folders -->
-        <mkdir dir="${build}"/>
-		<mkdir dir="${bin}"/>
-		<mkdir dir="${types}"/>
-        <mkdir dir="${core}"/>
-        <mkdir dir="${blacksmith}"/>
-        <mkdir dir="${guard}"/>
-        <mkdir dir="${healer}"/>
-        <mkdir dir="${quester}"/>
-        <mkdir dir="${trader}"/>
-        <mkdir dir="${wizard}"/>
- 
-       
-      </target>
-     
-    <!-- Compile the code -->
-     
-      <target name="dist" depends="init" description="compile the source">
-        <javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-1.1-R3.jar"/>
-                <pathelement location="${libs}/craftbukkit-1.1-R3.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${libs}/PermissionsEx.jar"/>
-        		<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
+		<mkdir dir="${build}" />
+		<mkdir dir="${bin}" />
+		<mkdir dir="${types}" />
+		<mkdir dir="${core}" />
+		<mkdir dir="${blacksmith}" />
+		<mkdir dir="${guard}" />
+		<mkdir dir="${healer}" />
+		<mkdir dir="${quester}" />
+		<mkdir dir="${trader}" />
+		<mkdir dir="${wizard}" />
+
+
+	</target>
+
+	<!-- Compile the code -->
+
+	<target name="dist" depends="init" description="compile the source">
+		<javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
 		<!-- Finish compiling the core early because the NPC types require the core! -->
-		<antcall target="distcore"/>
-		<antcall target="blacksmith"/>
-      </target>
-     
-      <target name="blacksmith" depends="init" description="compile the source">
-        <javac srcdir="${src}/blacksmith" destdir="${blacksmith}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${bin}/Citizens.jar"/>
-               	<pathelement location="${libs}/PermissionsEx.jar"/>
-               	<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
-		<antcall target="distblacksmith"/>
-			<antcall target="guard"/>
-      </target>
-      <target name="guard" depends="init" description="compile the source">
-        <javac srcdir="${src}/guard" destdir="${guard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${bin}/Citizens.jar"/>
-               	<pathelement location="${libs}/PermissionsEx.jar"/>
-               	<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
-		<antcall target="distguard"/>
-			<antcall target="healer"/>
-      </target>
-      <target name="healer" depends="init" description="compile the source">
-        <javac srcdir="${src}/healer" destdir="${healer}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${bin}/Citizens.jar"/>
-               	<pathelement location="${libs}/PermissionsEx.jar"/>
-               	<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
-		<antcall target="disthealer"/>
-			<antcall target="quester"/>
-      </target>
-      <target name="quester" depends="init" description="compile the source">
-        <javac srcdir="${src}/quester" destdir="${quester}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${bin}/Citizens.jar"/>
-               	<pathelement location="${libs}/PermissionsEx.jar"/>
-               	<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
-		<antcall target="distquester"/>
-			<antcall target="trader"/>
-      </target>
-      <target name="trader" depends="init" description="compile the source">
-        <javac srcdir="${src}/trader" destdir="${trader}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${bin}/Citizens.jar"/>
-               	<pathelement location="${libs}/PermissionsEx.jar"/>
-               	<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
-		<antcall target="disttrader"/>
-			 <antcall target="wizard"/>
-      </target>
-      <target name="wizard" depends="init" description="compile the source">
-        <javac srcdir="${src}/wizard" destdir="${wizard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" >
-               <classpath>
-                <pathelement path="${libs}"/>
-                <pathelement location="${libs}/PermissionsBukkit-1.1.jar"/>
-                <pathelement location="${libs}/bukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/craftbukkit-0.0.1-SNAPSHOT.jar"/>
-                <pathelement location="${libs}/Essentials.jar"/>
-                <pathelement location="${libs}/MultiCurrency.jar"/>
-                <pathelement location="${libs}/iCo4.jar"/>
-                <pathelement location="${libs}/iCo5.jar"/>
-                <pathelement location="${libs}/iCo6.jar"/>
-                <pathelement location="${libs}/BOSEconomy7.jar"/>
-                <pathelement location="${bin}/Citizens.jar"/>
-               	<pathelement location="${libs}/PermissionsEx.jar"/>
-               	<pathelement location="${libs}/bpermissions.jar"/>
-        		<pathelement location="${libs}/WorldGuard.jar"/>
-        		<pathelement location="${libs}/EssentialsGroupManager.jar"/>
-                </classpath>
-        </javac>
-				<antcall target="distwizard"/>
-      </target>
-     
-      <!-- Generate the jars -->
-      <target name="distcore" description="generate the distribution" >
-        <jar jarfile="${bin}/Citizens.jar" basedir="${core}" encoding="Cp1252">
-        <zipfileset dir="." includes="*.yml"/>
-        </jar>
-		
-      </target>
-      <target name="distblacksmith" description="generate the distribution" >
-        <jar jarfile="${types}/Blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
-        <zipfileset dir="${src}/blacksmith" includes="*.info"/>
-        </jar>
-      </target>
-      <target name="distguard" description="generate the distribution" >
-        <jar jarfile="${types}/Guard.jar" basedir="${guard}" encoding="Cp1252">
-        <zipfileset dir="${src}/guard" includes="*.info"/>
-        </jar>
-      </target>
-      <target name="disthealer" description="generate the distribution" >
-        <jar jarfile="${types}/Healer.jar" basedir="${healer}" encoding="Cp1252">
-        <zipfileset dir="${src}/healer" includes="*.info"/>
-        </jar>
-      </target>
-      <target name="distquester" description="generate the distribution" >
-        <jar jarfile="${types}/Quester.jar" basedir="${quester}" encoding="Cp1252">
-        <zipfileset dir="${src}/quester" includes="*.info"/>
-        </jar>
-      </target>
-      <target name="disttrader" description="generate the distribution" >
-        <jar jarfile="${types}/Trader.jar" basedir="${trader}" encoding="Cp1252">
-        <zipfileset dir="${src}/trader" includes="*.info"/>
-        </jar>
-      </target>
-      <target name="distwizard" description="generate the distribution" >
-        <jar jarfile="${types}/Wizard.jar" basedir="${wizard}" encoding="Cp1252">
-        <zipfileset dir="${src}/wizard" includes="*.info"/>
-        </jar>
-      </target>
-     
-      <target name="clean"
-            description="clean up" >
-        <!-- Delete the ${build} and ${dist} directory trees -->
-        <delete dir="${build}"/>
-        <delete dir="${dist}"/>
-		<delete dir="${bin}"/>
-      </target>
-     
-    </project>
+		<antcall target="distcore" />
+		<antcall target="blacksmith" />
+	</target>
+
+	<target name="blacksmith" depends="init" description="compile the source">
+		<javac srcdir="${src}/blacksmith" destdir="${blacksmith}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${bin}/Citizens.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
+		<antcall target="distblacksmith" />
+		<antcall target="guard" />
+	</target>
+	<target name="guard" depends="init" description="compile the source">
+		<javac srcdir="${src}/guard" destdir="${guard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${bin}/Citizens.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
+		<antcall target="distguard" />
+		<antcall target="healer" />
+	</target>
+	<target name="healer" depends="init" description="compile the source">
+		<javac srcdir="${src}/healer" destdir="${healer}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${bin}/Citizens.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
+		<antcall target="disthealer" />
+		<antcall target="quester" />
+	</target>
+	<target name="quester" depends="init" description="compile the source">
+		<javac srcdir="${src}/quester" destdir="${quester}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${bin}/Citizens.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
+		<antcall target="distquester" />
+		<antcall target="trader" />
+	</target>
+	<target name="trader" depends="init" description="compile the source">
+		<javac srcdir="${src}/trader" destdir="${trader}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${bin}/Citizens.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
+		<antcall target="disttrader" />
+		<antcall target="wizard" />
+	</target>
+	<target name="wizard" depends="init" description="compile the source">
+		<javac srcdir="${src}/wizard" destdir="${wizard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+			<classpath>
+				<pathelement path="${libs}" />
+				<pathelement location="${libs}/PermissionsBukkit-1.1.jar" />
+				<pathelement location="${libs}/bukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/craftbukkit-1.1-R3.jar" />
+				<pathelement location="${libs}/Essentials.jar" />
+				<pathelement location="${libs}/MultiCurrency.jar" />
+				<pathelement location="${libs}/iCo4.jar" />
+				<pathelement location="${libs}/iCo5.jar" />
+				<pathelement location="${libs}/iCo6.jar" />
+				<pathelement location="${libs}/BOSEconomy7.jar" />
+				<pathelement location="${bin}/Citizens.jar" />
+				<pathelement location="${libs}/PermissionsEx.jar" />
+				<pathelement location="${libs}/bpermissions.jar" />
+				<pathelement location="${libs}/WorldGuard.jar" />
+				<pathelement location="${libs}/EssentialsGroupManager.jar" />
+			</classpath>
+		</javac>
+		<antcall target="distwizard" />
+	</target>
+
+	<!-- Generate the jars -->
+	<target name="distcore" description="generate the distribution">
+		<jar jarfile="${bin}/Citizens.jar" basedir="${core}" encoding="Cp1252">
+			<zipfileset dir="." includes="*.yml" />
+		</jar>
+
+	</target>
+	<target name="distblacksmith" description="generate the distribution">
+		<jar jarfile="${types}/Blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
+			<zipfileset dir="${src}/blacksmith" includes="*.info" />
+		</jar>
+	</target>
+	<target name="distguard" description="generate the distribution">
+		<jar jarfile="${types}/Guard.jar" basedir="${guard}" encoding="Cp1252">
+			<zipfileset dir="${src}/guard" includes="*.info" />
+		</jar>
+	</target>
+	<target name="disthealer" description="generate the distribution">
+		<jar jarfile="${types}/Healer.jar" basedir="${healer}" encoding="Cp1252">
+			<zipfileset dir="${src}/healer" includes="*.info" />
+		</jar>
+	</target>
+	<target name="distquester" description="generate the distribution">
+		<jar jarfile="${types}/Quester.jar" basedir="${quester}" encoding="Cp1252">
+			<zipfileset dir="${src}/quester" includes="*.info" />
+		</jar>
+	</target>
+	<target name="disttrader" description="generate the distribution">
+		<jar jarfile="${types}/Trader.jar" basedir="${trader}" encoding="Cp1252">
+			<zipfileset dir="${src}/trader" includes="*.info" />
+		</jar>
+	</target>
+	<target name="distwizard" description="generate the distribution">
+		<jar jarfile="${types}/Wizard.jar" basedir="${wizard}" encoding="Cp1252">
+			<zipfileset dir="${src}/wizard" includes="*.info" />
+		</jar>
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+		<delete dir="${bin}" />
+	</target>
+
+</project>
