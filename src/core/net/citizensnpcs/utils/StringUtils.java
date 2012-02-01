@@ -269,38 +269,47 @@ public class StringUtils {
     }
 
     public static class Formatter {
-        private final String format;
+        private String format;
 
         public Formatter(String string) {
             this.format = string;
         }
 
         public Formatter reset() {
-            return new Formatter("");
+            format = "";
+            return this;
         }
 
         public Formatter add(String other) {
-            return new Formatter(format + " " + other);
+            if (other.isEmpty())
+                return this;
+            format += " " + other;
+            return this;
         }
 
         public Formatter wrap() {
-            return new Formatter(StringUtils.wrap(format));
+            format = StringUtils.wrap(format);
+            return this;
         }
 
         public Formatter wrap(ChatColor end) {
-            return new Formatter(StringUtils.wrap(format, end));
+            format = StringUtils.wrap(format, end);
+            return this;
         }
 
         public Formatter plural(double amount) {
-            return new Formatter(StringUtils.pluralise(format, amount));
+            format = StringUtils.pluralise(format, amount);
+            return this;
         }
 
         public Formatter capital() {
-            return new Formatter(StringUtils.capitalise(format));
+            format = StringUtils.capitalise(format);
+            return this;
         }
 
         public Formatter bracket() {
-            return new Formatter(StringUtils.bracketize(format));
+            format = StringUtils.bracketize(format);
+            return this;
         }
 
         public Formatter colour() {

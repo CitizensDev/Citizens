@@ -1,6 +1,7 @@
 package net.citizensnpcs.questers.quests.types;
 
 import net.citizensnpcs.questers.QuestUtils;
+import net.citizensnpcs.questers.quests.Objective;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.utils.StringUtils;
@@ -17,9 +18,14 @@ public class CollectQuest implements QuestUpdater {
         if (event instanceof PlayerPickupItemEvent) {
             PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
             ItemStack stack = ev.getItem().getItemStack();
-            progress.addAmount(stack.getAmount());
+            if (stack.getType() == progress.getObjective().getMaterial() && checkData(progress.getObjective(), stack))
+                progress.addAmount(stack.getAmount());
         }
         return progress.getAmount() >= progress.getObjective().getAmount();
+    }
+
+    private boolean checkData(Objective objective, ItemStack stack) {
+        return !objective.hasParameter("data") || objective.getParameter("data").getInt() == stack.getDurability();
     }
 
     @Override

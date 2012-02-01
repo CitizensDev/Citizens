@@ -13,19 +13,17 @@ import org.bukkit.entity.LivingEntity;
 public class Bouncer implements GuardUpdater {
 
     private boolean continueReturn(HumanNPC npc) {
-        return !LocationUtils.withinRange(npc.getLocation(),
-                npc.getBaseLocation(), 3.5);
+        return !LocationUtils.withinRange(npc.getLocation(), npc.getBaseLocation(), 3.5);
     }
 
     private boolean findTarget(HumanNPC npc) {
         Guard guard = npc.getType("guard");
         if (!guard.isAggressive())
             return false;
-        LivingEntity entity = Targeter.findTarget(Targeter.getNearby(
-                npc.getPlayer(), guard.getProtectionRadius()), npc);
+        LivingEntity entity = Targeter
+                .findTarget(Targeter.getNearby(npc.getPlayer(), guard.getProtectionRadius()), npc);
         if (entity != null
-                && LocationUtils.withinRange(entity.getLocation(),
-                        npc.getBaseLocation(), guard.getProtectionRadius())) {
+                && LocationUtils.withinRange(entity.getLocation(), npc.getBaseLocation(), guard.getProtectionRadius())) {
             guard.target(entity, npc);
             return true;
         }
@@ -34,14 +32,12 @@ public class Bouncer implements GuardUpdater {
 
     private boolean keepAttacking(HumanNPC npc) {
         Guard guard = npc.getType("guard");
-        if (npc.getHandle().getStationaryTicks() > Settings
-                .getInt("MaxStationaryReturnTicks")) {
+        if (npc.getHandle().getStationaryTicks() > Settings.getInt("MaxStationaryReturnTicks")) {
             npc.teleport(npc.getBaseLocation());
             npc.getHandle().cancelTarget();
         }
         return npc.getHandle().hasTarget()
-                && LocationUtils.withinRange(npc.getLocation(),
-                        npc.getBaseLocation(), guard.getProtectionRadius());
+                && LocationUtils.withinRange(npc.getLocation(), npc.getBaseLocation(), guard.getProtectionRadius());
     }
 
     @Override
@@ -50,12 +46,8 @@ public class Bouncer implements GuardUpdater {
         guard.target(attacker, npc);
     }
 
-    private boolean startReturning(HumanNPC npc) {
-        if (findTarget(npc))
-            return false;
-        PathUtils.createPath(npc, npc.getBaseLocation(), -1,
-                Settings.getInt("MaxStationaryReturnTicks"));
-        return true;
+    private void startReturning(HumanNPC npc) {
+        PathUtils.createPath(npc, npc.getBaseLocation(), -1, Settings.getInt("MaxStationaryReturnTicks"));
     }
 
     @Override
@@ -72,8 +64,8 @@ public class Bouncer implements GuardUpdater {
         case ATTACKING:
             if (!keepAttacking(npc)) {
                 npc.getHandle().cancelTarget();
-                return startReturning(npc) ? GuardStatus.RETURNING
-                        : GuardStatus.ATTACKING;
+                startReturning(npc);
+                return GuardStatus.RETURNING;
             }
             break;
         case RETURNING:
