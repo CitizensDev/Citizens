@@ -14,6 +14,7 @@ import net.citizensnpcs.questers.quests.types.KillNPCQuest;
 import net.citizensnpcs.questers.quests.types.LocationQuest;
 import net.citizensnpcs.questers.rewards.CommandReward.CommandRewardBuilder;
 import net.citizensnpcs.questers.rewards.EconpluginReward.EconpluginRewardBuilder;
+import net.citizensnpcs.questers.rewards.ExperienceReward.ExperienceRewardBuilder;
 import net.citizensnpcs.questers.rewards.HealthReward.HealthRewardBuilder;
 import net.citizensnpcs.questers.rewards.ItemReward.ItemRewardBuilder;
 import net.citizensnpcs.questers.rewards.NPCReward.NPCRewardBuilder;
@@ -40,6 +41,7 @@ public class QuestAPI {
         addQuestType(new LocationQuest(), "move location", "moveloc", "location", "loc");
         addQuestType(new CombatQuest(), "player combat", "combat");
 
+        addRewardBuilder(new ExperienceRewardBuilder(), "xp", "experience");
         addRewardBuilder(new CommandRewardBuilder(), "command", "cmd");
         rewards.put("health", new HealthRewardBuilder());
         rewards.put("item", new ItemRewardBuilder());
