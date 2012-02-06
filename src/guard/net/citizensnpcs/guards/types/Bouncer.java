@@ -16,14 +16,19 @@ public class Bouncer implements GuardUpdater {
         return !LocationUtils.withinRange(npc.getLocation(), npc.getBaseLocation(), 3.5);
     }
 
-    private boolean findTarget(HumanNPC npc) {
+    private boolean findTarget(HumanNPC npc) 
+    {
         Guard guard = npc.getType("guard");
         if (!guard.isAggressive())
             return false;
-        LivingEntity entity = Targeter
-                .findTarget(Targeter.getNearby(npc.getPlayer(), guard.getProtectionRadius()), npc);
-        if (entity != null
-                && LocationUtils.withinRange(entity.getLocation(), npc.getBaseLocation(), guard.getProtectionRadius())) {
+        LivingEntity entity = Targeter.findTarget(Targeter.getNearby(npc.getPlayer(), guard.getProtectionRadius()), npc);
+        if (entity != null && LocationUtils.withinRange(entity.getLocation(), npc.getBaseLocation(), guard.getProtectionRadius())) 
+        {
+            if (entity.isDead())
+            {
+                return false;
+            }
+            
             guard.target(entity, npc);
             return true;
         }
