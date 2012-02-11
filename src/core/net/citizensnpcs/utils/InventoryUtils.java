@@ -46,7 +46,7 @@ public class InventoryUtils {
 	public static boolean isTool(int id) {
 		return (id >= 256 && id <= 259) || (id >= 267 && id <= 279)
 				|| (id >= 283 && id <= 286) || (id >= 290 && id <= 294)
-				|| id == 346 || id == 359;
+				|| id == 346 || id == 359 || id == 261;
 	}
 
 	// Get if an item is armor
