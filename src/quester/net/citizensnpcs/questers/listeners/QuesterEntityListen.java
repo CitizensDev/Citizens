@@ -6,25 +6,26 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class QuesterEntityListen implements Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeath(EntityDeathEvent ev) {
-        if (ev.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) ev.getEntity().getLastDamageCause();
-            if (event.getDamager() instanceof Projectile) {
-                Projectile shot = ((Projectile) event.getDamager());
-                if (shot.getShooter() instanceof Player) {
-                    event = new EntityDamageByEntityEvent(shot.getShooter(), event.getEntity(), event.getCause(),
-                            event.getDamage());
-                }
+        if (!(ev.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+            return;
+        EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) ev.getEntity().getLastDamageCause();
+        if (event.getDamager() instanceof Projectile) {
+            Projectile shot = ((Projectile) event.getDamager());
+            if (shot.getShooter() instanceof Player) {
+                event = new EntityDamageByEntityEvent(shot.getShooter(), event.getEntity(), event.getCause(),
+                        event.getDamage());
             }
-            if (event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity) {
-                QuestManager.incrementQuest((Player) event.getDamager(), ev);
-            }
+        }
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity) {
+            QuestManager.incrementQuest((Player) event.getDamager(), ev);
         }
     }
 }

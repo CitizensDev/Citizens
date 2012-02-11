@@ -81,7 +81,7 @@ public class QuestProgress {
             ObjectiveProgress progress = this.progress[i];
             boolean cont = true;
             for (Class<? extends Event> type : progress.getEventTypes()) {
-                if (event.getClass().isAssignableFrom(type)) {
+                if (type.isAssignableFrom(event.getClass())) {
                     cont = false;
                     break;
                 }

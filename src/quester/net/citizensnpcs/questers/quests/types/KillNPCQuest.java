@@ -13,19 +13,23 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class KillNPCQuest implements QuestUpdater {
-    private static Class<? extends Event>[] EVENTS = new Class[] { EntityDeathEvent.class };
-
     @Override
     public Class<? extends Event>[] getEventTypes() {
         return EVENTS;
     }
 
     @Override
+    public String getStatus(ObjectiveProgress progress) throws QuestCancelException {
+        return QuestUtils.defaultAmountProgress(progress,
+                StringUtils.formatter("NPC").wrap().plural(progress.getAmount()) + " killed");
+    }
+
+    @Override
     public boolean update(Event event, ObjectiveProgress progress) {
         if (event instanceof EntityDeathEvent) {
             EntityDeathEvent ev = (EntityDeathEvent) event;
-            if (NPCManager.get(ev.getEntity()) != null) {
-                HumanNPC npc = NPCManager.get(ev.getEntity());
+            HumanNPC npc = NPCManager.get(ev.getEntity());
+            if (npc != null) {
                 String search = progress.getObjective().getString().toLowerCase();
                 boolean found = false, reversed = !search.isEmpty() && search.charAt(0) == '-';
                 if (search.contains("*") || search.contains(npc.getUID() + ",")
@@ -41,9 +45,5 @@ public class KillNPCQuest implements QuestUpdater {
         return progress.getAmount() >= progress.getObjective().getAmount();
     }
 
-    @Override
-    public String getStatus(ObjectiveProgress progress) throws QuestCancelException {
-        return QuestUtils.defaultAmountProgress(progress,
-                StringUtils.formatter("NPC").wrap().plural(progress.getAmount()) + " killed");
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { EntityDeathEvent.class };
 }

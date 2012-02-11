@@ -84,7 +84,7 @@ public class Bodyguard implements GuardUpdater {
         if (guard.isAggressive()
                 && LocationUtils.withinRange(npc.getLocation(), player.getLocation(), guard.getProtectionRadius())) {
             LivingEntity entity = Targeter.findTarget(Targeter.getNearby(player, guard.getProtectionRadius()), npc);
-            if (entity != null) {
+            if (entity != null && !entity.isDead()) {
                 guard.target(entity, npc);
                 return true;
             } else if (npc.getHandle().getTarget() != player) {
