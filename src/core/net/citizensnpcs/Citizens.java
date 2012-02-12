@@ -1,6 +1,7 @@
 package net.citizensnpcs;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
@@ -43,6 +44,8 @@ import net.citizensnpcs.resources.sk89q.UnhandledCommandException;
 import net.citizensnpcs.resources.sk89q.WrappedCommandException;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
+import net.citizensnpcs.utils.Metrics;
+import net.citizensnpcs.utils.Metrics.Plotter;
 import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.utils.Web;
 
@@ -76,6 +79,30 @@ public class Citizens extends JavaPlugin {
 
         // load settings
         Settings.setupVariables();
+
+        // initialise metrics
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Metrics metrics = new Metrics();
+                    metrics.addCustomData(plugin, new Plotter() {
+                        @Override
+                        public String getColumnName() {
+                            return "Total NPCs";
+                        }
+
+                        @Override
+                        public int getValue() {
+                            return NPCManager.getList().size();
+                        }
+                    });
+                    metrics.beginMeasuringPlugin(plugin);
+                } catch (IOException e) {
+                    Messaging.log("unable to load metrics");
+                }
+            }
+        }.start();
 
         // initialize error reporting
         Web.initErrorReporting();
