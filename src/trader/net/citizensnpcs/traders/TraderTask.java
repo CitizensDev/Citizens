@@ -30,6 +30,8 @@ public class TraderTask implements Runnable {
 	private int taskID;
 	private int prevTraderSlot = -1;
 	private int prevPlayerSlot = -1;
+	private static Map<Player,TraderTask> tasks = new HashMap<Player,TraderTask>();
+	private static boolean useSpout = false;
 
 	// Gets run every tick, checks the inventory for changes.
 	public TraderTask(HumanNPC npc, Player player, TraderMode mode) {
@@ -43,13 +45,13 @@ public class TraderTask implements Runnable {
 		// clone the items to the newly created inventory objects
 		clonePlayerInventory(npc.getInventory(), this.previousTraderInv);
 		clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
-
 		this.mode = mode;
 		sendJoinMessage();
 	}
 
 	@Override
 	public synchronized void run() {
+		if(useSpout)return;
 		if (stop) {
 			return;
 		}
@@ -120,8 +122,13 @@ public class TraderTask implements Runnable {
 			sendLeaveMessage();
 			said = true;
 		}
-		Bukkit.getServer().getScheduler().cancelTask(taskID);
-		run();
+		// Remove the task from the lookup list
+		if(useSpout){
+			tasks.remove(player);
+		}else{
+			Bukkit.getServer().getScheduler().cancelTask(taskID);
+			run();
+		}
 	}
 
 	private boolean checkContainer(EntityPlayer handle) {
@@ -129,8 +136,8 @@ public class TraderTask implements Runnable {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void handleTraderClick(int slot, PlayerInventory npcInv) {
-		npcInv.setItem(slot, previousTraderInv.getItem(slot));
+	public void handleTraderClick(int slot, PlayerInventory npcInv) {
+		if(!useSpout)npcInv.setItem(slot, previousTraderInv.getItem(slot));
 		Stockable stockable = getStockable(npcInv.getItem(slot), "sold", false);
 		if (stockable == null) {
 			return;
@@ -167,8 +174,8 @@ public class TraderTask implements Runnable {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void handlePlayerClick(int slot, PlayerInventory playerInv) {
-		playerInv.setItem(slot, previousPlayerInv.getItem(slot));
+	public void handlePlayerClick(int slot, PlayerInventory playerInv) {
+		if(!useSpout)playerInv.setItem(slot, previousPlayerInv.getItem(slot));
 		Stockable stockable = getStockable(playerInv.getItem(slot), "bought",
 				true);
 		if (stockable == null) {
@@ -332,5 +339,25 @@ public class TraderTask implements Runnable {
 		target.setChestplate(cloneItemStack(source.getChestplate()));
 		target.setLeggings(cloneItemStack(source.getLeggings()));
 		target.setBoots(cloneItemStack(source.getBoots()));
+	}
+
+	public static boolean isUseSpout() {
+		return useSpout;
+	}
+
+	public static void setUseSpout(boolean useSpout) {
+		TraderTask.useSpout = useSpout;
+	}
+
+	public static Map<Player, TraderTask> getTasks() {
+		return tasks;
+	}
+
+	public TraderMode getMode() {
+		return mode;
+	}
+
+	public HumanNPC getNpc() {
+		return npc;
 	}
 }
