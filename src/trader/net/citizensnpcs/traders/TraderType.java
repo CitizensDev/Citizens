@@ -1,5 +1,8 @@
 package net.citizensnpcs.traders;
 
+import org.bukkit.Bukkit;
+
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.commands.CommandHandler;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
@@ -25,6 +28,12 @@ public class TraderType extends CitizensNPCType {
     @Override
     public void registerEvents() {
         NPCTypeManager.registerEvents(new CitizensListen());
+        if(Bukkit.getPluginManager().getPlugin("Spout")!=null){
+        	NPCTypeManager.registerEvents(new SpoutListen());
+        	TraderTask.setUseSpout(true);
+        }else{
+        	Citizens.plugin.getLogger().warning("Spout is not enabled! Traders are susceptible to item duping!");
+        }
     }
 
     @Override
