@@ -1,6 +1,7 @@
 package net.citizensnpcs.permissions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,39 +14,27 @@ import net.citizensnpcs.npctypes.NPCTypeManager;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.utils.Messaging;
 
-import org.anjocaido.groupmanager.GroupManager;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 
-import com.platymuus.bukkit.permissions.PermissionsPlugin;
 
 public class PermissionManager {
-	private static PermissionsProvider provider = null;
+	private static Permission provider;
 	private static boolean permissionsEnabled;
 	private static final List<String> permissions = new ArrayList<String>();
 
 	public PermissionManager(PluginManager pm) {
-		String permPlugin = "";
-		if (pm.getPlugin("PermissionsBukkit") != null) {
-			permPlugin = "PermissionsBukkit";
-			provider = new PermissionsBukkitProvider(
-					(PermissionsPlugin) pm.getPlugin("PermissionsBukkit"));
-		} else if (pm.getPlugin("PermissionsEx") != null) {
-			permPlugin = "PermissionsEx";
-			provider = new PermissionsExProvider();
-		} else if (pm.getPlugin("bPermissions") != null) {
-			permPlugin = "bPermissions";
-			provider = new BPermissionsProvider();
-		} else if (pm.getPlugin("GroupManager") != null) {
-			permPlugin = "GroupManager";
-			provider = new GroupManagerProvider(
-					(GroupManager) pm.getPlugin("GroupManager"));
-		} else {
-			return;
-		}
-		permissionsEnabled = true;
+		String permPlugin;
+        provider = Citizens.setupPermissions();
+        if (provider == null) {
+            permissionsEnabled = false;
+            return;
+        }
+        permPlugin = provider.getName();
+        permissionsEnabled = true;
 		Messaging.log("Permissions system found (" + permPlugin + " v"
 				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
 		addPermissions();
@@ -77,39 +66,52 @@ public class PermissionManager {
 
 	public static void grantRank(Player player, String rank, boolean take) {
 		if (permissionsEnabled) {
-			provider.grantGroup(player, rank, take);
-		}
+            if (take) {
+                provider.playerRemoveGroup(player, rank);
+            } else {
+                provider.playerAddGroup(player, rank);
+            }
+        }
 	}
 
 	public static void setRank(Player player, String rank) {
 		if (permissionsEnabled) {
-			provider.setGroup(player, rank);
-		}
+            provider.playerAddGroup(player, rank);
+        }
 	}
 
 	public static void removeRank(Player player, String rank) {
 		if (permissionsEnabled) {
-			provider.removeGroup(player, rank);
-		}
+            provider.playerRemove(player, rank);
+        }
 	}
 
 	public static boolean hasRank(Player player, String rank) {
-		return permissionsEnabled && provider.inGroup(player, rank);
-	}
+        return permissionsEnabled && provider.playerInGroup(player, rank);
+    }
 
 	public static void givePermission(Player player, String reward, boolean take) {
 		if (permissionsEnabled) {
-			provider.grantPermission(player, reward, take);
-		}
+            if (take) {
+                provider.playerRemove(player, reward);
+            } else {
+                provider.playerAdd(player, reward);
+            }
+        }
 	}
 
 	public static CitizensGroup getGroup(String name) {
-		return permissionsEnabled ? provider.getGroup(name) : null;
-	}
+        World world = Bukkit.getServer().getWorlds().get(0);
+        return permissionsEnabled ? new CitizensGroup(provider.getPrimaryGroup(world, name)) : null;
+    }
 
 	public static Set<CitizensGroup> getGroups(Player player) {
-		return permissionsEnabled ? provider.getGroups(player) : null;
-	}
+        Set<CitizensGroup> groups = new HashSet<CitizensGroup>();
+        for (String group : provider.getPlayerGroups(player)) {
+            groups.add(new CitizensGroup(group));
+        }
+        return permissionsEnabled ? groups : null;
+    }
 
 	// TODO: is this needed?
 	public static void addPermission(String perm) {
@@ -130,7 +132,7 @@ public class PermissionManager {
 		// TODO: investigate whether this is needed.
 		for (String permission : permissions) {
 			Bukkit.getServer().getPluginManager()
-					.addPermission(new Permission("citizens." + permission));
+					.addPermission(new org.bukkit.permissions.Permission("citizens." + permission));
 		}
 	}
 }

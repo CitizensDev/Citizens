@@ -1,17 +1,6 @@
 package net.citizensnpcs;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-
+import com.google.common.base.Joiner;
 import net.citizensnpcs.api.event.CitizensDisableEvent;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.event.CitizensEnableTypeEvent;
@@ -22,7 +11,6 @@ import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
 import net.citizensnpcs.listeners.EntityListen;
 import net.citizensnpcs.listeners.PlayerListen;
-import net.citizensnpcs.listeners.ServerListen;
 import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
@@ -34,30 +22,24 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
-import net.citizensnpcs.resources.sk89q.CitizensCommandsManager;
-import net.citizensnpcs.resources.sk89q.CommandPermissionsException;
-import net.citizensnpcs.resources.sk89q.CommandUsageException;
-import net.citizensnpcs.resources.sk89q.MissingNestedCommandException;
-import net.citizensnpcs.resources.sk89q.RequirementMissingException;
-import net.citizensnpcs.resources.sk89q.ServerCommandException;
-import net.citizensnpcs.resources.sk89q.UnhandledCommandException;
-import net.citizensnpcs.resources.sk89q.WrappedCommandException;
-import net.citizensnpcs.utils.MessageUtils;
-import net.citizensnpcs.utils.Messaging;
-import net.citizensnpcs.utils.Metrics;
+import net.citizensnpcs.resources.sk89q.*;
+import net.citizensnpcs.utils.*;
 import net.citizensnpcs.utils.Metrics.Plotter;
-import net.citizensnpcs.utils.StringUtils;
-import net.citizensnpcs.utils.Web;
-
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.google.common.base.Joiner;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Citizens - NPCs for Bukkit
@@ -65,6 +47,10 @@ import com.google.common.base.Joiner;
 public class Citizens extends JavaPlugin {
     public static Citizens plugin;
     public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
+
+    public static Permission permission = null;
+    public static net.milkbowl.vault.economy.Economy economy = null;
+    public static Chat chat = null;
 
     public static boolean initialized = false;
 
@@ -115,7 +101,6 @@ public class Citizens extends JavaPlugin {
         // register our events
         getServer().getPluginManager().registerEvents(new EntityListen(), this);
         getServer().getPluginManager().registerEvents(new WorldListen(), this);
-        getServer().getPluginManager().registerEvents(new ServerListen(), this);
         getServer().getPluginManager().registerEvents(new PlayerListen(), this);
 
         // register our commands
@@ -162,6 +147,10 @@ public class Citizens extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        // initialize Permissions and Economy
+        Economy.init();
+        new PermissionManager(Bukkit.getServer().getPluginManager());
     }
 
     public static String localVersion() {
@@ -318,5 +307,41 @@ public class Citizens extends JavaPlugin {
         } else {
             Messaging.log("No NPC types loaded.");
         }
+    }
+
+    public static Permission setupPermissions()
+    {
+        RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            permission = permissionProvider.getProvider();
+            Messaging.log("Found Permissions Plugin: " + permission.getName());
+        } else {
+            Messaging.log("No Permissions Plugin found!");
+        }
+        return permission;
+    }
+
+    public static Chat setupChat()
+    {
+        RegisteredServiceProvider<Chat> chatProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) {
+            chat = chatProvider.getProvider();
+            Messaging.log("Found Chat Plugin: " + chat.getName());
+        } else {
+            Messaging.log("No Chat Plugin found!");
+        }
+        return chat;
+    }
+
+    public static net.milkbowl.vault.economy.Economy setupEconomy()
+    {
+        RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
+            Messaging.log("Found Economy Plugin: " + economy.getName());
+        } else {
+            Messaging.log("No Economy plugin found!");
+        }
+        return economy;
     }
 }

@@ -1,27 +1,27 @@
 package net.citizensnpcs;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
-import net.citizensnpcs.resources.register.payment.Method;
 
 import org.bukkit.entity.Player;
 
 public class Economy {
 	private static boolean serverEconomyEnabled = false;
 	private static boolean useEconPlugin = Settings.getBoolean("UseEconomy");
-	private static Method economy;
+	private static net.milkbowl.vault.economy.Economy economy;
 
 	// Used for economy-plugin support.
 	public static void setServerEconomyEnabled(boolean value) {
 		serverEconomyEnabled = value;
 	}
-
-	public static void setMethod(Method economy) {
-		Economy.economy = economy;
-	}
-
-	public static boolean hasMethod() {
-		return economy != null;
-	}
+    
+    public static void init() {
+        if (useEconPlugin()) {
+            economy = Citizens.setupEconomy();
+            if (economy == null) {
+                useEconPlugin = false;
+            }
+        }
+    }
 
 	/*
 	 * A helper method that checks a few variables for whether economy-plugins
@@ -43,9 +43,9 @@ public class Economy {
 	// Uses the economy-plugin methods to check whether a player has enough in
 	// their account to pay.
 	public static boolean playerHasEnough(String name, double amount) {
-		return economy.hasAccount(name)
-				&& economy.getAccount(name).hasEnough(amount);
-	}
+        return economy.hasAccount(name)
+                && economy.has(name, amount);
+    }
 
 	/**
 	 * Returns the balance of a given player's name, or -1 if they don't have an
@@ -53,8 +53,8 @@ public class Economy {
 	 */
 	public static double getBalance(String name) {
 		if (economy.hasAccount(name)) {
-			return economy.getAccount(name).balance();
-		}
+            return economy.getBalance(name);
+        }
 		return -1;
 	}
 
@@ -78,10 +78,9 @@ public class Economy {
 	// Gets the remainder necessary for an operation to be completed.
 	public static String getRemainder(Player player, double totalPrice) {
 		if (useEconPlugin()) {
-			return ""
-					+ (totalPrice - economy.getAccount(player.getName())
-							.balance());
-		}
+            return ""
+                    + (totalPrice - economy.getBalance(player.getName()));
+        }
 		return "0";
 	}
 
@@ -104,13 +103,13 @@ public class Economy {
 
 	// Add money to a player's account
 	public static void add(String name, double price) {
-		economy.getAccount(name).add(price);
-	}
+        economy.depositPlayer(name, price);
+    }
 
 	// Subtract money from a player's account
 	public static void subtract(String name, double price) {
-		economy.getAccount(name).subtract(price);
-	}
+        economy.withdrawPlayer(name, price);
+    }
 
 	// Pay an NPC the specified amount
 	public static void pay(HumanNPC npc, double amount) {

@@ -143,7 +143,7 @@ public class MessageUtils {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
 		if (text.equals(Settings.getString("DefaultText"))) {
-			return text.replace('&', 'ง');
+			return text.replace('&', 'ยง');
 		}
 		return text;
 	}

@@ -2,7 +2,7 @@ name: Citizens
 main: net.citizensnpcs.Citizens
 version: 1.1.5
 authors: [fullwall, aPunch]
-softdepend: [iConomy, Currency, BOSEconomy, Essentials, bPermissions, PermissionsEx, PermissionsBukkit]
+softdepend: [Vault]
 commands:
     npc:
         description: Performs various NPC-related commands.

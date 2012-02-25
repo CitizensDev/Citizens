@@ -468,7 +468,7 @@ public abstract class CommandsManager<T extends Player> {
 			CommandRequirements requirements = this.requirements.get(method);
 
 			if (requirements != null) {
-				if (requirements.requireEconomy() && !Economy.hasMethod()) {
+				if (requirements.requireEconomy() && !Economy.useEconPlugin()) {
 					throw new RequirementMissingException(
 							MessageUtils.noEconomyMessage);
 				}
