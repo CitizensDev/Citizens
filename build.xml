@@ -36,7 +36,7 @@
 	<!-- Compile the code -->
 
 	<target name="dist" depends="init" description="compile the source">
-		<javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+		<javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="UTF-8">
 			<classpath>
 				<pathelement path="${libs}" />
                 <pathelement location="${libs}/Vault.jar" />

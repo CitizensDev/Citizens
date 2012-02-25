@@ -27,16 +27,12 @@ public class PermissionManager {
 	private static final List<String> permissions = new ArrayList<String>();
 
 	public PermissionManager(PluginManager pm) {
-		String permPlugin;
         provider = Citizens.setupPermissions();
         if (provider == null) {
             permissionsEnabled = false;
             return;
         }
-        permPlugin = provider.getName();
         permissionsEnabled = true;
-		Messaging.log("Permissions system found (" + permPlugin + " v"
-				+ pm.getPlugin(permPlugin).getDescription().getVersion() + ")");
 		addPermissions();
 	}
 
@@ -128,11 +124,6 @@ public class PermissionManager {
 			if (type != null) {
 				type.getCommands().addPermissions();
 			}
-		}
-		// TODO: investigate whether this is needed.
-		for (String permission : permissions) {
-			Bukkit.getServer().getPluginManager()
-					.addPermission(new org.bukkit.permissions.Permission("citizens." + permission));
 		}
 	}
 }
