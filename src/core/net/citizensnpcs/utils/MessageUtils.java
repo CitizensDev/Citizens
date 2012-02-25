@@ -6,6 +6,8 @@ import java.util.Random;
 import net.citizensnpcs.Economy;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.npcdata.NPCDataManager;
+import net.citizensnpcs.permissions.PermissionManager;
+import net.citizensnpcs.permissions.PermissionsExProvider;
 import net.citizensnpcs.properties.properties.UtilityProperties;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
@@ -15,6 +17,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import com.google.common.base.Joiner;
 
@@ -61,8 +65,15 @@ public class MessageUtils {
 		}
 		if (!text.isEmpty()) {
 			if (Settings.getBoolean("UseNPCColors")) {
+				if (PermissionManager.hasBackend() && 
+						PermissionManager.getProvider() instanceof PermissionsExProvider) {
+					name = PermissionsEx.getUser(npc.getName())
+					.getPrefix() + StringUtils.stripColour(npc.getName())
+					+ PermissionsEx.getUser(npc.getName()).getSuffix();
+				}
+				
 				text = StringUtils.colourise(Settings.getString("ChatFormat")
-						.replace("%name%", npc.getName())) + text;
+						.replace("%name%", name)) + text;
 			} else {
 				text = StringUtils.colourise(Settings.getString("ChatFormat")
 						.replace(
@@ -143,7 +154,7 @@ public class MessageUtils {
 		String[] split = messages.split(";");
 		String text = split[new Random().nextInt(split.length)];
 		if (text.equals(Settings.getString("DefaultText"))) {
-			return text.replace('&', '§');
+			return text.replace('&', '¤');
 		}
 		return text;
 	}
