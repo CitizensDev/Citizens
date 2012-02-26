@@ -14,14 +14,22 @@ import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 public class EntityListen implements Listener {
+    @EventHandler
+    public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
+        if (NPCManager.get(event.getPlayer()) == null)
+            return;
+        ((CraftServer) Bukkit.getServer()).getHandle().players.remove(NPCManager.get(event.getPlayer()).getHandle());
+    }
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {

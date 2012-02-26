@@ -19,6 +19,7 @@ public class Quest {
     private final List<Requirement> requirements;
     private final long delay;
     private final List<Reward> initialRewards;
+    private final List<Reward> abortRewards;
 
     private Quest(QuestBuilder builder) {
         this.initialRewards = builder.initalRewards;
@@ -30,6 +31,7 @@ public class Quest {
         this.requirements = builder.requirements;
         this.objectives = builder.objectives;
         this.repeatLimit = builder.repeatLimit;
+        this.abortRewards = builder.abortRewards;
     }
 
     public String getAcceptanceText() {
@@ -74,6 +76,10 @@ public class Quest {
         return initialRewards;
     }
 
+    public List<Reward> getAbortRewards() {
+        return abortRewards;
+    }
+
     public static class QuestBuilder {
         private String acceptanceText = "";
         private String description = "";
@@ -84,6 +90,7 @@ public class Quest {
         private long delay;
         private List<Requirement> requirements = new ArrayList<Requirement>();
         private List<Reward> initalRewards;
+        private List<Reward> abortRewards;
 
         public QuestBuilder(String quest) {
             this.questName = quest;
@@ -130,6 +137,11 @@ public class Quest {
 
         public QuestBuilder initialRewards(List<Reward> loadRewards) {
             this.initalRewards = loadRewards;
+            return this;
+        }
+
+        public QuestBuilder abortRewards(List<Reward> rewards) {
+            this.abortRewards = rewards;
             return this;
         }
     }

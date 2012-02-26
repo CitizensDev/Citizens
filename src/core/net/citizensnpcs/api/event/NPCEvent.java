@@ -6,8 +6,7 @@ public abstract class NPCEvent extends CitizensEvent {
     private static final long serialVersionUID = 1L;
     private final HumanNPC npc;
 
-    protected NPCEvent(String name, HumanNPC npc) {
-        super(name);
+    protected NPCEvent(HumanNPC npc) {
         this.npc = npc;
     }
 

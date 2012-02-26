@@ -124,7 +124,7 @@ public class Citizens extends JavaPlugin {
         commands.register(WaypointCommands.class);
 
         // initialize permissions system
-        new PermissionManager(getServer().getPluginManager());
+        new PermissionManager().init(getServer().getPluginManager());
 
         // schedule Creature tasks
         if (CreatureNPCType.hasSpawning()) {

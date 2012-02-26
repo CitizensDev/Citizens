@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.questers.quests.types.BuildQuest;
+import net.citizensnpcs.questers.quests.types.ChatQuest;
 import net.citizensnpcs.questers.quests.types.CollectQuest;
 import net.citizensnpcs.questers.quests.types.CombatQuest;
 import net.citizensnpcs.questers.quests.types.DeliveryQuest;
@@ -40,6 +41,7 @@ public class QuestAPI {
         addQuestType(new DistanceQuest(), "move distance", "distance");
         addQuestType(new LocationQuest(), "move location", "moveloc", "location", "loc");
         addQuestType(new CombatQuest(), "player combat", "combat");
+        addQuestType(new ChatQuest(), "chat", "message");
 
         addRewardBuilder(new ExperienceRewardBuilder(), "xp", "experience");
         addRewardBuilder(new CommandRewardBuilder(), "command", "cmd");

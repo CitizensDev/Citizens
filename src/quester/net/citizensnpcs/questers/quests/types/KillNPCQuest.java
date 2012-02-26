@@ -6,6 +6,7 @@ import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
+import net.citizensnpcs.resources.npclib.creatures.CreatureTask;
 import net.citizensnpcs.resources.npclib.creatures.EvilCreatureNPC;
 import net.citizensnpcs.utils.StringUtils;
 
@@ -29,6 +30,8 @@ public class KillNPCQuest implements QuestUpdater {
         if (event instanceof EntityDeathEvent) {
             EntityDeathEvent ev = (EntityDeathEvent) event;
             HumanNPC npc = NPCManager.get(ev.getEntity());
+            if (npc == null)
+                npc = CreatureTask.getCreature(ev.getEntity()).npc;
             if (npc != null) {
                 String search = progress.getObjective().getString().toLowerCase();
                 boolean found = false, reversed = !search.isEmpty() && search.charAt(0) == '-';

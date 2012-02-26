@@ -4,18 +4,29 @@ import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class QuestCompleteEvent extends QuestEvent {
-	private static final long serialVersionUID = 1L;
-	private final CompletedQuest completed;
+    private static final long serialVersionUID = 1L;
+    private final CompletedQuest completed;
 
-	public QuestCompleteEvent(Quest quest, CompletedQuest completed,
-			Player player) {
-		super("QuestCompleteEvent", quest, player);
-		this.completed = completed;
-	}
+    public QuestCompleteEvent(Quest quest, CompletedQuest completed, Player player) {
+        super(quest, player);
+        this.completed = completed;
+    }
 
-	public CompletedQuest getCompleted() {
-		return completed;
-	}
+    public CompletedQuest getCompleted() {
+        return completed;
+    }
+
+    private static final HandlerList handlers = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

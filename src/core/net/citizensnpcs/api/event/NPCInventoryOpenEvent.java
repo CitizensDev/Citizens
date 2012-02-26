@@ -11,7 +11,7 @@ public class NPCInventoryOpenEvent extends NPCPlayerEvent implements Cancellable
     private boolean cancelled = false;
 
     public NPCInventoryOpenEvent(HumanNPC npc, Player player) {
-        super("NPCInventoryOpenEvent", npc, player);
+        super(npc, player);
     }
 
     /**

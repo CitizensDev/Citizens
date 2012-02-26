@@ -1,7 +1,6 @@
 package net.citizensnpcs.questers.listeners;
 
 import net.citizensnpcs.questers.QuestManager;
-import net.citizensnpcs.utils.ConversationUtils;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,6 +34,6 @@ public class QuesterPlayerListen implements Listener {
 
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
-        ConversationUtils.onChat(event);
+        QuestManager.incrementQuest(event.getPlayer(), event);
     }
 }

@@ -9,7 +9,6 @@ public class CitizensEnableTypeEvent extends CitizensEvent {
     private final CitizensNPCType type;
 
     public CitizensEnableTypeEvent(CitizensNPCType type) {
-        super("CitizensEnableTypeEvent");
         this.type = type;
     }
 

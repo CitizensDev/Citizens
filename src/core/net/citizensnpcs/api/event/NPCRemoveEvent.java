@@ -9,7 +9,7 @@ public class NPCRemoveEvent extends NPCEvent {
     private final NPCRemoveReason reason;
 
     public NPCRemoveEvent(HumanNPC npc, NPCRemoveReason reason) {
-        super("NPCRemoveEvent", npc);
+        super(npc);
         this.reason = reason;
     }
 

@@ -3,11 +3,23 @@ package net.citizensnpcs.questers.api.events;
 import net.citizensnpcs.questers.quests.Quest;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class QuestCancelEvent extends QuestEvent {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public QuestCancelEvent(Quest quest, Player player) {
-		super("QuestCancelEvent", quest, player);
-	}
+    public QuestCancelEvent(Quest quest, Player player) {
+        super(quest, player);
+    }
+
+    private static final HandlerList handlers = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

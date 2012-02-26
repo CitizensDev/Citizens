@@ -12,7 +12,7 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
     private String text;
 
     public NPCTalkEvent(HumanNPC npc, Player player, String text) {
-        super("NPCDisplayTextEvent", npc, player);
+        super(npc, player);
         this.text = text;
     }
 

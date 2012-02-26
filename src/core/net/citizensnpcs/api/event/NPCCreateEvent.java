@@ -12,7 +12,7 @@ public class NPCCreateEvent extends NPCEvent {
     private final Location loc;
 
     public NPCCreateEvent(HumanNPC npc, NPCCreateReason reason, Location loc) {
-        super("NPCSpawnEvent", npc);
+        super(npc);
         this.reason = reason;
         this.loc = loc;
     }

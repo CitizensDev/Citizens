@@ -11,7 +11,7 @@ public class NPCRightClickEvent extends NPCPlayerEvent implements Cancellable {
     private boolean cancelled = false;
 
     public NPCRightClickEvent(HumanNPC npc, Player player) {
-        super("NPCRightClickEvent", npc, player);
+        super(npc, player);
     }
 
     /**

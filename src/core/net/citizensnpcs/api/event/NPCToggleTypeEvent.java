@@ -10,7 +10,7 @@ public class NPCToggleTypeEvent extends NPCEvent {
     private final boolean toggledOn;
 
     public NPCToggleTypeEvent(HumanNPC npc, String type, boolean toggledOn) {
-        super("NPCToggleTypeEvent", npc);
+        super(npc);
         this.type = type;
         this.toggledOn = toggledOn;
     }

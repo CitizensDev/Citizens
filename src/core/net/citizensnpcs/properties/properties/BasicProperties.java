@@ -264,8 +264,7 @@ public class BasicProperties extends PropertyManager implements Properties {
                     waypoint.addModifier(modifier);
                 }
             }
-            if (waypoint != null)
-                temp.add(waypoint);
+            temp.add(waypoint);
         }
         return temp;
     }
