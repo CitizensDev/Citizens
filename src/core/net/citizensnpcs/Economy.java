@@ -15,6 +15,7 @@ public class Economy {
 	}
     
     public static void init() {
+        setServerEconomyEnabled(true);
         if (useEconPlugin()) {
             economy = Citizens.setupEconomy();
             if (economy == null) {
