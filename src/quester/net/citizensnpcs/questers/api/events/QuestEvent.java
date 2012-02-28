@@ -5,8 +5,7 @@ import net.citizensnpcs.questers.quests.Quest;
 
 import org.bukkit.entity.Player;
 
-public class QuestEvent extends CitizensEvent {
-    private static final long serialVersionUID = 1L;
+public abstract class QuestEvent extends CitizensEvent {
     private final Quest quest;
     private final Player player;
 

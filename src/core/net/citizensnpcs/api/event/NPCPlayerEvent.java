@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 
 public abstract class NPCPlayerEvent extends NPCEvent {
     protected Player player;
-    private static final long serialVersionUID = 1L;
 
     protected NPCPlayerEvent(HumanNPC npc, Player player) {
         super(npc);

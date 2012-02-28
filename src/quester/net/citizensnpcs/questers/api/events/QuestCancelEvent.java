@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 public class QuestCancelEvent extends QuestEvent {
-    private static final long serialVersionUID = 1L;
-
     public QuestCancelEvent(Quest quest, Player player) {
         super(quest, player);
     }

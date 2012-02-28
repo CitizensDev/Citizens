@@ -5,7 +5,6 @@ import net.citizensnpcs.npctypes.CitizensNPCType;
 import org.bukkit.event.HandlerList;
 
 public class CitizensEnableTypeEvent extends CitizensEvent {
-    private static final long serialVersionUID = 1L;
     private final CitizensNPCType type;
 
     public CitizensEnableTypeEvent(CitizensNPCType type) {

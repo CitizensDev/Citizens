@@ -5,7 +5,6 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.event.HandlerList;
 
 public class NPCRemoveEvent extends NPCEvent {
-    private static final long serialVersionUID = 1L;
     private final NPCRemoveReason reason;
 
     public NPCRemoveEvent(HumanNPC npc, NPCRemoveReason reason) {

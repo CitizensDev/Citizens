@@ -7,7 +7,6 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 public class NPCInventoryOpenEvent extends NPCPlayerEvent implements Cancellable {
-    private static final long serialVersionUID = 1L;
     private boolean cancelled = false;
 
     public NPCInventoryOpenEvent(HumanNPC npc, Player player) {

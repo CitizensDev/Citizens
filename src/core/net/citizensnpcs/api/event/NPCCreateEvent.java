@@ -6,8 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
 
 public class NPCCreateEvent extends NPCEvent {
-    private static final long serialVersionUID = -6321822806485360689L;
-
     private final NPCCreateReason reason;
     private final Location loc;
 

@@ -33,7 +33,7 @@ public class ServerListen implements Listener {
 
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event) {
-        if (this.methods != null && Methods.hasMethod() && Methods.getMethod().getPlugin().equals(event.getPlugin())) {
+        if (this.methods != null && Methods.hasMethod()) {
             Economy.setServerEconomyEnabled(false);
         }
     }

@@ -17,6 +17,7 @@ import net.minecraft.server.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -68,7 +69,7 @@ public class PathNPC extends EntityPlayer {
             up = this.random.nextBoolean();
             this.pitch += this.random.nextInt(5) * (up ? 1 : -1);
 
-            this.getBukkitEntity().shootArrow();
+            this.getBukkitEntity().launchProjectile(Arrow.class);
         } else {
             this.performAction(Animation.SWING_ARM);
             LivingEntity other = (LivingEntity) entity.getBukkitEntity();

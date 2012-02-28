@@ -3,7 +3,6 @@ package net.citizensnpcs.questers.quests.types;
 import net.citizensnpcs.questers.QuestUtils;
 import net.citizensnpcs.questers.quests.progress.ObjectiveProgress;
 import net.citizensnpcs.questers.quests.progress.QuestUpdater;
-import net.citizensnpcs.utils.EntityUtils;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,7 +20,7 @@ public class HuntQuest implements QuestUpdater {
                 return progress.getAmount() >= progress.getObjective().getAmount();
             LivingEntity entity = (LivingEntity) ev.getEntity();
             String search = progress.getObjective().getString().toLowerCase();
-            boolean found = search.contains(EntityUtils.getMonsterName(entity)) || search.contains("*"), reversed = !search
+            boolean found = search.contains(entity.getType().getName().toLowerCase()) || search.contains("*"), reversed = !search
                     .isEmpty() && search.charAt(0) == '-';
             if (reversed ^ found) {
                 progress.addAmount(1);

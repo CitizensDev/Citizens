@@ -7,7 +7,6 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 public class NPCRightClickEvent extends NPCPlayerEvent implements Cancellable {
-    private static final long serialVersionUID = 1L;
     private boolean cancelled = false;
 
     public NPCRightClickEvent(HumanNPC npc, Player player) {

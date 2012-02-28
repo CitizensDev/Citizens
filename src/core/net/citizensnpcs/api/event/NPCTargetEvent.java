@@ -5,8 +5,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public class NPCTargetEvent extends EntityTargetEvent {
-    private static final long serialVersionUID = 1L;
-
     public NPCTargetEvent(Entity entity, Entity target) {
         super(entity, target, TargetReason.CUSTOM);
     }

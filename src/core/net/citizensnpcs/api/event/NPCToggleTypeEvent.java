@@ -5,7 +5,6 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import org.bukkit.event.HandlerList;
 
 public class NPCToggleTypeEvent extends NPCEvent {
-    private static final long serialVersionUID = 1L;
     private final String type;
     private final boolean toggledOn;
 
