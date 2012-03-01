@@ -86,7 +86,7 @@ public class PathNPC extends EntityPlayer {
     }
 
     PathEntity createPathEntity(int x, int y, int z) {
-        return this.world.a(this, x, y, z, pathingRange);
+        return this.world.a(this, x, y, z, pathingRange, true, false, false, true);
     }
 
     private double distance(Entity entity) {
@@ -167,7 +167,7 @@ public class PathNPC extends EntityPlayer {
     }
 
     public boolean isInSight(Entity entity) {
-        return this.g(entity);
+        return this.h(entity);
     }
 
     private boolean isWithinAttackRange(Entity entity, double distance) {
@@ -175,7 +175,7 @@ public class PathNPC extends EntityPlayer {
         return this.attackTicks <= 0
                 && ((isHoldingBow() && (distance > Settings.getDouble("MinArrowRange") && distance < Settings
                         .getDouble("MaxArrowRange"))) || (distance < 1.5F && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
-                        && this.g(entity));
+                        && isInSight(entity));
     }
 
     protected void jump() {
@@ -261,7 +261,7 @@ public class PathNPC extends EntityPlayer {
 
     private void takeRandomPath() {
         if (!hasAttacked && this.targetEntity != null && (this.path == null || this.random.nextInt(20) == 0)) {
-            this.path = this.world.findPath(this, this.targetEntity, pathingRange);
+            this.path = this.world.findPath(this, this.targetEntity, pathingRange, true, false, false, true);
             this.dest = this.targetEntity.getBukkitEntity().getLocation();
         } else if (!hasAttacked && this.path == null)
             autoPathfinder.find(this);
@@ -294,7 +294,7 @@ public class PathNPC extends EntityPlayer {
 
     private void updateTarget() {
         if (!this.hasAttacked && this.targetEntity != null && autoPathToTarget) {
-            this.path = this.world.findPath(this, this.targetEntity, pathingRange);
+            this.path = this.world.findPath(this, this.targetEntity, pathingRange, true, false, false, true);
             this.dest = this.targetEntity.getBukkitEntity().getLocation();
         }
         if (targetEntity == null)
