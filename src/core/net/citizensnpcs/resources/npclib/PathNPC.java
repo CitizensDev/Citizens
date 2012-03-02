@@ -147,6 +147,7 @@ public class PathNPC extends EntityPlayer {
             float diffYaw = getYawDifference(diffZ, diffX);
 
             this.yaw += diffYaw;
+            this.X += diffYaw;
             if (diffY > 0.0D) {
                 jump();
             }
