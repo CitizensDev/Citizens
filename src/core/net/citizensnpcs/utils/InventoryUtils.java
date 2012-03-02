@@ -3,25 +3,12 @@ package net.citizensnpcs.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.citizensnpcs.api.event.NPCInventoryOpenEvent;
-import net.citizensnpcs.resources.npclib.HumanNPC;
-
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class InventoryUtils {
-
-    // Uses craftbukkit methods to show a player an npc's inventory screen.
-    public static void showInventory(HumanNPC npc, Player player) {
-        NPCInventoryOpenEvent inventoryOpenEvent = new NPCInventoryOpenEvent(npc, player);
-        if (inventoryOpenEvent.isCancelled()) {
-            return;
-        }
-        ((CraftPlayer) player).getHandle().openContainer(npc.getHandle().inventory);
-    }
 
     // Remove items from a player's current held slot
     public static void decreaseItemInHand(Player player) {

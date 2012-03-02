@@ -8,132 +8,53 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Packet103SetSlot;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
-public class TraderTask implements Runnable {
+public class TraderTask implements Listener {
     private final HumanNPC npc;
-    private final CraftPlayer player;
-    private final PlayerInventory previousTraderInv;
-    private final PlayerInventory previousPlayerInv;
+    private final Player player;
     private final TraderMode mode;
-    private boolean stop;
-    private boolean said;
-    private int taskID;
     private int prevTraderSlot = -1;
     private int prevPlayerSlot = -1;
-    private static Map<Player, TraderTask> tasks = new HashMap<Player, TraderTask>();
-    private static boolean useSpout = false;
 
     // Gets run every tick, checks the inventory for changes.
     public TraderTask(HumanNPC npc, Player player, TraderMode mode) {
         this.npc = npc;
-        this.player = (CraftPlayer) player;
-        // Create the inventory objects
-        this.previousTraderInv = new CraftInventoryPlayer(new net.minecraft.server.PlayerInventory(null));
-        this.previousPlayerInv = new CraftInventoryPlayer(new net.minecraft.server.PlayerInventory(null));
-        // clone the items to the newly created inventory objects
-        clonePlayerInventory(npc.getInventory(), this.previousTraderInv);
-        clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
+        this.player = player;
         this.mode = mode;
         sendJoinMessage();
     }
 
-    @Override
-    public synchronized void run() {
-        if (useSpout)
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (!event.getPlayer().equals(player))
             return;
-        if (stop) {
-            return;
-        }
-        if ((npc == null || player == null || checkContainer(player.getHandle()) || !player.isOnline()) && !said) {
-            kill();
-            return;
-        }
-        if (mode == TraderMode.STOCK) {
-            return;
-        }
-        stop = true;
-        int count = 0;
-        boolean found = false;
-        net.minecraft.server.ItemStack inhand = player.getHandle().inventory.getCarried();
-        for (ItemStack i : npc.getInventory().getContents()) {
-            if (!previousTraderInv.getItem(count).equals(i) && inhand == null) {
-                rewind();
-                break;
-            }
-            if (!previousTraderInv.getItem(count).equals(i)
-                    && previousTraderInv.getItem(count).getTypeId() == inhand.id) {
-                found = true;
-                handleTraderClick(count, npc.getInventory());
-                break;
-            }
-            count += 1;
-        }
-
-        count = 0;
-        if (!found) {
-            for (ItemStack i : player.getInventory().getContents()) {
-                if (!previousPlayerInv.getItem(count).equals(i) && inhand == null) {
-                    rewind();
-                    break;
-                }
-                if (!previousPlayerInv.getItem(count).equals(i)
-                        && previousPlayerInv.getItem(count).getTypeId() == inhand.id) {
-                    handlePlayerClick(count, player.getInventory());
-                    break;
-                }
-                count += 1;
-            }
-        }
-
-        clonePlayerInventory(npc.getInventory(), this.previousTraderInv);
-        clonePlayerInventory(player.getInventory(), this.previousPlayerInv);
-
-        // Set the itemstack in the player's cursor to null.
-        player.getHandle().inventory.setCarried((net.minecraft.server.ItemStack) null);
-        // Get rid of the picture on the cursor.
-        Packet103SetSlot packet = new Packet103SetSlot(-1, -1, null);
-        player.getHandle().netServerHandler.sendPacket(packet);
-        stop = false;
+        HandlerList.unregisterAll(this);
+        sendLeaveMessage();
     }
 
-    public void addID(int ID) {
-        this.taskID = ID;
-    }
-
-    public void kill() {
-        Trader trader = npc.getType("trader");
-        trader.setFree(true);
-        if (!said) {
-            sendLeaveMessage();
-            said = true;
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getInventory().equals(player.getInventory())) {
+            handlePlayerClick(event);
+        } else if (event.getInventory().equals(npc.getInventory())) {
+            handleTraderClick(event);
         }
-        // Remove the task from the lookup list
-        if (useSpout) {
-            tasks.remove(player);
-        } else {
-            Bukkit.getServer().getScheduler().cancelTask(taskID);
-            run();
-        }
-    }
-
-    private boolean checkContainer(EntityPlayer handle) {
-        return handle.activeContainer == handle.defaultContainer;
     }
 
     @SuppressWarnings("deprecation")
-    public void handleTraderClick(int slot, PlayerInventory npcInv) {
-        if (!useSpout)
-            npcInv.setItem(slot, previousTraderInv.getItem(slot));
+    public void handleTraderClick(InventoryClickEvent event) {
+        Inventory npcInv = npc.getInventory();
+        int slot = event.getSlot();
         Stockable stockable = getStockable(npcInv.getItem(slot), "sold", false);
         if (stockable == null) {
             return;
@@ -155,7 +76,7 @@ public class TraderTask implements Runnable {
         }
         Map<Integer, ItemStack> unbought = player.getInventory().addItem(buying);
         if (unbought.size() >= 1) {
-            rewind();
+            event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Not enough room in your inventory to add "
                     + MessageUtils.getStackString(buying, ChatColor.RED) + ".");
             return;
@@ -168,9 +89,9 @@ public class TraderTask implements Runnable {
     }
 
     @SuppressWarnings("deprecation")
-    public void handlePlayerClick(int slot, PlayerInventory playerInv) {
-        if (!useSpout)
-            playerInv.setItem(slot, previousPlayerInv.getItem(slot));
+    public void handlePlayerClick(InventoryClickEvent event) {
+        int slot = event.getSlot();
+        Inventory playerInv = player.getInventory();
         Stockable stockable = getStockable(playerInv.getItem(slot), "bought", true);
         if (stockable == null) {
             return;
@@ -197,7 +118,7 @@ public class TraderTask implements Runnable {
                 unsold = npc.getInventory().addItem(selling);
         }
         if (unsold.size() >= 1) {
-            rewind();
+            event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Not enough room available to add "
                     + MessageUtils.getStackString(selling, ChatColor.RED) + " to the trader's stock.");
             return;
@@ -209,15 +130,7 @@ public class TraderTask implements Runnable {
         player.sendMessage(ChatColor.GREEN + "Transaction successful.");
     }
 
-    @SuppressWarnings("deprecation")
-    private void rewind() {
-        player.getInventory().setContents(previousPlayerInv.getContents());
-        npc.getInventory().setContents(previousTraderInv.getContents());
-        player.updateInventory();
-        npc.getPlayer().updateInventory();
-    }
-
-    private boolean checkMiscellaneous(PlayerInventory inv, Stockable stockable, boolean buying) {
+    private boolean checkMiscellaneous(Inventory inv, Stockable stockable, boolean buying) {
         ItemStack stocking = stockable.getStocking();
         if (buying) {
             if (!InventoryUtils.has(npc.getPlayer(), stocking)) {
@@ -298,45 +211,5 @@ public class TraderTask implements Runnable {
                     + " finished.");
             break;
         }
-    }
-
-    private ItemStack cloneItemStack(ItemStack source) {
-        if (source == null) {// sanity check
-            return null;
-        }
-        return new ItemStack(source.getType(), source.getAmount(), source.getDurability(),
-                (source.getData() != null ? source.getData().getData() : null));
-    }
-
-    // Clones the first passed PlayerInventory object to the second one.
-    private void clonePlayerInventory(PlayerInventory source, PlayerInventory target) {
-        ItemStack[] contents = new ItemStack[source.getContents().length];
-        System.arraycopy(source.getContents(), 0, contents, 0, contents.length);
-        target.setContents(contents);
-
-        target.setHelmet(cloneItemStack(source.getHelmet()));
-        target.setChestplate(cloneItemStack(source.getChestplate()));
-        target.setLeggings(cloneItemStack(source.getLeggings()));
-        target.setBoots(cloneItemStack(source.getBoots()));
-    }
-
-    public static boolean isUseSpout() {
-        return useSpout;
-    }
-
-    public static void setUseSpout(boolean useSpout) {
-        TraderTask.useSpout = useSpout;
-    }
-
-    public static Map<Player, TraderTask> getTasks() {
-        return tasks;
-    }
-
-    public TraderMode getMode() {
-        return mode;
-    }
-
-    public HumanNPC getNpc() {
-        return npc;
     }
 }
