@@ -87,12 +87,13 @@ public class NPCDataManager {
             } else {
                 Armor armor = Armor.getArmorSlot(itemID);
                 if (armor != null) {
-                    if (armor.get(npcInv).getType() == Material.getMaterial(itemID)) {
+                    ItemStack armorItem = armor.get(npcInv);
+                    if (armorItem != null && armorItem.getType() == Material.getMaterial(itemID)) {
                         Messaging.sendError(player, error);
                         return;
                     }
                     slot = armor.name().toLowerCase();
-                    if (armor.get(npcInv).getType() != Material.AIR) {
+                    if (armorItem != null && armorItem.getType() != Material.AIR) {
                         toAdd.add(items.get(armor.getSlot() + 1).createStack());
                     }
                     items.set(armor.getSlot() + 1, new ItemData(hand.getTypeId(), hand.getDurability()));
