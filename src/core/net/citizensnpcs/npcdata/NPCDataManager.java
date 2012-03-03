@@ -53,7 +53,10 @@ public class NPCDataManager {
         List<ItemData> items = Lists.newArrayList();
         items.add(new ItemData(npc.getItemInHand().getTypeId(), npc.getItemInHand().getDurability()));
         for (Armor armor : Armor.values()) {
-            items.add(new ItemData(armor.get(npcInv).getTypeId(), armor.get(npcInv).getDurability()));
+            ItemStack slot = armor.get(npcInv);
+            if (slot == null)
+                slot = new ItemStack(Material.AIR, (short) 0);
+            items.add(new ItemData(slot.getTypeId(), slot.getDurability()));
         }
         List<ItemStack> toAdd = Lists.newArrayList();
         if (player.getItemInHand() == null || player.getItemInHand().getType() == Material.AIR) {
