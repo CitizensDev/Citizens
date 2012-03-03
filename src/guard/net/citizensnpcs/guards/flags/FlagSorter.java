@@ -192,16 +192,6 @@ public class FlagSorter {
         return Lists.newArrayList(Iterables.transform(Iterables.filter(entities, livingFilterer), livingTransformer));
     }
 
-    void updateGroup(FlagInfo info) {
-        CitizensGroup group = PermissionManager.getGroup(info.getName());
-        if (group == null)
-            return;
-        for (String name : group.getMembers()) {
-            if (groupCache.containsKey(name))
-                groupCache.put(name, info);
-        }
-    }
-
     private void updateLowest(FlagInfo info) {
         if (info.priority() < lowestFound) {
             lowestFound = info.priority();

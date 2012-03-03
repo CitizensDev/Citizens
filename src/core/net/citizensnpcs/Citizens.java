@@ -22,7 +22,6 @@ import net.citizensnpcs.commands.ToggleCommands;
 import net.citizensnpcs.commands.WaypointCommands;
 import net.citizensnpcs.listeners.EntityListen;
 import net.citizensnpcs.listeners.PlayerListen;
-import net.citizensnpcs.listeners.ServerListen;
 import net.citizensnpcs.listeners.WorldListen;
 import net.citizensnpcs.npcdata.NPCDataManager;
 import net.citizensnpcs.npctypes.CitizensNPCLoader;
@@ -115,7 +114,6 @@ public class Citizens extends JavaPlugin {
         // register our events
         getServer().getPluginManager().registerEvents(new EntityListen(), this);
         getServer().getPluginManager().registerEvents(new WorldListen(), this);
-        getServer().getPluginManager().registerEvents(new ServerListen(), this);
         getServer().getPluginManager().registerEvents(new PlayerListen(), this);
 
         // register our commands
@@ -124,7 +122,8 @@ public class Citizens extends JavaPlugin {
         commands.register(WaypointCommands.class);
 
         // initialize permissions system
-        new PermissionManager().init(getServer().getPluginManager());
+        new PermissionManager().init();
+        Economy.init();
 
         // schedule Creature tasks
         if (CreatureNPCType.hasSpawning()) {
