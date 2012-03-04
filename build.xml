@@ -47,7 +47,6 @@
 		</javac>
 		<!-- Finish compiling the core early because the NPC types require the core! -->
 		<antcall target="distcore" />
-		<antcall target="blacksmith" />
 	</target>
 
 	<target name="blacksmith" depends="init" description="compile the source">
@@ -61,7 +60,6 @@
 			</classpath>
 		</javac>
 		<antcall target="distblacksmith" />
-		<antcall target="guard" />
 	</target>
 	<target name="guard" depends="init" description="compile the source">
 		<javac srcdir="${src}/guard" destdir="${guard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
@@ -74,7 +72,6 @@
 			</classpath>
 		</javac>
 		<antcall target="distguard" />
-		<antcall target="healer" />
 	</target>
 	<target name="healer" depends="init" description="compile the source">
 		<javac srcdir="${src}/healer" destdir="${healer}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
@@ -87,7 +84,6 @@
 			</classpath>
 		</javac>
 		<antcall target="disthealer" />
-		<antcall target="quester" />
 	</target>
 	<target name="quester" depends="init" description="compile the source">
 		<javac srcdir="${src}/quester" destdir="${quester}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
@@ -100,7 +96,6 @@
 			</classpath>
 		</javac>
 		<antcall target="distquester" />
-		<antcall target="trader" />
 	</target>
 	<target name="trader" depends="init" description="compile the source">
 		<javac srcdir="${src}/trader" destdir="${trader}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
@@ -113,7 +108,6 @@
 			</classpath>
 		</javac>
 		<antcall target="disttrader" />
-		<antcall target="wizard" />
 	</target>
 	<target name="wizard" depends="init" description="compile the source">
 		<javac srcdir="${src}/wizard" destdir="${wizard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
@@ -133,32 +127,37 @@
 		<jar jarfile="${bin}/Citizens.jar" basedir="${core}" encoding="Cp1252">
 			<zipfileset dir="." includes="*.yml" />
 		</jar>
-
+		<antcall target="blacksmith" />
 	</target>
 	<target name="distblacksmith" description="generate the distribution">
 		<jar jarfile="${types}/Blacksmith.jar" basedir="${blacksmith}" encoding="Cp1252">
 			<zipfileset dir="${src}/blacksmith" includes="*.info" />
 		</jar>
+		<antcall target="guard" />
 	</target>
 	<target name="distguard" description="generate the distribution">
 		<jar jarfile="${types}/Guard.jar" basedir="${guard}" encoding="Cp1252">
 			<zipfileset dir="${src}/guard" includes="*.info" />
 		</jar>
+		<antcall target="healer" />
 	</target>
 	<target name="disthealer" description="generate the distribution">
 		<jar jarfile="${types}/Healer.jar" basedir="${healer}" encoding="Cp1252">
 			<zipfileset dir="${src}/healer" includes="*.info" />
 		</jar>
+		<antcall target="quester" />
 	</target>
 	<target name="distquester" description="generate the distribution">
 		<jar jarfile="${types}/Quester.jar" basedir="${quester}" encoding="Cp1252">
 			<zipfileset dir="${src}/quester" includes="*.info" />
 		</jar>
+		<antcall target="trader" />
 	</target>
 	<target name="disttrader" description="generate the distribution">
 		<jar jarfile="${types}/Trader.jar" basedir="${trader}" encoding="Cp1252">
 			<zipfileset dir="${src}/trader" includes="*.info" />
 		</jar>
+		<antcall target="wizard" />
 	</target>
 	<target name="distwizard" description="generate the distribution">
 		<jar jarfile="${types}/Wizard.jar" basedir="${wizard}" encoding="Cp1252">
