@@ -39,10 +39,10 @@
 		<javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-				<pathelement location="${libs}/WorldGuard.jar" />
-				<pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<!-- Finish compiling the core early because the NPC types require the core! -->
@@ -52,11 +52,12 @@
 	<target name="blacksmith" depends="init" description="compile the source">
 		<javac srcdir="${src}/blacksmith" destdir="${blacksmith}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
+				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-                <pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/WorldGuard.jar" />
-                <pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<antcall target="distblacksmith" />
@@ -64,11 +65,12 @@
 	<target name="guard" depends="init" description="compile the source">
 		<javac srcdir="${src}/guard" destdir="${guard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
+				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-                <pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/WorldGuard.jar" />
-                <pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<antcall target="distguard" />
@@ -76,11 +78,12 @@
 	<target name="healer" depends="init" description="compile the source">
 		<javac srcdir="${src}/healer" destdir="${healer}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
+				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-                <pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/WorldGuard.jar" />
-                <pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<antcall target="disthealer" />
@@ -88,11 +91,12 @@
 	<target name="quester" depends="init" description="compile the source">
 		<javac srcdir="${src}/quester" destdir="${quester}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
+				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-                <pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/WorldGuard.jar" />
-                <pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<antcall target="distquester" />
@@ -100,11 +104,12 @@
 	<target name="trader" depends="init" description="compile the source">
 		<javac srcdir="${src}/trader" destdir="${trader}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
+				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-                <pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/WorldGuard.jar" />
-                <pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<antcall target="disttrader" />
@@ -112,11 +117,12 @@
 	<target name="wizard" depends="init" description="compile the source">
 		<javac srcdir="${src}/wizard" destdir="${wizard}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
+				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-                <pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
-                <pathelement location="${libs}/WorldGuard.jar" />
-                <pathelement location="${libs}/Vault.jar" />
+                		<pathelement location="${libs}/bukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/craftbukkit-1.2.2-SNAPSHOT.jar" />
+                		<pathelement location="${libs}/WorldGuard.jar" />
+                		<pathelement location="${libs}/Vault.jar" />
 			</classpath>
 		</javac>
 		<antcall target="distwizard" />
