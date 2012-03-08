@@ -17,6 +17,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,15 +46,25 @@ public class TraderTask implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (mode == TraderMode.STOCK)
+        if (!event.getWhoClicked().equals(player) || mode == TraderMode.STOCK
+                || event.getSlotType() == SlotType.OUTSIDE)
             return;
-        ItemStack slot = event.getCurrentItem();
+        ItemStack slot = event.getView().getItem(event.getRawSlot());
         if (slot == null || slot.getType() == Material.AIR)
             return;
-        if (event.getInventory().getHolder().equals(player)) {
-            handlePlayerClick(event);
-        } else if (event.getInventory().getHolder().equals(npc.getPlayer())) {
+        event.setCancelled(true);
+        if (event.isRightClick() || event.isShiftClick()) {
+            player.sendMessage(ChatColor.GRAY + "Only plain left clicks are supported.");
+            return;
+        }
+        int rawSlot = event.getRawSlot();
+        boolean trader = event.getView().convertSlot(rawSlot) == rawSlot;
+        // see convertSlot javadoc - if rawSlot is returned unchanged, then it's
+        // a click on the top inventory.
+        if (trader) {
             handleTraderClick(event);
+        } else {
+            handlePlayerClick(event);
         }
     }
 
@@ -61,21 +72,18 @@ public class TraderTask implements Listener {
     public void handleTraderClick(InventoryClickEvent event) {
         Inventory npcInv = npc.getInventory();
         int slot = event.getSlot();
-        Stockable stockable = getStockable(event.getCurrentItem(), "sold", false);
+        Stockable stockable = getStockable(event.getView().getItem(event.getRawSlot()), "sold", false);
         if (stockable == null) {
-            event.setCancelled(true);
             return;
         }
         if (prevTraderSlot != slot) {
             prevTraderSlot = slot;
             sendStockableMessage(stockable);
-            event.setCancelled(true);
             return;
         }
         prevTraderSlot = slot;
         prevPlayerSlot = -1;
         if (checkMiscellaneous(npcInv, stockable, true)) {
-            event.setCancelled(true);
             return;
         }
         ItemStack buying = stockable.getStocking().clone();
@@ -85,7 +93,6 @@ public class TraderTask implements Listener {
         }
         Map<Integer, ItemStack> unbought = player.getInventory().addItem(buying);
         if (unbought.size() >= 1) {
-            event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Not enough room in your inventory to add "
                     + MessageUtils.getStackString(buying, ChatColor.RED) + ".");
             return;
@@ -101,21 +108,18 @@ public class TraderTask implements Listener {
     public void handlePlayerClick(InventoryClickEvent event) {
         int slot = event.getSlot();
         Inventory playerInv = player.getInventory();
-        Stockable stockable = getStockable(event.getCurrentItem(), "bought", true);
+        Stockable stockable = getStockable(event.getView().getItem(event.getRawSlot()), "bought", true);
         if (stockable == null) {
-            event.setCancelled(true);
             return;
         }
         if (prevPlayerSlot != slot) {
             prevPlayerSlot = slot;
             sendStockableMessage(stockable);
-            event.setCancelled(true);
             return;
         }
         prevPlayerSlot = slot;
         prevTraderSlot = -1;
         if (checkMiscellaneous(playerInv, stockable, false)) {
-            event.setCancelled(true);
             return;
         }
         ItemStack selling = stockable.getStocking().clone();
@@ -130,10 +134,8 @@ public class TraderTask implements Listener {
                 unsold = npc.getInventory().addItem(selling);
         }
         if (unsold.size() >= 1) {
-            event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Not enough room available to add "
                     + MessageUtils.getStackString(selling, ChatColor.RED) + " to the trader's stock.");
-            event.setCancelled(true);
             return;
         }
         double price = stockable.getPrice().getPrice();
