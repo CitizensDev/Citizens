@@ -72,6 +72,7 @@ public class NPCSpawner {
         clearMap(name);
         CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new ItemInWorldManager(ws));
         eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        eh.X = loc.getYaw();
         ws.addEntity(eh);
         ws.players.remove(eh);
         return new HumanNPC(eh, UID, name);

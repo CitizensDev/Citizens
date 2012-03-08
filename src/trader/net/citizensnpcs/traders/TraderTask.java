@@ -44,9 +44,9 @@ public class TraderTask implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory().equals(player.getInventory())) {
+        if (event.getWhoClicked().equals(player)) {
             handlePlayerClick(event);
-        } else if (event.getInventory().equals(npc.getInventory())) {
+        } else if (event.getWhoClicked().equals(npc.getPlayer())) {
             handleTraderClick(event);
         }
     }
@@ -57,16 +57,19 @@ public class TraderTask implements Listener {
         int slot = event.getSlot();
         Stockable stockable = getStockable(npcInv.getItem(slot), "sold", false);
         if (stockable == null) {
+            event.setCancelled(true);
             return;
         }
         if (prevTraderSlot != slot) {
             prevTraderSlot = slot;
             sendStockableMessage(stockable);
+            event.setCancelled(true);
             return;
         }
         prevTraderSlot = slot;
         prevPlayerSlot = -1;
         if (checkMiscellaneous(npcInv, stockable, true)) {
+            event.setCancelled(true);
             return;
         }
         ItemStack buying = stockable.getStocking().clone();
@@ -94,16 +97,19 @@ public class TraderTask implements Listener {
         Inventory playerInv = player.getInventory();
         Stockable stockable = getStockable(playerInv.getItem(slot), "bought", true);
         if (stockable == null) {
+            event.setCancelled(true);
             return;
         }
         if (prevPlayerSlot != slot) {
             prevPlayerSlot = slot;
             sendStockableMessage(stockable);
+            event.setCancelled(true);
             return;
         }
         prevPlayerSlot = slot;
         prevTraderSlot = -1;
         if (checkMiscellaneous(playerInv, stockable, false)) {
+            event.setCancelled(true);
             return;
         }
         ItemStack selling = stockable.getStocking().clone();
@@ -121,6 +127,7 @@ public class TraderTask implements Listener {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Not enough room available to add "
                     + MessageUtils.getStackString(selling, ChatColor.RED) + " to the trader's stock.");
+            event.setCancelled(true);
             return;
         }
         double price = stockable.getPrice().getPrice();
