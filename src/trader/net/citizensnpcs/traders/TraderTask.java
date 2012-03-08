@@ -10,6 +10,7 @@ import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -45,6 +46,9 @@ public class TraderTask implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (mode == TraderMode.STOCK)
+            return;
+        ItemStack slot = event.getCurrentItem();
+        if (slot == null || slot.getType() == Material.AIR)
             return;
         if (event.getInventory().getHolder().equals(player)) {
             handlePlayerClick(event);
@@ -181,7 +185,7 @@ public class TraderTask implements Listener {
     }
 
     private Stockable getStockable(ItemStack item, String keyword, boolean selling) {
-        // durability needs to be reset to 0 for tools / weapons / armor
+        // durability needs to be reset to 0 for tools / weapons / armor\
         short durability = item.getDurability();
         if (InventoryUtils.isTool(item.getTypeId()) || InventoryUtils.isArmor(item.getTypeId())) {
             durability = 0;
