@@ -44,9 +44,11 @@ public class TraderTask implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getWhoClicked().equals(player)) {
+        if (mode == TraderMode.STOCK)
+            return;
+        if (event.getInventory().getHolder().equals(player)) {
             handlePlayerClick(event);
-        } else if (event.getWhoClicked().equals(npc.getPlayer())) {
+        } else if (event.getInventory().getHolder().equals(npc.getPlayer())) {
             handleTraderClick(event);
         }
     }
