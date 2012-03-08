@@ -61,7 +61,7 @@ public class TraderTask implements Listener {
     public void handleTraderClick(InventoryClickEvent event) {
         Inventory npcInv = npc.getInventory();
         int slot = event.getSlot();
-        Stockable stockable = getStockable(npcInv.getItem(slot), "sold", false);
+        Stockable stockable = getStockable(event.getCurrentItem(), "sold", false);
         if (stockable == null) {
             event.setCancelled(true);
             return;
@@ -101,7 +101,7 @@ public class TraderTask implements Listener {
     public void handlePlayerClick(InventoryClickEvent event) {
         int slot = event.getSlot();
         Inventory playerInv = player.getInventory();
-        Stockable stockable = getStockable(playerInv.getItem(slot), "bought", true);
+        Stockable stockable = getStockable(event.getCurrentItem(), "bought", true);
         if (stockable == null) {
             event.setCancelled(true);
             return;
@@ -185,7 +185,7 @@ public class TraderTask implements Listener {
     }
 
     private Stockable getStockable(ItemStack item, String keyword, boolean selling) {
-        // durability needs to be reset to 0 for tools / weapons / armor\
+        // durability needs to be reset to 0 for tools / weapons / armor
         short durability = item.getDurability();
         if (InventoryUtils.isTool(item.getTypeId()) || InventoryUtils.isArmor(item.getTypeId())) {
             durability = 0;
