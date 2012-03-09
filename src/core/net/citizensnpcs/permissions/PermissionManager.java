@@ -25,11 +25,14 @@ public class PermissionManager {
     private static final List<String> permissions = new ArrayList<String>();
 
     public void init() {
-        RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServicesManager().getRegistration(
-                Permission.class);
-        if (permissionProvider != null) {
-            provider = permissionProvider.getProvider();
-            permissionsEnabled = true;
+        try {
+            RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServicesManager().getRegistration(
+                    Permission.class);
+            if (permissionProvider != null) {
+                provider = permissionProvider.getProvider();
+                permissionsEnabled = true;
+            }
+        } catch (NoClassDefFoundError ex) {
         }
         addPermissions();
     }
