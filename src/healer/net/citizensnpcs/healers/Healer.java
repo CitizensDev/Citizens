@@ -54,12 +54,12 @@ public class Healer extends CitizensNPC {
 			if (UtilityProperties.isHoldingTool("HealerTakeHealthItem", player)) {
 				if (playerHealth == 20) {
 					player.sendMessage(ChatColor.GREEN
-							+ "You are fully healed.");
+							+ "Twoje zycie jest juz pelne!");
 					return;
 				}
 				if (healerHealth == 0) {
 					player.sendMessage(StringUtils.wrap(npc.getName())
-							+ " does not have enough health remaining for you to take.");
+							+ " Niestety ale skonczyly mi sie apteczki.");
 					return;
 				}
 				if (Economy.useEconPlugin()) {
@@ -69,7 +69,7 @@ public class Healer extends CitizensNPC {
 								UtilityProperties.getPrice("healer.heal"));
 						if (paid >= 0) {
 							player.sendMessage(StringUtils.wrap(npc.getName())
-									+ " has healed you for "
+									+ " uzdrowil cie za "
 									+ StringUtils.wrap(Economy.format(paid))
 									+ ".");
 						}
@@ -80,7 +80,7 @@ public class Healer extends CitizensNPC {
 					}
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getName())
-							+ " has healed you.");
+							+ " uzdrowil cie.");
 				}
 				player.setHealth(player.getHealth() + 1);
 				healer.setHealth(healer.getHealth() - 1);
@@ -91,11 +91,11 @@ public class Healer extends CitizensNPC {
 						player.setHealth(playerHealth - 1);
 						healer.setHealth(healerHealth + 1);
 						player.sendMessage(ChatColor.GREEN
-								+ "You donated some health to the healer "
+								+ "Dziekuje ze oddales pol twojego serca. "
 								+ StringUtils.wrap(npc.getName()) + ".");
 					} else {
 						player.sendMessage(StringUtils.wrap(npc.getName())
-								+ " is fully healed.");
+								+ " ma juz duzo apteczek.");
 					}
 				} else {
 					player.sendMessage(ChatColor.GREEN
@@ -105,13 +105,13 @@ public class Healer extends CitizensNPC {
 			} else if (player.getItemInHand().getType() == Material.DIAMOND_BLOCK) {
 				if (healerHealth != healer.getMaxHealth()) {
 					healer.setHealth(healer.getMaxHealth());
-					player.sendMessage(ChatColor.GREEN + "You restored all of "
+					player.sendMessage(ChatColor.GREEN + "Dales blok diamentu  "
 							+ StringUtils.wrap(npc.getName())
-							+ "'s health with a magical block of diamond.");
+							+ " i otrzymal maksymalna ilosc apteczek.");
 					InventoryUtils.decreaseItemInHand(player);
 				} else {
 					player.sendMessage(StringUtils.wrap(npc.getName())
-							+ " is fully healed.");
+							+ " ma juz maksymalna ilosc apteczek.");
 				}
 			}
 		}
