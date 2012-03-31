@@ -2,7 +2,7 @@
 By fullwall and aPunch
 
 Supports:
--Minecraft Beta 1.2.3
+-Minecraft Beta 1.2.4
 -CraftBukkit 2126
 -PermissionsBukkit
 -bPermissions
@@ -13,16 +13,15 @@ Supports:
 -MultiCurrency
 
 Download:
-You can download the full Citizens package on our BukkitDev site, or the JAR files at http://ci.citizensnpcs.net/
+You can download the full Citizens package on our BukkitDev site, or the JAR files at http://ci.citizensnpcs.net/job/Citizens/
 
 Wiki:
 While the majority of the wiki has shifted to supporting 2.x functionality, 1.x documentation is still available on our wiki in the Citizens1 category: http://wiki.citizensnpcs.net/1.x/
 
 Bugs and Features:
-You can report any issues or request features on our JIRA installation, which is accessible at 
-http://issues.citizensnpcs.net/
+Feature requests will likely be incorporated into Citizens2, the complete recode of this plugin which is currently in beta testing. Bugs for Citizens1 can be reported on the github issue tracker.
 
-It is also imperative that you follow these guidelines if you don't want your bug report to be ignored:
+It is imperative that you follow these guidelines if you don't want your bug report to be ignored:
 
 -Make sure the bug you are experiencing is not already posted in the "Known caveats" section on our BukkitDev page or on our issue tracker
 -Read the last page or two of the thread to see if your question/bug has already been answered/reported
