@@ -2,8 +2,8 @@
 By fullwall and aPunch
 
 Supports:
--Minecraft Beta 1.8.1
--CraftBukkit 1240
+-Minecraft Beta 1.2.4
+-CraftBukkit 2126
 -PermissionsBukkit
 -bPermissions
 -PermissionsEx
@@ -13,26 +13,24 @@ Supports:
 -MultiCurrency
 
 Download:
-You can download the full Citizens package on our BukkitDev site or a customized JAR file at 
-http://citizensnpcs.net
+You can download the full Citizens package on our BukkitDev site, or the JAR files at 
+http://ci.citizensnpcs.net/job/Citizens/
 
 Wiki:
-You can find tons of information on Citizens permissions nodes, commands, and more on our wiki.
-URL: http://wiki.citizensnpcs.net
+While the majority of the wiki has shifted to supporting 2.x functionality, 1.x documentation 
+is still available on our wiki in the Citizens1 category: http://wiki.citizensnpcs.net/1.x/
 
-Reporting Bugs:
-With our Error Reporting system, you can have any Citizens console errors sent to 
-http://errorreport.citizensnpcs.net. However, some bugs may not produce console errors or you
-may not feel comfortable using our ER system. If that is the case, you can report the issue on the 
-Issue Tracker here: http://github.com/CitizensDev/Citizens/issues.
+Bugs and Features:
+Feature requests will likely be incorporated into Citizens2, the complete recode of this 
+plugin which is currently in beta testing. Bugs for Citizens1 can be reported on the github issue tracker.
 
-It is also imperative that you follow these guidelines if you don't want your bug report to be ignored:
+It is imperative that you follow these guidelines if you don't want your bug report to be ignored:
 
--Make sure the bug you are experiencing is not already posted in the "Known caveats" section on our
- BukkitDev page or on the GitHub Issue Tracker
+-Make sure the bug you are experiencing is not already posted in the "Known caveats" section on 
+ our BukkitDev page or on our issue tracker
 -Read the last page or two of the thread to see if your question/bug has already been answered/reported
--Provide as much information as possible (Minecraft version, CraftBukkit version, Citizens version, and 
- the version of any other plugin (if applicable))
+-Provide as much information as possible (Minecraft version, CraftBukkit version, Citizens version, 
+ and the version of any other plugin (if applicable))
  
 Licensing:
-Read the LICENSE file for the Citizens license.
+Read the LICENSE file for full details about the Citizens license.
