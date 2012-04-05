@@ -57,14 +57,20 @@ public class BasicCommands extends CommandHandler {
     @CommandRequirements()
     public static void citizens(CommandContext args, CommandSender sender, HumanNPC npc) {
         sender.sendMessage(ChatColor.GREEN + StringUtils.listify(StringUtils.wrap("Citizens")));
-        sender.sendMessage(ChatColor.GREEN + "  Version: " + StringUtils.wrap(Citizens.localVersion()));
+        sender.sendMessage(ChatColor.GREEN + "  Version: "
+                + StringUtils.wrap(Citizens.plugin.getDescription().getVersion()));
         sender.sendMessage(ChatColor.GREEN + "  Authors: ");
         sender.sendMessage(ChatColor.YELLOW + "      - fullwall");
         sender.sendMessage(ChatColor.YELLOW + "      - aPunch");
     }
 
-    @Command(aliases = "citizens", usage = "help (page)", desc = "view the Citizens help page", modifiers = "help",
-            min = 1, max = 2)
+    @Command(
+             aliases = "citizens",
+             usage = "help (page)",
+             desc = "view the Citizens help page",
+             modifiers = "help",
+             min = 1,
+             max = 2)
     @CommandPermissions("basic.use.help")
     @CommandRequirements()
     @ServerCommand()
@@ -98,8 +104,13 @@ public class BasicCommands extends CommandHandler {
         sender.sendMessage(ChatColor.GREEN + "Done. Removed " + StringUtils.wrap(count) + " orphaned NPCs.");
     }
 
-    @Command(aliases = "npc", usage = "color [color-code]", desc = "set the name color of an NPC", modifiers = "color",
-            min = 2, max = 2)
+    @Command(
+             aliases = "npc",
+             usage = "color [color-code]",
+             desc = "set the name color of an NPC",
+             modifiers = "color",
+             min = 2,
+             max = 2)
     @CommandPermissions("basic.modify.color")
     public static void color(CommandContext args, Player player, HumanNPC npc) {
         if (!args.getString(1).substring(0, 1).equals("&")) {
@@ -178,8 +189,13 @@ public class BasicCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "citizens", usage = "debug", desc = "toggle debug mode for Citizens", modifiers = "debug",
-            min = 1, max = 1)
+    @Command(
+             aliases = "citizens",
+             usage = "debug",
+             desc = "toggle debug mode for Citizens",
+             modifiers = "debug",
+             min = 1,
+             max = 1)
     @ServerCommand()
     @CommandPermissions("admin.debug")
     public static void debug(CommandContext args, CommandSender sender, HumanNPC npc) {
@@ -231,8 +247,13 @@ public class BasicCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "npc", usage = "list (name) (page)", desc = "view a list of NPCs for a player",
-            modifiers = "list", min = 1, max = 3)
+    @Command(
+             aliases = "npc",
+             usage = "list (name) (page)",
+             desc = "view a list of NPCs for a player",
+             modifiers = "list",
+             min = 1,
+             max = 3)
     @CommandPermissions("basic.use.list")
     public static void list(CommandContext args, Player player, HumanNPC npc) {
         switch (args.argsLength()) {
@@ -260,8 +281,13 @@ public class BasicCommands extends CommandHandler {
         }
     }
 
-    @Command(aliases = "npc", usage = "lookat", desc = "set an NPC's look-when-close setting", modifiers = "lookat",
-            min = 1, max = 1)
+    @Command(
+             aliases = "npc",
+             usage = "lookat",
+             desc = "set an NPC's look-when-close setting",
+             modifiers = "lookat",
+             min = 1,
+             max = 1)
     @CommandPermissions("basic.modify.lookat")
     public static void lookAt(CommandContext args, Player player, HumanNPC npc) {
         npc.getNPCData().setLookClose(!npc.getNPCData().isLookClose());
@@ -272,8 +298,13 @@ public class BasicCommands extends CommandHandler {
         }
     }
 
-    @Command(aliases = "npc", usage = "money (give|take) (amount)", desc = "control an npc's balance",
-            modifiers = "money", min = 1, max = 3)
+    @Command(
+             aliases = "npc",
+             usage = "money (give|take) (amount)",
+             desc = "control an npc's balance",
+             modifiers = "money",
+             min = 1,
+             max = 3)
     public static void money(CommandContext args, Player player, HumanNPC npc) {
         switch (args.argsLength()) {
         case 1:
@@ -347,8 +378,13 @@ public class BasicCommands extends CommandHandler {
         npc.getNPCData().setLocation(player.getLocation());
     }
 
-    @Command(aliases = "npc", usage = "moveto [x y z] (world pitch yaw)", desc = "move an NPC to a location",
-            modifiers = "moveto", min = 4, max = 7)
+    @Command(
+             aliases = "npc",
+             usage = "moveto [x y z] (world pitch yaw)",
+             desc = "move an NPC to a location",
+             modifiers = "moveto",
+             min = 4,
+             max = 7)
     @CommandPermissions("basic.modify.moveto")
     public static void moveTo(CommandContext args, Player player, HumanNPC npc) {
         double x = 0, y = 0, z = 0;
@@ -395,8 +431,13 @@ public class BasicCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "npc", usage = "help (page)", desc = "view the Basic NPC help page", modifiers = "help",
-            min = 1, max = 2)
+    @Command(
+             aliases = "npc",
+             usage = "help (page)",
+             desc = "view the Basic NPC help page",
+             modifiers = "help",
+             min = 1,
+             max = 2)
     @CommandPermissions("basic.use.help")
     @ServerCommand()
     public static void npcHelp(CommandContext args, CommandSender sender, HumanNPC npc) {
@@ -490,8 +531,13 @@ public class BasicCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "citizens", usage = "save", desc = "force a save of Citizens files", modifiers = "save",
-            min = 1, max = 1)
+    @Command(
+             aliases = "citizens",
+             usage = "save",
+             desc = "force a save of Citizens files",
+             modifiers = "save",
+             min = 1,
+             max = 1)
     @ServerCommand()
     @CommandPermissions("admin.save")
     public static void save(CommandContext args, CommandSender sender, HumanNPC npc) {
@@ -508,8 +554,13 @@ public class BasicCommands extends CommandHandler {
         sender.sendMessage(ChatColor.GREEN + "[" + StringUtils.wrap("Citizens") + "] Saved.");
     }
 
-    @Command(aliases = "npc", usage = "select [id]", desc = "select an NPC by its ID", modifiers = "select", min = 2,
-            max = 2)
+    @Command(
+             aliases = "npc",
+             usage = "select [id]",
+             desc = "select an NPC by its ID",
+             modifiers = "select",
+             min = 2,
+             max = 2)
     @CommandPermissions("basic.use.select")
     @CommandRequirements()
     public static void select(CommandContext args, Player player, HumanNPC npc) {
@@ -534,8 +585,13 @@ public class BasicCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "npc", usage = "setowner [name]", desc = "set the owner of an NPC", modifiers = "setowner",
-            min = 2, max = 2)
+    @Command(
+             aliases = "npc",
+             usage = "setowner [name]",
+             desc = "set the owner of an NPC",
+             modifiers = "setowner",
+             min = 2,
+             max = 2)
     public static void setOwner(CommandContext args, Player player, HumanNPC npc) {
         if ((!NPCManager.isOwner(player, npc.getUID()) && PermissionManager.hasPermission(player,
                 "citizens.admin.override.setowner"))
@@ -549,8 +605,13 @@ public class BasicCommands extends CommandHandler {
         Messaging.sendError(player, MessageUtils.noPermissionsMessage);
     }
 
-    @Command(aliases = "npc", usage = "talkclose", desc = "toggle an NPC's talk-when-close setting",
-            modifiers = "talkclose", min = 1, max = 1)
+    @Command(
+             aliases = "npc",
+             usage = "talkclose",
+             desc = "toggle an NPC's talk-when-close setting",
+             modifiers = "talkclose",
+             min = 1,
+             max = 1)
     @CommandPermissions("basic.modify.talkclose")
     public static void talkClose(CommandContext args, Player player, HumanNPC npc) {
         npc.getNPCData().setTalkClose(!npc.getNPCData().isTalkClose());
@@ -561,8 +622,13 @@ public class BasicCommands extends CommandHandler {
         }
     }
 
-    @Command(aliases = "npc", usage = "tp", desc = "teleport to an NPC", modifiers = { "tp", "teleport" }, min = 1,
-            max = 1)
+    @Command(
+             aliases = "npc",
+             usage = "tp",
+             desc = "teleport to an NPC",
+             modifiers = { "tp", "teleport" },
+             min = 1,
+             max = 1)
     @CommandPermissions("basic.use.teleport")
     public static void teleport(CommandContext args, Player player, HumanNPC npc) {
         player.teleport(npc.getNPCData().getLocation());

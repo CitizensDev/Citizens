@@ -46,7 +46,6 @@ import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.Metrics;
 import net.citizensnpcs.utils.Metrics.Plotter;
 import net.citizensnpcs.utils.StringUtils;
-import net.citizensnpcs.utils.Web;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -58,7 +57,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.base.Joiner;
 
-/**
+/*
  * Citizens - NPCs for Bukkit
  */
 public class Citizens extends JavaPlugin {
@@ -103,9 +102,6 @@ public class Citizens extends JavaPlugin {
             }
         }.start();
 
-        // initialize error reporting
-        Web.initErrorReporting();
-
         // register events per type
         for (String loaded : loadedTypes) {
             NPCTypeManager.getType(loaded).registerEvents();
@@ -144,7 +140,7 @@ public class Citizens extends JavaPlugin {
             }, Settings.getInt("SavingDelay"), Settings.getInt("SavingDelay"));
         }
 
-        Messaging.log("version [" + localVersion() + "] loaded.");
+        Messaging.log("version [" + getDescription().getVersion() + "] loaded.");
         // reinitialize existing NPCs
         // Scheduled tasks run once all plugins are loaded (multiworld support)
         if (getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
@@ -153,7 +149,6 @@ public class Citizens extends JavaPlugin {
                 setupNPCs();
                 // call enable event, can be used for initialization of
                 // type-specific things
-                // TODO remove when types are made into plugins
                 Bukkit.getServer().getPluginManager().callEvent(new CitizensEnableEvent());
             }
         }) == -1) {
@@ -163,23 +158,17 @@ public class Citizens extends JavaPlugin {
         }
     }
 
-    public static String localVersion() {
-        return Version.VERSION;
-    }
-
     @Override
     public void onDisable() {
         // save the local copy of our files to disk
-        Web.disableErrorReporting();
         PropertyManager.saveState();
         NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
         CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
 
         // call disable event
-        // TODO remove when types are made into plugins
         Bukkit.getServer().getPluginManager().callEvent(new CitizensDisableEvent());
 
-        Messaging.log("version [" + localVersion() + "] disabled.");
+        Messaging.log("version [" + getDescription().getVersion() + "] disabled.");
     }
 
     @Override

@@ -137,3 +137,9 @@ By fullwall and aPunch
 -added ability to execute some quest commands in the console
 *FIXED
 -various quest fixes/changes
+
+*--- v1.2 ---
+*KEY FEATURES
+-updated to CraftBukkit Recommended Build 1.2.5-R1.0
+*REMOVED
+-Web error reporting.

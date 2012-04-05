@@ -1,6 +1,6 @@
 name: Citizens
 main: net.citizensnpcs.Citizens
-version: 1.1.6
+version: 1.2
 authors: [fullwall, aPunch]
 softdepend: [Vault]
 commands:
