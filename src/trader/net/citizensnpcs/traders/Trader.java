@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.citizensnpcs.Citizens;
+import net.citizensnpcs.Settings;
 import net.citizensnpcs.npctypes.CitizensNPC;
 import net.citizensnpcs.npctypes.CitizensNPCType;
 import net.citizensnpcs.permissions.PermissionManager;
@@ -22,7 +23,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
 public class Trader extends CitizensNPC {
-
+	
     public static void loadGlobal() {
         Storage storage = UtilityProperties.getConfig();
         for (Object key : storage.getKeys("traders.global-prices")) {
@@ -39,6 +40,9 @@ public class Trader extends CitizensNPC {
         }
     }
 
+    private double lastAccess;
+    private double accessDelay;
+    
     private boolean unlimited = false;
     private boolean locked = false;
     private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
@@ -111,6 +115,9 @@ public class Trader extends CitizensNPC {
 
     @Override
     public void load(Storage profiles, int UID) {
+    	lastAccess = 0;
+    	accessDelay = Settings.getDouble("TraderAccessDelay");
+    	//accessDelay = profiles.getLong(UID + ".trader.access-delay", 500);
         unlimited = profiles.getBoolean(UID + ".trader.unlimited");
         locked = profiles.getBoolean(UID + ".trader.locked");
         useGlobalBuy = profiles.getBoolean(UID + ".trader.use-global.buy", true);
@@ -119,6 +126,14 @@ public class Trader extends CitizensNPC {
 
     @Override
     public void onRightClick(Player player, HumanNPC npc) {
+    	// Defaults to 500ms
+    	// There should be no reason anyone needs to spam right click.
+    	// This delay is configurable with .trader.access-delay
+    	if ((double) System.currentTimeMillis() - lastAccess < accessDelay) {
+    		return;
+    	}
+    	
+    	lastAccess = System.currentTimeMillis();
         Trader trader = npc.getType("trader");
         TraderMode mode;
         if (NPCManager.isOwner(player, npc.getUID())) {
@@ -157,6 +172,7 @@ public class Trader extends CitizensNPC {
         profiles.setBoolean(UID + ".trader.use-global.sell", useGlobalSell);
         profiles.setBoolean(UID + ".trader.use-global.buy", useGlobalBuy);
         profiles.setString(UID + ".trader.stock", Joiner.on(";").join(stocking.values()));
+        profiles.setDouble(UID + ".trader.access-delay", accessDelay);
     }
 
     public void setLocked(boolean locked) {

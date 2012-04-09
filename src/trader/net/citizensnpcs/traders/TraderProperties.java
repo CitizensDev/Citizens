@@ -1,5 +1,6 @@
 package net.citizensnpcs.traders;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,6 +9,8 @@ import net.citizensnpcs.properties.Node;
 import net.citizensnpcs.properties.Properties;
 import net.citizensnpcs.properties.PropertyManager;
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.Settings;
+import net.citizensnpcs.Settings.SettingsType;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -107,6 +110,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 
 	@Override
 	public List<Node> getNodes() {
-		return null;
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node("TraderAccessDelay", SettingsType.GENERAL, "trader.access-delay", 500));
+		return nodes;
 	}
 }
