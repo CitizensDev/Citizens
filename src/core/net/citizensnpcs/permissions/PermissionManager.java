@@ -22,6 +22,7 @@ import com.google.common.collect.Sets;
 public class PermissionManager {
     private static Permission provider = null;
     private static boolean permissionsEnabled;
+    private static boolean groupPermissionsEnabled;
     private static final List<String> permissions = new ArrayList<String>();
 
     public void init() {
@@ -31,6 +32,7 @@ public class PermissionManager {
             if (permissionProvider != null) {
                 provider = permissionProvider.getProvider();
                 permissionsEnabled = true;
+                groupPermissionsEnabled = true;
             }
         } catch (NoClassDefFoundError ex) {
         }
@@ -99,11 +101,21 @@ public class PermissionManager {
     }
 
     public static Set<CitizensGroup> getGroups(Player player) {
-        if (!permissionsEnabled)
+        if (!groupPermissionsEnabled)
             return null;
         Set<CitizensGroup> groups = Sets.newHashSet();
-        for (String group : provider.getPlayerGroups(player)) {
-            groups.add(new CitizensGroup(group));
+        try {
+        	for (String group : provider.getPlayerGroups(player)) {
+        		groups.add(new CitizensGroup(group));
+        	}
+        }
+        
+        // This will be thrown if permissions fails to load the group permissions.
+        // Issue # 963
+        catch (UnsupportedOperationException permissionsException){
+        	System.out.println("Disabling group permissions.\nReason: " + permissionsException.getMessage());
+        	groupPermissionsEnabled = false;
+        	return null;
         }
         return groups;
     }

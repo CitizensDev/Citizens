@@ -1,6 +1,7 @@
 package net.citizensnpcs.commands;
 
 import java.util.ArrayDeque;
+import java.lang.Math;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.Economy;
@@ -322,7 +323,7 @@ public class BasicCommands extends CommandHandler {
             }
             double amount;
             try {
-                amount = Double.parseDouble(args.getString(2));
+                amount = Math.abs(Double.parseDouble(args.getString(2)));
             } catch (NumberFormatException e) {
                 Messaging.sendError(player, "Invalid balance change amount entered.");
                 return;
