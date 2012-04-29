@@ -6,6 +6,7 @@ import java.util.List;
 import net.citizensnpcs.questers.quests.progress.QuestProgress;
 import net.citizensnpcs.questers.rewards.Requirement;
 import net.citizensnpcs.questers.rewards.Reward;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,7 @@ public class Quest {
     private final long delay;
     private final List<Reward> initialRewards;
     private final List<Reward> abortRewards;
+    private final String progressText;
 
     private Quest(QuestBuilder builder) {
         this.initialRewards = builder.initalRewards;
@@ -32,6 +34,7 @@ public class Quest {
         this.objectives = builder.objectives;
         this.repeatLimit = builder.repeatLimit;
         this.abortRewards = builder.abortRewards;
+        this.progressText = builder.progressText;
     }
 
     public String getAcceptanceText() {
@@ -72,6 +75,13 @@ public class Quest {
         this.granter.onCompletion(player, progress);
     }
 
+    public boolean sendProgressText(Player player) {
+        if (!this.progressText.isEmpty())
+            return false;
+        Messaging.send(player, progressText);
+        return true;
+    }
+
     public List<Reward> getInitialRewards() {
         return initialRewards;
     }
@@ -81,6 +91,7 @@ public class Quest {
     }
 
     public static class QuestBuilder {
+        public String progressText = "";
         private String acceptanceText = "";
         private String description = "";
         private RewardGranter granter;
@@ -103,6 +114,11 @@ public class Quest {
 
         public Quest create() {
             return new Quest(this);
+        }
+
+        public QuestBuilder progressText(String text) {
+            this.progressText = text;
+            return this;
         }
 
         public QuestBuilder delay(long delay) {

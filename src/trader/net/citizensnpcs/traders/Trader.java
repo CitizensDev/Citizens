@@ -15,6 +15,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,6 +45,7 @@ public class Trader extends CitizensNPC {
     private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
 
     private boolean useGlobalBuy, useGlobalSell;
+    private boolean free = true;
 
     private static Map<Check, Stockable> globalStock = Maps.newHashMap();
 
@@ -119,14 +121,18 @@ public class Trader extends CitizensNPC {
 
     @Override
     public void onRightClick(Player player, HumanNPC npc) {
-        Trader trader = npc.getType("trader");
+        if (!free) {
+            player.sendMessage(ChatColor.GRAY + "Trader is in use.");
+            return;
+        }
+        free = false;
         TraderMode mode;
         if (NPCManager.isOwner(player, npc.getUID())) {
             if (!PermissionManager.hasPermission(player, "citizens.trader.modify.stock")) {
                 return;
             }
             mode = TraderMode.STOCK;
-        } else if (trader.isUnlimited()) {
+        } else if (isUnlimited()) {
             if (!PermissionManager.hasPermission(player, "citizens.trader.use.trade")) {
                 return;
             }
@@ -176,5 +182,9 @@ public class Trader extends CitizensNPC {
             this.useGlobalSell = useGlobal;
         else
             this.useGlobalBuy = useGlobal;
+    }
+
+    public void setFree() {
+        free = true;
     }
 }

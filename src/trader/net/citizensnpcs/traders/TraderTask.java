@@ -42,6 +42,7 @@ public class TraderTask implements Listener {
             return;
         HandlerList.unregisterAll(this);
         sendLeaveMessage();
+        ((Trader) npc.getType("trader")).setFree();
     }
 
     @EventHandler

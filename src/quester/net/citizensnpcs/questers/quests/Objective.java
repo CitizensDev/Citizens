@@ -38,6 +38,7 @@ public class Objective {
     private final String questType;
     private final Map<String, RawYAMLObject> parameters;
     private final String string;
+    private final String statusText;
 
     private Objective(Builder builder) {
         this.questType = builder.type;
@@ -51,6 +52,7 @@ public class Objective {
         this.optional = builder.optional;
         this.completeHere = builder.completeHere;
         this.parameters = builder.params;
+        this.statusText = builder.statusText;
     }
 
     public RawYAMLObject getParameter(String name) {
@@ -116,6 +118,7 @@ public class Objective {
         private String string = "";
         private final String type;
         private final Map<String, RawYAMLObject> params = Maps.newHashMap();
+        private String statusText = "";
 
         public Builder(String type) {
             this.type = type;
@@ -174,5 +177,14 @@ public class Objective {
             this.string = string;
             return this;
         }
+
+        public Builder statusText(String string) {
+            this.statusText = string;
+            return this;
+        }
+    }
+
+    public String getStatusText() {
+        return this.statusText;
     }
 }

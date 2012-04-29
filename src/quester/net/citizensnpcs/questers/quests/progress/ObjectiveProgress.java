@@ -1,5 +1,6 @@
 package net.citizensnpcs.questers.quests.progress;
 
+import net.citizensnpcs.questers.QuestCancelException;
 import net.citizensnpcs.questers.api.QuestAPI;
 import net.citizensnpcs.questers.quests.Objective;
 
@@ -14,7 +15,6 @@ public class ObjectiveProgress {
     private final Player player;
     private final QuestUpdater questUpdater;
     private final String questName;
-
     private int amountCompleted = 0;
     private ItemStack lastItem;
     private Location lastLocation;
@@ -86,4 +86,9 @@ public class ObjectiveProgress {
         return questUpdater;
     }
 
+    public String getStatusText(boolean override) throws QuestCancelException {
+        if (override && objective.getStatusText().isEmpty())
+            return "";
+        return objective.getStatusText().isEmpty() ? questUpdater.getStatus(this) : objective.getStatusText();
+    }
 }

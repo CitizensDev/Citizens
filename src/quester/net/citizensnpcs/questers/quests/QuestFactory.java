@@ -33,6 +33,7 @@ public class QuestFactory {
             quest.description(quests.getString(path + ".texts.description"));
             quest.granter(new RewardGranter(quests.getString(path + ".texts.completion"), loadRewards(quests, path
                     + ".rewards")));
+            quest.progressText(quests.getString(path + ".texts.status"));
             quest.acceptanceText(quests.getString(path + ".texts.acceptance"));
             quest.repeatLimit(quests.getInt(path + ".repeats"));
             quest.requirements(Lists.transform(loadRewards(quests, path + ".requirements"), transformer));
@@ -66,6 +67,8 @@ public class QuestFactory {
                                 obj.param(key, new RawYAMLObject(quests.getRaw(path + "." + key)));
                             }
                         }
+                        if (quests.pathExists(path + ".status"))
+                            obj.statusText(quests.getString(path + ".status"));
                         if (quests.pathExists(path + ".amount"))
                             obj.amount(quests.getInt(path + ".amount"));
                         if (quests.pathExists(path + ".npcdestination"))

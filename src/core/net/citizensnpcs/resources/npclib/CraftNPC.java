@@ -9,7 +9,6 @@ import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.World;
 
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 
 public class CraftNPC extends PathNPC {
@@ -60,13 +59,5 @@ public class CraftNPC extends PathNPC {
 
     public boolean hasTarget() {
         return this.targetEntity != null;
-    }
-
-    @Override
-    public CraftPlayer getBukkitEntity() {
-        if (this.bukkitEntity == null) {
-            NPCSpawner.delayedRemove(this.name);
-        }
-        return super.getBukkitEntity();
     }
 }

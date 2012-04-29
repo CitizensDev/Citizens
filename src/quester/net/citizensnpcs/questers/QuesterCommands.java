@@ -60,7 +60,11 @@ public class QuesterCommands extends CommandHandler {
         }
     }
 
-    @Command(aliases = "quester", usage = "assign [quest]", desc = "assign a quest to an NPC", modifiers = "assign",
+    @Command(
+            aliases = "quester",
+            usage = "assign [quest]",
+            desc = "assign a quest to an NPC",
+            modifiers = "assign",
             min = 2)
     @CommandPermissions("quester.modify.quests.assign")
     public static void assignQuest(CommandContext args, Player player, HumanNPC npc) {
@@ -80,8 +84,13 @@ public class QuesterCommands extends CommandHandler {
                 + StringUtils.wrap(quester.getQuests().size()) + " quests.");
     }
 
-    @Command(aliases = "quest", usage = "add [player] [npcID] [quest]", desc = "gives a quest to a player",
-            modifiers = "add", min = 4, flags = "f")
+    @Command(
+            aliases = "quest",
+            usage = "add [player] [npcID] [quest]",
+            desc = "gives a quest to a player",
+            modifiers = "add",
+            min = 4,
+            flags = "f")
     @CommandRequirements()
     @ServerCommand()
     @CommandPermissions("quester.admin.quests.giveplayer")
@@ -166,7 +175,12 @@ public class QuesterCommands extends CommandHandler {
 
     @CommandRequirements()
     @ServerCommand()
-    @Command(aliases = "quest", usage = "reload", desc = "reloads quests from files", modifiers = "reload", min = 1,
+    @Command(
+            aliases = "quest",
+            usage = "reload",
+            desc = "reloads quests from files",
+            modifiers = "reload",
+            min = 1,
             max = 1)
     @CommandPermissions("quester.admin.quests.reload")
     public static void reloadQuests(CommandContext args, CommandSender sender, HumanNPC npc) {
@@ -177,7 +191,11 @@ public class QuesterCommands extends CommandHandler {
                 + " quests.");
     }
 
-    @Command(aliases = "quester", usage = "remove [quest]", desc = "remove a quest from an NPC", modifiers = "remove",
+    @Command(
+            aliases = "quester",
+            usage = "remove [quest]",
+            desc = "remove a quest from an NPC",
+            modifiers = "remove",
             min = 2)
     @CommandPermissions("quester.modify.quests.remove")
     public static void removeQuest(CommandContext args, Player player, HumanNPC npc) {
@@ -195,7 +213,12 @@ public class QuesterCommands extends CommandHandler {
 
     @CommandRequirements()
     @ServerCommand()
-    @Command(aliases = "quest", usage = "help", desc = "view the quests help page", modifiers = "help", min = 1,
+    @Command(
+            aliases = "quest",
+            usage = "help",
+            desc = "view the quests help page",
+            modifiers = "help",
+            min = 1,
             max = 1)
     @CommandPermissions("quester.use.quests.help")
     public static void questHelp(CommandContext args, CommandSender sender, HumanNPC npc) {
@@ -204,7 +227,12 @@ public class QuesterCommands extends CommandHandler {
 
     @CommandRequirements()
     @ServerCommand()
-    @Command(aliases = "quester", usage = "help", desc = "view the quester help page", modifiers = "help", min = 1,
+    @Command(
+            aliases = "quester",
+            usage = "help",
+            desc = "view the quester help page",
+            modifiers = "help",
+            min = 1,
             max = 1)
     @CommandPermissions("quester.use.help")
     public static void questerHelp(CommandContext args, CommandSender sender, HumanNPC npc) {
@@ -241,8 +269,13 @@ public class QuesterCommands extends CommandHandler {
         player.sendMessage(ChatColor.GREEN + "Saved current progress.");
     }
 
-    @Command(aliases = "quester", usage = "quests (page)", desc = "view the assigned quests of a quester",
-            modifiers = "quests", min = 1, max = 2)
+    @Command(
+            aliases = "quester",
+            usage = "quests (page)",
+            desc = "view the assigned quests of a quester",
+            modifiers = "quests",
+            min = 1,
+            max = 2)
     @CommandPermissions("quester.use.quests.view")
     public static void viewAssignedQuests(CommandContext args, Player player, HumanNPC npc) {
         int page = args.argsLength() == 2 ? args.getInteger(1) : 1;
@@ -266,8 +299,13 @@ public class QuesterCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "quest", usage = "completed (page)", desc = "view completed quests", modifiers = "completed",
-            min = 1, max = 2)
+    @Command(
+            aliases = "quest",
+            usage = "completed (page)",
+            desc = "view completed quests",
+            modifiers = "completed",
+            min = 1,
+            max = 2)
     @CommandPermissions("quester.use.quests.status")
     public static void viewCompleted(CommandContext args, Player player, HumanNPC npc) {
         PlayerProfile profile = PlayerProfile.getProfile(player.getName());
@@ -296,7 +334,12 @@ public class QuesterCommands extends CommandHandler {
     }
 
     @CommandRequirements()
-    @Command(aliases = "quest", usage = "status", desc = "view current quest status", modifiers = "status", min = 1,
+    @Command(
+            aliases = "quest",
+            usage = "status",
+            desc = "view current quest status",
+            modifiers = "status",
+            min = 1,
             max = 1)
     @CommandPermissions("quester.use.quests.status")
     public static void viewCurrentQuestStatus(CommandContext args, Player player, HumanNPC npc) {
@@ -314,12 +357,14 @@ public class QuesterCommands extends CommandHandler {
                 player.sendMessage(ChatColor.AQUA + "Quest is completed.");
             } else {
                 player.sendMessage(ChatColor.GREEN + "-" + ChatColor.AQUA + " Progress report " + ChatColor.GREEN + "-");
+                boolean override = QuestManager.getQuest(profile.getQuest()).sendProgressText(player);
                 for (ObjectiveProgress progress : profile.getProgress().getProgress()) {
                     if (progress == null)
                         continue;
                     try {
-                        Messaging.send(player, StringUtils.wrap("  - ", ChatColor.WHITE)
-                                + progress.getQuestUpdater().getStatus(progress));
+                        String progressText = progress.getStatusText(override);
+                        if (!progressText.isEmpty())
+                            Messaging.send(player, StringUtils.wrap("  - ", ChatColor.WHITE) + progressText);
                     } catch (QuestCancelException ex) {
                         player.sendMessage(ChatColor.GRAY + "Cancelling quest. Reason: " + ex.getReason());
                         profile.setProgress(null);
