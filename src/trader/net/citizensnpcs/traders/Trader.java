@@ -24,34 +24,13 @@ import com.google.common.collect.Maps;
 
 public class Trader extends CitizensNPC {
 
-    public static void loadGlobal() {
-        Storage storage = UtilityProperties.getConfig();
-        for (Object key : storage.getKeys("traders.global-prices")) {
-            String path = "traders.global-prices." + key;
-            int itemID = storage.getInt(path + ".id", 1);
-            int amount = storage.getInt(path + ".amount", 1);
-            short data = (short) storage.getInt(path + ".data");
-            double price = storage.getDouble(path + ".price");
-            boolean selling = !storage.getBoolean(path + ".selling", false);
-            if (itemID > 0 && amount > 0) {
-                Stockable stock = new Stockable(new ItemStack(itemID, amount, data), new ItemPrice(price), selling);
-                globalStock.put(stock.createCheck(), stock);
-            }
-        }
-    }
+    private TraderTask currentTask = null;
 
-    private boolean unlimited = false;
+    private boolean free = true;
     private boolean locked = false;
     private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
-
+    private boolean unlimited = false;
     private boolean useGlobalBuy, useGlobalSell;
-    private boolean free = true;
-
-    private static Map<Check, Stockable> globalStock = Maps.newHashMap();
-
-    public static void clearGlobal() {
-        globalStock.clear();
-    }
 
     public void addStockable(Stockable s) {
         stocking.put(s.createCheck(), s);
@@ -121,6 +100,8 @@ public class Trader extends CitizensNPC {
 
     @Override
     public void onRightClick(Player player, HumanNPC npc) {
+        if (currentTask != null)
+            currentTask.ensureValid();
         if (!free) {
             player.sendMessage(ChatColor.GRAY + "Trader is in use.");
             return;
@@ -143,7 +124,8 @@ public class Trader extends CitizensNPC {
             }
             mode = TraderMode.NORMAL;
         }
-        Bukkit.getPluginManager().registerEvents(new TraderTask(npc, player, mode), Citizens.plugin);
+        currentTask = new TraderTask(npc, player, mode);
+        Bukkit.getPluginManager().registerEvents(currentTask, Citizens.plugin);
         player.openInventory(npc.getInventory());
     }
 
@@ -165,6 +147,11 @@ public class Trader extends CitizensNPC {
         profiles.setString(UID + ".trader.stock", Joiner.on(";").join(stocking.values()));
     }
 
+    public void setFree() {
+        free = true;
+        currentTask = null;
+    }
+
     public void setLocked(boolean locked) {
         this.locked = locked;
     }
@@ -184,7 +171,25 @@ public class Trader extends CitizensNPC {
             this.useGlobalBuy = useGlobal;
     }
 
-    public void setFree() {
-        free = true;
+    private static Map<Check, Stockable> globalStock = Maps.newHashMap();
+
+    public static void clearGlobal() {
+        globalStock.clear();
+    }
+
+    public static void loadGlobal() {
+        Storage storage = UtilityProperties.getConfig();
+        for (Object key : storage.getKeys("traders.global-prices")) {
+            String path = "traders.global-prices." + key;
+            int itemID = storage.getInt(path + ".id", 1);
+            int amount = storage.getInt(path + ".amount", 1);
+            short data = (short) storage.getInt(path + ".data");
+            double price = storage.getDouble(path + ".price");
+            boolean selling = !storage.getBoolean(path + ".selling", false);
+            if (itemID > 0 && amount > 0) {
+                Stockable stock = new Stockable(new ItemStack(itemID, amount, data), new ItemPrice(price), selling);
+                globalStock.put(stock.createCheck(), stock);
+            }
+        }
     }
 }
