@@ -36,6 +36,6 @@ public class HuntQuest implements QuestUpdater {
 
     @Override
     public String getStatus(ObjectiveProgress progress) {
-        return QuestUtils.defaultAmountProgress(progress, "monsters killed");
+        return QuestUtils.defaultAmountProgress(progress, progress.getObjective().getString().toLowerCase()+" killed");
     }
 }
