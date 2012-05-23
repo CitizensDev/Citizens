@@ -1,6 +1,7 @@
 package net.citizensnpcs;
 
 import net.citizensnpcs.resources.npclib.HumanNPC;
+import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,6 +19,12 @@ public class Economy {
 
     public static void init() {
         if (useEconPlugin) {
+            try {
+                Class.forName("net.milkbowl.vault.economy.Economy");
+            } catch (ClassNotFoundException e) {
+                Messaging.log("Vault is required for economy but wasn't found. Server economy is unavailable.");
+                return;
+            }
             RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider = Bukkit.getServicesManager()
                     .getRegistration(net.milkbowl.vault.economy.Economy.class);
             if (economyProvider != null) {
