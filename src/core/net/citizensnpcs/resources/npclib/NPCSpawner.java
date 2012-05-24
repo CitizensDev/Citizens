@@ -1,5 +1,6 @@
 package net.citizensnpcs.resources.npclib;
 
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.event.NPCRemoveEvent;
 import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
@@ -26,28 +27,39 @@ public class NPCSpawner {
         return ((CraftServer) server).getServer();
     }
 
-    public static HumanNPC spawnNPC(int UID, String name, Location loc) {
+    public static HumanNPC spawnNPC(int UID, String name, final Location loc) {
         if (loc == null || loc.getWorld() == null) {
             Messaging.log("Null location or world while spawning", name, "UID", UID
                     + ". Is the location unloaded or missing?");
             return null;
         }
         WorldServer ws = getWorldServer(loc.getWorld());
-        CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new ItemInWorldManager(ws));
+        final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new ItemInWorldManager(ws));
         eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        eh.X = loc.getYaw();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+            @Override
+            public void run() {
+                eh.X = loc.getYaw();
+            }
+        });
         ws.addEntity(eh);
         ws.players.remove(eh);
         return new HumanNPC(eh, UID, name);
     }
 
-    public static HumanNPC spawnNPC(Location loc, CreatureNPCType type) {
+    public static HumanNPC spawnNPC(final Location loc, CreatureNPCType type) {
         try {
             String name = type.chooseRandomName();
             WorldServer ws = getWorldServer(loc.getWorld());
-            CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()), ws, name,
+            final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()), ws, name,
                     new ItemInWorldManager(ws));
             eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    eh.X = loc.getYaw();
+                }
+            });
             ws.addEntity(eh);
             ws.players.remove(eh);
             return new HumanNPC(eh, -1 /*Fake UID*/, name);
@@ -57,10 +69,16 @@ public class NPCSpawner {
         return null;
     }
 
-    public static HumanNPC spawnNPC(HumanNPC npc, Location loc) {
+    public static HumanNPC spawnNPC(final HumanNPC npc, final Location loc) {
         WorldServer ws = getWorldServer(loc.getWorld());
         npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         ws.addEntity(npc.getHandle());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+            @Override
+            public void run() {
+                npc.getHandle().X = loc.getYaw();
+            }
+        });
         ws.players.remove(npc.getHandle());
         return npc;
     }
@@ -76,9 +94,5 @@ public class NPCSpawner {
 
     public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
         despawnNPC(npc.npc, reason);
-    }
-
-    public static void removeNPCFromPlayerList(HumanNPC npc) {
-        getWorldServer(npc.getWorld()).players.remove(npc.getHandle());
     }
 }

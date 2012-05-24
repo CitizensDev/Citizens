@@ -245,4 +245,8 @@ public class TraderTask implements Listener {
         player.sendMessage(ChatColor.AQUA + "Price: " + message[1].trim());
         player.sendMessage(ChatColor.GOLD + "Click to confirm.");
     }
+
+    public Player getPlayer() {
+        return this.player;
+    }
 }

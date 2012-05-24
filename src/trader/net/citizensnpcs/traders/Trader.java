@@ -26,7 +26,6 @@ public class Trader extends CitizensNPC {
 
     private TraderTask currentTask = null;
 
-    private boolean free = true;
     private boolean locked = false;
     private Map<Check, Stockable> stocking = new HashMap<Check, Stockable>();
     private boolean unlimited = false;
@@ -102,11 +101,11 @@ public class Trader extends CitizensNPC {
     public void onRightClick(Player player, HumanNPC npc) {
         if (currentTask != null)
             currentTask.ensureValid();
-        if (!free) {
-            player.sendMessage(ChatColor.GRAY + "Trader is in use.");
+        if (currentTask != null) {
+            player.sendMessage(ChatColor.GRAY + "Sorry! Trader is currently serving "
+                    + currentTask.getPlayer().getName());
             return;
         }
-        free = false;
         TraderMode mode;
         if (NPCManager.isOwner(player, npc.getUID())) {
             if (!PermissionManager.hasPermission(player, "citizens.trader.modify.stock")) {
@@ -148,8 +147,11 @@ public class Trader extends CitizensNPC {
     }
 
     public void setFree() {
-        free = true;
         currentTask = null;
+    }
+
+    public boolean isFree() {
+        return currentTask == null;
     }
 
     public void setLocked(boolean locked) {

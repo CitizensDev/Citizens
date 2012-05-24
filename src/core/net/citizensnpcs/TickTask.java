@@ -1,12 +1,8 @@
 package net.citizensnpcs;
 
-import java.util.Map;
-
 import net.citizensnpcs.api.event.NPCCreateEvent.NPCCreateReason;
-import net.citizensnpcs.misc.Actions;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.resources.npclib.NPCManager;
-import net.citizensnpcs.resources.npclib.NPCSpawner;
 import net.citizensnpcs.utils.LocationUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
@@ -15,12 +11,14 @@ import net.citizensnpcs.utils.StringUtils;
 import net.citizensnpcs.waypoints.WaypointPath;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.MapMaker;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 
 public class TickTask implements Runnable {
-    private static final Map<HumanNPC, Actions> cachedActions = new MapMaker().weakKeys().makeMap();
+    private static final SetMultimap<HumanNPC, String> cachedActions = HashMultimap.create();
 
     @Override
     public void run() {
@@ -28,19 +26,23 @@ public class TickTask implements Runnable {
         for (HumanNPC npc : NPCManager.getList().values()) {
             updateWaypoints(npc);
             npc.doTick();
-            NPCSpawner.removeNPCFromPlayerList(npc);
+            if (!npc.getNPCData().isLookClose() && !npc.getNPCData().isTalkClose())
+                continue;
+            boolean canLookClose = npc.getHandle().pathFinished() && !npc.getHandle().hasTarget()
+                    && npc.getNPCData().isLookClose();
+            if (!npc.getNPCData().isTalkClose() && !canLookClose)
+                continue;
+            Location npcLoc = npc.getLocation();
             for (Player player : online) {
-                if (!npc.getNPCData().isLookClose() && !npc.getNPCData().isTalkClose())
-                    continue;
                 // If the player is within 'seeing' range
-                if (LocationUtils.withinRange(npc.getLocation(), player.getLocation(), Settings.getDouble("NPCRange"))) {
-                    if (npc.getHandle().pathFinished() && !npc.getHandle().hasTarget()
-                            && npc.getNPCData().isLookClose()) {
+                if (LocationUtils.withinRange(npcLoc, player.getLocation(), Settings.getDouble("NPCRange"))) {
+                    if (canLookClose) {
                         NPCManager.faceEntity(npc, player);
                     }
-                    cacheActions(npc, player);
+                    if (npc.getNPCData().isTalkClose())
+                        cacheActions(npc, player);
                 } else {
-                    clearActions(npc, player);
+                    cachedActions.remove(npc, player.getName());
                 }
             }
         }
@@ -87,24 +89,10 @@ public class TickTask implements Runnable {
         }
     }
 
-    private static void clearActions(HumanNPC npc, Player player) {
-        Actions actions = cachedActions.get(npc);
-        if (actions == null) {
-            cachedActions.put(npc, new Actions());
-            return;
-        }
-        actions.clear("saidText", player.getName());
-    }
-
     private static void cacheActions(HumanNPC npc, Player player) {
-        Actions actions = cachedActions.get(npc);
-        if (actions == null) {
-            cachedActions.put(npc, new Actions());
-            return;
-        }
-        if (!actions.has("saidText", player.getName()) && npc.getNPCData().isTalkClose()) {
+        if (!cachedActions.containsEntry(npc, player.getName().toLowerCase()) && npc.getNPCData().isTalkClose()) {
             MessageUtils.sendText(npc, player);
-            actions.set("saidText", player.getName());
+            cachedActions.put(npc, player.getName().toLowerCase());
         }
     }
 
@@ -122,7 +110,7 @@ public class TickTask implements Runnable {
         }
 
         public void register(int delay) {
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Citizens.plugin, this, delay);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, this, delay);
         }
 
         @Override
@@ -134,7 +122,7 @@ public class TickTask implements Runnable {
 
     public static void clearActions(Player player) {
         for (HumanNPC npc : cachedActions.keySet()) {
-            clearActions(npc, player);
+            cachedActions.remove(npc, player.getName().toLowerCase());
         }
     }
 }
