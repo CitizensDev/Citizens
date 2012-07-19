@@ -36,6 +36,7 @@ public class PlayerListen implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if(event.isCancelled()) return;
         NPCDataManager.handlePathEditor(event);
         if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer())
                 && event.getAction() == Action.RIGHT_CLICK_AIR) {
@@ -45,6 +46,7 @@ public class PlayerListen implements Listener {
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        if(event.isCancelled()) return;
         HumanNPC npc = NPCManager.get(event.getRightClicked());
         if (npc != null) {
             EntityTargetEvent rightClickEvent = new NPCTargetEvent(npc.getPlayer(), event.getPlayer());
