@@ -38,7 +38,7 @@ commands:
         description: Performs player-quest related commands.
         usage: |
                         The command was not recognized.
-                        See /citizens help for a list of commands.
+                        See /quest help for a list of commands.
     quester:
         description: Performs various Quester NPC-related commands.
         usage: |
