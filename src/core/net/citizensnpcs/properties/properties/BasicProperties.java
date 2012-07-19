@@ -76,7 +76,7 @@ public class BasicProperties extends PropertyManager implements Properties {
                     save.append("AIR*" + count + ",");
                     count = 0;
                 }
-                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/")
+                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/").append(i.getDurability()).append("/")
                         .append((i.getData() == null) ? 0 : i.getData().getData()).append(",");
             }
         }
@@ -95,9 +95,19 @@ public class BasicProperties extends PropertyManager implements Properties {
         List<ItemStack> array = new ArrayList<ItemStack>();
         for (String s : save.split(",")) {
             String[] split = s.split("/");
-            if (!split[0].contains("AIR") && !split[0].equals("0")) {
-                array.add(new ItemStack(StringUtils.parse(split[0]), StringUtils.parse(split[1]), (short) 0,
-                        (byte) StringUtils.parse(split[2])));
+            if (!split[0].contains("AIR") && !split[0].equals("0")) 
+            {
+                if(split.length == 4)
+            	{
+            		ItemStack newStack = new ItemStack(StringUtils.parse(split[0]), StringUtils.parse(split[1]), (short) StringUtils.parse(split[2]),
+                            (byte) StringUtils.parse(split[3]));
+            		newStack.setDurability((short) StringUtils.parse(split[2]));
+            		array.add(newStack);
+            	}
+            	else
+            	{
+            		array.add(new ItemStack(StringUtils.parse(split[0]), StringUtils.parse(split[1]), (short) 0, (byte) StringUtils.parse(split[2])));
+            	}
             } else {
                 if (split[0].equals("AIR")) {
                     array.add(null);
