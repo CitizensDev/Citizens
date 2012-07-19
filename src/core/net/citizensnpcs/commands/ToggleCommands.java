@@ -59,7 +59,7 @@ public class ToggleCommands extends CommandHandler {
 
 	@CommandRequirements(requireSelected = true, requireOwnership = true)
 	@Command(
-			aliases = { "toggle", "tog", "t" },
+			aliases = { "toggle", "tog" },
 			usage = "[type]",
 			desc = "toggle an NPC type",
 			modifiers = "*",
