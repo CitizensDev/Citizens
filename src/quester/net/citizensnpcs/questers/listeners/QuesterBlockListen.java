@@ -19,7 +19,7 @@ import com.google.common.collect.Sets;
 public class QuesterBlockListen implements Listener {
     private static final Set<Location> placed = Sets.newHashSet();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (placed.contains(event.getBlock().getLocation())) {
             return;
@@ -27,7 +27,7 @@ public class QuesterBlockListen implements Listener {
         QuestManager.incrementQuest(event.getPlayer(), event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         placed.add(event.getBlock().getLocation());
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new RemoveBlockTask(event.getBlock()),
