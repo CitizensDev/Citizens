@@ -45,14 +45,17 @@ public class TickTask implements Runnable {
             Location npcLoc = npc.getLocation();
             for (Player player : online) {
                 // If the player is within 'seeing' range
+                String name = player.getName().toLowerCase();
                 if (LocationUtils.withinRange(npcLoc, player.getLocation(), Settings.getDouble("NPCRange"))) {
-                    if (canLookClose) {
+                    if (canLookClose)
                         NPCManager.faceEntity(npc, player);
+
+                    if (npc.getNPCData().isTalkClose() && !cachedActions.containsEntry(npc, name)) {
+                        MessageUtils.sendText(npc, player);
+                        cachedActions.put(npc, name);
                     }
-                    if (npc.getNPCData().isTalkClose())
-                        cacheActions(npc, player);
                 } else {
-                    cachedActions.remove(npc, player.getName());
+                    cachedActions.remove(npc, name);
                 }
             }
         }
@@ -96,14 +99,6 @@ public class TickTask implements Runnable {
                     waypoints.setStarted(false);
                     waypoints.onReach(npc);
                 }
-        }
-    }
-
-    private static void cacheActions(HumanNPC npc, Player player) {
-        if (!cachedActions.containsEntry(npc, player.getName().toLowerCase())
-                && npc.getNPCData().isTalkClose()) {
-            MessageUtils.sendText(npc, player);
-            cachedActions.put(npc, player.getName().toLowerCase());
         }
     }
 
