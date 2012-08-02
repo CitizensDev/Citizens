@@ -38,8 +38,7 @@
 		<javac srcdir="${src}/core" destdir="${core}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
 			<classpath>
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
@@ -53,8 +52,7 @@
 			<classpath>
 				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
@@ -66,8 +64,7 @@
 			<classpath>
 				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
@@ -79,8 +76,7 @@
 			<classpath>
 				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
@@ -92,8 +88,7 @@
 			<classpath>
 				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
@@ -105,8 +100,7 @@
 			<classpath>
 				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
@@ -118,8 +112,7 @@
 			<classpath>
 				<pathelement path="${core}" />
 				<pathelement path="${libs}" />
-				<pathelement location="${libs}/bukkit-1.2.5-R1.0.jar" />
-				<pathelement location="${libs}/craftbukkit-1.2.5-R1.0.jar" />
+				<pathelement location="${libs}/craftbukkit.jar" />
 				<pathelement location="${libs}/WorldGuard.jar" />
 				<pathelement location="${libs}/Vault.jar" />
 			</classpath>
