@@ -3,6 +3,7 @@ package net.citizensnpcs.resources.npclib;
 import java.io.IOException;
 
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
+import net.minecraft.server.EnumGamemode;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
@@ -12,17 +13,18 @@ import net.minecraft.server.World;
 import org.bukkit.entity.LivingEntity;
 
 public class CraftNPC extends PathNPC {
-    public CraftNPC(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
+    public CraftNPC(MinecraftServer minecraftserver, World world, String s,
+            ItemInWorldManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
-        iteminworldmanager.setGameMode(0);
+        iteminworldmanager.setGameMode(EnumGamemode.SURVIVAL);
 
         NPCSocket socket = new NPCSocket();
         NetworkManager netMgr = new NPCNetworkManager(socket, "npc mgr", new NetHandler() {
             @Override
-            public boolean c() {
+            public boolean a() {
                 return false;
             }
-        });
+        }, server.E().getPrivate());
         this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
         netMgr.a(this.netServerHandler);
 

@@ -23,14 +23,6 @@ public class NPCNetHandler extends NetServerHandler {
     }
 
     @Override
-    public void a() {
-    }
-
-    @Override
-    public void sendMessage(String s) {
-    }
-
-    @Override
     public void a(String s, Object[] aobject) {
     }
 

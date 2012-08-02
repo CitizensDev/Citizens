@@ -34,12 +34,13 @@ public class NPCSpawner {
             return null;
         }
         WorldServer ws = getWorldServer(loc.getWorld());
-        final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new ItemInWorldManager(ws));
+        final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name,
+                new ItemInWorldManager(ws));
         eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
             public void run() {
-                eh.X = loc.getYaw();
+                eh.as = loc.getYaw();
             }
         });
         ws.addEntity(eh);
@@ -51,13 +52,13 @@ public class NPCSpawner {
         try {
             String name = type.chooseRandomName();
             WorldServer ws = getWorldServer(loc.getWorld());
-            final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()), ws, name,
-                    new ItemInWorldManager(ws));
+            final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()),
+                    ws, name, new ItemInWorldManager(ws));
             eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
                 @Override
                 public void run() {
-                    eh.X = loc.getYaw();
+                    eh.as = loc.getYaw();
                 }
             });
             ws.addEntity(eh);
@@ -76,7 +77,7 @@ public class NPCSpawner {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
             public void run() {
-                npc.getHandle().X = loc.getYaw();
+                npc.getHandle().as = loc.getYaw();
             }
         });
         ws.players.remove(npc.getHandle());

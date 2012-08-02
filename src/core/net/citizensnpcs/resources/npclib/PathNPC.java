@@ -44,17 +44,29 @@ public class PathNPC extends EntityPlayer {
     private int attackTimes = 0;
     private int attackTimesLimit = -1;
     private int prevX, prevY, prevZ;
-    private final AutoPathfinder autoPathfinder;
+    private AutoPathfinder autoPathfinder;
     private static final double JUMP_FACTOR = 0.07D;
 
-    public PathNPC(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
+    public PathNPC(MinecraftServer minecraftserver, World world, String s,
+            ItemInWorldManager iteminworldmanager) {
         this(minecraftserver, world, s, iteminworldmanager, new MinecraftAutoPathfinder());
     }
 
-    public PathNPC(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager,
-            AutoPathfinder autoPathfinder) {
+    public PathNPC(MinecraftServer minecraftserver, World world, String s,
+            ItemInWorldManager iteminworldmanager, AutoPathfinder autoPathfinder) {
         super(minecraftserver, world, s, iteminworldmanager);
         this.autoPathfinder = autoPathfinder;
+    }
+
+    public boolean isAutoPathfinder() {
+        return autoPathfinder != null;
+    }
+
+    public void setAutoPathfinder(boolean toggle) {
+        if (toggle) {
+            autoPathfinder = MinecraftAutoPathfinder.INSTANCE;
+        } else
+            autoPathfinder = null;
     }
 
     private void attackEntity(Entity entity) {
@@ -122,8 +134,7 @@ public class PathNPC extends EntityPlayer {
         float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
         float diffYaw = vectorYaw - this.yaw;
 
-        for (this.aX = this.bb; diffYaw < -180.0F; diffYaw += 360.0F) {
-        }
+        this.bs = this.bw;
         while (diffYaw >= 180.0F) {
             diffYaw -= 360.0F;
         }
@@ -147,13 +158,13 @@ public class PathNPC extends EntityPlayer {
             float diffYaw = getYawDifference(diffZ, diffX);
 
             this.yaw += diffYaw;
-            this.X += diffYaw;
+            this.as += diffYaw;
             if (diffY > 0.0D) {
                 jump();
             }
             // TODO: adjust pitch.
             // Walk.
-            this.a(this.aW, this.aX);
+            this.e(this.br, this.bs);
         }
         if (this.positionChanged && !this.pathFinished()) {
             jump();
@@ -164,18 +175,20 @@ public class PathNPC extends EntityPlayer {
     }
 
     private boolean isHoldingBow() {
-        return getBukkitEntity().getItemInHand() != null && getBukkitEntity().getItemInHand().getType() == Material.BOW;
+        return getBukkitEntity().getItemInHand() != null
+                && getBukkitEntity().getItemInHand().getType() == Material.BOW;
     }
 
     public boolean isInSight(Entity entity) {
-        return this.h(entity);
+        return this.l(entity);
     }
 
     private boolean isWithinAttackRange(Entity entity, double distance) {
         // Distance from EntityCreature.
         return this.attackTicks <= 0
                 && ((isHoldingBow() && (distance > Settings.getDouble("MinArrowRange") && distance < Settings
-                        .getDouble("MaxArrowRange"))) || (distance < 1.5F && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
+                        .getDouble("MaxArrowRange"))) || (distance < 1.5F
+                        && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
                         && isInSight(entity));
     }
 
@@ -236,8 +249,10 @@ public class PathNPC extends EntityPlayer {
         cancelPath();
     }
 
-    public void setTarget(LivingEntity entity, boolean aggro, int maxTicks, int maxStationaryTicks, double range) {
-        if (Plugins.worldGuardEnabled() && Settings.getBoolean("DenyBlockedPVPTargets") && entity instanceof Player) {
+    public void setTarget(LivingEntity entity, boolean aggro, int maxTicks, int maxStationaryTicks,
+            double range) {
+        if (Plugins.worldGuardEnabled() && Settings.getBoolean("DenyBlockedPVPTargets")
+                && entity instanceof Player) {
             if (!Plugins.worldGuard.getGlobalRegionManager().allows(DefaultFlag.PVP, entity.getLocation()))
                 return;
         }
@@ -246,6 +261,15 @@ public class PathNPC extends EntityPlayer {
         this.pathTickLimit = maxTicks;
         this.pathingRange = (float) range;
         this.stationaryTickLimit = maxStationaryTicks;
+    }
+
+    public boolean toggleAutoPathfinder() {
+        if (autoPathfinder == null) {
+            autoPathfinder = MinecraftAutoPathfinder.INSTANCE;
+            return true;
+        }
+        autoPathfinder = null;
+        return false;
     }
 
     public boolean startPath(Location loc, int maxTicks, int maxStationaryTicks, double range) {

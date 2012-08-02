@@ -54,14 +54,14 @@ public class BasicProperties extends PropertyManager implements Properties {
             return null;
         } else {
             return new Location(Bukkit.getServer().getWorld(values[0]), Double.parseDouble(values[1]),
-                    Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]),
-                    Float.parseFloat(values[5]));
+                    Double.parseDouble(values[2]), Double.parseDouble(values[3]),
+                    Float.parseFloat(values[4]), Float.parseFloat(values[5]));
         }
     }
 
     public void saveLocation(Location loc, int UID) {
-        String locale = loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ","
-                + loc.getYaw() + "," + loc.getPitch();
+        String locale = loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ()
+                + "," + loc.getYaw() + "," + loc.getPitch();
         profiles.setString(UID + location, locale);
     }
 
@@ -76,7 +76,8 @@ public class BasicProperties extends PropertyManager implements Properties {
                     save.append("AIR*" + count + ",");
                     count = 0;
                 }
-                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/").append(i.getDurability()).append("/")
+                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/")
+                        .append(i.getDurability()).append("/")
                         .append((i.getData() == null) ? 0 : i.getData().getData()).append(",");
             }
         }
@@ -95,19 +96,17 @@ public class BasicProperties extends PropertyManager implements Properties {
         List<ItemStack> array = new ArrayList<ItemStack>();
         for (String s : save.split(",")) {
             String[] split = s.split("/");
-            if (!split[0].contains("AIR") && !split[0].equals("0")) 
-            {
-                if(split.length == 4)
-            	{
-            		ItemStack newStack = new ItemStack(StringUtils.parse(split[0]), StringUtils.parse(split[1]), (short) StringUtils.parse(split[2]),
+            if (!split[0].contains("AIR") && !split[0].equals("0")) {
+                if (split.length == 4) {
+                    ItemStack newStack = new ItemStack(StringUtils.parse(split[0]),
+                            StringUtils.parse(split[1]), (short) StringUtils.parse(split[2]),
                             (byte) StringUtils.parse(split[3]));
-            		newStack.setDurability((short) StringUtils.parse(split[2]));
-            		array.add(newStack);
-            	}
-            	else
-            	{
-            		array.add(new ItemStack(StringUtils.parse(split[0]), StringUtils.parse(split[1]), (short) 0, (byte) StringUtils.parse(split[2])));
-            	}
+                    newStack.setDurability((short) StringUtils.parse(split[2]));
+                    array.add(newStack);
+                } else {
+                    array.add(new ItemStack(StringUtils.parse(split[0]), StringUtils.parse(split[1]),
+                            (short) 0, (byte) StringUtils.parse(split[2])));
+                }
             } else {
                 if (split[0].equals("AIR")) {
                     array.add(null);
@@ -167,7 +166,8 @@ public class BasicProperties extends PropertyManager implements Properties {
     }
 
     private void saveColour(int UID, ChatColor colour) {
-        profiles.setString(UID + color, colour == null ? "" + ChatColor.WHITE.getChar() : "" + colour.getChar());
+        profiles.setString(UID + color,
+                colour == null ? "" + ChatColor.WHITE.getChar() : "" + colour.getChar());
     }
 
     public Deque<String> getText(int UID) {
@@ -252,8 +252,8 @@ public class BasicProperties extends PropertyManager implements Properties {
         if (!read.isEmpty()) {
             for (String str : read.split(";")) {
                 String[] split = str.split(",");
-                temp.add(new Waypoint(new Location(world, Double.parseDouble(split[0]), Double.parseDouble(split[1]),
-                        Double.parseDouble(split[2]))));
+                temp.add(new Waypoint(new Location(world, Double.parseDouble(split[0]), Double
+                        .parseDouble(split[1]), Double.parseDouble(split[2]))));
             }
             return temp;
         }
@@ -269,7 +269,8 @@ public class BasicProperties extends PropertyManager implements Properties {
                 root += ".modifiers";
                 for (int innerKey : profiles.getIntegerKeys(root)) {
                     path = root + "." + innerKey;
-                    modifier = WaypointModifierType.valueOf(profiles.getString(path + ".type")).create(waypoint);
+                    modifier = WaypointModifierType.valueOf(profiles.getString(path + ".type")).create(
+                            waypoint);
                     modifier.parse(profiles, path);
                     waypoint.addModifier(modifier);
                 }
@@ -297,6 +298,8 @@ public class BasicProperties extends PropertyManager implements Properties {
         saveTalk(UID, npcdata.isTalk());
         saveWaypoints(UID, npc.getWaypoints().getWaypoints());
         saveOwner(UID, npcdata.getOwner());
+
+        profiles.setBoolean(UID + ".basic.wander", npc.getHandle().isAutoPathfinder());
     }
 
     private void saveBalance(int UID, double balance) {
@@ -334,6 +337,7 @@ public class BasicProperties extends PropertyManager implements Properties {
         if (getInventory(npc.getUID()) != null) {
             npc.getInventory().setContents(getInventory(npc.getUID()).getContents());
         }
+        npc.getHandle().setAutoPathfinder(profiles.getBoolean(UID + ".basic.wander", false));
         saveState(npc);
     }
 
@@ -363,9 +367,9 @@ public class BasicProperties extends PropertyManager implements Properties {
         return nodesForCopy;
     }
 
-    private static final List<String> nodesForCopy = Lists.newArrayList("basic.name", "basic.color", "basic.items",
-            "basic.inventory", "basic.location", "basic.look-when-close", "basic.talk-when-close", "basic.waypoints",
-            "basic.owner", "basic.talk", "basic.text");
+    private static final List<String> nodesForCopy = Lists.newArrayList("basic.name", "basic.color",
+            "basic.items", "basic.inventory", "basic.location", "basic.look-when-close",
+            "basic.talk-when-close", "basic.waypoints", "basic.owner", "basic.talk", "basic.text");
 
     private static final String name = ".basic.name";
     private static final String color = ".basic.color";
