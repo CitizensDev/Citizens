@@ -9,17 +9,25 @@ import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet;
 
 public class NPCNetworkManager extends NetworkManager {
+    private static Field THREAD_STOPPER;
+    static {
+        try {
+            THREAD_STOPPER = NetworkManager.class.getDeclaredField("m");
+            THREAD_STOPPER.setAccessible(true);
+        } catch (Exception ex) {
+            THREAD_STOPPER = null;
+        }
+    }
 
     public NPCNetworkManager(Socket paramSocket, String paramString, NetHandler paramNetHandler,
             PrivateKey key) {
         super(paramSocket, paramString, paramNetHandler, key);
 
-        try {
-            // the field above the 3 synchronized lists.
-            Field f = NetworkManager.class.getDeclaredField("l");
-            f.setAccessible(true);
-            f.set(this, false);
-        } catch (Exception e) {
+        if (THREAD_STOPPER != null) {
+            try {
+                THREAD_STOPPER.set(this, false);
+            } catch (Exception e) {
+            }
         }
     }
 
