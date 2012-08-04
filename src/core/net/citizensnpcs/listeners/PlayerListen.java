@@ -14,7 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -36,7 +36,8 @@ public class PlayerListen implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if(event.isCancelled()) return;
+        if (event.isCancelled())
+            return;
         NPCDataManager.handlePathEditor(event);
         if (NPCDataManager.equipmentEditors.containsKey(event.getPlayer())
                 && event.getAction() == Action.RIGHT_CLICK_AIR) {
@@ -46,7 +47,8 @@ public class PlayerListen implements Listener {
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if(event.isCancelled()) return;
+        if (event.isCancelled())
+            return;
         HumanNPC npc = NPCManager.get(event.getRightClicked());
         if (npc != null) {
             EntityTargetEvent rightClickEvent = new NPCTargetEvent(npc.getPlayer(), event.getPlayer());
@@ -55,7 +57,7 @@ public class PlayerListen implements Listener {
     }
 
     @EventHandler
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         ConversationUtils.onChat(event);
     }
 }

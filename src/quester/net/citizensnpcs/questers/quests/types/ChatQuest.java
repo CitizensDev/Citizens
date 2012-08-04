@@ -10,13 +10,13 @@ import net.citizensnpcs.resources.npclib.NPCManager;
 import net.citizensnpcs.utils.LocationUtils;
 
 import org.bukkit.event.Event;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 
 public class ChatQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerChatEvent.class };
+    private static final Class<? extends Event>[] EVENTS = new Class[] { AsyncPlayerChatEvent.class };
 
     @Override
     public Class<? extends Event>[] getEventTypes() {
@@ -25,11 +25,12 @@ public class ChatQuest implements QuestUpdater {
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
-        if (!(event instanceof PlayerChatEvent))
+        if (!(event instanceof AsyncPlayerChatEvent))
             return false;
         if (progress.getObjective().hasParameter("leeway") && progress.getObjective().hasParameter("npcid")) {
             int leeway = progress.getObjective().getParameter("leeway").getInt();
-            for (String string : Splitter.on(",").split(progress.getObjective().getParameter("npcid").getString())) {
+            for (String string : Splitter.on(",").split(
+                    progress.getObjective().getParameter("npcid").getString())) {
                 HumanNPC npc = NPCManager.get(Integer.parseInt(string));
                 if (npc == null)
                     continue;
@@ -37,7 +38,7 @@ public class ChatQuest implements QuestUpdater {
                     return false;
             }
         }
-        String message = ((PlayerChatEvent) event).getMessage();
+        String message = ((AsyncPlayerChatEvent) event).getMessage();
         for (String match : Splitter.on(",").split(progress.getObjective().getString())) {
             Set<Character> flags = Sets.newHashSet();
             int index = match.indexOf(':');
