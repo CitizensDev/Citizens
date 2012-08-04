@@ -42,6 +42,38 @@ import org.bukkit.entity.Player;
 @CommandRequirements(requireSelected = true, requireOwnership = true)
 public class BasicCommands extends CommandHandler {
 
+    @Override
+    public void addPermissions() {
+        PermissionManager.addPermission("admin.info");
+        PermissionManager.addPermission("admin.clean");
+        PermissionManager.addPermission("basic.use.help");
+        PermissionManager.addPermission("admin.save");
+        PermissionManager.addPermission("admin.debug");
+        PermissionManager.addPermission("admin.reload");
+        PermissionManager.addPermission("basic.modify.move");
+        PermissionManager.addPermission("basic.create");
+        PermissionManager.addPermission("basic.use.info");
+        PermissionManager.addPermission("basic.modify.moveto");
+        PermissionManager.addPermission("basic.modify.copy");
+        PermissionManager.addPermission("basic.modify.remove");
+        PermissionManager.addPermission("basic.modify.remove.all");
+        PermissionManager.addPermission("basic.modify.rename");
+        PermissionManager.addPermission("basic.modify.color");
+        PermissionManager.addPermission("basic.modify.addtext");
+        PermissionManager.addPermission("basic.modify.resettext");
+        PermissionManager.addPermission("basic.modify.settext");
+        PermissionManager.addPermission("basic.modify.equip");
+        PermissionManager.addPermission("basic.use.teleport");
+        PermissionManager.addPermission("basic.modify.talkclose");
+        PermissionManager.addPermission("basic.modify.lookat");
+        PermissionManager.addPermission("basic.use.select");
+        PermissionManager.addPermission("basic.modify.setowner");
+        PermissionManager.addPermission("waypoints.edit");
+        PermissionManager.addPermission("basic.use.list");
+        PermissionManager.addPermission("admin.override.setowner");
+        PermissionManager.addPermission("admin.override.remove");
+    }
+
     @Command(aliases = "npc", usage = "add [text]", desc = "add text to an NPC", modifiers = "add", min = 2)
     @CommandPermissions("basic.modify.addtext")
     public static void add(CommandContext args, Player player, HumanNPC npc) {
@@ -49,20 +81,6 @@ public class BasicCommands extends CommandHandler {
         NPCDataManager.addText(npc.getUID(), text);
         player.sendMessage(StringUtils.wrap(text) + " was added to " + StringUtils.wrap(npc.getName() + "'s")
                 + " text.");
-    }
-
-    @Command(
-            aliases = "npc",
-            usage = "wander",
-            desc = "makes an NPC wander like a mob",
-            modifiers = "wander",
-            min = 1,
-            max = 1)
-    @CommandPermissions("basic.modify.wander")
-    public static void wander(CommandContext args, Player player, HumanNPC npc) {
-        boolean useAutoPathfinder = npc.getHandle().toggleAutoPathfinder();
-        player.sendMessage(ChatColor.GREEN
-                + (useAutoPathfinder ? "The NPC is now wandering." : "The NPC has stopped wandering."));
     }
 
     @Command(aliases = "citizens", desc = "view Citizens info", max = 0)
@@ -567,20 +585,6 @@ public class BasicCommands extends CommandHandler {
 
     @Command(
             aliases = "npc",
-            usage = "talk",
-            desc = "toggle NPC talking on/off",
-            modifiers = "talk",
-            min = 1,
-            max = 1)
-    @CommandPermissions("basic.modify.talk")
-    public static void talk(CommandContext args, Player player, HumanNPC npc) {
-        npc.getNPCData().setTalk(!npc.getNPCData().isTalk());
-        player.sendMessage(StringUtils.wrap(npc.getName())
-                + ((npc.getNPCData().isTalk()) ? "is now talking." : "has stopped talking"));
-    }
-
-    @Command(
-            aliases = "npc",
             usage = "reset",
             desc = "reset the text of an NPC",
             modifiers = "reset",
@@ -674,6 +678,20 @@ public class BasicCommands extends CommandHandler {
 
     @Command(
             aliases = "npc",
+            usage = "talk",
+            desc = "toggle NPC talking on/off",
+            modifiers = "talk",
+            min = 1,
+            max = 1)
+    @CommandPermissions("basic.modify.talk")
+    public static void talk(CommandContext args, Player player, HumanNPC npc) {
+        npc.getNPCData().setTalk(!npc.getNPCData().isTalk());
+        player.sendMessage(StringUtils.wrap(npc.getName())
+                + ((npc.getNPCData().isTalk()) ? "is now talking." : "has stopped talking"));
+    }
+
+    @Command(
+            aliases = "npc",
             usage = "talkclose",
             desc = "toggle an NPC's talk-when-close setting",
             modifiers = "talkclose",
@@ -701,6 +719,20 @@ public class BasicCommands extends CommandHandler {
         player.teleport(npc.getNPCData().getLocation());
         player.sendMessage(ChatColor.GREEN + "Teleported you to " + StringUtils.wrap(npc.getName())
                 + ". Enjoy!");
+    }
+
+    @Command(
+            aliases = "npc",
+            usage = "wander",
+            desc = "makes an NPC wander like a mob",
+            modifiers = "wander",
+            min = 1,
+            max = 1)
+    @CommandPermissions("basic.modify.wander")
+    public static void wander(CommandContext args, Player player, HumanNPC npc) {
+        boolean useAutoPathfinder = npc.getHandle().toggleAutoPathfinder();
+        player.sendMessage(ChatColor.GREEN
+                + (useAutoPathfinder ? "The NPC is now wandering." : "The NPC has stopped wandering."));
     }
 
     @Command(
@@ -758,37 +790,5 @@ public class BasicCommands extends CommandHandler {
             npc.teleport(npc.getWaypoints().get(index).getLocation());
         }
         NPCDataManager.pathEditors.put(player, editing);
-    }
-
-    @Override
-    public void addPermissions() {
-        PermissionManager.addPermission("admin.info");
-        PermissionManager.addPermission("admin.clean");
-        PermissionManager.addPermission("basic.use.help");
-        PermissionManager.addPermission("admin.save");
-        PermissionManager.addPermission("admin.debug");
-        PermissionManager.addPermission("admin.reload");
-        PermissionManager.addPermission("basic.modify.move");
-        PermissionManager.addPermission("basic.create");
-        PermissionManager.addPermission("basic.use.info");
-        PermissionManager.addPermission("basic.modify.moveto");
-        PermissionManager.addPermission("basic.modify.copy");
-        PermissionManager.addPermission("basic.modify.remove");
-        PermissionManager.addPermission("basic.modify.remove.all");
-        PermissionManager.addPermission("basic.modify.rename");
-        PermissionManager.addPermission("basic.modify.color");
-        PermissionManager.addPermission("basic.modify.addtext");
-        PermissionManager.addPermission("basic.modify.resettext");
-        PermissionManager.addPermission("basic.modify.settext");
-        PermissionManager.addPermission("basic.modify.equip");
-        PermissionManager.addPermission("basic.use.teleport");
-        PermissionManager.addPermission("basic.modify.talkclose");
-        PermissionManager.addPermission("basic.modify.lookat");
-        PermissionManager.addPermission("basic.use.select");
-        PermissionManager.addPermission("basic.modify.setowner");
-        PermissionManager.addPermission("waypoints.edit");
-        PermissionManager.addPermission("basic.use.list");
-        PermissionManager.addPermission("admin.override.setowner");
-        PermissionManager.addPermission("admin.override.remove");
     }
 }

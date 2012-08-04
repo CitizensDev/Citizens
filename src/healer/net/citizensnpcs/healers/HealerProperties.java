@@ -13,42 +13,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import com.google.common.collect.Lists;
 
 public class HealerProperties extends PropertyManager implements Properties {
-	public static final HealerProperties INSTANCE = new HealerProperties();
-
 	private HealerProperties() {
-	}
-
-	@Override
-	public void saveState(HumanNPC npc) {
-		if (exists(npc)) {
-			boolean is = npc.isType("healer");
-			setEnabled(npc, is);
-			if (is) {
-				Healer healer = npc.getType("healer");
-				healer.save(profiles, npc.getUID());
-			}
-		}
-	}
-
-	@Override
-	public void loadState(HumanNPC npc) {
-		if (isEnabled(npc)) {
-			if (!npc.isType("healer"))
-				npc.registerType("healer");
-			Healer healer = npc.getType("healer");
-			healer.load(profiles, npc.getUID());
-		}
-		saveState(npc);
-	}
-
-	@Override
-	public void setEnabled(HumanNPC npc, boolean value) {
-		profiles.setBoolean(npc.getUID() + isHealer, value);
-	}
-
-	@Override
-	public boolean isEnabled(HumanNPC npc) {
-		return profiles.getBoolean(npc.getUID() + isHealer);
 	}
 
 	@Override
@@ -74,8 +39,43 @@ public class HealerProperties extends PropertyManager implements Properties {
 		return nodesForCopy;
 	}
 
-	private static final List<String> nodesForCopy = Lists.newArrayList(
-			"healer.toggle", "healer.health", "healer.level");
+	@Override
+	public boolean isEnabled(HumanNPC npc) {
+		return profiles.getBoolean(npc.getUID() + isHealer);
+	}
+
+	@Override
+	public void loadState(HumanNPC npc) {
+		if (isEnabled(npc)) {
+			if (!npc.isType("healer"))
+				npc.registerType("healer");
+			Healer healer = npc.getType("healer");
+			healer.load(profiles, npc.getUID());
+		}
+		saveState(npc);
+	}
+
+	@Override
+	public void saveState(HumanNPC npc) {
+		if (exists(npc)) {
+			boolean is = npc.isType("healer");
+			setEnabled(npc, is);
+			if (is) {
+				Healer healer = npc.getType("healer");
+				healer.save(profiles, npc.getUID());
+			}
+		}
+	}
+
+	@Override
+	public void setEnabled(HumanNPC npc, boolean value) {
+		profiles.setBoolean(npc.getUID() + isHealer, value);
+	}
+
+	public static final HealerProperties INSTANCE = new HealerProperties();
 
 	private static final String isHealer = ".healer.toggle";
+
+	private static final List<String> nodesForCopy = Lists.newArrayList(
+			"healer.toggle", "healer.health", "healer.level");
 }

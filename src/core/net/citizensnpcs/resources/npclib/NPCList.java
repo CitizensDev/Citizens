@@ -6,8 +6,6 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
-	private static final long serialVersionUID = 7208318521278059987L;
-
 	public boolean containsBukkitEntity(Entity entity) {
 		return getNPC(entity) != null;
 	}
@@ -29,4 +27,6 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
 		}
 		return null;
 	}
+
+	private static final long serialVersionUID = 7208318521278059987L;
 }

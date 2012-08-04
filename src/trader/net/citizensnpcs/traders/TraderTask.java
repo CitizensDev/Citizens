@@ -62,10 +62,19 @@ public class TraderTask implements Listener {
         return false;
     }
 
+    public void ensureValid() {
+        if (!player.isOnline())
+            exit();
+    }
+
     private void exit() {
         HandlerList.unregisterAll(this);
         sendLeaveMessage();
         ((Trader) npc.getType("trader")).setFree();
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 
     private Stockable getStockable(ItemStack item, String keyword, boolean selling) {
@@ -81,11 +90,6 @@ public class TraderTask implements Listener {
             return null;
         }
         return trader.getStockable(item.getTypeId(), durability, selling);
-    }
-
-    public void ensureValid() {
-        if (!player.isOnline())
-            exit();
     }
 
     @SuppressWarnings("deprecation")
@@ -244,9 +248,5 @@ public class TraderTask implements Listener {
         player.sendMessage(ChatColor.AQUA + "Item: " + message[0].trim());
         player.sendMessage(ChatColor.AQUA + "Price: " + message[1].trim());
         player.sendMessage(ChatColor.GOLD + "Click to confirm.");
-    }
-
-    public Player getPlayer() {
-        return this.player;
     }
 }

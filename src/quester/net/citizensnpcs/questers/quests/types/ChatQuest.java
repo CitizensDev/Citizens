@@ -16,11 +16,14 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 
 public class ChatQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { AsyncPlayerChatEvent.class };
-
     @Override
     public Class<? extends Event>[] getEventTypes() {
         return EVENTS;
+    }
+
+    @Override
+    public String getStatus(ObjectiveProgress progress) throws QuestCancelException {
+        return "waiting for a message!";
     }
 
     @Override
@@ -60,8 +63,5 @@ public class ChatQuest implements QuestUpdater {
         return false;
     }
 
-    @Override
-    public String getStatus(ObjectiveProgress progress) throws QuestCancelException {
-        return "waiting for a message!";
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { AsyncPlayerChatEvent.class };
 }

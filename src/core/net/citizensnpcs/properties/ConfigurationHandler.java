@@ -31,24 +31,6 @@ public class ConfigurationHandler extends AbstractStorage {
 		}
 	}
 
-	@Override
-	public void load() {
-		try {
-			this.config.load(file);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void save() {
-		try {
-			this.config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void create() {
 		try {
 			Messaging
@@ -62,68 +44,18 @@ public class ConfigurationHandler extends AbstractStorage {
 	}
 
 	@Override
-	public void removeKey(String path) {
-		this.config.set(path, null);
-		if (Settings.getBoolean("SaveOften")) {
-			save();
-		}
-	}
-
-	public boolean pathExists(String path) {
-		return this.config.get(path) != null;
-	}
-
-	public boolean pathExists(int path) {
-		return pathExists("" + path);
-	}
-
-	@Override
-	public String getString(String path) {
-		if (pathExists(path)) {
-			return this.config.get(path).toString();
-		}
-		return "";
-	}
-
-	@Override
-	public String getString(String path, String value) {
-		if (pathExists(path)) {
-			return this.config.getString(path);
-		} else {
-			setString(path, value);
-		}
-		return value;
-	}
-
-	@Override
-	public void setString(String path, String value) {
-		this.config.set(path, value);
-		if (Settings.getBoolean("SaveOften")) {
-			save();
-		}
-	}
-
-	@Override
-	public int getInt(String path) {
+	public boolean getBoolean(String path) {
 		if (pathExists(path)) {
 			if (config.getString(path) == null)
-				return config.getInt(path);
-			return Integer.parseInt(this.config.getString(path));
+				return config.getBoolean(path);
+			return Boolean.parseBoolean(this.config.getString(path));
 		}
-		return 0;
+		return false;
 	}
 
 	@Override
-	public int getInt(String path, int value) {
-		return this.config.getInt(path, value);
-	}
-
-	@Override
-	public void setInt(String path, int value) {
-		this.config.set(path, value);
-		if (Settings.getBoolean("SaveOften")) {
-			save();
-		}
+	public boolean getBoolean(String path, boolean value) {
+		return this.config.getBoolean(path, value);
 	}
 
 	@Override
@@ -145,11 +77,45 @@ public class ConfigurationHandler extends AbstractStorage {
 	}
 
 	@Override
-	public void setDouble(String path, double value) {
-		this.config.set(path, String.valueOf(value));
-		if (Settings.getBoolean("SaveOften")) {
-			save();
+	public int getInt(String path) {
+		if (pathExists(path)) {
+			if (config.getString(path) == null)
+				return config.getInt(path);
+			return Integer.parseInt(this.config.getString(path));
 		}
+		return 0;
+	}
+
+	@Override
+	public int getInt(String path, int value) {
+		return this.config.getInt(path, value);
+	}
+
+	@Override
+	public List<Integer> getIntegerKeys(String string) {
+		if (config.getConfigurationSection(string) == null) {
+			return Lists.newArrayList();
+		}
+		Set<String> keys = config.getConfigurationSection(string)
+				.getKeys(false);
+		List<Integer> parsed = Lists.newArrayList();
+		for (String key : keys) {
+			if (!StringUtils.isNumber(key)) {
+				continue;
+			}
+			parsed.add(Integer.parseInt(key));
+		}
+		return parsed;
+	}
+
+	@Override
+	public Set<String> getKeys(String path) {
+		if (path == null || path.isEmpty())
+			return this.config.getRoot().getKeys(false);
+		if (config.getConfigurationSection(path) == null) {
+			return Sets.newHashSet();
+		}
+		return this.config.getConfigurationSection(path).getKeys(false);
 	}
 
 	@Override
@@ -171,26 +137,65 @@ public class ConfigurationHandler extends AbstractStorage {
 	}
 
 	@Override
-	public void setLong(String path, long value) {
-		this.config.set(path, value);
+	public Object getRaw(String path) {
+		return config.get(path);
+	}
+
+	@Override
+	public String getString(String path) {
+		if (pathExists(path)) {
+			return this.config.get(path).toString();
+		}
+		return "";
+	}
+
+	@Override
+	public String getString(String path, String value) {
+		if (pathExists(path)) {
+			return this.config.getString(path);
+		} else {
+			setString(path, value);
+		}
+		return value;
+	}
+
+	@Override
+	public boolean keyExists(String path) {
+		return pathExists(path);
+	}
+
+	@Override
+	public void load() {
+		try {
+			this.config.load(file);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public boolean pathExists(int path) {
+		return pathExists("" + path);
+	}
+
+	public boolean pathExists(String path) {
+		return this.config.get(path) != null;
+	}
+
+	@Override
+	public void removeKey(String path) {
+		this.config.set(path, null);
 		if (Settings.getBoolean("SaveOften")) {
 			save();
 		}
 	}
 
 	@Override
-	public boolean getBoolean(String path) {
-		if (pathExists(path)) {
-			if (config.getString(path) == null)
-				return config.getBoolean(path);
-			return Boolean.parseBoolean(this.config.getString(path));
+	public void save() {
+		try {
+			this.config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return false;
-	}
-
-	@Override
-	public boolean getBoolean(String path, boolean value) {
-		return this.config.getBoolean(path, value);
 	}
 
 	@Override
@@ -202,18 +207,27 @@ public class ConfigurationHandler extends AbstractStorage {
 	}
 
 	@Override
-	public Set<String> getKeys(String path) {
-		if (path == null || path.isEmpty())
-			return this.config.getRoot().getKeys(false);
-		if (config.getConfigurationSection(path) == null) {
-			return Sets.newHashSet();
+	public void setDouble(String path, double value) {
+		this.config.set(path, String.valueOf(value));
+		if (Settings.getBoolean("SaveOften")) {
+			save();
 		}
-		return this.config.getConfigurationSection(path).getKeys(false);
 	}
 
 	@Override
-	public Object getRaw(String path) {
-		return config.get(path);
+	public void setInt(String path, int value) {
+		this.config.set(path, value);
+		if (Settings.getBoolean("SaveOften")) {
+			save();
+		}
+	}
+
+	@Override
+	public void setLong(String path, long value) {
+		this.config.set(path, value);
+		if (Settings.getBoolean("SaveOften")) {
+			save();
+		}
 	}
 
 	@Override
@@ -222,24 +236,10 @@ public class ConfigurationHandler extends AbstractStorage {
 	}
 
 	@Override
-	public boolean keyExists(String path) {
-		return pathExists(path);
-	}
-
-	@Override
-	public List<Integer> getIntegerKeys(String string) {
-		if (config.getConfigurationSection(string) == null) {
-			return Lists.newArrayList();
+	public void setString(String path, String value) {
+		this.config.set(path, value);
+		if (Settings.getBoolean("SaveOften")) {
+			save();
 		}
-		Set<String> keys = config.getConfigurationSection(string)
-				.getKeys(false);
-		List<Integer> parsed = Lists.newArrayList();
-		for (String key : keys) {
-			if (!StringUtils.isNumber(key)) {
-				continue;
-			}
-			parsed.add(Integer.parseInt(key));
-		}
-		return parsed;
 	}
 }

@@ -7,7 +7,7 @@ import org.bukkit.event.Event;
 public interface QuestUpdater {
     public Class<? extends Event>[] getEventTypes();
 
-    public boolean update(Event event, ObjectiveProgress progress);
-
     public String getStatus(ObjectiveProgress progress) throws QuestCancelException;
+
+    public boolean update(Event event, ObjectiveProgress progress);
 }

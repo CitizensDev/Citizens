@@ -8,13 +8,13 @@ import net.citizensnpcs.properties.Properties;
 
 public class TraderType extends CitizensNPCType {
     @Override
-    public Properties getProperties() {
-        return TraderProperties.INSTANCE;
+    public CommandHandler getCommands() {
+        return TraderCommands.INSTANCE;
     }
 
     @Override
-    public CommandHandler getCommands() {
-        return TraderCommands.INSTANCE;
+    public CitizensNPC getInstance() {
+        return new Trader();
     }
 
     @Override
@@ -23,12 +23,12 @@ public class TraderType extends CitizensNPCType {
     }
 
     @Override
-    public void registerEvents() {
-        NPCTypeManager.registerEvents(new CitizensListen());
+    public Properties getProperties() {
+        return TraderProperties.INSTANCE;
     }
 
     @Override
-    public CitizensNPC getInstance() {
-        return new Trader();
+    public void registerEvents() {
+        NPCTypeManager.registerEvents(new CitizensListen());
     }
 }

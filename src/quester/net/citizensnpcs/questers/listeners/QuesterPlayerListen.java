@@ -15,13 +15,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class QuesterPlayerListen implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        QuestManager.unload(event.getPlayer());
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        QuestManager.incrementQuest(event.getPlayer(), event);
+    public void onPlayerChat(final AsyncPlayerChatEvent event) {
+        if (!event.isAsynchronous())
+            QuestManager.incrementQuest(event.getPlayer(), event);
+        else
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    QuestManager.incrementQuest(event.getPlayer(), event);
+                }
+            });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -35,15 +38,12 @@ public class QuesterPlayerListen implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerChat(final AsyncPlayerChatEvent event) {
-        if (!event.isAsynchronous())
-            QuestManager.incrementQuest(event.getPlayer(), event);
-        else
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
-                @Override
-                public void run() {
-                    QuestManager.incrementQuest(event.getPlayer(), event);
-                }
-            });
+    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        QuestManager.incrementQuest(event.getPlayer(), event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        QuestManager.unload(event.getPlayer());
     }
 }

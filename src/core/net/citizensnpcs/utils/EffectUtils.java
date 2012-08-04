@@ -13,54 +13,40 @@ import org.bukkit.Location;
 import com.google.common.base.Joiner;
 
 public class EffectUtils {
+	public static class EffectData {
+		private final int data;
+		private final IEffect effect;
+
+		public EffectData(IEffect effect) {
+			this(effect, 0);
+		}
+
+		public EffectData(IEffect effect, int data) {
+			this.effect = effect;
+			this.data = data;
+		}
+
+		public int getData() {
+			return data;
+		}
+
+		public IEffect getEffect() {
+			return effect;
+		}
+	}
+
 	public static class Effects {
-		public interface IEffect {
-			public int getIdentifier();
-		}
-
-		public static Map<String, IEffect> names = new HashMap<String, IEffect>();
-		private static Set<String> formatted = new HashSet<String>();
-
-		public static IEffect getByName(String name) {
-			name = name.toUpperCase().replace(" ", "_");
-			for (String effect : names.keySet()) {
-				if (effect.startsWith(name)) {
-					return names.get(effect);
-				}
-			}
-			return null;
-		}
-
-		public static IEffect getByIdentifier(int identifier) {
-			for (IEffect effect : names.values()) {
-				if (effect.getIdentifier() == identifier) {
-					return effect;
-				}
-			}
-			return null;
-		}
-
-		public static Set<String> getFormattedEffects() {
-			return formatted;
-		}
-
-		public static void addFormatted(String name) {
-			String[] split = name.toLowerCase().split("_");
-			split[0] = StringUtils.capitalise(split[0]);
-			formatted.add(Joiner.on(" ").join(split));
-		}
-
 		public enum Effect implements IEffect {
-			/*
-			 * Creates the particles that appear when dispenser is used, data is
-			 * used as direction (up to 9).
-			 */
-			DISPENSER_PARTICLE_SPAWN(2000),
 			/*
 			 * Creates dig effects, uses the data as the block ID of the sound
 			 * to play.
 			 */
 			DIG(2001),
+			/*
+			 * Creates the particles that appear when dispenser is used, data is
+			 * used as direction (up to 9).
+			 */
+			DISPENSER_PARTICLE_SPAWN(2000),
 			/*
 			 * Plays a record, uses data as the item ID of the record to play
 			 */
@@ -84,6 +70,9 @@ public class EffectUtils {
 			}
 		}
 
+		public interface IEffect {
+			public int getIdentifier();
+		}
 		public enum Sound implements IEffect {
 			/*
 			 * Plays the sound when dispensers are fired
@@ -123,27 +112,38 @@ public class EffectUtils {
 				return "" + this.getIdentifier();
 			}
 		}
-	}
 
-	public static class EffectData {
-		private final IEffect effect;
-		private final int data;
+		private static Set<String> formatted = new HashSet<String>();
 
-		public EffectData(IEffect effect, int data) {
-			this.effect = effect;
-			this.data = data;
+		public static Map<String, IEffect> names = new HashMap<String, IEffect>();
+
+		public static void addFormatted(String name) {
+			String[] split = name.toLowerCase().split("_");
+			split[0] = StringUtils.capitalise(split[0]);
+			formatted.add(Joiner.on(" ").join(split));
 		}
 
-		public EffectData(IEffect effect) {
-			this(effect, 0);
+		public static IEffect getByIdentifier(int identifier) {
+			for (IEffect effect : names.values()) {
+				if (effect.getIdentifier() == identifier) {
+					return effect;
+				}
+			}
+			return null;
 		}
 
-		public IEffect getEffect() {
-			return effect;
+		public static IEffect getByName(String name) {
+			name = name.toUpperCase().replace(" ", "_");
+			for (String effect : names.keySet()) {
+				if (effect.startsWith(name)) {
+					return names.get(effect);
+				}
+			}
+			return null;
 		}
 
-		public int getData() {
-			return data;
+		public static Set<String> getFormattedEffects() {
+			return formatted;
 		}
 	}
 

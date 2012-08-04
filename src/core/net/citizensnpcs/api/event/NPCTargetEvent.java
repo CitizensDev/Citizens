@@ -9,12 +9,12 @@ public class NPCTargetEvent extends EntityTargetEvent {
         super(entity, target, TargetReason.CUSTOM);
     }
 
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
         return handlers;
     }
+
+    private static final HandlerList handlers = new HandlerList();
 
     public static HandlerList getHandlerList() {
         return handlers;

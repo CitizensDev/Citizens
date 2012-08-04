@@ -6,9 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 public class Stockable {
-	private final ItemStack stocking;
 	private ItemPrice price;
 	private boolean selling;
+	private final ItemStack stocking;
 
 	// Represents an item that the npc can buy or sell.
 	public Stockable(ItemStack stocking, ItemPrice price, boolean selling) {
@@ -22,26 +22,30 @@ public class Stockable {
 				this.stocking.getDurability(), isSelling());
 	}
 
-	public ItemStack getStocking() {
-		return this.stocking;
-	}
-
 	public ItemPrice getPrice() {
 		return this.price;
 	}
 
-	public void setSelling(boolean selling) {
-		this.selling = selling;
-	}
-
-	public boolean isSelling() {
-		return selling;
+	public ItemStack getStocking() {
+		return this.stocking;
 	}
 
 	public String getString(ChatColor colour) {
 		return StringUtils.wrap(getStocking().getAmount() + " "
 				+ getStocking().getType().name(), colour)
 				+ "(s)";
+	}
+
+	public boolean isSelling() {
+		return selling;
+	}
+
+	public void setPrice(ItemPrice price) {
+		this.price = price;
+	}
+
+	public void setSelling(boolean selling) {
+		this.selling = selling;
 	}
 
 	@Override
@@ -52,9 +56,5 @@ public class Stockable {
 		ret += price.toString() + ",";
 		ret += selling + ",";
 		return ret;
-	}
-
-	public void setPrice(ItemPrice price) {
-		this.price = price;
 	}
 }

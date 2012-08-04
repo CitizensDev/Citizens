@@ -45,11 +45,6 @@ public class CraftNPC extends PathNPC {
          */
     }
 
-    @Override
-    public void performAction(Animation action) {
-        this.animations.performAnimation(action);
-    }
-
     @SuppressWarnings("unused")
     private boolean chunkLoaded() {
         return this.bukkitEntity.getWorld().isChunkLoaded(this.npc.getChunkX(), this.npc.getChunkZ());
@@ -61,5 +56,10 @@ public class CraftNPC extends PathNPC {
 
     public boolean hasTarget() {
         return this.targetEntity != null;
+    }
+
+    @Override
+    public void performAction(Animation action) {
+        this.animations.performAnimation(action);
     }
 }

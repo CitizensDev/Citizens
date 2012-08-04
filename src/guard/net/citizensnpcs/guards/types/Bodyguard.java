@@ -40,34 +40,6 @@ public class Bodyguard implements GuardUpdater {
         });
     }
 
-    @Override
-    public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
-        switch (current) {
-        case NORMAL:
-            if (findTarget(npc))
-                return GuardStatus.ATTACKING;
-            break;
-        case ATTACKING:
-            if (!keepAttacking(npc)) {
-                teleportHome(npc);
-                return GuardStatus.NORMAL;
-            }
-            break;
-        }
-        return current;
-    }
-
-    private boolean keepAttacking(HumanNPC npc) {
-        Player owner = Bukkit.getPlayerExact(npc.getOwner());
-        if (owner == null) {
-            despawn(npc);
-            return false;
-        }
-        Guard guard = npc.getType("guard");
-        return npc.getHandle().hasTarget()
-                && LocationUtils.withinRange(owner.getLocation(), npc.getLocation(), guard.getProtectionRadius());
-    }
-
     private void despawn(HumanNPC npc) {
         toRespawn.put(npc.getOwner(), new NPCLocation(npc.getLocation(), npc.getUID(), npc.getOwner()));
         NPCManager.despawn(npc.getUID(), NPCRemoveReason.DEATH);
@@ -99,6 +71,21 @@ public class Bodyguard implements GuardUpdater {
         return false;
     }
 
+    private boolean keepAttacking(HumanNPC npc) {
+        Player owner = Bukkit.getPlayerExact(npc.getOwner());
+        if (owner == null) {
+            despawn(npc);
+            return false;
+        }
+        Guard guard = npc.getType("guard");
+        return npc.getHandle().hasTarget()
+                && LocationUtils.withinRange(owner.getLocation(), npc.getLocation(), guard.getProtectionRadius());
+    }
+
+    @Override
+    public void onDamage(HumanNPC npc, LivingEntity attacker) {
+    }
+
     private void teleportHome(HumanNPC npc) {
         Player owner = Bukkit.getServer().getPlayerExact(npc.getOwner());
         if (owner != null) {
@@ -107,9 +94,22 @@ public class Bodyguard implements GuardUpdater {
             despawn(npc);
     }
 
-    private final static Map<String, NPCLocation> toRespawn = new HashMap<String, NPCLocation>();
-
     @Override
-    public void onDamage(HumanNPC npc, LivingEntity attacker) {
+    public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
+        switch (current) {
+        case NORMAL:
+            if (findTarget(npc))
+                return GuardStatus.ATTACKING;
+            break;
+        case ATTACKING:
+            if (!keepAttacking(npc)) {
+                teleportHome(npc);
+                return GuardStatus.NORMAL;
+            }
+            break;
+        }
+        return current;
     }
+
+    private final static Map<String, NPCLocation> toRespawn = new HashMap<String, NPCLocation>();
 }

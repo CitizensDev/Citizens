@@ -12,6 +12,11 @@ public class NPCRemoveEvent extends NPCEvent {
         this.reason = reason;
     }
 
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
     /**
      * Get the reason why an NPC despawn
      * 
@@ -23,29 +28,24 @@ public class NPCRemoveEvent extends NPCEvent {
 
     public enum NPCRemoveReason {
         /**
-         * NPC was killed
-         */
-        DEATH,
-        /**
          * NPC was removed by a command
          */
         COMMAND,
         /**
-         * NPC was removed, possibly to be respawned later
+         * NPC was killed
          */
-        UNLOAD,
+        DEATH,
         /**
          * NPC was removed by other means
          */
-        OTHER;
+        OTHER,
+        /**
+         * NPC was removed, possibly to be respawned later
+         */
+        UNLOAD;
     }
 
     private static final HandlerList handlers = new HandlerList();
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
 
     public static HandlerList getHandlerList() {
         return handlers;

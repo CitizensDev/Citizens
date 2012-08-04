@@ -11,17 +11,6 @@ import org.bukkit.entity.Player;
 public class CitizensManager {
 
 	/**
-	 * Gets an NPC from a UID.
-	 * 
-	 * @param UID
-	 *            UID of an NPC
-	 * @return NPC with the given ID, null if an NPC wasn't found
-	 */
-	public static HumanNPC getNPC(int UID) {
-		return NPCManager.get(UID);
-	}
-
-	/**
 	 * Gets an NPC from an entity.
 	 * 
 	 * @param entity
@@ -30,17 +19,6 @@ public class CitizensManager {
 	 */
 	public static HumanNPC get(Entity entity) {
 		return NPCManager.get(entity);
-	}
-
-	/**
-	 * Checks if a given entity is an npc.
-	 * 
-	 * @param entity
-	 *            Bukkit Entity
-	 * @return true if the entity is an NPC
-	 */
-	public static boolean isNPC(Entity entity) {
-		return NPCManager.isNPC(entity);
 	}
 
 	/**
@@ -53,6 +31,17 @@ public class CitizensManager {
 	}
 
 	/**
+	 * Gets an NPC from a UID.
+	 * 
+	 * @param UID
+	 *            UID of an NPC
+	 * @return NPC with the given ID, null if an NPC wasn't found
+	 */
+	public static HumanNPC getNPC(int UID) {
+		return NPCManager.get(UID);
+	}
+
+	/**
 	 * Get the NPC that a given player has selected
 	 * 
 	 * @param player
@@ -62,6 +51,17 @@ public class CitizensManager {
 	 */
 	public static int getSelected(Player player) {
 		return NPCDataManager.getSelected(player);
+	}
+
+	/**
+	 * Checks if a given entity is an npc.
+	 * 
+	 * @param entity
+	 *            Bukkit Entity
+	 * @return true if the entity is an NPC
+	 */
+	public static boolean isNPC(Entity entity) {
+		return NPCManager.isNPC(entity);
 	}
 
 	/**

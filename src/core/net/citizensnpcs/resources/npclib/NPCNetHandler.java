@@ -23,23 +23,19 @@ public class NPCNetHandler extends NetServerHandler {
     }
 
     @Override
-    public void a(String s, Object[] aobject) {
+    public void a(Packet102WindowClick packet102windowclick) {
     }
 
     @Override
-    public void sendPacket(Packet packet) {
-    }
-
-    @Override
-    public void onUnhandledPacket(Packet packet) {
-    }
-
-    @Override
-    public void a(Packet3Chat packet3chat) {
+    public void a(Packet106Transaction packet106transaction) {
     }
 
     @Override
     public void a(Packet10Flying packet10flying) {
+    }
+
+    @Override
+    public void a(Packet130UpdateSign packet130updatesign) {
     }
 
     @Override
@@ -55,7 +51,15 @@ public class NPCNetHandler extends NetServerHandler {
     }
 
     @Override
+    public void a(Packet255KickDisconnect packet255kickdisconnect) {
+    }
+
+    @Override
     public void a(Packet28EntityVelocity packet28entityvelocity) {
+    }
+
+    @Override
+    public void a(Packet3Chat packet3chat) {
     }
 
     @Override
@@ -63,18 +67,14 @@ public class NPCNetHandler extends NetServerHandler {
     }
 
     @Override
-    public void a(Packet102WindowClick packet102windowclick) {
+    public void a(String s, Object[] aobject) {
     }
 
     @Override
-    public void a(Packet106Transaction packet106transaction) {
+    public void onUnhandledPacket(Packet packet) {
     }
 
     @Override
-    public void a(Packet255KickDisconnect packet255kickdisconnect) {
-    }
-
-    @Override
-    public void a(Packet130UpdateSign packet130updatesign) {
+    public void sendPacket(Packet packet) {
     }
 }

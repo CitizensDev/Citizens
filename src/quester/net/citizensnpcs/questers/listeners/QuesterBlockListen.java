@@ -17,8 +17,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import com.google.common.collect.Sets;
 
 public class QuesterBlockListen implements Listener {
-    private static final Set<Location> placed = Sets.newHashSet();
-
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (placed.contains(event.getBlock().getLocation())) {
@@ -49,4 +47,6 @@ public class QuesterBlockListen implements Listener {
             }
         }
     }
+
+    private static final Set<Location> placed = Sets.newHashSet();
 }

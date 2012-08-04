@@ -22,7 +22,15 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 public class PlayerProfile {
-    private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
+    private final Map<String, CompletedQuest> completedQuests = Maps.newHashMap();
+
+    private long lastSave;
+
+    private final String name;
+
+    private final ConfigurationHandler profile;
+
+    private QuestProgress progress;
 
     private PlayerProfile(String name) {
         profile = new ConfigurationHandler("plugins/Citizens/profiles/" + name + ".yml");
@@ -30,142 +38,64 @@ public class PlayerProfile {
         this.load();
     }
 
-    public static Collection<PlayerProfile> getOnline() {
-        return profiles.values();
-    }
-
-    public static PlayerProfile getProfile(String name, boolean register) {
-        name = name.toLowerCase();
-        if (profiles.get(name) == null) {
-            PlayerProfile profile = new PlayerProfile(name);
-            if (register) {
-                profiles.put(name, profile);
-            }
-            return profile;
-        }
-        return profiles.get(name);
-    }
-
-    public static PlayerProfile getProfile(String name) {
-        return getProfile(name, true);
-    }
-
-    public static boolean isOnline(String name) {
-        return profiles.containsKey(name.toLowerCase());
-    }
-
-    public int getCompletedTimes(String reward) {
-        return hasCompleted(reward) ? getCompletedQuest(reward).getTimesCompleted() : 0;
-    }
-
-    public static void setProfile(String name, PlayerProfile profile) {
-        name = name.toLowerCase();
-        if (profile == null) {
-            profiles.remove(name);
-        } else {
-            profiles.put(name, profile);
-        }
-    }
-
-    public static void saveAll() {
-        for (PlayerProfile profile : profiles.values()) {
-            profile.save();
-        }
-    }
-
-    private long lastSave;
-    private final ConfigurationHandler profile;
-    private final Map<String, CompletedQuest> completedQuests = Maps.newHashMap();
-    private QuestProgress progress;
-    private final String name;
-
     public void addCompletedQuest(CompletedQuest quest) {
         completedQuests.put(quest.getName().toLowerCase(), quest);
     }
 
-    public void removeCompletedQuest(String name) {
-        completedQuests.remove(name.toLowerCase());
-    }
-
-    public CompletedQuest getCompletedQuest(String name) {
-        return completedQuests.get(name.toLowerCase());
-    }
-
-    public void removeAllCompletedQuests() {
-        completedQuests.clear();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        PlayerProfile other = (PlayerProfile) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
     }
 
     public Collection<CompletedQuest> getAllCompleted() {
         return Collections.unmodifiableCollection(completedQuests.values());
     }
 
+    public CompletedQuest getCompletedQuest(String name) {
+        return completedQuests.get(name.toLowerCase());
+    }
+    public int getCompletedTimes(String reward) {
+        return hasCompleted(reward) ? getCompletedQuest(reward).getTimesCompleted() : 0;
+    }
+    public long getLastSaveTime() {
+        return lastSave;
+    }
+    public QuestProgress getProgress() {
+        return progress;
+    }
+    public String getQuest() {
+        return progress == null ? "" : progress.getQuestName();
+    }
+
     public boolean hasCompleted(String quest) {
         return completedQuests.containsKey(quest.toLowerCase());
     }
 
-    public QuestProgress getProgress() {
-        return progress;
-    }
-
-    public void setProgress(QuestProgress progress) {
-        this.progress = progress;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 
     public boolean hasQuest() {
         return progress != null;
     }
 
-    public String getQuest() {
-        return progress == null ? "" : progress.getQuestName();
-    }
-
     public boolean isOnline() {
         return Bukkit.getServer().getPlayer(name) != null;
-    }
-
-    public void save() {
-        this.lastSave = System.currentTimeMillis();
-        if (profile.pathExists("quests.current"))
-            profile.removeKey("quests.current");
-        if (progress != null) {
-            String path = "quests.current", oldPath = path;
-            int count = 0;
-
-            profile.setString(path + ".name", progress.getQuestName());
-            profile.setInt(path + ".step", progress.getStep());
-            profile.setLong(path + ".start-time", progress.getStartTime());
-            profile.setInt(path + ".giver", progress.getQuesterUID());
-            if (progress.getProgress() != null) {
-                for (ObjectiveProgress current : progress.getProgress()) {
-                    path = oldPath + "." + count + ".progress";
-                    if (current == null) {
-                        ++count;
-                        continue;
-                    }
-                    profile.setInt(path + ".amount", current.getAmount());
-                    if (current.getLastItem() != null) {
-                        profile.setInt(path + ".item.id", current.getLastItem().getTypeId());
-                        profile.setInt(path + ".item.amount", current.getLastItem().getAmount());
-                        profile.setInt(path + ".item.data", current.getLastItem().getDurability());
-                    }
-                    if (current.getLastLocation() != null) {
-                        LocationUtils.saveLocation(profile, current.getLastLocation(), path, true);
-                    }
-                    ++count;
-                }
-            }
-        }
-        if (profile.pathExists("quests.completed"))
-            profile.removeKey("quests.completed");
-        String path = "quests.completed.", temp;
-        for (CompletedQuest quest : this.completedQuests.values()) {
-            temp = path + quest.getName();
-            profile.setInt(temp + ".completed", quest.getTimesCompleted());
-            profile.setLong(temp + ".elapsed", quest.getElapsed());
-            profile.setLong(temp + ".finish", quest.getFinishTime());
-            profile.setInt(temp + ".quester", quest.getQuesterUID());
-        }
-        profile.save();
     }
 
     private void load() {
@@ -219,31 +149,101 @@ public class PlayerProfile {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name);
+    public void removeAllCompletedQuests() {
+        completedQuests.clear();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        PlayerProfile other = (PlayerProfile) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
+    public void removeCompletedQuest(String name) {
+        completedQuests.remove(name.toLowerCase());
+    }
+
+    public void save() {
+        this.lastSave = System.currentTimeMillis();
+        if (profile.pathExists("quests.current"))
+            profile.removeKey("quests.current");
+        if (progress != null) {
+            String path = "quests.current", oldPath = path;
+            int count = 0;
+
+            profile.setString(path + ".name", progress.getQuestName());
+            profile.setInt(path + ".step", progress.getStep());
+            profile.setLong(path + ".start-time", progress.getStartTime());
+            profile.setInt(path + ".giver", progress.getQuesterUID());
+            if (progress.getProgress() != null) {
+                for (ObjectiveProgress current : progress.getProgress()) {
+                    path = oldPath + "." + count + ".progress";
+                    if (current == null) {
+                        ++count;
+                        continue;
+                    }
+                    profile.setInt(path + ".amount", current.getAmount());
+                    if (current.getLastItem() != null) {
+                        profile.setInt(path + ".item.id", current.getLastItem().getTypeId());
+                        profile.setInt(path + ".item.amount", current.getLastItem().getAmount());
+                        profile.setInt(path + ".item.data", current.getLastItem().getDurability());
+                    }
+                    if (current.getLastLocation() != null) {
+                        LocationUtils.saveLocation(profile, current.getLastLocation(), path, true);
+                    }
+                    ++count;
+                }
             }
-        } else if (!name.equals(other.name)) {
-            return false;
         }
-        return true;
+        if (profile.pathExists("quests.completed"))
+            profile.removeKey("quests.completed");
+        String path = "quests.completed.", temp;
+        for (CompletedQuest quest : this.completedQuests.values()) {
+            temp = path + quest.getName();
+            profile.setInt(temp + ".completed", quest.getTimesCompleted());
+            profile.setLong(temp + ".elapsed", quest.getElapsed());
+            profile.setLong(temp + ".finish", quest.getFinishTime());
+            profile.setInt(temp + ".quester", quest.getQuesterUID());
+        }
+        profile.save();
     }
 
-    public long getLastSaveTime() {
-        return lastSave;
+    public void setProgress(QuestProgress progress) {
+        this.progress = progress;
+    }
+
+    private static final Map<String, PlayerProfile> profiles = new HashMap<String, PlayerProfile>();
+
+    public static Collection<PlayerProfile> getOnline() {
+        return profiles.values();
+    }
+
+    public static PlayerProfile getProfile(String name) {
+        return getProfile(name, true);
+    }
+
+    public static PlayerProfile getProfile(String name, boolean register) {
+        name = name.toLowerCase();
+        if (profiles.get(name) == null) {
+            PlayerProfile profile = new PlayerProfile(name);
+            if (register) {
+                profiles.put(name, profile);
+            }
+            return profile;
+        }
+        return profiles.get(name);
+    }
+
+    public static boolean isOnline(String name) {
+        return profiles.containsKey(name.toLowerCase());
+    }
+
+    public static void saveAll() {
+        for (PlayerProfile profile : profiles.values()) {
+            profile.save();
+        }
+    }
+
+    public static void setProfile(String name, PlayerProfile profile) {
+        name = name.toLowerCase();
+        if (profile == null) {
+            profiles.remove(name);
+        } else {
+            profiles.put(name, profile);
+        }
     }
 }

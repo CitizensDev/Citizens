@@ -12,9 +12,6 @@ import net.citizensnpcs.properties.Storage;
 import net.citizensnpcs.utils.Messaging;
 
 public class Settings {
-    private static List<Node> nodes = new ArrayList<Node>();
-    private static Map<String, Node> loadedNodes = new HashMap<String, Node>();
-
     public enum SettingsType {
         /*
          * citizens.yml
@@ -25,10 +22,9 @@ public class Settings {
          */
         MOB;
     }
+    private static Map<String, Node> loadedNodes = new HashMap<String, Node>();
 
-    public static String getPath(String key) {
-        return loadedNodes.get(key).getPath();
-    }
+    private static List<Node> nodes = new ArrayList<Node>();
 
     public static boolean getBoolean(String name) {
         try {
@@ -37,26 +33,6 @@ public class Settings {
             Messaging.log("Report this error ASAP.");
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public static int getInt(String name) {
-        try {
-            return (Integer) loadedNodes.get(name).getValue();
-        } catch (NullPointerException e) {
-            Messaging.log("Report this error ASAP.");
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    public static String getString(String name) {
-        try {
-            return (String) loadedNodes.get(name).getValue();
-        } catch (NullPointerException e) {
-            Messaging.log("Report this error ASAP.");
-            e.printStackTrace();
-            return "";
         }
     }
 
@@ -74,6 +50,30 @@ public class Settings {
             Messaging.log("Report this error ASAP.");
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    public static int getInt(String name) {
+        try {
+            return (Integer) loadedNodes.get(name).getValue();
+        } catch (NullPointerException e) {
+            Messaging.log("Report this error ASAP.");
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static String getPath(String key) {
+        return loadedNodes.get(key).getPath();
+    }
+
+    public static String getString(String name) {
+        try {
+            return (String) loadedNodes.get(name).getValue();
+        } catch (NullPointerException e) {
+            Messaging.log("Report this error ASAP.");
+            e.printStackTrace();
+            return "";
         }
     }
 

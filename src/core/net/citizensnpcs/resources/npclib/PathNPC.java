@@ -25,28 +25,26 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 //TODO: FIX UP THIS WHOLE CLASS
 public class PathNPC extends EntityPlayer {
-    public HumanNPC npc;
-    private PathEntity path;
-    private Location dest;
-
     protected final NPCAnimator animations = new NPCAnimator(this);
-    protected Entity targetEntity;
-    protected boolean targetAggro = false;
-    protected boolean randomPather = false;
-    protected boolean autoPathToTarget = true;
-    protected float pathingRange = 16;
-
-    private boolean hasAttacked = false;
-    private int pathTicks = 0;
-    private int pathTickLimit = -1;
-    private int stationaryTicks = 0;
-    private int stationaryTickLimit = -1;
     private int attackTimes = 0;
     private int attackTimesLimit = -1;
-    private int prevX, prevY, prevZ;
-    private AutoPathfinder autoPathfinder;
-    private static final double JUMP_FACTOR = 0.07D;
 
+    private AutoPathfinder autoPathfinder;
+    protected boolean autoPathToTarget = true;
+    private Location dest;
+    private boolean hasAttacked = false;
+    public HumanNPC npc;
+    private PathEntity path;
+
+    protected float pathingRange = 16;
+    private int pathTickLimit = -1;
+    private int pathTicks = 0;
+    private int prevX, prevY, prevZ;
+    protected boolean randomPather = false;
+    private int stationaryTickLimit = -1;
+    private int stationaryTicks = 0;
+    protected boolean targetAggro = false;
+    protected Entity targetEntity;
     public PathNPC(MinecraftServer minecraftserver, World world, String s,
             ItemInWorldManager iteminworldmanager) {
         this(minecraftserver, world, s, iteminworldmanager, new MinecraftAutoPathfinder());
@@ -56,17 +54,6 @@ public class PathNPC extends EntityPlayer {
             ItemInWorldManager iteminworldmanager, AutoPathfinder autoPathfinder) {
         super(minecraftserver, world, s, iteminworldmanager);
         this.autoPathfinder = autoPathfinder;
-    }
-
-    public boolean isAutoPathfinder() {
-        return autoPathfinder != null;
-    }
-
-    public void setAutoPathfinder(boolean toggle) {
-        if (toggle) {
-            autoPathfinder = MinecraftAutoPathfinder.INSTANCE;
-        } else
-            autoPathfinder = null;
     }
 
     private void attackEntity(Entity entity) {
@@ -95,6 +82,22 @@ public class PathNPC extends EntityPlayer {
         if (this.attackTimes >= this.attackTimesLimit) {
             cancelTarget();
         }
+    }
+
+    public void cancelPath() {
+        this.path = null;
+        this.dest = null;
+        this.pathTicks = this.stationaryTicks = 0;
+        this.pathTickLimit = this.stationaryTickLimit = -1;
+        this.pathingRange = 16;
+    }
+
+    public void cancelTarget() {
+        this.targetEntity = null;
+        this.targetAggro = false;
+        this.attackTimes = 0;
+        this.attackTimesLimit = -1;
+        cancelPath();
     }
 
     PathEntity createPathEntity(int x, int y, int z) {
@@ -174,6 +177,10 @@ public class PathNPC extends EntityPlayer {
         }
     }
 
+    public boolean isAutoPathfinder() {
+        return autoPathfinder != null;
+    }
+
     private boolean isHoldingBow() {
         return getBukkitEntity().getItemInHand() != null
                 && getBukkitEntity().getItemInHand().getType() == Material.BOW;
@@ -233,20 +240,11 @@ public class PathNPC extends EntityPlayer {
         this.animations.performAnimation(action);
     }
 
-    public void cancelPath() {
-        this.path = null;
-        this.dest = null;
-        this.pathTicks = this.stationaryTicks = 0;
-        this.pathTickLimit = this.stationaryTickLimit = -1;
-        this.pathingRange = 16;
-    }
-
-    public void cancelTarget() {
-        this.targetEntity = null;
-        this.targetAggro = false;
-        this.attackTimes = 0;
-        this.attackTimesLimit = -1;
-        cancelPath();
+    public void setAutoPathfinder(boolean toggle) {
+        if (toggle) {
+            autoPathfinder = MinecraftAutoPathfinder.INSTANCE;
+        } else
+            autoPathfinder = null;
     }
 
     public void setTarget(LivingEntity entity, boolean aggro, int maxTicks, int maxStationaryTicks,
@@ -261,15 +259,6 @@ public class PathNPC extends EntityPlayer {
         this.pathTickLimit = maxTicks;
         this.pathingRange = (float) range;
         this.stationaryTickLimit = maxStationaryTicks;
-    }
-
-    public boolean toggleAutoPathfinder() {
-        if (autoPathfinder == null) {
-            autoPathfinder = MinecraftAutoPathfinder.INSTANCE;
-            return true;
-        }
-        autoPathfinder = null;
-        return false;
     }
 
     public boolean startPath(Location loc, int maxTicks, int maxStationaryTicks, double range) {
@@ -295,6 +284,15 @@ public class PathNPC extends EntityPlayer {
     public void targetClosestPlayer(boolean aggro, double range) {
         this.targetEntity = this.getClosestPlayer(range);
         this.targetAggro = aggro;
+    }
+
+    public boolean toggleAutoPathfinder() {
+        if (autoPathfinder == null) {
+            autoPathfinder = MinecraftAutoPathfinder.INSTANCE;
+            return true;
+        }
+        autoPathfinder = null;
+        return false;
     }
 
     private void updatePathingState() {
@@ -335,4 +333,6 @@ public class PathNPC extends EntityPlayer {
             this.attackEntity(this.targetEntity);
         }
     }
+
+    private static final double JUMP_FACTOR = 0.07D;
 }

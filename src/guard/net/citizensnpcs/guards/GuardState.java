@@ -6,13 +6,13 @@ import net.citizensnpcs.guards.types.Soldier;
 
 public enum GuardState {
 	/**
-	 * Protects land
-	 */
-	BOUNCER(new Bouncer()),
-	/**
 	 * Protects and follows players
 	 */
 	BODYGUARD(new Bodyguard()),
+	/**
+	 * Protects land
+	 */
+	BOUNCER(new Bouncer()),
 	/**
 	 * Default guard type
 	 */

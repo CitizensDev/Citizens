@@ -23,14 +23,6 @@ public abstract class CreatureNPC extends CraftNPC {
 	}
 
 	/**
-	 * Called when a creature spawns. Provides a default method, which sets the
-	 * creature to randomly path in updateMove().
-	 */
-	public void onSpawn() {
-		this.randomPather = true;
-	}
-
-	/**
 	 * Called every tick. This method provides a default action, which can be
 	 * overridden by subclasses. The default action attempts to target the
 	 * closest player based on a predefined range, else takes a random path.
@@ -41,10 +33,27 @@ public abstract class CreatureNPC extends CraftNPC {
 	}
 
 	/**
-	 * Called when the creature dies. Can be used for loot drops or playing
-	 * sound effects.
+	 * Helper method.
+	 * 
+	 * @return
 	 */
-	public abstract void onDeath();
+	public Player getEntity() {
+		return (Player) this.bukkitEntity;
+	}
+
+	/**
+	 * Helper method.
+	 * 
+	 * @return
+	 */
+	public Location getLocation() {
+		return this.getEntity().getLocation();
+	}
+
+	/**
+	 * Returns the type of this creature.
+	 */
+	public abstract CreatureNPCType getType();
 
 	/**
 	 * Called when the creature is damaged. Can be used for targeting attacker
@@ -66,27 +75,18 @@ public abstract class CreatureNPC extends CraftNPC {
 	}
 
 	/**
-	 * Returns the type of this creature.
+	 * Called when the creature dies. Can be used for loot drops or playing
+	 * sound effects.
 	 */
-	public abstract CreatureNPCType getType();
+	public abstract void onDeath();
 
 	/**
-	 * Helper method.
+	 * Called when a player left clicks the NPC - this can cause a damage event
+	 * as well.
 	 * 
-	 * @return
+	 * @param player
 	 */
-	public Player getEntity() {
-		return (Player) this.bukkitEntity;
-	}
-
-	/**
-	 * Helper method.
-	 * 
-	 * @return
-	 */
-	public Location getLocation() {
-		return this.getEntity().getLocation();
-	}
+	public abstract void onLeftClick(Player player);
 
 	/**
 	 * Called when a player right clicks the NPC.
@@ -96,10 +96,10 @@ public abstract class CreatureNPC extends CraftNPC {
 	public abstract void onRightClick(Player player);
 
 	/**
-	 * Called when a player left clicks the NPC - this can cause a damage event
-	 * as well.
-	 * 
-	 * @param player
+	 * Called when a creature spawns. Provides a default method, which sets the
+	 * creature to randomly path in updateMove().
 	 */
-	public abstract void onLeftClick(Player player);
+	public void onSpawn() {
+		this.randomPather = true;
+	}
 }

@@ -23,22 +23,19 @@ public class NPCManager {
     public static final Map<Integer, String> GlobalUIDs = new MapMaker().makeMap();
     private static NPCList list = new NPCList();
 
-    public static HumanNPC get(int UID) {
-        return list.get(UID);
+    // Despawns an NPC.
+    public static void despawn(int UID, NPCRemoveReason reason) {
+        if (list.get(UID) == null)
+            return;
+        GlobalUIDs.remove(UID);
+        NPCSpawner.despawnNPC(list.remove(UID), reason);
     }
 
-    public static HumanNPC get(Entity entity) {
-        return list.getNPC(entity);
-    }
-
-    // Gets the list of NPCs.
-    public static NPCList getList() {
-        return list;
-    }
-
-    // Checks if a given entity is an npc.
-    public static boolean isNPC(Entity entity) {
-        return list.getNPC(entity) != null;
+    // Despawns all NPCs.
+    public static void despawnAll(NPCRemoveReason reason) {
+        for (int i : GlobalUIDs.keySet()) {
+            despawn(i, reason);
+        }
     }
 
     // Rotates an NPC.
@@ -64,47 +61,17 @@ public class NPCManager {
         npc.getHandle().pitch = (float) pitch;
     }
 
-    // Despawns an NPC.
-    public static void despawn(int UID, NPCRemoveReason reason) {
-        if (list.get(UID) == null)
-            return;
-        GlobalUIDs.remove(UID);
-        NPCSpawner.despawnNPC(list.remove(UID), reason);
+    public static HumanNPC get(Entity entity) {
+        return list.getNPC(entity);
     }
 
-    // Despawns all NPCs.
-    public static void despawnAll(NPCRemoveReason reason) {
-        for (int i : GlobalUIDs.keySet()) {
-            despawn(i, reason);
-        }
+    public static HumanNPC get(int UID) {
+        return list.get(UID);
     }
 
-    public static void safeDespawn(HumanNPC npc) {
-        NPCSpawner.despawnNPC(npc, NPCRemoveReason.UNLOAD);
-    }
-
-    // Removes an NPC.
-    public static void remove(int UID, NPCRemoveReason reason) {
-        PropertyManager.remove(get(UID));
-        despawn(UID, reason);
-    }
-
-    // Removes all NPCs.
-    public static void removeAll(NPCRemoveReason reason) {
-        for (int i : GlobalUIDs.keySet()) {
-            remove(i, reason);
-        }
-    }
-
-    // Removes an NPC, but not from the properties.
-    public static void removeForRespawn(int UID) {
-        PropertyManager.save(list.get(UID));
-        despawn(UID, NPCRemoveReason.UNLOAD);
-    }
-
-    // Registers a UID in the global list.
-    private static void registerUID(int UID, String name) {
-        GlobalUIDs.put(UID, name);
+    // Gets the list of NPCs.
+    public static NPCList getList() {
+        return list;
     }
 
     // Checks if a player has an npc selected.
@@ -118,23 +85,14 @@ public class NPCManager {
         return hasSelected(player) && NPCDataManager.selectedNPCs.get(player.getName()) == UID;
     }
 
+    // Checks if a given entity is an npc.
+    public static boolean isNPC(Entity entity) {
+        return list.getNPC(entity) != null;
+    }
+
     // Checks if a player owns a given npc.
     public static boolean isOwner(Player player, int UID) {
         return get(UID).getOwner().equalsIgnoreCase(player.getName());
-    }
-
-    // Renames an npc.
-    public static void rename(int UID, String changeTo, String owner) {
-        HumanNPC npc = get(UID);
-        npc.getNPCData().setName(changeTo);
-        removeForRespawn(UID);
-        register(UID, owner, NPCCreateReason.RESPAWN);
-    }
-
-    // Sets the colour of an npc's name.
-    public static void setColour(int UID, String owner) {
-        removeForRespawn(UID);
-        register(UID, owner, NPCCreateReason.RESPAWN);
     }
 
     // Spawns a new NPC and registers it.
@@ -179,5 +137,47 @@ public class NPCManager {
         PropertyManager.getBasic().saveName(UID, name);
         register(UID, owner, reason);
         return UID;
+    }
+
+    // Registers a UID in the global list.
+    private static void registerUID(int UID, String name) {
+        GlobalUIDs.put(UID, name);
+    }
+
+    // Removes an NPC.
+    public static void remove(int UID, NPCRemoveReason reason) {
+        PropertyManager.remove(get(UID));
+        despawn(UID, reason);
+    }
+
+    // Removes all NPCs.
+    public static void removeAll(NPCRemoveReason reason) {
+        for (int i : GlobalUIDs.keySet()) {
+            remove(i, reason);
+        }
+    }
+
+    // Removes an NPC, but not from the properties.
+    public static void removeForRespawn(int UID) {
+        PropertyManager.save(list.get(UID));
+        despawn(UID, NPCRemoveReason.UNLOAD);
+    }
+
+    // Renames an npc.
+    public static void rename(int UID, String changeTo, String owner) {
+        HumanNPC npc = get(UID);
+        npc.getNPCData().setName(changeTo);
+        removeForRespawn(UID);
+        register(UID, owner, NPCCreateReason.RESPAWN);
+    }
+
+    public static void safeDespawn(HumanNPC npc) {
+        NPCSpawner.despawnNPC(npc, NPCRemoveReason.UNLOAD);
+    }
+
+    // Sets the colour of an npc's name.
+    public static void setColour(int UID, String owner) {
+        removeForRespawn(UID);
+        register(UID, owner, NPCCreateReason.RESPAWN);
     }
 }

@@ -13,41 +13,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import com.google.common.collect.Lists;
 
 public class BlacksmithProperties extends PropertyManager implements Properties {
-	private static final String isBlacksmith = ".blacksmith.toggle";
-
-	public static final BlacksmithProperties INSTANCE = new BlacksmithProperties();
-
 	private BlacksmithProperties() {
-	}
-
-	@Override
-	public void saveState(HumanNPC npc) {
-		if (exists(npc)) {
-			setEnabled(npc, npc.isType("blacksmith"));
-			Blacksmith blacksmith = npc.getType("blacksmith");
-			blacksmith.save(profiles, npc.getUID());
-		}
-	}
-
-	@Override
-	public void loadState(HumanNPC npc) {
-		if (isEnabled(npc)) {
-			if (!npc.isType("blacksmith"))
-				npc.registerType("blacksmith");
-			Blacksmith blacksmith = npc.getType("blacksmith");
-			blacksmith.load(profiles, npc.getUID());
-		}
-		saveState(npc);
-	}
-
-	@Override
-	public void setEnabled(HumanNPC npc, boolean value) {
-		profiles.setBoolean(npc.getUID() + isBlacksmith, value);
-	}
-
-	@Override
-	public boolean isEnabled(HumanNPC npc) {
-		return profiles.getBoolean(npc.getUID() + isBlacksmith);
 	}
 
 	@Override
@@ -82,4 +48,38 @@ public class BlacksmithProperties extends PropertyManager implements Properties 
 	public Collection<String> getNodesForCopy() {
 		return Lists.newArrayList();
 	}
+
+	@Override
+	public boolean isEnabled(HumanNPC npc) {
+		return profiles.getBoolean(npc.getUID() + isBlacksmith);
+	}
+
+	@Override
+	public void loadState(HumanNPC npc) {
+		if (isEnabled(npc)) {
+			if (!npc.isType("blacksmith"))
+				npc.registerType("blacksmith");
+			Blacksmith blacksmith = npc.getType("blacksmith");
+			blacksmith.load(profiles, npc.getUID());
+		}
+		saveState(npc);
+	}
+
+	@Override
+	public void saveState(HumanNPC npc) {
+		if (exists(npc)) {
+			setEnabled(npc, npc.isType("blacksmith"));
+			Blacksmith blacksmith = npc.getType("blacksmith");
+			blacksmith.save(profiles, npc.getUID());
+		}
+	}
+
+	@Override
+	public void setEnabled(HumanNPC npc, boolean value) {
+		profiles.setBoolean(npc.getUID() + isBlacksmith, value);
+	}
+
+	public static final BlacksmithProperties INSTANCE = new BlacksmithProperties();
+
+	private static final String isBlacksmith = ".blacksmith.toggle";
 }

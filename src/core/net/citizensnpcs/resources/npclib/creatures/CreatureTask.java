@@ -17,13 +17,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.google.common.collect.MapMaker;
 
 public class CreatureTask implements Runnable {
-    public final static Map<Integer, CreatureNPC> creatureNPCs = new MapMaker().makeMap();
-    private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
-            CreatureNPCType.class);
     private Player[] online;
-    private static boolean dirty = true;
-    private static Random random = new Random(System.currentTimeMillis());
-
+    private void onSpawn(CreatureNPC creatureNPC) {
+        creatureNPC.onSpawn();
+    }
     @Override
     public void run() {
         if (dirty) {
@@ -39,7 +36,6 @@ public class CreatureTask implements Runnable {
             spawnCreature(type, player.getLocation());
         }
     }
-
     private void spawnCreature(CreatureNPCType type, Location location) {
         if (spawned.get(type) == null) {
             spawned.put(type, 0);
@@ -52,13 +48,27 @@ public class CreatureTask implements Runnable {
             }
         }
     }
-
-    private void onSpawn(CreatureNPC creatureNPC) {
-        creatureNPC.onSpawn();
+    public static class CreatureTick implements Runnable {
+        @Override
+        public void run() {
+            for (CreatureNPC npc : creatureNPCs.values()) {
+                npc.doTick();
+            }
+        }
     }
 
-    public static void setDirty() {
-        dirty = true;
+    public final static Map<Integer, CreatureNPC> creatureNPCs = new MapMaker().makeMap();
+
+    private static boolean dirty = true;
+
+    private static Random random = new Random(System.currentTimeMillis());
+
+    private final static EnumMap<CreatureNPCType, Integer> spawned = new EnumMap<CreatureNPCType, Integer>(
+            CreatureNPCType.class);
+
+    public static void despawn(CreatureNPC npc, NPCRemoveReason reason) {
+        removeFromMaps(npc);
+        NPCSpawner.despawnNPC(npc, reason);
     }
 
     public static void despawnAll(NPCRemoveReason reason) {
@@ -67,14 +77,8 @@ public class CreatureTask implements Runnable {
         }
     }
 
-    public static void despawn(CreatureNPC npc, NPCRemoveReason reason) {
-        removeFromMaps(npc);
-        NPCSpawner.despawnNPC(npc, reason);
-    }
-
-    public static void removeFromMaps(CreatureNPC npc) {
-        creatureNPCs.remove(npc.getBukkitEntity().getEntityId());
-        spawned.put(npc.getType(), spawned.get(npc.getType()) - 1);
+    public static CreatureNPC getCreature(Entity entity) {
+        return creatureNPCs.get(entity.getEntityId());
     }
 
     public static void onDamage(Entity entity, EntityDamageEvent event) {
@@ -92,16 +96,12 @@ public class CreatureTask implements Runnable {
         }
     }
 
-    public static CreatureNPC getCreature(Entity entity) {
-        return creatureNPCs.get(entity.getEntityId());
+    public static void removeFromMaps(CreatureNPC npc) {
+        creatureNPCs.remove(npc.getBukkitEntity().getEntityId());
+        spawned.put(npc.getType(), spawned.get(npc.getType()) - 1);
     }
 
-    public static class CreatureTick implements Runnable {
-        @Override
-        public void run() {
-            for (CreatureNPC npc : creatureNPCs.values()) {
-                npc.doTick();
-            }
-        }
+    public static void setDirty() {
+        dirty = true;
     }
 }

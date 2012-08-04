@@ -3,17 +3,12 @@ package net.citizensnpcs.resources.sk89q;
 import com.google.common.base.Objects;
 
 public class CommandIdentifier {
-	private final String modifier;
 	private final String command;
+	private final String modifier;
 
 	public CommandIdentifier(String command, String modifier) {
 		this.command = command;
 		this.modifier = modifier;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(command, modifier);
 	}
 
 	@Override
@@ -45,11 +40,16 @@ public class CommandIdentifier {
 		return true;
 	}
 
+	public String getCommand() {
+		return this.command;
+	}
+
 	public String getModifier() {
 		return this.modifier;
 	}
 
-	public String getCommand() {
-		return this.command;
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(command, modifier);
 	}
 }

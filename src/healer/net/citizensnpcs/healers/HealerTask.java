@@ -10,10 +10,19 @@ import org.bukkit.Bukkit;
 public class HealerTask implements Runnable {
 	private final HumanNPC npc;
 	private int taskID;
-	private static final Map<Integer, HealerTask> tasks = new HashMap<Integer, HealerTask>();
-
 	public HealerTask(HumanNPC npc) {
 		this.npc = npc;
+	}
+
+	public void addID(int taskID) {
+		this.taskID = taskID;
+		tasks.put(npc.getUID(), this);
+	}
+
+	public void cancel() {
+		Bukkit.getServer().getScheduler()
+				.cancelTask(getTask(npc.getUID()).taskID);
+		tasks.remove(npc.getUID());
 	}
 
 	@Override
@@ -24,10 +33,7 @@ public class HealerTask implements Runnable {
 		}
 	}
 
-	public void addID(int taskID) {
-		this.taskID = taskID;
-		tasks.put(npc.getUID(), this);
-	}
+	private static final Map<Integer, HealerTask> tasks = new HashMap<Integer, HealerTask>();
 
 	public static void cancelTasks() {
 		for (HealerTask entry : tasks.values()) {
@@ -37,11 +43,5 @@ public class HealerTask implements Runnable {
 
 	public static HealerTask getTask(int UID) {
 		return tasks.get(UID);
-	}
-
-	public void cancel() {
-		Bukkit.getServer().getScheduler()
-				.cancelTask(getTask(npc.getUID()).taskID);
-		tasks.remove(npc.getUID());
 	}
 }

@@ -20,10 +20,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import com.google.common.collect.Sets;
 
 public class PermissionManager {
-    private static Permission provider = null;
-    private static boolean permissionsEnabled;
-    private static final List<String> permissions = new ArrayList<String>();
-
     public void init() {
         try {
             RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServicesManager().getRegistration(
@@ -36,77 +32,10 @@ public class PermissionManager {
         }
         addPermissions();
     }
+    private static final List<String> permissions = new ArrayList<String>();
+    private static boolean permissionsEnabled;
 
-    public static boolean hasBackend() {
-        return permissionsEnabled;
-    }
-
-    public static boolean hasPermission(Player player, String string) {
-        return player.hasPermission(string);
-    }
-
-    public static boolean canCreate(Player player) {
-        return hasPermission(player, "citizens.admin") || hasPermission(player, "citizens.npccount.unlimited")
-                || getMaxNPCs(player) > UtilityProperties.getNPCCount(player.getName());
-    }
-
-    private static int getMaxNPCs(Player player) {
-        for (int x = 100; x > 0; --x) {
-            if (hasPermission(player, "citizens.npccount." + x)) {
-                return x;
-            }
-        }
-        return 0;
-    }
-
-    public static void grantRank(Player player, String rank, boolean take) {
-        if (permissionsEnabled) {
-            if (take) {
-                provider.playerRemoveGroup(player, rank);
-            } else {
-                provider.playerAddGroup(player, rank);
-            }
-        }
-    }
-
-    public static void setRank(Player player, String rank) {
-        if (permissionsEnabled) {
-            for (String group : provider.getPlayerGroups(player)) {
-                provider.playerRemoveGroup(player, group);
-            }
-            provider.playerAddGroup(player, rank);
-        }
-    }
-
-    public static void removeRank(Player player, String rank) {
-        if (permissionsEnabled) {
-            provider.playerRemoveGroup(player, rank);
-        }
-    }
-
-    public static boolean hasRank(Player player, String rank) {
-        return permissionsEnabled && provider.playerInGroup(player, rank);
-    }
-
-    public static void givePermission(Player player, String reward, boolean take) {
-        if (permissionsEnabled) {
-            if (take) {
-                provider.playerRemove(player, reward);
-            } else {
-                provider.playerAdd(player, reward);
-            }
-        }
-    }
-
-    public static Set<CitizensGroup> getGroups(Player player) {
-        if (!permissionsEnabled)
-            return null;
-        Set<CitizensGroup> groups = Sets.newHashSet();
-        for (String group : provider.getPlayerGroups(player)) {
-            groups.add(new CitizensGroup(group));
-        }
-        return groups;
-    }
+    private static Permission provider = null;
 
     // TODO: is this needed?
     public static void addPermission(String perm) {
@@ -130,6 +59,50 @@ public class PermissionManager {
         }
     }
 
+    public static boolean canCreate(Player player) {
+        return hasPermission(player, "citizens.admin") || hasPermission(player, "citizens.npccount.unlimited")
+                || getMaxNPCs(player) > UtilityProperties.getNPCCount(player.getName());
+    }
+
+    public static Set<CitizensGroup> getGroups(Player player) {
+        if (!permissionsEnabled)
+            return null;
+        Set<CitizensGroup> groups = Sets.newHashSet();
+        for (String group : provider.getPlayerGroups(player)) {
+            groups.add(new CitizensGroup(group));
+        }
+        return groups;
+    }
+
+    private static int getMaxNPCs(Player player) {
+        for (int x = 100; x > 0; --x) {
+            if (hasPermission(player, "citizens.npccount." + x)) {
+                return x;
+            }
+        }
+        return 0;
+    }
+
+    public static void givePermission(Player player, String reward, boolean take) {
+        if (permissionsEnabled) {
+            if (take) {
+                provider.playerRemove(player, reward);
+            } else {
+                provider.playerAdd(player, reward);
+            }
+        }
+    }
+
+    public static void grantRank(Player player, String rank, boolean take) {
+        if (permissionsEnabled) {
+            if (take) {
+                provider.playerRemoveGroup(player, rank);
+            } else {
+                provider.playerAddGroup(player, rank);
+            }
+        }
+    }
+
     public static boolean groupExists(String name) {
         if (!permissionsEnabled)
             return false;
@@ -138,5 +111,32 @@ public class PermissionManager {
                 return true;
         }
         return false;
+    }
+
+    public static boolean hasBackend() {
+        return permissionsEnabled;
+    }
+
+    public static boolean hasPermission(Player player, String string) {
+        return player.hasPermission(string);
+    }
+
+    public static boolean hasRank(Player player, String rank) {
+        return permissionsEnabled && provider.playerInGroup(player, rank);
+    }
+
+    public static void removeRank(Player player, String rank) {
+        if (permissionsEnabled) {
+            provider.playerRemoveGroup(player, rank);
+        }
+    }
+
+    public static void setRank(Player player, String rank) {
+        if (permissionsEnabled) {
+            for (String group : provider.getPlayerGroups(player)) {
+                provider.playerRemoveGroup(player, group);
+            }
+            provider.playerAddGroup(player, rank);
+        }
     }
 }

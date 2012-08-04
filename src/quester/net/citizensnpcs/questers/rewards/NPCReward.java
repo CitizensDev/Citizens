@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 import com.google.common.base.Joiner;
 
 public class NPCReward implements Reward {
+	private final Location at;
 	private final String name;
 	private final String[] toggles;
-	private final Location at;
 
 	public NPCReward(String name, String[] toggles, Location at) {
 		this.name = name;
@@ -50,17 +50,6 @@ public class NPCReward implements Reward {
 		storage.setString(root + ".types", Joiner.on(",").join(toggles));
 	}
 
-	public static class NPCRewardBuilder implements RewardBuilder {
-		@Override
-		public Reward build(Storage storage, String root, boolean take) {
-			if (storage.keyExists(root + ".npcid"))
-				return new NPCGiveReward(storage.getInt(root + ".npcid"));
-			return new NPCReward(storage.getString(root + ".name"), storage
-					.getString(root + ".types").split(","),
-					LocationUtils.loadLocation(storage, root, false));
-		}
-	}
-
 	private static class NPCGiveReward implements Reward {
 		private final int UID;
 
@@ -81,6 +70,17 @@ public class NPCReward implements Reward {
 		@Override
 		public void save(Storage storage, String root) {
 			storage.setInt(root + ".npcid", UID);
+		}
+	}
+
+	public static class NPCRewardBuilder implements RewardBuilder {
+		@Override
+		public Reward build(Storage storage, String root, boolean take) {
+			if (storage.keyExists(root + ".npcid"))
+				return new NPCGiveReward(storage.getInt(root + ".npcid"));
+			return new NPCReward(storage.getString(root + ".name"), storage
+					.getString(root + ".types").split(","),
+					LocationUtils.loadLocation(storage, root, false));
 		}
 	}
 }

@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemReward implements Requirement, Reward {
-    private final Material material;
     private final int amount;
     private final short durability;
+    private final Material material;
     private final boolean take;
 
     ItemReward(Material mat, int amount, short durability, boolean take) {
@@ -23,6 +23,23 @@ public class ItemReward implements Requirement, Reward {
         this.amount = amount;
         this.durability = durability;
         this.take = take;
+    }
+
+    @Override
+    public boolean fulfilsRequirement(Player player) {
+        return InventoryUtils.has(player, material, amount);
+    }
+
+    @Override
+    public String getRequiredText(Player player) {
+        int remainder = InventoryUtils.getRemainder(player, material, amount);
+        return ChatColor.GRAY
+                + "You need "
+                + StringUtils.wrap(remainder, ChatColor.GRAY)
+                + " more "
+                + StringUtils
+                        .pluralise(StringUtils.format(material), remainder)
+                + ".";
     }
 
     @SuppressWarnings("deprecation")
@@ -54,23 +71,6 @@ public class ItemReward implements Requirement, Reward {
     @Override
     public boolean isTake() {
         return take;
-    }
-
-    @Override
-    public boolean fulfilsRequirement(Player player) {
-        return InventoryUtils.has(player, material, amount);
-    }
-
-    @Override
-    public String getRequiredText(Player player) {
-        int remainder = InventoryUtils.getRemainder(player, material, amount);
-        return ChatColor.GRAY
-                + "You need "
-                + StringUtils.wrap(remainder, ChatColor.GRAY)
-                + " more "
-                + StringUtils
-                        .pluralise(StringUtils.format(material), remainder)
-                + ".";
     }
 
     @Override

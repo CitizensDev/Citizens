@@ -9,7 +9,17 @@ import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class DestroyQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { BlockBreakEvent.class };
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        return QuestUtils.defaultAmountProgress(progress, StringUtils.formatter(progress.getObjective().getMaterial())
+                .wrap().plural(progress.getAmount())
+                + " destroyed");
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -22,15 +32,5 @@ public class DestroyQuest implements QuestUpdater {
         return progress.getAmount() >= progress.getObjective().getAmount();
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
-    }
-
-    @Override
-    public String getStatus(ObjectiveProgress progress) {
-        return QuestUtils.defaultAmountProgress(progress, StringUtils.formatter(progress.getObjective().getMaterial())
-                .wrap().plural(progress.getAmount())
-                + " destroyed");
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { BlockBreakEvent.class };
 }

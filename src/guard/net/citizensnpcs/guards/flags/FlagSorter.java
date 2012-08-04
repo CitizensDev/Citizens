@@ -27,52 +27,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public class FlagSorter {
-    // TODO: perhaps we should make a sorted copy as well of the base flags.
-    // Needs some cleaning up of code... perhaps less verbosity can be achieved.
-    // Optimisations are definitely possible.
-    private final FlagList list;
-    private final Map<String, FlagInfo> groupCache = new HashMap<String, FlagInfo>();
-    private final FlagType GROUPS = FlagType.GROUP, PLAYERS = FlagType.PLAYER, MOBS = FlagType.MOB;
-    private int lowestFound = 21;
-
-    private static final Function<Entity, LivingEntity> livingTransformer = new Function<Entity, LivingEntity>() {
-        @Override
-        public LivingEntity apply(Entity entity) {
-            return (LivingEntity) entity;
-        }
-    };
-
-    private static final Predicate<Entity> livingFilterer = new Predicate<Entity>() {
-        @Override
-        public boolean apply(Entity entity) {
-            return entity instanceof LivingEntity && !((LivingEntity) entity).isDead();
-        }
-
-    };
-    private final Predicate<CitizensGroup> groupSorter = new Predicate<CitizensGroup>() {
-        @Override
-        public boolean apply(CitizensGroup group) {
-            String name = group.getName().toLowerCase();
-            if (!getByType(GROUPS).containsKey(name))
-                name = "all";
-            return getByType(GROUPS).containsKey(name) && !getByType(GROUPS).get(name).isSafe();
-        }
-    };
-    private final Function<CitizensGroup, String> groupToString = new Function<CitizensGroup, String>() {
-        @Override
-        public String apply(CitizensGroup group) {
-            return group.getName().toLowerCase();
-        }
-    };
-
-    private final Comparator<FlagInfo> priorityComparer = new Comparator<FlagInfo>() {
-        @Override
-        public int compare(FlagInfo first, FlagInfo other) {
-            int priority = first.priority(), second = other.priority();
-            return second < priority ? 1 : second > priority ? -1 : 0;
-        }
-    };
-
     private final Predicate<LivingEntity> entitySorter = new Predicate<LivingEntity>() {
         @Override
         public boolean apply(LivingEntity entity) {
@@ -119,6 +73,37 @@ public class FlagSorter {
             }
         }
 
+    };
+    private final Map<String, FlagInfo> groupCache = new HashMap<String, FlagInfo>();
+    private final FlagType GROUPS = FlagType.GROUP, PLAYERS = FlagType.PLAYER, MOBS = FlagType.MOB;
+    private final Predicate<CitizensGroup> groupSorter = new Predicate<CitizensGroup>() {
+        @Override
+        public boolean apply(CitizensGroup group) {
+            String name = group.getName().toLowerCase();
+            if (!getByType(GROUPS).containsKey(name))
+                name = "all";
+            return getByType(GROUPS).containsKey(name) && !getByType(GROUPS).get(name).isSafe();
+        }
+    };
+
+    private final Function<CitizensGroup, String> groupToString = new Function<CitizensGroup, String>() {
+        @Override
+        public String apply(CitizensGroup group) {
+            return group.getName().toLowerCase();
+        }
+    };
+
+    // TODO: perhaps we should make a sorted copy as well of the base flags.
+    // Needs some cleaning up of code... perhaps less verbosity can be achieved.
+    // Optimisations are definitely possible.
+    private final FlagList list;
+    private int lowestFound = 21;
+    private final Comparator<FlagInfo> priorityComparer = new Comparator<FlagInfo>() {
+        @Override
+        public int compare(FlagInfo first, FlagInfo other) {
+            int priority = first.priority(), second = other.priority();
+            return second < priority ? 1 : second > priority ? -1 : 0;
+        }
     };
 
     public FlagSorter(FlagList list) {
@@ -197,4 +182,19 @@ public class FlagSorter {
             lowestFound = info.priority();
         }
     }
+
+    private static final Predicate<Entity> livingFilterer = new Predicate<Entity>() {
+        @Override
+        public boolean apply(Entity entity) {
+            return entity instanceof LivingEntity && !((LivingEntity) entity).isDead();
+        }
+
+    };
+
+    private static final Function<Entity, LivingEntity> livingTransformer = new Function<Entity, LivingEntity>() {
+        @Override
+        public LivingEntity apply(Entity entity) {
+            return (LivingEntity) entity;
+        }
+    };
 }

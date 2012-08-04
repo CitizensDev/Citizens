@@ -61,12 +61,125 @@ import com.google.common.base.Joiner;
  * Citizens - NPCs for Bukkit
  */
 public class Citizens extends JavaPlugin {
-    public static Citizens plugin;
-    public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
+    // TODO: clean this up a little bit.
+    private boolean handleMistake(CommandSender sender, String command, String modifier) {
+        String[] modifiers = commands.getAllCommandModifiers(command);
+        Map<Integer, String> values = new TreeMap<Integer, String>();
+        int i = 0;
+        for (String string : modifiers) {
+            values.put(StringUtils.getLevenshteinDistance(modifier, string), modifiers[i]);
+            ++i;
+        }
+        int best = 0;
+        boolean stop = false;
+        Set<String> possible = new HashSet<String>();
+        for (Entry<Integer, String> entry : values.entrySet()) {
+            if (!stop) {
+                best = entry.getKey();
+                stop = true;
+            } else if (entry.getKey() > best) {
+                break;
+            }
+            possible.add(entry.getValue());
+        }
+        if (possible.size() > 0) {
+            sender.sendMessage(ChatColor.GRAY + "Unknown command. Did you mean:");
+            for (String string : possible) {
+                sender.sendMessage(StringUtils.wrap("    /") + command + " " + StringUtils.wrap(string));
+            }
+            return true;
+        }
+        return false;
+    }
+    // load NPC types in the plugins/Citizens/types directory
+    private void loadNPCTypes() {
+        File dir = new File(getDataFolder(), "types");
+        dir.mkdirs();
+        for (String f : dir.list()) {
+            if (f.contains(".jar")) {
+                CitizensNPCType type = CitizensNPCLoader.loadNPCType(new File(dir, f), this);
+                if (type != null) {
+                    loadedTypes.add(type.getName());
+                    Bukkit.getPluginManager().callEvent(new CitizensEnableTypeEvent(type));
+                }
+            }
+        }
+        if (loadedTypes.size() > 0) {
+            Messaging.log("NPC types loaded: " + Joiner.on(", ").join(loadedTypes));
+        } else {
+            Messaging.log("No NPC types loaded.");
+        }
+    }
 
-    public static boolean initialized = false;
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
+        try {
+            // must put command into split.
+            String[] split = new String[args.length + 1];
+            System.arraycopy(args, 0, split, 1, args.length);
+            split[0] = command.getName().toLowerCase();
 
-    public static List<String> loadedTypes = new ArrayList<String>();
+            String modifier = "";
+            if (args.length > 0) {
+                modifier = args[0];
+            }
+
+            // No command found!
+            if (!commands.hasCommand(split[0], modifier)) {
+                if (!modifier.isEmpty()) {
+                    boolean value = handleMistake(sender, split[0], modifier);
+                    return value;
+                }
+            }
+
+            HumanNPC npc = null;
+            if (player != null && NPCManager.hasSelected(player)) {
+                npc = NPCManager.get(NPCDataManager.getSelected(player));
+            }
+            try {
+                commands.execute(split, player, player == null ? sender : player, npc);
+            } catch (ServerCommandException e) {
+                sender.sendMessage(e.getMessage());
+            } catch (CommandPermissionsException e) {
+                Messaging.sendError(sender, MessageUtils.noPermissionsMessage);
+            } catch (MissingNestedCommandException e) {
+                Messaging.sendError(player, e.getUsage());
+            } catch (CommandUsageException e) {
+                Messaging.sendError(player, e.getMessage());
+                Messaging.sendError(player, e.getUsage());
+            } catch (RequirementMissingException e) {
+                Messaging.sendError(player, e.getMessage());
+            } catch (WrappedCommandException e) {
+                throw e.getCause();
+            } catch (UnhandledCommandException e) {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            Messaging.sendError(player, "That is not a valid number.");
+        } catch (Throwable excp) {
+            excp.printStackTrace();
+            Messaging.sendError(player, "Please report this error: [See console]");
+            Messaging.sendError(player, excp.getClass().getName() + ": " + excp.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public void onDisable() {
+        // save the local copy of our files to disk
+        PropertyManager.saveState();
+        NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
+        CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
+
+        // call disable event
+        Bukkit.getServer().getPluginManager().callEvent(new CitizensDisableEvent());
+
+        Messaging.log("version [" + getDescription().getVersion() + "] disabled.");
+    }
 
     @Override
     public void onEnable() {
@@ -159,108 +272,7 @@ public class Citizens extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {
-        // save the local copy of our files to disk
-        PropertyManager.saveState();
-        NPCManager.despawnAll(NPCRemoveReason.UNLOAD);
-        CreatureTask.despawnAll(NPCRemoveReason.UNLOAD);
-
-        // call disable event
-        Bukkit.getServer().getPluginManager().callEvent(new CitizensDisableEvent());
-
-        Messaging.log("version [" + getDescription().getVersion() + "] disabled.");
-    }
-
-    @Override
     public void onLoad() {
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = null;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        }
-        try {
-            // must put command into split.
-            String[] split = new String[args.length + 1];
-            System.arraycopy(args, 0, split, 1, args.length);
-            split[0] = command.getName().toLowerCase();
-
-            String modifier = "";
-            if (args.length > 0) {
-                modifier = args[0];
-            }
-
-            // No command found!
-            if (!commands.hasCommand(split[0], modifier)) {
-                if (!modifier.isEmpty()) {
-                    boolean value = handleMistake(sender, split[0], modifier);
-                    return value;
-                }
-            }
-
-            HumanNPC npc = null;
-            if (player != null && NPCManager.hasSelected(player)) {
-                npc = NPCManager.get(NPCDataManager.getSelected(player));
-            }
-            try {
-                commands.execute(split, player, player == null ? sender : player, npc);
-            } catch (ServerCommandException e) {
-                sender.sendMessage(e.getMessage());
-            } catch (CommandPermissionsException e) {
-                Messaging.sendError(sender, MessageUtils.noPermissionsMessage);
-            } catch (MissingNestedCommandException e) {
-                Messaging.sendError(player, e.getUsage());
-            } catch (CommandUsageException e) {
-                Messaging.sendError(player, e.getMessage());
-                Messaging.sendError(player, e.getUsage());
-            } catch (RequirementMissingException e) {
-                Messaging.sendError(player, e.getMessage());
-            } catch (WrappedCommandException e) {
-                throw e.getCause();
-            } catch (UnhandledCommandException e) {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            Messaging.sendError(player, "That is not a valid number.");
-        } catch (Throwable excp) {
-            excp.printStackTrace();
-            Messaging.sendError(player, "Please report this error: [See console]");
-            Messaging.sendError(player, excp.getClass().getName() + ": " + excp.getMessage());
-        }
-        return true;
-    }
-
-    // TODO: clean this up a little bit.
-    private boolean handleMistake(CommandSender sender, String command, String modifier) {
-        String[] modifiers = commands.getAllCommandModifiers(command);
-        Map<Integer, String> values = new TreeMap<Integer, String>();
-        int i = 0;
-        for (String string : modifiers) {
-            values.put(StringUtils.getLevenshteinDistance(modifier, string), modifiers[i]);
-            ++i;
-        }
-        int best = 0;
-        boolean stop = false;
-        Set<String> possible = new HashSet<String>();
-        for (Entry<Integer, String> entry : values.entrySet()) {
-            if (!stop) {
-                best = entry.getKey();
-                stop = true;
-            } else if (entry.getKey() > best) {
-                break;
-            }
-            possible.add(entry.getValue());
-        }
-        if (possible.size() > 0) {
-            sender.sendMessage(ChatColor.GRAY + "Unknown command. Did you mean:");
-            for (String string : possible) {
-                sender.sendMessage(StringUtils.wrap("    /") + command + " " + StringUtils.wrap(string));
-            }
-            return true;
-        }
-        return false;
     }
 
     private void setupNPCs() {
@@ -288,23 +300,11 @@ public class Citizens extends JavaPlugin {
         initialized = true;
     }
 
-    // load NPC types in the plugins/Citizens/types directory
-    private void loadNPCTypes() {
-        File dir = new File(getDataFolder(), "types");
-        dir.mkdirs();
-        for (String f : dir.list()) {
-            if (f.contains(".jar")) {
-                CitizensNPCType type = CitizensNPCLoader.loadNPCType(new File(dir, f), this);
-                if (type != null) {
-                    loadedTypes.add(type.getName());
-                    Bukkit.getPluginManager().callEvent(new CitizensEnableTypeEvent(type));
-                }
-            }
-        }
-        if (loadedTypes.size() > 0) {
-            Messaging.log("NPC types loaded: " + Joiner.on(", ").join(loadedTypes));
-        } else {
-            Messaging.log("No NPC types loaded.");
-        }
-    }
+    public static CitizensCommandsManager<Player> commands = new CitizensCommandsManager<Player>();
+
+    public static boolean initialized = false;
+
+    public static List<String> loadedTypes = new ArrayList<String>();
+
+    public static Citizens plugin;
 }

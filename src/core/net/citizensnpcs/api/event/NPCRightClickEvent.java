@@ -13,6 +13,11 @@ public class NPCRightClickEvent extends NPCPlayerEvent implements Cancellable {
         super(npc, player);
     }
 
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
     /**
      * Get the cancellation state of the event.
      * 
@@ -35,11 +40,6 @@ public class NPCRightClickEvent extends NPCPlayerEvent implements Cancellable {
     }
 
     private static final HandlerList handlers = new HandlerList();
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
 
     public static HandlerList getHandlerList() {
         return handlers;

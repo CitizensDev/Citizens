@@ -9,12 +9,6 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class PacketUtils {
-	public static void sendPacketToPlayer(final Player ply, final Packet packet) {
-		if (ply == null)
-			return;
-		((CraftPlayer) ply).getHandle().netServerHandler.sendPacket(packet);
-	}
-
 	public static void sendPacketNearby(final Location location,
 			final double radius, final Packet packet) {
 		sendPacketNearby(location, radius, packet, null);
@@ -43,5 +37,11 @@ public class PacketUtils {
 			}
 			sendPacketToPlayer(ply, packet);
 		}
+	}
+
+	public static void sendPacketToPlayer(final Player ply, final Packet packet) {
+		if (ply == null)
+			return;
+		((CraftPlayer) ply).getHandle().netServerHandler.sendPacket(packet);
 	}
 }

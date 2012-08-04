@@ -25,14 +25,6 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 public class EntityListen implements Listener {
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
-        if (NPCManager.get(event.getPlayer()) == null)
-            return;
-        ((CraftServer) Bukkit.getServer()).getHandle().players.remove(NPCManager.get(event.getPlayer())
-                .getHandle());
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         CreatureTask.onDamage(event.getEntity(), event);
         HumanNPC npc = NPCManager.get(event.getEntity());
@@ -49,6 +41,16 @@ public class EntityListen implements Listener {
             } else if (e.getDamager() instanceof Player) {
                 CreatureTask.onDamage(e.getEntity(), event);
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDeath(EntityDeathEvent event) {
+        CreatureTask.onEntityDeath(event.getEntity());
+        if (NPCManager.isNPC(event.getEntity())) {
+            HumanNPC npc = NPCManager.get(event.getEntity());
+            npc.callDeathEvent(event);
+            NPCManager.removeForRespawn(npc.getUID());
         }
     }
 
@@ -103,12 +105,10 @@ public class EntityListen implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onEntityDeath(EntityDeathEvent event) {
-        CreatureTask.onEntityDeath(event.getEntity());
-        if (NPCManager.isNPC(event.getEntity())) {
-            HumanNPC npc = NPCManager.get(event.getEntity());
-            npc.callDeathEvent(event);
-            NPCManager.removeForRespawn(npc.getUID());
-        }
+    public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
+        if (NPCManager.get(event.getPlayer()) == null)
+            return;
+        ((CraftServer) Bukkit.getServer()).getHandle().players.remove(NPCManager.get(event.getPlayer())
+                .getHandle());
     }
 }

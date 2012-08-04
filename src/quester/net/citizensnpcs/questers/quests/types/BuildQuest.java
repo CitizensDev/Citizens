@@ -9,7 +9,16 @@ import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BuildQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { BlockPlaceEvent.class };
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        return QuestUtils.defaultAmountProgress(progress, StringUtils.formatter(progress.getObjective().getMaterial())
+                .plural(progress.getAmount()) + " built");
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -21,14 +30,5 @@ public class BuildQuest implements QuestUpdater {
         return progress.getAmount() >= progress.getObjective().getAmount();
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
-    }
-
-    @Override
-    public String getStatus(ObjectiveProgress progress) {
-        return QuestUtils.defaultAmountProgress(progress, StringUtils.formatter(progress.getObjective().getMaterial())
-                .plural(progress.getAmount()) + " built");
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { BlockPlaceEvent.class };
 }

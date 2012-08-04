@@ -17,16 +17,6 @@ public class PermissionReward implements Requirement, Reward {
 	}
 
 	@Override
-	public void grant(Player player, int UID) {
-		PermissionManager.givePermission(player, reward, take);
-	}
-
-	@Override
-	public boolean isTake() {
-		return take;
-	}
-
-	@Override
 	public boolean fulfilsRequirement(Player player) {
 		return PermissionManager.hasPermission(player, reward);
 	}
@@ -35,6 +25,16 @@ public class PermissionReward implements Requirement, Reward {
 	public String getRequiredText(Player player) {
 		return ChatColor.GRAY + "You don't have the permission "
 				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
+	}
+
+	@Override
+	public void grant(Player player, int UID) {
+		PermissionManager.givePermission(player, reward, take);
+	}
+
+	@Override
+	public boolean isTake() {
+		return take;
 	}
 
 	@Override

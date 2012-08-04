@@ -22,20 +22,6 @@ public class QuestReward implements Requirement, Reward {
     }
 
     @Override
-    public void grant(Player player, int UID) {
-        if (!take)
-            new AssignQuestRunnable(player, UID, reward).schedule();
-        else if (PlayerProfile.getProfile(player.getName()).getQuest()
-                .equalsIgnoreCase(reward))
-            PlayerProfile.getProfile(player.getName()).setProgress(null);
-    }
-
-    @Override
-    public boolean isTake() {
-        return take;
-    }
-
-    @Override
     public boolean fulfilsRequirement(Player player) {
         if (times <= 0) {
             return !PlayerProfile.getProfile(player.getName()).hasCompleted(
@@ -57,14 +43,28 @@ public class QuestReward implements Requirement, Reward {
     }
 
     @Override
+    public void grant(Player player, int UID) {
+        if (!take)
+            new AssignQuestRunnable(player, UID, reward).schedule();
+        else if (PlayerProfile.getProfile(player.getName()).getQuest()
+                .equalsIgnoreCase(reward))
+            PlayerProfile.getProfile(player.getName()).setProgress(null);
+    }
+
+    @Override
+    public boolean isTake() {
+        return take;
+    }
+
+    @Override
     public void save(Storage storage, String root) {
         storage.setString(root + ".quest", reward);
     }
 
     private static class AssignQuestRunnable implements Runnable {
         private final Player player;
-        private final int UID;
         private final String quest;
+        private final int UID;
 
         public AssignQuestRunnable(Player player, int UID, String quest) {
             this.player = player;
@@ -72,14 +72,14 @@ public class QuestReward implements Requirement, Reward {
             this.quest = quest;
         }
 
-        public void schedule() {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
-                    this, 1);
-        }
-
         @Override
         public void run() {
             QuestManager.assignQuest(player, UID, quest);
+        }
+
+        public void schedule() {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin,
+                    this, 1);
         }
     }
 

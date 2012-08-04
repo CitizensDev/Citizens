@@ -13,9 +13,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class LinearWaypointPath implements WaypointPath0 {
+	private int index = 0;
 	private final HumanNPC npc;
 	private final List<Waypoint> points = new ArrayList<Waypoint>();
-	private int index = 0;
 
 	public LinearWaypointPath(HumanNPC npc) {
 		this.npc = npc;
@@ -37,10 +37,12 @@ public class LinearWaypointPath implements WaypointPath0 {
 		return new LinearPathEditor(player);
 	}
 
-	@Override
-	public void startPath() {
-		if (!rangeCheck())
-			return;
+	private boolean rangeCheck() {
+		if (index > points.size())
+			index = points.size();
+		if (0 > index)
+			index = 0;
+		return points.size() > 0;
 	}
 
 	@Override
@@ -50,20 +52,29 @@ public class LinearWaypointPath implements WaypointPath0 {
 		npc.getHandle().cancelPath();
 	}
 
-	private boolean rangeCheck() {
-		if (index > points.size())
-			index = points.size();
-		if (0 > index)
-			index = 0;
-		return points.size() > 0;
+	@Override
+	public void startPath() {
+		if (!rangeCheck())
+			return;
 	}
 
 	private class LinearPathEditor implements PathEditor {
-		private final Player player;
 		private int index = Math.max(0, points.size() - 1);
+		private final Player player;
 
 		private LinearPathEditor(Player player) {
 			this.player = player;
+		}
+
+		@Override
+		public void addModifier(WaypointModifier modifier) {
+			points.get(index).addModifier(modifier);
+		}
+
+		@Override
+		public void end() {
+			player.sendMessage(StringUtils.wrap("Finished")
+					+ " editing waypoints.");
 		}
 
 		@Override
@@ -114,11 +125,6 @@ public class LinearWaypointPath implements WaypointPath0 {
 		}
 
 		@Override
-		public void addModifier(WaypointModifier modifier) {
-			points.get(index).addModifier(modifier);
-		}
-
-		@Override
 		public void start() {
 			player.sendMessage(ChatColor.AQUA
 					+ StringUtils.listify("Waypoint Editing Controls"));
@@ -129,12 +135,6 @@ public class LinearWaypointPath implements WaypointPath0 {
 					+ " the NPC will cause him to restart from the current index.");
 			player.sendMessage(StringUtils.wrap("Repeat")
 					+ " this command to finish.");
-		}
-
-		@Override
-		public void end() {
-			player.sendMessage(StringUtils.wrap("Finished")
-					+ " editing waypoints.");
 		}
 	}
 }

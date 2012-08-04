@@ -23,9 +23,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class Guard extends CitizensNPC {
-    private boolean isAggressive = true;
-    private GuardState guardState = GuardState.NULL;
     private final FlagList flags = new FlagList();
+    private GuardState guardState = GuardState.NULL;
+    private boolean isAggressive = true;
     private double radius = 10;
 
     // Get a guard's blacklist
@@ -46,6 +46,11 @@ public class Guard extends CitizensNPC {
     // Get whether a bodyguard NPC kills on sight
     public boolean isAggressive() {
         return isAggressive;
+    }
+
+    private boolean isCoOwned(Entity damager, HumanNPC npc) {
+        HumanNPC other = NPCManager.get(damager);
+        return other != null && other.getOwner().equalsIgnoreCase(npc.getOwner());
     }
 
     private boolean isOwner(Entity damager, HumanNPC npc) {
@@ -81,11 +86,6 @@ public class Guard extends CitizensNPC {
             target((LivingEntity) ev.getDamager(), npc);
         }
         event.setCancelled(false);
-    }
-
-    private boolean isCoOwned(Entity damager, HumanNPC npc) {
-        HumanNPC other = NPCManager.get(damager);
-        return other != null && other.getOwner().equalsIgnoreCase(npc.getOwner());
     }
 
     @Override

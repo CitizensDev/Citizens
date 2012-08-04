@@ -14,12 +14,16 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.Lists;
 
 public class TraderProperties extends PropertyManager implements Properties {
-	private static final String isTrader = ".trader.toggle";
-	private static final String stock = ".trader.stock";
-
-	public static final TraderProperties INSTANCE = new TraderProperties();
-
 	private TraderProperties() {
+	}
+	@Override
+	public List<Node> getNodes() {
+		return null;
+	}
+
+	@Override
+	public List<String> getNodesForCopy() {
+		return nodesForCopy;
 	}
 
 	private Map<Check, Stockable> getStockables(int UID) {
@@ -63,15 +67,8 @@ public class TraderProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public void saveState(HumanNPC npc) {
-		if (exists(npc)) {
-			boolean is = npc.isType("trader");
-			setEnabled(npc, is);
-			if (is) {
-				Trader trader = npc.getType("trader");
-				trader.save(profiles, npc.getUID());
-			}
-		}
+	public boolean isEnabled(HumanNPC npc) {
+		return profiles.getBoolean(npc.getUID() + isTrader);
 	}
 
 	@Override
@@ -87,26 +84,29 @@ public class TraderProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
+	public void saveState(HumanNPC npc) {
+		if (exists(npc)) {
+			boolean is = npc.isType("trader");
+			setEnabled(npc, is);
+			if (is) {
+				Trader trader = npc.getType("trader");
+				trader.save(profiles, npc.getUID());
+			}
+		}
+	}
+
+	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
 		profiles.setBoolean(npc.getUID() + isTrader, value);
 	}
 
-	@Override
-	public boolean isEnabled(HumanNPC npc) {
-		return profiles.getBoolean(npc.getUID() + isTrader);
-	}
+	public static final TraderProperties INSTANCE = new TraderProperties();
 
-	@Override
-	public List<String> getNodesForCopy() {
-		return nodesForCopy;
-	}
+	private static final String isTrader = ".trader.toggle";
 
 	private static final List<String> nodesForCopy = Lists.newArrayList(
 			"trader.toggle", "trader.stock", "trader.unlimited",
 			"trader.clear-oldest", "trader.last-bought");
 
-	@Override
-	public List<Node> getNodes() {
-		return null;
-	}
+	private static final String stock = ".trader.stock";
 }

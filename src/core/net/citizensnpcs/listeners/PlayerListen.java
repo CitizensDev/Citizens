@@ -23,16 +23,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListen implements Listener {
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerLogin(PlayerLoginEvent event) {
-        CreatureTask.setDirty();
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        NPCDataManager.pathEditors.remove(event.getPlayer());
-        TickTask.clearActions(event.getPlayer());
-        CreatureTask.setDirty();
-        ConversationUtils.verify();
+    public void onPlayerChat(final AsyncPlayerChatEvent event) {
+        if (!event.isAsynchronous())
+            ConversationUtils.onChat(event);
+        else
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    ConversationUtils.onChat(event);
+                }
+            });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -58,15 +58,15 @@ public class PlayerListen implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerChat(final AsyncPlayerChatEvent event) {
-        if (!event.isAsynchronous())
-            ConversationUtils.onChat(event);
-        else
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
-                @Override
-                public void run() {
-                    ConversationUtils.onChat(event);
-                }
-            });
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        CreatureTask.setDirty();
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        NPCDataManager.pathEditors.remove(event.getPlayer());
+        TickTask.clearActions(event.getPlayer());
+        CreatureTask.setDirty();
+        ConversationUtils.verify();
     }
 }

@@ -16,6 +16,17 @@ public class PathEditingSession {
         this.index = index;
     }
 
+    public Location getCurrentLocation(WaypointPath waypoints) {
+        if (waypoints.get(index) != null)
+            return waypoints.get(index).getLocation();
+        int lower = Math.max(index - 1, 0);
+        return waypoints.get(lower).getLocation();
+    }
+
+    public int getIndex() {
+        return this.index;
+    }
+
     public HumanNPC getNPC() {
         return NPCManager.get(UID);
     }
@@ -30,15 +41,10 @@ public class PathEditingSession {
         rangeCheck(waypoints);
     }
 
-    public int getIndex() {
-        return this.index;
-    }
-
-    public Location getCurrentLocation(WaypointPath waypoints) {
-        if (waypoints.get(index) != null)
-            return waypoints.get(index).getLocation();
-        int lower = Math.max(index - 1, 0);
-        return waypoints.get(lower).getLocation();
+    private void rangeCheck(WaypointPath points) {
+        if (index >= points.size())
+            index = points.size() - 1;
+        index = Math.max(index, 0);
     }
 
     public void remove(WaypointPath waypoints) {
@@ -53,11 +59,5 @@ public class PathEditingSession {
             return;
         path.setIndex(index);
         getNPC().teleport(path.current().getLocation());
-    }
-
-    private void rangeCheck(WaypointPath points) {
-        if (index >= points.size())
-            index = points.size() - 1;
-        index = Math.max(index, 0);
     }
 }

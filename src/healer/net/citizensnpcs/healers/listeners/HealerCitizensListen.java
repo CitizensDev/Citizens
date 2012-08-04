@@ -16,6 +16,11 @@ import org.bukkit.event.Listener;
 public class HealerCitizensListen implements Listener {
 
     @EventHandler
+    public void onCitizensDisable(CitizensDisableEvent event) {
+        HealerTask.cancelTasks();
+    }
+
+    @EventHandler
     public void onCitizensEnable(CitizensEnableEvent event) {
         if (!Settings.getBoolean("RegenHealerHealth")) {
             return;
@@ -28,10 +33,5 @@ public class HealerCitizensListen implements Listener {
                         .scheduleSyncRepeatingTask(Citizens.plugin, task, delay, delay));
             }
         }
-    }
-
-    @EventHandler
-    public void onCitizensDisable(CitizensDisableEvent event) {
-        HealerTask.cancelTasks();
     }
 }

@@ -28,14 +28,6 @@ public class EvilCreatureNPC extends CreatureNPC {
 	}
 
 	@Override
-	public void onSpawn() {
-		npc.getInventory().setItemInHand(
-				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
-		this.health = Settings.getInt("EvilHealth");
-		super.onSpawn();
-	}
-
-	@Override
 	public void doTick() {
 		if (isTame)
 			return;
@@ -51,6 +43,11 @@ public class EvilCreatureNPC extends CreatureNPC {
 	}
 
 	@Override
+	public CreatureNPCType getType() {
+		return CreatureNPCType.EVIL;
+	}
+
+	@Override
 	public void onDeath() {
 		ItemStack item = UtilityProperties.getRandomDrop(Settings
 				.getString("EvilDrops"));
@@ -60,8 +57,7 @@ public class EvilCreatureNPC extends CreatureNPC {
 	}
 
 	@Override
-	public CreatureNPCType getType() {
-		return CreatureNPCType.EVIL;
+	public void onLeftClick(Player player) {
 	}
 
 	@Override
@@ -98,6 +94,10 @@ public class EvilCreatureNPC extends CreatureNPC {
 	}
 
 	@Override
-	public void onLeftClick(Player player) {
+	public void onSpawn() {
+		npc.getInventory().setItemInHand(
+				new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
+		this.health = Settings.getInt("EvilHealth");
+		super.onSpawn();
 	}
 }

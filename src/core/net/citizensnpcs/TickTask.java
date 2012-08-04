@@ -21,9 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
 
 public class TickTask implements Runnable {
-    private static final SetMultimap<HumanNPC, String> cachedActions = HashMultimap.create();
-    private static final List<String> toRemove = Lists.newArrayList();
-
     @Override
     public void run() {
         Player[] online = Bukkit.getServer().getOnlinePlayers();
@@ -60,7 +57,6 @@ public class TickTask implements Runnable {
             }
         }
     }
-
     private void updateWaypoints(HumanNPC npc) {
         WaypointPath waypoints = npc.getWaypoints();
         switch (waypoints.size()) {
@@ -102,13 +98,9 @@ public class TickTask implements Runnable {
         }
     }
 
-    public static void scheduleRespawn(HumanNPC npc, int delay) {
-        new RespawnTask(npc).register(delay);
-    }
-
     public static class RespawnTask implements Runnable {
-        private final int UID;
         private final String owner;
+        private final int UID;
 
         public RespawnTask(HumanNPC npc) {
             this.UID = npc.getUID();
@@ -127,9 +119,17 @@ public class TickTask implements Runnable {
         }
     }
 
+    private static final SetMultimap<HumanNPC, String> cachedActions = HashMultimap.create();
+
+    private static final List<String> toRemove = Lists.newArrayList();
+
     public static void clearActions(Player player) {
         synchronized (toRemove) {
             toRemove.add(player.getName().toLowerCase());
         }
+    }
+
+    public static void scheduleRespawn(HumanNPC npc, int delay) {
+        new RespawnTask(npc).register(delay);
     }
 }

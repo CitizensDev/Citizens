@@ -13,6 +13,18 @@ public class NPC {
 		this.UID = UID;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		NPC other = (NPC) obj;
+		return UID == other.UID;
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -24,17 +36,5 @@ public class NPC {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(UID);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		NPC other = (NPC) obj;
-		return UID == other.UID;
 	}
 }

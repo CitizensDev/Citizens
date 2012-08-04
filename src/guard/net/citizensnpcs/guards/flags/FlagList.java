@@ -18,12 +18,54 @@ public class FlagList {
     private final FlagSorter predicates = new FlagSorter(this);
     private LivingEntity result;
 
+    public void addFlag(FlagType type, FlagInfo info) {
+        if (info == null)
+            throw new IllegalArgumentException("Info should not be null");
+        getFlags(type).put(info.getName(), info);
+    }
+
+    public void addToAll(Set<Character> set, FlagInfo info) {
+        List<FlagType> toAdd = Lists.newArrayList();
+        if (set.size() == 1) {
+            for (FlagType type : FlagType.values()) {
+                toAdd.add(type);
+            }
+        } else {
+            for (FlagType type : FlagType.values()) {
+                if (type.isWithin(set)) {
+                    toAdd.add(type);
+                }
+            }
+        }
+        for (FlagType type : toAdd) {
+            addFlag(type, info);
+        }
+    }
+
+    public void clear() {
+        for (FlagType type : FlagType.values()) {
+            getFlags(type).clear();
+        }
+    }
+
+    public boolean contains(FlagType type, String name) {
+        return getFlags(type).get(name) != null;
+    }
+
+    public Map<String, FlagInfo> getFlags(FlagType type) {
+        return flags.get(type);
+    }
+
     private Map<FlagType, Map<String, FlagInfo>> getPopulatedMap() {
         Map<FlagType, Map<String, FlagInfo>> populated = Maps.newEnumMap(FlagType.class);
         for (FlagType type : FlagType.values()) {
             populated.put(type, new HashMap<String, FlagInfo>());
         }
         return populated;
+    }
+
+    public LivingEntity getResult() {
+        return result;
     }
 
     public boolean process(Location base, List<LivingEntity> toProcess) {
@@ -57,50 +99,8 @@ public class FlagList {
         process(base, predicates.transformToLiving(entities));
     }
 
-    public LivingEntity getResult() {
-        return result;
-    }
-
-    public void addFlag(FlagType type, FlagInfo info) {
-        if (info == null)
-            throw new IllegalArgumentException("Info should not be null");
-        getFlags(type).put(info.getName(), info);
-    }
-
     public void removeFlag(FlagType type, String identifier) {
         getFlags(type).remove(identifier);
-    }
-
-    public Map<String, FlagInfo> getFlags(FlagType type) {
-        return flags.get(type);
-    }
-
-    public void addToAll(Set<Character> set, FlagInfo info) {
-        List<FlagType> toAdd = Lists.newArrayList();
-        if (set.size() == 1) {
-            for (FlagType type : FlagType.values()) {
-                toAdd.add(type);
-            }
-        } else {
-            for (FlagType type : FlagType.values()) {
-                if (type.isWithin(set)) {
-                    toAdd.add(type);
-                }
-            }
-        }
-        for (FlagType type : toAdd) {
-            addFlag(type, info);
-        }
-    }
-
-    public boolean contains(FlagType type, String name) {
-        return getFlags(type).get(name) != null;
-    }
-
-    public void clear() {
-        for (FlagType type : FlagType.values()) {
-            getFlags(type).clear();
-        }
     }
 
     public enum FlagType {

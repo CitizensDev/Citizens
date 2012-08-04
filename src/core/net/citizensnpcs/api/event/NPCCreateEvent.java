@@ -6,8 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.event.HandlerList;
 
 public class NPCCreateEvent extends NPCEvent {
-    private final NPCCreateReason reason;
     private final Location loc;
+    private final NPCCreateReason reason;
 
     public NPCCreateEvent(HumanNPC npc, NPCCreateReason reason, Location loc) {
         super(npc);
@@ -15,13 +15,9 @@ public class NPCCreateEvent extends NPCEvent {
         this.loc = loc;
     }
 
-    /**
-     * Get the reason why an NPC was created
-     * 
-     * @return reason for an NPC being created
-     */
-    public NPCCreateReason getReason() {
-        return this.reason;
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
     }
 
     /**
@@ -33,11 +29,16 @@ public class NPCCreateEvent extends NPCEvent {
         return this.loc;
     }
 
+    /**
+     * Get the reason why an NPC was created
+     * 
+     * @return reason for an NPC being created
+     */
+    public NPCCreateReason getReason() {
+        return this.reason;
+    }
+
     public enum NPCCreateReason {
-        /**
-         * NPC naturally spawned into the world
-         */
-        SPAWN,
         /**
          * NPC was created via a command
          */
@@ -45,15 +46,14 @@ public class NPCCreateEvent extends NPCEvent {
         /**
          * NPC was reloaded/respawned after being unloaded/despawned/killed
          */
-        RESPAWN;
+        RESPAWN,
+        /**
+         * NPC naturally spawned into the world
+         */
+        SPAWN;
     }
 
     private static final HandlerList handlers = new HandlerList();
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
 
     public static HandlerList getHandlerList() {
         return handlers;

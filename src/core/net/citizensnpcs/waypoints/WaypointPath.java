@@ -12,18 +12,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class WaypointPath {
+	private int index = 0;
 	private final List<Waypoint> points = new ArrayList<Waypoint>();
 	private boolean started = false;
-	private int index = 0;
-
-	public void resetWaypoints() {
-		this.points.clear();
-		this.index = 0;
-	}
-
-	public void setIndex(int waypointIndex) {
-		this.index = waypointIndex;
-	}
 
 	public Waypoint current() {
 		if (points.size() == 0)
@@ -37,37 +28,8 @@ public class WaypointPath {
 		return index;
 	}
 
-	public void setStarted(boolean waypointStarted) {
-		this.started = waypointStarted;
-	}
-
-	public boolean isStarted() {
-		return started;
-	}
-
-	public List<Waypoint> getWaypoints() {
-		return this.points;
-	}
-
-	public void setPoints(List<Waypoint> waypoints) {
-		this.points.clear();
-		this.points.addAll(waypoints);
-	}
-
 	public Waypoint get(int index) {
 		return this.points.get(index);
-	}
-
-	public void insert(Waypoint location, int index) {
-		this.points.add(index, location);
-	}
-
-	public void remove(int index) {
-		this.points.remove(index);
-	}
-
-	public int size() {
-		return points.size();
 	}
 
 	public Waypoint getLast() {
@@ -77,13 +39,30 @@ public class WaypointPath {
 		return points.get(points.size() - 1);
 	}
 
+	public List<Waypoint> getWaypoints() {
+		return this.points;
+	}
+
+	public void insert(Waypoint location, int index) {
+		this.points.add(index, location);
+	}
+
+	public boolean isStarted() {
+		return started;
+	}
+
 	public void onReach(HumanNPC npc) {
 		if (current() != null)
 			current().onReach(npc);
 	}
 
-	public void scheduleNext(HumanNPC npc) {
-		schedule(npc, currentIndex());
+	public void remove(int index) {
+		this.points.remove(index);
+	}
+
+	public void resetWaypoints() {
+		this.points.clear();
+		this.index = 0;
 	}
 
 	public void schedule(HumanNPC npc, int index) {
@@ -109,6 +88,44 @@ public class WaypointPath {
 		}
 	}
 
+	public void scheduleNext(HumanNPC npc) {
+		schedule(npc, currentIndex());
+	}
+
+	public void setIndex(int waypointIndex) {
+		this.index = waypointIndex;
+	}
+
+	public void setPoints(List<Waypoint> waypoints) {
+		this.points.clear();
+		this.points.addAll(waypoints);
+	}
+
+	public void setStarted(boolean waypointStarted) {
+		this.started = waypointStarted;
+	}
+
+	public int size() {
+		return points.size();
+	}
+
+	private static class RestartPathTask implements Runnable {
+		private final HumanNPC npc;
+		private final Location point;
+
+		public RestartPathTask(HumanNPC npc, Location point) {
+			this.npc = npc;
+			this.point = point;
+		}
+
+		@Override
+		public void run() {
+			PathUtils.createPath(npc, point, -1, -1,
+					Settings.getDouble("PathfindingRange"));
+			npc.setPaused(false);
+		}
+	}
+
 	private static class WaypointScheduler implements Runnable {
 		private final HumanNPC npc;
 		private final Location target;
@@ -122,23 +139,6 @@ public class WaypointPath {
 		public void run() {
 			PathUtils.createPath(npc, target, -1, -1,
 					Settings.getDouble("PathfindingRange"));
-		}
-	}
-
-	private static class RestartPathTask implements Runnable {
-		private final Location point;
-		private final HumanNPC npc;
-
-		public RestartPathTask(HumanNPC npc, Location point) {
-			this.npc = npc;
-			this.point = point;
-		}
-
-		@Override
-		public void run() {
-			PathUtils.createPath(npc, point, -1, -1,
-					Settings.getDouble("PathfindingRange"));
-			npc.setPaused(false);
 		}
 	}
 }

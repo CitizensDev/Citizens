@@ -14,7 +14,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class DeliveryQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { NPCRightClickEvent.class };
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+
+    @Override
+    public String getStatus(ObjectiveProgress progress) throws QuestCancelException {
+        if (CitizensManager.getNPC(progress.getObjective().getDestNPCID()) == null) {
+            throw new QuestCancelException(ChatColor.GRAY + "Cancelling quest due to missing destination NPC.");
+        }
+        int amount = progress.getObjective().getAmount();
+        if (progress.getObjective().getMaterial() == null || progress.getObjective().getMaterial() == Material.AIR)
+            return ChatColor.GREEN + "Talking to "
+                    + StringUtils.wrap(CitizensManager.getNPC(progress.getObjective().getDestNPCID()).getName()) + ".";
+        return ChatColor.GREEN + "Delivering " + StringUtils.wrap(amount) + " "
+                + StringUtils.formatter(progress.getObjective().getMaterial()).plural(amount) + " to "
+                + StringUtils.wrap(CitizensManager.getNPC(progress.getObjective().getDestNPCID()).getName()) + ".";
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -47,22 +64,5 @@ public class DeliveryQuest implements QuestUpdater {
         return false;
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
-    }
-
-    @Override
-    public String getStatus(ObjectiveProgress progress) throws QuestCancelException {
-        if (CitizensManager.getNPC(progress.getObjective().getDestNPCID()) == null) {
-            throw new QuestCancelException(ChatColor.GRAY + "Cancelling quest due to missing destination NPC.");
-        }
-        int amount = progress.getObjective().getAmount();
-        if (progress.getObjective().getMaterial() == null || progress.getObjective().getMaterial() == Material.AIR)
-            return ChatColor.GREEN + "Talking to "
-                    + StringUtils.wrap(CitizensManager.getNPC(progress.getObjective().getDestNPCID()).getName()) + ".";
-        return ChatColor.GREEN + "Delivering " + StringUtils.wrap(amount) + " "
-                + StringUtils.formatter(progress.getObjective().getMaterial()).plural(amount) + " to "
-                + StringUtils.wrap(CitizensManager.getNPC(progress.getObjective().getDestNPCID()).getName()) + ".";
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { NPCRightClickEvent.class };
 }

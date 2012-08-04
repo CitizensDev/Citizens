@@ -33,18 +33,27 @@ public class Soldier implements GuardUpdater {
     }
 
     @Override
+    public void onDamage(HumanNPC npc, LivingEntity attacker) {
+    }
+
+    @Override
     public GuardStatus updateStatus(GuardStatus current, HumanNPC npc) {
         return current;
     }
 
-    @Override
-    public void onDamage(HumanNPC npc, LivingEntity attacker) {
-    }
-
     private static class SelectionHooks implements Listener {
-        @EventHandler
-        public void onPlayerQuit(PlayerQuitEvent event) {
-            selections.remove(event.getPlayer());
+        private void attack(Player player, LivingEntity attack, Selection<HumanNPC> selection) {
+            if (selection.size() == 0)
+                return;
+            for (HumanNPC npc : selection) {
+                PathUtils.target(npc, attack, true, -1);
+            }
+            player.sendMessage(ChatColor.GREEN + "Set " + StringUtils.wrap(selection.size())
+                    + StringUtils.pluralise(" NPC", selection.size()) + " on your target.");
+        }
+
+        private boolean isSoldier(HumanNPC npc) {
+            return npc.isType("guard") && ((Guard) npc.getType("guard")).isState(GuardState.SOLDIER);
         }
 
         @EventHandler
@@ -93,14 +102,9 @@ public class Soldier implements GuardUpdater {
             }
         }
 
-        private void attack(Player player, LivingEntity attack, Selection<HumanNPC> selection) {
-            if (selection.size() == 0)
-                return;
-            for (HumanNPC npc : selection) {
-                PathUtils.target(npc, attack, true, -1);
-            }
-            player.sendMessage(ChatColor.GREEN + "Set " + StringUtils.wrap(selection.size())
-                    + StringUtils.pluralise(" NPC", selection.size()) + " on your target.");
+        @EventHandler
+        public void onPlayerQuit(PlayerQuitEvent event) {
+            selections.remove(event.getPlayer());
         }
 
         private void select(Player player, HumanNPC npc, Selection<HumanNPC> selection) {
@@ -115,17 +119,13 @@ public class Soldier implements GuardUpdater {
                     + StringUtils.pluralise(" NPC", selection.size()) + " now selected.");
 
         }
-
-        private boolean isSoldier(HumanNPC npc) {
-            return npc.isType("guard") && ((Guard) npc.getType("guard")).isState(GuardState.SOLDIER);
-        }
     }
+
+    private static final Map<Player, Selection<HumanNPC>> selections = Maps.newHashMap();
 
     private static Selection<HumanNPC> getSelection(Player player) {
         if (!selections.containsKey(player))
             selections.put(player, new OwnerSelection(player));
         return selections.get(player);
     }
-
-    private static final Map<Player, Selection<HumanNPC>> selections = Maps.newHashMap();
 }

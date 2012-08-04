@@ -12,30 +12,15 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
  */
 public interface Properties {
 	/**
-	 * Load data for an NPC type for the given NPC
+	 * Get a list of configuration nodes for an NPC type
 	 * 
-	 * @param npc
-	 *            NPC to save the state of
+	 * @see net.citizensnpcs.properties.Node Node for info on creating nodes
+	 * 
+	 * @return list of configuration nodes
 	 */
-	public abstract void saveState(HumanNPC npc);
+	public abstract List<Node> getNodes();
 
-	/**
-	 * Load data for an NPC type for the given NPC
-	 * 
-	 * @param npc
-	 *            NPC to load the state of
-	 */
-	public abstract void loadState(HumanNPC npc);
-
-	/**
-	 * Set whether an NPC is of a type
-	 * 
-	 * @param npc
-	 *            NPC to set the state of
-	 * @param value
-	 *            Whether or not an NPC is enabled as a type
-	 */
-	public abstract void setEnabled(HumanNPC npc, boolean value);
+	public abstract Collection<String> getNodesForCopy();
 
 	/**
 	 * Get whether an NPC is of a type
@@ -47,13 +32,28 @@ public interface Properties {
 	public abstract boolean isEnabled(HumanNPC npc);
 
 	/**
-	 * Get a list of configuration nodes for an NPC type
+	 * Load data for an NPC type for the given NPC
 	 * 
-	 * @see net.citizensnpcs.properties.Node Node for info on creating nodes
-	 * 
-	 * @return list of configuration nodes
+	 * @param npc
+	 *            NPC to load the state of
 	 */
-	public abstract List<Node> getNodes();
+	public abstract void loadState(HumanNPC npc);
 
-	public abstract Collection<String> getNodesForCopy();
+	/**
+	 * Load data for an NPC type for the given NPC
+	 * 
+	 * @param npc
+	 *            NPC to save the state of
+	 */
+	public abstract void saveState(HumanNPC npc);
+
+	/**
+	 * Set whether an NPC is of a type
+	 * 
+	 * @param npc
+	 *            NPC to set the state of
+	 * @param value
+	 *            Whether or not an NPC is enabled as a type
+	 */
+	public abstract void setEnabled(HumanNPC npc, boolean value);
 }

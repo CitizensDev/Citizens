@@ -17,9 +17,36 @@ import com.google.common.collect.Lists;
 
 public class GuardProperties extends PropertyManager implements Properties {
 
-	public static final GuardProperties INSTANCE = new GuardProperties();
-
 	private GuardProperties() {
+	}
+
+	@Override
+	public List<Node> getNodes() {
+		List<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node("MaxStationaryReturnTicks", SettingsType.GENERAL,
+				"guards.max.stationary-return-ticks", 25));
+		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
+				"guards.respawn-delay", 100));
+		nodes.add(new Node("DefaultBouncerProtectionRadius",
+				SettingsType.GENERAL,
+				"guards.bouncers.default.protection-radius", 10));
+		nodes.add(new Node("SoldierSelectTool", SettingsType.GENERAL,
+				"guards.soldiers.items.select", "*"));
+		nodes.add(new Node("SoldierReturnTool", SettingsType.GENERAL,
+				"guards.soldiers.items.return", "288,"));
+		nodes.add(new Node("SoldierDeselectAllTool", SettingsType.GENERAL,
+				"guards.soldiers.items.deselect-all", "352,"));
+		return nodes;
+	}
+
+	@Override
+	public Collection<String> getNodesForCopy() {
+		return nodesForCopy;
+	}
+
+	@Override
+	public boolean isEnabled(HumanNPC npc) {
+		return profiles.getBoolean(npc.getUID() + isGuard);
 	}
 
 	private void loadFlags(Guard guard, int UID) {
@@ -35,6 +62,18 @@ public class GuardProperties extends PropertyManager implements Properties {
 			flags.addFlag(FlagType.parse(profiles.getString(path + ".type")),
 					FlagInfo.newInstance(key, priority, isSafe));
 		}
+	}
+
+	@Override
+	public void loadState(HumanNPC npc) {
+		if (isEnabled(npc)) {
+			if (!npc.isType("guard"))
+				npc.registerType("guard");
+			Guard guard = npc.getType("guard");
+			guard.load(profiles, npc.getUID());
+			loadFlags(guard, npc.getUID());
+		}
+		saveState(npc);
 	}
 
 	private void saveFlags(int UID, FlagList flags) {
@@ -63,54 +102,15 @@ public class GuardProperties extends PropertyManager implements Properties {
 	}
 
 	@Override
-	public void loadState(HumanNPC npc) {
-		if (isEnabled(npc)) {
-			if (!npc.isType("guard"))
-				npc.registerType("guard");
-			Guard guard = npc.getType("guard");
-			guard.load(profiles, npc.getUID());
-			loadFlags(guard, npc.getUID());
-		}
-		saveState(npc);
-	}
-
-	@Override
 	public void setEnabled(HumanNPC npc, boolean value) {
 		profiles.setBoolean(npc.getUID() + isGuard, value);
 	}
 
-	@Override
-	public boolean isEnabled(HumanNPC npc) {
-		return profiles.getBoolean(npc.getUID() + isGuard);
-	}
+	private static final String flag = ".guard.flags";
 
-	@Override
-	public List<Node> getNodes() {
-		List<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node("MaxStationaryReturnTicks", SettingsType.GENERAL,
-				"guards.max.stationary-return-ticks", 25));
-		nodes.add(new Node("GuardRespawnDelay", SettingsType.GENERAL,
-				"guards.respawn-delay", 100));
-		nodes.add(new Node("DefaultBouncerProtectionRadius",
-				SettingsType.GENERAL,
-				"guards.bouncers.default.protection-radius", 10));
-		nodes.add(new Node("SoldierSelectTool", SettingsType.GENERAL,
-				"guards.soldiers.items.select", "*"));
-		nodes.add(new Node("SoldierReturnTool", SettingsType.GENERAL,
-				"guards.soldiers.items.return", "288,"));
-		nodes.add(new Node("SoldierDeselectAllTool", SettingsType.GENERAL,
-				"guards.soldiers.items.deselect-all", "352,"));
-		return nodes;
-	}
-
-	@Override
-	public Collection<String> getNodesForCopy() {
-		return nodesForCopy;
-	}
-
+	public static final GuardProperties INSTANCE = new GuardProperties();
+	private static final String isGuard = ".guard.toggle";
 	private static final List<String> nodesForCopy = Lists.newArrayList(
 			"guard.toggle", "guard.type", "guard.radius", "guard.flags",
 			"guard.aggressive");
-	private static final String isGuard = ".guard.toggle";
-	private static final String flag = ".guard.flags";
 }

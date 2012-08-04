@@ -13,42 +13,7 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import com.google.common.collect.Lists;
 
 public class WizardProperties extends PropertyManager implements Properties {
-	public static final WizardProperties INSTANCE = new WizardProperties();
-
 	private WizardProperties() {
-	}
-
-	@Override
-	public void saveState(HumanNPC npc) {
-		if (exists(npc)) {
-			boolean is = npc.isType("wizard");
-			setEnabled(npc, is);
-			if (is) {
-				Wizard wizard = npc.getType("wizard");
-				wizard.save(profiles, npc.getUID());
-			}
-		}
-	}
-
-	@Override
-	public void loadState(HumanNPC npc) {
-		if (isEnabled(npc)) {
-			if (!npc.isType("wizard"))
-				npc.registerType("wizard");
-			Wizard wizard = npc.getType("wizard");
-			wizard.load(profiles, npc.getUID());
-		}
-		saveState(npc);
-	}
-
-	@Override
-	public void setEnabled(HumanNPC npc, boolean value) {
-		profiles.setBoolean(npc.getUID() + isWizard, value);
-	}
-
-	@Override
-	public boolean isEnabled(HumanNPC npc) {
-		return profiles.getBoolean(npc.getUID() + isWizard);
 	}
 
 	@Override
@@ -90,9 +55,44 @@ public class WizardProperties extends PropertyManager implements Properties {
 		return nodesForCopy;
 	}
 
+	@Override
+	public boolean isEnabled(HumanNPC npc) {
+		return profiles.getBoolean(npc.getUID() + isWizard);
+	}
+
+	@Override
+	public void loadState(HumanNPC npc) {
+		if (isEnabled(npc)) {
+			if (!npc.isType("wizard"))
+				npc.registerType("wizard");
+			Wizard wizard = npc.getType("wizard");
+			wizard.load(profiles, npc.getUID());
+		}
+		saveState(npc);
+	}
+
+	@Override
+	public void saveState(HumanNPC npc) {
+		if (exists(npc)) {
+			boolean is = npc.isType("wizard");
+			setEnabled(npc, is);
+			if (is) {
+				Wizard wizard = npc.getType("wizard");
+				wizard.save(profiles, npc.getUID());
+			}
+		}
+	}
+
+	@Override
+	public void setEnabled(HumanNPC npc, boolean value) {
+		profiles.setBoolean(npc.getUID() + isWizard, value);
+	}
+
+	public static final WizardProperties INSTANCE = new WizardProperties();
+
+	private static final String isWizard = ".wizard.toggle";
+
 	private static final List<String> nodesForCopy = Lists.newArrayList(
 			"wizard.toggle", "wizard.locations", "wizard.mana", "wizard.mode",
 			"wizard.time", "wizard.mob", "wizard.unlimited-mana");
-
-	private static final String isWizard = ".wizard.toggle";
 }

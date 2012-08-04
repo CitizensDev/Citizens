@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.citizensnpcs.questers.api.events.QuestBeginEvent;
 import net.citizensnpcs.questers.api.events.QuestCompleteEvent;
+import net.citizensnpcs.questers.api.events.QuestIncrementEvent;
 import net.citizensnpcs.questers.data.PlayerProfile;
 import net.citizensnpcs.questers.quests.CompletedQuest;
 import net.citizensnpcs.questers.quests.Quest;
@@ -37,23 +38,17 @@ public class QuestManager {
         }
         Quest quest = quests.get(questName);
         if (!canRepeat(player, quest)) {
-            player.sendMessage(ChatColor.GRAY
-                    + "You are not allowed to repeat this quest again.");
+            player.sendMessage(ChatColor.GRAY + "You are not allowed to repeat this quest again.");
             return false;
         }
-        if (getProfile(player.getName()).hasCompleted(questName)
-                && quest.getDelay() > 0) {
+        if (getProfile(player.getName()).hasCompleted(questName) && quest.getDelay() > 0) {
             long delayDifference = getDelayDifference(
-                    getProfile(player.getName()).getCompletedQuest(questName),
-                    quest);
+                    getProfile(player.getName()).getCompletedQuest(questName), quest);
             if (delayDifference > 0) {
-                long hours = TimeUnit.HOURS.convert(delayDifference,
-                        TimeUnit.MINUTES);
-                long minutes = delayDifference
-                        - TimeUnit.MINUTES.convert(hours, TimeUnit.HOURS);
+                long hours = TimeUnit.HOURS.convert(delayDifference, TimeUnit.MINUTES);
+                long minutes = delayDifference - TimeUnit.MINUTES.convert(hours, TimeUnit.HOURS);
                 player.sendMessage(ChatColor.GRAY + "You must wait "
-                        + StringUtils.wrap(hours, ChatColor.GRAY)
-                        + " hours and "
+                        + StringUtils.wrap(hours, ChatColor.GRAY) + " hours and "
                         + StringUtils.wrap(minutes, ChatColor.GRAY)
                         + " minutes before attempting this quest again.");
                 return false;
@@ -77,16 +72,9 @@ public class QuestManager {
             return false;
         }
         getProfile(player.getName()).setProgress(
-                new QuestProgress(UID, player, questName, System
-                        .currentTimeMillis()));
+                new QuestProgress(UID, player, questName, System.currentTimeMillis()));
         Messaging.send(player, quest.getAcceptanceText());
         return true;
-    }
-
-    private static long getDelayDifference(CompletedQuest completed, Quest quest) {
-        return quest.getDelay()
-                - TimeUnit.MINUTES.convert(System.currentTimeMillis()
-                        - completed.getFinishTime(), TimeUnit.MILLISECONDS);
     }
 
     public static boolean canRepeat(Player player, Quest quest) {
@@ -95,27 +83,33 @@ public class QuestManager {
         }
         PlayerProfile profile = PlayerProfile.getProfile(player.getName());
         return !profile.hasCompleted(quest.getName())
-                || (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(
-                        quest.getName()).getTimesCompleted() < quest
-                        .getRepeatLimit());
+                || (quest.getRepeatLimit() == -1 || profile.getCompletedQuest(quest.getName())
+                        .getTimesCompleted() < quest.getRepeatLimit());
+    }
+
+    public static void clearQuests() {
+        quests.clear();
     }
 
     public static void completeQuest(Player player) {
         PlayerProfile profile = PlayerProfile.getProfile(player.getName());
-        Quest quest = QuestManager.getQuest(profile.getProgress()
-                .getQuestName());
+        Quest quest = QuestManager.getQuest(profile.getProgress().getQuestName());
         quest.onCompletion(player, profile.getProgress());
         int UID = profile.getProgress().getQuesterUID();
-        long elapsed = System.currentTimeMillis()
-                - profile.getProgress().getStartTime();
+        long elapsed = System.currentTimeMillis() - profile.getProgress().getStartTime();
         profile.setProgress(null);
-        int completed = profile.hasCompleted(quest.getName()) ? profile
-                .getCompletedQuest(quest.getName()).getTimesCompleted() + 1 : 1;
-        CompletedQuest comp = new CompletedQuest(quest.getName(), UID,
-                completed, elapsed, System.currentTimeMillis());
+        int completed = profile.hasCompleted(quest.getName()) ? profile.getCompletedQuest(quest.getName())
+                .getTimesCompleted() + 1 : 1;
+        CompletedQuest comp = new CompletedQuest(quest.getName(), UID, completed, elapsed,
+                System.currentTimeMillis());
         profile.addCompletedQuest(comp);
-        Bukkit.getServer().getPluginManager()
-                .callEvent(new QuestCompleteEvent(quest, comp, player));
+        Bukkit.getServer().getPluginManager().callEvent(new QuestCompleteEvent(quest, comp, player));
+    }
+
+    private static long getDelayDifference(CompletedQuest completed, Quest quest) {
+        return quest.getDelay()
+                - TimeUnit.MINUTES.convert(System.currentTimeMillis() - completed.getFinishTime(),
+                        TimeUnit.MILLISECONDS);
     }
 
     private static PlayerProfile getProfile(String string) {
@@ -131,13 +125,16 @@ public class QuestManager {
     }
 
     public static void incrementQuest(Player player, Event event) {
-        if (event == null
-                || (event instanceof Cancellable && ((Cancellable) event)
-                        .isCancelled()))
+        if (event == null || (event instanceof Cancellable && ((Cancellable) event).isCancelled()))
             return;
         if (hasQuest(player)) {
             QuestProgress progress = getProfile(player.getName()).getProgress();
             if (progress.isFullyCompleted())
+                return;
+            QuestIncrementEvent incrementEvent = new QuestIncrementEvent(QuestManager.getQuest(progress
+                    .getQuestName()), player, event);
+            Bukkit.getPluginManager().callEvent(incrementEvent);
+            if (incrementEvent.isCancelled())
                 return;
             progress.updateProgress(player, event);
             if (progress.isStepCompleted()) {
@@ -161,9 +158,5 @@ public class QuestManager {
             getProfile(player.getName()).setProgress(null);
         }
         PlayerProfile.setProfile(player.getName(), null);
-    }
-
-    public static void clearQuests() {
-        quests.clear();
     }
 }

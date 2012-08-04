@@ -15,6 +15,13 @@ import org.bukkit.event.Listener;
 
 public class QuesterCitizensListen implements Listener {
     @EventHandler
+    public void onCitizensDisable(CitizensDisableEvent event) {
+        PlayerProfile.saveAll();
+        // QuestProperties.save(); TODO: commented out until quest saving is
+        // finished.
+    }
+
+    @EventHandler
     public void onCitizensEnable(CitizensEnableEvent event) {
         Messaging.log("Loaded " + QuestManager.quests().size() + " quests.");
     }
@@ -22,13 +29,6 @@ public class QuesterCitizensListen implements Listener {
     @EventHandler
     public void onCitizensReload(CitizensReloadEvent event) {
         QuestProperties.load();
-    }
-
-    @EventHandler
-    public void onCitizensDisable(CitizensDisableEvent event) {
-        PlayerProfile.saveAll();
-        // QuestProperties.save(); TODO: commented out until quest saving is
-        // finished.
     }
 
     @EventHandler

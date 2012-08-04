@@ -8,13 +8,27 @@ import org.bukkit.entity.Player;
 
 public class ExperienceReward implements Requirement {
     private final float exp;
-    private final boolean take;
     private final boolean isTotal;
+    private final boolean take;
 
     public ExperienceReward(float exp, boolean isTotal, boolean take) {
         this.take = take;
         this.exp = exp;
         this.isTotal = isTotal;
+    }
+
+    @Override
+    public boolean fulfilsRequirement(Player player) {
+        return isTotal ? player.getTotalExperience() >= exp : player.getExp() >= exp;
+    }
+
+    @Override
+    public String getRequiredText(Player player) {
+        return ChatColor.GRAY
+                + (isTotal ? "You need at least " + StringUtils.wrap(exp, ChatColor.GRAY) + " total experience points."
+                        : "You need to have  at least " + StringUtils.wrap(exp * 100, ChatColor.GRAY)
+                                + " of this experience level.");
+
     }
 
     @Override
@@ -39,20 +53,6 @@ public class ExperienceReward implements Requirement {
         storage.setBoolean(root + ".total", isTotal);
     }
 
-    @Override
-    public boolean fulfilsRequirement(Player player) {
-        return isTotal ? player.getTotalExperience() >= exp : player.getExp() >= exp;
-    }
-
-    @Override
-    public String getRequiredText(Player player) {
-        return ChatColor.GRAY
-                + (isTotal ? "You need at least " + StringUtils.wrap(exp, ChatColor.GRAY) + " total experience points."
-                        : "You need to have  at least " + StringUtils.wrap(exp * 100, ChatColor.GRAY)
-                                + " of this experience level.");
-
-    }
-
     private static class ExperienceLevelReward implements Requirement {
         private final int level;
         private final boolean take;
@@ -60,6 +60,16 @@ public class ExperienceReward implements Requirement {
         public ExperienceLevelReward(int level, boolean take) {
             this.level = level;
             this.take = take;
+        }
+
+        @Override
+        public boolean fulfilsRequirement(Player player) {
+            return player.getLevel() >= level;
+        }
+
+        @Override
+        public String getRequiredText(Player player) {
+            return ChatColor.GRAY + "You need to be at least level " + StringUtils.wrap(level, ChatColor.GRAY) + ".";
         }
 
         @Override
@@ -75,16 +85,6 @@ public class ExperienceReward implements Requirement {
         @Override
         public void save(Storage storage, String root) {
             storage.setInt(root + ".level", level);
-        }
-
-        @Override
-        public boolean fulfilsRequirement(Player player) {
-            return player.getLevel() >= level;
-        }
-
-        @Override
-        public String getRequiredText(Player player) {
-            return ChatColor.GRAY + "You need to be at least level " + StringUtils.wrap(level, ChatColor.GRAY) + ".";
         }
     }
 

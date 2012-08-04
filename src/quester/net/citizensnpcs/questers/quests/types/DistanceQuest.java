@@ -10,7 +10,16 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class DistanceQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerMoveEvent.class };
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        return QuestUtils.defaultAmountProgress(progress,
+                StringUtils.formatter("block").wrap().plural(progress.getAmount()) + " walked");
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -28,14 +37,5 @@ public class DistanceQuest implements QuestUpdater {
         return progress.getAmount() >= progress.getObjective().getAmount();
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
-    }
-
-    @Override
-    public String getStatus(ObjectiveProgress progress) {
-        return QuestUtils.defaultAmountProgress(progress,
-                StringUtils.formatter("block").wrap().plural(progress.getAmount()) + " walked");
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerMoveEvent.class };
 }

@@ -27,14 +27,14 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
 public class Wizard extends CitizensNPC {
+    private int currentLocation = 0;
     // TODO: using a string as storage for locations is baaaaad.
     private final List<String> locations = Lists.newArrayList();
-    private int currentLocation = 0;
-    private WizardMode mode = WizardMode.TELEPORT;
     private int mana = 10;
-    private String time = "morning";
     private EntityType mob = EntityType.CHICKEN;
     private int mobIndex = 0;
+    private WizardMode mode = WizardMode.TELEPORT;
+    private String time = "morning";
     private boolean unlimitedMana = false;
 
     // Adds a location to the main location sting.
@@ -42,22 +42,6 @@ public class Wizard extends CitizensNPC {
         String addedLoc = locName + "," + location.getWorld().getName() + "," + location.getX() + "," + location.getY()
                 + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
         locations.add(addedLoc);
-    }
-
-    // Returns the main location string
-    public Collection<String> getLocations() {
-        return locations;
-    }
-
-    public boolean removeLocation(String string) {
-        Iterator<String> iter = locations.iterator();
-        while (iter.hasNext()) {
-            if (iter.next().split(",")[0].equalsIgnoreCase(string)) {
-                iter.remove();
-                return true;
-            }
-        }
-        return false;
     }
 
     // Sets the next location in the list as active.
@@ -89,11 +73,6 @@ public class Wizard extends CitizensNPC {
         }
     }
 
-    // Returns the total amount of locations bound to the wizard.
-    public int getNumberOfLocations() {
-        return locations.size();
-    }
-
     // Return the current active teleport location for the wizard.
     public Location getCurrentLocation() {
         if (currentLocation >= locations.size())
@@ -111,34 +90,14 @@ public class Wizard extends CitizensNPC {
         return locations.get(currentLocation).split(",")[0];
     }
 
+    // Returns the main location string
+    public Collection<String> getLocations() {
+        return locations;
+    }
+
     // Get the mana that a wizard NPC has remaining
     public int getMana() {
         return mana;
-    }
-
-    // Set the mana of a wizard NPC
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
-    // Get the mode of a wizard
-    public WizardMode getMode() {
-        return mode;
-    }
-
-    // Set the mode of a wizard
-    public void setMode(WizardMode mode) {
-        this.mode = mode;
-    }
-
-    // Get the time setting of a wizard
-    public String getTime() {
-        return time;
-    }
-
-    // Set the time setting for a wizard
-    public void setTime(String time) {
-        this.time = time;
     }
 
     // Get the mob that a wizard will spawn
@@ -146,14 +105,45 @@ public class Wizard extends CitizensNPC {
         return mob;
     }
 
+    // Get the mode of a wizard
+    public WizardMode getMode() {
+        return mode;
+    }
+
+    // Returns the total amount of locations bound to the wizard.
+    public int getNumberOfLocations() {
+        return locations.size();
+    }
+
+    // Get the time setting of a wizard
+    public String getTime() {
+        return time;
+    }
+
+    @Override
+    public CitizensNPCType getType() {
+        return new WizardType();
+    }
+
     // Get whether a wizard has unlimited mana
     public boolean hasUnlimitedMana() {
         return unlimitedMana;
     }
 
-    // Set whether a wizard has unlimited mana
-    public void setUnlimitedMana(boolean unlimitedMana) {
-        this.unlimitedMana = unlimitedMana;
+    @Override
+    public void load(Storage profiles, int UID) {
+        unlimitedMana = profiles.getBoolean(UID + ".wizard.unlimited-mana");
+        time = profiles.getString(UID + ".wizard.time", "morning");
+        mode = (profiles.keyExists(UID + ".wizard.mode") && WizardMode.parse(profiles.getString(UID + ".wizard.mode")) != null) ? WizardMode
+                .parse(profiles.getString(UID + ".wizard.mode")) : WizardMode.TELEPORT;
+        mana = profiles.getInt(UID + ".wizard.mana", 10);
+        locations.clear();
+        for (String location : splitter.split(profiles.getString(UID + ".wizard.locations"))) {
+            locations.add(location.replace("(", "").replace(")", ""));
+        }
+        mob = (EntityType.fromName(profiles.getString(UID + ".wizard.mob")) != null) ? EntityType.fromName(profiles
+                .getString(UID + ".wizard.mob")) : EntityType.CREEPER;
+        mobIndex = mob.ordinal();
     }
 
     @Override
@@ -217,9 +207,15 @@ public class Wizard extends CitizensNPC {
         }
     }
 
-    @Override
-    public CitizensNPCType getType() {
-        return new WizardType();
+    public boolean removeLocation(String string) {
+        Iterator<String> iter = locations.iterator();
+        while (iter.hasNext()) {
+            if (iter.next().split(",")[0].equalsIgnoreCase(string)) {
+                iter.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -232,20 +228,24 @@ public class Wizard extends CitizensNPC {
         profiles.setString(UID + ".wizard.mob", mob.name());
     }
 
-    @Override
-    public void load(Storage profiles, int UID) {
-        unlimitedMana = profiles.getBoolean(UID + ".wizard.unlimited-mana");
-        time = profiles.getString(UID + ".wizard.time", "morning");
-        mode = (profiles.keyExists(UID + ".wizard.mode") && WizardMode.parse(profiles.getString(UID + ".wizard.mode")) != null) ? WizardMode
-                .parse(profiles.getString(UID + ".wizard.mode")) : WizardMode.TELEPORT;
-        mana = profiles.getInt(UID + ".wizard.mana", 10);
-        locations.clear();
-        for (String location : splitter.split(profiles.getString(UID + ".wizard.locations"))) {
-            locations.add(location.replace("(", "").replace(")", ""));
-        }
-        mob = (EntityType.fromName(profiles.getString(UID + ".wizard.mob")) != null) ? EntityType.fromName(profiles
-                .getString(UID + ".wizard.mob")) : EntityType.CREEPER;
-        mobIndex = mob.ordinal();
+    // Set the mana of a wizard NPC
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    // Set the mode of a wizard
+    public void setMode(WizardMode mode) {
+        this.mode = mode;
+    }
+
+    // Set the time setting for a wizard
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    // Set whether a wizard has unlimited mana
+    public void setUnlimitedMana(boolean unlimitedMana) {
+        this.unlimitedMana = unlimitedMana;
     }
 
     private static final Splitter splitter = Splitter.on(":").omitEmptyStrings().trimResults();

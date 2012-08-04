@@ -18,9 +18,26 @@ public abstract class CitizensNPC {
 	 */
 	public abstract CitizensNPCType getType();
 
-	public abstract void save(Storage profiles, int UID);
-
 	public abstract void load(Storage profiles, int UID);
+
+	/**
+	 * Called when an NPC type is damaged.
+	 * 
+	 * @param event
+	 *            Bukkit's EntityDamageEvent
+	 */
+	public void onDamage(EntityDamageEvent event) {
+		event.setCancelled(true);
+	}
+
+	/**
+	 * Called when an NPC type is killed.
+	 * 
+	 * @param event
+	 *            Bukkit's EntityDeathEvent
+	 */
+	public void onDeath(EntityDeathEvent event) {
+	}
 
 	/**
 	 * Called when a player left clicks the NPC - this can cause a damage event
@@ -55,22 +72,5 @@ public abstract class CitizensNPC {
 		event.setCancelled(true);
 	}
 
-	/**
-	 * Called when an NPC type is damaged.
-	 * 
-	 * @param event
-	 *            Bukkit's EntityDamageEvent
-	 */
-	public void onDamage(EntityDamageEvent event) {
-		event.setCancelled(true);
-	}
-
-	/**
-	 * Called when an NPC type is killed.
-	 * 
-	 * @param event
-	 *            Bukkit's EntityDeathEvent
-	 */
-	public void onDeath(EntityDeathEvent event) {
-	}
+	public abstract void save(Storage profiles, int UID);
 }

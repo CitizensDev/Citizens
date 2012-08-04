@@ -11,17 +11,17 @@ import net.citizensnpcs.utils.Messaging;
 import org.bukkit.entity.Player;
 
 public class Quest {
+    private final List<Reward> abortRewards;
     private final String acceptanceText;
+    private final long delay;
     private final String description;
     private final RewardGranter granter;
+    private final List<Reward> initialRewards;
     private final Objectives objectives;
+    private final String progressText;
     private final String questName;
     private final int repeatLimit;
     private final List<Requirement> requirements;
-    private final long delay;
-    private final List<Reward> initialRewards;
-    private final List<Reward> abortRewards;
-    private final String progressText;
 
     private Quest(QuestBuilder builder) {
         this.initialRewards = builder.initalRewards;
@@ -37,8 +37,16 @@ public class Quest {
         this.progressText = builder.progressText;
     }
 
+    public List<Reward> getAbortRewards() {
+        return abortRewards;
+    }
+
     public String getAcceptanceText() {
         return acceptanceText;
+    }
+
+    public long getDelay() {
+        return this.delay;
     }
 
     // Get the description of a quest
@@ -46,12 +54,12 @@ public class Quest {
         return description;
     }
 
-    public long getDelay() {
-        return this.delay;
-    }
-
     public RewardGranter getGranter() {
         return this.granter;
+    }
+
+    public List<Reward> getInitialRewards() {
+        return initialRewards;
     }
 
     // Get the name of a quest
@@ -82,29 +90,26 @@ public class Quest {
         return true;
     }
 
-    public List<Reward> getInitialRewards() {
-        return initialRewards;
-    }
-
-    public List<Reward> getAbortRewards() {
-        return abortRewards;
-    }
-
     public static class QuestBuilder {
-        public String progressText = "";
+        private List<Reward> abortRewards;
         private String acceptanceText = "";
+        private long delay;
         private String description = "";
         private RewardGranter granter;
+        private List<Reward> initalRewards;
         private Objectives objectives;
+        public String progressText = "";
         private String questName = "";
         private int repeatLimit = -1;
-        private long delay;
         private List<Requirement> requirements = new ArrayList<Requirement>();
-        private List<Reward> initalRewards;
-        private List<Reward> abortRewards;
 
         public QuestBuilder(String quest) {
             this.questName = quest;
+        }
+
+        public QuestBuilder abortRewards(List<Reward> rewards) {
+            this.abortRewards = rewards;
+            return this;
         }
 
         public QuestBuilder acceptanceText(String acceptanceText) {
@@ -114,11 +119,6 @@ public class Quest {
 
         public Quest create() {
             return new Quest(this);
-        }
-
-        public QuestBuilder progressText(String text) {
-            this.progressText = text;
-            return this;
         }
 
         public QuestBuilder delay(long delay) {
@@ -136,8 +136,18 @@ public class Quest {
             return this;
         }
 
+        public QuestBuilder initialRewards(List<Reward> loadRewards) {
+            this.initalRewards = loadRewards;
+            return this;
+        }
+
         public QuestBuilder objectives(Objectives objectives) {
             this.objectives = objectives;
+            return this;
+        }
+
+        public QuestBuilder progressText(String text) {
+            this.progressText = text;
             return this;
         }
 
@@ -148,16 +158,6 @@ public class Quest {
 
         public QuestBuilder requirements(List<Requirement> requirements) {
             this.requirements = requirements;
-            return this;
-        }
-
-        public QuestBuilder initialRewards(List<Reward> loadRewards) {
-            this.initalRewards = loadRewards;
-            return this;
-        }
-
-        public QuestBuilder abortRewards(List<Reward> rewards) {
-            this.abortRewards = rewards;
             return this;
         }
     }

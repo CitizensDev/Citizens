@@ -3,8 +3,8 @@ package net.citizensnpcs.traders;
 import com.google.common.base.Objects;
 
 public class Check {
-	private final int itemID;
 	private final short dataValue;
+	private final int itemID;
 	private final boolean selling;
 
 	// Used to distinguish between stockables in a hashmap.
@@ -12,11 +12,6 @@ public class Check {
 		this.itemID = itemID;
 		this.dataValue = dataValue;
 		this.selling = selling;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(itemID, dataValue, selling);
 	}
 
 	@Override
@@ -30,6 +25,11 @@ public class Check {
 		Check other = (Check) obj;
 		return itemID == other.itemID && dataValue == other.dataValue
 				&& selling == other.selling;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(itemID, dataValue, selling);
 	}
 
 	public boolean isSelling() {

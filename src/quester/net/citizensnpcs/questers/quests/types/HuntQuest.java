@@ -10,7 +10,15 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class HuntQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { EntityDeathEvent.class };
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        return QuestUtils.defaultAmountProgress(progress, "monsters killed");
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -18,7 +26,7 @@ public class HuntQuest implements QuestUpdater {
             EntityDeathEvent ev = (EntityDeathEvent) event;
             if (ev.getEntity() instanceof Player)
                 return progress.getAmount() >= progress.getObjective().getAmount();
-            LivingEntity entity = (LivingEntity) ev.getEntity();
+            LivingEntity entity = ev.getEntity();
             String search = progress.getObjective().getString().toLowerCase();
             boolean found = search.contains(entity.getType().getName().toLowerCase()) || search.contains("*"), reversed = !search
                     .isEmpty() && search.charAt(0) == '-';
@@ -29,13 +37,5 @@ public class HuntQuest implements QuestUpdater {
         return progress.getAmount() >= progress.getObjective().getAmount();
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
-    }
-
-    @Override
-    public String getStatus(ObjectiveProgress progress) {
-        return QuestUtils.defaultAmountProgress(progress, "monsters killed");
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { EntityDeathEvent.class };
 }

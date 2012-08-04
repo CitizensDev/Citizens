@@ -3,27 +3,14 @@ package net.citizensnpcs.guards.flags;
 import com.google.common.base.Objects;
 
 public class FlagInfo {
-	private final int priority;
 	private final String name;
+	private final int priority;
 	private final boolean safe;
 
 	private FlagInfo(String name, int priority, boolean safe) {
 		this.name = name;
 		this.priority = priority;
 		this.safe = safe;
-	}
-
-	public int priority() {
-		return priority;
-	}
-
-	public boolean isSafe() {
-		return safe;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(name);
 	}
 
 	@Override
@@ -47,6 +34,19 @@ public class FlagInfo {
 
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(name);
+	}
+
+	public boolean isSafe() {
+		return safe;
+	}
+
+	public int priority() {
+		return priority;
 	}
 
 	public static FlagInfo newInstance(String name) {

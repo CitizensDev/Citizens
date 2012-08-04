@@ -11,19 +11,13 @@ import net.citizensnpcs.wizards.listeners.WizardNPCListen;
 public class WizardType extends CitizensNPCType {
 
     @Override
-    public Properties getProperties() {
-        return WizardProperties.INSTANCE;
-    }
-
-    @Override
     public CommandHandler getCommands() {
         return WizardCommands.INSTANCE;
     }
 
     @Override
-    public void registerEvents() {
-        NPCTypeManager.registerEvents(new WizardCitizensListen());
-        NPCTypeManager.registerEvents(new WizardNPCListen());
+    public CitizensNPC getInstance() {
+        return new Wizard();
     }
 
     @Override
@@ -32,7 +26,13 @@ public class WizardType extends CitizensNPCType {
     }
 
     @Override
-    public CitizensNPC getInstance() {
-        return new Wizard();
+    public Properties getProperties() {
+        return WizardProperties.INSTANCE;
+    }
+
+    @Override
+    public void registerEvents() {
+        NPCTypeManager.registerEvents(new WizardCitizensListen());
+        NPCTypeManager.registerEvents(new WizardNPCListen());
     }
 }

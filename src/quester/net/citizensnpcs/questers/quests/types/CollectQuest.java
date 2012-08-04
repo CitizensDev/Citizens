@@ -11,19 +11,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class CollectQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerPickupItemEvent.class };
-
-    @Override
-    public boolean update(Event event, ObjectiveProgress progress) {
-        if (event instanceof PlayerPickupItemEvent) {
-            PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
-            ItemStack stack = ev.getItem().getItemStack();
-            if (stack.getType() == progress.getObjective().getMaterial() && checkData(progress.getObjective(), stack))
-                progress.addAmount(stack.getAmount());
-        }
-        return progress.getAmount() >= progress.getObjective().getAmount();
-    }
-
     private boolean checkData(Objective objective, ItemStack stack) {
         return !objective.hasParameter("data") || objective.getParameter("data").getInt() == stack.getDurability();
     }
@@ -39,4 +26,17 @@ public class CollectQuest implements QuestUpdater {
                 .wrap().plural(progress.getAmount())
                 + " collected");
     }
+
+    @Override
+    public boolean update(Event event, ObjectiveProgress progress) {
+        if (event instanceof PlayerPickupItemEvent) {
+            PlayerPickupItemEvent ev = (PlayerPickupItemEvent) event;
+            ItemStack stack = ev.getItem().getItemStack();
+            if (stack.getType() == progress.getObjective().getMaterial() && checkData(progress.getObjective(), stack))
+                progress.addAmount(stack.getAmount());
+        }
+        return progress.getAmount() >= progress.getObjective().getAmount();
+    }
+
+    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerPickupItemEvent.class };
 }

@@ -23,6 +23,22 @@ public class WorldListen implements Listener {
     private final Map<NPCLocation, Integer> toRespawn = new MapMaker().makeMap();
 
     @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+        // Respawns any existing NPCs in the loaded chunk
+        for (NPCLocation tempLoc : toRespawn.keySet()) {
+            if (event.getWorld().equals(tempLoc.getLocation().getWorld())
+                    && tempLoc.getChunkX() == event.getChunk().getX() && tempLoc.getChunkZ() == event.getChunk().getZ()) {
+                if (NPCManager.get(tempLoc.getUID()) != null) {
+                    NPCManager.register(tempLoc.getUID(), tempLoc.getOwner(), NPCCreateReason.RESPAWN);
+                }
+                toRespawn.remove(tempLoc);
+                Messaging.debug("Reloaded", tempLoc.getUID(), "due to chunk load at", tempLoc.getChunkX(),
+                        tempLoc.getChunkZ());
+            }
+        }
+    }
+
+    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         if (event.isCancelled())
             return;
@@ -40,22 +56,6 @@ public class WorldListen implements Listener {
         for (CreatureNPC entry : CreatureTask.creatureNPCs.values()) {
             if (entry.getBukkitEntity().getLocation().getBlock().getChunk().equals(event.getChunk())) {
                 CreatureTask.despawn(entry, NPCRemoveReason.UNLOAD);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onChunkLoad(ChunkLoadEvent event) {
-        // Respawns any existing NPCs in the loaded chunk
-        for (NPCLocation tempLoc : toRespawn.keySet()) {
-            if (event.getWorld().equals(tempLoc.getLocation().getWorld())
-                    && tempLoc.getChunkX() == event.getChunk().getX() && tempLoc.getChunkZ() == event.getChunk().getZ()) {
-                if (NPCManager.get(tempLoc.getUID()) != null) {
-                    NPCManager.register(tempLoc.getUID(), tempLoc.getOwner(), NPCCreateReason.RESPAWN);
-                }
-                toRespawn.remove(tempLoc);
-                Messaging.debug("Reloaded", tempLoc.getUID(), "due to chunk load at", tempLoc.getChunkX(),
-                        tempLoc.getChunkZ());
             }
         }
     }

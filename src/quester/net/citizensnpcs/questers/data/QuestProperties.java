@@ -14,16 +14,16 @@ public class QuestProperties {
 		QuestFactory.instantiateQuests(quests);
 	}
 
+	public static void load() {
+		quests.load();
+		QuestFactory.instantiateQuests(quests);
+	}
+
 	public static void save() {
 		quests.save();
 		for (Quest quest : QuestManager.quests()) {
 			QuestFactory.saveQuest(quests, quest);
 		}
-	}
-
-	public static void load() {
-		quests.load();
-		QuestFactory.instantiateQuests(quests);
 	}
 
 	public static void saveQuest(Quest quest) {

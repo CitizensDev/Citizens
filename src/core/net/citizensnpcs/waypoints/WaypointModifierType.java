@@ -9,9 +9,9 @@ import net.citizensnpcs.waypoints.modifiers.HealthModifier;
 import net.citizensnpcs.waypoints.modifiers.TeleportModifier;
 
 public enum WaypointModifierType {
-	CHAT(ChatModifier.class), DELAY(DelayModifier.class), HEALTH(
-			HealthModifier.class), TELEPORT(TeleportModifier.class), EFFECT(
-			EffectModifier.class);
+	CHAT(ChatModifier.class), DELAY(DelayModifier.class), EFFECT(
+    EffectModifier.class), HEALTH(
+            		HealthModifier.class), TELEPORT(TeleportModifier.class);
 
 	private final Constructor<? extends WaypointModifier> constructor;
 

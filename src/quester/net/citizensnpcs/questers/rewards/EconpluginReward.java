@@ -17,6 +17,21 @@ public class EconpluginReward implements Requirement, Reward {
 	}
 
 	@Override
+	public boolean fulfilsRequirement(Player player) {
+		return Economy.getBalance(player.getName()) - reward >= 0;
+	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		return ChatColor.GRAY
+				+ "You need "
+				+ StringUtils.wrap(
+						Economy.format(reward
+								- Economy.getBalance(player.getName())),
+						ChatColor.GRAY) + " more.";
+	}
+
+	@Override
 	public void grant(Player player, int UID) {
 		if (Economy.useEconPlugin()) {
 			if (this.take) {
@@ -30,21 +45,6 @@ public class EconpluginReward implements Requirement, Reward {
 	@Override
 	public boolean isTake() {
 		return take;
-	}
-
-	@Override
-	public boolean fulfilsRequirement(Player player) {
-		return Economy.getBalance(player.getName()) - reward >= 0;
-	}
-
-	@Override
-	public String getRequiredText(Player player) {
-		return ChatColor.GRAY
-				+ "You need "
-				+ StringUtils.wrap(
-						Economy.format(reward
-								- Economy.getBalance(player.getName())),
-						ChatColor.GRAY) + " more.";
 	}
 
 	@Override

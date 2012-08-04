@@ -18,8 +18,14 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import com.google.common.collect.Maps;
 
 public class CombatQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { EntityDeathEvent.class };
-    private static final Map<Player, KillDetails> playerKills = Maps.newHashMap();
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        return QuestUtils.defaultAmountProgress(progress, "players defeated");
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -58,19 +64,9 @@ public class CombatQuest implements QuestUpdater {
         return progress.getAmount() >= progress.getObjective().getAmount();
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
-    }
-
-    @Override
-    public String getStatus(ObjectiveProgress progress) {
-        return QuestUtils.defaultAmountProgress(progress, "players defeated");
-    }
-
     private static class KillDetails {
-        private final Player player;
         private final Location loc;
+        private final Player player;
         private final int times;
 
         KillDetails(Player player, Location loc, int times) {
@@ -80,16 +76,20 @@ public class CombatQuest implements QuestUpdater {
 
         }
 
-        public Player getPlayer() {
-            return player;
-        }
-
         public Location getLocation() {
             return loc;
+        }
+
+        public Player getPlayer() {
+            return player;
         }
 
         public int getTimes() {
             return times;
         }
     }
+
+    private static final Class<? extends Event>[] EVENTS = new Class[] { EntityDeathEvent.class };
+
+    private static final Map<Player, KillDetails> playerKills = Maps.newHashMap();
 }

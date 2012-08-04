@@ -69,6 +69,10 @@ public class Trader extends CitizensNPC {
         return new TraderType();
     }
 
+    public boolean isFree() {
+        return currentTask == null;
+    }
+
     public boolean isLocked() {
         return locked;
     }
@@ -148,10 +152,6 @@ public class Trader extends CitizensNPC {
 
     public void setFree() {
         currentTask = null;
-    }
-
-    public boolean isFree() {
-        return currentTask == null;
     }
 
     public void setLocked(boolean locked) {

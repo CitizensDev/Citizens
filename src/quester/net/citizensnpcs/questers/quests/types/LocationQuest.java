@@ -18,8 +18,21 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.google.common.collect.Maps;
 
 public class LocationQuest implements QuestUpdater {
-    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerMoveEvent.class };
-    private static final Map<Player, Long> reachTimes = Maps.newHashMap();
+    @Override
+    public Class<? extends Event>[] getEventTypes() {
+        return EVENTS;
+    }
+    @Override
+    public String getStatus(ObjectiveProgress progress) {
+        double amount = progress.getObjective().hasParameter("leeway") ? progress.getObjective().getParameter("leeway")
+                .getDouble() : progress.getAmount();
+        return ChatColor.GREEN
+                + "Moving to "
+                + StringUtils.format(progress.getObjective().getLocation())
+                + " "
+                + StringUtils.bracketize(StringUtils.wrap(amount) + StringUtils.formatter(" block").plural(amount)
+                        + " leeway", true);
+    }
 
     @Override
     public boolean update(Event event, ObjectiveProgress progress) {
@@ -39,15 +52,6 @@ public class LocationQuest implements QuestUpdater {
         return false;
     }
 
-    private boolean withinYawRange(Location to, Objective objective) {
-        if (objective.getLocation().getYaw() == 0 && objective.getLocation().getPitch() == 0)
-            return true;
-        float yaw1 = to.getYaw(), yaw2 = objective.getLocation().getYaw(), pitch1 = to.getPitch(), pitch2 = objective
-                .getLocation().getPitch();
-        return (yaw1 + objective.getAmount() >= yaw2 && yaw2 >= yaw1 - objective.getAmount())
-                && (pitch1 + objective.getAmount() >= pitch2 && pitch2 >= pitch1 - objective.getAmount());
-    }
-
     private boolean updateTime(int ticks, Player player) {
         if (ticks <= 0)
             return true;
@@ -63,20 +67,16 @@ public class LocationQuest implements QuestUpdater {
         return !reachTimes.containsKey(player);
     }
 
-    @Override
-    public Class<? extends Event>[] getEventTypes() {
-        return EVENTS;
+    private boolean withinYawRange(Location to, Objective objective) {
+        if (objective.getLocation().getYaw() == 0 && objective.getLocation().getPitch() == 0)
+            return true;
+        float yaw1 = to.getYaw(), yaw2 = objective.getLocation().getYaw(), pitch1 = to.getPitch(), pitch2 = objective
+                .getLocation().getPitch();
+        return (yaw1 + objective.getAmount() >= yaw2 && yaw2 >= yaw1 - objective.getAmount())
+                && (pitch1 + objective.getAmount() >= pitch2 && pitch2 >= pitch1 - objective.getAmount());
     }
 
-    @Override
-    public String getStatus(ObjectiveProgress progress) {
-        double amount = progress.getObjective().hasParameter("leeway") ? progress.getObjective().getParameter("leeway")
-                .getDouble() : progress.getAmount();
-        return ChatColor.GREEN
-                + "Moving to "
-                + StringUtils.format(progress.getObjective().getLocation())
-                + " "
-                + StringUtils.bracketize(StringUtils.wrap(amount) + StringUtils.formatter(" block").plural(amount)
-                        + " leeway", true);
-    }
+    private static final Class<? extends Event>[] EVENTS = new Class[] { PlayerMoveEvent.class };
+
+    private static final Map<Player, Long> reachTimes = Maps.newHashMap();
 }

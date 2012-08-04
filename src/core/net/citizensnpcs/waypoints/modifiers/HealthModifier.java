@@ -12,41 +12,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class HealthModifier extends WaypointModifier {
-	private boolean take;
 	private int amount;
-	private static final int AMOUNT = 0, TAKE = 1;
-
+	private boolean take;
 	public HealthModifier(Waypoint waypoint) {
 		super(waypoint);
 	}
 
 	@Override
-	public void onReach(HumanNPC npc) {
-		int health = npc.getPlayer().getHealth();
-		health = take ? health - amount : health + amount;
-		if (health > 20) {
-			health = 20;
-		} else if (health < 0) {
-			health = 0;
-		}
-		npc.getPlayer().setHealth(health);
-	}
-
-	@Override
-	public void parse(Storage storage, String root) {
-		take = storage.getBoolean(root + ".take");
-		amount = storage.getInt(root = ".amount");
-	}
-
-	@Override
-	public void save(Storage storage, String root) {
-		storage.setBoolean(root + ".take", take);
-		storage.setInt(root + ".amount", amount);
-	}
-
-	@Override
-	public WaypointModifierType getType() {
-		return WaypointModifierType.HEALTH;
+	public boolean allowExit() {
+		return false;
 	}
 
 	@Override
@@ -85,12 +59,38 @@ public class HealthModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean allowExit() {
-		return false;
+	public WaypointModifierType getType() {
+		return WaypointModifierType.HEALTH;
 	}
 
 	@Override
 	public void onExit() {
 		waypoint.addModifier(this);
 	}
+
+	@Override
+	public void onReach(HumanNPC npc) {
+		int health = npc.getPlayer().getHealth();
+		health = take ? health - amount : health + amount;
+		if (health > 20) {
+			health = 20;
+		} else if (health < 0) {
+			health = 0;
+		}
+		npc.getPlayer().setHealth(health);
+	}
+
+	@Override
+	public void parse(Storage storage, String root) {
+		take = storage.getBoolean(root + ".take");
+		amount = storage.getInt(root = ".amount");
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		storage.setBoolean(root + ".take", take);
+		storage.setInt(root + ".amount", amount);
+	}
+
+	private static final int AMOUNT = 0, TAKE = 1;
 }

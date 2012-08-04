@@ -21,23 +21,87 @@ import org.bukkit.entity.Player;
 		requireOwnership = true,
 		requiredType = "wizard")
 public class WizardCommands extends CommandHandler {
-	public static final WizardCommands INSTANCE = new WizardCommands();
-
 	private WizardCommands() {
 	}
 
-	@CommandRequirements()
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("wizard.use.help");
+		PermissionManager.addPermission("wizard.modify.mode");
+		PermissionManager.addPermission("wizard.use.status");
+		PermissionManager.addPermission("wizard.modify.addloc");
+		PermissionManager.addPermission("wizard.modify.removeloc");
+		PermissionManager.addPermission("wizard.use.locations");
+		PermissionManager.addPermission("wizard.modify.unlimited");
+		PermissionManager.addPermission("wizard.use.interact");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender) {
+		HelpUtils.header(sender, "Wizard", 1, 1);
+		HelpUtils.format(sender, "wizard", "locations",
+				"view the tp locations of a wizard");
+		HelpUtils.format(sender, "wizard", "addloc [name]",
+				"add a tp location to the wizard");
+		HelpUtils.format(sender, "wizard", "removeloc [id]",
+				"remove the tp location");
+		HelpUtils.format(sender, "wizard", "mode [mode]",
+				"change the mode of a wizard");
+		HelpUtils.format(sender, "wizard", "status",
+				"display the status of a wizard");
+		HelpUtils.format(sender, "wizard", "unlimited",
+				"toggle a wizard's mana as unlimited");
+		HelpUtils.footer(sender);
+	}
+
+	public static final WizardCommands INSTANCE = new WizardCommands();
+
 	@Command(
 			aliases = "wizard",
-			usage = "help",
-			desc = "view the wizard help page",
-			modifiers = "help",
+			usage = "addloc [location]",
+			desc = "add a location to a wizard",
+			modifiers = "addloc",
+			min = 2)
+	@CommandPermissions("wizard.modify.addloc")
+	public static void addLocation(CommandContext args, Player player,
+			HumanNPC npc) {
+		Wizard wizard = npc.getType("wizard");
+		if (wizard.getMode() != WizardMode.TELEPORT) {
+			Messaging.sendError(player, npc.getName()
+					+ " is not in teleport mode.");
+			return;
+		}
+		player.sendMessage(ChatColor.GREEN + "Added current location to "
+				+ StringUtils.wrap(npc.getName()) + " as "
+				+ StringUtils.wrap(args.getJoinedStrings(1)) + ".");
+		wizard.addLocation(player.getLocation(), args.getJoinedStrings(1));
+	}
+
+	@Command(
+			aliases = "wizard",
+			usage = "locations",
+			desc = "view the locations of a wizard",
+			modifiers = "locations",
 			min = 1,
 			max = 1)
-	@CommandPermissions("wizard.use.help")
-	public static void wizardHelp(CommandContext args, CommandSender sender,
+	@CommandPermissions("wizard.use.locations")
+	public static void locations(CommandContext args, Player player,
 			HumanNPC npc) {
-		INSTANCE.sendHelpPage(sender);
+		Wizard wizard = npc.getType("wizard");
+		if (wizard.getMode() != WizardMode.TELEPORT) {
+			Messaging.sendError(player, npc.getName()
+					+ " is not in teleport mode.");
+			return;
+		}
+		player.sendMessage(ChatColor.GREEN
+				+ StringUtils.listify(StringUtils.wrap(npc.getName()
+						+ "'s Wizard Locations")));
+		int i = 1;
+		for (String location : wizard.getLocations()) {
+			player.sendMessage(StringUtils.wrap(i) + ": "
+					+ location.split(",")[0]);
+			++i;
+		}
 	}
 
 	@Command(
@@ -71,50 +135,6 @@ public class WizardCommands extends CommandHandler {
 
 	@Command(
 			aliases = "wizard",
-			usage = "status",
-			desc = "display the status of a wizard",
-			modifiers = "status",
-			min = 1,
-			max = 1)
-	@CommandPermissions("wizard.use.status")
-	public static void status(CommandContext args, Player player, HumanNPC npc) {
-		player.sendMessage(ChatColor.YELLOW
-				+ StringUtils.listify(ChatColor.GREEN + npc.getName()
-						+ "'s Wizard Status" + ChatColor.YELLOW));
-		Wizard wizard = npc.getType("wizard");
-		player.sendMessage(ChatColor.GREEN + "    Mode: "
-				+ StringUtils.wrap(wizard.getMode().name().toLowerCase()));
-		String mana = "" + wizard.getMana();
-		if (wizard.hasUnlimitedMana()) {
-			mana = "unlimited";
-		}
-		player.sendMessage(ChatColor.GREEN + "    Mana: "
-				+ StringUtils.wrap(mana));
-	}
-
-	@Command(
-			aliases = "wizard",
-			usage = "addloc [location]",
-			desc = "add a location to a wizard",
-			modifiers = "addloc",
-			min = 2)
-	@CommandPermissions("wizard.modify.addloc")
-	public static void addLocation(CommandContext args, Player player,
-			HumanNPC npc) {
-		Wizard wizard = npc.getType("wizard");
-		if (wizard.getMode() != WizardMode.TELEPORT) {
-			Messaging.sendError(player, npc.getName()
-					+ " is not in teleport mode.");
-			return;
-		}
-		player.sendMessage(ChatColor.GREEN + "Added current location to "
-				+ StringUtils.wrap(npc.getName()) + " as "
-				+ StringUtils.wrap(args.getJoinedStrings(1)) + ".");
-		wizard.addLocation(player.getLocation(), args.getJoinedStrings(1));
-	}
-
-	@Command(
-			aliases = "wizard",
 			usage = "removeloc [location]",
 			desc = "remove a location from a wizard",
 			modifiers = "removeloc",
@@ -139,29 +159,25 @@ public class WizardCommands extends CommandHandler {
 
 	@Command(
 			aliases = "wizard",
-			usage = "locations",
-			desc = "view the locations of a wizard",
-			modifiers = "locations",
+			usage = "status",
+			desc = "display the status of a wizard",
+			modifiers = "status",
 			min = 1,
 			max = 1)
-	@CommandPermissions("wizard.use.locations")
-	public static void locations(CommandContext args, Player player,
-			HumanNPC npc) {
+	@CommandPermissions("wizard.use.status")
+	public static void status(CommandContext args, Player player, HumanNPC npc) {
+		player.sendMessage(ChatColor.YELLOW
+				+ StringUtils.listify(ChatColor.GREEN + npc.getName()
+						+ "'s Wizard Status" + ChatColor.YELLOW));
 		Wizard wizard = npc.getType("wizard");
-		if (wizard.getMode() != WizardMode.TELEPORT) {
-			Messaging.sendError(player, npc.getName()
-					+ " is not in teleport mode.");
-			return;
+		player.sendMessage(ChatColor.GREEN + "    Mode: "
+				+ StringUtils.wrap(wizard.getMode().name().toLowerCase()));
+		String mana = "" + wizard.getMana();
+		if (wizard.hasUnlimitedMana()) {
+			mana = "unlimited";
 		}
-		player.sendMessage(ChatColor.GREEN
-				+ StringUtils.listify(StringUtils.wrap(npc.getName()
-						+ "'s Wizard Locations")));
-		int i = 1;
-		for (String location : wizard.getLocations()) {
-			player.sendMessage(StringUtils.wrap(i) + ": "
-					+ location.split(",")[0]);
-			++i;
-		}
+		player.sendMessage(ChatColor.GREEN + "    Mana: "
+				+ StringUtils.wrap(mana));
 	}
 
 	@Command(
@@ -185,33 +201,17 @@ public class WizardCommands extends CommandHandler {
 		}
 	}
 
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("wizard.use.help");
-		PermissionManager.addPermission("wizard.modify.mode");
-		PermissionManager.addPermission("wizard.use.status");
-		PermissionManager.addPermission("wizard.modify.addloc");
-		PermissionManager.addPermission("wizard.modify.removeloc");
-		PermissionManager.addPermission("wizard.use.locations");
-		PermissionManager.addPermission("wizard.modify.unlimited");
-		PermissionManager.addPermission("wizard.use.interact");
-	}
-
-	@Override
-	public void sendHelpPage(CommandSender sender) {
-		HelpUtils.header(sender, "Wizard", 1, 1);
-		HelpUtils.format(sender, "wizard", "locations",
-				"view the tp locations of a wizard");
-		HelpUtils.format(sender, "wizard", "addloc [name]",
-				"add a tp location to the wizard");
-		HelpUtils.format(sender, "wizard", "removeloc [id]",
-				"remove the tp location");
-		HelpUtils.format(sender, "wizard", "mode [mode]",
-				"change the mode of a wizard");
-		HelpUtils.format(sender, "wizard", "status",
-				"display the status of a wizard");
-		HelpUtils.format(sender, "wizard", "unlimited",
-				"toggle a wizard's mana as unlimited");
-		HelpUtils.footer(sender);
+	@CommandRequirements()
+	@Command(
+			aliases = "wizard",
+			usage = "help",
+			desc = "view the wizard help page",
+			modifiers = "help",
+			min = 1,
+			max = 1)
+	@CommandPermissions("wizard.use.help")
+	public static void wizardHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		INSTANCE.sendHelpPage(sender);
 	}
 }

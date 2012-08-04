@@ -30,18 +30,36 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 
 public class NPCDataManager {
-    // TODO: make editors an interface.
-    public static final Map<Player, PathEditingSession> pathEditors = Maps.newHashMap();
     public static final Map<Player, Integer> equipmentEditors = Maps.newHashMap();
     public static final Map<Integer, Deque<String>> NPCTexts = new MapMaker().makeMap();
+    // TODO: make editors an interface.
+    public static final Map<Player, PathEditingSession> pathEditors = Maps.newHashMap();
     public static final Map<String, Integer> selectedNPCs = new MapMaker().makeMap();
 
-    public static void handleEquipmentEditor(NPCRightClickEvent event) {
-        Player player = event.getPlayer();
-        HumanNPC npc = event.getNPC();
-        if (equipmentEditors.containsKey(player) && equipmentEditors.get(player) == npc.getUID()) {
-            equip(player, npc);
+    // Adds items to an npc so that they are visible.
+    public static void addItems(HumanNPC npc, List<ItemData> items) {
+        if (items != null) {
+            npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0).createStack());
+            for (int i = 0; i < items.size() - 1; i++) {
+                Armor.getArmor(i).set(npc.getInventory(),
+                        items.get(i + 1).getID() == 0 ? null : items.get(i + 1).createStack());
+            }
+            npc.getNPCData().setItems(items);
         }
+    }
+
+    // Adds to an npc's text.
+    public static void addText(int UID, String text) {
+        Deque<String> texts = NPCDataManager.getText(UID);
+        if (texts == null) {
+            texts = new ArrayDeque<String>();
+        }
+        texts.add(text);
+        NPCDataManager.setText(UID, texts);
+    }
+
+    public static void deselectNPC(Player player) {
+        selectedNPCs.remove(player.getName());
     }
 
     // equip an NPC based on a player's item-in-hand
@@ -134,6 +152,23 @@ public class NPCDataManager {
         NPCManager.register(npc.getUID(), npc.getOwner(), NPCCreateReason.RESPAWN);
     }
 
+    public static int getSelected(Player player) {
+        return selectedNPCs.get(player.getName());
+    }
+
+    // Get an npc's text.
+    public static Deque<String> getText(int UID) {
+        return NPCTexts.get(UID);
+    }
+
+    public static void handleEquipmentEditor(NPCRightClickEvent event) {
+        Player player = event.getPlayer();
+        HumanNPC npc = event.getNPC();
+        if (equipmentEditors.containsKey(player) && equipmentEditors.get(player) == npc.getUID()) {
+            equip(player, npc);
+        }
+    }
+
     public static void handlePathEditor(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (pathEditors.get(player) == null)
@@ -188,43 +223,13 @@ public class NPCDataManager {
         pathEditors.get(event.getPlayer()).restartAtIndex();
     }
 
-    // Adds items to an npc so that they are visible.
-    public static void addItems(HumanNPC npc, List<ItemData> items) {
-        if (items != null) {
-            npc.setItemInHand(items.get(0).getID() == 0 ? null : items.get(0).createStack());
-            for (int i = 0; i < items.size() - 1; i++) {
-                Armor.getArmor(i).set(npc.getInventory(),
-                        items.get(i + 1).getID() == 0 ? null : items.get(i + 1).createStack());
-            }
-            npc.getNPCData().setItems(items);
-        }
-    }
-
-    // Adds to an npc's text.
-    public static void addText(int UID, String text) {
-        Deque<String> texts = NPCDataManager.getText(UID);
-        if (texts == null) {
-            texts = new ArrayDeque<String>();
-        }
-        texts.add(text);
-        NPCDataManager.setText(UID, texts);
-    }
-
-    public static int getSelected(Player player) {
-        return selectedNPCs.get(player.getName());
+    // Resets an NPC's text.
+    public static void resetText(int UID) {
+        setText(UID, new ArrayDeque<String>());
     }
 
     public static void selectNPC(Player player, HumanNPC npc) {
         selectedNPCs.put(player.getName(), npc.getUID());
-    }
-
-    public static void deselectNPC(Player player) {
-        selectedNPCs.remove(player.getName());
-    }
-
-    // Get an npc's text.
-    public static Deque<String> getText(int UID) {
-        return NPCTexts.get(UID);
     }
 
     // Sets an npc's text to the given texts.
@@ -232,10 +237,5 @@ public class NPCDataManager {
         text = StringUtils.colourise(text);
         NPCTexts.put(UID, text);
         NPCManager.get(UID).getNPCData().setTexts(text);
-    }
-
-    // Resets an NPC's text.
-    public static void resetText(int UID) {
-        setText(UID, new ArrayDeque<String>());
     }
 }

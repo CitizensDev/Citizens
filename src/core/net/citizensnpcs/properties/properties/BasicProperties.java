@@ -36,56 +36,25 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 public class BasicProperties extends PropertyManager implements Properties {
-    public void saveName(int UID, String npcName) {
-        profiles.setString(UID + name, npcName);
-    }
-
-    public String getName(int UID) {
-        return profiles.getString(UID + name);
-    }
-
-    public Location getLocation(int UID) {
-        String[] values = profiles.getString(UID + location).split(",");
-        if (values.length != 6) {
-            if (values[0].isEmpty()) {
-                Messaging.log("Missing location for " + UID);
-            } else
-                Messaging.log("Invalid location length. Length: " + values.length);
-            return null;
-        } else {
-            return new Location(Bukkit.getServer().getWorld(values[0]), Double.parseDouble(values[1]),
-                    Double.parseDouble(values[2]), Double.parseDouble(values[3]),
-                    Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+    private double getBalance(int UID) {
+        if (profiles.keyExists(UID + ".trader.balance")) {
+            double previous = profiles.getDouble(UID + ".trader.balance");
+            profiles.removeKey(UID + ".trader.balance");
+            return previous;
         }
+        return profiles.getDouble(UID + ".basic.balance");
     }
 
-    public void saveLocation(Location loc, int UID) {
-        String locale = loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ()
-                + "," + loc.getYaw() + "," + loc.getPitch();
-        profiles.setString(UID + location, locale);
-    }
-
-    private void saveInventory(int UID, PlayerInventory inv) {
-        StringBuilder save = new StringBuilder();
-        int count = 0;
-        for (ItemStack i : inv.getContents()) {
-            if (i == null || i.getType() == Material.AIR) {
-                ++count;
-            } else {
-                if (count > 0) {
-                    save.append("AIR*" + count + ",");
-                    count = 0;
-                }
-                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/")
-                        .append(i.getDurability()).append("/")
-                        .append((i.getData() == null) ? 0 : i.getData().getData()).append(",");
-            }
+    public ChatColor getColour(int UID) {
+        if (Strings.isNullOrEmpty(profiles.getString(UID + color))) {
+            profiles.setInt(UID + color, 0xF);
+            return ChatColor.WHITE;
         }
-        if (count > 0) {
-            save.append("AIR*" + count + ",");
-            count = 0;
+        try {
+            return ChatColor.getByChar((char) ('0' + Integer.parseInt(profiles.getString(UID + color), 16)));
+        } catch (NumberFormatException ex) {
+            return ChatColor.getByChar(profiles.getString(UID + color).charAt(0));
         }
-        profiles.setString(UID + inventory, save.toString());
     }
 
     private PlayerInventory getInventory(int UID) {
@@ -144,30 +113,44 @@ public class BasicProperties extends PropertyManager implements Properties {
         return items;
     }
 
-    private void saveItems(int UID, List<ItemData> items) {
-        StringBuilder temp = new StringBuilder();
-        for (int i = 0; i < items.size(); i++) {
-            short durability = items.get(i).getDurability();
-            temp.append(items.get(i).getID() + ":" + (durability == -1 ? 0 : durability) + ",");
-        }
-        profiles.setString(UID + BasicProperties.items, temp.toString());
-    }
-
-    public ChatColor getColour(int UID) {
-        if (Strings.isNullOrEmpty(profiles.getString(UID + color))) {
-            profiles.setInt(UID + color, 0xF);
-            return ChatColor.WHITE;
-        }
-        try {
-            return ChatColor.getByChar((char) ('0' + Integer.parseInt(profiles.getString(UID + color), 16)));
-        } catch (NumberFormatException ex) {
-            return ChatColor.getByChar(profiles.getString(UID + color).charAt(0));
+    public Location getLocation(int UID) {
+        String[] values = profiles.getString(UID + location).split(",");
+        if (values.length != 6) {
+            if (values[0].isEmpty()) {
+                Messaging.log("Missing location for " + UID);
+            } else
+                Messaging.log("Invalid location length. Length: " + values.length);
+            return null;
+        } else {
+            return new Location(Bukkit.getServer().getWorld(values[0]), Double.parseDouble(values[1]),
+                    Double.parseDouble(values[2]), Double.parseDouble(values[3]),
+                    Float.parseFloat(values[4]), Float.parseFloat(values[5]));
         }
     }
 
-    private void saveColour(int UID, ChatColor colour) {
-        profiles.setString(UID + color,
-                colour == null ? "" + ChatColor.WHITE.getChar() : "" + colour.getChar());
+    public String getName(int UID) {
+        return profiles.getString(UID + name);
+    }
+
+    public int getNewNpcID() {
+        int count = 0;
+        while (profiles.keyExists("" + count))
+            ++count;
+        return count;
+    }
+
+    @Override
+    public List<Node> getNodes() {
+        return null;
+    }
+
+    @Override
+    public Collection<String> getNodesForCopy() {
+        return nodesForCopy;
+    }
+
+    public String getOwner(int UID) {
+        return profiles.getString(UID + owner);
     }
 
     public Deque<String> getText(int UID) {
@@ -177,70 +160,6 @@ public class BasicProperties extends PropertyManager implements Properties {
             return texts;
         }
         return null;
-    }
-
-    private void saveText(int UID, Deque<String> texts) {
-        if (texts == null) {
-            return;
-        }
-        profiles.setString(UID + text, Joiner.on(";").skipNulls().join(texts));
-    }
-
-    public boolean isTalk(int UID) {
-        return profiles.getBoolean(UID + talk, true);
-    }
-
-    private void saveTalk(int UID, boolean talk) {
-        profiles.setBoolean(UID + BasicProperties.talk, talk);
-    }
-
-    public boolean isLookWhenClose(int UID) {
-        return profiles.getBoolean(UID + lookWhenClose, Settings.getBoolean("DefaultLookAt"));
-    }
-
-    public void saveLookWhenClose(int UID, boolean value) {
-        profiles.setBoolean(UID + lookWhenClose, value);
-    }
-
-    public boolean isTalkWhenClose(int UID) {
-        return profiles.getBoolean(UID + talkWhenClose, Settings.getBoolean("DefaultTalkClose"));
-    }
-
-    public void saveTalkWhenClose(int UID, boolean value) {
-        profiles.setBoolean(UID + talkWhenClose, value);
-    }
-
-    public String getOwner(int UID) {
-        return profiles.getString(UID + owner);
-    }
-
-    public void saveOwner(int UID, String name) {
-        profiles.setString(UID + owner, name);
-    }
-
-    private void saveWaypoints(int UID, List<Waypoint> list) {
-        if (list.size() == 0)
-            return;
-        profiles.removeKey(UID + BasicProperties.waypoints); // clear old
-                                                             // waypoints.
-        int count = 0, innercount = 0;
-        String path = "", root = "";
-        for (Waypoint waypoint : list) {
-            path = UID + BasicProperties.waypoints + "." + count;
-            LocationUtils.saveLocation(profiles, waypoint.getLocation(), path, true);
-
-            profiles.setInt(path + ".delay", waypoint.getDelay());
-            path += ".modifiers.";
-
-            innercount = 0;
-            for (WaypointModifier modifier : waypoint.getModifiers()) {
-                root = path + innercount;
-                profiles.setString(root + ".type", modifier.getType().name());
-                modifier.save(profiles, root);
-                ++innercount;
-            }
-            ++count;
-        }
     }
 
     private List<Waypoint> getWaypoints(int UID, World world) {
@@ -281,38 +200,20 @@ public class BasicProperties extends PropertyManager implements Properties {
     }
 
     @Override
-    public void saveState(HumanNPC npc) {
-        int UID = npc.getUID();
-
-        NPCData npcdata = npc.getNPCData();
-
-        saveBalance(npc.getUID(), npc.getBalance());
-        saveName(npc.getUID(), npcdata.getName());
-        saveLocation(npcdata.getLocation(), UID);
-        saveColour(UID, npcdata.getColour());
-        saveItems(UID, npcdata.getItems());
-        saveInventory(UID, npc.getPlayer().getInventory());
-        saveText(UID, npcdata.getTexts());
-        saveLookWhenClose(UID, npcdata.isLookClose());
-        saveTalkWhenClose(UID, npcdata.isTalkClose());
-        saveTalk(UID, npcdata.isTalk());
-        saveWaypoints(UID, npc.getWaypoints().getWaypoints());
-        saveOwner(UID, npcdata.getOwner());
-
-        profiles.setBoolean(UID + ".basic.wander", npc.getHandle().isAutoPathfinder());
+    public boolean isEnabled(HumanNPC npc) {
+        return true;
     }
 
-    private void saveBalance(int UID, double balance) {
-        profiles.setDouble(UID + ".basic.balance", balance);
+    public boolean isLookWhenClose(int UID) {
+        return profiles.getBoolean(UID + lookWhenClose, Settings.getBoolean("DefaultLookAt"));
     }
 
-    private double getBalance(int UID) {
-        if (profiles.keyExists(UID + ".trader.balance")) {
-            double previous = profiles.getDouble(UID + ".trader.balance");
-            profiles.removeKey(UID + ".trader.balance");
-            return previous;
-        }
-        return profiles.getDouble(UID + ".basic.balance");
+    public boolean isTalk(int UID) {
+        return profiles.getBoolean(UID + talk, true);
+    }
+
+    public boolean isTalkWhenClose(int UID) {
+        return profiles.getBoolean(UID + talkWhenClose, Settings.getBoolean("DefaultTalkClose"));
     }
 
     @Override
@@ -341,45 +242,144 @@ public class BasicProperties extends PropertyManager implements Properties {
         saveState(npc);
     }
 
+    private void saveBalance(int UID, double balance) {
+        profiles.setDouble(UID + ".basic.balance", balance);
+    }
+
+    private void saveColour(int UID, ChatColor colour) {
+        profiles.setString(UID + color,
+                colour == null ? "" + ChatColor.WHITE.getChar() : "" + colour.getChar());
+    }
+
+    private void saveInventory(int UID, PlayerInventory inv) {
+        StringBuilder save = new StringBuilder();
+        int count = 0;
+        for (ItemStack i : inv.getContents()) {
+            if (i == null || i.getType() == Material.AIR) {
+                ++count;
+            } else {
+                if (count > 0) {
+                    save.append("AIR*" + count + ",");
+                    count = 0;
+                }
+                save.append(i.getTypeId()).append("/").append(i.getAmount()).append("/")
+                        .append(i.getDurability()).append("/")
+                        .append((i.getData() == null) ? 0 : i.getData().getData()).append(",");
+            }
+        }
+        if (count > 0) {
+            save.append("AIR*" + count + ",");
+            count = 0;
+        }
+        profiles.setString(UID + inventory, save.toString());
+    }
+
+    private void saveItems(int UID, List<ItemData> items) {
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            short durability = items.get(i).getDurability();
+            temp.append(items.get(i).getID() + ":" + (durability == -1 ? 0 : durability) + ",");
+        }
+        profiles.setString(UID + BasicProperties.items, temp.toString());
+    }
+
+    public void saveLocation(Location loc, int UID) {
+        String locale = loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ()
+                + "," + loc.getYaw() + "," + loc.getPitch();
+        profiles.setString(UID + location, locale);
+    }
+
+    public void saveLookWhenClose(int UID, boolean value) {
+        profiles.setBoolean(UID + lookWhenClose, value);
+    }
+
+    public void saveName(int UID, String npcName) {
+        profiles.setString(UID + name, npcName);
+    }
+
+    public void saveOwner(int UID, String name) {
+        profiles.setString(UID + owner, name);
+    }
+
+    @Override
+    public void saveState(HumanNPC npc) {
+        int UID = npc.getUID();
+
+        NPCData npcdata = npc.getNPCData();
+
+        saveBalance(npc.getUID(), npc.getBalance());
+        saveName(npc.getUID(), npcdata.getName());
+        saveLocation(npcdata.getLocation(), UID);
+        saveColour(UID, npcdata.getColour());
+        saveItems(UID, npcdata.getItems());
+        saveInventory(UID, npc.getPlayer().getInventory());
+        saveText(UID, npcdata.getTexts());
+        saveLookWhenClose(UID, npcdata.isLookClose());
+        saveTalkWhenClose(UID, npcdata.isTalkClose());
+        saveTalk(UID, npcdata.isTalk());
+        saveWaypoints(UID, npc.getWaypoints().getWaypoints());
+        saveOwner(UID, npcdata.getOwner());
+
+        profiles.setBoolean(UID + ".basic.wander", npc.getHandle().isAutoPathfinder());
+    }
+
+    private void saveTalk(int UID, boolean talk) {
+        profiles.setBoolean(UID + BasicProperties.talk, talk);
+    }
+
+    public void saveTalkWhenClose(int UID, boolean value) {
+        profiles.setBoolean(UID + talkWhenClose, value);
+    }
+
+    private void saveText(int UID, Deque<String> texts) {
+        if (texts == null) {
+            return;
+        }
+        profiles.setString(UID + text, Joiner.on(";").skipNulls().join(texts));
+    }
+
+    private void saveWaypoints(int UID, List<Waypoint> list) {
+        if (list.size() == 0)
+            return;
+        profiles.removeKey(UID + BasicProperties.waypoints); // clear old
+                                                             // waypoints.
+        int count = 0, innercount = 0;
+        String path = "", root = "";
+        for (Waypoint waypoint : list) {
+            path = UID + BasicProperties.waypoints + "." + count;
+            LocationUtils.saveLocation(profiles, waypoint.getLocation(), path, true);
+
+            profiles.setInt(path + ".delay", waypoint.getDelay());
+            path += ".modifiers.";
+
+            innercount = 0;
+            for (WaypointModifier modifier : waypoint.getModifiers()) {
+                root = path + innercount;
+                profiles.setString(root + ".type", modifier.getType().name());
+                modifier.save(profiles, root);
+                ++innercount;
+            }
+            ++count;
+        }
+    }
+
     @Override
     public void setEnabled(HumanNPC npc, boolean value) {
     }
 
-    @Override
-    public boolean isEnabled(HumanNPC npc) {
-        return true;
-    }
+    private static final String color = ".basic.color";
 
-    public int getNewNpcID() {
-        int count = 0;
-        while (profiles.keyExists("" + count))
-            ++count;
-        return count;
-    }
-
-    @Override
-    public List<Node> getNodes() {
-        return null;
-    }
-
-    @Override
-    public Collection<String> getNodesForCopy() {
-        return nodesForCopy;
-    }
-
+    private static final String inventory = ".basic.inventory";
+    private static final String items = ".basic.items";
+    private static final String location = ".basic.location";
+    private static final String lookWhenClose = ".basic.look-when-close";
+    private static final String name = ".basic.name";
     private static final List<String> nodesForCopy = Lists.newArrayList("basic.name", "basic.color",
             "basic.items", "basic.inventory", "basic.location", "basic.look-when-close",
             "basic.talk-when-close", "basic.waypoints", "basic.owner", "basic.talk", "basic.text");
-
-    private static final String name = ".basic.name";
-    private static final String color = ".basic.color";
-    private static final String items = ".basic.items";
-    private static final String inventory = ".basic.inventory";
-    private static final String location = ".basic.location";
-    private static final String lookWhenClose = ".basic.look-when-close";
-    private static final String talkWhenClose = ".basic.talk-when-close";
-    private static final String waypoints = ".basic.waypoints";
     private static final String owner = ".basic.owner";
-    private static final String text = ".basic.text";
     private static final String talk = ".basic.talk";
+    private static final String talkWhenClose = ".basic.talk-when-close";
+    private static final String text = ".basic.text";
+    private static final String waypoints = ".basic.waypoints";
 }

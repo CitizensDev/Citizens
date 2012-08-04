@@ -15,12 +15,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class TeleportModifier extends WaypointModifier {
-	private Location loc;
 	private final ConstructableLocation construct = new ConstructableLocation();
-	private static final int X = 0, Y = 1, Z = 2, PITCH = 3, YAW = 4;
-
+	private Location loc;
 	public TeleportModifier(Waypoint waypoint) {
 		super(waypoint);
+	}
+
+	@Override
+	public boolean allowExit() {
+		return step >= PITCH;
 	}
 
 	@Override
@@ -87,8 +90,8 @@ public class TeleportModifier extends WaypointModifier {
 	}
 
 	@Override
-	public boolean allowExit() {
-		return step >= PITCH;
+	public WaypointModifierType getType() {
+		return WaypointModifierType.TELEPORT;
 	}
 
 	@Override
@@ -103,11 +106,6 @@ public class TeleportModifier extends WaypointModifier {
 	}
 
 	@Override
-	public WaypointModifierType getType() {
-		return WaypointModifierType.TELEPORT;
-	}
-
-	@Override
 	public void parse(Storage storage, String root) {
 		loc = LocationUtils.loadLocation(storage, root, true);
 	}
@@ -116,4 +114,6 @@ public class TeleportModifier extends WaypointModifier {
 	public void save(Storage storage, String root) {
 		LocationUtils.saveLocation(storage, loc, root, true);
 	}
+
+	private static final int X = 0, Y = 1, Z = 2, PITCH = 3, YAW = 4;
 }

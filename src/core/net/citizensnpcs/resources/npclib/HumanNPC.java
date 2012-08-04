@@ -24,13 +24,13 @@ import org.bukkit.inventory.PlayerInventory;
 import com.google.common.collect.MapMaker;
 
 public class HumanNPC extends NPC {
+    private double balance;
     private final CraftNPC mcEntity;
     private NPCData npcdata = new NPCData();
-    private double balance;
     private boolean paused;
-    private WaypointPath waypoints = new WaypointPath();
-
     private final Map<String, CitizensNPC> types = new MapMaker().makeMap();
+
+    private WaypointPath waypoints = new WaypointPath();
 
     public HumanNPC(CraftNPC entity, int UID, String name) {
         super(UID, name);
@@ -127,7 +127,7 @@ public class HumanNPC extends NPC {
     }
 
     public Player getPlayer() {
-        return (Player) this.mcEntity.getBukkitEntity();
+        return this.mcEntity.getBukkitEntity();
     }
 
     @SuppressWarnings("unchecked")

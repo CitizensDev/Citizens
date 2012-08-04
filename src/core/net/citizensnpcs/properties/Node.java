@@ -8,8 +8,8 @@ import net.citizensnpcs.properties.properties.UtilityProperties;
  */
 public class Node {
 	private final String name;
-	private final SettingsType type;
 	private final String path;
+	private final SettingsType type;
 	private Object value;
 
 	public Node(String name, SettingsType type, String path, Object value) {
@@ -40,6 +40,15 @@ public class Node {
 	}
 
 	/**
+	 * Get the path of the node
+	 * 
+	 * @return path Path of a node
+	 */
+	public String getPath() {
+		return this.path;
+	}
+
+	/**
 	 * Get the type of the node, which determines which file the node is written
 	 * to
 	 * 
@@ -47,15 +56,6 @@ public class Node {
 	 */
 	public SettingsType getType() {
 		return this.type;
-	}
-
-	/**
-	 * Get the path of the node
-	 * 
-	 * @return path Path of a node
-	 */
-	public String getPath() {
-		return this.path;
 	}
 
 	/**

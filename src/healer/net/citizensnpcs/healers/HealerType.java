@@ -11,19 +11,13 @@ import net.citizensnpcs.properties.Properties;
 public class HealerType extends CitizensNPCType {
 
     @Override
-    public Properties getProperties() {
-        return HealerProperties.INSTANCE;
-    }
-
-    @Override
     public CommandHandler getCommands() {
         return HealerCommands.INSTANCE;
     }
 
     @Override
-    public void registerEvents() {
-        NPCTypeManager.registerEvents(new HealerCitizensListen());
-        NPCTypeManager.registerEvents(new HealerNPCListen());
+    public CitizensNPC getInstance() {
+        return new Healer();
     }
 
     @Override
@@ -32,7 +26,13 @@ public class HealerType extends CitizensNPCType {
     }
 
     @Override
-    public CitizensNPC getInstance() {
-        return new Healer();
+    public Properties getProperties() {
+        return HealerProperties.INSTANCE;
+    }
+
+    @Override
+    public void registerEvents() {
+        NPCTypeManager.registerEvents(new HealerCitizensListen());
+        NPCTypeManager.registerEvents(new HealerNPCListen());
     }
 }

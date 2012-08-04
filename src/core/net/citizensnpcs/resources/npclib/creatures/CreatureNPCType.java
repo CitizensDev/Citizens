@@ -22,28 +22,13 @@ import com.google.common.collect.Maps;
 public enum CreatureNPCType {
 	EVIL(EvilCreatureNPC.class, "Evil", SpawnValidator.DEFAULT_SPAWNIN,
 			SpawnValidator.DEFAULT_SPAWNON);
+	private Constructor<? extends CreatureNPC> instance;
 	private final int max, spawnChance;
+	private final String name;
 	private final String[] possible;
 	private final boolean spawn;
-	private Constructor<? extends CreatureNPC> instance;
-	private final SpawnValidator spawnIn, spawnOn;
 	private final Spawner spawner = DefaultSpawner.INSTANCE;
-	private final String name;
-
-	private static final Random random = new Random();
-
-	private static final Map<String, CreatureNPCType> mapping = Maps
-			.newHashMap();
-
-	private static final List<CreatureNPCType> spawning = Lists.newArrayList();
-
-	static {
-		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
-			mapping.put(type.name, type);
-			if (type.isSpawn())
-				spawning.add(type);
-		}
-	}
+	private final SpawnValidator spawnIn, spawnOn;
 
 	CreatureNPCType(Class<? extends CreatureNPC> instance, String name,
 			SpawnValidator spawnIn, SpawnValidator spawnOn) {
@@ -94,6 +79,13 @@ public enum CreatureNPCType {
 				&& spawnIn.isValid(world.getBlockTypeIdAt(x, y + 1, z));
 	}
 
+	private static final Map<String, CreatureNPCType> mapping = Maps
+			.newHashMap();
+
+	private static final Random random = new Random();
+
+	private static final List<CreatureNPCType> spawning = Lists.newArrayList();
+
 	public static CreatureNPCType fromName(String mob) {
 		return mapping.get(mob);
 	}
@@ -105,5 +97,13 @@ public enum CreatureNPCType {
 
 	public static boolean hasSpawning() {
 		return spawning.size() > 0;
+	}
+
+	static {
+		for (CreatureNPCType type : EnumSet.allOf(CreatureNPCType.class)) {
+			mapping.put(type.name, type);
+			if (type.isSpawn())
+				spawning.add(type);
+		}
 	}
 }

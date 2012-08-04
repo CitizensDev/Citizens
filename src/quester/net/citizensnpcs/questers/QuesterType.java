@@ -15,13 +15,23 @@ import net.citizensnpcs.questers.listeners.QuesterPlayerListen;
 public class QuesterType extends CitizensNPCType {
 
     @Override
-    public Properties getProperties() {
-        return QuesterProperties.INSTANCE;
+    public CommandHandler getCommands() {
+        return QuesterCommands.INSTANCE;
     }
 
     @Override
-    public CommandHandler getCommands() {
-        return QuesterCommands.INSTANCE;
+    public CitizensNPC getInstance() {
+        return new Quester();
+    }
+
+    @Override
+    public String getName() {
+        return "quester";
+    }
+
+    @Override
+    public Properties getProperties() {
+        return QuesterProperties.INSTANCE;
     }
 
     @Override
@@ -36,15 +46,5 @@ public class QuesterType extends CitizensNPCType {
         // player events
         QuesterPlayerListen pl = new QuesterPlayerListen();
         NPCTypeManager.registerEvents(pl);
-    }
-
-    @Override
-    public String getName() {
-        return "quester";
-    }
-
-    @Override
-    public CitizensNPC getInstance() {
-        return new Quester();
     }
 }

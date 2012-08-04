@@ -15,6 +15,20 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
         this.text = text;
     }
 
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    /**
+     * Get the text involved in the event.
+     * 
+     * @return text involved in the event.
+     */
+    public String getText() {
+        return this.text;
+    }
+
     /**
      * Get the cancellation state of the event.
      * 
@@ -37,15 +51,6 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
     }
 
     /**
-     * Get the text involved in the event.
-     * 
-     * @return text involved in the event.
-     */
-    public String getText() {
-        return this.text;
-    }
-
-    /**
      * Set the text involved in the event.
      * 
      * @param text
@@ -56,11 +61,6 @@ public class NPCTalkEvent extends NPCPlayerEvent implements Cancellable {
     }
 
     private static final HandlerList handlers = new HandlerList();
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
 
     public static HandlerList getHandlerList() {
         return handlers;

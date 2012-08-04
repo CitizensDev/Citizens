@@ -35,10 +35,10 @@ public class Objective {
     private final Location location;
     private final Material material;
     private final boolean optional;
-    private final String questType;
     private final Map<String, RawYAMLObject> parameters;
-    private final String string;
+    private final String questType;
     private final String statusText;
+    private final String string;
 
     private Objective(Builder builder) {
         this.questType = builder.type;
@@ -53,14 +53,6 @@ public class Objective {
         this.completeHere = builder.completeHere;
         this.parameters = builder.params;
         this.statusText = builder.statusText;
-    }
-
-    public RawYAMLObject getParameter(String name) {
-        return parameters.get(name);
-    }
-
-    public boolean hasParameter(String string) {
-        return parameters.get(string) != null;
     }
 
     public int getAmount() {
@@ -87,12 +79,24 @@ public class Objective {
         return material;
     }
 
+    public RawYAMLObject getParameter(String name) {
+        return parameters.get(name);
+    }
+
+    public String getStatusText() {
+        return this.statusText;
+    }
+
     public String getString() {
         return string;
     }
 
     public String getType() {
         return questType;
+    }
+
+    public boolean hasParameter(String string) {
+        return parameters.get(string) != null;
     }
 
     public boolean isOptional() {
@@ -115,18 +119,13 @@ public class Objective {
         private Location location = null;
         private Material material = null;
         private boolean optional = false;
-        private String string = "";
-        private final String type;
         private final Map<String, RawYAMLObject> params = Maps.newHashMap();
         private String statusText = "";
+        private String string = "";
+        private final String type;
 
         public Builder(String type) {
             this.type = type;
-        }
-
-        public Builder param(String name, RawYAMLObject value) {
-            this.params.put(name, value);
-            return this;
         }
 
         public Builder amount(int amount) {
@@ -173,8 +172,8 @@ public class Objective {
             return this;
         }
 
-        public Builder string(String string) {
-            this.string = string;
+        public Builder param(String name, RawYAMLObject value) {
+            this.params.put(name, value);
             return this;
         }
 
@@ -182,9 +181,10 @@ public class Objective {
             this.statusText = string;
             return this;
         }
-    }
 
-    public String getStatusText() {
-        return this.statusText;
+        public Builder string(String string) {
+            this.string = string;
+            return this;
+        }
     }
 }

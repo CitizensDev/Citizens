@@ -8,9 +8,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class RankReward implements Requirement, Reward {
+	private final boolean replace;
 	private final String reward;
 	private final boolean take;
-	private final boolean replace;
 	private final String with;
 
 	RankReward(String reward, String with, boolean replace, boolean take) {
@@ -18,6 +18,17 @@ public class RankReward implements Requirement, Reward {
 		this.replace = replace;
 		this.take = take;
 		this.with = with;
+	}
+
+	@Override
+	public boolean fulfilsRequirement(Player player) {
+		return PermissionManager.hasRank(player, reward);
+	}
+
+	@Override
+	public String getRequiredText(Player player) {
+		return ChatColor.GRAY + "You must be in the group "
+				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
 	}
 
 	@Override
@@ -36,17 +47,6 @@ public class RankReward implements Requirement, Reward {
 	@Override
 	public boolean isTake() {
 		return take;
-	}
-
-	@Override
-	public boolean fulfilsRequirement(Player player) {
-		return PermissionManager.hasRank(player, reward);
-	}
-
-	@Override
-	public String getRequiredText(Player player) {
-		return ChatColor.GRAY + "You must be in the group "
-				+ StringUtils.wrap(reward, ChatColor.GRAY) + ".";
 	}
 
 	@Override

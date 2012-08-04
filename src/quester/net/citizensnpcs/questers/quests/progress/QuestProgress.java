@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class QuestProgress {
+    private final ObjectiveCycler objectives;
+    private final Player player;
     private ObjectiveProgress[] progress;
     private final String questName;
-    private final ObjectiveCycler objectives;
     private final long startTime;
     private final int UID;
-    private final Player player;
 
     public QuestProgress(int UID, Player player, String questName, long startTime) {
         this.UID = UID;
@@ -21,18 +21,6 @@ public class QuestProgress {
         this.objectives = QuestManager.getQuest(questName).getObjectives().newCycler();
         this.startTime = startTime;
         addObjectives();
-    }
-
-    public void cycle() {
-        next();
-        if (!this.objectives.isCompleted()) {
-            addObjectives();
-        }
-    }
-
-    private void next() {
-        this.progress = null;
-        this.objectives.cycle();
     }
 
     private void addObjectives() {
@@ -46,14 +34,35 @@ public class QuestProgress {
         }
     }
 
+    public void cycle() {
+        next();
+        if (!this.objectives.isCompleted()) {
+            addObjectives();
+        }
+    }
+
+    public ObjectiveProgress[] getProgress() {
+        return progress;
+    }
+
+    public int getQuesterUID() {
+        return this.UID;
+    }
+
+    public String getQuestName() {
+        return questName;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
     public int getStep() {
         return this.objectives.currentStep();
     }
 
-    public void setStep(int step) {
-        while (this.objectives.currentStep() != step) {
-            cycle();
-        }
+    public boolean isFullyCompleted() {
+        return isStepCompleted() && this.objectives.isCompleted();
     }
 
     public boolean isStepCompleted() {
@@ -67,8 +76,19 @@ public class QuestProgress {
         return true;
     }
 
-    public boolean isFullyCompleted() {
-        return isStepCompleted() && this.objectives.isCompleted();
+    private void next() {
+        this.progress = null;
+        this.objectives.cycle();
+    }
+
+    public void onStepCompletion() {
+        this.objectives.current().onCompletion(player, this);
+    }
+
+    public void setStep(int step) {
+        while (this.objectives.currentStep() != step) {
+            cycle();
+        }
     }
 
     public void updateProgress(Player player, Event event) {
@@ -94,25 +114,5 @@ public class QuestProgress {
                 this.progress[i] = null;
             }
         }
-    }
-
-    public int getQuesterUID() {
-        return this.UID;
-    }
-
-    public String getQuestName() {
-        return questName;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public ObjectiveProgress[] getProgress() {
-        return progress;
-    }
-
-    public void onStepCompletion() {
-        this.objectives.current().onCompletion(player, this);
     }
 }

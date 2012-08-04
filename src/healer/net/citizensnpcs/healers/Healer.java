@@ -25,13 +25,10 @@ public class Healer extends CitizensNPC {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	// Get the maximum health of a healer NPC
-	public int getMaxHealth() {
-		return level * 10;
+	// Get the health regeneration rate for a healer based on its level
+	public int getHealthRegenRate() {
+		return Settings.getInt("HealerHealthRegenIncrement")
+				* (11 - (getLevel()));
 	}
 
 	// Get the level of a healer NPC
@@ -39,9 +36,20 @@ public class Healer extends CitizensNPC {
 		return level;
 	}
 
-	// Set the level of a healer NPC
-	public void setLevel(int level) {
-		this.level = level;
+	// Get the maximum health of a healer NPC
+	public int getMaxHealth() {
+		return level * 10;
+	}
+
+	@Override
+	public CitizensNPCType getType() {
+		return new HealerType();
+	}
+
+	@Override
+	public void load(Storage profiles, int UID) {
+		health = profiles.getInt(UID + ".healer.health", 10);
+		level = profiles.getInt(UID + ".healer.level", 1);
 	}
 
 	// TODO Make this less ugly to look at
@@ -117,26 +125,18 @@ public class Healer extends CitizensNPC {
 		}
 	}
 
-	// Get the health regeneration rate for a healer based on its level
-	public int getHealthRegenRate() {
-		return Settings.getInt("HealerHealthRegenIncrement")
-				* (11 - (getLevel()));
-	}
-
-	@Override
-	public CitizensNPCType getType() {
-		return new HealerType();
-	}
-
 	@Override
 	public void save(Storage profiles, int UID) {
 		profiles.setInt(UID + ".healer.health", health);
 		profiles.setInt(UID + ".healer.level", level);
 	}
 
-	@Override
-	public void load(Storage profiles, int UID) {
-		health = profiles.getInt(UID + ".healer.health", 10);
-		level = profiles.getInt(UID + ".healer.level", 1);
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	// Set the level of a healer NPC
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }

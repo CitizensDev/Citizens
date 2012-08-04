@@ -23,6 +23,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public class QuestFactory {
+    private static final Function<Reward, Requirement> transformer = new Function<Reward, Requirement>() {
+        @Override
+        public Requirement apply(Reward arg0) {
+            return arg0 instanceof Requirement ? (Requirement) arg0 : null;
+        }
+    };
+
     private static final Set<String> usedKeys = Sets.newHashSet("type", "amount", "item", "npcdestination", "rewards",
             "location", "string", "optional", "finishhere", "materialid", "message");
 
@@ -111,6 +118,26 @@ public class QuestFactory {
         }
     }
 
+    private static List<Reward> loadRewards(ConfigurationHandler source, String root) {
+        List<Reward> rewards = Lists.newArrayList();
+        if (!source.pathExists(root) || source.getKeys(root) == null)
+            return rewards;
+        Collection<String> keys = source.getKeys(root);
+        String path;
+        for (String key : keys) {
+            path = root + "." + key;
+            boolean take = source.getBoolean(path + ".take", false);
+            String type = source.getString(path + ".type");
+            Reward builder = QuestAPI.getBuilder(type) == null ? null : QuestAPI.getBuilder(type).build(source, path,
+                    take);
+            if (builder != null) {
+                rewards.add(builder);
+            } else
+                Messaging.log("Invalid type identifier " + type + " for reward at " + path + ": reward not loaded.");
+        }
+        return rewards;
+    }
+
     public static void saveQuest(ConfigurationHandler quests, Quest quest) {
         String path = quest.getName();
         quests.setString(path + ".texts.description", quest.getDescription());
@@ -163,31 +190,4 @@ public class QuestFactory {
         }
         // TODO: save rewards + requirements.
     }
-
-    private static List<Reward> loadRewards(ConfigurationHandler source, String root) {
-        List<Reward> rewards = Lists.newArrayList();
-        if (!source.pathExists(root) || source.getKeys(root) == null)
-            return rewards;
-        Collection<String> keys = source.getKeys(root);
-        String path;
-        for (String key : keys) {
-            path = root + "." + key;
-            boolean take = source.getBoolean(path + ".take", false);
-            String type = source.getString(path + ".type");
-            Reward builder = QuestAPI.getBuilder(type) == null ? null : QuestAPI.getBuilder(type).build(source, path,
-                    take);
-            if (builder != null) {
-                rewards.add(builder);
-            } else
-                Messaging.log("Invalid type identifier " + type + " for reward at " + path + ": reward not loaded.");
-        }
-        return rewards;
-    }
-
-    private static final Function<Reward, Requirement> transformer = new Function<Reward, Requirement>() {
-        @Override
-        public Requirement apply(Reward arg0) {
-            return arg0 instanceof Requirement ? (Requirement) arg0 : null;
-        }
-    };
 }

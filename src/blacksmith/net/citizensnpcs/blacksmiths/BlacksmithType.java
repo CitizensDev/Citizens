@@ -8,16 +8,6 @@ import net.citizensnpcs.properties.Properties;
 public class BlacksmithType extends CitizensNPCType {
 
 	@Override
-	public String getName() {
-		return "blacksmith";
-	}
-
-	@Override
-	public Properties getProperties() {
-		return BlacksmithProperties.INSTANCE;
-	}
-
-	@Override
 	public CommandHandler getCommands() {
 		return BlacksmithCommands.INSTANCE;
 	}
@@ -25,5 +15,15 @@ public class BlacksmithType extends CitizensNPCType {
 	@Override
 	public CitizensNPC getInstance() {
 		return new Blacksmith();
+	}
+
+	@Override
+	public String getName() {
+		return "blacksmith";
+	}
+
+	@Override
+	public Properties getProperties() {
+		return BlacksmithProperties.INSTANCE;
 	}
 }

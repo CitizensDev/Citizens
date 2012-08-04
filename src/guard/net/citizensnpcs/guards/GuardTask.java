@@ -9,8 +9,6 @@ import net.citizensnpcs.resources.npclib.HumanNPC;
 import com.google.common.collect.Maps;
 
 public class GuardTask implements Runnable {
-	private final static Map<HumanNPC, GuardStatus> states = Maps.newHashMap();
-
 	@Override
 	public void run() {
 		for (HumanNPC npc : CitizensManager.getList().values()) {
@@ -23,4 +21,6 @@ public class GuardTask implements Runnable {
 			states.put(npc, guard.updateStatus(states.get(npc), npc));
 		}
 	}
+
+	private final static Map<HumanNPC, GuardStatus> states = Maps.newHashMap();
 }

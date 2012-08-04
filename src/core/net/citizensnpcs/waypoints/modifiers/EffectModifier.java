@@ -25,45 +25,24 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 public class EffectModifier extends WaypointModifier {
-	private IEffect inProgress;
 	private final List<EffectData> effects = new ArrayList<EffectData>();
+	private IEffect inProgress;
 
 	public EffectModifier(Waypoint waypoint) {
 		super(waypoint);
 	}
 
-	@Override
-	public void onReach(HumanNPC npc) {
-		for (EffectData data : effects) {
-			EffectUtils.playSound(data.getEffect(), waypoint.getLocation(),
-					data.getData());
-		}
+	private void add(Player player, EffectData data) {
+		effects.add(data);
+		player.sendMessage(ChatColor.GREEN
+				+ "Added effect "
+				+ StringUtils.wrap(StringUtils.format((Enum<?>) data
+						.getEffect())) + ".");
 	}
 
 	@Override
-	public void parse(Storage storage, String root) {
-		String[] innerSplit;
-		for (String effect : Splitter.on(";").split(
-				storage.getString(root + ".effects"))) {
-			innerSplit = effect.split(",");
-			effects.add(new EffectData(Effects.getByIdentifier(Integer
-					.parseInt(innerSplit[0])), Integer.parseInt(innerSplit[1])));
-		}
-	}
-
-	@Override
-	public void save(Storage storage, String root) {
-		StringBuilder builder = new StringBuilder();
-		for (EffectData data : effects) {
-			builder.append(data.getEffect().getIdentifier() + ","
-					+ data.getData() + ";");
-		}
-		storage.setString(root + ".effects", builder.toString());
-	}
-
-	@Override
-	public WaypointModifierType getType() {
-		return WaypointModifierType.EFFECT;
+	public boolean allowExit() {
+		return effects.size() > 0;
 	}
 
 	@Override
@@ -152,27 +131,9 @@ public class EffectModifier extends WaypointModifier {
 		return false;
 	}
 
-	private void add(Player player, EffectData data) {
-		effects.add(data);
-		player.sendMessage(ChatColor.GREEN
-				+ "Added effect "
-				+ StringUtils.wrap(StringUtils.format((Enum<?>) data
-						.getEffect())) + ".");
-	}
-
 	@Override
-	public boolean allowExit() {
-		return effects.size() > 0;
-	}
-
-	@Override
-	public boolean special(Player player, ChatType type) {
-		if (type == ChatType.RESTART) {
-			effects.clear();
-		} else if (type == ChatType.UNDO && allowExit()) {
-			effects.remove(effects.size() - 1);
-		}
-		return super.special(player, type);
+	public WaypointModifierType getType() {
+		return WaypointModifierType.EFFECT;
 	}
 
 	@Override
@@ -183,5 +144,44 @@ public class EffectModifier extends WaypointModifier {
 	@Override
 	protected void onExit() {
 		waypoint.addModifier(this);
+	}
+
+	@Override
+	public void onReach(HumanNPC npc) {
+		for (EffectData data : effects) {
+			EffectUtils.playSound(data.getEffect(), waypoint.getLocation(),
+					data.getData());
+		}
+	}
+
+	@Override
+	public void parse(Storage storage, String root) {
+		String[] innerSplit;
+		for (String effect : Splitter.on(";").split(
+				storage.getString(root + ".effects"))) {
+			innerSplit = effect.split(",");
+			effects.add(new EffectData(Effects.getByIdentifier(Integer
+					.parseInt(innerSplit[0])), Integer.parseInt(innerSplit[1])));
+		}
+	}
+
+	@Override
+	public void save(Storage storage, String root) {
+		StringBuilder builder = new StringBuilder();
+		for (EffectData data : effects) {
+			builder.append(data.getEffect().getIdentifier() + ","
+					+ data.getData() + ";");
+		}
+		storage.setString(root + ".effects", builder.toString());
+	}
+
+	@Override
+	public boolean special(Player player, ChatType type) {
+		if (type == ChatType.RESTART) {
+			effects.clear();
+		} else if (type == ChatType.UNDO && allowExit()) {
+			effects.remove(effects.size() - 1);
+		}
+		return super.special(player, type);
 	}
 }

@@ -6,19 +6,19 @@ import net.citizensnpcs.questers.quests.Quest;
 import org.bukkit.entity.Player;
 
 public abstract class QuestEvent extends CitizensEvent {
-    private final Quest quest;
     private final Player player;
+    private final Quest quest;
 
     protected QuestEvent(Quest quest, Player player) {
         this.quest = quest;
         this.player = player;
     }
 
-    public Quest getQuest() {
-        return quest;
-    }
-
     public Player getPlayer() {
         return player;
+    }
+
+    public Quest getQuest() {
+        return quest;
     }
 }

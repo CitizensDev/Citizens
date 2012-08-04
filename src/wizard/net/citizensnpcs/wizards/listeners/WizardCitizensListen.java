@@ -15,6 +15,11 @@ import org.bukkit.event.Listener;
 public class WizardCitizensListen implements Listener {
 
     @EventHandler
+    public void onCitizensDisable(CitizensDisableEvent event) {
+        WizardTask.cancelTasks();
+    }
+
+    @EventHandler
     public void onCitizensEnable(CitizensEnableEvent event) {
         if (!Settings.getBoolean("RegenWizardMana")) {
             return;
@@ -29,10 +34,5 @@ public class WizardCitizensListen implements Listener {
                                 Settings.getInt("WizardManaRegenRate")));
             }
         }
-    }
-
-    @EventHandler
-    public void onCitizensDisable(CitizensDisableEvent event) {
-        WizardTask.cancelTasks();
     }
 }

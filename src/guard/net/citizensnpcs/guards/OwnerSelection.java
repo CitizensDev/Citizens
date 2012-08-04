@@ -13,17 +13,11 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
 public class OwnerSelection implements Selection<HumanNPC> {
-	private final Set<Integer> selected = Sets.newHashSet();
 	private final Player owner;
+	private final Set<Integer> selected = Sets.newHashSet();
 
 	public OwnerSelection(Player owner) {
 		this.owner = owner;
-	}
-
-	@Override
-	public void select(HumanNPC selection) {
-		if (isOwner(selection.getUID()))
-			selected.add(selection.getUID());
 	}
 
 	@Override
@@ -33,22 +27,34 @@ public class OwnerSelection implements Selection<HumanNPC> {
 	}
 
 	@Override
-	public boolean isSelected(HumanNPC selection) {
-		return isOwner(selection.getUID())
-				&& selected.contains(selection.getUID());
+	public void deselectAll() {
+		selected.clear();
 	}
 
 	private boolean isOwner(int UID) {
 		return NPCManager.isOwner(owner, UID);
 	}
 
-	public int size() {
-		return selected.size();
+	@Override
+	public boolean isSelected(HumanNPC selection) {
+		return isOwner(selection.getUID())
+				&& selected.contains(selection.getUID());
 	}
 
 	@Override
 	public Iterator<HumanNPC> iterator() {
 		return Iterators.transform(selected.iterator(), UIDToNPC);
+	}
+
+	@Override
+	public void select(HumanNPC selection) {
+		if (isOwner(selection.getUID()))
+			selected.add(selection.getUID());
+	}
+
+	@Override
+    public int size() {
+		return selected.size();
 	}
 
 	private static Function<Integer, HumanNPC> UIDToNPC = new Function<Integer, HumanNPC>() {
@@ -57,9 +63,4 @@ public class OwnerSelection implements Selection<HumanNPC> {
 			return NPCManager.get(arg0);
 		}
 	};
-
-	@Override
-	public void deselectAll() {
-		selected.clear();
-	}
 }

@@ -29,24 +29,80 @@ import org.bukkit.inventory.ItemStack;
 		requireEconomy = true,
 		requiredType = "trader")
 public class TraderCommands extends CommandHandler {
-	public static final TraderCommands INSTANCE = new TraderCommands();
-
 	private TraderCommands() {
 	}
 
-	@CommandRequirements()
+	@Override
+	public void addPermissions() {
+		PermissionManager.addPermission("trader.use.help");
+		PermissionManager.addPermission("trader.use.showmoney");
+		PermissionManager.addPermission("trader.modify.money");
+		PermissionManager.addPermission("trader.use.list");
+		PermissionManager.addPermission("trader.modify.unlimited");
+		PermissionManager.addPermission("trader.modify.clearstock");
+		PermissionManager.addPermission("trader.modify.stock");
+		PermissionManager.addPermission("trader.use.trade");
+	}
+
+	@Override
+	public void sendHelpPage(CommandSender sender) {
+		HelpUtils.header(sender, "Trader", 1, 1);
+		HelpUtils.format(sender, "trader", "list [buy|sell] (page)",
+				"list a trader's buy/sell list");
+		HelpUtils.format(sender, "trader",
+				"[buy|sell] [itemID(:amount:data)] [price]",
+				"add an item to a trader's stock");
+		HelpUtils.format(sender, "trader", "[buy|sell] remove [itemID:data]",
+				"remove item from a trader's stock");
+		HelpUtils.format(sender, "trader",
+				"[buy|sell] edit [itemID(:amount:data)] [price]",
+				"edit a trader's stock");
+		HelpUtils.format(sender, "trader", "useglobal [buy|sell]",
+				"toggle using global stock");
+		HelpUtils.format(sender, "trader", "unlimited",
+				"set whether a trader has unlimited stock");
+		HelpUtils.format(sender, "trader", "clear [buy|sell]",
+				"clear a trader's stock");
+		HelpUtils.footer(sender);
+	}
+
+	public static final TraderCommands INSTANCE = new TraderCommands();
+
 	@Command(
 			aliases = "trader",
-			usage = "help",
-			desc = "view the trader help page",
-			modifiers = "help",
-			min = 1,
-			max = 1)
-	@CommandPermissions("trader.use.help")
-	@ServerCommand()
-	public static void traderHelp(CommandContext args, CommandSender sender,
-			HumanNPC npc) {
-		INSTANCE.sendHelpPage(sender);
+			usage = "clear [buy|sell]",
+			desc = "clear the stock of a trader",
+			modifiers = "clear",
+			min = 2,
+			max = 2)
+	@CommandPermissions("trader.modify.clearstock")
+	public static void clear(CommandContext args, Player player, HumanNPC npc) {
+		boolean selling = args.getString(1).contains("bu");
+		Trader trader = npc.getType("trader");
+		String keyword = "buying";
+		if (!selling) {
+			keyword = "selling";
+		}
+		int count = 0;
+		for (Check check : trader.getStocking().keySet()) {
+			if (check.isSelling() == selling) {
+				trader.removeStockable(check);
+				++count;
+			}
+		}
+		player.sendMessage(ChatColor.GREEN + "Cleared "
+				+ StringUtils.wrap(count)
+				+ StringUtils.pluralise(" item", count) + " from the trader's "
+				+ StringUtils.wrap(keyword) + " list.");
+	}
+
+	private static ItemPrice createItemPrice(Player player, String price) {
+		if (Double.parseDouble(price) < 0) {
+			player.sendMessage(ChatColor.GRAY
+					+ "Negative prices are not allowed.");
+			return null;
+		}
+		return new ItemPrice(Double.parseDouble(price));
 	}
 
 	@CommandRequirements(
@@ -98,25 +154,72 @@ public class TraderCommands extends CommandHandler {
 		}
 	}
 
+	private static ItemStack parseItemStack(Player player, String[] split) {
+		try {
+			int amount = 1;
+			short data = 0;
+			Material mat = StringUtils.parseMaterial(split[0]);
+			if (mat == null) {
+				player.sendMessage(ChatColor.GRAY
+						+ "Invalid material ID or name specified.");
+				return null;
+			}
+			switch (split.length) {
+			case 3:
+				data = Short.parseShort(split[2]);
+			case 2:
+				amount = Integer.parseInt(split[1]);
+				if (amount <= 0 || amount > 64) {
+					player.sendMessage(ChatColor.GRAY
+							+ "You entered an invalid amount.");
+					return null;
+				}
+			default:
+				break;
+			}
+			ItemStack stack = new ItemStack(mat, amount);
+			stack.setDurability(data);
+			return stack;
+		} catch (NumberFormatException ex) {
+			return null;
+		}
+	}
+
 	@Command(
 			aliases = "trader",
-			usage = "unlimited",
-			desc = "change the unlimited status of a trader",
-			modifiers = { "unlimited", "unlim", "unl" },
+			usage = "lock",
+			desc = "toggle placing bought items into inventory",
+			modifiers = "clearold",
 			min = 1,
 			max = 1)
-	@CommandPermissions("trader.modify.unlimited")
-	public static void unlimited(CommandContext args, Player player,
+	@CommandPermissions("trader.modify.lock")
+	public static void setLock(CommandContext args, Player player, HumanNPC npc) {
+		Trader trader = npc.getType("trader");
+		trader.setLocked(!trader.isLocked());
+		player.sendMessage(ChatColor.GREEN
+				+ (trader.isLocked() ? "The trader's inventory is now locked while buying."
+						: "The trader's inventory is no longer locked while buying."));
+	}
+
+	@Command(
+			aliases = "trader",
+			usage = "useglobal [buy|sell]",
+			desc = "toggle usage of global stock",
+			modifiers = "useglobal",
+			min = 2,
+			max = 2)
+	@CommandPermissions("trader.admin.useglobal")
+	public static void setUseGlobal(CommandContext args, Player player,
 			HumanNPC npc) {
 		Trader trader = npc.getType("trader");
-		trader.setUnlimited(!trader.isUnlimited());
-		if (trader.isUnlimited()) {
-			player.sendMessage(ChatColor.GREEN
-					+ "The trader will now have unlimited stock!");
-		} else {
-			player.sendMessage(ChatColor.GREEN
-					+ "The trader has stopped having unlimited stock.");
-		}
+		boolean selling = args.getString(1).equalsIgnoreCase("sell");
+		String keyword = selling ? "selling" : "buying";
+		trader.setUseGlobal(!trader.isUseGlobal(selling), selling);
+		player.sendMessage(ChatColor.GREEN
+				+ (trader.isLocked() ? "The trader will now use global "
+						+ keyword + " stock."
+						: "The trader will no longer use global " + keyword
+								+ " stock."));
 	}
 
 	@Command(
@@ -219,142 +322,39 @@ public class TraderCommands extends CommandHandler {
 				+ ".");
 	}
 
+	@CommandRequirements()
 	@Command(
 			aliases = "trader",
-			usage = "clear [buy|sell]",
-			desc = "clear the stock of a trader",
-			modifiers = "clear",
-			min = 2,
-			max = 2)
-	@CommandPermissions("trader.modify.clearstock")
-	public static void clear(CommandContext args, Player player, HumanNPC npc) {
-		boolean selling = args.getString(1).contains("bu");
-		Trader trader = npc.getType("trader");
-		String keyword = "buying";
-		if (!selling) {
-			keyword = "selling";
-		}
-		int count = 0;
-		for (Check check : trader.getStocking().keySet()) {
-			if (check.isSelling() == selling) {
-				trader.removeStockable(check);
-				++count;
-			}
-		}
-		player.sendMessage(ChatColor.GREEN + "Cleared "
-				+ StringUtils.wrap(count)
-				+ StringUtils.pluralise(" item", count) + " from the trader's "
-				+ StringUtils.wrap(keyword) + " list.");
-	}
-
-	@Command(
-			aliases = "trader",
-			usage = "lock",
-			desc = "toggle placing bought items into inventory",
-			modifiers = "clearold",
+			usage = "help",
+			desc = "view the trader help page",
+			modifiers = "help",
 			min = 1,
 			max = 1)
-	@CommandPermissions("trader.modify.lock")
-	public static void setLock(CommandContext args, Player player, HumanNPC npc) {
-		Trader trader = npc.getType("trader");
-		trader.setLocked(!trader.isLocked());
-		player.sendMessage(ChatColor.GREEN
-				+ (trader.isLocked() ? "The trader's inventory is now locked while buying."
-						: "The trader's inventory is no longer locked while buying."));
+	@CommandPermissions("trader.use.help")
+	@ServerCommand()
+	public static void traderHelp(CommandContext args, CommandSender sender,
+			HumanNPC npc) {
+		INSTANCE.sendHelpPage(sender);
 	}
 
 	@Command(
 			aliases = "trader",
-			usage = "useglobal [buy|sell]",
-			desc = "toggle usage of global stock",
-			modifiers = "useglobal",
-			min = 2,
-			max = 2)
-	@CommandPermissions("trader.admin.useglobal")
-	public static void setUseGlobal(CommandContext args, Player player,
+			usage = "unlimited",
+			desc = "change the unlimited status of a trader",
+			modifiers = { "unlimited", "unlim", "unl" },
+			min = 1,
+			max = 1)
+	@CommandPermissions("trader.modify.unlimited")
+	public static void unlimited(CommandContext args, Player player,
 			HumanNPC npc) {
 		Trader trader = npc.getType("trader");
-		boolean selling = args.getString(1).equalsIgnoreCase("sell");
-		String keyword = selling ? "selling" : "buying";
-		trader.setUseGlobal(!trader.isUseGlobal(selling), selling);
-		player.sendMessage(ChatColor.GREEN
-				+ (trader.isLocked() ? "The trader will now use global "
-						+ keyword + " stock."
-						: "The trader will no longer use global " + keyword
-								+ " stock."));
-	}
-
-	private static ItemPrice createItemPrice(Player player, String price) {
-		if (Double.parseDouble(price) < 0) {
-			player.sendMessage(ChatColor.GRAY
-					+ "Negative prices are not allowed.");
-			return null;
+		trader.setUnlimited(!trader.isUnlimited());
+		if (trader.isUnlimited()) {
+			player.sendMessage(ChatColor.GREEN
+					+ "The trader will now have unlimited stock!");
+		} else {
+			player.sendMessage(ChatColor.GREEN
+					+ "The trader has stopped having unlimited stock.");
 		}
-		return new ItemPrice(Double.parseDouble(price));
-	}
-
-	private static ItemStack parseItemStack(Player player, String[] split) {
-		try {
-			int amount = 1;
-			short data = 0;
-			Material mat = StringUtils.parseMaterial(split[0]);
-			if (mat == null) {
-				player.sendMessage(ChatColor.GRAY
-						+ "Invalid material ID or name specified.");
-				return null;
-			}
-			switch (split.length) {
-			case 3:
-				data = Short.parseShort(split[2]);
-			case 2:
-				amount = Integer.parseInt(split[1]);
-				if (amount <= 0 || amount > 64) {
-					player.sendMessage(ChatColor.GRAY
-							+ "You entered an invalid amount.");
-					return null;
-				}
-			default:
-				break;
-			}
-			ItemStack stack = new ItemStack(mat, amount);
-			stack.setDurability(data);
-			return stack;
-		} catch (NumberFormatException ex) {
-			return null;
-		}
-	}
-
-	@Override
-	public void addPermissions() {
-		PermissionManager.addPermission("trader.use.help");
-		PermissionManager.addPermission("trader.use.showmoney");
-		PermissionManager.addPermission("trader.modify.money");
-		PermissionManager.addPermission("trader.use.list");
-		PermissionManager.addPermission("trader.modify.unlimited");
-		PermissionManager.addPermission("trader.modify.clearstock");
-		PermissionManager.addPermission("trader.modify.stock");
-		PermissionManager.addPermission("trader.use.trade");
-	}
-
-	@Override
-	public void sendHelpPage(CommandSender sender) {
-		HelpUtils.header(sender, "Trader", 1, 1);
-		HelpUtils.format(sender, "trader", "list [buy|sell] (page)",
-				"list a trader's buy/sell list");
-		HelpUtils.format(sender, "trader",
-				"[buy|sell] [itemID(:amount:data)] [price]",
-				"add an item to a trader's stock");
-		HelpUtils.format(sender, "trader", "[buy|sell] remove [itemID:data]",
-				"remove item from a trader's stock");
-		HelpUtils.format(sender, "trader",
-				"[buy|sell] edit [itemID(:amount:data)] [price]",
-				"edit a trader's stock");
-		HelpUtils.format(sender, "trader", "useglobal [buy|sell]",
-				"toggle using global stock");
-		HelpUtils.format(sender, "trader", "unlimited",
-				"set whether a trader has unlimited stock");
-		HelpUtils.format(sender, "trader", "clear [buy|sell]",
-				"clear a trader's stock");
-		HelpUtils.footer(sender);
 	}
 }

@@ -10,18 +10,13 @@ import net.citizensnpcs.properties.Properties;
 public class GuardType extends CitizensNPCType {
 
     @Override
-    public Properties getProperties() {
-        return GuardProperties.INSTANCE;
-    }
-
-    @Override
     public CommandHandler getCommands() {
         return GuardCommands.INSTANCE;
     }
 
     @Override
-    public void registerEvents() {
-        NPCTypeManager.registerEvents(new GuardCitizensListen());
+    public CitizensNPC getInstance() {
+        return new Guard();
     }
 
     @Override
@@ -30,7 +25,12 @@ public class GuardType extends CitizensNPCType {
     }
 
     @Override
-    public CitizensNPC getInstance() {
-        return new Guard();
+    public Properties getProperties() {
+        return GuardProperties.INSTANCE;
+    }
+
+    @Override
+    public void registerEvents() {
+        NPCTypeManager.registerEvents(new GuardCitizensListen());
     }
 }

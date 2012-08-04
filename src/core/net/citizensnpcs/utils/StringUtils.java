@@ -13,24 +13,69 @@ import org.bukkit.Material;
 import com.google.common.base.Joiner;
 
 public class StringUtils {
-    private static final Pattern INTEGER = Pattern.compile("^[0-9]+$");
+    public static class Formatter {
+        private String format;
 
-    public static String pluralise(String string, double size) {
-        return size > 1 ? string + (string.endsWith("s") ? "es" : "s") : string;
-    }
-
-    public static String parseColour(String s) {
-        if (s.startsWith("&")) {
-            String colour = "";
-            colour = s.replace("&", "\u00A7").substring(0, 1);
-            return colour;
+        public Formatter(String string) {
+            this.format = string;
         }
-        return "\u00A7f";
+
+        public Formatter add(String other) {
+            if (other.isEmpty())
+                return this;
+            format += " " + other;
+            return this;
+        }
+
+        public Formatter bracket() {
+            format = StringUtils.bracketize(format);
+            return this;
+        }
+
+        public Formatter capital() {
+            format = StringUtils.capitalise(format);
+            return this;
+        }
+
+        public Formatter colour() {
+            return new Formatter(StringUtils.colourise(format));
+        }
+
+        public Formatter list() {
+            return new Formatter(StringUtils.listify(format));
+        }
+
+        public Formatter plural(double amount) {
+            format = StringUtils.pluralise(format, amount);
+            return this;
+        }
+
+        public Formatter reset() {
+            format = "";
+            return this;
+        }
+
+        public Formatter slice(int start, int end) {
+            return new Formatter(format.substring(start, end));
+        }
+
+        @Override
+        public String toString() {
+            return format;
+        }
+
+        public Formatter wrap() {
+            format = StringUtils.wrap(format);
+            return this;
+        }
+
+        public Formatter wrap(ChatColor end) {
+            format = StringUtils.wrap(format, end);
+            return this;
+        }
     }
 
-    public static String stripColour(String toStrip) {
-        return ChatColor.stripColor(toStrip);
-    }
+    private static final Pattern INTEGER = Pattern.compile("^[0-9]+$");
 
     public static String bracketize(String string) {
         return "[" + string + "]";
@@ -38,10 +83,6 @@ public class StringUtils {
 
     public static String bracketize(String string, boolean soft) {
         return soft ? '(' + string + ')' : bracketize(string);
-    }
-
-    public static String listify(String string) {
-        return "========[ " + string + " ]========";
     }
 
     public static String capitalise(String toCapitalise) {
@@ -61,101 +102,34 @@ public class StringUtils {
         return string.replace("&", "\u00A7");
     }
 
-    public static Material parseMaterial(String material) {
-        Material mat = Material.matchMaterial(material);
-        if (mat == null) {
-            Material newMat = Material.getMaterial(material);
-            if (newMat != null) {
-                if (!UtilityProperties.getItemOverride(newMat.getId()).isEmpty()) {
-                    mat = parseMaterial(UtilityProperties.getItemOverride(newMat.getId()));
-                } else if (isNumber(material)) {
-                    mat = Material.getMaterial(Integer.parseInt(material));
-                }
-            }
-        }
-        return mat;
+    public static String format(Enum<?> toFormat) {
+        return format(toFormat, true);
     }
 
-    public static boolean isNumber(String material) {
-        return INTEGER.matcher(material).find();
+    public static String format(Enum<?> toFormat, boolean capitalise) {
+        if (toFormat == null)
+            return "";
+        String[] split = toFormat.name().toLowerCase().split("_");
+        if (capitalise)
+            split[0] = capitalise(split[0]);
+        return Joiner.on(" ").join(split);
     }
 
-    /**
-     * Makes a string yellow, with a trailing green colour.
-     * 
-     * @param string
-     * @return
-     */
-    public static String wrap(Object string) {
-        return ChatColor.YELLOW + string.toString() + ChatColor.GREEN;
+    public static String format(Location location) {
+        return join(location.getBlockX(), location.getBlockY(), location.getBlockZ(),
+                bracketize(StringUtils.wrap("world: ") + location.getWorld().getName(), true));
     }
 
-    /**
-     * Makes a double a yellow string with a trailing green colour.
-     * 
-     * @param string
-     * @return
-     */
-    public static String wrap(double string) {
-        if (string % 1 == 0) {
-            return ChatColor.YELLOW + "" + (int) string + ChatColor.GREEN;
-        } else {
-            return ChatColor.YELLOW + "" + string + ChatColor.GREEN;
-        }
+    public static Formatter formatter() {
+        return new Formatter("");
     }
 
-    /**
-     * Makes a string yellow, with a given colour trailing.
-     * 
-     * @param string
-     * @param trailing
-     * @return
-     */
-    public static String wrap(String string, ChatColor trailing) {
-        return ChatColor.YELLOW + string + trailing;
+    public static Formatter formatter(Enum<?> toFormat) {
+        return formatter(format(toFormat));
     }
 
-    /**
-     * Makes a double a yellow string, with a given colour trailing.
-     * 
-     * @param string
-     * @param trailing
-     * @return
-     */
-    public static String wrap(double string, ChatColor trailing) {
-        return ChatColor.YELLOW + "" + (int) string + trailing;
-    }
-
-    /**
-     * Makes a string yellow, with a trailing green colour. Based on '{' and '}'
-     * in the string.
-     * 
-     * @param string
-     * @return
-     */
-    public static String wrapFull(String string) {
-        return ChatColor.GREEN + string.replace("{", "" + ChatColor.YELLOW).replace("}", "" + ChatColor.GREEN);
-    }
-
-    /**
-     * Makes a string yellow, with a specified tailing colour. Based on '{' and
-     * '}' in the string.
-     * 
-     * @param string
-     * @return
-     */
-    public static String wrapFull(String string, ChatColor colour) {
-        return colour + string.replace("{", "" + ChatColor.YELLOW).replace("}", "" + colour);
-    }
-
-    /**
-     * Parse an integer from a string value
-     * 
-     * @param passed
-     * @return
-     */
-    public static int parse(String passed) {
-        return Integer.parseInt(passed);
+    public static Formatter formatter(Object string) {
+        return new Formatter(string.toString());
     }
 
     public static int getLevenshteinDistance(String s, String t) {
@@ -234,99 +208,125 @@ public class StringUtils {
         return message.charAt(0) == '/';
     }
 
-    public static String format(Enum<?> toFormat) {
-        return format(toFormat, true);
-    }
-
-    public static String format(Enum<?> toFormat, boolean capitalise) {
-        if (toFormat == null)
-            return "";
-        String[] split = toFormat.name().toLowerCase().split("_");
-        if (capitalise)
-            split[0] = capitalise(split[0]);
-        return Joiner.on(" ").join(split);
-    }
-
-    public static String format(Location location) {
-        return join(location.getBlockX(), location.getBlockY(), location.getBlockZ(),
-                bracketize(StringUtils.wrap("world: ") + location.getWorld().getName(), true));
+    public static boolean isNumber(String material) {
+        return INTEGER.matcher(material).find();
     }
 
     public static String join(Object... parts) {
         return Joiner.on(" ").join(parts);
     }
 
-    public static Formatter formatter(Object string) {
-        return new Formatter(string.toString());
+    public static String listify(String string) {
+        return "========[ " + string + " ]========";
     }
 
-    public static Formatter formatter() {
-        return new Formatter("");
+    /**
+     * Parse an integer from a string value
+     * 
+     * @param passed
+     * @return
+     */
+    public static int parse(String passed) {
+        return Integer.parseInt(passed);
     }
 
-    public static Formatter formatter(Enum<?> toFormat) {
-        return formatter(format(toFormat));
+    public static String parseColour(String s) {
+        if (s.startsWith("&")) {
+            String colour = "";
+            colour = s.replace("&", "\u00A7").substring(0, 1);
+            return colour;
+        }
+        return "\u00A7f";
     }
 
-    public static class Formatter {
-        private String format;
-
-        public Formatter(String string) {
-            this.format = string;
+    public static Material parseMaterial(String material) {
+        Material mat = Material.matchMaterial(material);
+        if (mat == null) {
+            Material newMat = Material.getMaterial(material);
+            if (newMat != null) {
+                if (!UtilityProperties.getItemOverride(newMat.getId()).isEmpty()) {
+                    mat = parseMaterial(UtilityProperties.getItemOverride(newMat.getId()));
+                } else if (isNumber(material)) {
+                    mat = Material.getMaterial(Integer.parseInt(material));
+                }
+            }
         }
+        return mat;
+    }
 
-        public Formatter reset() {
-            format = "";
-            return this;
-        }
+    public static String pluralise(String string, double size) {
+        return size > 1 ? string + (string.endsWith("s") ? "es" : "s") : string;
+    }
 
-        public Formatter add(String other) {
-            if (other.isEmpty())
-                return this;
-            format += " " + other;
-            return this;
-        }
+    public static String stripColour(String toStrip) {
+        return ChatColor.stripColor(toStrip);
+    }
 
-        public Formatter wrap() {
-            format = StringUtils.wrap(format);
-            return this;
+    /**
+     * Makes a double a yellow string with a trailing green colour.
+     * 
+     * @param string
+     * @return
+     */
+    public static String wrap(double string) {
+        if (string % 1 == 0) {
+            return ChatColor.YELLOW + "" + (int) string + ChatColor.GREEN;
+        } else {
+            return ChatColor.YELLOW + "" + string + ChatColor.GREEN;
         }
+    }
 
-        public Formatter wrap(ChatColor end) {
-            format = StringUtils.wrap(format, end);
-            return this;
-        }
+    /**
+     * Makes a double a yellow string, with a given colour trailing.
+     * 
+     * @param string
+     * @param trailing
+     * @return
+     */
+    public static String wrap(double string, ChatColor trailing) {
+        return ChatColor.YELLOW + "" + (int) string + trailing;
+    }
 
-        public Formatter plural(double amount) {
-            format = StringUtils.pluralise(format, amount);
-            return this;
-        }
+    /**
+     * Makes a string yellow, with a trailing green colour.
+     * 
+     * @param string
+     * @return
+     */
+    public static String wrap(Object string) {
+        return ChatColor.YELLOW + string.toString() + ChatColor.GREEN;
+    }
 
-        public Formatter capital() {
-            format = StringUtils.capitalise(format);
-            return this;
-        }
+    /**
+     * Makes a string yellow, with a given colour trailing.
+     * 
+     * @param string
+     * @param trailing
+     * @return
+     */
+    public static String wrap(String string, ChatColor trailing) {
+        return ChatColor.YELLOW + string + trailing;
+    }
 
-        public Formatter bracket() {
-            format = StringUtils.bracketize(format);
-            return this;
-        }
+    /**
+     * Makes a string yellow, with a trailing green colour. Based on '{' and '}'
+     * in the string.
+     * 
+     * @param string
+     * @return
+     */
+    public static String wrapFull(String string) {
+        return ChatColor.GREEN + string.replace("{", "" + ChatColor.YELLOW).replace("}", "" + ChatColor.GREEN);
+    }
 
-        public Formatter colour() {
-            return new Formatter(StringUtils.colourise(format));
-        }
-
-        public Formatter list() {
-            return new Formatter(StringUtils.listify(format));
-        }
-
-        public Formatter slice(int start, int end) {
-            return new Formatter(format.substring(start, end));
-        }
-
-        @Override
-        public String toString() {
-            return format;
-        }
+    /**
+     * Makes a string yellow, with a specified tailing colour. Based on '{' and
+     * '}' in the string.
+     * 
+     * @param string
+     * @return
+     */
+    public static String wrapFull(String string, ChatColor colour) {
+        return colour + string.replace("{", "" + ChatColor.YELLOW).replace("}", "" + colour);
     }
 }

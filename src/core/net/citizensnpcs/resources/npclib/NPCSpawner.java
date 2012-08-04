@@ -19,12 +19,39 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 
 public class NPCSpawner {
-    private static WorldServer getWorldServer(World world) {
-        return ((CraftWorld) world).getHandle();
+    public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
+        despawnNPC(npc.npc, reason);
+    }
+
+    public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
+        if (getWorldServer(npc.getWorld()).getEntity(npc.getPlayer().getEntityId()) != npc.getHandle()
+                || npc.getHandle().dead)
+            return;
+        Bukkit.getServer().getPluginManager().callEvent(new NPCRemoveEvent(npc, reason));
+        PacketUtils.sendPacketToOnline(new Packet29DestroyEntity(npc.getHandle().id), null);
+        npc.getHandle().die();
     }
 
     private static MinecraftServer getMinecraftServer(Server server) {
         return ((CraftServer) server).getServer();
+    }
+
+    private static WorldServer getWorldServer(World world) {
+        return ((CraftWorld) world).getHandle();
+    }
+
+    public static HumanNPC spawnNPC(final HumanNPC npc, final Location loc) {
+        WorldServer ws = getWorldServer(loc.getWorld());
+        npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        ws.addEntity(npc.getHandle());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+            @Override
+            public void run() {
+                npc.getHandle().as = loc.getYaw();
+            }
+        });
+        ws.players.remove(npc.getHandle());
+        return npc;
     }
 
     public static HumanNPC spawnNPC(int UID, String name, final Location loc) {
@@ -68,32 +95,5 @@ public class NPCSpawner {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static HumanNPC spawnNPC(final HumanNPC npc, final Location loc) {
-        WorldServer ws = getWorldServer(loc.getWorld());
-        npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        ws.addEntity(npc.getHandle());
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
-            @Override
-            public void run() {
-                npc.getHandle().as = loc.getYaw();
-            }
-        });
-        ws.players.remove(npc.getHandle());
-        return npc;
-    }
-
-    public static void despawnNPC(HumanNPC npc, NPCRemoveReason reason) {
-        if (getWorldServer(npc.getWorld()).getEntity(npc.getPlayer().getEntityId()) != npc.getHandle()
-                || npc.getHandle().dead)
-            return;
-        Bukkit.getServer().getPluginManager().callEvent(new NPCRemoveEvent(npc, reason));
-        PacketUtils.sendPacketToOnline(new Packet29DestroyEntity(npc.getHandle().id), null);
-        npc.getHandle().die();
-    }
-
-    public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
-        despawnNPC(npc.npc, reason);
     }
 }

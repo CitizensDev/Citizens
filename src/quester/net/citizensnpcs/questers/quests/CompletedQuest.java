@@ -3,9 +3,9 @@ package net.citizensnpcs.questers.quests;
 import java.util.concurrent.TimeUnit;
 
 public class CompletedQuest {
-	private final int npcID;
-	private final String name;
 	private final long elapsed, seconds, minutes, hours, finishTime;
+	private final String name;
+	private final int npcID;
 	private int timesCompleted;
 
 	public CompletedQuest(String quest, int npcID, int completed, long elapsed,
@@ -20,6 +20,22 @@ public class CompletedQuest {
 		this.npcID = npcID;
 	}
 
+	public long getElapsed() {
+		return elapsed;
+	}
+
+	public long getFinishTime() {
+		return this.finishTime;
+	}
+
+	public long getHours() {
+		return hours;
+	}
+
+	public long getMinutes() {
+		return minutes;
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -32,27 +48,11 @@ public class CompletedQuest {
 		return seconds;
 	}
 
-	public long getMinutes() {
-		return minutes;
-	}
-
-	public long getHours() {
-		return hours;
-	}
-
-	public long getElapsed() {
-		return elapsed;
-	}
-
 	public int getTimesCompleted() {
 		return timesCompleted;
 	}
 
 	public void setTimeCompleted(int completed) {
 		this.timesCompleted = completed;
-	}
-
-	public long getFinishTime() {
-		return this.finishTime;
 	}
 }

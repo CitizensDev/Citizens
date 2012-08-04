@@ -9,6 +9,14 @@ public class SettingsTree {
 	private final Map<String, String> tree = new ConcurrentHashMap<String, String>(
 			100);
 
+	public String get(String path) {
+		return tree.get(path);
+	}
+
+	public Map<String, String> getTree() {
+		return tree;
+	}
+
 	public void populate(String path) {
 		StringBuilder progressive = new StringBuilder();
 		int index = 0;
@@ -24,12 +32,12 @@ public class SettingsTree {
 		}
 	}
 
-	public String get(String path) {
-		return tree.get(path);
-	}
-
-	public Map<String, String> getTree() {
-		return tree;
+	public void remove(String path) {
+		for (String key : tree.keySet()) {
+			if (!key.startsWith(path))
+				continue;
+			tree.remove(key);
+		}
 	}
 
 	public void set(String path, String value) {
@@ -39,13 +47,5 @@ public class SettingsTree {
 			Messaging.debug(path, "was set to an illegal value of", value);
 		}
 		populate(path);
-	}
-
-	public void remove(String path) {
-		for (String key : tree.keySet()) {
-			if (!key.startsWith(path))
-				continue;
-			tree.remove(key);
-		}
 	}
 }

@@ -18,12 +18,12 @@ public class QuestCompleteEvent extends QuestEvent {
         return completed;
     }
 
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
         return handlers;
     }
+
+    private static final HandlerList handlers = new HandlerList();
 
     public static HandlerList getHandlerList() {
         return handlers;
