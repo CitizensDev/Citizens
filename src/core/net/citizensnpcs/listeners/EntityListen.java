@@ -24,14 +24,15 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 public class EntityListen implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
         if (NPCManager.get(event.getPlayer()) == null)
             return;
-        ((CraftServer) Bukkit.getServer()).getHandle().players.remove(NPCManager.get(event.getPlayer()).getHandle());
+        ((CraftServer) Bukkit.getServer()).getHandle().players.remove(NPCManager.get(event.getPlayer())
+                .getHandle());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         CreatureTask.onDamage(event.getEntity(), event);
         HumanNPC npc = NPCManager.get(event.getEntity());
@@ -101,7 +102,7 @@ public class EntityListen implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         CreatureTask.onEntityDeath(event.getEntity());
         if (NPCManager.isNPC(event.getEntity())) {

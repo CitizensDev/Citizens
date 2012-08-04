@@ -1,5 +1,6 @@
 package net.citizensnpcs.listeners;
 
+import net.citizensnpcs.Citizens;
 import net.citizensnpcs.TickTask;
 import net.citizensnpcs.api.event.NPCTargetEvent;
 import net.citizensnpcs.npcdata.NPCDataManager;
@@ -21,12 +22,12 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListen implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event) {
         CreatureTask.setDirty();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         NPCDataManager.pathEditors.remove(event.getPlayer());
         TickTask.clearActions(event.getPlayer());
@@ -34,7 +35,7 @@ public class PlayerListen implements Listener {
         ConversationUtils.verify();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.isCancelled())
             return;
@@ -45,7 +46,7 @@ public class PlayerListen implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.isCancelled())
             return;
@@ -56,8 +57,16 @@ public class PlayerListen implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        ConversationUtils.onChat(event);
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerChat(final AsyncPlayerChatEvent event) {
+        if (!event.isAsynchronous())
+            ConversationUtils.onChat(event);
+        else
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
+                @Override
+                public void run() {
+                    ConversationUtils.onChat(event);
+                }
+            });
     }
 }
