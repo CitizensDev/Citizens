@@ -1,5 +1,6 @@
 package net.citizensnpcs.resources.npclib;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.Socket;
 import java.security.PrivateKey;
@@ -10,7 +11,7 @@ import net.minecraft.server.Packet;
 
 public class NPCNetworkManager extends NetworkManager {
     public NPCNetworkManager(Socket paramSocket, String paramString, NetHandler paramNetHandler,
-            PrivateKey key) {
+            PrivateKey key) throws IOException {
         super(paramSocket, paramString, paramNetHandler, key);
 
         if (THREAD_STOPPER != null) {
@@ -20,6 +21,7 @@ public class NPCNetworkManager extends NetworkManager {
             }
         }
     }
+
     @Override
     public void a() {
     }

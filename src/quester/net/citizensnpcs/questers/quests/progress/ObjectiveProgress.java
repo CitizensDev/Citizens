@@ -89,6 +89,8 @@ public class ObjectiveProgress {
     }
 
     public boolean update(Event event) {
+        if (getPlayer() == null)
+            return false;
         return getQuestUpdater().update(event, this);
     }
 }
