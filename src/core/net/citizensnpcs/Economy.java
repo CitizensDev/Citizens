@@ -103,7 +103,10 @@ public class Economy {
     // Pays for an operation using the player's money.
     public static double pay(Player player, double price) {
         if (useEconPlugin()) {
-            subtract(player.getName(), price);
+        	if(price > 0)
+        		subtract(player.getName(), price);
+        	else
+        		add(player.getName(), -price);
             return price;
         }
         return 0;
