@@ -47,9 +47,9 @@ public class NPCSpawner {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
             public void run() {
-                npc.getHandle().as = loc.getYaw();
+                npc.getHandle().ay = loc.getYaw();
             }
-        });
+        }, 2);
         ws.players.remove(npc.getHandle());
         return npc;
     }
@@ -67,7 +67,7 @@ public class NPCSpawner {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
             public void run() {
-                eh.as = loc.getYaw();
+                eh.ay = loc.getYaw();
             }
         });
         ws.addEntity(eh);
@@ -85,7 +85,7 @@ public class NPCSpawner {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
                 @Override
                 public void run() {
-                    eh.as = loc.getYaw();
+                    eh.ay = loc.getYaw();
                 }
             });
             ws.addEntity(eh);

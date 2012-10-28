@@ -45,6 +45,7 @@ public class PathNPC extends EntityPlayer {
     private int stationaryTicks = 0;
     protected boolean targetAggro = false;
     protected Entity targetEntity;
+
     public PathNPC(MinecraftServer minecraftserver, World world, String s,
             ItemInWorldManager iteminworldmanager) {
         this(minecraftserver, world, s, iteminworldmanager, new MinecraftAutoPathfinder());
@@ -116,7 +117,7 @@ public class PathNPC extends EntityPlayer {
     private Vec3D getPathVector() {
         Vec3D vec3d = path.a(this);
         double length = (this.width * 2.0F);
-        while (vec3d != null && vec3d.d(this.locX, vec3d.b, this.locZ) < length * length) {
+        while (vec3d != null && vec3d.d(this.locX, vec3d.d, this.locZ) < length * length) {
             this.path.a(); // Increment path index.
             // Is path finished?
             if (this.path.b()) {
@@ -137,7 +138,7 @@ public class PathNPC extends EntityPlayer {
         float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
         float diffYaw = vectorYaw - this.yaw;
 
-        this.bs = this.bw;
+        this.bE = this.bI;
         while (diffYaw >= 180.0F) {
             diffYaw -= 360.0F;
         }
@@ -155,19 +156,19 @@ public class PathNPC extends EntityPlayer {
         boolean inWater = this.getBukkitEntity().getRemainingAir() < 20;
         boolean onFire = this.getBukkitEntity().getFireTicks() > 0;
         if (vector != null) {
-            double diffX = vector.a - this.locX;
-            double diffZ = vector.c - this.locZ;
-            double diffY = vector.b - yHeight;
+            double diffX = vector.c - this.locX;
+            double diffZ = vector.e - this.locZ;
+            double diffY = vector.d - yHeight;
             float diffYaw = getYawDifference(diffZ, diffX);
 
             this.yaw += diffYaw;
-            this.as += diffYaw;
+            this.ay += diffYaw;
             if (diffY > 0.0D) {
                 jump();
             }
             // TODO: adjust pitch.
             // Walk.
-            this.e(this.br, this.bs);
+            this.e(this.bD, this.bE);
         }
         if (this.positionChanged && !this.pathFinished()) {
             jump();
@@ -187,7 +188,7 @@ public class PathNPC extends EntityPlayer {
     }
 
     public boolean isInSight(Entity entity) {
-        return this.l(entity);
+        return this.m(entity);
     }
 
     private boolean isWithinAttackRange(Entity entity, double distance) {

@@ -59,7 +59,7 @@ public class NPCAnimator {
 
     private void sendMetadataPacket() {
         PacketUtils.sendPacketNearby(getPlayer().getLocation(), 64, new Packet40EntityMetadata(this.npc.id,
-                getWatcher()), getPlayer());
+                getWatcher(), true), getPlayer());
     }
 
     private void sleep() {

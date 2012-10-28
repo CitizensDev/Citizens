@@ -26,13 +26,12 @@ public class CraftNPC extends PathNPC {
                 public boolean a() {
                     return false;
                 }
-            }, server.E().getPrivate());
+            }, server.F().getPrivate());
             this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
             netMgr.a(this.netServerHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try {
             socket.close();
         } catch (IOException ex) {

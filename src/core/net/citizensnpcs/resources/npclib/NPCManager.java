@@ -57,7 +57,7 @@ public class NPCManager {
             yaw = yaw + (Math.abs(180 - yaw) * 2);
         }
         npc.getHandle().yaw = (float) yaw - 90;
-        npc.getHandle().as = npc.getHandle().yaw;
+        npc.getHandle().ay = npc.getHandle().yaw;
         npc.getHandle().pitch = (float) pitch;
     }
 
