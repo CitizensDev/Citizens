@@ -138,7 +138,7 @@ public class PathNPC extends EntityPlayer {
         float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
         float diffYaw = vectorYaw - this.yaw;
 
-        this.bE = this.bI;
+        this.bC = this.bG;
         while (diffYaw >= 180.0F) {
             diffYaw -= 360.0F;
         }
@@ -168,7 +168,7 @@ public class PathNPC extends EntityPlayer {
             }
             // TODO: adjust pitch.
             // Walk.
-            this.e(this.bD, this.bE);
+            this.e(this.bB, this.bC);
         }
         if (this.positionChanged && !this.pathFinished()) {
             jump();
@@ -188,7 +188,7 @@ public class PathNPC extends EntityPlayer {
     }
 
     public boolean isInSight(Entity entity) {
-        return this.m(entity);
+        return this.n(entity);
     }
 
     private boolean isWithinAttackRange(Entity entity, double distance) {
