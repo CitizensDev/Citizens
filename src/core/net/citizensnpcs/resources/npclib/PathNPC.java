@@ -4,12 +4,14 @@ import net.citizensnpcs.Plugins;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
+import net.citizensnpcs.utils.PacketUtils;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.Packet5EntityEquipment;
 import net.minecraft.server.PathEntity;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
@@ -207,12 +209,27 @@ public class PathNPC extends EntityPlayer {
         }
     }
 
+    private final net.minecraft.server.ItemStack[] previousEquipment = { null, null, null, null, null };
+
+    private void updateEquipment() {
+        for (int i = 0; i < previousEquipment.length; i++) {
+            net.minecraft.server.ItemStack previous = previousEquipment[i];
+            net.minecraft.server.ItemStack current = getEquipment(i);
+            if (previous != current) {
+                PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(
+                        id, i, current));
+                previousEquipment[i] = current;
+            }
+        }
+    }
+
     public void moveTick() {
         if (this.dead) {
             if (this.targetEntity != null || this.path != null)
                 cancelTarget();
             return;
         }
+        updateEquipment();
         hasAttacked = false;
         if (randomPather) {
             takeRandomPath();
