@@ -5,20 +5,20 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.utils.PacketUtils;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.MathHelper;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.Packet5EntityEquipment;
-import net.minecraft.server.PathEntity;
-import net.minecraft.server.Vec3D;
-import net.minecraft.server.World;
+import net.minecraft.server.v1_4_5.Entity;
+import net.minecraft.server.v1_4_5.EntityHuman;
+import net.minecraft.server.v1_4_5.EntityPlayer;
+import net.minecraft.server.v1_4_5.ItemInWorldManager;
+import net.minecraft.server.v1_4_5.MathHelper;
+import net.minecraft.server.v1_4_5.MinecraftServer;
+import net.minecraft.server.v1_4_5.Packet5EntityEquipment;
+import net.minecraft.server.v1_4_5.PathEntity;
+import net.minecraft.server.v1_4_5.Vec3D;
+import net.minecraft.server.v1_4_5.World;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftLivingEntity;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -209,12 +209,12 @@ public class PathNPC extends EntityPlayer {
         }
     }
 
-    private final net.minecraft.server.ItemStack[] previousEquipment = { null, null, null, null, null };
+    private final net.minecraft.server.v1_4_5.ItemStack[] previousEquipment = { null, null, null, null, null };
 
     private void updateEquipment() {
         for (int i = 0; i < previousEquipment.length; i++) {
-            net.minecraft.server.ItemStack previous = previousEquipment[i];
-            net.minecraft.server.ItemStack current = getEquipment(i);
+            net.minecraft.server.v1_4_5.ItemStack previous = previousEquipment[i];
+            net.minecraft.server.v1_4_5.ItemStack current = getEquipment(i);
             if (previous != current) {
                 PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(
                         id, i, current));

@@ -14,7 +14,7 @@ import net.citizensnpcs.utils.StringUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -65,7 +65,8 @@ public class Guard extends CitizensNPC {
     public void load(Storage profiles, int UID) {
         guardState = GuardState.parse(profiles.getString(UID + ".guard.type"));
         isAggressive = profiles.getBoolean(UID + ".guard.aggressive");
-        radius = profiles.getDouble(UID + ".guard.radius", Settings.getDouble("DefaultBouncerProtectionRadius"));
+        radius = profiles.getDouble(UID + ".guard.radius",
+                Settings.getDouble("DefaultBouncerProtectionRadius"));
     }
 
     @Override
@@ -93,8 +94,8 @@ public class Guard extends CitizensNPC {
         HumanNPC npc = NPCManager.get(event.getEntity());
         Player player = Bukkit.getServer().getPlayerExact(npc.getOwner());
         if (player != null) {
-            player.sendMessage(ChatColor.GRAY + "Your guard NPC " + StringUtils.wrap(npc.getName(), ChatColor.GRAY)
-                    + " died.");
+            player.sendMessage(ChatColor.GRAY + "Your guard NPC "
+                    + StringUtils.wrap(npc.getName(), ChatColor.GRAY) + " died.");
         }
         event.getDrops().clear();
         TickTask.scheduleRespawn(npc, Settings.getInt("GuardRespawnDelay"));
@@ -125,14 +126,15 @@ public class Guard extends CitizensNPC {
     public void target(LivingEntity entity, HumanNPC npc) {
         if (isOwner(entity, npc) || isCoOwned(entity, npc))
             return;
-        if (Settings.getBoolean("RealisticPathing") && !npc.getHandle().isInSight(((CraftEntity) entity).getHandle()))
+        if (Settings.getBoolean("RealisticPathing")
+                && !npc.getHandle().isInSight(((CraftEntity) entity).getHandle()))
             return;
         npc.setPaused(true);
         PathUtils.target(npc, entity, true, -1, -1, Settings.getDouble("PathfindingRange"));
     }
 
     public GuardStatus updateStatus(GuardStatus guardStatus, HumanNPC npc) {
-        return guardState == GuardState.NULL ? GuardStatus.NORMAL : guardState.getUpdater().updateStatus(guardStatus,
-                npc);
+        return guardState == GuardState.NULL ? GuardStatus.NORMAL : guardState.getUpdater().updateStatus(
+                guardStatus, npc);
     }
 }

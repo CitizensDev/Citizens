@@ -2,31 +2,30 @@ package net.citizensnpcs.resources.npclib;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
-	public boolean containsBukkitEntity(Entity entity) {
-		return getNPC(entity) != null;
-	}
+    public boolean containsBukkitEntity(Entity entity) {
+        return getNPC(entity) != null;
+    }
 
-	public HumanNPC getNPC(Entity entity) {
-		if (entity == null) {
-			return null;
-		}
-		net.minecraft.server.Entity mcEntity = ((CraftEntity) entity)
-				.getHandle();
-		if (mcEntity instanceof CraftNPC) {
-			HumanNPC npc = ((CraftNPC) mcEntity).npc;
-			if (npc == null)
-				return null;
-			// Compare object references to eliminate conflicting UIDs.
-			if (get(npc.getUID()) == npc) {
-				return npc;
-			}
-		}
-		return null;
-	}
+    public HumanNPC getNPC(Entity entity) {
+        if (entity == null) {
+            return null;
+        }
+        net.minecraft.server.v1_4_5.Entity mcEntity = ((CraftEntity) entity).getHandle();
+        if (mcEntity instanceof CraftNPC) {
+            HumanNPC npc = ((CraftNPC) mcEntity).npc;
+            if (npc == null)
+                return null;
+            // Compare object references to eliminate conflicting UIDs.
+            if (get(npc.getUID()) == npc) {
+                return npc;
+            }
+        }
+        return null;
+    }
 
-	private static final long serialVersionUID = 7208318521278059987L;
+    private static final long serialVersionUID = 7208318521278059987L;
 }

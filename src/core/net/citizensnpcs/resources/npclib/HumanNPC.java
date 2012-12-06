@@ -13,7 +13,7 @@ import net.citizensnpcs.waypoints.WaypointPath;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.v1_4_5.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -40,8 +40,7 @@ public class HumanNPC extends NPC {
 
     public <T extends CitizensNPC> void addType(String type) {
         if (!NPCTypeManager.validType(type))
-            throw new IllegalArgumentException("illegal type: " + type
-                    + " added to: " + this.getUID());
+            throw new IllegalArgumentException("illegal type: " + type + " added to: " + this.getUID());
         registerType(type);
         PropertyManager.load(type, this);
     }
@@ -90,8 +89,8 @@ public class HumanNPC extends NPC {
     }
 
     public Location getBaseLocation() {
-        return this.waypoints.current() != null ? this.waypoints.current()
-                .getLocation() : this.npcdata.getLocation();
+        return this.waypoints.current() != null ? this.waypoints.current().getLocation() : this.npcdata
+                .getLocation();
     }
 
     public int getChunkX() {
@@ -191,8 +190,7 @@ public class HumanNPC extends NPC {
         boolean multiworld = loc.getWorld() != this.getWorld();
         this.getPlayer().teleport(loc);
         if (multiworld) {
-            ((CraftServer) Bukkit.getServer()).getHandle().players
-                    .remove(this.mcEntity);
+            ((CraftServer) Bukkit.getServer()).getHandle().players.remove(this.mcEntity);
         }
     }
 
