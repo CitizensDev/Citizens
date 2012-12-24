@@ -1,11 +1,11 @@
 package net.citizensnpcs.utils;
 
-import net.minecraft.server.v1_4_5.Packet;
+import net.minecraft.server.v1_4_6.Packet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class PacketUtils {
@@ -40,6 +40,6 @@ public class PacketUtils {
     public static void sendPacketToPlayer(final Player ply, final Packet packet) {
         if (ply == null)
             return;
-        ((CraftPlayer) ply).getHandle().netServerHandler.sendPacket(packet);
+        ((CraftPlayer) ply).getHandle().playerConnection.sendPacket(packet);
     }
 }

@@ -5,20 +5,20 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.utils.PacketUtils;
-import net.minecraft.server.v1_4_5.Entity;
-import net.minecraft.server.v1_4_5.EntityHuman;
-import net.minecraft.server.v1_4_5.EntityPlayer;
-import net.minecraft.server.v1_4_5.ItemInWorldManager;
-import net.minecraft.server.v1_4_5.MathHelper;
-import net.minecraft.server.v1_4_5.MinecraftServer;
-import net.minecraft.server.v1_4_5.Packet5EntityEquipment;
-import net.minecraft.server.v1_4_5.PathEntity;
-import net.minecraft.server.v1_4_5.Vec3D;
-import net.minecraft.server.v1_4_5.World;
+import net.minecraft.server.v1_4_6.Entity;
+import net.minecraft.server.v1_4_6.EntityHuman;
+import net.minecraft.server.v1_4_6.EntityPlayer;
+import net.minecraft.server.v1_4_6.MathHelper;
+import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_6.Packet5EntityEquipment;
+import net.minecraft.server.v1_4_6.PathEntity;
+import net.minecraft.server.v1_4_6.PlayerInteractManager;
+import net.minecraft.server.v1_4_6.Vec3D;
+import net.minecraft.server.v1_4_6.World;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftLivingEntity;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -49,12 +49,12 @@ public class PathNPC extends EntityPlayer {
     protected Entity targetEntity;
 
     public PathNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager) {
+            PlayerInteractManager iteminworldmanager) {
         this(minecraftserver, world, s, iteminworldmanager, new MinecraftAutoPathfinder());
     }
 
     public PathNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager, AutoPathfinder autoPathfinder) {
+            PlayerInteractManager iteminworldmanager, AutoPathfinder autoPathfinder) {
         super(minecraftserver, world, s, iteminworldmanager);
         this.autoPathfinder = autoPathfinder;
     }
@@ -164,7 +164,7 @@ public class PathNPC extends EntityPlayer {
             float diffYaw = getYawDifference(diffZ, diffX);
 
             this.yaw += diffYaw;
-            this.ay += diffYaw;
+            this.az += diffYaw;
             if (diffY > 0.0D) {
                 jump();
             }
@@ -209,12 +209,12 @@ public class PathNPC extends EntityPlayer {
         }
     }
 
-    private final net.minecraft.server.v1_4_5.ItemStack[] previousEquipment = { null, null, null, null, null };
+    private final net.minecraft.server.v1_4_6.ItemStack[] previousEquipment = { null, null, null, null, null };
 
     private void updateEquipment() {
         for (int i = 0; i < previousEquipment.length; i++) {
-            net.minecraft.server.v1_4_5.ItemStack previous = previousEquipment[i];
-            net.minecraft.server.v1_4_5.ItemStack current = getEquipment(i);
+            net.minecraft.server.v1_4_6.ItemStack previous = previousEquipment[i];
+            net.minecraft.server.v1_4_6.ItemStack current = getEquipment(i);
             if (previous != current) {
                 PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(
                         id, i, current));

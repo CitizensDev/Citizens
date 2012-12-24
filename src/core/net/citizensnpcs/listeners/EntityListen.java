@@ -14,7 +14,7 @@ import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_5.CraftServer;
+import org.bukkit.craftbukkit.v1_4_6.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -10,9 +10,9 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
-import net.minecraft.server.v1_4_5.ItemInWorldManager;
-import net.minecraft.server.v1_4_5.MinecraftServer;
-import net.minecraft.server.v1_4_5.World;
+import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_6.PlayerInteractManager;
+import net.minecraft.server.v1_4_6.World;
 
 import org.bukkit.Location;
 
@@ -34,7 +34,7 @@ public enum CreatureNPCType {
         name = StringUtils.capitalise(name.toLowerCase());
         try {
             this.instance = instance.getConstructor(MinecraftServer.class, World.class, String.class,
-                    ItemInWorldManager.class);
+                    PlayerInteractManager.class);
         } catch (Exception ex) {
             Messaging.log("Unable to get constructor for", name + ".");
         }

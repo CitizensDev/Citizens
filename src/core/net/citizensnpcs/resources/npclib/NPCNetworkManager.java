@@ -5,12 +5,12 @@ import java.lang.reflect.Field;
 import java.net.Socket;
 import java.security.PrivateKey;
 
-import net.minecraft.server.v1_4_5.NetHandler;
-import net.minecraft.server.v1_4_5.NetworkManager;
-import net.minecraft.server.v1_4_5.Packet;
+import net.minecraft.server.v1_4_6.Connection;
+import net.minecraft.server.v1_4_6.NetworkManager;
+import net.minecraft.server.v1_4_6.Packet;
 
 public class NPCNetworkManager extends NetworkManager {
-    public NPCNetworkManager(Socket paramSocket, String paramString, NetHandler paramNetHandler,
+    public NPCNetworkManager(Socket paramSocket, String paramString, Connection paramNetHandler,
             PrivateKey key) throws IOException {
         super(paramSocket, paramString, paramNetHandler, key);
 
@@ -27,7 +27,7 @@ public class NPCNetworkManager extends NetworkManager {
     }
 
     @Override
-    public void a(NetHandler nethandler) {
+    public void a(Connection nethandler) {
     }
 
     @Override

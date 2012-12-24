@@ -1,12 +1,12 @@
 package net.citizensnpcs.resources.npclib.creatures;
 
 import net.citizensnpcs.resources.npclib.CraftNPC;
-import net.minecraft.server.v1_4_5.ItemInWorldManager;
-import net.minecraft.server.v1_4_5.MinecraftServer;
-import net.minecraft.server.v1_4_5.World;
+import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_6.PlayerInteractManager;
+import net.minecraft.server.v1_4_6.World;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ public abstract class CreatureNPC extends CraftNPC {
     protected final int[] weapons = { 267, 268, 272, 283 };
 
     public CreatureNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager) {
+            PlayerInteractManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
     }
 

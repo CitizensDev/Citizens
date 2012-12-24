@@ -3,32 +3,32 @@ package net.citizensnpcs.resources.npclib;
 import java.io.IOException;
 
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
-import net.minecraft.server.v1_4_5.EnumGamemode;
-import net.minecraft.server.v1_4_5.ItemInWorldManager;
-import net.minecraft.server.v1_4_5.MinecraftServer;
-import net.minecraft.server.v1_4_5.NetHandler;
-import net.minecraft.server.v1_4_5.NetworkManager;
-import net.minecraft.server.v1_4_5.World;
+import net.minecraft.server.v1_4_6.Connection;
+import net.minecraft.server.v1_4_6.EnumGamemode;
+import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_6.NetworkManager;
+import net.minecraft.server.v1_4_6.PlayerInteractManager;
+import net.minecraft.server.v1_4_6.World;
 
 import org.bukkit.entity.LivingEntity;
 
 public class CraftNPC extends PathNPC {
     public CraftNPC(MinecraftServer minecraftserver, World world, String s,
-            ItemInWorldManager iteminworldmanager) {
+            PlayerInteractManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
         iteminworldmanager.setGameMode(EnumGamemode.SURVIVAL);
 
         NPCSocket socket = new NPCSocket();
         NetworkManager netMgr;
         try {
-            netMgr = new NPCNetworkManager(socket, "npc mgr", new NetHandler() {
+            netMgr = new NPCNetworkManager(socket, "npc mgr", new Connection() {
                 @Override
                 public boolean a() {
                     return false;
                 }
             }, server.F().getPrivate());
-            this.netServerHandler = new NPCNetHandler(minecraftserver, this, netMgr);
-            netMgr.a(this.netServerHandler);
+            this.playerConnection = new NPCNetHandler(minecraftserver, this, netMgr);
+            netMgr.a(this.playerConnection);
         } catch (IOException e) {
             e.printStackTrace();
         }

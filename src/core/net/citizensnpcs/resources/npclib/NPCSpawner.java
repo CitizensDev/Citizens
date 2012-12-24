@@ -6,17 +6,17 @@ import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PacketUtils;
-import net.minecraft.server.v1_4_5.ItemInWorldManager;
-import net.minecraft.server.v1_4_5.MinecraftServer;
-import net.minecraft.server.v1_4_5.Packet29DestroyEntity;
-import net.minecraft.server.v1_4_5.WorldServer;
+import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_6.Packet29DestroyEntity;
+import net.minecraft.server.v1_4_6.PlayerInteractManager;
+import net.minecraft.server.v1_4_6.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_4_5.CraftServer;
-import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_6.CraftServer;
+import org.bukkit.craftbukkit.v1_4_6.CraftWorld;
 
 public class NPCSpawner {
     public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {
@@ -62,7 +62,7 @@ public class NPCSpawner {
         }
         WorldServer ws = getWorldServer(loc.getWorld());
         final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name,
-                new ItemInWorldManager(ws));
+                new PlayerInteractManager(ws));
         eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
@@ -80,7 +80,7 @@ public class NPCSpawner {
             String name = type.chooseRandomName();
             WorldServer ws = getWorldServer(loc.getWorld());
             final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()),
-                    ws, name, new ItemInWorldManager(ws));
+                    ws, name, new PlayerInteractManager(ws));
             eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
                 @Override
