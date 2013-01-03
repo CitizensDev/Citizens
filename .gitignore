@@ -9,3 +9,5 @@
 /doc
 Citizens.jar
 .DS_Store*
+*.iml
+/.idea
