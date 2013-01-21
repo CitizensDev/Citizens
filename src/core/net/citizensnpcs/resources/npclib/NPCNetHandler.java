@@ -1,21 +1,21 @@
 package net.citizensnpcs.resources.npclib;
 
-import net.minecraft.server.v1_4_6.EntityPlayer;
-import net.minecraft.server.v1_4_6.MinecraftServer;
-import net.minecraft.server.v1_4_6.NetworkManager;
-import net.minecraft.server.v1_4_6.Packet;
-import net.minecraft.server.v1_4_6.Packet102WindowClick;
-import net.minecraft.server.v1_4_6.Packet106Transaction;
-import net.minecraft.server.v1_4_6.Packet10Flying;
-import net.minecraft.server.v1_4_6.Packet130UpdateSign;
-import net.minecraft.server.v1_4_6.Packet14BlockDig;
-import net.minecraft.server.v1_4_6.Packet15Place;
-import net.minecraft.server.v1_4_6.Packet16BlockItemSwitch;
-import net.minecraft.server.v1_4_6.Packet255KickDisconnect;
-import net.minecraft.server.v1_4_6.Packet28EntityVelocity;
-import net.minecraft.server.v1_4_6.Packet3Chat;
-import net.minecraft.server.v1_4_6.Packet51MapChunk;
-import net.minecraft.server.v1_4_6.PlayerConnection;
+import net.minecraft.server.v1_4_R1.EntityPlayer;
+import net.minecraft.server.v1_4_R1.MinecraftServer;
+import net.minecraft.server.v1_4_R1.NetworkManager;
+import net.minecraft.server.v1_4_R1.Packet;
+import net.minecraft.server.v1_4_R1.Packet102WindowClick;
+import net.minecraft.server.v1_4_R1.Packet106Transaction;
+import net.minecraft.server.v1_4_R1.Packet10Flying;
+import net.minecraft.server.v1_4_R1.Packet130UpdateSign;
+import net.minecraft.server.v1_4_R1.Packet14BlockDig;
+import net.minecraft.server.v1_4_R1.Packet15Place;
+import net.minecraft.server.v1_4_R1.Packet16BlockItemSwitch;
+import net.minecraft.server.v1_4_R1.Packet255KickDisconnect;
+import net.minecraft.server.v1_4_R1.Packet28EntityVelocity;
+import net.minecraft.server.v1_4_R1.Packet3Chat;
+import net.minecraft.server.v1_4_R1.Packet51MapChunk;
+import net.minecraft.server.v1_4_R1.PlayerConnection;
 
 public class NPCNetHandler extends PlayerConnection {
     public NPCNetHandler(MinecraftServer minecraftserver, EntityPlayer entityplayer, NetworkManager netMgr) {
