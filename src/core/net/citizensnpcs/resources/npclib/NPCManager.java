@@ -42,8 +42,7 @@ public class NPCManager {
     public static void faceEntity(HumanNPC npc, Entity entity) {
         if (npc.getWorld() != entity.getWorld())
             return;
-        if (Settings.getBoolean("RealisticPathing")
-                && !npc.getHandle().isInSight(((CraftEntity) entity).getHandle()))
+        if (Settings.getBoolean("RealisticPathing") && !npc.getHandle().isInSight(((CraftEntity) entity).getHandle()))
             return;
         Location loc = npc.getLocation(), pl = entity.getLocation();
         double xDiff = pl.getX() - loc.getX();
@@ -57,7 +56,7 @@ public class NPCManager {
             yaw = yaw + (Math.abs(180 - yaw) * 2);
         }
         npc.getHandle().yaw = (float) yaw - 90;
-        npc.getHandle().ay = npc.getHandle().yaw;
+        npc.getHandle().az = npc.getHandle().yaw;
         npc.getHandle().pitch = (float) pitch;
     }
 
@@ -115,9 +114,8 @@ public class NPCManager {
         Bukkit.getServer().getPluginManager().callEvent(event);
 
         npc.setNPCData(new NPCData(npcName, UID, loc, colour, PropertyManager.getBasic().getItems(UID),
-                NPCDataManager.NPCTexts.get(UID), PropertyManager.getBasic().isTalk(UID), PropertyManager
-                        .getBasic().isLookWhenClose(UID), PropertyManager.getBasic().isTalkWhenClose(UID),
-                owner));
+                NPCDataManager.NPCTexts.get(UID), PropertyManager.getBasic().isTalk(UID), PropertyManager.getBasic()
+                        .isLookWhenClose(UID), PropertyManager.getBasic().isTalkWhenClose(UID), owner));
         PropertyManager.getBasic().saveOwner(UID, owner);
         PropertyManager.load(npc);
 

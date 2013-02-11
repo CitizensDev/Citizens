@@ -25,10 +25,8 @@ public class TickTask implements Runnable {
     public void run() {
         Player[] online = Bukkit.getServer().getOnlinePlayers();
         if (toRemove.size() > 0) {
-            synchronized (toRemove) {
-                cachedActions.values().removeAll(toRemove);
-                toRemove.clear();
-            }
+            cachedActions.values().removeAll(toRemove);
+            toRemove.clear();
         }
         for (HumanNPC npc : NPCManager.getList().values()) {
             updateWaypoints(npc);
@@ -57,6 +55,7 @@ public class TickTask implements Runnable {
             }
         }
     }
+
     private void updateWaypoints(HumanNPC npc) {
         WaypointPath waypoints = npc.getWaypoints();
         switch (waypoints.size()) {
@@ -114,19 +113,15 @@ public class TickTask implements Runnable {
         @Override
         public void run() {
             NPCManager.register(UID, owner, NPCCreateReason.RESPAWN);
-            Messaging.sendUncertain(owner, StringUtils.wrap(NPCManager.get(UID).getName())
-                    + " has respawned.");
+            Messaging.sendUncertain(owner, StringUtils.wrap(NPCManager.get(UID).getName()) + " has respawned.");
         }
     }
 
     private static final SetMultimap<HumanNPC, String> cachedActions = HashMultimap.create();
-
     private static final List<String> toRemove = Lists.newArrayList();
 
     public static void clearActions(Player player) {
-        synchronized (toRemove) {
-            toRemove.add(player.getName().toLowerCase());
-        }
+        toRemove.add(player.getName().toLowerCase());
     }
 
     public static void scheduleRespawn(HumanNPC npc, int delay) {

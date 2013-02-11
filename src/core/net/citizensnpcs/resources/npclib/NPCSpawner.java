@@ -47,7 +47,7 @@ public class NPCSpawner {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
             public void run() {
-                npc.getHandle().ay = loc.getYaw();
+                npc.getHandle().az = loc.getYaw();
             }
         }, 2);
         ws.players.remove(npc.getHandle());
@@ -61,13 +61,12 @@ public class NPCSpawner {
             return null;
         }
         WorldServer ws = getWorldServer(loc.getWorld());
-        final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name,
-                new PlayerInteractManager(ws));
+        final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new PlayerInteractManager(ws));
         eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
             @Override
             public void run() {
-                eh.ay = loc.getYaw();
+                eh.az = loc.getYaw();
             }
         });
         ws.addEntity(eh);
@@ -79,13 +78,13 @@ public class NPCSpawner {
         try {
             String name = type.chooseRandomName();
             WorldServer ws = getWorldServer(loc.getWorld());
-            final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()),
-                    ws, name, new PlayerInteractManager(ws));
+            final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()), ws, name,
+                    new PlayerInteractManager(ws));
             eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
                 @Override
                 public void run() {
-                    eh.ay = loc.getYaw();
+                    eh.az = loc.getYaw();
                 }
             });
             ws.addEntity(eh);
