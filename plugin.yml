@@ -46,7 +46,7 @@ commands:
                         See /quester help for a list of commands.
     toggle:
         description: Toggles between various NPC states.
-        aliases: [t, tog]
+        aliases: [to, tog]
         usage: |
                         The command was not recognized.
     citizens:
