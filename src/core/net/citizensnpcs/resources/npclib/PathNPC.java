@@ -48,13 +48,12 @@ public class PathNPC extends EntityPlayer {
     protected boolean targetAggro = false;
     protected Entity targetEntity;
 
-    public PathNPC(MinecraftServer minecraftserver, World world, String s,
-            PlayerInteractManager iteminworldmanager) {
+    public PathNPC(MinecraftServer minecraftserver, World world, String s, PlayerInteractManager iteminworldmanager) {
         this(minecraftserver, world, s, iteminworldmanager, new MinecraftAutoPathfinder());
     }
 
-    public PathNPC(MinecraftServer minecraftserver, World world, String s,
-            PlayerInteractManager iteminworldmanager, AutoPathfinder autoPathfinder) {
+    public PathNPC(MinecraftServer minecraftserver, World world, String s, PlayerInteractManager iteminworldmanager,
+            AutoPathfinder autoPathfinder) {
         super(minecraftserver, world, s, iteminworldmanager);
         this.autoPathfinder = autoPathfinder;
     }
@@ -170,7 +169,7 @@ public class PathNPC extends EntityPlayer {
             }
             // TODO: adjust pitch.
             // Walk.
-            this.e(this.bB, this.bC);
+            this.e(this.bC, this.bD);
         }
         if (this.positionChanged && !this.pathFinished()) {
             jump();
@@ -185,8 +184,7 @@ public class PathNPC extends EntityPlayer {
     }
 
     private boolean isHoldingBow() {
-        return getBukkitEntity().getItemInHand() != null
-                && getBukkitEntity().getItemInHand().getType() == Material.BOW;
+        return getBukkitEntity().getItemInHand() != null && getBukkitEntity().getItemInHand().getType() == Material.BOW;
     }
 
     public boolean isInSight(Entity entity) {
@@ -197,8 +195,7 @@ public class PathNPC extends EntityPlayer {
         // Distance from EntityCreature.
         return this.attackTicks <= 0
                 && ((isHoldingBow() && (distance > Settings.getDouble("MinArrowRange") && distance < Settings
-                        .getDouble("MaxArrowRange"))) || (distance < 1.5F
-                        && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
+                        .getDouble("MaxArrowRange"))) || (distance < 1.5F && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e)
                         && isInSight(entity));
     }
 
@@ -216,8 +213,8 @@ public class PathNPC extends EntityPlayer {
             net.minecraft.server.v1_4_R1.ItemStack previous = previousEquipment[i];
             net.minecraft.server.v1_4_R1.ItemStack current = getEquipment(i);
             if (previous != current) {
-                PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(
-                        id, i, current));
+                PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(id, i,
+                        current));
                 previousEquipment[i] = current;
             }
         }
@@ -265,10 +262,8 @@ public class PathNPC extends EntityPlayer {
             autoPathfinder = null;
     }
 
-    public void setTarget(LivingEntity entity, boolean aggro, int maxTicks, int maxStationaryTicks,
-            double range) {
-        if (Plugins.worldGuardEnabled() && Settings.getBoolean("DenyBlockedPVPTargets")
-                && entity instanceof Player) {
+    public void setTarget(LivingEntity entity, boolean aggro, int maxTicks, int maxStationaryTicks, double range) {
+        if (Plugins.worldGuardEnabled() && Settings.getBoolean("DenyBlockedPVPTargets") && entity instanceof Player) {
             if (!Plugins.worldGuard.getGlobalRegionManager().allows(DefaultFlag.PVP, entity.getLocation()))
                 return;
         }
