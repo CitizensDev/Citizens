@@ -139,7 +139,7 @@ public class PathNPC extends EntityPlayer {
         float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
         float diffYaw = vectorYaw - this.yaw;
 
-        this.bC = this.bG;
+        this.bD = this.bH;
         while (diffYaw >= 180.0F) {
             diffYaw -= 360.0F;
         }
