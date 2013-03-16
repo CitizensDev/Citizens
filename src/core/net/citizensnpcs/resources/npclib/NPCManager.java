@@ -13,7 +13,7 @@ import net.citizensnpcs.properties.PropertyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_5_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -56,7 +56,7 @@ public class NPCManager {
             yaw = yaw + (Math.abs(180 - yaw) * 2);
         }
         npc.getHandle().yaw = (float) yaw - 90;
-        npc.getHandle().az = npc.getHandle().yaw;
+        npc.getHandle().aA = npc.getHandle().yaw;
         npc.getHandle().pitch = (float) pitch;
     }
 

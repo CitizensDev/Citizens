@@ -5,20 +5,20 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPC;
 import net.citizensnpcs.utils.PacketUtils;
-import net.minecraft.server.v1_4_R1.Entity;
-import net.minecraft.server.v1_4_R1.EntityHuman;
-import net.minecraft.server.v1_4_R1.EntityPlayer;
-import net.minecraft.server.v1_4_R1.MathHelper;
-import net.minecraft.server.v1_4_R1.MinecraftServer;
-import net.minecraft.server.v1_4_R1.Packet5EntityEquipment;
-import net.minecraft.server.v1_4_R1.PathEntity;
-import net.minecraft.server.v1_4_R1.PlayerInteractManager;
-import net.minecraft.server.v1_4_R1.Vec3D;
-import net.minecraft.server.v1_4_R1.World;
+import net.minecraft.server.v1_5_R1.Entity;
+import net.minecraft.server.v1_5_R1.EntityHuman;
+import net.minecraft.server.v1_5_R1.EntityPlayer;
+import net.minecraft.server.v1_5_R1.MathHelper;
+import net.minecraft.server.v1_5_R1.MinecraftServer;
+import net.minecraft.server.v1_5_R1.Packet5EntityEquipment;
+import net.minecraft.server.v1_5_R1.PathEntity;
+import net.minecraft.server.v1_5_R1.PlayerInteractManager;
+import net.minecraft.server.v1_5_R1.Vec3D;
+import net.minecraft.server.v1_5_R1.World;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_5_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -41,11 +41,13 @@ public class PathNPC extends EntityPlayer {
     protected float pathingRange = 16;
     private int pathTickLimit = -1;
     private int pathTicks = 0;
+    private final net.minecraft.server.v1_5_R1.ItemStack[] previousEquipment = { null, null, null, null, null };
     private int prevX, prevY, prevZ;
     protected boolean randomPather = false;
     private int stationaryTickLimit = -1;
     private int stationaryTicks = 0;
     protected boolean targetAggro = false;
+
     protected Entity targetEntity;
 
     public PathNPC(MinecraftServer minecraftserver, World world, String s, PlayerInteractManager iteminworldmanager) {
@@ -139,7 +141,7 @@ public class PathNPC extends EntityPlayer {
         float vectorYaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
         float diffYaw = vectorYaw - this.yaw;
 
-        this.bD = this.bH;
+        this.bE = this.bI;
         while (diffYaw >= 180.0F) {
             diffYaw -= 360.0F;
         }
@@ -163,13 +165,13 @@ public class PathNPC extends EntityPlayer {
             float diffYaw = getYawDifference(diffZ, diffX);
 
             this.yaw += diffYaw;
-            this.az += diffYaw;
+            this.aA += diffYaw;
             if (diffY > 0.0D) {
                 jump();
             }
             // TODO: adjust pitch.
             // Walk.
-            this.e(this.bC, this.bD);
+            this.e(this.bD, this.bE);
         }
         if (this.positionChanged && !this.pathFinished()) {
             jump();
@@ -203,20 +205,6 @@ public class PathNPC extends EntityPlayer {
         if (this.onGround) {
             this.motY = 0.42D + JUMP_FACTOR;
             // Augment defaults to actually get over a block.
-        }
-    }
-
-    private final net.minecraft.server.v1_4_R1.ItemStack[] previousEquipment = { null, null, null, null, null };
-
-    private void updateEquipment() {
-        for (int i = 0; i < previousEquipment.length; i++) {
-            net.minecraft.server.v1_4_R1.ItemStack previous = previousEquipment[i];
-            net.minecraft.server.v1_4_R1.ItemStack current = getEquipment(i);
-            if (previous != current) {
-                PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(id, i,
-                        current));
-                previousEquipment[i] = current;
-            }
         }
     }
 
@@ -306,6 +294,18 @@ public class PathNPC extends EntityPlayer {
         }
         autoPathfinder = null;
         return false;
+    }
+
+    private void updateEquipment() {
+        for (int i = 0; i < previousEquipment.length; i++) {
+            net.minecraft.server.v1_5_R1.ItemStack previous = previousEquipment[i];
+            net.minecraft.server.v1_5_R1.ItemStack current = getEquipment(i);
+            if (previous != current) {
+                PacketUtils.sendPacketNearby(getBukkitEntity().getLocation(), 64, new Packet5EntityEquipment(id, i,
+                        current));
+                previousEquipment[i] = current;
+            }
+        }
     }
 
     private void updatePathingState() {

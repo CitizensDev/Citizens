@@ -3,25 +3,24 @@ package net.citizensnpcs.resources.npclib;
 import java.io.IOException;
 
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
-import net.minecraft.server.v1_4_R1.Connection;
-import net.minecraft.server.v1_4_R1.EnumGamemode;
-import net.minecraft.server.v1_4_R1.MinecraftServer;
-import net.minecraft.server.v1_4_R1.NetworkManager;
-import net.minecraft.server.v1_4_R1.PlayerInteractManager;
-import net.minecraft.server.v1_4_R1.World;
+import net.minecraft.server.v1_5_R1.Connection;
+import net.minecraft.server.v1_5_R1.EnumGamemode;
+import net.minecraft.server.v1_5_R1.MinecraftServer;
+import net.minecraft.server.v1_5_R1.NetworkManager;
+import net.minecraft.server.v1_5_R1.PlayerInteractManager;
+import net.minecraft.server.v1_5_R1.World;
 
 import org.bukkit.entity.LivingEntity;
 
 public class CraftNPC extends PathNPC {
-    public CraftNPC(MinecraftServer minecraftserver, World world, String s,
-            PlayerInteractManager iteminworldmanager) {
+    public CraftNPC(MinecraftServer minecraftserver, World world, String s, PlayerInteractManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
         iteminworldmanager.setGameMode(EnumGamemode.SURVIVAL);
 
         NPCSocket socket = new NPCSocket();
         NetworkManager netMgr;
         try {
-            netMgr = new NPCNetworkManager(socket, "npc mgr", new Connection() {
+            netMgr = new NPCNetworkManager(server.getLogger(), socket, "npc mgr", new Connection() {
                 @Override
                 public boolean a() {
                     return false;

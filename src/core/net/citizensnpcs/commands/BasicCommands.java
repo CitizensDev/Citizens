@@ -35,7 +35,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_5_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -123,7 +123,7 @@ public class BasicCommands extends CommandHandler {
         int count = 0;
         for (World world : Bukkit.getServer().getWorlds()) {
             for (Entity entity : world.getEntities()) {
-                net.minecraft.server.v1_4_R1.Entity mcEntity = ((CraftEntity) entity).getHandle();
+                net.minecraft.server.v1_5_R1.Entity mcEntity = ((CraftEntity) entity).getHandle();
                 if (!(mcEntity instanceof CraftNPC) || mcEntity instanceof CreatureNPC)
                     continue;
                 HumanNPC found = ((CraftNPC) mcEntity).npc;

@@ -2,8 +2,8 @@ package net.citizensnpcs.resources.npclib;
 
 import java.util.Random;
 
-import net.minecraft.server.v1_4_R1.MathHelper;
-import net.minecraft.server.v1_4_R1.PathEntity;
+import net.minecraft.server.v1_5_R1.MathHelper;
+import net.minecraft.server.v1_5_R1.PathEntity;
 
 public class MinecraftAutoPathfinder implements AutoPathfinder {
     private final Random random = new Random();
@@ -19,7 +19,7 @@ public class MinecraftAutoPathfinder implements AutoPathfinder {
             int x2 = MathHelper.floor(npc.locX + this.random.nextInt(13) - 6.0D);
             int y2 = MathHelper.floor(npc.locY + this.random.nextInt(7) - 3.0D);
             int z2 = MathHelper.floor(npc.locZ + this.random.nextInt(13) - 6.0D);
-            double tempPathWeight = 0.5 - npc.world.p(x2, y2, z2);
+            double tempPathWeight = 0.5 - npc.world.q(x2, y2, z2);
 
             if (tempPathWeight > pathWeight) {
                 pathWeight = tempPathWeight;
