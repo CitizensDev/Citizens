@@ -10,10 +10,10 @@ import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
-import net.minecraft.server.v1_5_R1.EntityHuman;
-import net.minecraft.server.v1_5_R1.MinecraftServer;
-import net.minecraft.server.v1_5_R1.PlayerInteractManager;
-import net.minecraft.server.v1_5_R1.World;
+import net.minecraft.server.v1_5_R2.EntityHuman;
+import net.minecraft.server.v1_5_R2.MinecraftServer;
+import net.minecraft.server.v1_5_R2.PlayerInteractManager;
+import net.minecraft.server.v1_5_R2.World;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
