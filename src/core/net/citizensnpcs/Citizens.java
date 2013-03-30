@@ -91,6 +91,7 @@ public class Citizens extends JavaPlugin {
         }
         return false;
     }
+
     // load NPC types in the plugins/Citizens/types directory
     private void loadNPCTypes() {
         File dir = new File(getDataFolder(), "types");
@@ -192,28 +193,23 @@ public class Citizens extends JavaPlugin {
         Settings.setupVariables();
 
         // initialise metrics
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Metrics metrics = new Metrics();
-                    metrics.addCustomData(plugin, new Plotter() {
-                        @Override
-                        public String getColumnName() {
-                            return "Total NPCs";
-                        }
-
-                        @Override
-                        public int getValue() {
-                            return NPCManager.getList().size();
-                        }
-                    });
-                    metrics.beginMeasuringPlugin(plugin);
-                } catch (IOException e) {
-                    Messaging.log("unable to load metrics");
+        try {
+            Metrics metrics = new Metrics(Citizens.this);
+            metrics.addCustomData(new Plotter() {
+                @Override
+                public String getColumnName() {
+                    return "Total NPCs";
                 }
-            }
-        }.start();
+
+                @Override
+                public int getValue() {
+                    return NPCManager.getList().size();
+                }
+            });
+            metrics.start();
+        } catch (IOException e) {
+            Messaging.log("unable to load metrics");
+        }
 
         // register events per type
         for (String loaded : loadedTypes) {

@@ -9,12 +9,11 @@ import net.citizensnpcs.utils.PacketUtils;
 import net.minecraft.server.v1_5_R2.MinecraftServer;
 import net.minecraft.server.v1_5_R2.Packet29DestroyEntity;
 import net.minecraft.server.v1_5_R2.PlayerInteractManager;
-import net.minecraft.server.v1_5_R2.WorldServer;
+import net.minecraft.server.v1_5_R2.World;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_5_R2.CraftWorld;
 
@@ -36,12 +35,12 @@ public class NPCSpawner {
         return ((CraftServer) server).getServer();
     }
 
-    private static WorldServer getWorldServer(World world) {
+    private static World getWorldServer(org.bukkit.World world) {
         return ((CraftWorld) world).getHandle();
     }
 
     public static HumanNPC spawnNPC(final HumanNPC npc, final Location loc) {
-        WorldServer ws = getWorldServer(loc.getWorld());
+        World ws = getWorldServer(loc.getWorld());
         npc.getHandle().setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         ws.addEntity(npc.getHandle());
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
@@ -60,7 +59,7 @@ public class NPCSpawner {
                     + ". Is the location unloaded or missing?");
             return null;
         }
-        WorldServer ws = getWorldServer(loc.getWorld());
+        World ws = getWorldServer(loc.getWorld());
         final CraftNPC eh = new CraftNPC(getMinecraftServer(ws.getServer()), ws, name, new PlayerInteractManager(ws));
         eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         Bukkit.getScheduler().scheduleSyncDelayedTask(Citizens.plugin, new Runnable() {
@@ -77,7 +76,7 @@ public class NPCSpawner {
     public static HumanNPC spawnNPC(final Location loc, CreatureNPCType type) {
         try {
             String name = type.chooseRandomName();
-            WorldServer ws = getWorldServer(loc.getWorld());
+            World ws = getWorldServer(loc.getWorld());
             final CraftNPC eh = type.getEntityConstructor().newInstance(getMinecraftServer(ws.getServer()), ws, name,
                     new PlayerInteractManager(ws));
             eh.setPositionRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());

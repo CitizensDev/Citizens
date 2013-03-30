@@ -14,55 +14,49 @@ import net.citizensnpcs.utils.Messaging;
 
 public class CitizensNPCLoader {
 
-	public static CitizensNPCType loadNPCType(File file, Citizens plugin) {
-		try {
-			JarFile jarFile = new JarFile(file);
-			Enumeration<JarEntry> entries = jarFile.entries();
-			String mainClass = null;
-			while (entries.hasMoreElements()) {
-				JarEntry element = entries.nextElement();
-				if (element.getName().equalsIgnoreCase("type.info")) {
-					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(
-									jarFile.getInputStream(element)));
-					mainClass = reader.readLine().substring(6);
-					reader.close();
-					break;
-				}
-			}
-			if (mainClass != null) {
-				ClassLoader loader = URLClassLoader.newInstance(
-						new URL[] { file.toURI().toURL() }, plugin.getClass()
-								.getClassLoader());
-				Class<?> clazz = Class.forName(mainClass, true, loader);
-				for (Class<?> subclazz : clazz.getClasses()) {
-					// load extended classes.
-					Class.forName(subclazz.getName(), true, loader);
-				}
+    public static CitizensNPCType loadNPCType(File file, Citizens plugin) {
+        try {
+            JarFile jarFile = new JarFile(file);
+            Enumeration<JarEntry> entries = jarFile.entries();
+            String mainClass = null;
+            while (entries.hasMoreElements()) {
+                JarEntry element = entries.nextElement();
+                if (element.getName().equalsIgnoreCase("type.info")) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(jarFile.getInputStream(element)));
+                    mainClass = reader.readLine().substring(6);
+                    reader.close();
+                    break;
+                }
+            }
+            jarFile.close();
+            if (mainClass != null) {
+                ClassLoader loader = URLClassLoader.newInstance(new URL[] { file.toURI().toURL() }, plugin.getClass()
+                        .getClassLoader());
+                Class<?> clazz = Class.forName(mainClass, true, loader);
+                for (Class<?> subclazz : clazz.getClasses()) {
+                    // load extended classes.
+                    Class.forName(subclazz.getName(), true, loader);
+                }
 
-				Class<? extends CitizensNPCType> typeClass = clazz
-						.asSubclass(CitizensNPCType.class);
-				CitizensNPCType type = typeClass.newInstance();
-				if (type.getProperties() == null) {
-					throw new InvalidNPCTypeException(type.getName()
-							+ " is missing a valid Properties class.");
-				}
-				if (type.getCommands() == null) {
-					throw new InvalidNPCTypeException(type.getName()
-							+ " is missing a valid Commands class.");
-				}
-				return NPCTypeManager.registerType(type);
-			} else {
-				throw new InvalidNPCTypeException("Failed to load "
-						+ file.getName()
-						+ ". Does the .jar file contain a npctype.info file?");
-			}
-		} catch (InvalidNPCTypeException ex) {
-			Messaging.log(ex.getMessage());
-			return null;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
+                Class<? extends CitizensNPCType> typeClass = clazz.asSubclass(CitizensNPCType.class);
+                CitizensNPCType type = typeClass.newInstance();
+                if (type.getProperties() == null) {
+                    throw new InvalidNPCTypeException(type.getName() + " is missing a valid Properties class.");
+                }
+                if (type.getCommands() == null) {
+                    throw new InvalidNPCTypeException(type.getName() + " is missing a valid Commands class.");
+                }
+                return NPCTypeManager.registerType(type);
+            } else {
+                throw new InvalidNPCTypeException("Failed to load " + file.getName()
+                        + ". Does the .jar file contain a npctype.info file?");
+            }
+        } catch (InvalidNPCTypeException ex) {
+            Messaging.log(ex.getMessage());
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
