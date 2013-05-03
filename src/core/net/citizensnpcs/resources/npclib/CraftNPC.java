@@ -3,12 +3,12 @@ package net.citizensnpcs.resources.npclib;
 import java.io.IOException;
 
 import net.citizensnpcs.resources.npclib.NPCAnimator.Animation;
-import net.minecraft.server.v1_5_R2.Connection;
-import net.minecraft.server.v1_5_R2.EnumGamemode;
-import net.minecraft.server.v1_5_R2.MinecraftServer;
-import net.minecraft.server.v1_5_R2.NetworkManager;
-import net.minecraft.server.v1_5_R2.PlayerInteractManager;
-import net.minecraft.server.v1_5_R2.World;
+import net.minecraft.server.v1_5_R3.Connection;
+import net.minecraft.server.v1_5_R3.EnumGamemode;
+import net.minecraft.server.v1_5_R3.MinecraftServer;
+import net.minecraft.server.v1_5_R3.NetworkManager;
+import net.minecraft.server.v1_5_R3.PlayerInteractManager;
+import net.minecraft.server.v1_5_R3.World;
 
 import org.bukkit.entity.LivingEntity;
 

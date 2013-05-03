@@ -2,7 +2,7 @@ package net.citizensnpcs.resources.npclib;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_5_R3.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
 public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
@@ -14,7 +14,7 @@ public class NPCList extends ConcurrentHashMap<Integer, HumanNPC> {
         if (entity == null) {
             return null;
         }
-        net.minecraft.server.v1_5_R2.Entity mcEntity = ((CraftEntity) entity).getHandle();
+        net.minecraft.server.v1_5_R3.Entity mcEntity = ((CraftEntity) entity).getHandle();
         if (mcEntity instanceof CraftNPC) {
             HumanNPC npc = ((CraftNPC) mcEntity).npc;
             if (npc == null)
