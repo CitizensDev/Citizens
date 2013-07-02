@@ -6,16 +6,16 @@ import net.citizensnpcs.api.event.NPCRemoveEvent.NPCRemoveReason;
 import net.citizensnpcs.resources.npclib.creatures.CreatureNPCType;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.PacketUtils;
-import net.minecraft.server.v1_5_R3.MinecraftServer;
-import net.minecraft.server.v1_5_R3.Packet29DestroyEntity;
-import net.minecraft.server.v1_5_R3.PlayerInteractManager;
-import net.minecraft.server.v1_5_R3.World;
+import net.minecraft.server.v1_6_R1.MinecraftServer;
+import net.minecraft.server.v1_6_R1.Packet29DestroyEntity;
+import net.minecraft.server.v1_6_R1.PlayerInteractManager;
+import net.minecraft.server.v1_6_R1.World;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_6_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_6_R1.CraftWorld;
 
 public class NPCSpawner {
     public static void despawnNPC(CraftNPC npc, NPCRemoveReason reason) {

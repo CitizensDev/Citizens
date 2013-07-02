@@ -1,11 +1,11 @@
 package net.citizensnpcs.utils;
 
-import net.minecraft.server.v1_5_R3.Packet;
+import net.minecraft.server.v1_6_R1.Packet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_6_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class PacketUtils {

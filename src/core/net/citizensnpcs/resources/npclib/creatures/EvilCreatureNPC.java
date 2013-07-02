@@ -10,10 +10,10 @@ import net.citizensnpcs.utils.InventoryUtils;
 import net.citizensnpcs.utils.MessageUtils;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
-import net.minecraft.server.v1_5_R3.EntityHuman;
-import net.minecraft.server.v1_5_R3.MinecraftServer;
-import net.minecraft.server.v1_5_R3.PlayerInteractManager;
-import net.minecraft.server.v1_5_R3.World;
+import net.minecraft.server.v1_6_R1.EntityHuman;
+import net.minecraft.server.v1_6_R1.MinecraftServer;
+import net.minecraft.server.v1_6_R1.PlayerInteractManager;
+import net.minecraft.server.v1_6_R1.World;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -70,8 +70,7 @@ public class EvilCreatureNPC extends CreatureNPC {
             InventoryUtils.decreaseItemInHand(player);
             isTame = true;
             CreatureTask.despawn(this, NPCRemoveReason.OTHER);
-            NPCManager.register(npc.getName(), player.getLocation(), player.getName(),
-                    NPCCreateReason.RESPAWN);
+            NPCManager.register(npc.getName(), player.getLocation(), player.getName(), NPCCreateReason.RESPAWN);
             player.sendMessage(ChatColor.GREEN + "You have tamed " + StringUtils.wrap(npc.getName())
                     + "! You can now toggle it to be any type.");
         } else {
@@ -87,7 +86,7 @@ public class EvilCreatureNPC extends CreatureNPC {
     @Override
     public void onSpawn() {
         npc.getInventory().setItemInHand(new ItemStack(weapons[this.random.nextInt(weapons.length)], 1));
-        this.health = Settings.getInt("EvilHealth");
+        this.setHealth((float) Settings.getDouble("EvilHealth"));
         super.onSpawn();
     }
 }
