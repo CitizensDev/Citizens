@@ -5,10 +5,10 @@ import java.lang.reflect.Field;
 import java.net.Socket;
 import java.security.PrivateKey;
 
-import net.minecraft.server.v1_6_R1.Connection;
-import net.minecraft.server.v1_6_R1.IConsoleLogManager;
-import net.minecraft.server.v1_6_R1.NetworkManager;
-import net.minecraft.server.v1_6_R1.Packet;
+import net.minecraft.server.v1_6_R2.Connection;
+import net.minecraft.server.v1_6_R2.IConsoleLogManager;
+import net.minecraft.server.v1_6_R2.NetworkManager;
+import net.minecraft.server.v1_6_R2.Packet;
 
 public class NPCNetworkManager extends NetworkManager {
     public NPCNetworkManager(IConsoleLogManager mgr, Socket paramSocket, String paramString,

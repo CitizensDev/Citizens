@@ -27,7 +27,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_6_R1.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -89,7 +89,7 @@ public class BasicProperties extends PropertyManager implements Properties {
                 }
             }
         }
-        PlayerInventory inv = new CraftInventoryPlayer(new net.minecraft.server.v1_6_R1.PlayerInventory(null));
+        PlayerInventory inv = new CraftInventoryPlayer(new net.minecraft.server.v1_6_R2.PlayerInventory(null));
         ItemStack[] stacks = inv.getContents();
         inv.setContents(array.toArray(stacks));
         return inv;
