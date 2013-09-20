@@ -2,8 +2,8 @@ package net.citizensnpcs.resources.npclib;
 
 import java.util.Random;
 
-import net.minecraft.server.v1_6_R2.MathHelper;
-import net.minecraft.server.v1_6_R2.PathEntity;
+import net.minecraft.server.v1_6_R3.MathHelper;
+import net.minecraft.server.v1_6_R3.PathEntity;
 
 public class MinecraftAutoPathfinder implements AutoPathfinder {
     private final Random random = new Random();

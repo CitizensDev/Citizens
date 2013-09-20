@@ -10,9 +10,9 @@ import net.citizensnpcs.Settings;
 import net.citizensnpcs.resources.npclib.HumanNPC;
 import net.citizensnpcs.utils.Messaging;
 import net.citizensnpcs.utils.StringUtils;
-import net.minecraft.server.v1_6_R2.MinecraftServer;
-import net.minecraft.server.v1_6_R2.PlayerInteractManager;
-import net.minecraft.server.v1_6_R2.World;
+import net.minecraft.server.v1_6_R3.MinecraftServer;
+import net.minecraft.server.v1_6_R3.PlayerInteractManager;
+import net.minecraft.server.v1_6_R3.World;
 
 import org.bukkit.Location;
 

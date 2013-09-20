@@ -1,10 +1,10 @@
 package net.citizensnpcs.resources.npclib;
 
 import net.citizensnpcs.utils.PacketUtils;
-import net.minecraft.server.v1_6_R2.DataWatcher;
-import net.minecraft.server.v1_6_R2.Packet17EntityLocationAction;
-import net.minecraft.server.v1_6_R2.Packet18ArmAnimation;
-import net.minecraft.server.v1_6_R2.Packet40EntityMetadata;
+import net.minecraft.server.v1_6_R3.DataWatcher;
+import net.minecraft.server.v1_6_R3.Packet17EntityLocationAction;
+import net.minecraft.server.v1_6_R3.Packet18ArmAnimation;
+import net.minecraft.server.v1_6_R3.Packet40EntityMetadata;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
